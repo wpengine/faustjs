@@ -1,0 +1,68 @@
+{
+  "name": "@wpengine/headless",
+  "version": "0.0.1-canary.0",
+  "description": "This module helps you integrate with the WP API and get posts (both published and draft)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "run-s clean ts",
+    "clean": "rimraf dist",
+    "lint": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
+    "prepublish": "run-s build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless"
+  },
+  "keywords": [
+    "WordPress",
+    "WP",
+    "Headless",
+    "CMS",
+    "API",
+    "WP Engine"
+  ],
+  "author": "WP Engine",
+  "license": "MIT",
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "isomorphic-fetch": "^3.0.0",
+    "moize": "^5.4.7",
+    "universal-cookie": "^4.0.4"
+  },
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "@apollo/client": "^3.3.4",
+    "graphql": "^15.4.0",
+    "next": "^10.0.3"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "0.0.35",
+    "@types/node": "^14.14.11",
+    "@types/react": "^17.0.0",
+    "@apollo/client": "^3.3.4",
+    "next": "^10.0.3",
+    "react": "^17.0.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.1.2",
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0",
+    "@types/express": "^4.17.9",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "^6.0.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2"
+  }
+}

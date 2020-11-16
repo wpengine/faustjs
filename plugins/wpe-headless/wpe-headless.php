@@ -1,0 +1,32 @@
+<?php
+/**
+ * Plugin Name: WPEngine Headless
+ * Plugin URI: https://wpengine.com/
+ * Description: Plugin for working with headless WordPress.
+ * Author: WPEngine
+ * Author URI: https://wpengine.com/
+ * Text Domain: wpe-headless
+ * Domain Path: /languages
+ * Version: 0.1.1-dev
+ *
+ * @package WPE_Headless
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+define( 'WPE_HEADLESS_FILE', __FILE__ );
+define( 'WPE_HEADLESS_DIR', dirname( __FILE__ ) );
+define( 'WPE_HEADLESS_PATH', plugin_basename( WPE_HEADLESS_FILE ) );
+define( 'WPE_HEADLESS_SLUG', dirname( plugin_basename( WPE_HEADLESS_FILE ) ) );
+
+require WPE_HEADLESS_DIR . '/includes/auth/functions.php';
+require WPE_HEADLESS_DIR . '/includes/settings/functions.php';
+require WPE_HEADLESS_DIR . '/includes/updates/functions.php';
+require WPE_HEADLESS_DIR . '/includes/auth/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/replacement/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/rest/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/settings/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/updates/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/utilities/callbacks.php';

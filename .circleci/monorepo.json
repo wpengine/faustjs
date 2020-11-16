@@ -1,0 +1,5 @@
+{
+  "packages": {
+    "wpe-headless-plugin": ["plugins/wpe-headless/"]
+  }
+}
