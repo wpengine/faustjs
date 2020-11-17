@@ -3,7 +3,7 @@
  * Class for rest API endpoints
  *
  */
-class WP_Headless_Api {
+class WPE_Headless_Api {
     public static function init() {
         add_action( 'rest_api_init', array( __CLASS__, 'register_routes' ) );
         add_filter( 'determine_current_user', array( __CLASS__, 'auth_handler' ), 20 );
@@ -20,7 +20,7 @@ class WP_Headless_Api {
     public static function authorize(WP_REST_Request $request) {
         $code = $request->get_param('code');
         $user_id = self::get_user_id_with_token($code, 'ac', 60);
-        $access_token = WP_Headless_Crypto::encrypt('at|' . $user_id . '|' . time());
+        $access_token = WPE_Headless_Crypto::encrypt('at|' . $user_id . '|' . time());
 
         return (object)array(
             'access_token' => $access_token
@@ -30,8 +30,8 @@ class WP_Headless_Api {
     public static function authorize_permission( WP_REST_Request $request ) {
         // $user = wp_get_current_user();
         // current_user_can( 'edit_user', $data['user_id'] );
-        $secret = WP_Headless_Constants::get_secret_key_option();
-        $header_secret = $request->get_header(WP_Headless_Constants::SECRET_HEADER);
+        $secret = WPE_Headless_Constants::get_secret_key_option();
+        $header_secret = $request->get_header(WPE_Headless_Constants::SECRET_HEADER);
 
         if ($secret !== $header_secret) {
             return false;
@@ -58,7 +58,7 @@ class WP_Headless_Api {
             return false;
         }
 
-        $decrypted_code = WP_Headless_Crypto::decrypt($code);
+        $decrypted_code = WPE_Headless_Crypto::decrypt($code);
 
         if (!isset($decrypted_code)) {
             return false;
@@ -134,7 +134,7 @@ class WP_Headless_Api {
 	 * Filter the user to authenticate.
 	 */
 	public static function authenticate( $input_user, $token ) {
-		if ( ! apply_filters( 'wp_Headless_is_api_request', self::is_api_request() ) ) {
+		if ( ! apply_filters( 'WPE_Headless_is_api_request', self::is_api_request() ) ) {
 			return $input_user;
 		}
 

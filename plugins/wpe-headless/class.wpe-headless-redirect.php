@@ -3,7 +3,7 @@
  * Class for redirect endpoints
  *
  */
-class WP_Headless_Redirect {
+class WPE_Headless_Redirect {
     public static function init() {
         add_action('parse_request', array( __CLASS__, 'handle_generate' ));
     }
@@ -18,7 +18,7 @@ class WP_Headless_Redirect {
                 exit;
             }
 
-            $parsed_frontend_uri = parse_url(WP_Headless_Constants::get_frontend_uri_option());
+            $parsed_frontend_uri = parse_url(WPE_Headless_Constants::get_frontend_uri_option());
             $allowed_redirects = $parsed_frontend_uri['scheme']. '://' . $parsed_frontend_uri['host'] . ',http://localhost,https://localhost,http://0.0.0.0,https://0.0.0.0';
 
             $parsed_redirect = parse_url($redirect);
@@ -31,7 +31,7 @@ class WP_Headless_Redirect {
             }
 
             if (is_user_logged_in()) {
-                $code = WP_Headless_Crypto::encrypt('ac|' . wp_get_current_user()->ID . '|' . time());
+                $code = WPE_Headless_Crypto::encrypt('ac|' . wp_get_current_user()->ID . '|' . time());
 
                 if (strpos($redirect, '?') !== false) {
                     wp_redirect($redirect . '&code=' . $code);

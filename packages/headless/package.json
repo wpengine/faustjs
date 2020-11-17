@@ -1,5 +1,5 @@
 {
-  "name": "wp-api",
+  "name": "@wpengine/headless",
   "version": "0.0.1",
   "description": "This module helps you integrate with the WP API and get posts (both published and draft)",
   "main": "dist/index.js",
@@ -7,32 +7,36 @@
     "build": "run-s clean ts",
     "clean": "rimraf dist",
     "lint": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
+    "prepublish": "run-s build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts": "tsc -p ."
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/devrel/tree/main/node/modules/wp-api"
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless"
   },
   "keywords": [
     "WordPress",
     "WP",
     "Headless",
     "CMS",
-    "API"
+    "API",
+    "WP Engine"
   ],
-  "author": "Will Johnston",
+  "author": "WP Engine",
   "license": "MIT",
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "graphql": "^15.4.0",
-    "isomorphic-fetch": "^3.0.0",
-    "next": "^10.0.0",
+    "isomorphic-fetch": "^3.0.0"
+  },
+  "peerDependencies": {
     "react": "^17.0.1"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "0.0.35",
     "@types/node": "^14.14.6",
+    "@types/express": "^4.17.9",
     "@types/react": "^16.9.55",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",

@@ -3,11 +3,11 @@
  * Class for encrypting and decrypting tokens
  *
  */
-class WP_Headless_Crypto {
-    const SECRET_KEY = WP_Headless_Constants::SECRET_KEY;
-    const SECRET_HEADER = WP_Headless_Constants::SECRET_HEADER;
-    const ENCRYPTION_METHOD = WP_Headless_Constants::ENCRYPTION_METHOD;
-    const ENCRYPTION_ALGO = WP_Headless_Constants::ENCRYPTION_ALGO;
+class WPE_Headless_Crypto {
+    const SECRET_KEY = WPE_Headless_Constants::SECRET_KEY;
+    const SECRET_HEADER = WPE_Headless_Constants::SECRET_HEADER;
+    const ENCRYPTION_METHOD = WPE_Headless_Constants::ENCRYPTION_METHOD;
+    const ENCRYPTION_ALGO = WPE_Headless_Constants::ENCRYPTION_ALGO;
 
     public static function encrypt( $string ) {
         $info = self::get_encryption_info();
@@ -21,7 +21,7 @@ class WP_Headless_Crypto {
 
     public static function get_encryption_info() {
         $secret_key = self::SECRET_KEY;
-        $secret_iv = WP_Headless_Constants::get_secret_key_option() . self::get_default_key();
+        $secret_iv = WPE_Headless_Constants::get_secret_key_option() . self::get_default_key();
         $encrypt_method = self::ENCRYPTION_METHOD;
         $key = hash( self::ENCRYPTION_ALGO, $secret_key );
         $iv = substr( hash( self::ENCRYPTION_ALGO, $secret_iv ), 0, 16 );
@@ -34,8 +34,8 @@ class WP_Headless_Crypto {
     }
 
     public static function get_default_key() {
-        if ( defined( 'WP_Headless_SECRET_KEY' ) && '' !== WP_Headless_SECRET_KEY ) {
-			return WP_Headless_SECRET_KEY;
+        if ( defined( 'WPE_Headless_SECRET_KEY' ) && '' !== WPE_Headless_SECRET_KEY ) {
+			return WPE_Headless_SECRET_KEY;
 		}
 
 		if ( defined( 'AUTH_KEY' ) && '' !== AUTH_KEY ) {
@@ -43,6 +43,6 @@ class WP_Headless_Crypto {
 		}
 
 		// If this is reached, you're either not on a live site or have a serious security issue.
-		return WP_Headless_Constants::get_secret_key_option();
+		return WPE_Headless_Constants::get_secret_key_option();
     }
 }
