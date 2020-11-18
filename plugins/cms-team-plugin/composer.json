@@ -1,0 +1,25 @@
+{
+    "name": "wpengine/headless-plugin",
+    "description": "Plugin for working with headless WordPress.",
+    "type": "project",
+    "minimum-stability": "stable",
+    "require": {},
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "roave/security-advisories": "dev-master",
+        "wp-coding-standards/wpcs": "^2.2"
+    },
+    "scripts": {
+      "suite": ["@lint", "@phpcs"],
+      "lint": "parallel-lint -e php --no-colors --exclude vendor .",
+      "phpcs": "phpcs",
+      "phpcs:fix": "phpcbf"
+    },
+    "config": {
+      "preferred-install": "dist",
+      "sort-packages": true,
+      "optimize-autoloader": true
+    }
+}
