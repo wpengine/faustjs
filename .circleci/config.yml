@@ -72,7 +72,7 @@ jobs:
           name: "Bundle plugin files into a zip"
           command: |
             cd ..
-            zip --verbose -x@.zipignore -x *.wpe/* -r "cms-team-plugin/build/headless-poc.$BUILD_VERSION.zip" cms-team-plugin
+            zip --verbose -x@cms-team-plugin/.zipignore -x *.wpe/* -r "cms-team-plugin/build/headless-poc.$BUILD_VERSION.zip" cms-team-plugin
       - store_artifacts:
           path: build
       - persist_to_workspace:
