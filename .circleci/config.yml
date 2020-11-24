@@ -90,7 +90,7 @@ jobs:
           at: ~/project
       - wp-product-orb/variable-load
       - wp-product-orb/parse-wp-readme:
-          infile: headless-poc/readme.txt
+          infile: readme.txt
           outfile: build/headless-poc.$BUILD_VERSION.json
       - store_artifacts:
           path: build
