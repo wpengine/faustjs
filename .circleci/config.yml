@@ -7,7 +7,36 @@ orbs:
   wp-product-orb: wpengine/wp-product-orb@1.3.0
   php: circleci/php@1.1.0
 
+parameters:
+  # This parameter is used to trigger the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # A parameter per package
+  wpe-headless-plugin:
+    type: boolean
+    default: false
+
 jobs:
+  trigger-workflows:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          # This step is added to demonstrate the possibility to dynamically set the user token
+          name: Set token
+          command: echo "export CIRCLE_USER_TOKEN=${CIRCLE_PROJECT_TOKEN}" >> $BASH_ENV
+      - run:
+          name: Trigger workflows
+          command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
+          environment:
+            # (optional) print additional debug information
+            MONOREPO_DEBUG: "true"
+            # (optional) additional CI parameters to include in the pipeline (must be a valid JSON)
+            CI_PARAMETERS: '{ "deploy": true }'
+
   checkout:
     executor: wp-product-orb/default
     steps:
@@ -119,7 +148,18 @@ jobs:
           version: $BUILD_VERSION
 
 workflows:
+  version: 2
+
+  # The main workflow responsible for triggering all other workflows
+  # in which changes are detected.
+  ci:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
+
+  # Workflows defined for each package.
   plugin-cms-team-plugin:
+    when: << pipeline.parameters.wpe-headless-plugin >>
     jobs:
       - checkout
       - plugin-cms-team-plugin-checkout:
