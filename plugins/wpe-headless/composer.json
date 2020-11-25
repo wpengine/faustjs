@@ -1,5 +1,5 @@
 {
-    "name": "wpengine/headless-plugin",
+    "name": "wpengine/wpe-headless",
     "description": "Plugin for working with headless WordPress.",
     "type": "project",
     "minimum-stability": "stable",
