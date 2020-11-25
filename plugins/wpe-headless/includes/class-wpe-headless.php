@@ -18,26 +18,6 @@ class WPE_Headless {
 		WPE_Headless_Redirect::init();
 	}
 
-	public static function activate() {
-		flush_rewrite_rules();
-
-		$secret_key = WPE_Headless_Constants::get_secret_key_option();
-
-		if ( isset( $secret_key ) ) {
-			update_option( WPE_Headless_Constants::SECRET_KEY, wp_generate_uuid4() );
-		} else {
-			add_option( WPE_Headless_Constants::SECRET_KEY, wp_generate_uuid4() );
-		}
-
-		$frontend_uri = WPE_Headless_Constants::get_frontend_uri_option();
-
-		if ( isset( $frontend_uri ) ) {
-			update_option( WPE_Headless_Constants::FRONTEND_URI, '' );
-		} else {
-			add_option( WPE_Headless_Constants::FRONTEND_URI, '' );
-		}
-	}
-
 	public static function set_post_preview_link() {
 		$base_uri = WPE_Headless_Constants::get_frontend_uri_option();
 		$post     = get_post();
@@ -54,15 +34,6 @@ class WPE_Headless {
 		}
 
 		return $base_uri . $post->post_name;
-	}
-
-	public static function deactivate() {
-		flush_rewrite_rules();
-
-		delete_option( WPE_Headless_Constants::SECRET_KEY );
-		delete_option( WPE_Headless_Constants::FRONTEND_URI );
-
-		remove_filter( 'preview_post_link', array( __CLASS__, 'set_post_preview_link' ) );
 	}
 
 	public static function admin_init() {

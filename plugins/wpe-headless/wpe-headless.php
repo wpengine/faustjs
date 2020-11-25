@@ -39,7 +39,4 @@ if ( wpe_headless_is_events_enabled() ) {
 	require WPE_HEADLESS_DIR . '/includes/events/callbacks.php';
 }
 
-register_activation_hook( __FILE__, array( 'WPE_Headless', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'WPE_Headless', 'deactivate' ) );
-
 WPE_Headless::init();
