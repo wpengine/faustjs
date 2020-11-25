@@ -25,7 +25,7 @@ jobs:
     steps:
       - checkout
       - run:
-          # This step is added to demonstrate the possibility to dynamically set the user token
+          # See MarkKelnar about the personal api token created and added as an environment variable for the project
           name: Set token
           command: echo "export CIRCLE_USER_TOKEN=${CIRCLE_PROJECT_TOKEN}" >> $BASH_ENV
       - run:
@@ -35,7 +35,7 @@ jobs:
             # (optional) print additional debug information
             MONOREPO_DEBUG: "true"
             # (optional) additional CI parameters to include in the pipeline (must be a valid JSON)
-            CI_PARAMETERS: '{ "deploy": true }'
+            # CI_PARAMETERS: '{ "deploy": true }'
 
   checkout:
     executor: wp-product-orb/default
