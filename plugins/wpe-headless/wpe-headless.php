@@ -19,21 +19,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WPE_HEADLESS_FILE', __FILE__ );
 define( 'WPE_HEADLESS_DIR', dirname( __FILE__ ) );
 
-require WPE_HEADLESS_DIR . '/includes/settings/functions.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/functions.php';
+require WPE_HEADLESS_DIR . '/includes/settings/functions.php';
 require WPE_HEADLESS_DIR . '/includes/updates/functions.php';
+require WPE_HEADLESS_DIR . '/includes/utilities/functions.php';
 
 require WPE_HEADLESS_DIR . '/includes/redirect/class-wpe-headless-redirect.php';
 require WPE_HEADLESS_DIR . '/includes/rest/class-wpe-headless-api.php';
 require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-constants.php';
 require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-crypto.php';
 
-require WPE_HEADLESS_DIR . '/includes/utilities/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/menus/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/graphql-callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/settings/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/updates/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/utilities/callbacks.php';
 
 if ( wpe_headless_is_events_enabled() ) {
 	require WPE_HEADLESS_DIR . '/includes/events/callbacks.php';
