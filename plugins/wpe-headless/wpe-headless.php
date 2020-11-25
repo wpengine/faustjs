@@ -40,4 +40,5 @@ if ( wpe_headless_is_events_enabled() ) {
 	require WPE_HEADLESS_DIR . '/includes/events/callbacks.php';
 }
 
-WPE_Headless::init();
+WPE_Headless_Api::init();
+WPE_Headless_Redirect::init();

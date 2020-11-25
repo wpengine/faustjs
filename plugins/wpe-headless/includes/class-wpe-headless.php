@@ -10,7 +10,6 @@ class WPE_Headless {
 	 * @static
 	 */
 	public static function init() {
-		WPE_Headless_Api::init();
-		WPE_Headless_Redirect::init();
+
 	}
 }
