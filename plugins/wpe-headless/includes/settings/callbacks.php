@@ -66,9 +66,9 @@ function wpe_headless_register_settings_section() {
 	);
 
 	add_settings_section(
-		'events_setting_section',
-		__( 'Events', 'wpe-headless' ),
-		'wpe_headless_display_events_setting_section',
+		'authentication_settings_section',
+		__( 'Authentication Codes', 'wpe-headless' ),
+		'',
 		'wpe-headless-settings'
 	);
 
@@ -76,6 +76,13 @@ function wpe_headless_register_settings_section() {
 		'menu_locations_section',
 		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_section',
+		'wpe-headless-settings'
+	);
+
+	add_settings_section(
+		'events_setting_section',
+		__( 'Events', 'wpe-headless' ),
+		'wpe_headless_display_events_setting_section',
 		'wpe-headless-settings'
 	);
 }
@@ -114,6 +121,22 @@ function wpe_headless_register_settings_fields() {
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
 		'menu_locations_section'
+	);
+
+	add_settings_field(
+		'api_key',
+		__( 'API Key', 'wpe-headless' ),
+		'wpe_headless_display_api_key_field',
+		'wpe-headless-settings',
+		'authentication_settings_section'
+	);
+
+	add_settings_field(
+		'front_end_uri',
+		__( 'Preview Base Address (URL)', 'wpe-headless' ),
+		'wpe_headless_display_front_end_uri_field',
+		'wpe-headless-settings',
+		'authentication_settings_section'
 	);
 }
 
@@ -230,5 +253,35 @@ function wpe_headless_display_events_enabled_field() {
 		<input type="checkbox" id="events_enabled" name="wpe_headless[events_enabled]" <?php checked( $enabled ); ?> value="1" />
 		<?php esc_html_e( 'Events enabled', 'wpe-headless' ); ?>
 	</label>
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "API Key" text field.
+ *
+ * @return void
+ */
+function wpe_headless_display_api_key_field() {
+	$api_key = wpe_headless_get_setting( 'api_key', '' );
+
+	?>
+	<input type="text" id="api_key" name="wpe_headless[api_key]" value="<?php echo esc_attr( $api_key ); ?>" class="regular-text code" disabled />
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "API Key" text field.
+ *
+ * @return void
+ */
+function wpe_headless_display_front_end_uri_field() {
+	$front_end_uri = wpe_headless_get_setting( 'front_end_uri', '' );
+
+	?>
+	<input type="text" id="front_end_uri" name="wpe_headless[front_end_uri]" value="<?php echo esc_attr( $front_end_uri ); ?>" class="regular-text" />
 	<?php
 }

@@ -10,8 +10,6 @@ class WPE_Headless {
 	 * @static
 	 */
 	public static function init() {
-		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
-
 		add_filter( 'preview_post_link', array( __CLASS__, 'set_post_preview_link' ) );
 		add_filter( 'post_link', array( __CLASS__, 'set_post_link' ) );
 		WPE_Headless_Api::init();
@@ -34,65 +32,5 @@ class WPE_Headless {
 		}
 
 		return $base_uri . $post->post_name;
-	}
-
-	public static function admin_init() {
-		// register a new setting for "general" page
-		register_setting( 'general', WPE_Headless_Constants::SECRET_KEY );
-		register_setting( 'general', WPE_Headless_Constants::FRONTEND_URI );
-
-		// register a new section in the "general" page
-		add_settings_section(
-			'WPE_Headlesss_settings',
-			'WP Authentication Codes',
-			array( __CLASS__, 'settings_section_callback' ),
-			'general'
-		);
-
-		// register a new field in the "WPE_Headlesss_settings" section, inside the "general" page
-		add_settings_field(
-			WPE_Headless_Constants::SECRET_KEY,
-			'API Secret',
-			array( __CLASS__, 'settings_api_secret_callback' ),
-			'general',
-			'WPE_Headlesss_settings'
-		);
-
-		add_settings_field(
-			WPE_Headless_Constants::FRONTEND_URI,
-			'Preview Base Address (URL)',
-			array( __CLASS__, 'settings_base_uri_callback' ),
-			'general',
-			'WPE_Headlesss_settings'
-		);
-	}
-
-	// section content cb
-	public static function settings_section_callback() {
-		// echo '<p>Settings for WP Authentication Codes.</p>';
-	}
-
-	// section content cb
-	public static function settings_api_secret_callback() {
-		// get the value of the setting we've registered with register_setting()
-		$setting = WPE_Headless_Constants::get_secret_key_option();
-		// output the field
-		?>
-
-
-		<input type="text" disabled class="regular-text" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
-		<input type="hidden" class="regular-text" name="<?php echo WPE_Headless_Constants::SECRET_KEY; ?>" value="<?php echo isset( $setting ) ? esc_attr( $setting ) : ''; ?>">
-		<?php
-	}
-
-	// section content cb
-	public static function settings_base_uri_callback() {
-		// get the value of the setting we've registered with register_setting()
-		$setting = WPE_Headless_Constants::get_frontend_uri_option();
-		// output the field
-		?>
-
-		<input type="text" class="regular-text" name="<?php echo WPE_Headless_Constants::FRONTEND_URI; ?>" value="<?php echo $setting; ?>">
-		<?php
 	}
 }
