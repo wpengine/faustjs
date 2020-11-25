@@ -74,7 +74,7 @@ add_filter( 'post_link' , 'wpe_headless_post_link', 10, 3 );
  * @return string The post's permalink.
  */
 function wpe_headless_post_link( $permalink, $post, $leavename ) {
-	$base_uri = WPE_Headless_Constants::get_frontend_uri_option();
+	$front_end_uri = wpe_headless_get_setting( 'front_end_uri' );
 
 	if ( 'draft' === $post->post_status ) {
 		$permalink = sprintf(
