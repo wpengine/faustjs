@@ -23,7 +23,6 @@ require WPE_HEADLESS_DIR . '/includes/settings/functions.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/functions.php';
 require WPE_HEADLESS_DIR . '/includes/updates/functions.php';
 
-require WPE_HEADLESS_DIR . '/includes/class-wpe-headless.php';
 require WPE_HEADLESS_DIR . '/includes/redirect/class-wpe-headless-redirect.php';
 require WPE_HEADLESS_DIR . '/includes/rest/class-wpe-headless-api.php';
 require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-constants.php';
