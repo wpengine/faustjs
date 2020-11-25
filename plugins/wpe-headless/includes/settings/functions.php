@@ -38,6 +38,23 @@ function wpe_headless_get_setting( $name, $default = false ) {
 }
 
 /**
+ * Update a headless setting value.
+ *
+ * @link https://developer.wordpress.org/reference/functions/update_option/
+ *
+ * @param string $name  The setting name.
+ * @param mixed  $value The setting value.
+ *
+ * @return void
+ */
+function wpe_headless_update_setting( $name, $value ) {
+	$settings = wpe_headless_get_settings();
+	$settings[ $name ] = $value;
+
+	update_option( 'wpe_headless', $settings );
+}
+
+/**
  * Get all headless settings.
  *
  * @return array An array of settings.
