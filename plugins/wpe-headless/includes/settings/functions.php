@@ -21,8 +21,8 @@ function wpe_headless_is_events_enabled() {
 /**
  * Get a headless setting by name.
  *
- * @param string  $name    The setting name.
- * @param boolean $default Optional setting value.
+ * @param string $name    The setting name.
+ * @param mixed  $default Optional setting value. Default false.
  *
  * @return mixed The setting value.
  */
@@ -34,7 +34,14 @@ function wpe_headless_get_setting( $name, $default = false ) {
 		$value = $settings[ $name ];
 	}
 
-	return $value;
+	/**
+	 * Filter 'wpe_headless_get_setting'.
+	 *
+	 * @param mixed  $value   The setting value.
+	 * @param string $name    The setting name.
+	 * @param mixed  $default Optional setting value.
+	 */
+	return apply_filters( 'wpe_headless_get_setting', $value, $name, $default );
 }
 
 /**
