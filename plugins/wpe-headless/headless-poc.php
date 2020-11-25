@@ -23,11 +23,11 @@ require WPE_HEADLESS_DIR . '/includes/settings/functions.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/functions.php';
 require WPE_HEADLESS_DIR . '/includes/updates/functions.php';
 
-require WPE_HEADLESS_DIR . '/includes/class.wpe-headless.php';
-require WPE_HEADLESS_DIR . '/includes/redirect/class.wpe-headless-redirect.php';
-require WPE_HEADLESS_DIR . '/includes/rest/class.wpe-headless-api.php';
-require WPE_HEADLESS_DIR . '/includes/settings/class.wpe-headless-constants.php';
-require WPE_HEADLESS_DIR . '/includes/settings/class.wpe-headless-crypto.php';
+require WPE_HEADLESS_DIR . '/includes/class-wpe-headless.php';
+require WPE_HEADLESS_DIR . '/includes/redirect/class-wpe-headless-redirect.php';
+require WPE_HEADLESS_DIR . '/includes/rest/class-wpe-headless-api.php';
+require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-constants.php';
+require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-crypto.php';
 
 require WPE_HEADLESS_DIR . '/includes/menus/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/callbacks.php';
@@ -39,7 +39,7 @@ if ( wpe_headless_is_events_enabled() ) {
 	require WPE_HEADLESS_DIR . '/includes/events/callbacks.php';
 }
 
-register_activation_hook(__FILE__, array('WPE_Headless', 'activate'));
-register_deactivation_hook(__FILE__, array('WPE_Headless', 'deactivate'));
+register_activation_hook( __FILE__, array( 'WPE_Headless', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'WPE_Headless', 'deactivate' ) );
 
 WPE_Headless::init();
