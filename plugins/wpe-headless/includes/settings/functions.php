@@ -67,5 +67,12 @@ function wpe_headless_update_setting( $name, $value ) {
  * @return array An array of settings.
  */
 function wpe_headless_get_settings() {
-	return get_option( 'wpe_headless', array() );
+	$settings = get_option( 'wpe_headless', array() );
+
+	/**
+	 * Filter 'wpe_headless_get_setting'.
+	 *
+	 * @param array $settings Array of plugin settings.
+	 */
+	return apply_filters( 'wpe_headless_get_setting', $settings );
 }
