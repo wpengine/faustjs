@@ -34,3 +34,58 @@ function wpe_headless_content_replacement( $content ) {
 	$content = str_replace( "href=\"{$site_url}", "href=\"{$replacement}", $content );
 	return str_replace( 'href="//', 'href="/', $content );
 }
+
+add_filter( 'preview_post_link', 'wpe_headless_preview_post_link', 10, 2 );
+/**
+ * Callback for WordPress 'preview_post_link' filter.
+ *
+ * Swap the post preview link for headless front-end.
+ *
+ * @param string  $preview_link URL used for the post preview.
+ * @param WP_Post $post         Post object.
+ *
+ * @return string URL used for the post preview.
+ */
+function wpe_headless_preview_post_link( $preview_link, $post ) {
+	$front_end_uri = wpe_headless_get_setting( 'front_end_uri' );
+
+	if ( $front_end_uri ) {
+		$preview_link = sprintf(
+			'%s%s/?status=%s&preview=true',
+			$front_end_uri,
+			base64_encode( 'post:' . $post->ID ),
+			$post->post_status
+		);
+	}
+
+	return $preview_link;
+}
+
+add_filter( 'post_link' , 'wpe_headless_post_link', 10, 3 );
+/**
+ * Callback for WordPress 'post_link' filter.
+ *
+ * Modify the post link for a post type "post" for headless.
+ *
+ * @param string  $permalink The post's permalink.
+ * @param WP_Post $post      The post in question.
+ * @param bool    $leavename Whether to keep the post name.
+ *
+ * @return string The post's permalink.
+ */
+function wpe_headless_post_link( $permalink, $post, $leavename ) {
+	$base_uri = WPE_Headless_Constants::get_frontend_uri_option();
+
+	if ( 'draft' === $post->post_status ) {
+		$permalink = sprintf(
+			'%s%s/?status=%s&preview=true',
+			$front_end_uri,
+			base64_encode( 'post:' . $post->ID ),
+			$post->post_status
+		);
+	} else {
+		$permalink = $base_uri . $post->post_name;
+	}
+
+	return $permalink;
+}
