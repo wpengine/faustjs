@@ -1,0 +1,125 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.1
+orbs:
+  wp-product-orb: wpengine/wp-product-orb@1.1.2
+  php: circleci/php@1.1.0
+jobs:
+  checkout:
+    executor: wp-product-orb/default
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    steps:
+      - checkout:
+          path: headless-poc
+      - run:
+          name: Make artifacts build directory
+          command: |
+            [ ! -d "build" ] && mkdir build &>/dev/null
+      - wp-product-orb/get-version-from-php:
+          filename: headless-poc/headless-poc.php
+          return_var: BUILD_VERSION
+      - wp-product-orb/variable:
+          var: BUILD_VERSION
+          value: $BUILD_VERSION
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  composer:
+    executor: php/default
+    steps:
+      - attach_workspace:
+          at: .
+      - php/install-composer
+      - php/install-packages:
+          app-dir: headless-poc
+      - run:
+          name: Composer PHP lint and code sniffer
+          command: |
+            /usr/local/bin/composer suite
+          working_directory: headless-poc
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  bundle-zip:
+    executor: wp-product-orb/default
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    steps:
+      - attach_workspace:
+          at: .
+      - wp-product-orb/variable-load
+      - run:
+          name: "Bundle plugin files into a zip"
+          command: |
+            zip --verbose -x@headless-poc/.zipignore -r "build/headless-poc.$BUILD_VERSION.zip" headless-poc
+      - store_artifacts:
+          path: build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+
+  bundle-json:
+    executor: wp-product-orb/parser
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    steps:
+      - attach_workspace:
+          at: .
+      - wp-product-orb/variable-load
+      - wp-product-orb/parse-wp-readme:
+          infile: headless-poc/readme.txt
+          outfile: build/headless-poc.$BUILD_VERSION.json
+      - store_artifacts:
+          path: build
+      - persist_to_workspace:
+          root: .
+          paths:
+            build
+
+  deploy-staging:
+    executor: wp-product-orb/authenticate
+    environment:
+      WPE_SESSION_DIR: ./.wpe
+    steps:
+      - attach_workspace:
+          at: .
+      - wp-product-orb/variable-load
+      - wp-product-orb/authenticate:
+          user: WPE_LDAP_USER
+          pass: WPE_LDAP_PASS
+          url: https://auth-staging.wpengine.io/v1/tokens
+      - wp-product-orb/post-zip:
+          url: https://wp-product-info-staging.wpesvc.net/v1/plugins/headless-poc
+          zip: build/headless-poc.$BUILD_VERSION.zip
+          json: build/headless-poc.$BUILD_VERSION.json
+          version: $BUILD_VERSION
+
+workflows:
+  bundle:
+    jobs:
+      - checkout
+      - composer:
+          requires:
+            - checkout
+      - bundle-zip:
+          requires:
+            - checkout
+      - bundle-json:
+          requires:
+            - checkout
+      - deploy-staging:
+          requires:
+            - bundle-zip
+            - bundle-json
+          filters:
+            branches:
+              only: main
+          context: wpe-ldap-creds
