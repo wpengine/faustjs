@@ -1,5 +1,5 @@
 {
   "packages": {
-    "wpe-headless-plugin": ["plugins/cms-team-plugin/"]
+    "wpe-headless-plugin": ["plugins/wpe-headless/"]
   }
 }
