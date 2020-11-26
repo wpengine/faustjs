@@ -46,9 +46,9 @@ jobs:
           paths:
             - .
 
-  plugin-cms-team-plugin-checkout:
+  plugin-wpe-headless-checkout:
     executor: wp-product-orb/default
-    working_directory: ~/project/plugins/cms-team-plugin
+    working_directory: ~/project/plugins/wpe-headless
     environment:
       WPE_SESSION_DIR: ./.wpe
     steps:
@@ -67,11 +67,11 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/cms-team-plugin
+            - plugins/wpe-headless
 
-  plugin-cms-team-plugin-composer:
+  plugin-wpe-headless-composer:
     executor: php/default
-    working_directory: ~/project/plugins/cms-team-plugin
+    working_directory: ~/project/plugins/wpe-headless
     steps:
       - attach_workspace:
           at: ~/project
@@ -86,11 +86,11 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/cms-team-plugin
+            - plugins/wpe-headless
 
-  plugin-cms-team-plugin-bundle-zip:
+  plugin-wpe-headless-bundle-zip:
     executor: wp-product-orb/default
-    working_directory: ~/project/plugins/cms-team-plugin
+    working_directory: ~/project/plugins/wpe-headless
     environment:
       WPE_SESSION_DIR: ./.wpe
     steps:
@@ -101,17 +101,17 @@ jobs:
           name: "Bundle plugin files into a zip"
           command: |
             cd ..
-            zip --verbose -x@cms-team-plugin/.zipignore -x *.wpe/* */build/ -r "cms-team-plugin/build/headless-poc.$BUILD_VERSION.zip" cms-team-plugin
+            zip --verbose -x@wpe-headless/.zipignore -x *.wpe/* */build/ -r "wpe-headless/build/headless-poc.$BUILD_VERSION.zip" wpe-headless
       - store_artifacts:
           path: build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/cms-team-plugin/build
+            - plugins/wpe-headless/build
 
-  plugin-cms-team-plugin-bundle-json:
+  plugin-wpe-headless-bundle-json:
     executor: wp-product-orb/parser
-    working_directory: ~/project/plugins/cms-team-plugin
+    working_directory: ~/project/plugins/wpe-headless
     environment:
       WPE_SESSION_DIR: ./.wpe
     steps:
@@ -126,11 +126,11 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/cms-team-plugin/build
+            - plugins/wpe-headless/build
 
-  plugin-cms-team-plugin-deploy-staging:
+  plugin-wpe-headless-deploy-staging:
     executor: wp-product-orb/authenticate
-    working_directory: ~/project/plugins/cms-team-plugin
+    working_directory: ~/project/plugins/wpe-headless
     environment:
       WPE_SESSION_DIR: ./.wpe
     steps:
@@ -158,26 +158,26 @@ workflows:
       - trigger-workflows
 
   # Workflows defined for each package.
-  plugin-cms-team-plugin:
+  plugin-wpe-headless:
     when: << pipeline.parameters.wpe-headless-plugin >>
     jobs:
       - checkout
-      - plugin-cms-team-plugin-checkout:
+      - plugin-wpe-headless-checkout:
           requires:
             - checkout
-      - plugin-cms-team-plugin-composer:
+      - plugin-wpe-headless-composer:
           requires:
-            - plugin-cms-team-plugin-checkout
-      - plugin-cms-team-plugin-bundle-zip:
+            - plugin-wpe-headless-checkout
+      - plugin-wpe-headless-bundle-zip:
           requires:
-            - plugin-cms-team-plugin-checkout
-      - plugin-cms-team-plugin-bundle-json:
+            - plugin-wpe-headless-checkout
+      - plugin-wpe-headless-bundle-json:
           requires:
-            - plugin-cms-team-plugin-checkout
-      - plugin-cms-team-plugin-deploy-staging:
+            - plugin-wpe-headless-checkout
+      - plugin-wpe-headless-deploy-staging:
           requires:
-            - plugin-cms-team-plugin-bundle-zip
-            - plugin-cms-team-plugin-bundle-json
+            - plugin-wpe-headless-bundle-zip
+            - plugin-wpe-headless-bundle-json
           filters:
             branches:
               only: main
