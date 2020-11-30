@@ -21,7 +21,6 @@ const Index = ({ allPosts: { edges }, preview }) => {
           <title>Next.js Blog Example with {CMS_NAME}</title>
         </Head>
         <Container>
-          {/* TODO: extract Menu to Intro component. */}
           <WPMenu />
           <Intro />
           {heroPost && (
