@@ -1,9 +1,9 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
-// TODO: fix Webpack config so this runs server-side without “document is not defined”.
-// import styles from './styles.module.css'
-const styles = {}; styles.menu = '';
+import styles from './styles.module.css'
 import { getMenuLocation } from './utils'
+
+console.log(styles)
 
 const menuList = (items) =>
   items.map((item, key) => {
@@ -46,16 +46,17 @@ export const WP_MENU_QUERY = gql`
  * @returns {JSX.Element} WPMenu component.
  */
 export const WPMenu = ({ location = 'PRIMARY' }) => {
+  const menuClasses = 'menu ' + location.toLowerCase() + ' ' + styles.menu
   const { loading, error, data } = useQuery(WP_MENU_QUERY)
-  if (loading) return <p className={styles.menu}>Loading menu...</p>
-  if (error) return <p className={styles.menu}>Could not load menu</p>
+  if (loading) return <p className={menuClasses}>Loading menu...</p>
+  if (error) return <p className={menuClasses}>Could not load menu</p>
 
   const menuData = data.menuItems.nodes || []
   const menuItems = getMenuLocation(location, menuData)
 
   return (
     menuItems.length > 0 && (
-      <nav className={styles.menu} aria-label='Main'>
+      <nav className={menuClasses} aria-label='Main'>
         <div className='wrap'>
           <ul>{menuList(menuItems)}</ul>
         </div>
