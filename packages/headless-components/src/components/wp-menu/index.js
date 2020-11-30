@@ -3,8 +3,6 @@ import { useQuery, gql } from '@apollo/client'
 import styles from './styles.module.css'
 import { getMenuLocation } from './utils'
 
-console.log(styles)
-
 const menuList = (items) =>
   items.map((item, key) => {
     return (
