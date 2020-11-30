@@ -11,7 +11,6 @@
     "@apollo/client": "file:../node_modules/@apollo/client",
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
-    "deepmerge": "^4.2.2",
     "graphql": "file:../node_modules/graphql",
     "next": "latest",
     "next-apollo": "^5.0.4",
