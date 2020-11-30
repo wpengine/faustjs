@@ -1,6 +1,3 @@
-import React from 'react'
-import styles from './styles.module.css'
+import { WPMenu, WP_MENU_QUERY } from './components/wp-menu'
 
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
+export { WPMenu, WP_MENU_QUERY }
