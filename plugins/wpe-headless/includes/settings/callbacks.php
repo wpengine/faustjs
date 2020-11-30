@@ -132,9 +132,9 @@ function wpe_headless_register_settings_fields() {
 	);
 
 	add_settings_field(
-		'front_end_uri',
+		'frontend_uri',
 		__( 'Preview Base Address (URL)', 'wpe-headless' ),
-		'wpe_headless_display_front_end_uri_field',
+		'wpe_headless_display_frontend_uri_field',
 		'wpe-headless-settings',
 		'authentication_settings_section'
 	);
@@ -278,10 +278,10 @@ function wpe_headless_display_api_key_field() {
  *
  * @return void
  */
-function wpe_headless_display_front_end_uri_field() {
-	$front_end_uri = wpe_headless_get_setting( 'front_end_uri', '' );
+function wpe_headless_display_frontend_uri_field() {
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri', '' );
 
 	?>
-	<input type="text" id="front_end_uri" name="wpe_headless[front_end_uri]" value="<?php echo esc_attr( $front_end_uri ); ?>" class="regular-text" />
+	<input type="text" id="frontend_uri" name="wpe_headless[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
 	<?php
 }

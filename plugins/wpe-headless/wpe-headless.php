@@ -25,7 +25,6 @@ require WPE_HEADLESS_DIR . '/includes/settings/functions.php';
 require WPE_HEADLESS_DIR . '/includes/updates/functions.php';
 require WPE_HEADLESS_DIR . '/includes/utilities/functions.php';
 
-require WPE_HEADLESS_DIR . '/includes/redirect/class-wpe-headless-redirect.php';
 require WPE_HEADLESS_DIR . '/includes/rest/class-wpe-headless-api.php';
 require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-constants.php';
 require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-crypto.php';
@@ -43,4 +42,3 @@ if ( wpe_headless_is_events_enabled() ) {
 }
 
 WPE_Headless_Api::init();
-WPE_Headless_Redirect::init();

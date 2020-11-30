@@ -47,12 +47,12 @@ add_filter( 'preview_post_link', 'wpe_headless_preview_post_link', 10, 2 );
  * @return string URL used for the post preview.
  */
 function wpe_headless_preview_post_link( $preview_link, $post ) {
-	$front_end_uri = wpe_headless_get_setting( 'front_end_uri' );
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
-	if ( $front_end_uri ) {
+	if ( $frontend_uri ) {
 		$preview_link = sprintf(
 			'%s%s/?status=%s&preview=true',
-			$front_end_uri,
+			$frontend_uri,
 			base64_encode( 'post:' . $post->ID ),
 			$post->post_status
 		);
@@ -74,12 +74,12 @@ add_filter( 'post_link' , 'wpe_headless_post_link', 10, 3 );
  * @return string The post's permalink.
  */
 function wpe_headless_post_link( $permalink, $post, $leavename ) {
-	$front_end_uri = wpe_headless_get_setting( 'front_end_uri' );
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( 'draft' === $post->post_status ) {
 		$permalink = sprintf(
 			'%s%s/?status=%s&preview=true',
-			$front_end_uri,
+			$frontend_uri,
 			base64_encode( 'post:' . $post->ID ),
 			$post->post_status
 		);
