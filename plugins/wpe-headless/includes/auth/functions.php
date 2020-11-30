@@ -10,7 +10,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Generate an encrypted code for the given WP_User.
+ *
+ * @param \WP_User $wp_user A WP_User object.
+ *
+ * @return string An encrypted code.
+ */
+function wpe_headless_generate_user_code( $wp_user ) {
+	return WPE_Headless_Crypto::encrypt( 'ac|' . $wp_user->ID . '|' . time() );
+}
+
+/**
  * Determine if a url is allowed as a redirect destination.
+ *
+ * @todo Possibly move to another directory.
  *
  * @param string $url The redirect destination url.
  *
@@ -30,6 +43,8 @@ function wpe_headless_can_redirect( $url ) {
 
 /**
  * Get an array of allowed redirect destination urls.
+ *
+ * @todo Possibly move to another directory.
  *
  * @return array Array of allowed redirect domains.
  */

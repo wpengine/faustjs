@@ -13,7 +13,7 @@ add_action( 'parse_request', 'wpe_headless_handle_generate_endpoint' );
 /**
  * Callback for WordPress 'parse_request' action.
  *
- * Generate a code and redirect to the `frontend_uri` or development domain.
+ * Generate an authentication code and redirect to the requested url.
  *
  * @return void
  */
@@ -26,7 +26,7 @@ function wpe_headless_handle_generate_endpoint() {
 		return;
 	}
 
-	$redirect_uri = isset( $_GET['redirect_uri'] ) ? $_GET['redirect_uri'] : '';
+	$redirect_uri = $_GET['redirect_uri'];
 
 	if ( ! is_user_logged_in() ) {
 		wp_redirect(
@@ -40,7 +40,7 @@ function wpe_headless_handle_generate_endpoint() {
 		return;
 	}
 
-	$code = WPE_Headless_Crypto::encrypt( 'ac|' . wp_get_current_user()->ID . '|' . time() );
+	$code = wpe_headless_generate_user_code( wp_get_current_user() );
 
 	if ( parse_url( $redirect_uri, PHP_URL_QUERY ) ) {
 	    $redirect_uri .= "&code={$code}";
