@@ -30,6 +30,7 @@ require WPE_HEADLESS_DIR . '/includes/settings/class.wpe-headless-constants.php'
 require WPE_HEADLESS_DIR . '/includes/settings/class.wpe-headless-crypto.php';
 
 require WPE_HEADLESS_DIR . '/includes/menus/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/admin-menus/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/graphql-callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/settings/callbacks.php';
