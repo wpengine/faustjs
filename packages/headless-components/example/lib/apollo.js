@@ -13,7 +13,6 @@ function createApolloClient() {
         ssrMode: typeof window === 'undefined',
         link: new HttpLink({
             uri: API_URL,
-            // credentials: 'same-origin',
         }),
         cache: new InMemoryCache({
             typePolicies: {

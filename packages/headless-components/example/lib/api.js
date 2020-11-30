@@ -1,5 +1,3 @@
-// import { flatToTree } from './menu'
-
 const API_URL = process.env.WORDPRESS_API_URL
 
 async function fetchAPI(query, { variables } = {}) {
@@ -211,19 +209,3 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
 
   return data
 }
-
-// export async function getMenuItems() {
-//   const data = await fetchAPI(`
-//    {
-//      menuItems(where: {location: PRIMARY}) {
-//        nodes {
-//         key: id
-//         parentId
-//         title: label
-//         url
-//       }
-//     }
-//   }
-//   `)
-//   return flatToTree(data?.menuItems?.nodes || [])
-// }
