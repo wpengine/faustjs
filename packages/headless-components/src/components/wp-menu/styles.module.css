@@ -1,0 +1,26 @@
+.menu {
+  margin: 30px 0;
+}
+
+.menu li a:hover {
+  text-decoration: underline;
+}
+
+.menu li {
+  display: inline-block;
+  position: relative;
+  padding-right: 24px;
+}
+
+.menu :global(.submenu) {
+  display: none;
+  position: absolute;
+}
+
+.menu li:hover :global(ul.submenu) {
+  display: block;
+}
+
+.menu :global(ul.submenu li) {
+  width: 280px;
+}
