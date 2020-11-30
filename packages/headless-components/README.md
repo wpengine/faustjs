@@ -1,30 +1,27 @@
-# headless-components
+# Headless Components
 
-> React components for headless WordPress
+React components for headless WordPress.
 
-[![NPM](https://img.shields.io/npm/v/headless-components.svg)](https://www.npmjs.com/package/headless-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/@wpengine/headless-components.svg)](https://www.npmjs.com/package/@wpengine/headless-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save headless-components
+npm install --save @wpengine/headless-components
 ```
 
 ## Usage
 
-```jsx
-import React, { Component } from 'react'
+### WPMenu component
 
-import MyComponent from 'headless-components'
-import 'headless-components/dist/index.css'
+```jsx
+import { WPMenu } from '@wpengine/headless-components'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <WPMenu location='primary' />
   }
 }
 ```
 
-## License
-
-GPL-2.0-or-later © [wpengine](https://github.com/wpengine)
+See `packages/headless-components/example/README.md` for a full example with Next.js, GraphQL and Apollo.
