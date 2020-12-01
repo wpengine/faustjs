@@ -1,4 +1,4 @@
-# Headless Source: WPGraphQL
+# Next.js Source: WPGraphQL
 
 An NPM package to simplify the integration between WPGraphQL and Next.js. Powered by `@apollo/client`.
 
