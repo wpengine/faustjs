@@ -1,5 +1,5 @@
 {
-  "name": "@wpengine/headless-source-wpgraphql",
+  "name": "@wpengine/next-source-wpgraphql",
   "version": "0.0.1",
   "repository": "wpengine/headless-framework",
   "description": "Connect Next.js with WPGraphQL",
