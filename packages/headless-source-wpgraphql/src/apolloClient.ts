@@ -1,7 +1,7 @@
 /**
  * @see https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
  */
-import { useMemo } from 'react'
+import {useMemo} from 'react'
 import {ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject} from '@apollo/client'
 import merge from 'deepmerge'
 
@@ -11,13 +11,17 @@ const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRE
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 if (!API_URL) {
-    throw new Error('WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint.')
+    if (window) {
+        throw new Error('NEXT_PUBLIC_WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.')
+    } else {
+        throw new Error('WORDPRESS_API_URL and NEXT_PUBLIC_WORDPRESS_API_URL environment variables are not set. Please set WORDPRESS_API_URL (or NEXT_PUBLIC_WORDPRESS_API_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.')
+    }
 }
 
 /**
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
-function createApolloClient() : ApolloClient<NormalizedCacheObject> {
+function createApolloClient(): ApolloClient<NormalizedCacheObject> {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: new HttpLink({
@@ -56,7 +60,7 @@ function createApolloClient() : ApolloClient<NormalizedCacheObject> {
  * }
  * ```
  */
-export function initializeApollo(initialState = null) : ApolloClient<NormalizedCacheObject> {
+export function initializeApollo(initialState = null): ApolloClient<NormalizedCacheObject> {
     const _apolloClient = apolloClient ?? createApolloClient()
 
     // If your page has Next.js data fetching methods that use Apollo Client, the initial state
