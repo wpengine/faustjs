@@ -55,7 +55,7 @@ function wpe_headless_get_setting( $name, $default = false ) {
  * @return void
  */
 function wpe_headless_update_setting( $name, $value ) {
-	$settings = wpe_headless_get_settings();
+	$settings          = wpe_headless_get_settings();
 	$settings[ $name ] = $value;
 
 	update_option( 'wpe_headless', $settings );

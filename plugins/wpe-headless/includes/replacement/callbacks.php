@@ -53,7 +53,7 @@ function wpe_headless_preview_post_link( $preview_link, $post ) {
 		$preview_link = sprintf(
 			'%s%s/?status=%s&preview=true',
 			$frontend_uri,
-			base64_encode( 'post:' . $post->ID ),
+			base64_encode( 'post:' . $post->ID ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			$post->post_status
 		);
 	}
@@ -61,7 +61,7 @@ function wpe_headless_preview_post_link( $preview_link, $post ) {
 	return $preview_link;
 }
 
-add_filter( 'post_link' , 'wpe_headless_post_link', 10, 3 );
+add_filter( 'post_link', 'wpe_headless_post_link', 10, 3 );
 /**
  * Callback for WordPress 'post_link' filter.
  *
@@ -80,7 +80,7 @@ function wpe_headless_post_link( $permalink, $post, $leavename ) {
 		$permalink = sprintf(
 			'%s%s/?status=%s&preview=true',
 			$frontend_uri,
-			base64_encode( 'post:' . $post->ID ),
+			base64_encode( 'post:' . $post->ID ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			$post->post_status
 		);
 	} else {
