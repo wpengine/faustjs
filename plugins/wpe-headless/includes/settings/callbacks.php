@@ -124,9 +124,9 @@ function wpe_headless_register_settings_fields() {
 	);
 
 	add_settings_field(
-		'api_key',
-		__( 'API Key', 'wpe-headless' ),
-		'wpe_headless_display_api_key_field',
+		'secret_key',
+		__( 'Secret Key', 'wpe-headless' ),
+		'wpe_headless_display_secret_key_field',
 		'wpe-headless-settings',
 		'authentication_settings_section'
 	);
@@ -263,11 +263,11 @@ function wpe_headless_display_events_enabled_field() {
  *
  * @return void
  */
-function wpe_headless_display_api_key_field() {
-	$api_key = wpe_headless_get_setting( 'api_key', '' );
+function wpe_headless_display_secret_key_field() {
+	$secret_key = wpe_headless_get_setting( 'secret_key', '' );
 
 	?>
-	<input type="text" id="api_key" name="wpe_headless[api_key]" value="<?php echo esc_attr( $api_key ); ?>" class="regular-text code" disabled />
+	<input type="text" id="secret_key" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
 	<?php
 }
 

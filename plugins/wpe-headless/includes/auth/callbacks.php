@@ -36,12 +36,12 @@ function wpe_headless_handle_generate_endpoint() {
 		exit;
 	}
 
-	$code = wpe_headless_generate_user_code( wp_get_current_user() );
+	$auth_code = wpe_headless_generate_user_auth_code( wp_get_current_user() );
 
 	if ( wp_parse_url( $redirect_uri, PHP_URL_QUERY ) ) {
-		$redirect_uri .= "&code={$code}";
+		$redirect_uri .= "&code={$auth_code}";
 	} else {
-		$redirect_uri .= "?code={$code}";
+		$redirect_uri .= "?code={$auth_code}";
 	}
 
 	wp_safe_redirect( $redirect_uri );

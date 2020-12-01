@@ -20,10 +20,10 @@ register_activation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_activation' );
  * @return void
  */
 function wpe_headless_handle_activation() {
-	$api_key = wpe_headless_get_setting( 'api_key', '' );
+	$secret_key = wpe_headless_get_setting( 'secret_key', '' );
 
-	if ( ! $api_key ) {
-		wpe_headless_update_setting( 'api_key', wp_generate_uuid4() );
+	if ( ! $secret_key ) {
+		wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
 	}
 
 	flush_rewrite_rules();
