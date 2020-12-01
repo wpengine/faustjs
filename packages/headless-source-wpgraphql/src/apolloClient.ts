@@ -2,13 +2,13 @@
  * @see https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
  */
 import { useMemo } from 'react'
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
+import {ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject} from '@apollo/client'
 import merge from 'deepmerge'
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 
 const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
-let apolloClient
+let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 if (!API_URL) {
     throw new Error('WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint.')
@@ -17,7 +17,7 @@ if (!API_URL) {
 /**
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
-function createApolloClient() {
+function createApolloClient() : ApolloClient<NormalizedCacheObject> {
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
         link: new HttpLink({
@@ -56,7 +56,7 @@ function createApolloClient() {
  * }
  * ```
  */
-export function initializeApollo(initialState = null) {
+export function initializeApollo(initialState = null) : ApolloClient<NormalizedCacheObject> {
     const _apolloClient = apolloClient ?? createApolloClient()
 
     // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -66,6 +66,7 @@ export function initializeApollo(initialState = null) {
         const existingCache = _apolloClient.extract()
 
         // Merge the existing cache into data passed from getStaticProps/getServerSideProps
+        // @ts-ignore
         const data = merge(initialState, existingCache)
 
         // Restore the cache with the merged data
@@ -97,7 +98,7 @@ export function initializeApollo(initialState = null) {
  * }
  * ```
  */
-export function addApolloState(client: ApolloClient<any>, pageProps) {
+export function addApolloState(client: ApolloClient<any>, pageProps: { [prop: string]: any }) {
     if (pageProps?.props) {
         pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
     }
@@ -110,7 +111,7 @@ export function addApolloState(client: ApolloClient<any>, pageProps) {
  *
  * @see WPGraphQLProvider
  */
-export function useApollo(pageProps) {
+export function useApollo(pageProps: { [prop: string]: any }) {
     const state = pageProps[APOLLO_STATE_PROP_NAME]
 
     return useMemo(() => initializeApollo(state), [state])
