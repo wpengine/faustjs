@@ -15,6 +15,7 @@
             "dom.iterable",
             "esnext"
         ],
+        "strict": true,
         "jsx": "react"
     },
     "include": [
