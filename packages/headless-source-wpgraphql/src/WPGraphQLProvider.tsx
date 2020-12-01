@@ -27,7 +27,7 @@ interface Props {
  * export default MyApp
  * ```
  */
-export default function WPGraphQLProvider({children, pageProps}: Props) {
+export function WPGraphQLProvider({children, pageProps}: Props) {
     const apolloClient = useApollo(pageProps)
 
     return (
