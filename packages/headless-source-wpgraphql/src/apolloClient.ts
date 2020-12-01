@@ -69,9 +69,14 @@ export function initializeApollo(initialState = null): ApolloClient<NormalizedCa
         // Get existing cache, loaded during client side data fetching
         const existingCache = _apolloClient.extract()
 
+        const overwriteMerge = (target: any[], source: any[], options?: merge.Options) : any[] => source;
+
+        // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
         // Merge the existing cache into data passed from getStaticProps/getServerSideProps
         // @ts-ignore
-        const data = merge(initialState, existingCache)
+        const data = merge(initialState, existingCache, {
+            arrayMerge: overwriteMerge,
+        })
 
         // Restore the cache with the merged data
         _apolloClient.cache.restore(data)
