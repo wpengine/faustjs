@@ -4,6 +4,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 module.exports = {
     entry: './src/index.ts',
     externals: ['react', '@apollo/client', 'graphql'],
+    target: 'node',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
