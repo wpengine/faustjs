@@ -52,7 +52,7 @@ function wpe_headless_encrypt( $value ) {
 
 	$hash = hash_hmac( 'sha256', $cipher_text, $secret_key, true );
 
-	return base64_encode( $iv . $hash . $cipher_text );
+	return base64_encode( $iv . $hash . $cipher_text ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 }
 
 /**
@@ -73,7 +73,7 @@ function wpe_headless_decrypt( $value ) {
 		return $decrypted_value;
 	}
 
-	$value       = base64_decode( $value );
+	$value       = base64_decode( $value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 	$iv_length   = openssl_cipher_iv_length( 'AES-256-CBC' );
 	$iv          = substr( $value, 0, $iv_length );
 	$hash        = substr( $value, $iv_length, 32 );
@@ -81,7 +81,7 @@ function wpe_headless_decrypt( $value ) {
 	$hash_comp   = hash_hmac( 'sha256', $cipher_text, $secret_key, true );
 
 	if ( hash_equals( $hash, $hash_comp ) ) {
-	    $decrypted_value = openssl_decrypt( $cipher_text, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv );
+		$decrypted_value = openssl_decrypt( $cipher_text, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv );
 	}
 
 	return $decrypted_value;
