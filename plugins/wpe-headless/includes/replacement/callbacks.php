@@ -41,6 +41,8 @@ add_filter( 'preview_post_link', 'wpe_headless_preview_post_link', 10, 2 );
  *
  * Swap the post preview link for headless front-end.
  *
+ * @todo Should this always be enabled?
+ *
  * @param string  $preview_link URL used for the post preview.
  * @param WP_Post $post         Post object.
  *
@@ -66,6 +68,8 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10, 3 );
  * Callback for WordPress 'post_link' filter.
  *
  * Modify the post link for a post type "post" for headless.
+ *
+ * @todo Should this always be enabled?
  *
  * @param string  $permalink The post's permalink.
  * @param WP_Post $post      The post in question.
