@@ -31,6 +31,7 @@ require WPE_HEADLESS_DIR . '/includes/settings/class-wpe-headless-crypto.php';
 
 require WPE_HEADLESS_DIR . '/includes/menus/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/auth/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/deny-public-access/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/graphql-callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/settings/callbacks.php';
