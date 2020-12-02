@@ -84,7 +84,7 @@ function wpe_headless_post_link( $permalink, $post, $leavename ) {
 			$post->post_status
 		);
 	} else {
-		$permalink = $base_uri . $post->post_name;
+		$permalink = $frontend_uri . $post->post_name;
 	}
 
 	return $permalink;
