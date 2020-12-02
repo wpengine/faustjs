@@ -14,6 +14,8 @@ add_action( 'parse_request', 'wpe_headless_deny_public_access', 99 );
  * @return void
  */
 function wpe_headless_deny_public_access( $query ) {
+	$redirect_base = wpe_headless_get_setting( 'frontend_uri' );
+
 	if (
 		defined( 'DOING_CRON' ) ||
 		defined( 'REST_REQUEST' ) ||
@@ -21,18 +23,13 @@ function wpe_headless_deny_public_access( $query ) {
 		is_customize_preview() ||
 		( function_exists( 'is_graphql_http_request' ) && is_graphql_http_request() ) || // From https://wordpress.org/plugins/wp-graphql/.
 		! empty( $query->query_vars['rest_oauth1'] ) || // From https://oauth1.wp-api.org/.
-		! property_exists( $query, 'request' )
+		! property_exists( $query, 'request' ) ||
+		! $redirect_base
 	) {
 		return;
 	}
 
 	// TODO: abort redirect if $query->request matches a list of whitelist strings/regexes specified by the user.
-
-	$redirect_base = wpe_headless_get_setting( 'frontend_uri' );
-
-	if ( ! $redirect_base ) {
-		return;
-	}
 
 	$response_code = 301;
 	$redirect_url  = trailingslashit( $redirect_base ) . $query->request;
