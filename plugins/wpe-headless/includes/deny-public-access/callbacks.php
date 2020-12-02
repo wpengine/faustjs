@@ -28,16 +28,16 @@ function wpe_headless_deny_public_access( $query ) {
 
 	// TODO: abort redirect if $query->request matches a list of whitelist strings/regexes specified by the user.
 
-	$http_response_code = 301;
-	$redirect_base      = wpe_headless_get_setting( 'frontend_uri' );
+	$redirect_base = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( ! $redirect_base ) {
 		return;
 	}
 
-	$redirect_url = trailingslashit( $redirect_base ) . $query->request;
+	$response_code = 301;
+	$redirect_url  = trailingslashit( $redirect_base ) . $query->request;
 
 	header( 'X-Redirect-By: WP Engine Headless plugin' ); // For support teams. See https://developer.yoast.com/blog/x-redirect-by-header/.
-	header( 'Location: ' . $redirect_url, true, $http_response_code );
+	header( 'Location: ' . $redirect_url, true, $response_code );
 	exit;
 }
