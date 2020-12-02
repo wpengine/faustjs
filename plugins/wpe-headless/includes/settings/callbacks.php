@@ -179,7 +179,11 @@ function wpe_headless_display_replacement_setting_section() {
 }
 
 /**
- * Displays the "Menu Locations" field.
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "Menu Locations" text field.
+ *
+ * @return void
  */
 function wpe_headless_display_menu_locations_field() {
 	$menu_locations = wpe_headless_get_setting( 'menu_locations', 'Primary, Footer' );
@@ -228,7 +232,11 @@ function wpe_headless_display_events_setting_section() {
 }
 
 /**
- * Displays the "events_setting_section" content.
+ * Callback for WordPress add_settings_section() function.
+ *
+ * Display "menu_locations_section" content.
+ *
+ * @return void
  */
 function wpe_headless_display_menu_locations_section() {
 	?>
@@ -264,7 +272,7 @@ function wpe_headless_display_events_enabled_field() {
  * @return void
  */
 function wpe_headless_display_secret_key_field() {
-	$secret_key = wpe_headless_get_setting( 'secret_key', '' );
+	$secret_key = wpe_headless_get_secret_key();
 
 	?>
 	<input type="text" id="secret_key" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />

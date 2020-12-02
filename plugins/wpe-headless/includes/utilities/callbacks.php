@@ -15,12 +15,14 @@ register_activation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_activation' );
  *
  * Set the secret key and flush rewrite rules.
  *
+ * @todo is flush_rewrite_rules() needed?
+ *
  * @link https://developer.wordpress.org/reference/functions/register_activation_hook/
  *
  * @return void
  */
 function wpe_headless_handle_activation() {
-	$secret_key = wpe_headless_get_setting( 'secret_key', '' );
+	$secret_key = wpe_headless_get_secret_key();
 
 	if ( ! $secret_key ) {
 		wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
@@ -34,6 +36,8 @@ register_deactivation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_deactivation
  * Callback for WordPress register_deactivation_hook() function.
  *
  * Flush rewrite rules on plugin deactivation.
+ *
+ * @todo is flush_rewrite_rules() needed?
  *
  * @link https://developer.wordpress.org/reference/functions/register_deactivation_hook/
  *

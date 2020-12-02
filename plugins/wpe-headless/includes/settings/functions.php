@@ -19,6 +19,15 @@ function wpe_headless_is_events_enabled() {
 }
 
 /**
+ * Get the secret key setting.
+ *
+ * @return string The secret key.
+ */
+function wpe_headless_get_secret_key() {
+	return wpe_headless_get_setting( 'secret_key', '' );
+}
+
+/**
  * Get a headless setting by name.
  *
  * @param string $name    The setting name.
