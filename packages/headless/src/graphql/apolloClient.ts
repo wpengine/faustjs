@@ -1,34 +1,44 @@
 /**
  * @see https://github.com/vercel/next.js/blob/canary/examples/with-apollo/lib/apolloClient.js
  */
-import {useMemo} from 'react'
-import {ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject} from '@apollo/client'
-import merge from 'deepmerge'
+import { useMemo } from 'react';
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from '@apollo/client';
+import merge from 'deepmerge';
 
-export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
+export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
-const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
+const API_URL =
+  process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 if (!API_URL) {
-    if (window) {
-        throw new Error('NEXT_PUBLIC_WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.')
-    } else {
-        throw new Error('WORDPRESS_API_URL and NEXT_PUBLIC_WORDPRESS_API_URL environment variables are not set. Please set WORDPRESS_API_URL (or NEXT_PUBLIC_WORDPRESS_API_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.')
-    }
+  if (window) {
+    throw new Error(
+      'NEXT_PUBLIC_WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.',
+    );
+  } else {
+    throw new Error(
+      'WORDPRESS_API_URL and NEXT_PUBLIC_WORDPRESS_API_URL environment variables are not set. Please set WORDPRESS_API_URL (or NEXT_PUBLIC_WORDPRESS_API_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.',
+    );
+  }
 }
 
 /**
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
-    return new ApolloClient({
-        ssrMode: typeof window === 'undefined',
-        link: new HttpLink({
-            uri: API_URL,
-        }),
-        cache: new InMemoryCache(),
-    })
+  return new ApolloClient({
+    ssrMode: typeof window === 'undefined',
+    link: new HttpLink({
+      uri: API_URL,
+    }),
+    cache: new InMemoryCache(),
+  });
 }
 
 /**
@@ -60,33 +70,39 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
  * }
  * ```
  */
-export function initializeApollo(initialState = null): ApolloClient<NormalizedCacheObject> {
-    const _apolloClient = apolloClient ?? createApolloClient()
+export function initializeApollo(
+  initialState = null,
+): ApolloClient<NormalizedCacheObject> {
+  const localApolloClient = apolloClient ?? createApolloClient();
 
-    // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-    // gets hydrated here
-    if (initialState) {
-        // Get existing cache, loaded during client side data fetching
-        const existingCache = _apolloClient.extract()
+  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
+  // gets hydrated here
+  if (initialState) {
+    // Get existing cache, loaded during client side data fetching
+    const existingCache = localApolloClient.extract();
 
-        const overwriteMerge = (target: any[], source: any[], options?: merge.Options) : any[] => source;
+    const overwriteMerge = (
+      target: any[],
+      source: any[],
+      options?: merge.Options,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    ): any[] => source;
 
-        // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
-        // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-        // @ts-ignore
-        const data = merge(initialState, existingCache, {
-            arrayMerge: overwriteMerge,
-        })
+    // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
+    // Merge the existing cache into data passed from getStaticProps/getServerSideProps
+    const data = merge(initialState || {}, existingCache, {
+      arrayMerge: overwriteMerge,
+    });
 
-        // Restore the cache with the merged data
-        _apolloClient.cache.restore(data)
-    }
-    // For SSG and SSR always create a new Apollo Client
-    if (typeof window === 'undefined') return _apolloClient
-    // Create the Apollo Client once in the client
-    if (!apolloClient) apolloClient = _apolloClient
+    // Restore the cache with the merged data
+    localApolloClient.cache.restore(data);
+  }
+  // For SSG and SSR always create a new Apollo Client
+  if (typeof window === 'undefined') return localApolloClient;
+  // Create the Apollo Client once in the client
+  if (!apolloClient) apolloClient = localApolloClient;
 
-    return _apolloClient
+  return localApolloClient;
 }
 
 /**
@@ -107,12 +123,16 @@ export function initializeApollo(initialState = null): ApolloClient<NormalizedCa
  * }
  * ```
  */
-export function addApolloState(client: ApolloClient<any>, pageProps: { [prop: string]: any }) {
-    if (pageProps?.props) {
-        pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
-    }
+export function addApolloState(
+  client: ApolloClient<any>,
+  pageProps: { [prop: string]: any },
+) {
+  if (pageProps?.props) {
+    // eslint-disable-next-line no-param-reassign
+    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
+  }
 
-    return pageProps
+  return pageProps;
 }
 
 /**
@@ -121,9 +141,7 @@ export function addApolloState(client: ApolloClient<any>, pageProps: { [prop: st
  * @see WPGraphQLProvider
  */
 export function useApollo(pageProps: { [prop: string]: any }) {
-    const state = pageProps[APOLLO_STATE_PROP_NAME]
+  const state = pageProps[APOLLO_STATE_PROP_NAME];
 
-    return useMemo(() => initializeApollo(state), [state])
+  return useMemo(() => initializeApollo(state), [state]);
 }
-
-

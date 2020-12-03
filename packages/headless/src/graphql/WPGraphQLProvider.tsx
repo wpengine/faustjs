@@ -1,10 +1,10 @@
-import React from 'react'
-import {ApolloProvider} from '@apollo/client'
-import {useApollo} from './apolloClient'
+import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import { useApollo } from './apolloClient';
 
 interface Props {
-    children: React.ReactNode
-    pageProps: { [prop: string]: any }
+  children: React.ReactNode;
+  pageProps: { [prop: string]: any };
 }
 
 /**
@@ -27,13 +27,8 @@ interface Props {
  * export default MyApp
  * ```
  */
-export function WPGraphQLProvider({children, pageProps}: Props) {
-    const apolloClient = useApollo(pageProps)
+export function WPGraphQLProvider({ children, pageProps }: Props) {
+  const apolloClient = useApollo(pageProps);
 
-    return (
-        <ApolloProvider client={apolloClient}>
-            {children}
-        </ApolloProvider>
-    )
+  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
 }
-
