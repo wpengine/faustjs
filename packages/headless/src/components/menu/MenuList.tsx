@@ -3,19 +3,11 @@ import { MenuItem } from "./MenuItemInterface";
 
 interface Props {
     items: MenuItem[];
-    anchor?(
-        item: MenuItem,
-        attributes?: React.AnchorHTMLAttributes<HTMLAnchorElement>
-    ): React.ReactNode;
+    anchor?(item: MenuItem): React.ReactNode;
 }
 
-const defaultAnchor = (
-    item: MenuItem,
-    attributes: React.AnchorHTMLAttributes<HTMLAnchorElement>
-) => (
-    <a href={item.href} {...attributes}>
-        {item.title}
-    </a>
+const defaultAnchor = (item: MenuItem) => (
+    <a href={item.href}>{item.title}</a>
 );
 
 /**
