@@ -80,6 +80,12 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10, 3 );
 function wpe_headless_post_link( $permalink, $post, $leavename ) {
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
+	if ( empty( $frontend_uri ) ) {
+		return $permalink;
+	}
+
+	$frontend_uri = trailingslashit( $frontend_uri );
+
 	if ( 'draft' === $post->post_status ) {
 		$permalink = sprintf(
 			'%s%s/?status=%s&preview=true',
@@ -93,3 +99,24 @@ function wpe_headless_post_link( $permalink, $post, $leavename ) {
 
 	return $permalink;
 }
+
+/**
+ * Rewrites term links to point to the specified front-end URL.
+ *
+ * @param string $term_link Term link URL.
+ *
+ * @return string
+ */
+function wpe_headless_term_link( $term_link ) {
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+
+	if ( empty( $frontend_uri ) ) {
+		return $term_link;
+	}
+
+	$frontend_uri = trailingslashit( $frontend_uri );
+	$site_url     = trailingslashit( site_url() );
+
+	return str_replace( $site_url, $frontend_uri, $term_link );
+}
+add_filter( 'term_link', 'wpe_headless_term_link' );
