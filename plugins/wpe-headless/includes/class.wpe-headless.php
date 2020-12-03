@@ -13,7 +13,7 @@ class WPE_Headless {
 	public static function init() {
         add_action('admin_init', array( __CLASS__, 'admin_init' ));
 
-        add_filter('preview_post_link', array( __CLASS__, 'set_post_preview_link' ));
+        add_filter('preview_post_link', array( __CLASS__, 'set_post_link' ));
         add_filter('post_link', array( __CLASS__, 'set_post_link' ));
         WPE_Headless_Api::init();
         WPE_Headless_Redirect::init();
@@ -39,22 +39,11 @@ class WPE_Headless {
         }
     }
 
-    public static function set_post_preview_link() {
+    public static function set_post_link($link) {
         $base_uri = WPE_Headless_Constants::get_frontend_uri_option();
-        $post = get_post();
+        $url = str_replace(get_home_url() . '/', $base_uri, $link);
 
-        return $base_uri . base64_encode('post:' . $post->ID) . '/?status=' . $post->post_status . '&preview=true';
-    }
-
-    public static function set_post_link() {
-        $base_uri = WPE_Headless_Constants::get_frontend_uri_option();
-        $post = get_post();
-
-        if ($post->post_status === 'draft') {
-            return $base_uri . base64_encode('post:' . $post->ID) . '/?status=' . $post->post_status . '&preview=true';
-        }
-
-        return $base_uri . $post->post_name;
+        return $url;
     }
 
     public static function deactivate() {
@@ -74,7 +63,7 @@ class WPE_Headless {
         // register a new section in the "general" page
         add_settings_section(
             'WPE_Headlesss_settings',
-            'WP Authentication Codes', array( __CLASS__, 'settings_section_callback' ),
+            'WPE Headless', array( __CLASS__, 'settings_section_callback' ),
             'general'
         );
 
@@ -96,7 +85,7 @@ class WPE_Headless {
 
     // section content cb
     public static function settings_section_callback() {
-        // echo '<p>Settings for WP Authentication Codes.</p>';
+        // echo '<p>Settings for WPE Headless.</p>';
     }
 
     // section content cb
