@@ -2,7 +2,7 @@ import React from "react";
 import { MenuItem } from "./MenuItemInterface";
 
 interface Props {
-    items: MenuItem[];
+    items?: MenuItem[];
     anchor?(item: MenuItem): React.ReactNode;
 }
 
