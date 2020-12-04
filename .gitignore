@@ -3,4 +3,3 @@ dist
 *.zip
 .idea
 .DS_Store
-examples/preview
