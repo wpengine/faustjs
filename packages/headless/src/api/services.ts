@@ -90,6 +90,7 @@ export const getContentNode = moize(async function getContentNode(
   idType: ContentNodeIdType = ContentNodeIdType.URI,
   asPreview = false,
 ): Promise<Post | Page> {
+  console.log(client.link);
   const result = await client.query<{ contentNode: Post | Page }>({
     query: gql`
       query {

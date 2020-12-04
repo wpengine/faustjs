@@ -13,19 +13,19 @@ import merge from 'deepmerge';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
-const API_URL =
-  process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
+const WP_URL =
+  process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL;
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-if (!API_URL) {
+if (!WP_URL) {
   if (isServerSide()) {
     throw new Error(
-      'NEXT_PUBLIC_WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.',
+      'NEXT_PUBLIC_WORDPRESS_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.',
     );
   } else {
     throw new Error(
-      'WORDPRESS_API_URL and NEXT_PUBLIC_WORDPRESS_API_URL environment variables are not set. Please set WORDPRESS_API_URL (or NEXT_PUBLIC_WORDPRESS_API_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.',
+      'WORDPRESS_URL and NEXT_PUBLIC_WORDPRESS_URL environment variables are not set. Please set WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.',
     );
   }
 }
@@ -37,7 +37,7 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: isServerSide(),
     link: new HttpLink({
-      uri: `${ API_URL }/graphql`,
+      uri: `${ WP_URL }/graphql`,
     }),
     cache: new InMemoryCache(),
   });
@@ -140,7 +140,7 @@ export function addApolloState(
 export function addAuthorization(client: ApolloClient<any>, accessToken: string) {
   client.setLink(
     new HttpLink({
-      uri: `${ API_URL }/graphql`,
+      uri: `${ WP_URL }/graphql`,
       headers: {
         Authorization: `Bearer ${ accessToken }`,
       },

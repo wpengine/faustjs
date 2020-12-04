@@ -2,9 +2,9 @@ import Cookies from 'universal-cookie';
 import { base64Decode, base64Encode } from '../utils';
 
 let cookies = new Cookies();
-const API_URL =
-process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
-const TOKEN_KEY = base64Encode(`${API_URL}-at`);
+const WP_URL =
+process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL;
+const TOKEN_KEY = base64Encode(`${WP_URL}-at`);
 
 export function initializeServerCookie(cookie?: string) {
     cookies = new Cookies(cookie);
