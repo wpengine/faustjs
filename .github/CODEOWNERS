@@ -1,1 +1,4 @@
-* @wpengine/developer-relations @rfmeier @mindctrl @markkelnar @nickcernis @claygriffiths
+* @wpengine/blockheads
+/docs/ @wpengine/developer-relations 
+/examples/ @wpengine/developer-relations 
+/README.md @wpengine/developer-relations
