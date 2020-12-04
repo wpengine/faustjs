@@ -7,7 +7,6 @@ import { GetServerSidePropsContext } from 'next';
 
 export default function Page() {
   const pageInfo = useUriInfo();
-
   if (!pageInfo) {
     return <></>;
   }

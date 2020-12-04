@@ -28,7 +28,8 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "isomorphic-fetch": "^3.0.0",
-    "moize": "^5.4.7"
+    "moize": "^5.4.7",
+    "universal-cookie": "^4.0.4"
   },
   "peerDependencies": {
     "react": "^17.0.1",
