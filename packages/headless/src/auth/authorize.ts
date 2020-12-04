@@ -48,7 +48,12 @@ export async function ensureAuthorization(client: ApolloClient<NormalizedCacheOb
         try {
             const result = await authorize(code);
             accessToken = result.access_token;
-            storeAccessToken(accessToken);
+            storeAccessToken(accessToken, res);
+            res.statusCode = 302;
+            res.setHeader('Location', `${http}://${url.replace(/(&?code(\=[^&]*)?(?=&|$)|^foo(\=[^&]*)?)(&|$)/, '')}`);
+            res.end();
+
+            return true;
         } catch (e) {
             console.log('Something went wrong');
             console.log(e);

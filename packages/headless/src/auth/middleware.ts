@@ -24,7 +24,7 @@ export async function authorizeExpressHandler(req: Request, res: Response) {
     }
 
     const result = await authorize(code);
-    storeAccessToken(result.access_token);
+    storeAccessToken(result.access_token, res);
     res.status(200).send(result);
   } catch (e) {
     if (e.status) {
