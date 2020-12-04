@@ -5,8 +5,8 @@ import { addAuthorization } from '../graphql';
 import { isServerSide } from '../utils';
 import { getAccessToken, storeAccessToken } from './cookie';
 
-const API_URL =
-    process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
+const WP_URL =
+    process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL;
 const API_CLIENT_SECRET = process.env.WPE_HEADLESS_SECRET;
 
 if (!API_CLIENT_SECRET && isServerSide()) {
@@ -16,7 +16,7 @@ if (!API_CLIENT_SECRET && isServerSide()) {
 }
 
 export async function authorize(code: string) {
-    const response = await fetch(`${ API_URL }/wp-json/wpac/v1/authorize`, {
+    const response = await fetch(`${ WP_URL }/wp-json/wpac/v1/authorize`, {
         headers: {
             'Content-Type': 'application/json',
             'x-wpe-headless-secret': API_CLIENT_SECRET as string,
@@ -58,7 +58,7 @@ export async function ensureAuthorization(client: ApolloClient<NormalizedCacheOb
 
     if (!accessToken || accessToken.length === 0) {
         res.statusCode = 302;
-        res.setHeader('Location', `${ API_URL }/generate?redirect_uri=${ encodeURIComponent(`${http}://${url}`) }`);
+        res.setHeader('Location', `${ WP_URL }/generate?redirect_uri=${ encodeURIComponent(`${http}://${url}`) }`);
         res.end();
 
         return true;
