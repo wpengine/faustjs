@@ -100,6 +100,7 @@ function wpe_headless_post_link( $permalink, $post, $leavename ) {
 	return $permalink;
 }
 
+add_filter( 'term_link', 'wpe_headless_term_link' );
 /**
  * Rewrites term links to point to the specified front-end URL.
  *
@@ -119,4 +120,3 @@ function wpe_headless_term_link( $term_link ) {
 
 	return str_replace( $site_url, $frontend_uri, $term_link );
 }
-add_filter( 'term_link', 'wpe_headless_term_link' );
