@@ -3,3 +3,4 @@ dist
 *.js
 *.d.ts
 !.eslintrc.js
+!jest.config.js
