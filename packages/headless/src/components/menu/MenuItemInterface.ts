@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface MenuItem
+interface MenuItem
 	extends React.DetailedHTMLProps<
 		React.AnchorHTMLAttributes<HTMLAnchorElement>,
 		HTMLAnchorElement
@@ -8,3 +8,5 @@ export interface MenuItem
 	title: string;
 	children?: MenuItem[];
 }
+
+export default MenuItem;

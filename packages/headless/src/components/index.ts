@@ -1,2 +1,4 @@
-export { Menu } from "./menu/Menu";
-export { MenuItem } from "./menu/MenuItemInterface";
+import Menu from "./menu/Menu";
+import MenuItem from "./menu/MenuItemInterface";
+
+export { Menu, MenuItem };

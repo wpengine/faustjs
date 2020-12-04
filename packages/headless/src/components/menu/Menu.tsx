@@ -1,14 +1,14 @@
 import React from "react";
-import { MenuItem } from "./MenuItemInterface";
+import MenuItem from "./MenuItemInterface";
 import MenuList from "./MenuList";
 
 interface Props
-    extends React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-    > {
-    items: MenuItem[];
-    anchor?(item: MenuItem): React.ReactNode;
+	extends React.DetailedHTMLProps<
+		React.HTMLAttributes<HTMLElement>,
+		HTMLElement
+	> {
+	items: MenuItem[];
+	anchor?(item: MenuItem): React.ReactNode;
 }
 
 /**
@@ -17,7 +17,6 @@ interface Props
  * @example
  * ```ts
  * import { Menu, MenuItem } from '@wpengine/components'
- *
  *
  * function MyApp() {
  *     const items = [
@@ -52,18 +51,20 @@ interface Props
  * export default MyApp
  * ```
  */
-export function Menu({
-    items,
-    anchor,
-    ...attributes
-}: Props): false | JSX.Element {
-    return (
-        items.length > 0 && (
-            <nav {...attributes}>
-                <div className="wrap">
-                    <ul>{MenuList({items, anchor})}</ul>
-                </div>
-            </nav>
-        )
-    )
+export default function Menu({
+	items,
+	anchor,
+	...attributes
+}: Props): JSX.Element | null {
+	if (items.length === 0) {
+		return null;
+	}
+
+	return (
+		<nav {...attributes}>
+			<div className="wrap">
+				<ul>{MenuList({ items, anchor })}</ul>
+			</div>
+		</nav>
+	);
 }
