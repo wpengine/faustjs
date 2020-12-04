@@ -1,51 +1,38 @@
 import { Response, Request } from 'express';
-import fetch from 'isomorphic-fetch';
-import { ApiConfig } from '../types';
-import { normalizeConfig } from '../utils';
+import { authorize } from './authorize';
+import { storeAccessToken } from './cookie';
 
-export function authorizeExpressHandler(config: ApiConfig) {
-  const cfg = normalizeConfig(config);
+const AUTH_ENDPOINT = process.env.AUTH_ENDPOINT || process.env.NEXT_PUBLIC_AUTH_ENDPOINT;
 
-  if (!cfg || !cfg.secret) {
-    throw new Error(
-      'You must set your configuration with a baseUrl and secret for your WP site.',
-    );
-  }
+if (!AUTH_ENDPOINT) {
+  throw new Error(
+    'AUTH_ENDPOINT and NEXT_PUBLIC_AUTH_ENDPOINT environment variables are not set. Please set AUTH_ENDPOINT (or NEXT_PUBLIC_AUTH_ENDPOINT if you wish to also use client-side requests) to your Next authorization endpoint.'
+  );
+}
 
-  return async function authorize(req: Request, res: Response) {
-    try {
-      const { code } = req.body as { code?: string };
 
-      if (!code) {
-        res.status(400).send({
-          message: 'No authentication code found',
-        });
+export async function authorizeExpressHandler(req: Request, res: Response) {
+  try {
+    const { code } = req.body as { code?: string; };
 
-        return;
-      }
-
-      const response = await fetch(`${cfg.baseUrl}/wp-json/wpac/v1/authorize`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-wpe-headless-secret': cfg.secret as string,
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          code,
-        }),
+    if (!code) {
+      res.status(400).send({
+        message: 'No authentication code found',
       });
 
-      const result = (await response.json()) as { access_token?: string };
-
-      if (!response.ok) {
-        res.status(response.status).send(result);
-
-        return;
-      }
-
-      res.status(200).send(result);
-    } catch (e) {
-      res.status(500).send(e);
+      return;
     }
-  };
+
+    const result = await authorize(code);
+    storeAccessToken(result.access_token);
+    res.status(200).send(result);
+  } catch (e) {
+    if (e.status) {
+      res.status(e.status);
+    } else {
+      res.status(500);
+    }
+
+    res.send(e);
+  }
 }
