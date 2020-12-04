@@ -1,33 +1,43 @@
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from 'next';
 import { getUriInfo, getPosts, getContentNode } from './services';
-import { initializeApollo, addApolloState } from "../graphql";
+import { initializeApollo, addApolloState } from '../graphql';
 import { initializeServerCookie } from '../auth';
-import { ensureAuthorization } from "../auth/authorize";
-import { ContentNodeIdType } from "../types";
+import { ensureAuthorization } from '../auth/authorize';
+import { ContentNodeIdType } from '../types';
 
-export async function initializeHeadlessProps(context: GetServerSidePropsContext) {
-    const apolloClient = initializeApollo();
-    initializeServerCookie(context.req.headers.cookie);
+export async function initializeHeadlessProps(
+  context: GetServerSidePropsContext,
+) {
+  const apolloClient = initializeApollo();
+  initializeServerCookie(context.req.headers.cookie);
 
-    const pageInfo = await getUriInfo(apolloClient, context.resolvedUrl ?? '');
+  const pageInfo = await getUriInfo(apolloClient, context.resolvedUrl ?? '');
 
-    if (pageInfo.isPreview) {
-        const redirected = await ensureAuthorization(apolloClient, `${ context.req.headers.host as string }${ context.resolvedUrl }`, context.query, context.res);
+  if (pageInfo.isPreview) {
+    const response = await ensureAuthorization(
+      apolloClient,
+      `${context.req.headers.host as string}${context.resolvedUrl}`,
+      context.query,
+      context.res,
+    );
 
-        if (redirected) {
-            return addApolloState(apolloClient, {
-                props: { preview: context.preview ?? false }
-            });
-        }
+    if (response?.redirect) {
+      return response;
     }
+  }
 
-    if (pageInfo.isPostsPage) {
-        await getPosts(apolloClient);
-    } else {
-        await getContentNode(apolloClient, pageInfo.uriPath, ContentNodeIdType.URI, pageInfo.isPreview);
-    }
+  if (pageInfo.isPostsPage) {
+    await getPosts(apolloClient);
+  } else {
+    await getContentNode(
+      apolloClient,
+      pageInfo.uriPath,
+      ContentNodeIdType.URI,
+      pageInfo.isPreview,
+    );
+  }
 
-    return addApolloState(apolloClient, {
-        props: { preview: context.preview ?? false }
-    });
+  return addApolloState(apolloClient, {
+    props: { preview: context.preview ?? false },
+  });
 }

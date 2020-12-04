@@ -224,7 +224,7 @@ export const getUriInfo = moize(
       if (isPreview) {
         return {
           isPreview,
-          uriPath
+          uriPath,
         };
       }
 

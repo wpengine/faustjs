@@ -12,7 +12,12 @@ import {
   GeneralSettings,
   UriInfo,
 } from '../types';
-import { getPosts, getGeneralSettings, getContentNode, getUriInfo } from './services';
+import {
+  getPosts,
+  getGeneralSettings,
+  getContentNode,
+  getUriInfo,
+} from './services';
 
 export function usePosts() {
   const [result, setResult] = useState<Post[]>();
@@ -22,10 +27,17 @@ export function usePosts() {
     let subscribed = true;
     if (client) {
       void (async () => {
-        const posts = await getPosts(client as ApolloClient<NormalizedCacheObject>);
+        try {
+          const posts = await getPosts(
+            client as ApolloClient<NormalizedCacheObject>,
+          );
 
-        if (subscribed) {
-          setResult(posts);
+          if (subscribed) {
+            setResult(posts);
+          }
+        } catch (e) {
+          console.log('Error getting posts');
+          console.log(e);
         }
       })();
     }
@@ -34,42 +46,6 @@ export function usePosts() {
       subscribed = false;
     };
   }, [client]);
-
-  return result;
-}
-
-export function usePost(id?: string, idType?: ContentNodeIdType) {
-  const [result, setResult] = useState<Post | Page>();
-  const client = useApolloClient();
-  const pageInfo = useUriInfo();
-
-  useEffect(() => {
-    let subscribed = true;
-    if (client) {
-      void (async () => {
-        let post: Post | Page | undefined;
-
-        if (!!id) {
-          post = await getContentNode(client as ApolloClient<NormalizedCacheObject>, id, idType);
-        } else if (!!pageInfo) {
-          post = await getContentNode(
-            client as ApolloClient<NormalizedCacheObject>,
-            pageInfo.uriPath,
-            ContentNodeIdType.URI,
-            pageInfo.isPreview
-          );
-        }
-
-        if (subscribed) {
-          setResult(post);
-        }
-      })();
-    }
-
-    return () => {
-      subscribed = false;
-    };
-  }, [client, pageInfo, id, idType]);
 
   return result;
 }
@@ -83,12 +59,17 @@ export function useGeneralSettings() {
 
     if (client) {
       void (async () => {
-        const settings = await getGeneralSettings(
-          client as ApolloClient<NormalizedCacheObject>,
-        );
+        try {
+          const settings = await getGeneralSettings(
+            client as ApolloClient<NormalizedCacheObject>,
+          );
 
-        if (subscribed && !!settings) {
-          setResult(settings);
+          if (subscribed && !!settings) {
+            setResult(settings);
+          }
+        } catch (e) {
+          console.log('Error getting settings');
+          console.log(e);
         }
       })();
     }
@@ -114,16 +95,21 @@ export function useUriInfo() {
 
       if (page.indexOf('[[') === -1) {
         void (async () => {
-          const info = await getUriInfo(
-            client as ApolloClient<NormalizedCacheObject>,
-            page,
-          );
+          try {
+            const info = await getUriInfo(
+              client as ApolloClient<NormalizedCacheObject>,
+              page,
+            );
 
-          if (!subscribed) {
-            return;
+            if (!subscribed) {
+              return;
+            }
+
+            setUriInfo(info);
+          } catch (e) {
+            console.log('Error getting URI info');
+            console.log(e);
           }
-
-          setUriInfo(info);
         })();
       }
     }
@@ -131,7 +117,56 @@ export function useUriInfo() {
     return () => {
       subscribed = false;
     };
-  }, [router, client]);
+  }, [router, client, router.asPath]);
+
+  if (pageInfo?.uriPath !== router.asPath) {
+    return undefined;
+  }
 
   return pageInfo;
+}
+
+export function usePost(id?: string, idType?: ContentNodeIdType) {
+  const [result, setResult] = useState<Post | Page>();
+  const client = useApolloClient();
+  const pageInfo = useUriInfo();
+
+  useEffect(() => {
+    let subscribed = true;
+    if (client) {
+      void (async () => {
+        try {
+          let post: Post | Page | undefined;
+
+          if (id) {
+            post = await getContentNode(
+              client as ApolloClient<NormalizedCacheObject>,
+              id,
+              idType,
+            );
+          } else if (pageInfo) {
+            post = await getContentNode(
+              client as ApolloClient<NormalizedCacheObject>,
+              pageInfo.uriPath,
+              ContentNodeIdType.URI,
+              pageInfo.isPreview,
+            );
+          }
+
+          if (subscribed) {
+            setResult(post);
+          }
+        } catch (e) {
+          console.log('Error getting a post');
+          console.log(e);
+        }
+      })();
+    }
+
+    return () => {
+      subscribed = false;
+    };
+  }, [client, pageInfo, id, idType]);
+
+  return result;
 }
