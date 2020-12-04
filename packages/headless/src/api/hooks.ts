@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ApolloClient,
   NormalizedCacheObject,
@@ -6,36 +6,26 @@ import {
 } from '@apollo/client';
 import { useRouter } from 'next/router';
 import {
+  Page,
   Post,
   ContentNodeIdType,
-  ContentNode,
   GeneralSettings,
   UriInfo,
 } from '../types';
-import { posts, generalSettings, contentNode, uriInfo } from './services';
-import { Context } from './context';
+import { getPosts, getGeneralSettings, getContentNode, getUriInfo } from './services';
 
-function useApi<R = any>(
-  service: typeof posts | typeof contentNode,
-  ...args: any[]
-): R | undefined {
-  const [result, setResult] = useState<R>();
+export function usePosts() {
+  const [result, setResult] = useState<Post[]>();
   const client = useApolloClient();
 
   useEffect(() => {
     let subscribed = true;
     if (client) {
       void (async () => {
-        const p = (await (service as (
-          client: ApolloClient<NormalizedCacheObject>,
-          ...a: any[]
-        ) => Promise<any>)(
-          client as ApolloClient<NormalizedCacheObject>,
-          ...args,
-        )) as R;
+        const posts = await getPosts(client as ApolloClient<NormalizedCacheObject>);
 
         if (subscribed) {
-          setResult(p);
+          setResult(posts);
         }
       })();
     }
@@ -43,36 +33,46 @@ function useApi<R = any>(
     return () => {
       subscribed = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client, service, ...args]);
+  }, [client]);
 
   return result;
 }
 
-export function usePosts() {
-  return useApi<Post[]>(posts);
+export function usePost(id?: string, idType?: ContentNodeIdType) {
+  const [result, setResult] = useState<Post | Page>();
+  const client = useApolloClient();
+  const pageInfo = useUriInfo();
+
+  useEffect(() => {
+    let subscribed = true;
+    if (client) {
+      void (async () => {
+        let post: Post | Page | undefined;
+
+        if (!!id) {
+          post = await getContentNode(client as ApolloClient<NormalizedCacheObject>, id, idType);
+        } else if (!!pageInfo) {
+          post = await getContentNode(
+            client as ApolloClient<NormalizedCacheObject>,
+            pageInfo.uriPath,
+            ContentNodeIdType.URI,
+            pageInfo.isPreview
+          );
+        }
+
+        if (subscribed) {
+          setResult(post);
+        }
+      })();
+    }
+
+    return () => {
+      subscribed = false;
+    };
+  }, [client, pageInfo, id, idType]);
+
+  return result;
 }
-
-/* eslint-disable react-hooks/rules-of-hooks */
-export function usePost(uid?: string, idType?: ContentNodeIdType) {
-  const { pageInfo } = useContext(Context);
-
-  if (!uid && !!pageInfo) {
-    return useApi<ContentNode>(
-      contentNode,
-      pageInfo.uriPath,
-      ContentNodeIdType.URI,
-      pageInfo.isPreview,
-    );
-  }
-
-  if (!uid) {
-    return undefined;
-  }
-
-  return useApi<ContentNode>(contentNode, uid, idType);
-}
-/* eslint-enable react-hooks/rules-of-hooks */
 
 export function useGeneralSettings() {
   const [result, setResult] = useState<GeneralSettings>();
@@ -83,7 +83,7 @@ export function useGeneralSettings() {
 
     if (client) {
       void (async () => {
-        const settings = await generalSettings(
+        const settings = await getGeneralSettings(
           client as ApolloClient<NormalizedCacheObject>,
         );
 
@@ -114,7 +114,7 @@ export function useUriInfo() {
 
       if (page.indexOf('[[') === -1) {
         void (async () => {
-          const info = await uriInfo(
+          const info = await getUriInfo(
             client as ApolloClient<NormalizedCacheObject>,
             page,
           );

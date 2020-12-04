@@ -8,16 +8,18 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+import { isServerSide } from '../utils';
 import merge from 'deepmerge';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 const API_URL =
   process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
+
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 if (!API_URL) {
-  if (window) {
+  if (isServerSide()) {
     throw new Error(
       'NEXT_PUBLIC_WORDPRESS_API_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.',
     );
@@ -33,9 +35,9 @@ if (!API_URL) {
  */
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: isServerSide(),
     link: new HttpLink({
-      uri: API_URL,
+      uri: `${ API_URL }/graphql`,
     }),
     cache: new InMemoryCache(),
   });
@@ -90,7 +92,7 @@ export function initializeApollo(
 
     // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-    const data = merge(initialState || {}, existingCache, {
+    const data = merge(initialState ?? {}, existingCache, {
       arrayMerge: overwriteMerge,
     });
 
@@ -98,7 +100,7 @@ export function initializeApollo(
     localApolloClient.cache.restore(data);
   }
   // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return localApolloClient;
+  if (isServerSide()) return localApolloClient;
   // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = localApolloClient;
 
@@ -125,7 +127,7 @@ export function initializeApollo(
  */
 export function addApolloState(
   client: ApolloClient<any>,
-  pageProps: { [prop: string]: any },
+  pageProps: { [prop: string]: any; },
 ) {
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
@@ -135,12 +137,23 @@ export function addApolloState(
   return pageProps;
 }
 
+export function addAuthorization(client: ApolloClient<any>, accessToken: string) {
+  client.setLink(
+    new HttpLink({
+      uri: `${ API_URL }/graphql`,
+      headers: {
+        Authorization: `Bearer ${ accessToken }`,
+      },
+    }),
+  );
+}
+
 /**
  * React Hook to use the Apollo client. This is used by <WPGraphQLProvider>
  *
  * @see WPGraphQLProvider
  */
-export function useApollo(pageProps: { [prop: string]: any }) {
+export function useApollo(pageProps: { [prop: string]: any; }) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
   return useMemo(() => initializeApollo(state), [state]);

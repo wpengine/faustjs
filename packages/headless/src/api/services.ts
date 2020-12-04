@@ -10,8 +10,8 @@ import {
 } from '../types';
 import * as utils from '../utils';
 
-export const posts = moize(
-  async function posts(client: ApolloClient<NormalizedCacheObject>) {
+export const getPosts = moize(
+  async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
     const result = await client.query<{ posts: Connection<Post> }>({
       query: gql`
         query {
@@ -84,7 +84,7 @@ export const posts = moize(
   },
 );
 
-export const contentNode = moize(async function contentNode(
+export const getContentNode = moize(async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
   id: string,
   idType: ContentNodeIdType = ContentNodeIdType.URI,
@@ -181,7 +181,7 @@ export const contentNode = moize(async function contentNode(
   };
 });
 
-export const generalSettings = moize(async function generalSettings(
+export const getGeneralSettings = moize(async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<GeneralSettings> {
   const result = await client.query<{ generalSettings: GeneralSettings }>({
@@ -198,8 +198,8 @@ export const generalSettings = moize(async function generalSettings(
   return result?.data?.generalSettings;
 });
 
-export const uriInfo = moize(
-  async function uriInfo(
+export const getUriInfo = moize(
+  async function getUriInfo(
     client: ApolloClient<NormalizedCacheObject>,
     uri: string,
   ): Promise<UriInfo> {
@@ -221,6 +221,13 @@ export const uriInfo = moize(
     const result = response?.data?.nodeByUri;
 
     if (!result) {
+      if (isPreview) {
+        return {
+          isPreview,
+          uriPath
+        };
+      }
+
       return {
         is404: true,
         uriPath,

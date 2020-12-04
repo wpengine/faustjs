@@ -4,18 +4,7 @@ export interface ApiConfig {
   secret?: string;
 }
 
-export interface TemplateProps {
-  pageInfo: UriInfo;
-}
-
-export interface HeadlessTheme {
-  DefaultTemplate: import('react').FC<TemplateProps>;
-  SingleTemplate?: import('react').FC<TemplateProps>;
-  ListTemplate?: import('react').FC<TemplateProps>;
-  NotFoundTemplate?: import('react').FC<TemplateProps>;
-}
-
-export interface ThemeContext {
+export interface ApiContext {
   pageInfo?: UriInfo;
 }
 
