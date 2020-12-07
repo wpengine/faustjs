@@ -36,7 +36,9 @@ function wpe_headless_handle_generate_endpoint() {
 		exit;
 	}
 
-	$auth_code = wpe_headless_generate_user_auth_code( wp_get_current_user() );
+	$auth_code = wpe_headless_generate_authentication_code(
+		wp_get_current_user()
+	);
 
 	if ( wp_parse_url( $redirect_uri, PHP_URL_QUERY ) ) {
 		$redirect_uri .= "&code={$auth_code}";
@@ -54,6 +56,8 @@ add_filter( 'allowed_redirect_hosts', 'wpe_headless_allowed_redirect_hosts', 10,
  * Callback for WordPress 'allowed_redirect_hosts' filter.
  *
  * Add frontend_uri host and development domains to allowed redirects.
+ *
+ * @link https://developer.wordpress.org/reference/hooks/allowed_redirect_hosts/
  *
  * @param string[] $hosts An array of allowed host names.
  * @param string   $host  The host name of the redirect destination; empty string if not set.

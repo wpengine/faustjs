@@ -10,20 +10,106 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Generate an encrypted code for the given WP_User.
+ * Generate an access token given a user.
  *
- * @uses wpe_headless_encrypt()
+ * @uses wpe_headless_generate_user_code()
  *
- * @param \WP_User $wp_user A WP_User object.
+ * @param WP_User $wp_user A WP_User object.
  *
  * @return string|bool An encrypted string or false.
  */
-function wpe_headless_generate_user_auth_code( $wp_user ) {
+function wpe_headless_generate_access_token( $wp_user ) {
+	return wpe_headless_generate_user_code( $wp_user, 'at' );
+}
+
+/**
+ * Generate an authentication code given a user.
+ *
+ * @uses wpe_headless_generate_user_code()
+ *
+ * @param WP_User $wp_user A WP_User object.
+ *
+ * @return string|bool An encrypted string or false.
+ */
+function wpe_headless_generate_authentication_code( $wp_user ) {
+	return wpe_headless_generate_user_code( $wp_user, 'ac' );
+}
+
+/**
+ * Get a WP_User given an access token.
+ *
+ * @uses wpe_headless_get_user_from_code()
+ *
+ * @param string $token    A base 64 encoded string.
+ * @param int    $duration The duration in seconds to remain valid.
+ *
+ * @return WP_User|bool A WP_User object or false.
+ */
+function wpe_headless_get_user_from_access_token( $token, $duration ) {
+	return wpe_headless_get_user_from_code( $token, 'at', $duration );
+}
+
+/**
+ * Get a WP_User given an authentication code.
+ *
+ * @uses wpe_headless_get_user_from_code()
+ *
+ * @param string $code     A base 64 encoded string.
+ * @param int    $duration The duration in seconds to remain valid.
+ *
+ * @return WP_User|bool A WP_User object or false.
+ */
+function wpe_headless_get_user_from_authentication_code( $code, $duration ) {
+	return wpe_headless_get_user_from_code( $code, 'ac', $duration );
+}
+
+/**
+ * Generate an encrypted code for the given WP_User and type.
+ *
+ * @uses wpe_headless_encrypt()
+ *
+ * @param WP_User $wp_user A WP_User object.
+ * @param string  $type    The type of code. Either 'ac' or 'at'.
+ *
+ * @return string|bool An encrypted string or false if failure.
+ */
+function wpe_headless_generate_user_code( $wp_user, $type ) {
 	if ( empty( $wp_user->ID ) ) {
 		return false;
 	}
 
-	return wpe_headless_encrypt( "ac|{$wp_user->ID}|" . time() );
+	return wpe_headless_encrypt( "{$type}|{$wp_user->ID}|" . time() );
+}
+
+/**
+ * Get a WP_User given a base 64 encoded code.
+ *
+ * @param string $code     The base64 encoded encrypted code.
+ * @param string $type     The type of code. Either 'ac' or 'at'.
+ * @param int    $duration The max duration to compare to the timestamp.
+ *
+ * @return WP_User|bool A WP_User object or false.
+ */
+function wpe_headless_get_user_from_code( $code, $type, $duration ) {
+	$code = wpe_headless_decrypt( $code );
+	if ( ! $code ) {
+		return false;
+	}
+
+	$parts = explode( '|', $code );
+	if ( count( $parts ) < 3 ) {
+		return false;
+	}
+
+	if ( $type !== $parts[0] ) {
+		return false;
+	}
+
+	if ( time() - absint( $parts[2] ) > $duration ) {
+		return false;
+	}
+
+	return get_user_by( 'ID', absint( $parts[1] ) );
 }
 
 /**
@@ -37,7 +123,7 @@ function wpe_headless_generate_user_auth_code( $wp_user ) {
  * @return string|bool The encrypted value as a base 64 encoded string or false.
  */
 function wpe_headless_encrypt( $value ) {
-	$secret_key = wpe_headless_get_setting( 'secret_key' );
+	$secret_key = wpe_headless_get_secret_key();
 
 	if ( ! $secret_key ) {
 		return false;
@@ -66,7 +152,7 @@ function wpe_headless_encrypt( $value ) {
  * @return string|bool The decrypted value or false.
  */
 function wpe_headless_decrypt( $value ) {
-	$secret_key      = wpe_headless_get_setting( 'secret_key' );
+	$secret_key      = wpe_headless_get_secret_key();
 	$decrypted_value = false;
 
 	if ( ! $secret_key ) {
@@ -103,5 +189,5 @@ function wpe_headless_get_default_key() {
 		return AUTH_KEY;
 	}
 
-	return wpe_headless_get_setting( 'secret_key' );
+	return wpe_headless_get_secret_key();
 }

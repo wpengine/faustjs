@@ -1,91 +1,23 @@
 <?php
 /**
- * Handles communicating with the WPE product update API
- * and saving the data for WordPress to use for plugin updates.
+ * Plugin updates related functions.
  *
- * @package WPE_Headless\PluginUpdates
+ * @package WPE_Headless
  */
-
-namespace WPE_Headless\PluginUpdates;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use stdClass;
-
-define( 'WPE_HEADLESS_PRODUCT_INFO_URL', 'https://wp-product-info-staging.wpesvc.net/v1/plugins' );
-
 /**
- * Convenience function to return the plugin slug name. Ex. headless-poc/headless-poc.php
+ * Retrieve and convert custom endpoint response for the WordPress plugin api.
  *
- * @return string $slug The plguin slug.
- */
-function my_plugin_path() {
-	return plugin_basename( WPE_HEADLESS_FILE );
-}
-
-/**
- * Convenience function to return the plugin slug name. Ex. headless-poc
- *
- * @return string $slug The plguin slug.
- */
-function my_slug() {
-	return dirname( plugin_basename( WPE_HEADLESS_FILE ) );
-}
-
-/**
- * Checks the WPE plugin info API for new versions of the plugin
- * and returns the data required to update this plugin.
- *
- * @param object $data WordPress update object.
- *
- * @return object $data An updated object if an update exists, default object if not.
- */
-function check_for_updates( $data ) {
-
-	// No update object exists. Return early.
-	if ( empty( $data ) ) {
-		return $data;
-	}
-
-	$response = get_product_info();
-
-	if ( empty( $response->requires_at_least ) || empty( $response->version ) ) {
-		return $data;
-	}
-
-	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
-	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $response->requires_at_least, '>=' );
-
-	// Only update the response if there's a newer version, otherwise WP shows an update notice for the same version.
-	if ( $meets_wp_req && version_compare( $current_plugin_data['Version'], $response->version, '<' ) ) {
-		$response->plugin                   = plugin_basename( WPE_HEADLESS_FILE );
-		$data->response[ my_plugin_path() ] = $response;
-	}
-
-	return $data;
-}
-
-/**
- * Returns a custom API response for updating the plugin
- * and for displaying information about it in wp-admin.
- *
- * The `plugins_api` filter is documented in `wp-admin/includes/plugin-install.php`.
- *
- * @param string $slug The plguin slug.
+ * Retrieve data from a custom endpoint then create a custom object that can be used by WordPress.
  *
  * @return false|stdClass $api Plugin API arguments.
  */
-function custom_plugins_api( $slug ) {
-
-	/**
-	 * Information from the product info service API.
-	 *
-	 * @var stdClass $product_info
-	 */
-	$product_info = get_product_info();
-
+function wpe_headless_get_plugin_data() {
+	$product_info = wpe_headless_get_remote_plugin_info();
 	if ( empty( $product_info ) || is_wp_error( $product_info ) ) {
 		return;
 	}
@@ -113,22 +45,20 @@ function custom_plugins_api( $slug ) {
 /**
  * Fetches and returns the plugin info api error.
  *
- * @return mixed Value set for the option.
+ * @return mixed|false The plugin api error or false.
  */
-function get_api_error() {
-	return get_option( 'wpe_headless_poc_product_info_api_error', false );
+function wpe_headless_get_plugin_api_error() {
+	return get_option( 'wpe_headless_product_info_api_error', false );
 }
 
 /**
- * Fetches and returns the plugin info from the WPE product info API.
+ * Retrieve remote plugin information from the custom endpoint.
  *
  * @return stdClass
  */
-function get_product_info() {
+function wpe_headless_get_remote_plugin_info() {
 	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
-
-	// Check for a cached response before making an API call.
-	$response = get_transient( 'wpe_headless_poc_product_info' );
+	$response            = get_transient( 'wpe_headless_poc_product_info' );
 
 	if ( false === $response ) {
 		$request_args = array(
@@ -139,20 +69,16 @@ function get_product_info() {
 			),
 		);
 
-		$response = wp_remote_get( WPE_HEADLESS_PRODUCT_INFO_URL . '/headless-poc', $request_args );
-
+		$response = wpe_headless_request_plugin_updates( $request_args );
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-
-			// Save the error code so we can use it elsewhere to display messages.
 			if ( is_wp_error( $response ) ) {
-				update_option( 'wpe_headless_poc_product_info_api_error', $response->get_error_code(), false );
+				update_option( 'wpe_headless_product_info_api_error', $response->get_error_code(), false );
 			} else {
 				$response_body = json_decode( wp_remote_retrieve_body( $response ), false );
 				$error_code    = ! empty( $response_body->error_code ) ? $response_body->error_code : 'unknown';
-				update_option( 'wpe_headless_poc_product_info_api_error', $error_code, false );
+				update_option( 'wpe_headless_product_info_api_error', $error_code, false );
 			}
 
-			// Cache an empty object for 5 minutes to give the product info API time to recover.
 			$response = new stdClass();
 
 			set_transient( 'wpe_headless_poc_product_info', $response, MINUTE_IN_SECONDS * 5 );
@@ -160,12 +86,12 @@ function get_product_info() {
 			return $response;
 		}
 
-		// Delete any existing API error codes since we have a valid API response.
-		delete_option( 'wpe_headless_poc_product_info_api_error' );
+		delete_option( 'wpe_headless_product_info_api_error' );
 
-		$response = json_decode( wp_remote_retrieve_body( $response ) );
+		$response = json_decode(
+			wp_remote_retrieve_body( $response )
+		);
 
-		// Cache the response for 12 hours.
 		set_transient( 'wpe_headless_poc_product_info', $response, HOUR_IN_SECONDS * 12 );
 	}
 
@@ -173,35 +99,13 @@ function get_product_info() {
 }
 
 /**
- * Shows a notice on the Plugins page when there is an
- * issue with the subscription key and/or update service.
- *
- * @param string $plugin_file Path to the plugin file relative to the plugins directory.
- * @param array  $plugin_data An array of plugin data.
- */
-function show_plugin_row_notice( $plugin_file, $plugin_data ) {
-	$api_error = get_option( 'wpe_headless_poc_product_info_api_error', false );
-
-	if ( empty( $api_error ) ) {
-		return;
-	}
-
-	echo '<tr class="plugin-update-tr active" id="wpe-headless-update" data-slug="wpe-headless" data-plugin="healess-poc/headless-poc.php">';
-	echo '<td colspan="3" class="plugin-update">';
-	echo '<div class="update-message notice inline notice-error notice-alt"><p>' . wp_kses_post( api_error_notice_text( $api_error ) ) . '</p></div>';
-	echo '</td>';
-	echo '</tr>';
-}
-
-/**
- * Returns the text to be displayed to the user based on the
- * error code received from the Product Info Service API.
+ * Get the remote plugin api error message.
  *
  * @param string $reason The reason/error code received the API.
  *
- * @return string
+ * @return string The error message.
  */
-function api_error_notice_text( $reason ) {
+function wpe_headless_get_api_error_text( $reason ) {
 	switch ( $reason ) {
 		case 'key-unknown':
 			return __( 'The product you requested information for is unknown. Please contact support.', 'wpe-headless' );
@@ -217,4 +121,21 @@ function api_error_notice_text( $reason ) {
 				esc_html__( 'WP Engine Account Portal', 'wpe-headless' )
 			);
 	}
+}
+
+/**
+ * Retrieve plugin update information via http GET request.
+ *
+ * @uses wp_remote_get()
+ * @link https://developer.wordpress.org/reference/functions/wp_remote_get/
+ *
+ * @param array $args Array of request args.
+ *
+ * @return array|WP_Error A response as an array or WP_Error.
+ */
+function wpe_headless_request_plugin_updates( $args ) {
+	return wp_remote_get(
+		'https://wp-product-info-staging.wpesvc.net/v1/plugins/headless-poc',
+		$args
+	);
 }
