@@ -63,7 +63,7 @@ export function normalizeConfig(config: ApiConfig) {
  * @param {string} str
  * @returns {string}
  */
-export function trimTrailingSlash(str: string): string {
+export function trimTrailingSlash(str: string | undefined): string | undefined {
   if (!str) {
     return str;
   }
