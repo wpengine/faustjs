@@ -14,7 +14,7 @@ interface Props {
  *
  * @example
  * ```ts
- * import {WPGraphQLProvider} from '@wpengine/next-source-wpgraphql'
+ * import {WPGraphQLProvider} from '@wpengine/headless/graphql'
  *
  * function MyApp({Component, pageProps}) {
  *     return (
