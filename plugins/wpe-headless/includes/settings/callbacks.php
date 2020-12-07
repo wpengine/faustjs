@@ -285,7 +285,7 @@ function wpe_headless_display_secret_key_field() {
 /**
  * Callback for WordPress add_settings_field() method parameter.
  *
- * Display the "API Key" text field.
+ * Display the Preview Base Address (URL) field.
  *
  * @return void
  */
