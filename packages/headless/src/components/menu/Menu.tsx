@@ -16,7 +16,7 @@ interface Props
  *
  * @example
  * ```ts
- * import { Menu, MenuItem } from '@wpengine/components'
+ * import { Menu, MenuItem } from '@wpengine/headless/components'
  *
  * function MyApp() {
  *     const items = [
