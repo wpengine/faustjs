@@ -13,8 +13,9 @@ import { isServerSide, trimTrailingSlash } from '../utils';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
-const WP_URL =
-  trimTrailingSlash(process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL);
+const WP_URL = trimTrailingSlash(
+  process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
+);
 
 if (!WP_URL) {
   if (isServerSide()) {
@@ -35,7 +36,7 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: isServerSide(),
     link: new HttpLink({
-      uri: `${ WP_URL as string }/graphql`,
+      uri: `${WP_URL as string}/graphql`,
     }),
     cache: new InMemoryCache(),
   });
@@ -125,7 +126,7 @@ export function initializeApollo(
  */
 export function addApolloState(
   client: ApolloClient<any>,
-  pageProps: { [prop: string]: any; },
+  pageProps: { [prop: string]: any },
 ) {
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
@@ -141,9 +142,9 @@ export function addAuthorization(
 ) {
   client.setLink(
     new HttpLink({
-      uri: `${ WP_URL as string }/graphql`,
+      uri: `${WP_URL as string}/graphql`,
       headers: {
-        Authorization: `Bearer ${ accessToken }`,
+        Authorization: `Bearer ${accessToken}`,
       },
     }),
   );
@@ -154,7 +155,7 @@ export function addAuthorization(
  *
  * @see WPGraphQLProvider
  */
-export function useApollo(pageProps: { [prop: string]: any; }) {
+export function useApollo(pageProps: { [prop: string]: any }) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
   return useMemo(() => initializeApollo(state), [state]);
