@@ -28,6 +28,7 @@ require WPE_HEADLESS_DIR . '/includes/updates/functions.php';
 require WPE_HEADLESS_DIR . '/includes/auth/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/deny-public-access/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/menus/callbacks.php';
+require WPE_HEADLESS_DIR . '/includes/admin-menus/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/replacement/graphql-callbacks.php';
 require WPE_HEADLESS_DIR . '/includes/rest/callbacks.php';

@@ -269,20 +269,23 @@ function wpe_headless_display_events_enabled_field() {
  *
  * Display the "API Key" text field.
  *
+ * Added hidden field to preserve value during settings save.
+ *
  * @return void
  */
 function wpe_headless_display_secret_key_field() {
 	$secret_key = wpe_headless_get_secret_key();
 
 	?>
-	<input type="text" id="secret_key" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
+	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
+	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
 	<?php
 }
 
 /**
  * Callback for WordPress add_settings_field() method parameter.
  *
- * Display the "API Key" text field.
+ * Display the Preview Base Address (URL) field.
  *
  * @return void
  */

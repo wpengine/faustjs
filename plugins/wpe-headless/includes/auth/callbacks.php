@@ -40,11 +40,7 @@ function wpe_headless_handle_generate_endpoint() {
 		wp_get_current_user()
 	);
 
-	if ( wp_parse_url( $redirect_uri, PHP_URL_QUERY ) ) {
-		$redirect_uri .= "&code={$auth_code}";
-	} else {
-		$redirect_uri .= "?code={$auth_code}";
-	}
+	$redirect_uri = add_query_arg( 'code', $auth_code, $redirect_uri );
 
 	wp_safe_redirect( $redirect_uri );
 
