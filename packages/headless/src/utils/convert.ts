@@ -1,4 +1,4 @@
-import { ApiConfig } from '../types';
+import { WPEHeadlessConfig } from '../types';
 import { isBase64, isServerSide } from './assert';
 
 export function base64Decode(str: string) {
@@ -44,16 +44,20 @@ export function getQueryParam(search: string, param: string) {
   return '';
 }
 
-export function normalizeConfig(config: ApiConfig) {
-  let { baseUrl } = config;
+export function normalizeConfig(config: WPEHeadlessConfig) {
+  let { uriPrefix } = config;
 
-  baseUrl = baseUrl.trim();
-
-  if (/\/$/.test(baseUrl)) {
-    baseUrl = baseUrl.slice(0, -1);
+  if (!uriPrefix) {
+    uriPrefix = '';
   }
 
-  return { ...config, baseUrl };
+  uriPrefix = uriPrefix.trim();
+
+  if (/\/$/.test(uriPrefix)) {
+    uriPrefix = uriPrefix.slice(0, -1);
+  }
+
+  return { ...config, uriPrefix };
 }
 
 /**
@@ -91,4 +95,12 @@ export function getUrlPath(url?: string) {
   }
 
   return `${exec[1]}${exec[2]}`;
+}
+
+export function resolveUrlPath(url: string, prefix?: string) {
+  if (prefix) {
+    return url.replace(prefix, '');
+  }
+
+  return url;
 }

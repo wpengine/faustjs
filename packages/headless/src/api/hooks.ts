@@ -18,6 +18,8 @@ import {
   getContentNode,
   getUriInfo,
 } from './services';
+import { wpeHeadlessConfig } from '../config';
+import { resolveUrlPath } from '../utils';
 
 /**
  * React Hook for retrieving a list of posts from your Wordpress site
@@ -107,36 +109,42 @@ export function useGeneralSettings() {
   return result;
 }
 
-export function useUriInfo() {
+export function useUriInfo(uri?: string) {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const router = useRouter();
   const client = useApolloClient();
 
   useEffect(() => {
     let subscribed = true;
+    let page: string | undefined;
 
-    if (router) {
-      const page = router.asPath;
-
-      if (page.indexOf('[[') === -1) {
-        void (async () => {
-          try {
-            const info = await getUriInfo(
-              client as ApolloClient<NormalizedCacheObject>,
-              page,
-            );
-
-            if (!subscribed) {
-              return;
-            }
-
-            setUriInfo(info);
-          } catch (e) {
-            console.log('Error getting URI info');
-            console.log(e);
-          }
-        })();
+    if (uri) {
+      page = uri;
+    } else if (router) {
+      if (router.asPath.indexOf('[[') === -1) {
+        page = router.asPath;
+        page = resolveUrlPath(page, wpeHeadlessConfig().uriPrefix);
       }
+    }
+
+    if (page) {
+      void (async () => {
+        try {
+          const info = await getUriInfo(
+            client as ApolloClient<NormalizedCacheObject>,
+            page,
+          );
+
+          if (!subscribed) {
+            return;
+          }
+
+          setUriInfo(info);
+        } catch (e) {
+          console.log('Error getting URI info');
+          console.log(e);
+        }
+      })();
     }
 
     return () => {
@@ -144,17 +152,28 @@ export function useUriInfo() {
     };
   }, [router, client, router.asPath]);
 
-  if (pageInfo?.uriPath !== router.asPath) {
+  if (pageInfo?.uriPath !== resolveUrlPath(router.asPath, wpeHeadlessConfig().uriPrefix)) {
     return undefined;
   }
 
   return pageInfo;
 }
 
-export function usePost(id?: string, idType?: ContentNodeIdType) {
+export function usePost(): Post | Page | undefined;
+export function usePost(uriInfo: UriInfo): Post | Page | undefined;
+export function usePost(id: string, idType: ContentNodeIdType): Post | Page | undefined;
+export function usePost(idOrUriInfo?: UriInfo | string, idType?: ContentNodeIdType): Post | Page | undefined {
   const [result, setResult] = useState<Post | Page>();
   const client = useApolloClient();
-  const pageInfo = useUriInfo();
+  let pageInfo: UriInfo | undefined;
+  let id: string | undefined;
+
+  if (!!idOrUriInfo && typeof idOrUriInfo !== 'string') {
+    pageInfo = useUriInfo(idOrUriInfo.uriPath);
+  } else {
+    id = idOrUriInfo;
+    pageInfo = useUriInfo();
+  }
 
   useEffect(() => {
     let subscribed = true;

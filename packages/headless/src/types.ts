@@ -1,7 +1,14 @@
-export interface ApiConfig {
-  baseUrl: string;
-  authorizeEndpoint: string;
-  secret?: string;
+export interface WPEHeadlessConfig {
+  /**
+   * This is a prefix URI path that we will use as the base URL for your Wordpress posts.
+   * By default we will assume that your site is configured with no blog-specific URI.
+   *
+   * @example /blog
+   *
+   * @type {string}
+   * @memberof WPEHeadlessConfig
+   */
+  uriPrefix?: string;
 }
 
 export interface ApiContext {

@@ -1,6 +1,10 @@
 import React from 'react';
 import { AppContext, AppInitialProps } from 'next/app';
-import { WPGraphQLProvider } from '@wpengine/headless';
+import { WPGraphQLProvider, wpeHeadlessConfig } from '@wpengine/headless';
+
+wpeHeadlessConfig({
+  uriPrefix: '/blog'
+});
 
 export default function App({
   Component,

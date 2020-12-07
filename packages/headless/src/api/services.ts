@@ -201,14 +201,15 @@ export const getGeneralSettings = moize(async function getGeneralSettings(
 export const getUriInfo = moize(
   async function getUriInfo(
     client: ApolloClient<NormalizedCacheObject>,
-    uri: string,
+    uriPath: string,
   ): Promise<UriInfo> {
-    const uriPath = utils.getUrlPath(uri);
+    const urlPath = utils.getUrlPath(uriPath);
     const isPreview = /preview=true/.test(uriPath);
+
     const response = await client.query<{ nodeByUri?: UriInfo }>({
       query: gql`
             query {
-              nodeByUri(uri: "${uriPath}") {
+              nodeByUri(uri: "${urlPath}") {
                 id
                 ... on ContentType {
                   isFrontPage
