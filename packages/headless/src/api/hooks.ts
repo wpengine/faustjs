@@ -18,7 +18,7 @@ import {
   getContentNode,
   getUriInfo,
 } from './services';
-import { wpeHeadlessConfig } from '../config';
+import { headlessConfig } from '../config';
 import { resolveUrlPath } from '../utils';
 
 /**
@@ -123,7 +123,7 @@ export function useUriInfo(uri?: string) {
     } else if (router) {
       if (router.asPath.indexOf('[[') === -1) {
         page = router.asPath;
-        page = resolveUrlPath(page, wpeHeadlessConfig().uriPrefix);
+        page = resolveUrlPath(page, headlessConfig().uriPrefix);
       }
     }
 
@@ -150,9 +150,12 @@ export function useUriInfo(uri?: string) {
     return () => {
       subscribed = false;
     };
-  }, [router, client, router.asPath]);
+  }, [router, client, router.asPath, uri]);
 
-  if (pageInfo?.uriPath !== resolveUrlPath(router.asPath, wpeHeadlessConfig().uriPrefix)) {
+  if (
+    pageInfo?.uriPath !==
+    resolveUrlPath(router.asPath, headlessConfig().uriPrefix)
+  ) {
     return undefined;
   }
 
@@ -161,19 +164,26 @@ export function useUriInfo(uri?: string) {
 
 export function usePost(): Post | Page | undefined;
 export function usePost(uriInfo: UriInfo): Post | Page | undefined;
-export function usePost(id: string, idType: ContentNodeIdType): Post | Page | undefined;
-export function usePost(idOrUriInfo?: UriInfo | string, idType?: ContentNodeIdType): Post | Page | undefined {
+export function usePost(
+  id: string,
+  idType: ContentNodeIdType,
+): Post | Page | undefined;
+export function usePost(
+  idOrUriInfo?: UriInfo | string,
+  idType?: ContentNodeIdType,
+): Post | Page | undefined {
   const [result, setResult] = useState<Post | Page>();
   const client = useApolloClient();
-  let pageInfo: UriInfo | undefined;
   let id: string | undefined;
+  let uri: string | undefined;
 
   if (!!idOrUriInfo && typeof idOrUriInfo !== 'string') {
-    pageInfo = useUriInfo(idOrUriInfo.uriPath);
+    uri = idOrUriInfo.uriPath;
   } else {
     id = idOrUriInfo;
-    pageInfo = useUriInfo();
   }
+
+  const pageInfo = useUriInfo(uri);
 
   useEffect(() => {
     let subscribed = true;

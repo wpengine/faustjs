@@ -1,4 +1,4 @@
-export interface WPEHeadlessConfig {
+export interface HeadlessConfig {
   /**
    * This is a prefix URI path that we will use as the base URL for your Wordpress posts.
    * By default we will assume that your site is configured with no blog-specific URI.
@@ -9,10 +9,6 @@ export interface WPEHeadlessConfig {
    * @memberof WPEHeadlessConfig
    */
   uriPrefix?: string;
-}
-
-export interface ApiContext {
-  pageInfo?: UriInfo;
 }
 
 export enum ContentNodeIdType {

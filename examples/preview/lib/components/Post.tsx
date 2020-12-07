@@ -6,16 +6,14 @@ export default function Post() {
 
   return (
     <div>
-      { post &&
+      {post && (
         <div>
           <div>
-            <h5>
-              { post.title }
-            </h5>
-            <p dangerouslySetInnerHTML={ { __html: post.content ?? '' } } />
+            <h5>{post.title}</h5>
+            <p dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
           </div>
         </div>
-      }
+      )}
     </div>
   );
 }

@@ -27,7 +27,7 @@ interface Props {
  * export default MyApp
  * ```
  */
-export function WPGraphQLProvider({ children, pageProps }: Props) {
+export function HeadlessProvider({ children, pageProps }: Props) {
   const apolloClient = useApollo(pageProps);
 
   return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
