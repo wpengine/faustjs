@@ -13,13 +13,13 @@ jobs:
       WPE_SESSION_DIR: ./.wpe
     steps:
       - checkout:
-          path: headless-poc
+          path: wpe-headless
       - run:
           name: Make artifacts build directory
           command: |
             [ ! -d "build" ] && mkdir build &>/dev/null
       - wp-product-orb/get-version-from-php:
-          filename: headless-poc/headless-poc.php
+          filename: wpe-headless/wpe-headless.php
           return_var: BUILD_VERSION
       - wp-product-orb/variable:
           var: BUILD_VERSION
@@ -36,12 +36,12 @@ jobs:
           at: .
       - php/install-composer
       - php/install-packages:
-          app-dir: headless-poc
+          app-dir: wpe-headless
       - run:
           name: Composer PHP lint and code sniffer
           command: |
             /usr/local/bin/composer suite
-          working_directory: headless-poc
+          working_directory: wpe-headless
       - persist_to_workspace:
           root: .
           paths:
@@ -58,7 +58,7 @@ jobs:
       - run:
           name: "Bundle plugin files into a zip"
           command: |
-            zip --verbose -x@headless-poc/.zipignore -r "build/headless-poc.$BUILD_VERSION.zip" headless-poc
+            zip --verbose -x@wpe-headless/.zipignore -r "build/wpe-headless.$BUILD_VERSION.zip" wpe-headless
       - store_artifacts:
           path: build
       - persist_to_workspace:
@@ -75,8 +75,8 @@ jobs:
           at: .
       - wp-product-orb/variable-load
       - wp-product-orb/parse-wp-readme:
-          infile: headless-poc/readme.txt
-          outfile: build/headless-poc.$BUILD_VERSION.json
+          infile: wpe-headless/readme.txt
+          outfile: build/wpe-headless.$BUILD_VERSION.json
       - store_artifacts:
           path: build
       - persist_to_workspace:
@@ -97,9 +97,9 @@ jobs:
           pass: WPE_LDAP_PASS
           url: https://auth-staging.wpengine.io/v1/tokens
       - wp-product-orb/post-zip:
-          url: https://wp-product-info-staging.wpesvc.net/v1/plugins/headless-poc
-          zip: build/headless-poc.$BUILD_VERSION.zip
-          json: build/headless-poc.$BUILD_VERSION.json
+          url: https://wp-product-info-staging.wpesvc.net/v1/plugins/wpe-headless
+          zip: build/wpe-headless.$BUILD_VERSION.zip
+          json: build/wpe-headless.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
 workflows:
