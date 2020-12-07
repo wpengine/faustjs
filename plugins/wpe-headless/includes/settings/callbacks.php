@@ -66,9 +66,9 @@ function wpe_headless_register_settings_section() {
 	);
 
 	add_settings_section(
-		'events_setting_section',
-		__( 'Events', 'wpe-headless' ),
-		'wpe_headless_display_events_setting_section',
+		'authentication_settings_section',
+		__( 'Authentication Codes', 'wpe-headless' ),
+		'',
 		'wpe-headless-settings'
 	);
 
@@ -76,6 +76,13 @@ function wpe_headless_register_settings_section() {
 		'menu_locations_section',
 		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_section',
+		'wpe-headless-settings'
+	);
+
+	add_settings_section(
+		'events_setting_section',
+		__( 'Events', 'wpe-headless' ),
+		'wpe_headless_display_events_setting_section',
 		'wpe-headless-settings'
 	);
 }
@@ -114,6 +121,22 @@ function wpe_headless_register_settings_fields() {
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
 		'menu_locations_section'
+	);
+
+	add_settings_field(
+		'secret_key',
+		__( 'Secret Key', 'wpe-headless' ),
+		'wpe_headless_display_secret_key_field',
+		'wpe-headless-settings',
+		'authentication_settings_section'
+	);
+
+	add_settings_field(
+		'frontend_uri',
+		__( 'Preview Base Address (URL)', 'wpe-headless' ),
+		'wpe_headless_display_frontend_uri_field',
+		'wpe-headless-settings',
+		'authentication_settings_section'
 	);
 }
 
@@ -156,7 +179,11 @@ function wpe_headless_display_replacement_setting_section() {
 }
 
 /**
- * Displays the "Menu Locations" field.
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "Menu Locations" text field.
+ *
+ * @return void
  */
 function wpe_headless_display_menu_locations_field() {
 	$menu_locations = wpe_headless_get_setting( 'menu_locations', 'Primary, Footer' );
@@ -205,7 +232,11 @@ function wpe_headless_display_events_setting_section() {
 }
 
 /**
- * Displays the "events_setting_section" content.
+ * Callback for WordPress add_settings_section() function.
+ *
+ * Display "menu_locations_section" content.
+ *
+ * @return void
  */
 function wpe_headless_display_menu_locations_section() {
 	?>
@@ -230,5 +261,38 @@ function wpe_headless_display_events_enabled_field() {
 		<input type="checkbox" id="events_enabled" name="wpe_headless[events_enabled]" <?php checked( $enabled ); ?> value="1" />
 		<?php esc_html_e( 'Events enabled', 'wpe-headless' ); ?>
 	</label>
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "API Key" text field.
+ *
+ * Added hidden field to preserve value during settings save.
+ *
+ * @return void
+ */
+function wpe_headless_display_secret_key_field() {
+	$secret_key = wpe_headless_get_secret_key();
+
+	?>
+	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
+	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the Preview Base Address (URL) field.
+ *
+ * @return void
+ */
+function wpe_headless_display_frontend_uri_field() {
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri', '' );
+
+	?>
+	<input type="text" id="frontend_uri" name="wpe_headless[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
 	<?php
 }
