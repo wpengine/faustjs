@@ -19,7 +19,32 @@ import {
   getUriInfo,
 } from './services';
 
-export function usePosts() {
+/**
+ * React Hook for retrieving a list of posts from your Wordpress site
+ *
+ * @example
+ * ```ts
+ * import { usePosts } from '@wpengine/headless';
+ *
+ * export function ListPosts() {
+ *   const posts = usePosts();
+ *
+ *   if (!posts) {
+ *     return <></>;
+ *   }
+ *
+ *   return (
+ *     <>
+ *       {posts.map((post) => (
+ *         <div key={post.id} dangerouslySetInnerHTML={ { __html: post.content ?? '' } } />
+ *       ))}
+ *     </>
+ *   );
+ * }
+ * @export
+ * @returns {(Post[] | undefined)}
+ */
+export function usePosts(): Post[] | undefined {
   const [result, setResult] = useState<Post[]>();
   const client = useApolloClient();
 
