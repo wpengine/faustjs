@@ -6,8 +6,9 @@ import { addAuthorization } from '../graphql';
 import { isServerSide, trimTrailingSlash } from '../utils';
 import { getAccessToken, storeAccessToken } from './cookie';
 
-let WP_URL =
-trimTrailingSlash(process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL);
+const WP_URL = trimTrailingSlash(
+  process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
+);
 const API_CLIENT_SECRET = process.env.WPE_HEADLESS_SECRET;
 
 if (!API_CLIENT_SECRET && isServerSide()) {
@@ -18,7 +19,7 @@ if (!API_CLIENT_SECRET && isServerSide()) {
 
 export async function authorize(code: string) {
   const response = await fetch(
-    `${ WP_URL as string }/wp-json/wpac/v1/authorize`,
+    `${WP_URL as string}/wp-json/wpac/v1/authorize`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ export async function authorize(code: string) {
     },
   );
 
-  const result = (await response.json()) as { access_token?: string; };
+  const result = (await response.json()) as { access_token?: string };
 
   if (!response.ok) {
     // eslint-disable-next-line @typescript-eslint/no-throw-literal
@@ -50,7 +51,7 @@ export async function ensureAuthorization(
   url: string,
   query: ParsedUrlQuery,
   res: ServerResponse,
-): Promise<{ redirect?: Redirect; }> {
+): Promise<{ redirect?: Redirect }> {
   let accessToken = getAccessToken();
   const { code } = query;
   const http = /localhost/.test(url) ? 'http' : 'https';
@@ -67,10 +68,10 @@ export async function ensureAuthorization(
       return {
         redirect: {
           permanent: false,
-          destination: `${ http }://${ url.replace(
+          destination: `${http}://${url.replace(
             /(&?code(=[^&]*)?(?=&|$)|^foo(=[^&]*)?)(&|$)/,
             '',
-          ) }`,
+          )}`,
         },
       };
     } catch (e) {
@@ -85,9 +86,9 @@ export async function ensureAuthorization(
     return {
       redirect: {
         permanent: false,
-        destination: `${ WP_URL as string }/generate?redirect_uri=${ encodeURIComponent(
-          `${ http }://${ url }`,
-        ) }`,
+        destination: `${
+          WP_URL as string
+        }/generate?redirect_uri=${encodeURIComponent(`${http}://${url}`)}`,
       },
     };
   }
