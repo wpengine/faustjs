@@ -1,5 +1,4 @@
 import { gql, ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import moize from 'moize';
 import {
   GeneralSettings,
   ContentNodeIdType,
@@ -27,9 +26,8 @@ export async function query<T>(client: ApolloClient<NormalizedCacheObject>, quer
   });
 }
 
-export const getPosts = moize(
-  async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
-    const result = await query<{ posts: Connection<Post>; }>(client, `
+export async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
+  const result = await query<{ posts: Connection<Post>; }>(client, `
         query {
           posts {
             pageInfo {
@@ -57,49 +55,42 @@ export const getPosts = moize(
         }
       `);
 
-    const thePosts = result?.data?.posts?.edges.map(({ node }) => node);
+  const thePosts = result?.data?.posts?.edges.map(({ node }) => node);
 
-    if (!thePosts) {
-      return thePosts;
-    }
+  if (!thePosts) {
+    return thePosts;
+  }
 
-    return thePosts.map((thePost) => {
-      const {
-        id,
-        slug,
-        title,
-        content,
-        isRevision,
-        isPreview,
-        isSticky,
-        excerpt,
-        uri,
-        status,
-      } = thePost;
+  return thePosts.map((thePost) => {
+    const {
+      id,
+      slug,
+      title,
+      content,
+      isRevision,
+      isPreview,
+      isSticky,
+      excerpt,
+      uri,
+      status,
+    } = thePost;
 
-      return {
-        id,
-        slug,
-        title,
-        content,
-        isRevision,
-        isPreview,
-        isSticky,
-        excerpt,
-        uri: utils.getUrlPath(uri),
-        status,
-      };
-    });
-  },
-  {
-    isDeepEqual: false,
-    isPromise: true,
-    isSerialized: true,
-    maxAge: 1000,
-  },
-);
+    return {
+      id,
+      slug,
+      title,
+      content,
+      isRevision,
+      isPreview,
+      isSticky,
+      excerpt,
+      uri: utils.getUrlPath(uri),
+      status,
+    };
+  });
+}
 
-export const getContentNode = moize(async function getContentNode(
+export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
   id: string,
   idType: ContentNodeIdType = ContentNodeIdType.URI,
@@ -192,9 +183,9 @@ export const getContentNode = moize(async function getContentNode(
     isFrontPage: (node as Page).isFrontPage,
     isPostsPage: (node as Page).isPostsPage,
   };
-});
+}
 
-export const getGeneralSettings = moize(async function getGeneralSettings(
+export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<GeneralSettings> {
   const result = await query<{ generalSettings: GeneralSettings; }>(client, `
@@ -207,17 +198,16 @@ export const getGeneralSettings = moize(async function getGeneralSettings(
     `);
 
   return result?.data?.generalSettings;
-});
+}
 
-export const getUriInfo = moize(
-  async function getUriInfo(
-    client: ApolloClient<NormalizedCacheObject>,
-    uriPath: string,
-  ): Promise<UriInfo> {
-    const urlPath = utils.getUrlPath(uriPath);
-    const isPreview = /preview=true/.test(uriPath);
+export async function getUriInfo(
+  client: ApolloClient<NormalizedCacheObject>,
+  uriPath: string,
+): Promise<UriInfo> {
+  const urlPath = utils.getUrlPath(uriPath);
+  const isPreview = /preview=true/.test(uriPath);
 
-    const response = await query<{ nodeByUri?: UriInfo; }>(client, `
+  const response = await query<{ nodeByUri?: UriInfo; }>(client, `
       query {
         nodeByUri(uri: "${ urlPath }") {
           id
@@ -228,36 +218,29 @@ export const getUriInfo = moize(
         }
       }
     `);
-    const result = response?.data?.nodeByUri;
+  const result = response?.data?.nodeByUri;
 
-    if (!result) {
-      if (isPreview) {
-        return {
-          isPreview,
-          uriPath,
-        };
-      }
-
+  if (!result) {
+    if (isPreview) {
       return {
-        is404: true,
+        isPreview,
         uriPath,
       };
     }
 
-    const { isPostsPage, isFrontPage, id } = result;
-
     return {
-      isPostsPage,
-      isFrontPage,
-      id,
-      isPreview,
+      is404: true,
       uriPath,
     };
-  },
-  {
-    isDeepEqual: false,
-    isPromise: true,
-    isSerialized: true,
-    maxAge: 1000,
-  },
-);
+  }
+
+  const { isPostsPage, isFrontPage, id } = result;
+
+  return {
+    isPostsPage,
+    isFrontPage,
+    id,
+    isPreview,
+    uriPath,
+  };
+}
