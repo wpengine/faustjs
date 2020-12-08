@@ -93,23 +93,19 @@ function wpe_headless_generate_user_code( $wp_user, $type ) {
 function wpe_headless_get_user_from_code( $code, $type, $duration ) {
 	$code = wpe_headless_decrypt( $code );
 	if ( ! $code ) {
-		echo "!code";
 		return false;
 	}
 
 	$parts = explode( '|', $code );
 	if ( count( $parts ) < 3 ) {
-		echo "!count(parts)";
 		return false;
 	}
 
 	if ( $type !== $parts[0] ) {
-		echo "type !== parts[0]";
 		return false;
 	}
 
 	if ( time() - absint( $parts[2] ) > $duration ) {
-		echo "time() - absint( parts[2] ) > duration";
 		return false;
 	}
 
