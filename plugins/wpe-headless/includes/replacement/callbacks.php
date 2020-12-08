@@ -35,69 +35,29 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'preview_post_link', 'wpe_headless_preview_post_link', 10, 2 );
+add_filter( 'preview_post_link', 'wpe_headless_post_link', 10 );
+add_filter( 'post_link', 'wpe_headless_post_link', 10 );
+
 /**
- * Callback for WordPress 'preview_post_link' filter.
+ * Callback for WordPress 'preview_post_link' filter and 'post_link' filter. For now, we use the same callback for both.
  *
- * Swap the post preview link for headless front-end.
+ * Swap the post preview link and post links in admin for headless front-end.
  *
  * @todo Should this always be enabled?
+ * @todo Page links
  *
- * @param string  $preview_link URL used for the post preview.
- * @param WP_Post $post         Post object.
+ * @param string  $link URL used for the post preview and/or post.
  *
  * @return string URL used for the post preview.
  */
-function wpe_headless_preview_post_link( $preview_link, $post ) {
+function wpe_headless_post_link( $link ) {
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
-		$preview_link = sprintf(
-			'%s%s/?status=%s&preview=true',
-			$frontend_uri,
-			base64_encode( 'post:' . $post->ID ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-			$post->post_status
-		);
+		return str_replace( trailingslashit( get_home_url() ), trailingslashit( $frontend_uri ), $link );
 	}
 
-	return $preview_link;
-}
-
-add_filter( 'post_link', 'wpe_headless_post_link', 10, 3 );
-/**
- * Callback for WordPress 'post_link' filter.
- *
- * Modify the post link for a post type "post" for headless.
- *
- * @todo Should this always be enabled?
- *
- * @param string  $permalink The post's permalink.
- * @param WP_Post $post      The post in question.
- * @param bool    $leavename Whether to keep the post name.
- *
- * @return string The post's permalink.
- */
-function wpe_headless_post_link( $permalink, $post, $leavename ) {
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
-
-	if ( empty( $frontend_uri ) ) {
-		return $permalink;
-	}
-
-	$frontend_uri = trailingslashit( $frontend_uri );
-
-	if ( 'draft' === $post->post_status ) {
-		$permalink = sprintf(
-			'%s%s/?status=%s&preview=true',
-			$frontend_uri,
-			base64_encode( 'post:' . $post->ID ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-			$post->post_status
-		);
-	} else {
-		$permalink = $frontend_uri . $post->post_name;
-	}
-
-	return $permalink;
+	return $link;
 }
 
 add_filter( 'term_link', 'wpe_headless_term_link' );
