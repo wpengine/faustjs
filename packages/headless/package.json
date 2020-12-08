@@ -1,7 +1,7 @@
 {
   "name": "@wpengine/headless",
-  "version": "0.0.2",
-  "description": "This module helps you integrate with the WP API and get posts (both published and draft)",
+  "version": "0.0.1-canary",
+  "description": "This module helps you use Wordpress as a Headless CMS",
   "main": "dist/index.js",
   "scripts": {
     "build": "run-s clean ts",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless"
+    "url": "https://github.com/wpengine/headless-framework/tree/canary/packages/headless"
   },
   "keywords": [
     "WordPress",
