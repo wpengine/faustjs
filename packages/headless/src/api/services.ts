@@ -9,11 +9,27 @@ import {
   UriInfo,
 } from '../types';
 import * as utils from '../utils';
+import { getAccessToken } from '../auth';
+
+export async function query<T>(client: ApolloClient<NormalizedCacheObject>, query: string) {
+  const accessToken = getAccessToken();
+  let context: { headers?: { Authorization: string; }; } = {};
+
+  if (accessToken) {
+    context.headers = {
+      Authorization: `Bearer ${ accessToken }`,
+    };
+  }
+
+  return client.query<T>({
+    query: gql`${ query }`,
+    context
+  });
+}
 
 export const getPosts = moize(
   async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
-    const result = await client.query<{ posts: Connection<Post> }>({
-      query: gql`
+    const result = await query<{ posts: Connection<Post>; }>(client, `
         query {
           posts {
             pageInfo {
@@ -39,8 +55,7 @@ export const getPosts = moize(
             }
           }
         }
-      `,
-    });
+      `);
 
     const thePosts = result?.data?.posts?.edges.map(({ node }) => node);
 
@@ -90,10 +105,9 @@ export const getContentNode = moize(async function getContentNode(
   idType: ContentNodeIdType = ContentNodeIdType.URI,
   asPreview = false,
 ): Promise<Post | Page> {
-  const result = await client.query<{ contentNode: Post | Page }>({
-    query: gql`
+  const result = await query<{ contentNode: Post | Page; }>(client, `
       query {
-        contentNode(id: "${id}", idType: ${idType}, asPreview: ${asPreview}) {
+        contentNode(id: "${ id }", idType: ${ idType }, asPreview: ${ asPreview }) {
           ... on Post {
             id
             slug
@@ -148,8 +162,7 @@ export const getContentNode = moize(async function getContentNode(
           }
         }
       }
-    `,
-  });
+    `);
 
   let node = result?.data?.contentNode;
 
@@ -184,16 +197,14 @@ export const getContentNode = moize(async function getContentNode(
 export const getGeneralSettings = moize(async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<GeneralSettings> {
-  const result = await client.query<{ generalSettings: GeneralSettings }>({
-    query: gql`
+  const result = await query<{ generalSettings: GeneralSettings; }>(client, `
       query {
         generalSettings {
           title
           description
         }
       }
-    `,
-  });
+    `);
 
   return result?.data?.generalSettings;
 });
@@ -206,19 +217,17 @@ export const getUriInfo = moize(
     const urlPath = utils.getUrlPath(uriPath);
     const isPreview = /preview=true/.test(uriPath);
 
-    const response = await client.query<{ nodeByUri?: UriInfo }>({
-      query: gql`
-            query {
-              nodeByUri(uri: "${urlPath}") {
-                id
-                ... on ContentType {
-                  isFrontPage
-                  isPostsPage
-                }
-              }
-            }
-          `,
-    });
+    const response = await query<{ nodeByUri?: UriInfo; }>(client, `
+      query {
+        nodeByUri(uri: "${ urlPath }") {
+          id
+          ... on ContentType {
+            isFrontPage
+            isPostsPage
+          }
+        }
+      }
+    `);
     const result = response?.data?.nodeByUri;
 
     if (!result) {
