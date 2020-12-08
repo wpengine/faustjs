@@ -27,7 +27,7 @@ ln -s /path/to/headless-framework/plugins/wpe-headless /path/to/wordpress/wp-con
 ```
 
 **PHP Code Sniffer**
-Code sniffer is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
+[PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
 Install the composer packages from within `wpe-headless` directory if you haven't already.
 ```
