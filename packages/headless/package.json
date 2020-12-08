@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless",
-  "version": "0.0.1-canary.0",
+  "version": "0.0.1-alpha.0",
   "description": "This module helps you integrate with the WP API and get posts (both published and draft)",
   "main": "dist/index.js",
   "scripts": {
