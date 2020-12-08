@@ -2,7 +2,6 @@ import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { ServerResponse } from 'http';
 import { Redirect } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { addAuthorization } from '../provider';
 import { isServerSide, trimTrailingSlash } from '../utils';
 import { getAccessToken, storeAccessToken } from './cookie';
 
@@ -62,10 +61,6 @@ export async function ensureAuthorization(
       accessToken = result.access_token;
       storeAccessToken(accessToken, res);
 
-      if (accessToken) {
-        addAuthorization(client, accessToken);
-      }
-
       return {
         redirect: {
           permanent: false,
@@ -94,8 +89,6 @@ export async function ensureAuthorization(
       },
     };
   }
-
-  addAuthorization(client, accessToken);
 
   return {};
 }
