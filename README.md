@@ -1,6 +1,6 @@
 # WordPress Headless Framework (PREVIEW/ALPHA)
 
-This project is in the early stages of development, but it does contain useful functionallity for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
+NOTE: This project is in the early stages of development, but it does contain useful functionallity for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
 
 ## Features
 
@@ -10,11 +10,12 @@ This project is in the early stages of development, but it does contain useful f
 -   Previews
     -   Rewrite preview and draft links in WP Admin to redirect to the frontend.
 
+## [Documenation](./docs/README.md)
+
 ## Project Structure
 
 -   `/packages` - NPM packages
 -   `/plugins` - WordPress Plugins
--   `/themes` - WordPress Themes (TBD)
 
 # Contributing
 
