@@ -4,7 +4,7 @@
     "type": "project",
     "minimum-stability": "stable",
     "require-dev": {
-        "dealerdirect/phpcodesniffer-composer-installer": "0.7.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "roave/security-advisories": "dev-master",
