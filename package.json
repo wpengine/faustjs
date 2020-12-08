@@ -3,8 +3,5 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.22.1"
-  },
-  "dependencies": {
-    "universal-cookie": "^4.0.4"
   }
 }
