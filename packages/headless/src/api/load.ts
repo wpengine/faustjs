@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import { getUriInfo, getPosts, getContentNode } from './services';
 import { initializeApollo, addApolloState } from '../provider';
-import { initializeServerCookie } from '../auth';
+import { initializeServerCookie, storeAccessToken } from '../auth';
 import { ensureAuthorization } from '../auth/authorize';
 import { headlessConfig } from '../config';
 import { ContentNodeIdType } from '../types';
@@ -22,7 +22,7 @@ export async function initializeHeadlessProps(
   if (pageInfo.isPreview) {
     const response = await ensureAuthorization(
       apolloClient,
-      `${context.req.headers.host as string}${context.resolvedUrl ?? ''}`,
+      `${ context.req.headers.host as string }${ context.resolvedUrl ?? '' }`,
       context.query,
       context.res,
     );
@@ -32,15 +32,19 @@ export async function initializeHeadlessProps(
     }
   }
 
-  if (pageInfo.isPostsPage) {
-    await getPosts(apolloClient);
-  } else {
-    await getContentNode(
-      apolloClient,
-      pageInfo.uriPath,
-      ContentNodeIdType.URI,
-      pageInfo.isPreview,
-    );
+  try {
+    if (pageInfo.isPostsPage) {
+      await getPosts(apolloClient);
+    } else {
+      await getContentNode(
+        apolloClient,
+        pageInfo.uriPath,
+        ContentNodeIdType.URI,
+        pageInfo.isPreview,
+      );
+    }
+  } catch(e) {
+    storeAccessToken(undefined, context.res);
   }
 
   return addApolloState(apolloClient, {

@@ -61,6 +61,7 @@ export async function ensureAuthorization(
       const result = await authorize(code);
       accessToken = result.access_token;
       storeAccessToken(accessToken, res);
+
       if (accessToken) {
         addAuthorization(client, accessToken);
       }
@@ -78,6 +79,7 @@ export async function ensureAuthorization(
       console.log('Something went wrong');
       console.log(e);
 
+      storeAccessToken(undefined, res);
       return {};
     }
   }

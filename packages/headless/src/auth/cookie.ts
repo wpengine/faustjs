@@ -30,6 +30,9 @@ export function storeAccessToken(
 ) {
   if (!token) {
     cookies.remove(TOKEN_KEY);
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    res.setHeader('Set-Cookie', `${TOKEN_KEY}=; expires=${yesterday.toUTCString()}`);
 
     return;
   }
