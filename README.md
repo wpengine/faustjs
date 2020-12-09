@@ -7,10 +7,10 @@ NOTE: This project is in the early stages of development, but it does contain us
 -   Headless Auth Flows
     -   OAuth token authentication for users
     -   Auth handler for Express/Next that exchanges a code for an access token. The access token can be used to make authenticated calls to WordPress via WPGraphQL or REST.
--   Previews
+-   [Previews](./docs/previews/README.md)
     -   Rewrite preview and draft links in WP Admin to redirect to the frontend.
 
-## [Documenation](./docs/README.md)
+## [Documentation](./docs/README.md)
 
 ## Project Structure
 
