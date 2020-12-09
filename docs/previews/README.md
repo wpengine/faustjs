@@ -4,9 +4,19 @@
 
 In this guide, we'll walk through how to configure a Next.js site for previews.
 
+We're going to use Next with TypeScript for this example.
+
+```
+npx create-next-app previews
+npm i typescript @types/react @types/react-dom @types/node -D
+```
+
+TL;DR
+Checkout the [example project](../../examples/preview) to see how it works.
+
 ## WPE Headless Plugin
 
-In order to enable previews in WordPress, you'll first need to install the [wpe-headless plugin](../../plugins).
+In order to enable previews in WordPress, you'll first need to install the [wpe-headless plugin](../../plugins). You also need to install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/).
 
 The plugin enables an OAuth flow for users to authenticate with WordPress and receive an access token which is used for subsequent API calls (i.e. GQL/REST).
 
@@ -20,11 +30,11 @@ Go to Settings->Headless to view the plugin's settings page:
 
 There are 2 settings that assist in previews. The first one is read-only. It gives you an API secret key that you need to use on your backend for your frontend.
 
-The second setting is the location of your frontend. You'll need to put the base URL (i.e. http://localhost:3000).
+The second setting is the location of your frontend. You'll need to put the base URL which will be `http://localhost:3000` for this example.
 
 ![Headless Plugin Auth Settings](./headless-settings-auth.jpg)
 
-## @wpengine/headless
+## Headless Framework (@wpengine/headless)
 
 The `@wpengine/headless` package provides helpers to get previews working in a React application.
 
@@ -48,3 +58,162 @@ The flow looks like this:
 -   The frontend server exchanges the code for an access token
 -   The access token is stored in a cookie
 -   The user is finally redirected back to the original Url and uses the access token in the cookie to make the authenticated request
+
+The framework provides a Node.js auth handler to do the exchange for you.
+
+### Auth Hander
+
+In order to support the exchange of the access code for an access token, the framework provides a Node auth handler:
+
+```
+import { authorizeHandler } from '@wpengine/headless';
+```
+
+`authorizeHandler` accepts a Node request (IncomingMessage) and response (ServerResponse) which are compatible with ExpressJS, Next APIs, etc.
+
+In order to enable the handler in Nextjs, create a new API route `/pages/api/authorize.ts` and add:
+
+```
+import { authorizeHandler } from '@wpengine/headless';
+
+export default authorizeHandler;
+```
+
+### Next Integration
+
+The framework provides a provider and hooks that assist in routing and server side rendering.
+
+#### HeadlessProvider
+
+The provider is the glue that allows the framework to communicate with WordPress. To set it up, create `/pages/_app.tsx`.
+
+```jsx
+import React from "react";
+import { AppContext, AppInitialProps } from "next/app";
+import { HeadlessProvider } from "@wpengine/headless";
+
+export default function App({
+	Component,
+	pageProps,
+}: AppContext & AppInitialProps) {
+	return (
+		<HeadlessProvider pageProps={pageProps}>
+			<Component {...pageProps} />
+		</HeadlessProvider>
+	);
+}
+```
+
+#### Routes and Hooks
+
+For this example, we're only going to need one page to handle all of our routes `/pages/[[...page]].tsx`. This is a catch-all route in Next. We'll use hooks provided by the framework to load the right content for each URL.
+
+```jsx
+import React from "react";
+import {
+	useNextUriInfo,
+	initializeNextServerSideProps,
+} from "@wpengine/headless";
+import { GetServerSidePropsContext } from "next";
+import Posts from "../lib/components/Posts";
+import Post from "../lib/components/Post";
+
+export default function Page() {
+	const pageInfo = useNextUriInfo();
+
+	if (!pageInfo) {
+		return <></>;
+	}
+
+	if (pageInfo.isPostsPage) {
+		return <Posts />;
+	}
+
+	return <Post />;
+}
+
+export function getServerSideProps(context: GetServerSidePropsContext) {
+	return initializeNextServerSideProps(context);
+}
+```
+
+`useNextUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
+
+`initializeNextServerSideProps` is used to allow for Server Side Rendering. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the inital request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
+
+`/lib/components/Post.tsx`
+
+```jsx
+import React from "react";
+import { usePost } from "@wpengine/headless";
+
+export default function Post() {
+	const post = usePost();
+
+	return (
+		<div>
+			{post && (
+				<div>
+					<div>
+						<h5>{post.title}</h5>
+						<p
+							dangerouslySetInnerHTML={{
+								__html: post.content ?? "",
+							}}
+						/>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+}
+```
+
+`/lib/ components/Posts.tsx`
+
+```jsx
+import React from "react";
+import Link from "next/link";
+import { usePosts } from "@wpengine/headless";
+
+export default function Posts() {
+	const posts = usePosts();
+
+	return (
+		<div>
+			{posts &&
+				posts.map((post) => (
+					<div key={post.id} id={`post-${post.id}`}>
+						<div>
+							<Link href={post.uri}>
+								<h5>
+									<a href={post.uri}>{post.title}</a>
+								</h5>
+							</Link>
+							<p
+								dangerouslySetInnerHTML={{
+									__html: post.excerpt ?? "",
+								}}
+							/>
+						</div>
+					</div>
+				))}
+		</div>
+	);
+}
+```
+
+#### Configuration
+
+We need to let the frontend know about our WordPress instance. The framework expects a few environment variables with this information. Create a file in the root of the project `/.env.local`.
+
+```
+# Base URL for WordPress
+NEXT_PUBLIC_WORDPRESS_URL=http://developer-hub.local
+
+# Plugin secret found in WordPress Settings->Headless
+WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+
+# Location of the auth handler endpoint
+NEXT_PUBLIC_AUTH_ENDPOINT=/api/authorize
+```
