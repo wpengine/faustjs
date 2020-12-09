@@ -28,6 +28,7 @@ function read_config_packages {
 
 # Download workflows status from CircleCI API (as JSON files).
 function get_workflows {
+  echo "DEBUG: $1"
   seq 0 100 $((($1 - 1) * 100)) | \
   awk \
     -v api="https://circleci.com/api/v1.1/project/${PROJECT_SLUG}" \
