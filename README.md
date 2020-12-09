@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/npm/v/@wpengine/headless.svg)](https://npmjs.org/package/@wpengine/headless)
 
-NOTE: This project is in the early stages of development, but it does contain useful functionallity for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
+NOTE: This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
 
 ## Features
 
