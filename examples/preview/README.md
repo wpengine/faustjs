@@ -19,8 +19,6 @@ NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
 # Plugin secret found in WordPress Settings->Headless
 WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 
-# Location of the auth handler endpoint (this is correct for the example)
-NEXT_PUBLIC_AUTH_ENDPOINT=/api/authorize
 ```
 
 ## Run it
