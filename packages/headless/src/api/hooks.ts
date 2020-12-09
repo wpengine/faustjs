@@ -19,7 +19,7 @@ import {
   getUriInfo,
 } from './services';
 import { headlessConfig } from '../config';
-import { isServerSide, resolvePrefixedUrlPath } from '../utils';
+import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
 
 /**
  * React Hook for retrieving a list of posts from your Wordpress site
@@ -161,16 +161,24 @@ export function useNextUriInfo() {
   return pageInfo;
 }
 
-export function useUriInfo(uri: string) {
+export function useUriInfo(uri?: string) {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const client = useApolloClient();
+  let localUri = uri;
+
+  if (!localUri && !isServerSide()) {
+    localUri = resolvePrefixedUrlPath(
+      getUrlPath(window.location.href),
+      headlessConfig().uriPrefix,
+    );
+  }
 
   useEffect(() => {
     let subscribed = true;
     let page: string | undefined;
 
-    if (uri) {
-      page = uri;
+    if (localUri) {
+      page = localUri;
     }
 
     if (page) {
@@ -196,11 +204,11 @@ export function useUriInfo(uri: string) {
     return () => {
       subscribed = false;
     };
-  }, [client, uri]);
+  }, [client, localUri]);
 
   if (
     pageInfo?.uriPath !==
-    resolvePrefixedUrlPath(uri, headlessConfig().uriPrefix)
+    resolvePrefixedUrlPath(localUri || '', headlessConfig().uriPrefix)
   ) {
     return undefined;
   }

@@ -114,7 +114,7 @@ export function getUrlPath(url?: string) {
     return '/';
   }
 
-  return parsedUrl?.pathname;
+  return `${parsedUrl?.pathname || '/'}${parsedUrl?.search || ''}`;
 }
 
 export function resolvePrefixedUrlPath(url: string, prefix?: string) {
