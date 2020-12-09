@@ -37,6 +37,22 @@ jobs:
             # (optional) additional CI parameters to include in the pipeline (must be a valid JSON)
             # CI_PARAMETERS: '{ "deploy": true }'
 
+  trigger-tag:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          # See MarkKelnar about the personal api token created and added as an environment variable for the project
+          name: Set token
+          command: echo "export CIRCLE_USER_TOKEN=${CIRCLE_PROJECT_TOKEN}" >> $BASH_ENV
+      - run:
+          name: Trigger workflows with tag
+          command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
+          environment:
+            MONOREPO_DEBUG: "true"
+            TRIGGER_PACKAGE: wpe-headless-plugin
+
   checkout:
     executor: wp-product-orb/default
     steps:
@@ -161,6 +177,14 @@ workflows:
     when: << pipeline.parameters.trigger >>
     jobs:
       - trigger-workflows
+
+  tag:
+    when: << pipeline.git.tag >>
+    jobs:
+      - trigger-tag:
+          filters:
+            tags:
+              only: /^plugin\/wpe-headless\/\S+/
 
   # Workflows defined for each package.
   plugin-wpe-headless:

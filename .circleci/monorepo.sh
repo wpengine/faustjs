@@ -147,11 +147,20 @@ function print_status {
 }
 
 function create_request_body {
-  echo "$1" | 
-  jq --raw-output --arg branch "${CIRCLE_BRANCH}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. | 
-    map(select(.changes > 0)) | 
-    reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) | 
-    { branch: $branch, parameters: . } | 
+  echo "$1" |
+  jq --raw-output --arg branch "${CIRCLE_BRANCH}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. |
+    map(select(.changes > 0)) |
+    reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) |
+    { branch: $branch, parameters: . } |
+    @json'
+}
+
+function create_request_tag {
+  echo "$1" |
+  jq --raw-output --arg tag "${CIRCLE_TAG}" --arg trigger "${TRIGGER_PARAM_NAME}" --arg package "${TRIGGER_PACKAGE}" --argjson params "${CI_PARAMETERS:-null}" '. |
+    map(select(.changes > 0)) |
+    reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) |
+    { tag: $tag, parameters: . } |
     @json'
 }
 
@@ -226,25 +235,29 @@ function get_parent {
 
 function main {
   init
-  get_builds
-  git_parent_commit=$( get_parent )
+  if [[ "x${CIRCLE_TAG}" == "x" ]]; then
+    get_builds
+    git_parent_commit=$( get_parent )
 
-  statuses=$(\
-    read_config_packages "${CONFIG_FILE}" | 
-    diff "${git_parent_commit}" "${BUILDS_FILE}" |
-    jq --raw-input --slurp \
-      'split("\n") | map(select(. != "")) | map(split(" ")) | map({ package: .[3], parent: .[1], branch: .[2], changes: .[0] | tonumber })')
+    statuses=$(\
+      read_config_packages "${CONFIG_FILE}" |
+      diff "${git_parent_commit}" "${BUILDS_FILE}" |
+      jq --raw-input --slurp \
+        'split("\n") | map(select(. != "")) | map(split(" ")) | map({ package: .[3], parent: .[1], branch: .[2], changes: .[0] | tonumber })')
 
-  print_status "${statuses}"
-  changed_packages=$( echo "${statuses}" | jq '. | map(select(.changes > 0)) | length' )
-  total_packages=$( echo "${statuses}" | jq '. | length' )
+    print_status "${statuses}"
+    changed_packages=$( echo "${statuses}" | jq '. | map(select(.changes > 0)) | length' )
+    total_packages=$( echo "${statuses}" | jq '. | length' )
 
-  echo "Number of packages changed: ${changed_packages} / ${total_packages}"
+    echo "Number of packages changed: ${changed_packages} / ${total_packages}"
 
-  if [[ "${changed_packages}" != "0" ]]; then
-    create_pipeline "$( create_request_body "${statuses}" )"
+    if [[ "${changed_packages}" != "0" ]]; then
+      create_pipeline "$( create_request_body "${statuses}" )"
+    else
+      echo "No changes in packages. Skip workflow trigger."
+    fi
   else
-    echo "No changes in packages. Skip workflow trigger."
+      create_pipeline "$( create_request_tag )"
   fi
 
   if [[ "${MONOREPO_DEBUG}" == "true" ]]; then
