@@ -21,29 +21,6 @@ export function base64Encode(str: string) {
   return btoa(str);
 }
 
-export function getQueryParam(search: string, param: string) {
-  if (search.length === 0) {
-    return '';
-  }
-
-  let query = search;
-
-  if (query[0] === '?') {
-    query = query.substring(1);
-  }
-
-  const params = query.split('&');
-
-  for (let i = 0; i < params.length; i += 1) {
-    const pair = params[i].split('=');
-    if (decodeURIComponent(pair[0]) === param) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-
-  return '';
-}
-
 export function normalizeConfig(config: HeadlessConfig) {
   let { uriPrefix } = config;
 
@@ -75,29 +52,72 @@ export function trimTrailingSlash(str: string | undefined): string | undefined {
   return str.replace(/\/$/, '');
 }
 
-export function getUrlPath(url?: string) {
+const URL_REGEX = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/;
+
+/* eslint-disable consistent-return */
+export function parseUrl(url: string | undefined) {
   if (!url) {
-    return '/';
+    return;
   }
 
-  if ((url.match(/\//g) || []).length < 3) {
-    if (/(?:https?:\/\/)/.test(url)) {
-      return '/';
+  const parsed = URL_REGEX.exec(url);
+
+  if (!parsed || parsed.length < 1) {
+    return;
+  }
+
+  return {
+    href: parsed[0],
+    protocol: parsed[1],
+    baseUrl: `${parsed[1]}${parsed[3]}`,
+    host: parsed[4],
+    pathname: parsed[5],
+    search: parsed[6],
+    hash: parsed[8],
+  };
+}
+/* eslint-enable consistent-return */
+
+export function getQueryParam(url: string, param: string) {
+  if (!url || url.length === 0) {
+    return '';
+  }
+
+  const parsedUrl = parseUrl(url);
+
+  if (!parsedUrl) {
+    return '';
+  }
+
+  let query = parsedUrl.search;
+
+  if (query[0] === '?') {
+    query = query.substring(1);
+  }
+
+  const params = query.split('&');
+
+  for (let i = 0; i < params.length; i += 1) {
+    const pair = params[i].split('=');
+    if (decodeURIComponent(pair[0]) === param) {
+      return decodeURIComponent(pair[1]);
     }
-
-    return url;
   }
 
-  const exec = /(?:https?:\/\/)?(?:[^?/\s]+([?/]))(.*)/.exec(url);
-
-  if (!exec || exec.length < 1) {
-    return '/';
-  }
-
-  return `${exec[1]}${exec[2]}`;
+  return '';
 }
 
-export function resolveUrlPath(url: string, prefix?: string) {
+export function getUrlPath(url?: string) {
+  const parsedUrl = parseUrl(url);
+
+  if (!parsedUrl) {
+    return '/';
+  }
+
+  return parsedUrl?.pathname;
+}
+
+export function resolvePrefixedUrlPath(url: string, prefix?: string) {
   let resolvedUrl = url;
 
   if (prefix) {
@@ -110,3 +130,15 @@ export function resolveUrlPath(url: string, prefix?: string) {
 
   return resolvedUrl;
 }
+
+/* eslint-disable consistent-return */
+export function trimLeadingSlashes(str: string | undefined) {
+  if (!str) {
+    return str;
+  }
+
+  if (str[0] === '/') {
+    return str.slice(1);
+  }
+}
+/* eslint-enable consistent-return */

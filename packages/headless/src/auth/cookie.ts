@@ -32,7 +32,10 @@ export function storeAccessToken(
     cookies.remove(TOKEN_KEY);
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    res.setHeader('Set-Cookie', `${TOKEN_KEY}=; expires=${yesterday.toUTCString()}`);
+    res.setHeader(
+      'Set-Cookie',
+      `${TOKEN_KEY}=; expires=${yesterday.toUTCString()}; path=/`,
+    );
 
     return;
   }
@@ -40,5 +43,8 @@ export function storeAccessToken(
   const encodedToken = base64Encode(token);
 
   cookies.set(TOKEN_KEY, encodedToken);
-  res.setHeader('Set-Cookie', `${TOKEN_KEY}=${encodedToken}; Max-Age=2592000`);
+  res.setHeader(
+    'Set-Cookie',
+    `${TOKEN_KEY}=${encodedToken}; Max-Age=2592000; path=/`,
+  );
 }
