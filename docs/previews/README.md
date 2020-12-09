@@ -9,6 +9,7 @@ We're going to use Next with TypeScript for this example.
 ```
 npx create-next-app previews
 npm i typescript @types/react @types/react-dom @types/node -D
+npm i @wpengine/headless
 ```
 
 TL;DR
