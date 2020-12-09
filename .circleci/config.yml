@@ -16,7 +16,7 @@ parameters:
   # A parameter per package
   wpe-headless-plugin:
     type: boolean
-    default: true
+    default: false
 
 jobs:
   trigger-workflows:
