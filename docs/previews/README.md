@@ -6,10 +6,12 @@ In this guide, we'll walk through how to configure a Next.js site for previews.
 
 We're going to use Next with TypeScript for this example.
 
-```
+```bash
 npx create-next-app previews
+cd previews
+rm -r ./pages/*
+npm i @wpengine/headless @apollo/client graphql
 npm i typescript @types/react @types/react-dom @types/node -D
-npm i @wpengine/headless
 ```
 
 TL;DR
@@ -41,7 +43,7 @@ The `@wpengine/headless` package provides helpers to get previews working in a R
 
 Install the npm package via:
 
-```
+```bash
 npm i @wpengine/headless
 ```
 
@@ -66,15 +68,17 @@ The framework provides a Node.js auth handler to do the exchange for you.
 
 In order to support the exchange of the access code for an access token, the framework provides a Node authorization handler:
 
-```
+```typescript
 import { authorizeHandler } from '@wpengine/headless';
 ```
 
 `authorizeHandler` accepts a Node request (IncomingMessage) and response (ServerResponse) which are compatible with ExpressJS, Next APIs, etc.
 
-In order to enable the handler in Next, create a new API route `/pages/api/authorize.ts` and add:
+In order to enable the handler in Next, create a new API route:
 
-```
+`/pages/api/authorize.ts`
+
+```typescript
 import { authorizeHandler } from '@wpengine/headless';
 
 export default authorizeHandler;
@@ -208,22 +212,22 @@ export default function Posts() {
 
 We need to let the frontend know about our WordPress instance. The framework expects a few environment variables with this information. Create a file in the root of the project `/.env.local`.
 
-```
+```bash
 # Base URL for WordPress
-NEXT_PUBLIC_WORDPRESS_URL=http://developer-hub.local
+NEXT_PUBLIC_WORDPRESS_URL=http://yourwp.com
 
 # Plugin secret found in WordPress Settings->Headless
 WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 
 # Location of the auth handler endpoint
-NEXT_PUBLIC_AUTH_ENDPOINT=/api/authorize
+NEXT_PUBLIC_AUTHORIZATION_URL=/api/authorize
 ```
 
 ## Try it out!
 
 You can run the project via:
 
-```
+```bash
 npm run dev
 ```
 
