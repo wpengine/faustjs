@@ -4,20 +4,21 @@ NOTE: This project is in the early stages of development, but it does contain us
 
 ## Features
 
--   Headless Auth Flows
-    -   OAuth token authentication for users
-    -   Auth handler for Express/Next that exchanges a code for an access token. The access token can be used to make authenticated calls to WordPress via WPGraphQL or REST.
--   [Previews](./docs/previews/README.md)
-    -   Rewrite preview and draft links in WP Admin to redirect to the frontend.
+- Headless Auth Flows
+  - OAuth token authentication for users
+  - Auth handler for Express/Next that exchanges a code for an access token. The access token can be used to make authenticated calls to WordPress via WPGraphQL or REST.
+- [Previews](./docs/previews/README.md)
+  - Rewrite preview and draft links in WP Admin to redirect to the frontend.
 
 ## [Tryout Previews](./docs/previews/README.md)
+
 We'll walk you through creating a Next.js app that uses the plugin and framework to enable post previews!
 
 ## Project Structure
 
--   `/docs` - Documentation
--   `/packages` - NPM packages
--   `/plugins` - WordPress Plugins
+- `/docs` - Documentation
+- `/packages` - NPM packages
+- `/plugins` - WordPress Plugins
 
 # Contributing
 
