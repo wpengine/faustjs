@@ -1,6 +1,6 @@
 export interface HeadlessConfig {
   /**
-   * This is a prefix URI path that we will use as the base URL for your Wordpress posts.
+   * This is a prefix URI path that we will use as the base URL for your WordPress posts.
    * By default we will assume that your site is configured with no blog-specific URI.
    *
    * @example /blog
