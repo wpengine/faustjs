@@ -14,6 +14,7 @@ NOTE: This project is in the early stages of development, but it does contain us
 
 ## Project Structure
 
+-   `/docs` - Documentation
 -   `/packages` - NPM packages
 -   `/plugins` - WordPress Plugins
 
