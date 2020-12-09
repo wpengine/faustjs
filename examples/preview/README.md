@@ -1,2 +1,3 @@
-# developers
-Developer Hub for Documentation, Best Practices, Tutorials, etc.
+# Headless WordPress Previews Example
+
+[Preview Documentation](../../docs/previews/README.md)
