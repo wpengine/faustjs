@@ -1,5 +1,6 @@
 src/
 .eslintrc.js
+.prettierrc.js
 .gitignore
 node_modules
 tsconfig.json
