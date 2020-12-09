@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "description": "This module helps you use Wordpress as a Headless CMS",
   "main": "dist/index.js",
   "scripts": {
