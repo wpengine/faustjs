@@ -1,34 +1,42 @@
-import { GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { getUriInfo, getPosts, getContentNode } from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { initializeServerCookie, storeAccessToken } from '../auth';
 import { ensureAuthorization } from '../auth/authorize';
 import { headlessConfig } from '../config';
-import { ContentNodeIdType } from '../types';
-import { resolveUrlPath } from '../utils';
+import { ContentNodeIdType, UriInfo } from '../types';
+import { resolvePrefixedUrlPath } from '../utils';
 
-export async function initializeHeadlessProps(
+export async function initializeNextServerSideProps(
   context: GetServerSidePropsContext,
-) {
+): Promise<GetServerSidePropsResult<unknown>> {
   const apolloClient = initializeApollo();
+
   initializeServerCookie(context.req.headers.cookie);
+
   const wpeConfig = headlessConfig();
-  const currentUrlPath = resolveUrlPath(
+  const currentUrlPath = resolvePrefixedUrlPath(
     context.resolvedUrl ?? '',
     wpeConfig.uriPrefix,
   );
-  const pageInfo = await getUriInfo(apolloClient, currentUrlPath);
+  const pageInfo = (await getUriInfo(apolloClient, currentUrlPath)) as UriInfo;
 
   if (pageInfo.isPreview) {
-    const response = await ensureAuthorization(
-      apolloClient,
-      `${ context.req.headers.host as string }${ context.resolvedUrl ?? '' }`,
-      context.query,
-      context.res,
+    const host = context.req.headers.host as string;
+    const protocol = /localhost/.test(host) ? 'http:' : 'https:';
+    const response = ensureAuthorization(
+      `${protocol}//${context.req.headers.host as string}${
+        context.resolvedUrl ?? ''
+      }`,
     );
 
-    if (response?.redirect) {
-      return response;
+    if (typeof response !== 'string' && typeof response.redirect === 'string') {
+      return {
+        redirect: {
+          permanent: false,
+          destination: response.redirect,
+        },
+      };
     }
   }
 
@@ -43,11 +51,13 @@ export async function initializeHeadlessProps(
         pageInfo.isPreview,
       );
     }
-  } catch(e) {
+  } catch (e) {
     storeAccessToken(undefined, context.res);
   }
 
   return addApolloState(apolloClient, {
     props: { preview: context.preview ?? false },
-  });
+  }) as {
+    props: unknown;
+  };
 }

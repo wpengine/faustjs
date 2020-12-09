@@ -2,10 +2,6 @@ import React from 'react';
 import { AppContext, AppInitialProps } from 'next/app';
 import { HeadlessProvider, headlessConfig } from '@wpengine/headless';
 
-headlessConfig({
-  uriPrefix: '/blog',
-});
-
 /* eslint-disable react/jsx-props-no-spreading */
 export default function App({
   Component,

@@ -1,14 +1,20 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { ServerResponse } from 'http';
-import { Redirect } from 'next';
-import { ParsedUrlQuery } from 'querystring';
-import { addAuthorization } from '../provider';
-import { isServerSide, trimTrailingSlash } from '../utils';
-import { getAccessToken, storeAccessToken } from './cookie';
+import {
+  isServerSide,
+  parseUrl,
+  trimLeadingSlashes,
+  trimTrailingSlash,
+} from '../utils';
+import { getAccessToken } from './cookie';
 
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
 );
+const AUTH_URL = trimTrailingSlash(
+  process.env.NEXT_PUBLIC_AUTHORIZATION_URL ||
+    process.env.AUTHORIZATION_URL ||
+    '/api/auth/wpe-headless',
+);
+
 const API_CLIENT_SECRET = process.env.WPE_HEADLESS_SECRET;
 
 if (!API_CLIENT_SECRET && isServerSide()) {
@@ -46,56 +52,28 @@ export async function authorize(code: string) {
 }
 
 // eslint-disable-next-line consistent-return
-export async function ensureAuthorization(
-  client: ApolloClient<NormalizedCacheObject>,
+export function ensureAuthorization<T>(
   url: string,
-  query: ParsedUrlQuery,
-  res: ServerResponse,
-): Promise<{ redirect?: Redirect }> {
-  let accessToken = getAccessToken();
-  const { code } = query;
-  const http = /localhost/.test(url) ? 'http' : 'https';
+): string | { redirect: string } {
+  const accessToken = getAccessToken();
 
-  if (typeof code === 'string') {
-    try {
-      const result = await authorize(code);
-      accessToken = result.access_token;
-      storeAccessToken(accessToken, res);
-
-      if (accessToken) {
-        addAuthorization(client, accessToken);
-      }
-
-      return {
-        redirect: {
-          permanent: false,
-          destination: `${http}://${url.replace(
-            /(&?code(=[^&]*)?(?=&|$)|^foo(=[^&]*)?)(&|$)/,
-            '',
-          )}`,
-        },
-      };
-    } catch (e) {
-      console.log('Something went wrong');
-      console.log(e);
-
-      storeAccessToken(undefined, res);
-      return {};
-    }
+  if (!!accessToken && accessToken.length > 0) {
+    return accessToken;
   }
 
-  if (!accessToken || accessToken.length === 0) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: `${
-          WP_URL as string
-        }/generate?redirect_uri=${encodeURIComponent(`${http}://${url}`)}`,
-      },
-    };
+  const parsedUrl = parseUrl(url);
+
+  if (!parsedUrl) {
+    throw new Error('Invalid url for authorization');
   }
 
-  addAuthorization(client, accessToken);
+  const { baseUrl } = parsedUrl;
 
-  return {};
+  return {
+    redirect: `${WP_URL as string}/generate?redirect_uri=${encodeURIComponent(
+      `${baseUrl}/${
+        trimLeadingSlashes(AUTH_URL as string) as string
+      }?redirect_uri=${encodeURIComponent(url)}`,
+    )}`,
+  };
 }

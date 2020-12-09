@@ -136,20 +136,6 @@ export function addApolloState(
   return pageProps;
 }
 
-export function addAuthorization(
-  client: ApolloClient<any>,
-  accessToken: string,
-) {
-  client.setLink(
-    new HttpLink({
-      uri: `${WP_URL as string}/graphql`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }),
-  );
-}
-
 /**
  * React Hook to use the Apollo client. This is used by <WPGraphQLProvider>
  *
