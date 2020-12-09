@@ -58,13 +58,13 @@ The flow looks like this:
 - WordPress redirects back to frontend with a temporary code
 - The frontend server exchanges the code for an access token
 - The access token is stored in a cookie
-- The user is finally redirected back to the original Url and uses the access token in the cookie to make the authenticated request
+- The user is finally redirected back to the original URL and uses the access token in the cookie to make the authenticated request
 
 The framework provides a Node.js auth handler to do the exchange for you.
 
 ### Auth Hander
 
-In order to support the exchange of the access code for an access token, the framework provides a Node auth handler:
+In order to support the exchange of the access code for an access token, the framework provides a Node authorization handler:
 
 ```
 import { authorizeHandler } from '@wpengine/headless';
@@ -72,7 +72,7 @@ import { authorizeHandler } from '@wpengine/headless';
 
 `authorizeHandler` accepts a Node request (IncomingMessage) and response (ServerResponse) which are compatible with ExpressJS, Next APIs, etc.
 
-In order to enable the handler in Nextjs, create a new API route `/pages/api/authorize.ts` and add:
+In order to enable the handler in Next, create a new API route `/pages/api/authorize.ts` and add:
 
 ```
 import { authorizeHandler } from '@wpengine/headless';
@@ -140,7 +140,7 @@ export function getServerSideProps(context: GetServerSidePropsContext) {
 
 `useNextUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
 
-`initializeNextServerSideProps` is used to allow for Server Side Rendering. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the inital request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
+`initializeNextServerSideProps` is used to allow for Server Side Rendering. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
 
 `/lib/components/Post.tsx`
 
