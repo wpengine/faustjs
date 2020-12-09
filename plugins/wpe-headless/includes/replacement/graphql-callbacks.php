@@ -5,11 +5,18 @@
  * @package WPE_Headless
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_filter( 'graphql_request_results', 'wpe_headless_url_replacement' );
 /**
+ * Callback for WP GraphQL 'graphql_request_results' filter.
+ *
  * Replaces the WordPress Site URL with the replacement domain in 'url' nodes.
  *
  * @param object $response The default GraphQL query response.
+ *
  * @return object The modified response with URLs replaced.
  */
 function wpe_headless_url_replacement( $response ) {
