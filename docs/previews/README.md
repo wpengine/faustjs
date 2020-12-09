@@ -19,7 +19,7 @@ Checkout the [example project](../../examples/preview) to see how it works.
 
 ## WPE Headless Plugin
 
-In order to enable previews in WordPress, you'll first need to install the [wpe-headless plugin](../../plugins). You also need to install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/).
+In order to enable previews in WordPress, you'll first need to install the [wpe-headless plugin](https://github.com/wpengine/headless-framework/releases/download/v0.0.1-alpha.1/wpe-headless-plugin.zip). You also need to install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/).
 
 The plugin enables an OAuth flow for users to authenticate with WordPress and receive an access token which is used for subsequent API calls (i.e. GQL/REST).
 
