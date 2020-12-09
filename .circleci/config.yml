@@ -160,7 +160,10 @@ workflows:
   ci:
     when: << pipeline.parameters.trigger >>
     jobs:
-      - trigger-workflows
+      - trigger-workflows:
+          filters:
+            tags:
+              only: /.*/
 
   # Workflows defined for each package.
   plugin-wpe-headless:
