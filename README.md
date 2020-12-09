@@ -10,7 +10,8 @@ NOTE: This project is in the early stages of development, but it does contain us
 -   [Previews](./docs/previews/README.md)
     -   Rewrite preview and draft links in WP Admin to redirect to the frontend.
 
-## [Documentation](./docs/README.md)
+## [Tryout Previews](./docs/previews/README.md)
+We'll walk you through creating a Next.js app that uses the plugin and framework to enable post previews!
 
 ## Project Structure
 
