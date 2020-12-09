@@ -238,19 +238,19 @@ function main {
   if [[ "x${CIRCLE_TAG}" == "x" ]]; then
     get_builds
     git_parent_commit=$( get_parent )
+
+    statuses=$(\
+      read_config_packages "${CONFIG_FILE}" |
+      diff "${git_parent_commit}" "${BUILDS_FILE}" |
+      jq --raw-input --slurp \
+        'split("\n") | map(select(. != "")) | map(split(" ")) | map({ package: .[3], parent: .[1], branch: .[2], changes: .[0] | tonumber })')
+
+    print_status "${statuses}"
+    changed_packages=$( echo "${statuses}" | jq '. | map(select(.changes > 0)) | length' )
+    total_packages=$( echo "${statuses}" | jq '. | length' )
+
+    echo "Number of packages changed: ${changed_packages} / ${total_packages}"
   fi
-
-  statuses=$(\
-    read_config_packages "${CONFIG_FILE}" | 
-    diff "${git_parent_commit}" "${BUILDS_FILE}" |
-    jq --raw-input --slurp \
-      'split("\n") | map(select(. != "")) | map(split(" ")) | map({ package: .[3], parent: .[1], branch: .[2], changes: .[0] | tonumber })')
-
-  print_status "${statuses}"
-  changed_packages=$( echo "${statuses}" | jq '. | map(select(.changes > 0)) | length' )
-  total_packages=$( echo "${statuses}" | jq '. | length' )
-
-  echo "Number of packages changed: ${changed_packages} / ${total_packages}"
 
   if [[ "${changed_packages}${CIRCLE_TAG}" != "0" ]]; then
     create_pipeline "$( create_request_body "${statuses}" )"
