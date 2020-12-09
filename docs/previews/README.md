@@ -1,6 +1,6 @@
 # Previews in Headless WordPress
 
-**NOTE: This is prerelease software. As we work towards our first release, we may introduce breaking changes.**
+**NOTE: This is prerelease software. As we work towards our first release, we will 💯 introduce breaking changes.**
 
 In this guide, we'll walk through how to configure a Next.js site for previews.
 
@@ -36,4 +36,15 @@ npm i @wpengine/headless
 
 The package contains an auth handler to get an access token for a user when trying to view a preview/draft post as well as React hooks to pull post(s).
 
-### Auth Handler
+### Authorization Flow
+
+In order to submit secure requests to WordPress, we need to be able to verify that a user has access to the content that is being requested. The plugin exposes routes that allow us to create access codes and exchange them for access tokens.
+
+The flow looks like this:
+
+-   User makes a request to a secure route (i.e. draft post)
+-   User is redirected to WordPress to login
+-   WordPress redirects back to frontend with a temporary code
+-   The frontend server exchanges the code for an access token
+-   The access token is stored in a cookie
+-   The user is finally redirected back to the original Url and uses the access token in the cookie to make the authenticated request
