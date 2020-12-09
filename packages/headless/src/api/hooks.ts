@@ -19,7 +19,7 @@ import {
   getUriInfo,
 } from './services';
 import { headlessConfig } from '../config';
-import { resolveUrlPath } from '../utils';
+import { isServerSide, resolvePrefixedUrlPath } from '../utils';
 
 /**
  * React Hook for retrieving a list of posts from your Wordpress site
@@ -109,7 +109,7 @@ export function useGeneralSettings() {
   return result;
 }
 
-export function useUriInfo(uri?: string) {
+export function useNextUriInfo() {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const router = useRouter();
   const client = useApolloClient();
@@ -118,12 +118,10 @@ export function useUriInfo(uri?: string) {
     let subscribed = true;
     let page: string | undefined;
 
-    if (uri) {
-      page = uri;
-    } else if (router) {
+    if (router) {
       if (router.asPath.indexOf('[[') === -1) {
         page = router.asPath;
-        page = resolveUrlPath(page, headlessConfig().uriPrefix);
+        page = resolvePrefixedUrlPath(page, headlessConfig().uriPrefix);
       }
     }
 
@@ -139,7 +137,7 @@ export function useUriInfo(uri?: string) {
             return;
           }
 
-          setUriInfo(info);
+          setUriInfo(info as UriInfo);
         } catch (e) {
           console.log('Error getting URI info');
           console.log(e);
@@ -150,11 +148,59 @@ export function useUriInfo(uri?: string) {
     return () => {
       subscribed = false;
     };
-  }, [router, client, router.asPath, uri]);
+  }, [router, client, router.asPath]);
+
+  if (
+    !!router &&
+    pageInfo?.uriPath !==
+      resolvePrefixedUrlPath(router.asPath, headlessConfig().uriPrefix)
+  ) {
+    return undefined;
+  }
+
+  return pageInfo;
+}
+
+export function useUriInfo(uri: string) {
+  const [pageInfo, setUriInfo] = useState<UriInfo>();
+  const client = useApolloClient();
+
+  useEffect(() => {
+    let subscribed = true;
+    let page: string | undefined;
+
+    if (uri) {
+      page = uri;
+    }
+
+    if (page) {
+      void (async () => {
+        try {
+          const info = await getUriInfo(
+            client as ApolloClient<NormalizedCacheObject>,
+            page,
+          );
+
+          if (!subscribed) {
+            return;
+          }
+
+          setUriInfo(info as UriInfo);
+        } catch (e) {
+          console.log('Error getting URI info');
+          console.log(e);
+        }
+      })();
+    }
+
+    return () => {
+      subscribed = false;
+    };
+  }, [client, uri]);
 
   if (
     pageInfo?.uriPath !==
-    resolveUrlPath(router.asPath, headlessConfig().uriPrefix)
+    resolvePrefixedUrlPath(uri, headlessConfig().uriPrefix)
   ) {
     return undefined;
   }
@@ -183,7 +229,14 @@ export function usePost(
     id = idOrUriInfo;
   }
 
-  const pageInfo = useUriInfo(uri);
+  if (!uri && !isServerSide()) {
+    uri = resolvePrefixedUrlPath(
+      `${window.location.pathname}${window.location.search || ''}`,
+      headlessConfig().uriPrefix,
+    );
+  }
+
+  const pageInfo = useUriInfo(uri as string);
 
   useEffect(() => {
     let subscribed = true;

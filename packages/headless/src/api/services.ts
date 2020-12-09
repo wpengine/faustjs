@@ -8,26 +8,34 @@ import {
   UriInfo,
 } from '../types';
 import * as utils from '../utils';
-import { getAccessToken } from '../auth';
+import { ensureAuthorization, getAccessToken } from '../auth';
+import { isServerSide } from '../utils';
 
-export async function query<T>(client: ApolloClient<NormalizedCacheObject>, query: string) {
+export async function baseQuery<T>(
+  client: ApolloClient<NormalizedCacheObject>,
+  query: string,
+) {
   const accessToken = getAccessToken();
-  let context: { headers?: { Authorization: string; }; } = {};
+  const context: { headers?: { Authorization: string } } = {};
 
   if (accessToken) {
     context.headers = {
-      Authorization: `Bearer ${ accessToken }`,
+      Authorization: `Bearer ${accessToken}`,
     };
   }
 
   return client.query<T>({
-    query: gql`${ query }`,
-    context
+    query: gql`
+      ${query}
+    `,
+    context,
   });
 }
 
 export async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
-  const result = await query<{ posts: Connection<Post>; }>(client, `
+  const result = await baseQuery<{ posts: Connection<Post> }>(
+    client,
+    `
         query {
           posts {
             pageInfo {
@@ -53,7 +61,8 @@ export async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
             }
           }
         }
-      `);
+      `,
+  );
 
   const thePosts = result?.data?.posts?.edges.map(({ node }) => node);
 
@@ -96,9 +105,13 @@ export async function getContentNode(
   idType: ContentNodeIdType = ContentNodeIdType.URI,
   asPreview = false,
 ): Promise<Post | Page> {
-  const result = await query<{ contentNode: Post | Page; }>(client, `
+  const result = await baseQuery<{ contentNode: Post | Page }>(
+    client,
+    `
       query {
-        contentNode(id: "${ id }", idType: ${ idType }, asPreview: ${ asPreview }) {
+        contentNode(id: "${id}", idType: ${idType}, asPreview: ${String(
+      asPreview,
+    )}) {
           ... on Post {
             id
             slug
@@ -153,7 +166,8 @@ export async function getContentNode(
           }
         }
       }
-    `);
+    `,
+  );
 
   let node = result?.data?.contentNode;
 
@@ -188,28 +202,43 @@ export async function getContentNode(
 export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<GeneralSettings> {
-  const result = await query<{ generalSettings: GeneralSettings; }>(client, `
+  const result = await baseQuery<{ generalSettings: GeneralSettings }>(
+    client,
+    `
       query {
         generalSettings {
           title
           description
         }
       }
-    `);
+    `,
+  );
 
   return result?.data?.generalSettings;
 }
 
+/* eslint-disable consistent-return */
 export async function getUriInfo(
   client: ApolloClient<NormalizedCacheObject>,
   uriPath: string,
-): Promise<UriInfo> {
+): Promise<UriInfo | void> {
   const urlPath = utils.getUrlPath(uriPath);
   const isPreview = /preview=true/.test(uriPath);
 
-  const response = await query<{ nodeByUri?: UriInfo; }>(client, `
+  if (isPreview && !isServerSide()) {
+    const response = ensureAuthorization(window.location.href);
+
+    if (typeof response !== 'string' && typeof response.redirect === 'string') {
+      window.location.replace(response.redirect);
+      return;
+    }
+  }
+
+  const response = await baseQuery<{ nodeByUri?: UriInfo }>(
+    client,
+    `
       query {
-        nodeByUri(uri: "${ urlPath }") {
+        nodeByUri(uri: "${urlPath}") {
           id
           ... on ContentType {
             isFrontPage
@@ -217,7 +246,8 @@ export async function getUriInfo(
           }
         }
       }
-    `);
+    `,
+  );
   const result = response?.data?.nodeByUri;
 
   if (!result) {
@@ -244,3 +274,4 @@ export async function getUriInfo(
     uriPath,
   };
 }
+/* eslint-enable consistent-return */
