@@ -217,3 +217,19 @@ WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 # Location of the auth handler endpoint
 NEXT_PUBLIC_AUTH_ENDPOINT=/api/authorize
 ```
+
+## Try it out!
+
+You can run the project via:
+
+```
+npm run dev
+```
+
+The server will start on port 3000 by default: [http://localhost:3000](http://localhost:3000)
+
+You should see a list of posts on the home page and be able to view a single post.
+
+For previews, go to WP and create a new post, but don't publish it. Click preview, and you'll be sent to the frontend through the authorization flow.
+
+NOTE: If you open the preview link in a private window, you'll be prompted to login to WP before being redirected back to the frontend.
