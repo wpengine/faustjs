@@ -14,7 +14,6 @@ This project is in the early stages of development, but it does contain useful f
 
 -   `/packages` - NPM packages
 -   `/plugins` - WordPress Plugins
--   `/themes` - WordPress Themes (TBD)
 
 # Contributing
 
