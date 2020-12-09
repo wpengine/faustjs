@@ -10,15 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Determine if events are enabled.
- *
- * @return bool True if events are enabled, false if else.
- */
-function wpe_headless_is_events_enabled() {
-	return '1' === wpe_headless_get_setting( 'events_enabled' );
-}
-
-/**
  * Get the secret key setting.
  *
  * @return string The secret key.

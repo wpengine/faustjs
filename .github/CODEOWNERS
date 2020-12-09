@@ -1,4 +1,4 @@
-* @wpengine/blockheads
-/docs/ @wpengine/developer-relations 
-/examples/ @wpengine/developer-relations 
-/README.md @wpengine/developer-relations
+*           @wpengine/blockheads
+/docs/      @wpengine/developer-relations @wpengine/blockheads
+/examples/  @wpengine/developer-relations @wpengine/blockheads
+/README.md  @wpengine/developer-relations @wpengine/blockheads

@@ -1,15 +1,13 @@
 {
-  "name": "developers",
+  "name": "preview",
   "version": "1.0.0",
-  "description": "Developer Hub for Documentation, Best Practices, Tutorials, etc.",
+  "description": "WP Headless Previews",
   "main": "index.js",
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3000",
-    "open": "run-s open:dev",
-    "open:dev": "open-cli https://hjcygmca2nyvyhg9fa91k.js.wpenginepowered.com/",
+    "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
-    "open:prod": "open-cli https://hbx7dbh7i7dcvwzxfhdzc.js.wpenginepowered.com/",
     "lint": "tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
     "start": "next start -p 8080",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wpengine/developers.git"
+    "url": "git+https://github.com/wpengine/headless-framework/tree/main.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wpengine/developers/issues"
+    "url": "https://github.com/wpengine/headless-framework/tree/main/issues"
   },
-  "homepage": "https://github.com/wpengine/developers#readme",
+  "homepage": "https://github.com/wpengine/headless-framework/tree/main/examples/preview#readme",
   "dependencies": {
     "@apollo/client": "^3.3.4",
     "@octokit/rest": "^18.0.12",
