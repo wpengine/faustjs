@@ -22,7 +22,7 @@ import { headlessConfig } from '../config';
 import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
 
 /**
- * React Hook for retrieving a list of posts from your Wordpress site
+ * React Hook for retrieving a list of posts from your WordPress site
  *
  * @example
  * ```ts
