@@ -28,7 +28,6 @@ function read_config_packages {
 
 # Download workflows status from CircleCI API (as JSON files).
 function get_workflows {
-  echo "DEBUG: $1"
   seq 0 100 $((($1 - 1) * 100)) | \
   awk \
     -v api="https://circleci.com/api/v1.1/project/${PROJECT_SLUG}" \
@@ -148,12 +147,21 @@ function print_status {
 }
 
 function create_request_body {
-  echo "$1" | 
-  jq --raw-output --arg branch "${CIRCLE_BRANCH}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. | 
-    map(select(.changes > 0)) | 
-    reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) | 
-    { branch: $branch, parameters: . } | 
-    @json'
+  if [[ "x${CIRCLE_TAG}" == "x" ]]; then
+    echo "$1" |
+    jq --raw-output --arg branch "${CIRCLE_BRANCH}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. |
+      map(select(.changes > 0)) |
+      reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) |
+      { branch: $branch, parameters: . } |
+      @json'
+  else
+    echo "$1" |
+    jq --raw-output --arg tag "${CIRCLE_TAG}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. |
+      map(select(.changes > 0)) |
+      reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) |
+      { tag: $tag, parameters: . } |
+      @json'
+  fi
 }
 
 function create_pipeline {
@@ -227,8 +235,10 @@ function get_parent {
 
 function main {
   init
-  get_builds
-  git_parent_commit=$( get_parent )
+  if [[ "x${CIRCLE_TAG}" == "x" ]]; then
+    get_builds
+    git_parent_commit=$( get_parent )
+  fi
 
   statuses=$(\
     read_config_packages "${CONFIG_FILE}" | 
@@ -242,7 +252,7 @@ function main {
 
   echo "Number of packages changed: ${changed_packages} / ${total_packages}"
 
-  if [[ "${changed_packages}" != "0" ]]; then
+  if [[ "${changed_packages}${CIRCLE_TAG}" != "0" ]]; then
     create_pipeline "$( create_request_body "${statuses}" )"
   else
     echo "No changes in packages. Skip workflow trigger."
