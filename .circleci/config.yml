@@ -192,6 +192,7 @@ workflows:
               only: /^plugin\/wpe-headless\/\S+/
 
   # Workflows defined for each package.
+  # By default circleci doesn't trigger on a tag event. Add the filter for tags so that all jobs in the workflow will run also when a tag is present.
   plugin-wpe-headless:
     when: << pipeline.parameters.wpe-headless-plugin >>
     jobs:
@@ -232,6 +233,7 @@ workflows:
             branches:
               only:
                 - main
+                - canary
             tags:
               only: /.*/
           context: wpe-ldap-creds
