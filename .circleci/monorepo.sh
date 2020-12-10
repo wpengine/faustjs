@@ -157,8 +157,7 @@ function create_request_body {
 
 function create_request_tag {
   echo "$1" |
-  jq --raw-output --arg tag "${CIRCLE_TAG}" --arg trigger "${TRIGGER_PARAM_NAME}" --arg package "${TRIGGER_PACKAGE}" --argjson params "${CI_PARAMETERS:-null}" '. |
-    map(select(.changes > 0)) |
+  jq --raw-output --arg tag "${CIRCLE_TAG}" --arg trigger "${TRIGGER_PARAM_NAME}" --argjson params "${CI_PARAMETERS:-null}" '. |
     reduce .[] as $i (($params // {}) * { ($trigger): false }; .[$i.package] = true) |
     { tag: $tag, parameters: . } |
     @json'
@@ -210,11 +209,15 @@ function get_builds {
 
 function debug {
   echo -e "\n\nDEBUG INFORMATION"
-  echo -e "\n\n=== Branches ==="
-  cat "${TMP_DIR}/branches.txt"
+  if [[ -r "${TMP_DIR}/branches.txt" ]]; then
+    echo -e "\n\n=== Branches ==="
+    cat "${TMP_DIR}/branches.txt"
+  fi
 
-  echo -e "\n\n=== Builds ==="
-  cat "${BUILDS_FILE}"
+  if [[ -r "${BUILDS_FILE}" ]]; then
+    echo -e "\n\n=== Builds ==="
+    cat "${BUILDS_FILE}"
+  fi
 }
 
 function get_parent {
@@ -257,7 +260,7 @@ function main {
       echo "No changes in packages. Skip workflow trigger."
     fi
   else
-      create_pipeline "$( create_request_tag )"
+      create_pipeline "$( create_request_tag "{}" )"
   fi
 
   if [[ "${MONOREPO_DEBUG}" == "true" ]]; then

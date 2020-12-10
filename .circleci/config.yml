@@ -51,7 +51,8 @@ jobs:
           command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
           environment:
             MONOREPO_DEBUG: "true"
-            TRIGGER_PACKAGE: wpe-headless-plugin
+            # (optional) additional CI parameters to include in the pipeline (must be a valid JSON)
+            CI_PARAMETERS: '{ "wpe-headless-plugin": true }'
 
   checkout:
     executor: wp-product-orb/default
