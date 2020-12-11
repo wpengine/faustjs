@@ -3,7 +3,12 @@
 	<description>Generally-applicable sniffs for WordPress plugins.</description>
 
 	<file>.</file>
+
+	<!-- Exclude composer vendor directory -->
 	<exclude-pattern>/vendor/</exclude-pattern>
+
+	<!-- Exclude CircleCI composer file -->
+	<exclude-pattern>composer-setup.php</exclude-pattern>
 
 	<!-- How to scan -->
 	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
