@@ -62,6 +62,11 @@ In order to run WordPress unit tests, the test framework needs to be set up.
 /bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
 ```
 
+If you connect to mysql via a sock connection, you can run the following.
+```
+/bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
+```
+
 Install the composer packages from within `wpe-headless` directory if you haven't already.
 ```
 composer install
