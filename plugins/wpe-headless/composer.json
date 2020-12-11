@@ -7,15 +7,17 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "phpunit/phpunit": "~7",
         "roave/security-advisories": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.8",
         "wp-coding-standards/wpcs": "^2.2"
     },
     "scripts": {
-      "suite": ["@lint", "@phpcs"],
       "lint": "parallel-lint -e php --no-colors --exclude vendor .",
       "phpcs": "phpcs",
-      "phpcs:fix": "phpcbf"
+      "phpcs:fix": "phpcbf",
+      "suite": ["@lint", "@phpcs", "@test"],
+      "test": "phpunit"
     },
     "config": {
       "preferred-install": "dist",
