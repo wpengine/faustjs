@@ -37,6 +37,23 @@ jobs:
             # (optional) additional CI parameters to include in the pipeline (must be a valid JSON)
             # CI_PARAMETERS: '{ "deploy": true }'
 
+  trigger-tag:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          # See MarkKelnar about the personal api token created and added as an environment variable for the project
+          name: Set token
+          command: echo "export CIRCLE_USER_TOKEN=${CIRCLE_PROJECT_TOKEN}" >> $BASH_ENV
+      - run:
+          name: Trigger workflows with tag
+          command: chmod +x .circleci/monorepo.sh && .circleci/monorepo.sh
+          environment:
+            MONOREPO_DEBUG: "true"
+            # (optional) additional CI parameters to include in the pipeline (must be a valid JSON)
+            CI_PARAMETERS: '{ "wpe-headless-plugin": true }'
+
   checkout:
     executor: wp-product-orb/default
     steps:
@@ -81,7 +98,7 @@ jobs:
       - run:
           name: Composer PHP lint and code sniffer
           command: |
-            # /usr/local/bin/composer suite
+            /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
           working_directory: .
       - persist_to_workspace:
           root: ~/project
@@ -128,11 +145,16 @@ jobs:
           paths:
             - plugins/wpe-headless/build
 
-  plugin-wpe-headless-deploy-staging:
+  plugin-wpe-headless-deploy:
     executor: wp-product-orb/authenticate
     working_directory: ~/project/plugins/wpe-headless
     environment:
       WPE_SESSION_DIR: ./.wpe
+    parameters:
+      auth_url:
+        type: string
+      upload_url:
+        type: string
     steps:
       - attach_workspace:
           at: ~/project
@@ -140,9 +162,9 @@ jobs:
       - wp-product-orb/authenticate:
           user: WPE_LDAP_USER
           pass: WPE_LDAP_PASS
-          url: https://auth-staging.wpengine.io/v1/tokens
+          url: << parameters.auth_url >>
       - wp-product-orb/post-zip:
-          url: https://wp-product-info-staging.wpesvc.net/v1/plugins/wpe-headless
+          url: << parameters.upload_url >>/wpe-headless
           zip: build/wpe-headless.$BUILD_VERSION.zip
           json: build/wpe-headless.$BUILD_VERSION.json
           version: $BUILD_VERSION
@@ -157,28 +179,77 @@ workflows:
     jobs:
       - trigger-workflows
 
+  # Trigger tag build when tag and not already building a specific package workflow
+  tag:
+    when:
+      and:
+        - << pipeline.git.tag >>
+        - not: << pipeline.parameters.wpe-headless-plugin >>
+    jobs:
+      - trigger-tag:
+          filters:
+            tags:
+              only: /^plugin\/wpe-headless\/\S+/
+
   # Workflows defined for each package.
+  # By default circleci doesn't trigger on a tag event. Add the filter for tags so that all jobs in the workflow will run also when a tag is present.
   plugin-wpe-headless:
     when: << pipeline.parameters.wpe-headless-plugin >>
     jobs:
-      - checkout
+      - checkout:
+          filters:
+            tags:
+              only: /.*/
       - plugin-wpe-headless-checkout:
           requires:
             - checkout
+          filters:
+            tags:
+              only: /.*/
       - plugin-wpe-headless-composer:
           requires:
             - plugin-wpe-headless-checkout
+          filters:
+            tags:
+              only: /.*/
       - plugin-wpe-headless-bundle-zip:
           requires:
             - plugin-wpe-headless-checkout
+          filters:
+            tags:
+              only: /.*/
       - plugin-wpe-headless-bundle-json:
           requires:
             - plugin-wpe-headless-checkout
-      - plugin-wpe-headless-deploy-staging:
+          filters:
+            tags:
+              only: /.*/
+      - plugin-wpe-headless-deploy:
+          name: "Deploy zip to api (staging)"
           requires:
             - plugin-wpe-headless-bundle-zip
             - plugin-wpe-headless-bundle-json
           filters:
             branches:
-              only: main
+              only:
+                - main
+                - canary
+            tags:
+              only: /.*/
           context: wpe-ldap-creds
+          auth_url: https://auth-staging.wpengine.io/v1/tokens
+          upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
+      - plugin-wpe-headless-deploy:
+          name: "Deploy zip to api (production)"
+          requires:
+            - plugin-wpe-headless-bundle-zip
+            - plugin-wpe-headless-bundle-json
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              # tag ex. plugin/wpe-headless/1.0.0
+              only: /^plugin\/wpe-headless\/\S+/
+          context: wpe-ldap-creds
+          auth_url: https://auth.wpengine.io/v1/tokens
+          upload_url: https://wp-product-info.wpesvc.net/v1/plugins

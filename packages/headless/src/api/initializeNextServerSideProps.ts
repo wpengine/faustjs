@@ -7,16 +7,6 @@ import { headlessConfig } from '../config';
 import { ContentNodeIdType, UriInfo } from '../types';
 import { resolvePrefixedUrlPath } from '../utils';
 
-/**
- * Must be called from getServerSideProps within a Next app in order to support SSR. It will
- * initialized cookies and prefetch/cache the page content and bundle it with the page for
- * rehydration on the frontend.
- *
- * @async
- * @export
- * @param {GetServerSidePropsContext} context The Next SSR context
- * @returns {Promise<GetServerSidePropsResult<unknown>>}
- */
 export async function initializeNextServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<unknown>> {
