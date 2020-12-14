@@ -98,7 +98,7 @@ jobs:
       - run:
           name: Composer PHP lint and code sniffer
           command: |
-            # /usr/local/bin/composer suite
+            /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
           working_directory: .
       - persist_to_workspace:
           root: ~/project
@@ -181,7 +181,7 @@ workflows:
 
   # Trigger tag build when tag and not already building a specific package workflow
   tag:
-    when: 
+    when:
       and:
         - << pipeline.git.tag >>
         - not: << pipeline.parameters.wpe-headless-plugin >>

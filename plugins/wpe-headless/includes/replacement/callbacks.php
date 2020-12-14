@@ -46,7 +46,7 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @todo Should this always be enabled?
  * @todo Page links
  *
- * @param string  $link URL used for the post preview and/or post.
+ * @param string $link URL used for the post preview and/or post.
  *
  * @return string URL used for the post preview.
  */

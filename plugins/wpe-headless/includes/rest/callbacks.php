@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'graphql_authentication_errors', 'wpe_headless_rest_validate_access_token');
+add_filter( 'graphql_authentication_errors', 'wpe_headless_rest_validate_access_token' );
 /**
  * Callback for WPGraphQL 'graphql_authentication_errors' filter.
  *
