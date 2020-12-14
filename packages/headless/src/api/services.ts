@@ -1,4 +1,9 @@
-import { gql, ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import {
+  gql,
+  ApolloClient,
+  NormalizedCacheObject,
+  ApolloQueryResult,
+} from '@apollo/client';
 import {
   GeneralSettings,
   ContentNodeIdType,
@@ -11,10 +16,20 @@ import * as utils from '../utils';
 import { ensureAuthorization, getAccessToken } from '../auth';
 import { isServerSide } from '../utils';
 
+/**
+ * Makes a call to WPGraphQL, applying the Authorization header if necessary.
+ *
+ * @async
+ * @export
+ * @template T
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @param {string} query
+ * @returns {Promise<ApolloQueryResult<T>>}
+ */
 export async function baseQuery<T>(
   client: ApolloClient<NormalizedCacheObject>,
   query: string,
-) {
+): Promise<ApolloQueryResult<T>> {
   const accessToken = getAccessToken();
   const context: { headers?: { Authorization: string } } = {};
 
@@ -32,6 +47,14 @@ export async function baseQuery<T>(
   });
 }
 
+/**
+ * Gets all posts from WordPress
+ *
+ * @async
+ * @export
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @returns
+ */
 export async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
   const result = await baseQuery<{ posts: Connection<Post> }>(
     client,
@@ -99,6 +122,17 @@ export async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
   });
 }
 
+/**
+ * Gets an individual Post or Page from WordPress
+ *
+ * @async
+ * @export
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @param {string} id The identifier for the Post or Page
+ * @param {ContentNodeIdType} [idType=ContentNodeIdType.URI] The type of identifier
+ * @param {boolean} [asPreview=false] Whether or not to grab preview information (requires Authorization)
+ * @returns {(Promise<Post | Page>)}
+ */
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
   id: string,
@@ -199,6 +233,14 @@ export async function getContentNode(
   };
 }
 
+/**
+ * Gets the General Settings from WordPress
+ *
+ * @async
+ * @export
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @returns {Promise<GeneralSettings>}
+ */
 export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<GeneralSettings> {
@@ -218,6 +260,15 @@ export async function getGeneralSettings(
 }
 
 /* eslint-disable consistent-return */
+/**
+ * Gets information about the URI from WordPress
+ *
+ * @async
+ * @export
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @param {string} uriPath The path for the URI (e.g. '/hello-world')
+ * @returns {(Promise<UriInfo | void>)}
+ */
 export async function getUriInfo(
   client: ApolloClient<NormalizedCacheObject>,
   uriPath: string,
