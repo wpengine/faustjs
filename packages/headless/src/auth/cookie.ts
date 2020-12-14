@@ -12,7 +12,13 @@ export function initializeServerCookie(cookie: string | undefined) {
   cookies = new Cookies(cookie);
 }
 
-// eslint-disable-next-line consistent-return
+/* eslint-disable consistent-return */
+/**
+ * Gets an Access Token from the cookie, if it exists
+ *
+ * @export
+ * @returns {(string | undefined)}
+ */
 export function getAccessToken(): string | undefined {
   const token: string = cookies.get(TOKEN_KEY);
 
@@ -20,10 +26,17 @@ export function getAccessToken(): string | undefined {
     return;
   }
 
-  // eslint-disable-next-line consistent-return
   return base64Decode(token);
 }
+/* eslint-enable consistent-return */
 
+/**
+ * Stores an Access Token on the cookie
+ *
+ * @export
+ * @param {(string | undefined)} token
+ * @param {ServerResponse} res
+ */
 export function storeAccessToken(
   token: string | undefined,
   res: ServerResponse,

@@ -1,7 +1,7 @@
 import {
   isServerSide,
   parseUrl,
-  trimLeadingSlashes,
+  trimLeadingSlash,
   trimTrailingSlash,
 } from '../utils';
 import { getAccessToken } from './cookie';
@@ -23,7 +23,18 @@ if (!API_CLIENT_SECRET && isServerSide()) {
   );
 }
 
-export async function authorize(code: string) {
+/**
+ * Exchanges an Authorization Code for an Access Token that you can use to make authenticated requests to
+ * the WordPress API
+ *
+ * @async
+ * @export
+ * @param {string} code
+ * @returns {Promise<{ access_token?: string; }>}
+ */
+export async function authorize(
+  code: string,
+): Promise<{ access_token?: string }> {
   const response = await fetch(
     `${WP_URL as string}/wp-json/wpac/v1/authorize`,
     {
@@ -51,8 +62,16 @@ export async function authorize(code: string) {
   return result;
 }
 
-// eslint-disable-next-line consistent-return
-export function ensureAuthorization<T>(
+/* eslint-disable consistent-return */
+/**
+ * Checks for an existing Access Token and returns one if it exists. Otherwise returns
+ * an object containing a redirect URI to send the client to for authorization.
+ *
+ * @export
+ * @param {string} url
+ * @returns {(string | { redirect: string })}
+ */
+export function ensureAuthorization(
   url: string,
 ): string | { redirect: string } {
   const accessToken = getAccessToken();
@@ -72,8 +91,9 @@ export function ensureAuthorization<T>(
   return {
     redirect: `${WP_URL as string}/generate?redirect_uri=${encodeURIComponent(
       `${baseUrl}/${
-        trimLeadingSlashes(AUTH_URL as string) as string
+        trimLeadingSlash(AUTH_URL as string) as string
       }?redirect_uri=${encodeURIComponent(url)}`,
     )}`,
   };
 }
+/* eslint-enable consistent-return */
