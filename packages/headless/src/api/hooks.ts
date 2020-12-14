@@ -25,7 +25,7 @@ import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
  * React Hook for retrieving a list of posts from your WordPress site
  *
  * @example
- * ```ts
+ * ```tsx
  * import { usePosts } from '@wpengine/headless';
  *
  * export function ListPosts() {
@@ -43,6 +43,7 @@ import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
  *     </>
  *   );
  * }
+ * ```
  * @export
  * @returns {(Post[] | undefined)}
  */
@@ -77,6 +78,31 @@ export function usePosts(): Post[] | undefined {
   return result;
 }
 
+/**
+ * React Hook for retrieving the general settings (title, description) from your WordPress site
+ *
+ * @example
+ * ```tsx
+ * import { useGeneralSettings } from '@wpengine/headless';
+ *
+ * export function Header() {
+ *   const settings = useGeneralSettings();
+ *
+ *   if (!settings) {
+ *     return <></>;
+ *   }
+ *
+ *   return (
+ *     <header>
+ *       <h1>{settings.title}</h1>
+ *       <h2>{settings.description}</h2>
+ *     </header>
+ *   );
+ * }
+ * ```
+ * @export
+ * @returns {(GeneralSettings | undefined)}
+ */
 export function useGeneralSettings() {
   const [result, setResult] = useState<GeneralSettings>();
   const client = useApolloClient();
@@ -109,6 +135,24 @@ export function useGeneralSettings() {
   return result;
 }
 
+/**
+ * React Hook for retrieving information about the current URI within a Next app.
+ *
+ * @see useUriInfo For similar functionality outside of Next apps.
+ *
+ * @example
+ * ```tsx
+ * import { useNextUriInfo } from '@wpengine/headless';
+ *
+ * export function Screen() {
+ *   const uriInfo = useNextUriInfo();
+ *
+ *   console.log(uriInfo);
+ * }
+ * ```
+ * @export
+ * @returns {(UriInfo | undefined)}
+ */
 export function useNextUriInfo() {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const router = useRouter();
@@ -161,6 +205,25 @@ export function useNextUriInfo() {
   return pageInfo;
 }
 
+/**
+ * React Hook for retrieving information about the current URI. Expects you to
+ * either pass in a URI, otherwise it will use window.location
+ *
+ * @see useNextUriInfo For similar functionality inside Next apps.
+ *
+ * @example
+ * ```tsx
+ * import { useUriInfo } from '@wpengine/headless';
+ *
+ * export function Screen() {
+ *   const uriInfo = useUriInfo();
+ *
+ *   console.log(uriInfo);
+ * }
+ * ```
+ * @export
+ * @returns {(UriInfo | undefined)}
+ */
 export function useUriInfo(uri?: string) {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const client = useApolloClient();
@@ -216,8 +279,94 @@ export function useUriInfo(uri?: string) {
   return pageInfo;
 }
 
+/**
+ * React Hook for retrieving the post based on the current URI. Uses window.location if necessary
+ *
+ * @example
+ * ```tsx
+ * import { usePost } from '@wpengine/headless';
+ *
+ * export default function Post() {
+ *   const post = usePost();
+ *
+ *   return (
+ *     <div>
+ *       {post && (
+ *         <div>
+ *           <div>
+ *             <h5>{post.title}</h5>
+ *             <p dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
+ *           </div>
+ *         </div>
+ *       )}
+ *     </div>
+ *   );
+ * }
+ * ```
+ * @export
+ * @returns {(Post | Page | undefined)}
+ */
 export function usePost(): Post | Page | undefined;
+/**
+ * React Hook for retrieving the post based on the passed-in uriInfo.
+ *
+ * @example
+ * ```tsx
+ * import { usePost, UriInfo } from '@wpengine/headless';
+ *
+ * export default function Post({ uriInfo }: { uriInfo: UriInfo }) {
+ *   const post = usePost(uriInfo);
+ *
+ *   return (
+ *     <div>
+ *       {post && (
+ *         <div>
+ *           <div>
+ *             <h5>{post.title}</h5>
+ *             <p dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
+ *           </div>
+ *         </div>
+ *       )}
+ *     </div>
+ *   );
+ * }
+ * ```
+ * @export
+ * @param {UriInfo} uriInfo
+ * @returns {(Post | Page | undefined)}
+ */
 export function usePost(uriInfo: UriInfo): Post | Page | undefined;
+/**
+ * React Hook for retrieving the post based on the passed-in id and idType.
+ *
+ * @see ContentNodeIdType For the different types of identifiers you can pass in
+ *
+ * @example
+ * ```tsx
+ * import { usePost, ContentNodeIdType } from '@wpengine/headless';
+ *
+ * export default function Post({ slug }: { slug: string; }) {
+ *   const post = usePost(slug, ContentNodeIdType.SLUG);
+ *
+ *   return (
+ *     <div>
+ *       {post && (
+ *         <div>
+ *           <div>
+ *             <h5>{post.title}</h5>
+ *             <p dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
+ *           </div>
+ *         </div>
+ *       )}
+ *     </div>
+ *   );
+ * }
+ * ```
+ * @export
+ * @param {string} id The identifier for the post based on ContentNodeIdType
+ * @param {ContentNodeIdType} idType The description of the type of id passed in
+ * @returns {(Post | Page | undefined)}
+ */
 export function usePost(
   id: string,
   idType: ContentNodeIdType,
