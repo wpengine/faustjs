@@ -1,14 +1,14 @@
-import React from "react";
-import MenuItem from "./MenuItemInterface";
-import MenuList from "./MenuList";
+import React from 'react';
+import MenuItem from './MenuItemInterface';
+import MenuList from './MenuList';
 
 interface Props
-	extends React.DetailedHTMLProps<
-		React.HTMLAttributes<HTMLElement>,
-		HTMLElement
-	> {
-	items: MenuItem[];
-	anchor?(item: MenuItem): React.ReactNode;
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLElement>,
+    HTMLElement
+  > {
+  items: MenuItem[];
+  anchor?(item: MenuItem): React.ReactNode;
 }
 
 /**
@@ -52,19 +52,19 @@ interface Props
  * ```
  */
 export default function Menu({
-	items,
-	anchor,
-	...attributes
+  items,
+  anchor,
+  ...attributes
 }: Props): JSX.Element | null {
-	if (items.length === 0) {
-		return null;
-	}
+  if (items.length === 0) {
+    return null;
+  }
 
-	return (
-		<nav {...attributes}>
-			<div className="wrap">
-				<ul>{MenuList({ items, anchor })}</ul>
-			</div>
-		</nav>
-	);
+  return (
+    <nav {...attributes}>
+      <div className="wrap">
+        <ul>{MenuList({ items, anchor })}</ul>
+      </div>
+    </nav>
+  );
 }

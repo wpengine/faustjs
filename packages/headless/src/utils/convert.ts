@@ -1,6 +1,13 @@
-import { HeadlessConfig } from '../types';
+import { HeadlessConfig, ParsedUrlInfo } from '../types';
 import { isBase64, isServerSide } from './assert';
 
+/**
+ * Decodes a base64 string, compatible server-side and client-side
+ *
+ * @export
+ * @param {string} str
+ * @returns
+ */
 export function base64Decode(str: string) {
   if (!isBase64(str)) {
     return str;
@@ -13,6 +20,13 @@ export function base64Decode(str: string) {
   return atob(str);
 }
 
+/**
+ * Encodes a string to base64, compatible server-side and client-side
+ *
+ * @export
+ * @param {string} str
+ * @returns
+ */
 export function base64Encode(str: string) {
   if (isServerSide()) {
     return Buffer.from(str, 'utf8').toString('base64');
@@ -21,7 +35,15 @@ export function base64Encode(str: string) {
   return btoa(str);
 }
 
-export function normalizeConfig(config: HeadlessConfig) {
+/**
+ * Takes a HeadlessConfig and ensures the properties that need to be normalized
+ * (e.g. URL slashes trimmed, etc) are handled.
+ *
+ * @export
+ * @param {HeadlessConfig} config
+ * @returns {HeadlessConfig}
+ */
+export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
   let { uriPrefix } = config;
 
   if (!uriPrefix) {
@@ -55,7 +77,14 @@ export function trimTrailingSlash(str: string | undefined): string | undefined {
 const URL_REGEX = /^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/;
 
 /* eslint-disable consistent-return */
-export function parseUrl(url: string | undefined) {
+/**
+ * Parses a url into various parts
+ *
+ * @export
+ * @param {(string | undefined)} url
+ * @returns {ParsedUrlInfo}
+ */
+export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
   if (!url) {
     return;
   }
@@ -78,6 +107,14 @@ export function parseUrl(url: string | undefined) {
 }
 /* eslint-enable consistent-return */
 
+/**
+ * Gets query parameters from a url or search string
+ *
+ * @export
+ * @param {string} url
+ * @param {string} param
+ * @returns {string}
+ */
 export function getQueryParam(url: string, param: string) {
   if (!url || url.length === 0) {
     return '';
@@ -107,6 +144,13 @@ export function getQueryParam(url: string, param: string) {
   return '';
 }
 
+/**
+ * Gets the path without the protocol/host/port from a full URL string
+ *
+ * @export
+ * @param {string} [url]
+ * @returns
+ */
 export function getUrlPath(url?: string) {
   const parsedUrl = parseUrl(url);
 
@@ -117,6 +161,14 @@ export function getUrlPath(url?: string) {
   return `${parsedUrl?.pathname || '/'}${parsedUrl?.search || ''}`;
 }
 
+/**
+ * Ensures that a url does not have the specified prefix in it.
+ *
+ * @export
+ * @param {string} url
+ * @param {string} [prefix]
+ * @returns
+ */
 export function resolvePrefixedUrlPath(url: string, prefix?: string) {
   let resolvedUrl = url;
 
@@ -132,7 +184,14 @@ export function resolvePrefixedUrlPath(url: string, prefix?: string) {
 }
 
 /* eslint-disable consistent-return */
-export function trimLeadingSlashes(str: string | undefined) {
+/**
+ * Removes a leading slash from a string if they exist
+ *
+ * @export
+ * @param {(string | undefined)} str
+ * @returns
+ */
+export function trimLeadingSlash(str: string | undefined) {
   if (!str) {
     return str;
   }
