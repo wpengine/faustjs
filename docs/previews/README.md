@@ -214,7 +214,7 @@ We need to let the frontend know about our WordPress instance. The framework exp
 
 ```bash
 # Base URL for WordPress
-NEXT_PUBLIC_WORDPRESS_URL=http://yourwp.com
+NEXT_PUBLIC_WORDPRESS_URL=https://example.com
 
 # Plugin secret found in WordPress Settings->Headless
 WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
