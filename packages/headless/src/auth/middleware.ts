@@ -4,7 +4,7 @@ import { storeAccessToken } from './cookie';
 import { getQueryParam } from '../utils';
 
 /**
- * A Node handler for processing incomming requests to exchange an Authorization Code
+ * A Node handler for processing incoming requests to exchange an Authorization Code
  * for an Access Token using the WordPress API. Once the code is exchanged, this
  * handler stores the Access Token on the cookie and redirects to the frontend.
  *
