@@ -14,7 +14,7 @@ The framework expects a few environment variables. Create a file in the root of 
 
 ```bash
 # Base URL for WordPress
-NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
+NEXT_PUBLIC_WORDPRESS_URL=https://example.com
 
 # Plugin secret found in WordPress Settings->Headless
 WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
