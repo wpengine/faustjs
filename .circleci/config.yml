@@ -105,6 +105,38 @@ jobs:
           paths:
             - plugins/wpe-headless
 
+  plugin-wpe-headless-test:
+    working_directory: ~/project/plugins/wpe-headless
+    docker:
+      - image: cimg/php:7.4
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_DATABASE: wpe_headless_tests
+          MYSQL_USER: wpe_headless_user
+          MYSQL_PASSWORD: wpe_headless_pass
+          MYSQL_ROOT_PASSWORD: password
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - php/install-composer
+      - php/install-packages:
+          app-dir: .
+      - run:
+          name: Install Subversion package
+          command: |
+            sudo apt-get update -yq
+            sudo apt-get install subversion -yq
+      - run:
+          name: Setup WordPress testing framework
+          command: |
+            /bin/bash tests/install-wp-tests.sh wpe_headless_tests wpe_headless_user wpe_headless_pass 127.0.0.1 latest true
+          working_directory: .
+      - run:
+          name: Run testing suite
+          command: |
+            composer test
+          working_directory: .
+
   plugin-wpe-headless-bundle-zip:
     executor: wp-product-orb/default
     working_directory: ~/project/plugins/wpe-headless
@@ -212,15 +244,21 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - plugin-wpe-headless-test:
+          requires:
+            - plugin-wpe-headless-composer
+          filters:
+            tags:
+              only: /.*/
       - plugin-wpe-headless-bundle-zip:
           requires:
-            - plugin-wpe-headless-checkout
+            - plugin-wpe-headless-test
           filters:
             tags:
               only: /.*/
       - plugin-wpe-headless-bundle-json:
           requires:
-            - plugin-wpe-headless-checkout
+            - plugin-wpe-headless-test
           filters:
             tags:
               only: /.*/
