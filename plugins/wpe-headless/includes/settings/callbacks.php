@@ -59,30 +59,16 @@ add_action( 'admin_init', 'wpe_headless_register_settings_section' );
  */
 function wpe_headless_register_settings_section() {
 	add_settings_section(
-		'replacement_setting_section',
-		__( 'Domain Replacement', 'wpe-headless' ),
-		'wpe_headless_display_replacement_setting_section',
-		'wpe-headless-settings'
-	);
-
-	add_settings_section(
-		'authentication_settings_section',
-		__( 'Authentication Codes', 'wpe-headless' ),
-		'',
+		'frontend_site_section',
+		null,
+		null,
 		'wpe-headless-settings'
 	);
 
 	add_settings_section(
 		'menu_locations_section',
-		__( 'Menu Locations', 'wpe-headless' ),
-		'wpe_headless_display_menu_locations_section',
-		'wpe-headless-settings'
-	);
-
-	add_settings_section(
-		'events_setting_section',
-		__( 'Events', 'wpe-headless' ),
-		'wpe_headless_display_events_setting_section',
+		null,
+		null,
 		'wpe-headless-settings'
 	);
 }
@@ -100,19 +86,19 @@ add_action( 'admin_init', 'wpe_headless_register_settings_fields' );
  */
 function wpe_headless_register_settings_fields() {
 	add_settings_field(
-		'replacement_domain',
-		__( 'Replacement Domain', 'wpe-headless' ),
-		'wpe_headless_display_replacement_domain_field',
+		'frontend_uri',
+		__( 'Front-end site URL', 'wpe-headless' ),
+		'wpe_headless_display_frontend_uri_field',
 		'wpe-headless-settings',
-		'replacement_setting_section'
+		'frontend_site_section'
 	);
 
 	add_settings_field(
-		'events_enabled',
-		'',
-		'wpe_headless_display_events_enabled_field',
+		'secret_key',
+		__( 'Secret Key', 'wpe-headless' ),
+		'wpe_headless_display_secret_key_field',
 		'wpe-headless-settings',
-		'events_setting_section'
+		'frontend_site_section'
 	);
 
 	add_settings_field(
@@ -121,22 +107,6 @@ function wpe_headless_register_settings_fields() {
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
 		'menu_locations_section'
-	);
-
-	add_settings_field(
-		'secret_key',
-		__( 'Secret Key', 'wpe-headless' ),
-		'wpe_headless_display_secret_key_field',
-		'wpe-headless-settings',
-		'authentication_settings_section'
-	);
-
-	add_settings_field(
-		'frontend_uri',
-		__( 'Preview Base Address (URL)', 'wpe-headless' ),
-		'wpe_headless_display_frontend_uri_field',
-		'wpe-headless-settings',
-		'authentication_settings_section'
 	);
 }
 
@@ -164,21 +134,6 @@ function wpe_headless_display_settings_page() {
 }
 
 /**
- * Callback for WordPress add_settings_section() function.
- *
- * Display "replacement_setting_section" content.
- *
- * @return void
- */
-function wpe_headless_display_replacement_setting_section() {
-	?>
-	<p class="description">
-		<?php esc_html_e( 'Add a query string of `?replace-domain` to API requests to swap the WordPress domain with the replacement domain in response content.', 'wpe-headless' ); ?>
-	</p>
-	<?php
-}
-
-/**
  * Callback for WordPress add_settings_field() method parameter.
  *
  * Display the "Menu Locations" text field.
@@ -200,73 +155,6 @@ function wpe_headless_display_menu_locations_field() {
 /**
  * Callback for WordPress add_settings_field() method parameter.
  *
- * Display the "Replacement Domain" text field.
- *
- * @return void
- */
-function wpe_headless_display_replacement_domain_field() {
-	$replacement_domain = wpe_headless_get_setting( 'replacement_domain', '' );
-
-	?>
-	<input type="text" id="replacement_domain" name="wpe_headless[replacement_domain]" value="<?php echo esc_attr( $replacement_domain ); ?>" class="regular-text" />
-
-	<p class="description">
-		<?php esc_html_e( 'Leave empty to remove the domain and display only the path.', 'wpe-headless' ); ?>
-	</p>
-	<?php
-}
-
-/**
- * Callback for WordPress add_settings_section() function.
- *
- * Display "events_setting_section" content.
- *
- * @return void
- */
-function wpe_headless_display_events_setting_section() {
-	?>
-	<p class="description">
-		<?php esc_html_e( 'Toggle WordPress post/page events to trigger headless api. (Not yet implemented)', 'wpe-headless' ); ?>
-	</p>
-	<?php
-}
-
-/**
- * Callback for WordPress add_settings_section() function.
- *
- * Display "menu_locations_section" content.
- *
- * @return void
- */
-function wpe_headless_display_menu_locations_section() {
-	?>
-	<p class="description">
-		<?php esc_html_e( 'Add menu locations to group menu items for display.', 'wpe-headless' ); ?>
-	</p>
-	<?php
-}
-
-/**
- * Callback for WordPress add_settings_field() method parameter.
- *
- * Display the "Events" checkbox field.
- *
- * @return void
- */
-function wpe_headless_display_events_enabled_field() {
-	$enabled = wpe_headless_is_events_enabled();
-
-	?>
-	<label for="events_enabled">
-		<input type="checkbox" id="events_enabled" name="wpe_headless[events_enabled]" <?php checked( $enabled ); ?> value="1" />
-		<?php esc_html_e( 'Events enabled', 'wpe-headless' ); ?>
-	</label>
-	<?php
-}
-
-/**
- * Callback for WordPress add_settings_field() method parameter.
- *
  * Display the "API Key" text field.
  *
  * Added hidden field to preserve value during settings save.
@@ -279,6 +167,15 @@ function wpe_headless_display_secret_key_field() {
 	?>
 	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
 	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
+	<p class="description">
+		<?php
+		printf(
+			/* translators: %s: link to documentation */
+			wp_kses_post( 'This key is used to enable post previewing with Next.js. Read about post previewing <a href="%s" target="_blank" rel="noopener noreferrer">here</a>.', 'wpe-headless' ),
+			'https://github.com/wpengine/headless-framework/blob/main/docs/previews/README.md'
+		);
+		?>
+	</p>
 	<?php
 }
 
@@ -294,5 +191,8 @@ function wpe_headless_display_frontend_uri_field() {
 
 	?>
 	<input type="text" id="frontend_uri" name="wpe_headless[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
+	<p class="description">
+		<?php esc_html_e( 'The URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'wpe-headless' ); ?>
+	</p>
 	<?php
 }
