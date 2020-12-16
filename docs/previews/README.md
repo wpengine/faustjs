@@ -31,9 +31,9 @@ Go to Settings->Headless to view the plugin's settings page:
 
 ![Headless Plugin Menu](./headless-settings.jpg)
 
-There are 2 settings that assist in previews. The first one is read-only. It gives you an API secret key that you need to use on your backend for your frontend.
+There are 2 settings that assist in previews. The first setting is the location of your frontend. You'll need to enter a `Front-end site URL`, which will be `http://localhost:3000` for this example.
 
-The second setting is the location of your frontend. You'll need to put the base URL which will be `http://localhost:3000` for this example.
+The second one is read-only. It gives you an API secret key that you need to use on your backend for your frontend.
 
 ![Headless Plugin Auth Settings](./headless-settings-auth.jpg)
 
