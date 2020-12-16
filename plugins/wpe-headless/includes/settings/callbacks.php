@@ -103,7 +103,7 @@ function wpe_headless_register_settings_fields() {
 
 	add_settings_field(
 		'menu_locations',
-		__( 'Locations', 'wpe-headless' ),
+		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
 		'menu_locations_section'
