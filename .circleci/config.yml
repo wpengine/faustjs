@@ -144,7 +144,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^plugin\/wpe-headless\/\S+/
+              only: /^plugin-test\/wpe-headless\/\S+/
       - plugin-wpe-headless-bundle-json:
           requires:
             - plugin-wpe-headless-checkout
@@ -152,7 +152,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^plugin\/wpe-headless\/\S+/
+              only: /^plugin-test\/wpe-headless\/\S+/
       - plugin-wpe-headless-deploy:
           name: "Deploy zip to api (staging)"
           requires:
@@ -162,7 +162,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /^plugin\/wpe-headless\/\S+/
+              only: /^plugin-test\/wpe-headless\/\S+/
           context: wpe-ldap-creds
           auth_url: https://auth-staging.wpengine.io/v1/tokens
           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
@@ -176,7 +176,7 @@ workflows:
               ignore: /.*/
             tags:
               # tag ex. plugin/wpe-headless/1.0.0
-              only: /^plugin\/wpe-headless\/\S+/
+              only: /^plugin-test\/wpe-headless\/\S+/
           context: wpe-ldap-creds
           auth_url: https://auth.wpengine.io/v1/tokens
           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
