@@ -30,7 +30,7 @@ function wpe_headless_url_replacement( $response ) {
 			$response->data,
 			function( &$value, $key ) {
 				if ( 'url' === $key ) {
-					$replacement = wpe_headless_get_setting( 'replacement_domain', '/' );
+					$replacement = wpe_headless_get_setting( 'frontend_uri', '/' );
 					$value       = str_replace( site_url(), $replacement, $value );
 				}
 			}
