@@ -178,5 +178,5 @@ workflows:
               # tag ex. plugin/wpe-headless/1.0.0
               only: /^plugin-test\/wpe-headless\/\S+/
           context: wpe-ldap-creds
-          auth_url: https://auth.wpengine.io/v1/tokens
-          upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+          auth_url: https://auth.wpengine.io.testing/v1/tokens
+          upload_url: https://wp-product-info.wpesvc.net.testing/v1/plugins
