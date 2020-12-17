@@ -10,7 +10,8 @@ Install the latest plugin for this project and [WPGraphQL](https://wordpress.org
 
 ## Example Project
 
-The framework expects a few environment variables. Create a file in the root of the example project `/.env.local`.
+The framework expects a few environment variables. Copy `.env.local.sample` to `.env.local` and fill out the variables
+accordingly.
 
 ```bash
 # Base URL for WordPress
@@ -18,7 +19,6 @@ NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
 WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
-
 ```
 
 ## Run it
