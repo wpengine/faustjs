@@ -37,6 +37,8 @@ across multiple local sites!
 
 #### WPE Headless Plugin
 
+[Download](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+
 **Setup**
 To begin working with the WPE Headless WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
 

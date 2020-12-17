@@ -113,7 +113,7 @@ function wpe_headless_display_plugin_row_notice( $plugin_file, $plugin_data ) {
 	$error = wpe_headless_get_plugin_api_error();
 
 	?>
-	<tr class="plugin-update-tr active" id="wpe-headless-update" data-slug="wpe-headless" data-plugin="healess-poc/headless-poc.php">
+	<tr class="plugin-update-tr active" id="wpe-headless-update" data-slug="wpe-headless" data-plugin="wpe-headless/wpe-headless.php">
 		<td colspan="3" class="plugin-update">
 			<div class="update-message notice inline notice-error notice-alt">
 				<p>
