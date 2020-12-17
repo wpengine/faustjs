@@ -1,7 +1,4 @@
 node_modules
 dist
-*.js
-*.d.ts
-!.eslintrc.js
-!jest.config.js
-!.prettierrc.js
+jest.setup.js
+jest.setup.d.ts
