@@ -1,10 +1,21 @@
 # WordPress Headless Framework (PREVIEW/ALPHA)
 
-[![Version](https://img.shields.io/npm/v/@wpengine/headless.svg)](https://npmjs.org/package/@wpengine/headless)
+🚧 **Note:** This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
 
-NOTE: This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
+## Quick Start
 
-## Features
+Eager to try out the Headless Framework? Here's how you can get started with our Preview example:
+
+1. Create a WordPress site if you haven't already. We recommend using [Local](https://localwp.com/)!
+2. Download, upload, and activate the `wpe-headless` plugin in this repository. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed
+4. [Clone this repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to a directory of your choice
+5. Navigate to `examples/preview` in the cloned repository
+6. `cp .env.local.sample .env.local`
+7. Populate `NEXT_PUBLIC_WORDPRESS_URL` and `WPE_HEADLESS_SECRET` accordingly in `.env.local`
+8. `npm install && npm run dev`
+
+## Framework Features
 
 - Headless Auth Flows
   - OAuth token authentication for users
@@ -12,93 +23,48 @@ NOTE: This project is in the early stages of development, but it does contain us
 - [Previews](./docs/previews/README.md)
   - Rewrite preview and draft links in WP Admin to redirect to the frontend.
 
-## [Tryout Previews](./docs/previews/README.md)
+## Download & Installation
 
-We'll walk you through creating a Next.js app that uses the plugin and framework to enable post previews!
+There are two key parts of the WordPress Headless Framework. To take full advantage, you will need to install the plugin
+in addition to the npm package.
 
-## Project Structure
+### WordPress Plugin
 
-- `/docs` - Documentation
-- `/packages` - NPM packages
-- `/plugins` - WordPress Plugins
+[📥 Download Latest](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
 
-# Contributing
+After downloading the zip linked above, we recommend installing by [Manually Uploading via WordPress Admin](https://wordpress.org/support/article/managing-plugins/#manual-upload-via-wordpress-admin).
 
-Since we're in the early stages of development, we are not currently accepting outside contributions; although, we are interested in any problems that you encounter while using the framework.
+### `@wpengine/headless` npm Package
 
-Create an issue in this repository to report bugs or feature requests.
+[![Version](https://img.shields.io/npm/v/@wpengine/headless.svg)](https://npmjs.org/package/@wpengine/headless)
 
-### Plugins
+#### Yarn
 
-As this is a monorepo, you will not be able to check out this repository into `wp-content/themes` or `wp-content/plugins`.
-
-Instead, you can create symlinks to the themes/plugins in this repository. Best of all, this will also sync your work
-across multiple local sites!
-
-#### WPE Headless Plugin
-
-[Download](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
-
-**Setup**
-To begin working with the WPE Headless WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
-
-```
-ln -s /path/to/headless-framework/plugins/wpe-headless /path/to/wordpress/wp-content/plugins/wpe-headless
+```shell
+yarn add @wpengine/headless
 ```
 
-**PHP Code Sniffer**
-[PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
+### npm
 
-Install the composer packages from within `wpe-headless` directory if you haven't already.
-```
-composer install
+```shell
+npm install --save @wpengine/headless
 ```
 
-Run the syntax check.
-```
-composer phpcs
-```
+## Guides
 
-Some syntax errors can be fixed by phpcs.
-```
-composer phpcs:fix
-```
+* [Creating a Next.js application from scratch and integrating `@wpengine/headless` to enable post previewing](./docs/previews/README.md)
 
-**WordPress Unit Tests**
-In order to run WordPress unit tests, the test framework needs to be set up.
-```
-/bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
-```
+## Contributing
 
-If you connect to mysql via a sock connection, you can run the following.
-```
-/bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
-```
+Since we're in the early stages of development, we are not currently accepting outside contributions; although, we are
+interested in any problems that you encounter while using the framework.
 
-Install the composer packages from within `wpe-headless` directory if you haven't already.
-```
-composer install
-```
+### [Development Guide](./docs/DEVELOPMENT.md)
 
-Within the `wpe-headless` directory, run `phpunit` either directly or as a composer command
-```
-vendor/bin/phpunit
-```
+As this repository contains a WordPress plugin as well as npm packages, we have a few recommendations to help
+streamline your development process.
 
-or
+### License
 
-```
-composer test
-```
-
-### NPM Packages
-
-When working on the NPM packages in this repository, you'll likely want to test them in a project that pulls them in
-as dependencies.
-
-To pull in your code changes into the dependent project, you can [npm link](https://docs.npmjs.com/cli/v6/commands/npm-link)
-or [yarn link](https://classic.yarnpkg.com/en/docs/cli/link/). This will create symlinks from your dependent project's
-`node_modules` directory into this repository.
-
-**Note!** If using Next.js, you'll likely need to add [`next-transpile-modules`](https://www.npmjs.com/package/next-transpile-modules)
-to your `next.config.js`. Without doing this, you may run errors such as `Error: Cannot find module 'react'`.
+* npm packages in this repository are MIT licensed
+* WordPress plugins in this repository are GPLv2+ licensed
