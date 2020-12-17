@@ -135,7 +135,7 @@ function wpe_headless_get_api_error_text( $reason ) {
  */
 function wpe_headless_request_plugin_updates( $args ) {
 	return wp_remote_get(
-		'https://wp-product-info-staging.wpesvc.net/v1/plugins/headless-poc',
+		'https://wp-product-info.wpesvc.net/v1/plugins/headless-poc',
 		$args
 	);
 }
