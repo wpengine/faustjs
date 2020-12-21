@@ -5,6 +5,10 @@
  * @package WPE_Headless
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_action( 'parse_request', 'wpe_headless_deny_public_access', 99 );
 /**
  * Redirects non-API requests for public URLs to the specified front-end URL.

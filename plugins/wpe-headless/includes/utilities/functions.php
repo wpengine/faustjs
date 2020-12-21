@@ -5,6 +5,10 @@
  * @package WPE_Headless
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Converts string to camelCase. Added to ensure that fields are compliant with the GraphQL spec.
  *

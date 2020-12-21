@@ -5,6 +5,10 @@
  * @package WPE_Headless
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Returns list of conditional tags applicable to a headless frontend.
  *
