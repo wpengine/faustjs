@@ -18,16 +18,18 @@ add_filter( 'graphql_authentication_errors', 'wpe_headless_rest_validate_access_
  *
  * @link https://www.wpgraphql.com/filters/graphql_authentication_errors/
  *
+ * @param bool $authentication_errors Whether there are authentication errors with the request.
+ *
  * @return bool True if the Authorization header exists and is invalid, false otherwise.
  */
-function wpe_headless_rest_validate_access_token() {
+function wpe_headless_rest_validate_access_token( $authentication_errors ) {
 	if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
-		return false;
+		return $authentication_errors;
 	}
 
 	$parts = explode( ' ', trim( $_SERVER['HTTP_AUTHORIZATION'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 	if ( count( $parts ) < 2 ) {
-		return new WP_Error( 'access_token_error', __( 'Access token error', 'wpe-headless' ), array( 'status' => 401 ) );
+		return true;
 	}
 
 	$wp_user = wpe_headless_get_user_from_access_token( $parts[1], 5 * MONTH_IN_SECONDS );
@@ -35,7 +37,7 @@ function wpe_headless_rest_validate_access_token() {
 		return false;
 	}
 
-	return new WP_Error( 'access_token_error', __( 'Access token error', 'wpe-headless' ), array( 'status' => 401 ) );
+	return true;
 }
 
 add_filter( 'determine_current_user', 'wpe_headless_rest_determine_current_user', 20 );
