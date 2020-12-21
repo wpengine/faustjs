@@ -22,10 +22,6 @@
  */
 function wpe_headless_get_conditional_tags() {
 	return array(
-		'is_404'               => array(
-			'description'     => __( 'When a page displays after an "HTTP 404: Not Found" error occurs.', 'wpe-headless' ),
-			'template_getter' => 'get_404_template',
-		),
 		'is_search'            => array(
 			'description'     => __( 'Determines whether the query is for a search.', 'wpe-headless' ),
 			'template_getter' => 'get_search_template',
