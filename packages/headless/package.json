@@ -5,12 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "run-s clean ts",
+    "dev": "run-s clean ts:watch",
     "clean": "rimraf dist",
     "lint": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
     "prepublish": "run-s build",
     "test": "jest",
     "test:watch": "jest --watch",
-    "ts": "tsc -p ."
+    "ts": "tsc -p .",
+    "ts:watch": "tsc -p . --watch"
   },
   "repository": {
     "type": "git",
