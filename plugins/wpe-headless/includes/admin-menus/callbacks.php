@@ -60,5 +60,6 @@ function wpe_headless_remove_admin_bar_items() {
 	 */
 	global $wp_admin_bar;
 	$wp_admin_bar->remove_menu( 'customize' );
+	$wp_admin_bar->remove_node( 'themes' );
 	$wp_admin_bar->remove_node( 'widgets' );
 }
