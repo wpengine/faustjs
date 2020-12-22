@@ -2,7 +2,8 @@
   "name": "@wpengine/headless",
   "version": "0.0.1-alpha.1",
   "description": "This module helps you use WordPress as a Headless CMS",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "run-s clean ts",
     "dev": "run-s clean ts:watch",
