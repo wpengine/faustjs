@@ -20,11 +20,7 @@ const WP_URL = trimTrailingSlash(
 if (!WP_URL) {
   if (isServerSide()) {
     throw new Error(
-      'NEXT_PUBLIC_WORDPRESS_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.',
-    );
-  } else {
-    throw new Error(
-      'WORDPRESS_URL and NEXT_PUBLIC_WORDPRESS_URL environment variables are not set. Please set WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.',
+      'WORDPRESS_URL and NEXT_PUBLIC_WORDPRESS_URL environment variables are not set. Please set WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.'
     );
   }
 }
@@ -35,9 +31,9 @@ if (!WP_URL) {
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: isServerSide(),
-    link: new HttpLink({
+    link:  WP_URL ? new HttpLink({
       uri: `${WP_URL as string}/graphql`,
-    }),
+    }) : undefined,
     cache: new InMemoryCache(),
   });
 }
