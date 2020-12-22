@@ -1,1 +1,1 @@
-export * from './dist/src/components';
+export * from './dist/components';
