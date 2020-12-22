@@ -204,9 +204,21 @@ function wpe_headless_display_secret_key_field() {
 	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
 	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
 
-	<a href="<?php echo esc_url( $regenerate_url ); ?>" title="<?php esc_attr_e( 'Regenerate Secret Key', 'wpe-headless' ); ?>">
+	<a
+		href="<?php echo esc_url( $regenerate_url ); ?>"
+		title="<?php esc_attr_e( 'Regenerate Secret Key', 'wpe-headless' ); ?>"
+		onclick="confirm_regenerate_key( event )"
+	>
 		<?php esc_html_e( 'Regenerate', 'wpe-headless' ); ?>
 	</a>
+
+	<script type="text/javascript">
+		function confirm_regenerate_key( event ) {
+			if ( ! confirm( 'Are you sure you want to regenerate your secret key?' ) ) {
+				event.preventDefault();
+			}
+		}
+	</script>
 
 	<p class="description">
 		<?php
