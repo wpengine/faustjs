@@ -63,3 +63,18 @@ function wpe_headless_remove_admin_bar_items() {
 	$wp_admin_bar->remove_node( 'themes' );
 	$wp_admin_bar->remove_node( 'widgets' );
 }
+
+add_action( 'current_screen', 'wpe_headless_prevent_admin_page_access' );
+/**
+ * Prevents access to named pages by redirecting to the admin root.
+ *
+ * @return void
+ */
+function wpe_headless_prevent_admin_page_access() {
+	$screen = get_current_screen();
+
+	if ( is_object( $screen ) && 'themes' === $screen->id ) {
+		wp_safe_redirect( admin_url() );
+		exit;
+	}
+}
