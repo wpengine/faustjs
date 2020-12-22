@@ -36,53 +36,77 @@ function wpe_headless_register_templates_field() {
 		'templates',
 		array(
 			'type'    => array( 'list_of' => 'String' ),
-			'resolve' => function ( $root, $args, AppContext $context, ResolveInfo $info ) {
-				global $wpe_headless_checked_templates;
-				$wpe_headless_checked_templates = array();
-
-				// Loop through each of the template conditionals, and find the appropriate template file.
-				foreach ( wpe_headless_template_hierarchy_types() as $type ) {
-					add_filter( "{$type}_template_hierarchy", 'wpe_headless_log_template_hierarchy' );
-				}
-
-				$template = false;
-
-				foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
-					if ( empty( $tag_info['template_getter'] ) ) {
-						continue;
-					}
-
-					$template_getter = $tag_info['template_getter'];
-
-					if ( call_user_func( $tag ) ) {
-						$template = call_user_func( $template_getter );
-					}
-
-					if ( $template ) {
-						if ( 'is_attachment' === $tag ) {
-							remove_filter( 'the_content', 'prepend_attachment' );
-						}
-
-						break;
-					}
-				}
-
-				foreach ( wpe_headless_template_hierarchy_types() as $type ) {
-					remove_filter( "{$type}_template_hierarchy", 'wpe_headless_log_template_hierarchy' );
-				}
-
-				/* Strip PHP extension from the checked templates */
-				$wpe_headless_checked_templates = array_map(
-					function ( $template ) {
-						return basename( $template, '.php' );
-					},
-					$wpe_headless_checked_templates
-				);
-
-				return $wpe_headless_checked_templates;
-			},
+			'resolve' => 'wpe_headless_templates_resolver',
 		)
 	);
+
+	register_graphql_field(
+		'ContentNode',
+		'templates',
+		array(
+			'type'    => array( 'list_of' => 'String' ),
+			'resolve' => 'wpe_headless_templates_resolver',
+		)
+	);
+}
+
+/**
+ * Resolver for getting the templates that will be loaded on a given node
+ *
+ * @param $root
+ * @param $args
+ * @param AppContext $context
+ * @param ResolveInfo $info
+ *
+ * @return array|string[]
+ */
+function wpe_headless_templates_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
+	global $wpe_headless_checked_templates;
+	$wpe_headless_checked_templates = array();
+
+	// Loop through each of the template conditionals, and find the appropriate template file.
+	foreach ( wpe_headless_template_hierarchy_types() as $type ) {
+		add_filter( "{$type}_template_hierarchy", 'wpe_headless_log_template_hierarchy' );
+	}
+
+	$template = false;
+
+	foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
+		if ( empty( $tag_info['template_getter'] ) ) {
+			continue;
+		}
+
+		$template_getter = $tag_info['template_getter'];
+
+		if ( call_user_func( $tag ) ) {
+			$template = call_user_func( $template_getter );
+		}
+
+		if ( $template ) {
+			if ( 'is_attachment' === $tag ) {
+				remove_filter( 'the_content', 'prepend_attachment' );
+			}
+
+			break;
+		}
+	}
+
+	foreach ( wpe_headless_template_hierarchy_types() as $type ) {
+		remove_filter( "{$type}_template_hierarchy", 'wpe_headless_log_template_hierarchy' );
+	}
+
+	/* Strip PHP extension from the checked templates */
+	$wpe_headless_checked_templates = array_map(
+		function ( $template ) {
+			return basename( $template, '.php' );
+		},
+		$wpe_headless_checked_templates
+	);
+
+	/**
+	 * Add index as the default template.
+	 */
+	return array_merge( $wpe_headless_checked_templates, array( 'index' ) );
 }
 
 /**
@@ -136,15 +160,36 @@ function wpe_headless_register_conditional_tags_field() {
 		'conditionalTags',
 		array(
 			'type'    => 'ConditionalTags',
-			'resolve' => function ( $root, $args, AppContext $context, ResolveInfo $info ) {
-				$conditional_tag_values = array();
-
-				foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
-					$conditional_tag_values[ wpe_headless_camelcase( $tag ) ] = $tag();
-				}
-
-				return $conditional_tag_values;
-			},
+			'resolve' => 'wpe_headless_conditional_tags_resolver',
 		)
 	);
+
+	register_graphql_field(
+		'ContentNode',
+		'conditionalTags',
+		array(
+			'type'    => 'ConditionalTags',
+			'resolve' => 'wpe_headless_conditional_tags_resolver',
+		)
+	);
+}
+
+/**
+ * Resolver for conditionalTags field.
+ *
+ * @param $root
+ * @param $args
+ * @param AppContext $context
+ * @param ResolveInfo $info
+ *
+ * @return array
+ */
+function wpe_headless_conditional_tags_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
+	$conditional_tag_values = array();
+
+	foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
+		$conditional_tag_values[ wpe_headless_camelcase( $tag ) ] = $tag();
+	}
+
+	return $conditional_tag_values;
 }
