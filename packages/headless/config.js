@@ -1,1 +1,1 @@
-module.exports = require('./dist/src/config');
+module.exports = require('./dist/config');

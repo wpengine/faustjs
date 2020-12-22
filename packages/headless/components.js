@@ -1,1 +1,1 @@
-module.exports = require('./dist/src/components');
+module.exports = require('./dist/components');

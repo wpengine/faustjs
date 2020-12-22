@@ -10,7 +10,8 @@
         "strict": true,
         "noUnusedLocals": true,
         "outDir": "dist",
-        "declaration": true,
+		"rootDir": "src",
+		"declaration": true,
         "lib": [
             "dom",
             "dom.iterable",
@@ -18,11 +19,11 @@
         ],
         "jsx": "react"
     },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx"
-    ],
+	"include": [
+		"src"
+	],
     "exclude": [
-        "node_modules"
+        "node_modules",
+		"dist"
     ]
 }
