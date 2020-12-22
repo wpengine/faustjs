@@ -130,6 +130,10 @@ function wpe_headless_handle_regenerate_secret_key() {
 		return;
 	}
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
 	check_admin_referer( 'regenerate_secret', 'regenerate_nonce' );
 
 	wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
