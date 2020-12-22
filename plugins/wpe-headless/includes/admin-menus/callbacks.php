@@ -20,6 +20,9 @@ function wpe_headless_remove_admin_menu_pages() {
 	 */
 	global $submenu;
 
+	// Remove Appearance > Themes.
+	remove_submenu_page( 'themes.php', 'themes.php' );
+
 	// Remove Appearance > Theme Editor.
 	remove_submenu_page( 'themes.php', 'theme-editor.php' );
 
