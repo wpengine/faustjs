@@ -110,6 +110,41 @@ function wpe_headless_register_settings_fields() {
 	);
 }
 
+add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_handle_regenerate_secret_key', 5 );
+/**
+ * Callback for WordPress 'load-{$page_hook}' action.
+ *
+ * Nonce set in wpe_headless_display_secret_key_field().
+ *
+ * Regenerate the secret key.
+ *
+ * @return void
+ */
+function wpe_headless_handle_regenerate_secret_key() {
+	$screen = get_current_screen();
+	if ( 'settings_page_wpe-headless-settings' !== $screen->id ) {
+		return;
+	}
+
+	if ( empty( $_GET['regenerate_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	check_admin_referer( 'regenerate_secret', 'regenerate_nonce' );
+
+	wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
+
+	wp_safe_redirect(
+		admin_url( '/options-general.php?page=wpe-headless-settings' )
+	);
+
+	exit;
+}
+
 /**
  * Callback for add_submenu_page() function.
  *
@@ -162,11 +197,33 @@ function wpe_headless_display_menu_locations_field() {
  * @return void
  */
 function wpe_headless_display_secret_key_field() {
-	$secret_key = wpe_headless_get_secret_key();
+	$secret_key     = wpe_headless_get_secret_key();
+	$regenerate_url = wp_nonce_url(
+		admin_url( 'options-general.php?page=wpe-headless-settings' ),
+		'regenerate_secret',
+		'regenerate_nonce'
+	);
 
 	?>
 	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
 	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
+
+	<a
+		href="<?php echo esc_url( $regenerate_url ); ?>"
+		title="<?php esc_attr_e( 'Regenerate Secret Key', 'wpe-headless' ); ?>"
+		onclick="confirm_regenerate_key( event )"
+	>
+		<?php esc_html_e( 'Regenerate', 'wpe-headless' ); ?>
+	</a>
+
+	<script type="text/javascript">
+		function confirm_regenerate_key( event ) {
+			if ( ! confirm( 'Are you sure you want to regenerate your secret key?' ) ) {
+				event.preventDefault();
+			}
+		}
+	</script>
+
 	<p class="description">
 		<?php
 		printf(

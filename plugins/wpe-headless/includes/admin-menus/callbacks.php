@@ -5,6 +5,10 @@
  * @package WPE_Headless
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_action( 'admin_menu', 'wpe_headless_remove_admin_menu_pages', 1000 );
 /**
  * Remove wp-admin menu items not needed in a headless environment.
