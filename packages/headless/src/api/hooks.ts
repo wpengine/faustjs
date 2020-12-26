@@ -20,6 +20,7 @@ import {
 } from './services';
 import { headlessConfig } from '../config';
 import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
+import {isPreviewPath} from "../utils/preview";
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -413,7 +414,7 @@ export function usePost(
               client as ApolloClient<NormalizedCacheObject>,
               pageInfo.uriPath,
               ContentNodeIdType.URI,
-              pageInfo.isPreview,
+              isPreviewPath(window.location.href),
             );
           }
 

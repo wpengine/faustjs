@@ -1,10 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import {
-  useNextUriInfo,
-  initializeNextServerSideProps,
-} from '@wpengine/headless';
-import { GetServerSidePropsContext } from 'next';
+import { useNextUriInfo, initializeNextStaticProps } from '@wpengine/headless';
 import Posts from '../lib/components/Posts';
 import Post from '../lib/components/Post';
 
@@ -22,6 +18,17 @@ export default function Page() {
   return <Post />;
 }
 
-export function getServerSideProps(context: GetServerSidePropsContext) {
-  return initializeNextServerSideProps(context);
+/**
+ * @todo Show how to switch between static and SSR
+ */
+
+export function getStaticProps(context: any) {
+  return initializeNextStaticProps(context);
+}
+
+export function getStaticPaths() {
+  return {
+    paths: ['/'],
+    fallback: true,
+  };
 }
