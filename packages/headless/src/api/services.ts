@@ -267,19 +267,20 @@ export async function getGeneralSettings(
  * @export
  * @param {ApolloClient<NormalizedCacheObject>} client
  * @param {string} uriPath The path for the URI (e.g. '/hello-world')
+ * @param {boolean} [isPreview] Whether or not the page being displayed is in preview mode or not.
  * @returns {(Promise<UriInfo | void>)}
  */
 export async function getUriInfo(
   client: ApolloClient<NormalizedCacheObject>,
   uriPath: string,
+  isPreview?: boolean,
 ): Promise<UriInfo | void> {
   const urlPath = utils.getUrlPath(uriPath);
-  const isPreview = /preview=true/.test(uriPath);
 
   if (isPreview && !isServerSide()) {
     const response = ensureAuthorization(window.location.href);
 
-    if (typeof response !== 'string' && typeof response.redirect === 'string') {
+    if (typeof response !== 'string' && response?.redirect) {
       window.location.replace(response.redirect);
       return;
     }

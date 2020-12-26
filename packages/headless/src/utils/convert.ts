@@ -108,43 +108,6 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
 /* eslint-enable consistent-return */
 
 /**
- * Gets query parameters from a url or search string
- *
- * @export
- * @param {string} url
- * @param {string} param
- * @returns {string}
- */
-export function getQueryParam(url: string, param: string) {
-  if (!url || url.length === 0) {
-    return '';
-  }
-
-  const parsedUrl = parseUrl(url);
-
-  if (!parsedUrl) {
-    return '';
-  }
-
-  let query = parsedUrl.search;
-
-  if (query[0] === '?') {
-    query = query.substring(1);
-  }
-
-  const params = query.split('&');
-
-  for (let i = 0; i < params.length; i += 1) {
-    const pair = params[i].split('=');
-    if (decodeURIComponent(pair[0]) === param) {
-      return decodeURIComponent(pair[1]);
-    }
-  }
-
-  return '';
-}
-
-/**
  * Gets the path without the protocol/host/port from a full URL string
  *
  * @export
@@ -174,6 +137,16 @@ export function resolvePrefixedUrlPath(url: string, prefix?: string) {
 
   if (prefix) {
     resolvedUrl = url.replace(prefix, '');
+  }
+
+  const splitUrl = resolvedUrl.split('/');
+
+  /**
+   * Remove preview and preview ID if provided as WP GraphQL will not be able to resolve queries such as nodeByUri
+   * properly.
+   */
+  if (splitUrl?.[splitUrl.length - 2] === 'preview') {
+    resolvedUrl = splitUrl.slice(0, splitUrl.length - 2).join('/');
   }
 
   if (resolvedUrl === '') {

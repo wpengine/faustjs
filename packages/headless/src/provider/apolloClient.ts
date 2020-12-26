@@ -10,6 +10,7 @@ import {
 } from '@apollo/client';
 import merge from 'deepmerge';
 import { isServerSide, trimTrailingSlash } from '../utils';
+import {GetServerSidePropsResult, GetStaticPropsResult} from "next";
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -123,13 +124,15 @@ export function initializeApollo(
 export function addApolloState(
   client: ApolloClient<any>,
   pageProps: { [prop: string]: any },
-) {
+) : GetServerSidePropsResult<any> | GetStaticPropsResult<any> {
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }
 
-  return pageProps;
+  return pageProps as {
+    props: unknown;
+  };
 }
 
 /**
