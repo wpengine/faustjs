@@ -59,14 +59,7 @@ add_action( 'admin_init', 'wpe_headless_register_settings_section' );
  */
 function wpe_headless_register_settings_section() {
 	add_settings_section(
-		'frontend_site_section',
-		null,
-		null,
-		'wpe-headless-settings'
-	);
-
-	add_settings_section(
-		'menu_locations_section',
+		'settings_section',
 		null,
 		null,
 		'wpe-headless-settings'
@@ -90,7 +83,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Front-end site URL', 'wpe-headless' ),
 		'wpe_headless_display_frontend_uri_field',
 		'wpe-headless-settings',
-		'frontend_site_section'
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -98,7 +91,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Secret Key', 'wpe-headless' ),
 		'wpe_headless_display_secret_key_field',
 		'wpe-headless-settings',
-		'frontend_site_section'
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -106,7 +99,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
-		'menu_locations_section'
+		'settings_section'
 	);
 }
 
