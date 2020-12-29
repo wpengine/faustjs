@@ -101,6 +101,14 @@ function wpe_headless_register_settings_fields() {
 		'wpe-headless-settings',
 		'settings_section'
 	);
+
+	add_settings_field(
+		'enable_disable',
+		__( 'Features', 'wpe-headless' ),
+		'wpe_headless_display_enable_disable_fields',
+		'wpe-headless-settings',
+		'settings_section'
+	);
 }
 
 add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_handle_regenerate_secret_key', 5 );
@@ -244,5 +252,39 @@ function wpe_headless_display_frontend_uri_field() {
 	<p class="description">
 		<?php esc_html_e( 'The URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'wpe-headless' ); ?>
 	</p>
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the enable/disable features section.
+ *
+ * @return void
+ */
+function wpe_headless_display_enable_disable_fields() {
+	$enable_theme         = wpe_headless_get_setting( 'enable_theme', false );
+	$enable_rewrites      = wpe_headless_get_setting( 'enable_rewrites', false );
+	$enable_route_locking = wpe_headless_get_setting( 'enable_route_locking', false );
+
+	?>
+	<fieldset>
+		<label for="enable_theme">
+			<input type="checkbox" id="enable_theme" name="wpe_headless[enable_theme]" value="1" <?php checked( $enable_theme ); ?> />
+			<?php esc_html_e( 'Enable Theme', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_rewrites">
+			<input type="checkbox" id="enable_rewrites" name="wpe_headless[enable_rewrites]" value="1" <?php checked( $enable_rewrites ); ?> />
+			<?php esc_html_e( 'Post/category URL rewrites', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_route_locking">
+			<input type="checkbox" id="enable_route_locking" name="wpe_headless[enable_route_locking]" value="1" <?php checked( $enable_route_locking ); ?> />
+			<?php esc_html_e( 'Lock down routes', 'wpe-headless' ); ?>
+		</label>
+	</fieldset>
 	<?php
 }
