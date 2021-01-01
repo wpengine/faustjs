@@ -13,7 +13,7 @@ import {
   UriInfo,
 } from '../types';
 import * as utils from '../utils';
-import { ensureAuthorization, getAccessToken } from '../auth';
+import { ensureAuthorization } from '../auth';
 import { isServerSide } from '../utils';
 
 /**
@@ -30,20 +30,10 @@ export async function baseQuery<T>(
   client: ApolloClient<NormalizedCacheObject>,
   query: string,
 ): Promise<ApolloQueryResult<T>> {
-  const accessToken = getAccessToken();
-  const context: { headers?: { Authorization: string } } = {};
-
-  if (accessToken) {
-    context.headers = {
-      Authorization: `Bearer ${accessToken}`,
-    };
-  }
-
   return client.query<T>({
     query: gql`
       ${query}
     `,
-    context,
   });
 }
 
