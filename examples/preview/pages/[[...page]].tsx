@@ -1,21 +1,11 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { useNextUriInfo, initializeNextStaticProps } from '@wpengine/headless';
-import Posts from '../lib/components/Posts';
-import Post from '../lib/components/Post';
+import { TemplateLoader, initializeNextStaticProps } from '@wpengine/headless';
 
-export default function Page() {
-  const pageInfo = useNextUriInfo();
-
-  if (!pageInfo) {
-    return <></>;
-  }
-
-  if (pageInfo.isPostsPage) {
-    return <Posts />;
-  }
-
-  return <Post />;
+/**
+ * @todo make conditionalTags available
+ */
+export default function Page({ ...props }) {
+  return <TemplateLoader />;
 }
 
 /**

@@ -257,6 +257,7 @@ export async function getUriInfo(
       query($uri: String!) {
         nodeByUri(uri: $uri) {
           id
+          templates
           ... on ContentType {
             isFrontPage
             isPostsPage
@@ -285,7 +286,7 @@ export async function getUriInfo(
     };
   }
 
-  const { isPostsPage, isFrontPage, id } = result;
+  const { isPostsPage, isFrontPage, id, templates } = result;
 
   return {
     isPostsPage,
@@ -293,6 +294,7 @@ export async function getUriInfo(
     id,
     isPreview,
     uriPath,
+    templates,
   };
 }
 /* eslint-enable consistent-return */
