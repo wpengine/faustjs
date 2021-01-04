@@ -1,29 +1,29 @@
 {
-    "compilerOptions": {
-        "module": "CommonJS",
-        "moduleResolution": "Node",
-        "target": "ES2017",
-        "removeComments": true,
-        "allowSyntheticDefaultImports": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "strict": true,
-        "noUnusedLocals": true,
-        "outDir": "dist",
+	"compilerOptions": {
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"target": "ES2017",
+		"removeComments": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"outDir": "dist",
 		"rootDir": "src",
 		"declaration": true,
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "jsx": "react"
-    },
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+		"jsx": "react"
+	},
 	"include": [
 		"src"
 	],
-    "exclude": [
-        "node_modules",
+	"exclude": [
+		"node_modules",
 		"dist"
-    ]
+	]
 }
