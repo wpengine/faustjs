@@ -37,13 +37,11 @@ function wpe_headless_content_replacement( $content ) {
 
 add_filter( 'preview_post_link', 'wpe_headless_post_link', 10 );
 add_filter( 'post_link', 'wpe_headless_post_link', 10 );
-
 /**
- * Callback for WordPress 'preview_post_link' filter and 'post_link' filter. For now, we use the same callback for both.
+ * Callback for WordPress 'preview_post_link' filter and 'post_link' filter.
  *
  * Swap the post preview link and post links in admin for headless front-end.
  *
- * @todo Should this always be enabled?
  * @todo Page links
  *
  * @param string $link URL used for the post preview and/or post.
@@ -51,6 +49,10 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @return string URL used for the post preview.
  */
 function wpe_headless_post_link( $link ) {
+	if ( ! wpe_headless_domain_replacement_enabled() ) {
+		return $link;
+	}
+
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
@@ -69,6 +71,10 @@ add_filter( 'term_link', 'wpe_headless_term_link' );
  * @return string
  */
 function wpe_headless_term_link( $term_link ) {
+	if ( ! wpe_headless_domain_replacement_enabled() ) {
+		return $term_link;
+	}
+
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( empty( $frontend_uri ) ) {

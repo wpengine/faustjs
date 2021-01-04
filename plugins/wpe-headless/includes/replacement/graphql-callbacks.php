@@ -20,6 +20,10 @@ add_filter( 'graphql_request_results', 'wpe_headless_url_replacement' );
  * @return object The modified response with URLs replaced.
  */
 function wpe_headless_url_replacement( $response ) {
+	if ( ! wpe_headless_domain_replacement_enabled() ) {
+		return $response;
+	}
+
 	if (
 		is_object( $response ) &&
 		property_exists( $response, 'data' ) &&

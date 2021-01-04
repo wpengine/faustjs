@@ -263,27 +263,27 @@ function wpe_headless_display_frontend_uri_field() {
  * @return void
  */
 function wpe_headless_display_enable_disable_fields() {
-	$enable_theme         = wpe_headless_get_setting( 'enable_theme', false );
-	$enable_rewrites      = wpe_headless_get_setting( 'enable_rewrites', false );
-	$enable_route_locking = wpe_headless_get_setting( 'enable_route_locking', false );
+	$disable_theme    = wpe_headless_get_setting( 'disable_theme', false );
+	$enable_rewrites  = wpe_headless_get_setting( 'enable_rewrites', false );
+	$enable_redirects = wpe_headless_get_setting( 'enable_redirects', false );
 
 	?>
 	<fieldset>
-		<label for="enable_theme">
-			<input type="checkbox" id="enable_theme" name="wpe_headless[enable_theme]" value="1" <?php checked( $enable_theme ); ?> />
-			<?php esc_html_e( 'Enable Theme', 'wpe-headless' ); ?>
+		<label for="disable_theme">
+			<input type="checkbox" id="disable_theme" name="wpe_headless[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
+			<?php esc_html_e( 'Disable WordPress theme functionality', 'wpe-headless' ); ?>
 		</label>
 		<br />
 
 		<label for="enable_rewrites">
 			<input type="checkbox" id="enable_rewrites" name="wpe_headless[enable_rewrites]" value="1" <?php checked( $enable_rewrites ); ?> />
-			<?php esc_html_e( 'Post/category URL rewrites', 'wpe-headless' ); ?>
+			<?php esc_html_e( 'Enable Post and Category URL rewrites', 'wpe-headless' ); ?>
 		</label>
 		<br />
 
-		<label for="enable_route_locking">
-			<input type="checkbox" id="enable_route_locking" name="wpe_headless[enable_route_locking]" value="1" <?php checked( $enable_route_locking ); ?> />
-			<?php esc_html_e( 'Lock down routes', 'wpe-headless' ); ?>
+		<label for="enable_redirects">
+			<input type="checkbox" id="enable_redirects" name="wpe_headless[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
+			<?php esc_html_e( 'Enable public route redirects', 'wpe-headless' ); ?>
 		</label>
 	</fieldset>
 	<?php
@@ -302,6 +302,7 @@ function wpe_headless_verify_graphql_dependency() {
 	if ( function_exists( 'graphql' ) ) {
 		return;
 	}
+
 	add_action( 'admin_notices', 'wpe_headless_display_graphql_notice' );
 	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_graphql_scripts' );
 }
@@ -331,6 +332,7 @@ function wpe_headless_display_graphql_notice() {
  */
 function wpe_headless_add_graphql_scripts() {
 	wp_enqueue_script( 'wp-api-fetch' );
+
 	?>
 	<script>
 		document.addEventListener( 'DOMContentLoaded', function() {

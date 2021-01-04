@@ -17,14 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool True if can proceed with replacement, false if else.
  */
 function wpe_headless_domain_replacement_enabled() {
-	$enabled = false;
+	$enabled         = false;
+	$enable_rewrites = wpe_headless_get_setting( 'enable_rewrites', false );
 
-	if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$enabled = true;
-	}
+	if ( $enable_rewrites ) {
+		if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$enabled = true;
+		}
 
-	if ( isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
-		$enabled = true;
+		if ( isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
+			$enabled = true;
+		}
 	}
 
 	/**
