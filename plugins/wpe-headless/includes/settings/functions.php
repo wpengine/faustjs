@@ -79,9 +79,9 @@ function wpe_headless_get_settings() {
 	$settings = get_option( 'wpe_headless', array() );
 
 	/**
-	 * Filter 'wpe_headless_get_setting'.
+	 * Filter 'wpe_headless_get_settings'.
 	 *
 	 * @param array $settings Array of plugin settings.
 	 */
-	return apply_filters( 'wpe_headless_get_setting', $settings );
+	return apply_filters( 'wpe_headless_get_settings', $settings );
 }
