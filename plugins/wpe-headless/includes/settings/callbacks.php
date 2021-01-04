@@ -288,3 +288,140 @@ function wpe_headless_display_enable_disable_fields() {
 	</fieldset>
 	<?php
 }
+
+add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_graphql_dependency' );
+/**
+ * Verifies the WP GraphQL dependency is met.
+ *
+ * If not, it adds an admin notice and related scripts
+ * for installing and activating the plugin.
+ *
+ * @return void
+ */
+function wpe_headless_verify_graphql_dependency() {
+	if ( function_exists( 'graphql' ) ) {
+		return;
+	}
+	add_action( 'admin_notices', 'wpe_headless_display_graphql_notice' );
+	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_graphql_scripts' );
+}
+
+/**
+ * Displays the WP GraphQL dependency notice.
+ */
+function wpe_headless_display_graphql_notice() {
+	?>
+	<div id="wpe-headless-notice-graphql" class="notice notice-info wpe-headless-notice wpe-headless-notice-graphql">
+		<p>
+			<?php
+			printf(
+			/* translators: %s: Link to plugin install page. */
+				wp_kses_post( __( 'WP Engine Headless requires the WP GraphQL plugin. <a id="wpe-headless-link-install-graphql" href="%s">Install and activate it now</a>.', 'wpe-headless' ) ),
+				esc_url( admin_url( 'plugin-install.php?s=wp+graphql&tab=search&type=term' ) )
+			);
+			?>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Adds the scripts required to install the
+ * WP GraphQL plugin dependency.
+ */
+function wpe_headless_add_graphql_scripts() {
+	wp_enqueue_script( 'wp-api-fetch' );
+	?>
+	<script>
+		document.addEventListener( 'DOMContentLoaded', function() {
+			document.getElementById( 'wpe-headless-link-install-graphql' ).onclick = ( event ) => {
+				event.preventDefault();
+				doGraphQLInstall();
+			}
+		} );
+
+		// Installs and activates the WP GraphQL plugin.
+		async function doGraphQLInstall() {
+			updateGraphQLNotice( 'installing' );
+
+			let installed = false;
+
+			/**
+			 * Check if the plugin is installed first.
+			 * Otherwise the REST endpoint downloads
+			 * and tries to install the plugin before
+			 * returning an error that the folder
+			 * already exists.
+			 */
+			await isGraphQLPluginInstalled().then( ( result ) => {
+				installed = result;
+			} ).catch( ( result ) => {
+				console.log( result );
+				installed = false;
+			} );
+
+			if ( installed ) {
+				await activateGraphQL();
+			} else {
+				await installActivateGraphQLPlugin();
+			}
+			updateGraphQLNotice( 'complete' );
+		}
+
+		// Updates the admin notice text.
+		function updateGraphQLNotice( type = 'installing' ) {
+			const notices = document.getElementsByClassName( 'wpe-headless-notice-graphql' );
+			const notice = notices[0];
+			switch ( type ) {
+				case 'installing':
+					notice.innerHTML = '<p>Installing and activating the WP GraphQL plugin...</p>';
+					break;
+
+				case 'complete':
+					notice.innerHTML = '<p>GraphQL installed and activated!</p>';
+					break;
+			}
+		}
+
+		// Returns whether or not the WP GraphQL plugin is installed.
+		async function isGraphQLPluginInstalled() {
+			let installed = false;
+			await wp.apiFetch( {
+				path: '/wp/v2/plugins/wp-graphql/wp-graphql',
+				method: 'GET'
+			} ).then( ( result ) => {
+				if ( result.hasOwnProperty( 'code' ) && result.code === 'rest_plugin_not_found' ) {
+					installed = false;
+				}
+
+				if ( result.hasOwnProperty( 'plugin' ) && result.plugin === 'wp-graphql/wp-graphql' ) {
+					installed = true;
+				}
+			} );
+			return installed;
+		}
+
+		// Activates the plugin if it already exists.
+		async function activateGraphQL() {
+			await wp.apiFetch( {
+				path: '/wp/v2/plugins/wp-graphql/wp-graphql',
+				method: 'POST',
+				data: { status: 'active' },
+			} ).then( ( result ) => {
+				console.log( result );
+			} )
+		}
+
+		// Installs and activates the plugin.
+		async function installActivateGraphQLPlugin() {
+			await wp.apiFetch( {
+				path: '/wp/v2/plugins',
+				method: 'POST',
+				data: { slug: 'wp-graphql', status: 'active' }
+			} ).then( ( result ) => {
+				console.log(result);
+			} );
+		}
+	</script>
+	<?php
+}
