@@ -17,7 +17,6 @@ add_filter( 'the_content', 'wpe_headless_content_replacement' );
  *
  * @return string The post content.
  * @todo Needs work...
- *
  */
 function wpe_headless_content_replacement( $content ) {
 	if ( ! wpe_headless_domain_replacement_enabled() ) {
@@ -59,7 +58,7 @@ function wpe_headless_post_preview_link( $link ) {
 		 */
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
-		$args       = wp_parse_args( parse_url( $link, PHP_URL_QUERY ) );
+		$args       = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
 		$preview_id = $args['preview_id'];
 
 		/**
@@ -78,9 +77,12 @@ function wpe_headless_post_preview_link( $link ) {
 		 */
 		$path = trailingslashit( $path ) . 'preview/' . $preview_id;
 
-		$link = add_query_arg( array(
-			'redirect_uri' => urlencode( $path ),
-		), $frontend_uri . 'api/auth/wpe-headless' );
+		$link = add_query_arg(
+			array(
+				'redirect_uri' => rawurlencode( $path ),
+			),
+			$frontend_uri . 'api/auth/wpe-headless'
+		);
 	}
 
 	return $link;
@@ -99,7 +101,6 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @return string URL used for the post.
  * @todo Should this always be enabled?
  * @todo Page links
- *
  */
 function wpe_headless_post_link( $link ) {
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );

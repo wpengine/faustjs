@@ -53,10 +53,10 @@ function wpe_headless_register_templates_field() {
 /**
  * Resolver for getting the templates that will be loaded on a given node
  *
- * @param $root
- * @param $args
- * @param AppContext $context
- * @param ResolveInfo $info
+ * @param array       $root  GraphQL Root Object.
+ * @param array       $args  Args passed to query.
+ * @param AppContext  $context The context of the query to pass along.
+ * @param ResolveInfo $info The ResolveInfo object.
  *
  * @return array|string[]
  */
@@ -177,10 +177,10 @@ function wpe_headless_register_conditional_tags_field() {
 /**
  * Resolver for conditionalTags field.
  *
- * @param $root
- * @param $args
- * @param AppContext $context
- * @param ResolveInfo $info
+ * @param array       $root  GraphQL Root Object.
+ * @param array       $args  Args passed to query.
+ * @param AppContext  $context The context of the query to pass along.
+ * @param ResolveInfo $info The ResolveInfo object.
  *
  * @return array
  */
