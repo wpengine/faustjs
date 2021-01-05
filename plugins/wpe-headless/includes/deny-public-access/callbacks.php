@@ -18,6 +18,12 @@ add_action( 'parse_request', 'wpe_headless_deny_public_access', 99 );
  * @return void
  */
 function wpe_headless_deny_public_access( $query ) {
+	$enable_redirects = wpe_headless_get_setting( 'enable_redirects', false );
+
+	if ( ! $enable_redirects ) {
+		return;
+	}
+
 	$redirect_base = wpe_headless_get_setting( 'frontend_uri' );
 
 	if (
