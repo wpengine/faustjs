@@ -1,5 +1,5 @@
 import React from 'react';
-import { TemplateLoader, initializeNextStaticProps } from '@wpengine/headless';
+import { useNextUriInfo, initializeNextStaticProps, initializeNextStaticPaths } from '@wpengine/headless';
 
 /**
  * @todo make conditionalTags available
@@ -17,8 +17,5 @@ export function getStaticProps(context: any) {
 }
 
 export function getStaticPaths() {
-  return {
-    paths: ['/'],
-    fallback: true,
-  };
+  return initializeNextStaticPaths();
 }
