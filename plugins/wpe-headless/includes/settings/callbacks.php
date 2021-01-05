@@ -263,9 +263,9 @@ function wpe_headless_display_frontend_uri_field() {
  * @return void
  */
 function wpe_headless_display_enable_disable_fields() {
-	$disable_theme    = wpe_headless_get_setting( 'disable_theme', false );
-	$enable_rewrites  = wpe_headless_get_setting( 'enable_rewrites', false );
-	$enable_redirects = wpe_headless_get_setting( 'enable_redirects', false );
+	$disable_theme    = wpe_headless_is_themes_disabled();
+	$enable_rewrites  = wpe_headless_is_rewrites_enabled();
+	$enable_redirects = wpe_headless_is_redirects_enabled();
 
 	?>
 	<fieldset>

@@ -10,6 +10,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Determine if redirects are enabled.
+ *
+ * @return bool True if redirects are enabled, false if else.
+ */
+function wpe_headless_is_redirects_enabled() {
+	return '1' === wpe_headless_get_setting( 'enable_redirects' );
+}
+
+/**
+ * Determine if rewrites are enabled.
+ *
+ * @return bool True if rewrites are enabled, false if else.
+ */
+function wpe_headless_is_rewrites_enabled() {
+	return '1' === wpe_headless_get_setting( 'enable_rewrites' );
+}
+
+/**
+ * Determine if themes are disabled.
+ *
+ * @return bool True if themes are disabled, false if else.
+ */
+function wpe_headless_is_themes_disabled() {
+	return '1' === wpe_headless_get_setting( 'disable_theme' );
+}
+
+/**
  * Determine if events are enabled.
  *
  * @return bool True if events are enabled, false if else.

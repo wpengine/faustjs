@@ -25,9 +25,7 @@ function wpe_headless_remove_admin_menu_pages() {
 	 */
 	global $submenu;
 
-	$disable_theme = wpe_headless_get_setting( 'disable_theme', false );
-
-	if ( ! $disable_theme ) {
+	if ( ! wpe_headless_is_themes_disabled() ) {
 		return;
 	}
 
@@ -71,9 +69,7 @@ function wpe_headless_remove_admin_bar_items() {
 	 */
 	global $wp_admin_bar;
 
-	$disable_theme = wpe_headless_get_setting( 'disable_theme', false );
-
-	if ( ! $disable_theme ) {
+	if ( ! wpe_headless_is_themes_disabled() ) {
 		return;
 	}
 
@@ -89,9 +85,7 @@ add_action( 'current_screen', 'wpe_headless_prevent_admin_page_access' );
  * @return void
  */
 function wpe_headless_prevent_admin_page_access() {
-	$disable_theme = wpe_headless_get_setting( 'disable_theme', false );
-
-	if ( ! $disable_theme ) {
+	if ( ! wpe_headless_is_themes_disabled() ) {
 		return;
 	}
 

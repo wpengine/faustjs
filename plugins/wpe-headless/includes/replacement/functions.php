@@ -17,10 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool True if can proceed with replacement, false if else.
  */
 function wpe_headless_domain_replacement_enabled() {
-	$enabled         = false;
-	$enable_rewrites = wpe_headless_get_setting( 'enable_rewrites', false );
+	$enabled = false;
 
-	if ( $enable_rewrites ) {
+	if ( wpe_headless_is_rewrites_enabled() ) {
 		if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$enabled = true;
 		}
