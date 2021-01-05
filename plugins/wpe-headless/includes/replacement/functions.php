@@ -19,12 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 function wpe_headless_domain_replacement_enabled() {
 	$enabled = false;
 
-	if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$enabled = true;
-	}
+	if ( wpe_headless_is_rewrites_enabled() ) {
+		if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$enabled = true;
+		}
 
-	if ( isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
-		$enabled = true;
+		if ( isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
+			$enabled = true;
+		}
 	}
 
 	/**

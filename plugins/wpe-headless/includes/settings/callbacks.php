@@ -59,14 +59,7 @@ add_action( 'admin_init', 'wpe_headless_register_settings_section' );
  */
 function wpe_headless_register_settings_section() {
 	add_settings_section(
-		'frontend_site_section',
-		null,
-		null,
-		'wpe-headless-settings'
-	);
-
-	add_settings_section(
-		'menu_locations_section',
+		'settings_section',
 		null,
 		null,
 		'wpe-headless-settings'
@@ -90,7 +83,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Front-end site URL', 'wpe-headless' ),
 		'wpe_headless_display_frontend_uri_field',
 		'wpe-headless-settings',
-		'frontend_site_section'
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -98,7 +91,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Secret Key', 'wpe-headless' ),
 		'wpe_headless_display_secret_key_field',
 		'wpe-headless-settings',
-		'frontend_site_section'
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -106,7 +99,15 @@ function wpe_headless_register_settings_fields() {
 		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
-		'menu_locations_section'
+		'settings_section'
+	);
+
+	add_settings_field(
+		'enable_disable',
+		__( 'Features', 'wpe-headless' ),
+		'wpe_headless_display_enable_disable_fields',
+		'wpe-headless-settings',
+		'settings_section'
 	);
 }
 
@@ -254,6 +255,40 @@ function wpe_headless_display_frontend_uri_field() {
 	<?php
 }
 
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the enable/disable features section.
+ *
+ * @return void
+ */
+function wpe_headless_display_enable_disable_fields() {
+	$disable_theme    = wpe_headless_is_themes_disabled();
+	$enable_rewrites  = wpe_headless_is_rewrites_enabled();
+	$enable_redirects = wpe_headless_is_redirects_enabled();
+
+	?>
+	<fieldset>
+		<label for="disable_theme">
+			<input type="checkbox" id="disable_theme" name="wpe_headless[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
+			<?php esc_html_e( 'Disable WordPress theme functionality', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_rewrites">
+			<input type="checkbox" id="enable_rewrites" name="wpe_headless[enable_rewrites]" value="1" <?php checked( $enable_rewrites ); ?> />
+			<?php esc_html_e( 'Enable Post and Category URL rewrites', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_redirects">
+			<input type="checkbox" id="enable_redirects" name="wpe_headless[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
+			<?php esc_html_e( 'Enable public route redirects', 'wpe-headless' ); ?>
+		</label>
+	</fieldset>
+	<?php
+}
+
 add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_graphql_dependency' );
 /**
  * Verifies the WP GraphQL dependency is met.
@@ -267,6 +302,7 @@ function wpe_headless_verify_graphql_dependency() {
 	if ( function_exists( 'graphql' ) ) {
 		return;
 	}
+
 	add_action( 'admin_notices', 'wpe_headless_display_graphql_notice' );
 	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_graphql_scripts' );
 }
@@ -296,6 +332,7 @@ function wpe_headless_display_graphql_notice() {
  */
 function wpe_headless_add_graphql_scripts() {
 	wp_enqueue_script( 'wp-api-fetch' );
+
 	?>
 	<script>
 		document.addEventListener( 'DOMContentLoaded', function() {

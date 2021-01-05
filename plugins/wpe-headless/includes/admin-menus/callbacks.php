@@ -14,6 +14,7 @@ add_action( 'admin_menu', 'wpe_headless_remove_admin_menu_pages', 1000 );
  * Remove wp-admin menu items not needed in a headless environment.
  *
  * @global $submenu
+ *
  * @return void
  */
 function wpe_headless_remove_admin_menu_pages() {
@@ -23,6 +24,10 @@ function wpe_headless_remove_admin_menu_pages() {
 	 * @var array
 	 */
 	global $submenu;
+
+	if ( ! wpe_headless_is_themes_disabled() ) {
+		return;
+	}
 
 	// Remove Appearance > Themes.
 	remove_submenu_page( 'themes.php', 'themes.php' );
@@ -63,6 +68,11 @@ function wpe_headless_remove_admin_bar_items() {
 	 * @var WP_Admin_Bar $wp_admin_bar
 	 */
 	global $wp_admin_bar;
+
+	if ( ! wpe_headless_is_themes_disabled() ) {
+		return;
+	}
+
 	$wp_admin_bar->remove_menu( 'customize' );
 	$wp_admin_bar->remove_node( 'themes' );
 	$wp_admin_bar->remove_node( 'widgets' );
@@ -75,6 +85,10 @@ add_action( 'current_screen', 'wpe_headless_prevent_admin_page_access' );
  * @return void
  */
 function wpe_headless_prevent_admin_page_access() {
+	if ( ! wpe_headless_is_themes_disabled() ) {
+		return;
+	}
+
 	$screen = get_current_screen();
 
 	if ( is_object( $screen ) && 'themes' === $screen->id ) {

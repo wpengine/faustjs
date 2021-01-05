@@ -90,8 +90,9 @@ function wpe_headless_post_preview_link( $link ) {
 
 
 add_filter( 'post_link', 'wpe_headless_post_link', 10 );
-
 /**
+ * Callback for WordPress 'preview_post_link' filter and 'post_link' filter.
+ *
  * Callback for WordPress  'post_link' filter.
  *
  * Swap post links in admin for headless front-end.
@@ -99,10 +100,12 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @param string $link URL used for the post.
  *
  * @return string URL used for the post.
- * @todo Should this always be enabled?
- * @todo Page links
  */
 function wpe_headless_post_link( $link ) {
+	if ( ! wpe_headless_domain_replacement_enabled() ) {
+		return $link;
+	}
+
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
@@ -121,6 +124,10 @@ add_filter( 'term_link', 'wpe_headless_term_link' );
  * @return string
  */
 function wpe_headless_term_link( $term_link ) {
+	if ( ! wpe_headless_domain_replacement_enabled() ) {
+		return $term_link;
+	}
+
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( empty( $frontend_uri ) ) {
