@@ -83,6 +83,7 @@ export interface UriInfo {
   isPreview?: boolean;
   is404?: boolean;
   uriPath: string;
+  templates?: string[];
 }
 
 /**
