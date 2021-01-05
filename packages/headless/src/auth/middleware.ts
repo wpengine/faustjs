@@ -14,22 +14,27 @@ export async function nextAuthorizeHandler(
   try {
     const { code, redirect_uri: redirectUri } = req.query;
 
+    const host = req.headers.host ?? '';
+    const protocol = /localhost/.test(host) ? 'http:' : 'https:';
+    const fullRedirectUrl = `${protocol}//${host}/${redirectUri as string}`;
+
     /**
-     * If missing code, this is a request that's meant to trigger authorizationo such as a preview.
+     * If missing code, this is a request that's meant to trigger authorization such as a preview.
      */
     if (!code && redirectUri) {
-      const host = req.headers.host ?? '';
-      const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-
-      const response = ensureAuthorization(
-        `${protocol}//${host}/${(redirectUri as string) ?? ''}`,
-      );
+      const response = ensureAuthorization(fullRedirectUrl);
 
       if (typeof response !== 'string' && response?.redirect) {
         res.redirect(response.redirect);
 
         return;
       }
+
+      /**
+       * We already have an auth code stored, go ahead and redirect.
+       */
+      res.redirect(302, fullRedirectUrl);
+      return;
     }
 
     if (!code || !redirectUri) {
