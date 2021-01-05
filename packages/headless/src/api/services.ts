@@ -1,9 +1,4 @@
-import {
-  gql,
-  ApolloClient,
-  NormalizedCacheObject,
-  ApolloQueryResult,
-} from '@apollo/client';
+import { gql, ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import {
   GeneralSettings,
   ContentNodeIdType,
@@ -17,27 +12,6 @@ import { ensureAuthorization } from '../auth';
 import { isServerSide } from '../utils';
 
 /**
- * Makes a call to WPGraphQL, applying the Authorization header if necessary.
- *
- * @async
- * @export
- * @template T
- * @param {ApolloClient<NormalizedCacheObject>} client
- * @param {string} query
- * @returns {Promise<ApolloQueryResult<T>>}
- */
-export async function baseQuery<T>(
-  client: ApolloClient<NormalizedCacheObject>,
-  query: string,
-): Promise<ApolloQueryResult<T>> {
-  return client.query<T>({
-    query: gql`
-      ${query}
-    `,
-  });
-}
-
-/**
  * Gets all posts from WordPress
  *
  * @async
@@ -45,37 +19,38 @@ export async function baseQuery<T>(
  * @param {ApolloClient<NormalizedCacheObject>} client
  * @returns
  */
-export async function getPosts(client: ApolloClient<NormalizedCacheObject>) {
-  const result = await baseQuery<{ posts: Connection<Post> }>(
-    client,
-    `
-        query {
-          posts {
-            pageInfo {
-              endCursor
-              hasNextPage
-              hasPreviousPage
-              startCursor
-            }
-            edges {
-              cursor
-              node {
-                id
-                slug
-                title
-                content
-                isRevision
-                isPreview
-                isSticky
-                excerpt
-                uri
-                status
-              }
+export async function getPosts(
+  client: ApolloClient<NormalizedCacheObject>,
+): Promise<Post[]> {
+  const result = await client.query<{ posts: Connection<Post> }>({
+    query: gql`
+      query {
+        posts {
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          edges {
+            cursor
+            node {
+              id
+              slug
+              title
+              content
+              isRevision
+              isPreview
+              isSticky
+              excerpt
+              uri
+              status
             }
           }
         }
-      `,
-  );
+      }
+    `,
+  });
 
   const thePosts = result?.data?.posts?.edges.map(({ node }) => node);
 
@@ -129,13 +104,10 @@ export async function getContentNode(
   idType: ContentNodeIdType = ContentNodeIdType.URI,
   asPreview = false,
 ): Promise<Post | Page> {
-  const result = await baseQuery<{ contentNode: Post | Page }>(
-    client,
-    `
-      query {
-        contentNode(id: "${id}", idType: ${idType}, asPreview: ${String(
-      asPreview,
-    )}) {
+  const result = await client.query<{ contentNode: Post | Page }>({
+    query: gql`
+      query($id: ID!, $idType: ContentNodeIdTypeEnum, $asPreview: Boolean) {
+        contentNode(id: $id, idType: $idType, asPreview: $asPreview) {
           ... on Post {
             id
             slug
@@ -191,7 +163,12 @@ export async function getContentNode(
         }
       }
     `,
-  );
+    variables: {
+      id,
+      idType,
+      asPreview,
+    },
+  });
 
   let node = result?.data?.contentNode;
 
@@ -234,9 +211,8 @@ export async function getContentNode(
 export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<GeneralSettings> {
-  const result = await baseQuery<{ generalSettings: GeneralSettings }>(
-    client,
-    `
+  const result = await client.query<{ generalSettings: GeneralSettings }>({
+    query: gql`
       query {
         generalSettings {
           title
@@ -244,7 +220,7 @@ export async function getGeneralSettings(
         }
       }
     `,
-  );
+  });
 
   return result?.data?.generalSettings;
 }
@@ -276,11 +252,10 @@ export async function getUriInfo(
     }
   }
 
-  const response = await baseQuery<{ nodeByUri?: UriInfo }>(
-    client,
-    `
-      query {
-        nodeByUri(uri: "${urlPath}") {
+  const response = await client.query<{ nodeByUri?: UriInfo }>({
+    query: gql`
+      query($uri: String!) {
+        nodeByUri(uri: $uri) {
           id
           ... on ContentType {
             isFrontPage
@@ -289,7 +264,11 @@ export async function getUriInfo(
         }
       }
     `,
-  );
+    variables: {
+      uri: urlPath,
+    },
+  });
+
   const result = response?.data?.nodeByUri;
 
   if (!result) {
