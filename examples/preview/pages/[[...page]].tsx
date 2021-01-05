@@ -4,7 +4,7 @@ import { TemplateLoader, initializeNextStaticProps } from '@wpengine/headless';
 /**
  * @todo make conditionalTags available
  */
-export default function Page({ ...props }) {
+export default function Page() {
   return <TemplateLoader />;
 }
 

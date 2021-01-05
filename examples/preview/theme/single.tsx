@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePost } from '@wpengine/headless';
 
-export default function Post() {
+export default function Single() {
   const post = usePost();
 
   return (
