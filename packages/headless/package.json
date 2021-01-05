@@ -32,6 +32,7 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "isomorphic-fetch": "^3.0.0",
+    "next-transpile-modules": "^6.0.0",
     "universal-cookie": "^4.0.4"
   },
   "peerDependencies": {
