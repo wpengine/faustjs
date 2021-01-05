@@ -1,27 +1,24 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import {
-  useNextUriInfo,
-  initializeNextServerSideProps,
-} from '@wpengine/headless';
-import { GetServerSidePropsContext } from 'next';
-import Posts from '../lib/components/Posts';
-import Post from '../lib/components/Post';
+import { TemplateLoader, initializeNextStaticProps } from '@wpengine/headless';
 
+/**
+ * @todo make conditionalTags available
+ */
 export default function Page() {
-  const pageInfo = useNextUriInfo();
-
-  if (!pageInfo) {
-    return <></>;
-  }
-
-  if (pageInfo.isPostsPage) {
-    return <Posts />;
-  }
-
-  return <Post />;
+  return <TemplateLoader />;
 }
 
-export function getServerSideProps(context: GetServerSidePropsContext) {
-  return initializeNextServerSideProps(context);
+/**
+ * @todo Show how to switch between static and SSR
+ */
+
+export function getStaticProps(context: any) {
+  return initializeNextStaticProps(context);
+}
+
+export function getStaticPaths() {
+  return {
+    paths: ['/'],
+    fallback: true,
+  };
 }

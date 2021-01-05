@@ -68,22 +68,26 @@ export async function authorize(
  * an object containing a redirect URI to send the client to for authorization.
  *
  * @export
- * @param {string} url
+ * @param {string} redirectUri
  * @returns {(string | { redirect: string })}
  */
 export function ensureAuthorization(
-  url: string,
-): string | { redirect: string } {
+  redirectUri: string,
+): string | { redirect: string } | undefined {
   const accessToken = getAccessToken();
+
+  if (!WP_URL) {
+    return undefined;
+  }
 
   if (!!accessToken && accessToken.length > 0) {
     return accessToken;
   }
 
-  const parsedUrl = parseUrl(url);
+  const parsedUrl = parseUrl(redirectUri);
 
   if (!parsedUrl) {
-    throw new Error('Invalid url for authorization');
+    throw new Error('Invalid redirectUri for authorization');
   }
 
   const { baseUrl } = parsedUrl;
@@ -92,7 +96,7 @@ export function ensureAuthorization(
     redirect: `${WP_URL as string}/generate?redirect_uri=${encodeURIComponent(
       `${baseUrl}/${
         trimLeadingSlash(AUTH_URL as string) as string
-      }?redirect_uri=${encodeURIComponent(url)}`,
+      }?redirect_uri=${encodeURIComponent(redirectUri)}`,
     )}`,
   };
 }

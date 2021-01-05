@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePosts } from '@wpengine/headless';
 
-export default function Posts() {
+export default function Index() {
   const posts = usePosts();
 
   return (
