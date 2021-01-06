@@ -1,0 +1,26 @@
+name: ESLint
+on: pull_request
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node Dependencies
+        run: yarn install
+        working-directory: packages/headless
+        env:
+          CI: TRUE
+      - name: Test Code Linting
+        run:  yarn run eslint --output-file eslint_report.json --format json . --ext .js,.jsx,.ts,.tsx
+        working-directory: packages/headless
+        continue-on-error: true
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@1.1.2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          report-json: "packages/headless/eslint_report.json"
+      - name: Upload ESLint report
+        uses: actions/upload-artifact@v1
+        with:
+          name: eslint_report_headless_package.json
+          path: packages/headless/eslint_report.json
