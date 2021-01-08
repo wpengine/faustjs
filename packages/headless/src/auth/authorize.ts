@@ -93,7 +93,7 @@ export function ensureAuthorization(
   const { baseUrl } = parsedUrl;
 
   return {
-    redirect: `${WP_URL as string}/generate?redirect_uri=${encodeURIComponent(
+    redirect: `${WP_URL}/generate?redirect_uri=${encodeURIComponent(
       `${baseUrl}/${
         trimLeadingSlash(AUTH_URL as string) as string
       }?redirect_uri=${encodeURIComponent(redirectUri)}`,

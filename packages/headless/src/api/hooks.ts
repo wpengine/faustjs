@@ -20,7 +20,7 @@ import {
 } from './services';
 import { headlessConfig } from '../config';
 import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
-import {isPreviewPath} from "../utils/preview";
+import { isPreviewPath } from '../utils/preview';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
