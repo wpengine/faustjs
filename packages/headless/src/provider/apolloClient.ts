@@ -4,10 +4,10 @@
 import { useMemo } from 'react';
 import {
   ApolloClient,
-  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
 import { GetServerSidePropsResult, GetStaticPropsResult } from 'next';
@@ -51,7 +51,7 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
     ssrMode: isServerSide(),
     link: WP_URL
       ? authLink.concat(
-          new HttpLink({
+          new BatchHttpLink({
             uri: `${WP_URL}/graphql`,
           }),
         )
