@@ -32,15 +32,6 @@ export async function initializeNextServerSideProps(
     wpeConfig.uriPrefix,
   );
 
-  /* Load settings into cache */
-  await getGeneralSettings(apolloClient);
-
-  const pageInfo = (await getUriInfo(
-    apolloClient,
-    currentUrlPath,
-    isPreview(context),
-  )) as UriInfo;
-
   if (isPreview(context)) {
     const host = context.req.headers.host as string;
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
@@ -65,16 +56,19 @@ export async function initializeNextServerSideProps(
     };
   }
 
-  if (pageInfo.isPostsPage) {
-    await getPosts(apolloClient);
-  } else {
-    await getContentNode(
-      apolloClient,
-      pageInfo.uriPath,
-      ContentNodeIdType.URI,
-      isPreview(context),
-    );
-  }
+  await Promise.all([
+    getGeneralSettings(apolloClient),
+    getUriInfo(apolloClient, currentUrlPath, isPreview(context)),
+    getPosts(apolloClient),
+    currentUrlPath !== '/'
+      ? getContentNode(
+          apolloClient,
+          currentUrlPath,
+          ContentNodeIdType.URI,
+          isPreview(context),
+        )
+      : undefined,
+  ]);
 
   return addApolloState(apolloClient, {
     props: { preview: context.preview ?? false },
