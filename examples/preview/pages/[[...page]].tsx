@@ -1,5 +1,9 @@
 import React from 'react';
-import { TemplateLoader, useNextUriInfo, initializeNextStaticProps, initializeNextStaticPaths } from '@wpengine/headless';
+import {
+  TemplateLoader,
+  initializeNextStaticProps,
+  initializeNextStaticPaths,
+} from '@wpengine/headless';
 
 /**
  * @todo make conditionalTags available
