@@ -1,5 +1,10 @@
 import { GetServerSidePropsResult, GetStaticPropsContext } from 'next';
-import { getUriInfo, getPosts, getContentNode } from './services';
+import {
+  getUriInfo,
+  getPosts,
+  getContentNode,
+  getGeneralSettings,
+} from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
 import { ContentNodeIdType, UriInfo } from '../types';
@@ -26,6 +31,9 @@ export async function initializeNextStaticProps(
     getCurrentPath(context),
     wpeConfig.uriPrefix,
   );
+
+  /* Load settings into cache */
+  await getGeneralSettings(apolloClient);
 
   const pageInfo = (await getUriInfo(
     apolloClient,
