@@ -7,7 +7,7 @@ import {
 } from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { ContentNodeIdType, UriInfo } from '../types';
+import { ContentNodeIdType } from '../types';
 import { resolvePrefixedUrlPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
@@ -31,15 +31,6 @@ export async function initializeNextStaticProps(
     getCurrentPath(context),
     wpeConfig.uriPrefix,
   );
-
-  /* Load settings into cache */
-  await getGeneralSettings(apolloClient);
-
-  const pageInfo = (await getUriInfo(
-    apolloClient,
-    currentUrlPath,
-    isPreview(context),
-  )) as UriInfo;
 
   if (isPreview(context)) {
     const path = Array.isArray(context.params?.page)
@@ -68,16 +59,19 @@ export async function initializeNextStaticProps(
     };
   }
 
-  if (pageInfo.isPostsPage) {
-    await getPosts(apolloClient);
-  } else {
-    await getContentNode(
-      apolloClient,
-      pageInfo.uriPath,
-      ContentNodeIdType.URI,
-      isPreview(context),
-    );
-  }
+  await Promise.all([
+    getGeneralSettings(apolloClient),
+    getUriInfo(apolloClient, currentUrlPath, isPreview(context)),
+    getPosts(apolloClient),
+    currentUrlPath !== '/'
+      ? getContentNode(
+          apolloClient,
+          currentUrlPath,
+          ContentNodeIdType.URI,
+          isPreview(context),
+        )
+      : undefined,
+  ]);
 
   return addApolloState(apolloClient, {
     props: { preview: context.preview ?? false },
