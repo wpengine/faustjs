@@ -1,12 +1,17 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { getUriInfo, getPosts, getContentNode } from './services';
+import {
+  getUriInfo,
+  getPosts,
+  getContentNode,
+  getGeneralSettings,
+} from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
 import { ContentNodeIdType, UriInfo } from '../types';
 import { resolvePrefixedUrlPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
-import {isPreview, isPreviewPath} from "../utils/preview";
+import { isPreview, isPreviewPath } from '../utils/preview';
 
 /**
  * Must be called from getServerSideProps within a Next app in order to support SSR. It will
@@ -26,6 +31,9 @@ export async function initializeNextServerSideProps(
     getCurrentPath(context),
     wpeConfig.uriPrefix,
   );
+
+  /* Load settings into cache */
+  await getGeneralSettings(apolloClient);
 
   const pageInfo = (await getUriInfo(
     apolloClient,
