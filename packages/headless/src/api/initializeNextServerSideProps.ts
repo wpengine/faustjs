@@ -7,7 +7,7 @@ import {
 } from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { ContentNodeIdType, UriInfo } from '../types';
+import { ContentNodeIdType } from '../types';
 import { resolvePrefixedUrlPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
