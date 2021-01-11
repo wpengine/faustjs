@@ -59,14 +59,7 @@ add_action( 'admin_init', 'wpe_headless_register_settings_section' );
  */
 function wpe_headless_register_settings_section() {
 	add_settings_section(
-		'frontend_site_section',
-		null,
-		null,
-		'wpe-headless-settings'
-	);
-
-	add_settings_section(
-		'menu_locations_section',
+		'settings_section',
 		null,
 		null,
 		'wpe-headless-settings'
@@ -90,7 +83,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Front-end site URL', 'wpe-headless' ),
 		'wpe_headless_display_frontend_uri_field',
 		'wpe-headless-settings',
-		'frontend_site_section'
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -98,7 +91,7 @@ function wpe_headless_register_settings_fields() {
 		__( 'Secret Key', 'wpe-headless' ),
 		'wpe_headless_display_secret_key_field',
 		'wpe-headless-settings',
-		'frontend_site_section'
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -106,8 +99,51 @@ function wpe_headless_register_settings_fields() {
 		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
-		'menu_locations_section'
+		'settings_section'
 	);
+
+	add_settings_field(
+		'enable_disable',
+		__( 'Features', 'wpe-headless' ),
+		'wpe_headless_display_enable_disable_fields',
+		'wpe-headless-settings',
+		'settings_section'
+	);
+}
+
+add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_handle_regenerate_secret_key', 5 );
+/**
+ * Callback for WordPress 'load-{$page_hook}' action.
+ *
+ * Nonce set in wpe_headless_display_secret_key_field().
+ *
+ * Regenerate the secret key.
+ *
+ * @return void
+ */
+function wpe_headless_handle_regenerate_secret_key() {
+	$screen = get_current_screen();
+	if ( 'settings_page_wpe-headless-settings' !== $screen->id ) {
+		return;
+	}
+
+	if ( empty( $_GET['regenerate_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	check_admin_referer( 'regenerate_secret', 'regenerate_nonce' );
+
+	wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
+
+	wp_safe_redirect(
+		admin_url( '/options-general.php?page=wpe-headless-settings' )
+	);
+
+	exit;
 }
 
 /**
@@ -162,11 +198,33 @@ function wpe_headless_display_menu_locations_field() {
  * @return void
  */
 function wpe_headless_display_secret_key_field() {
-	$secret_key = wpe_headless_get_secret_key();
+	$secret_key     = wpe_headless_get_secret_key();
+	$regenerate_url = wp_nonce_url(
+		admin_url( 'options-general.php?page=wpe-headless-settings' ),
+		'regenerate_secret',
+		'regenerate_nonce'
+	);
 
 	?>
 	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
 	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
+
+	<a
+		href="<?php echo esc_url( $regenerate_url ); ?>"
+		title="<?php esc_attr_e( 'Regenerate Secret Key', 'wpe-headless' ); ?>"
+		onclick="confirm_regenerate_key( event )"
+	>
+		<?php esc_html_e( 'Regenerate', 'wpe-headless' ); ?>
+	</a>
+
+	<script type="text/javascript">
+		function confirm_regenerate_key( event ) {
+			if ( ! confirm( 'Are you sure you want to regenerate your secret key?' ) ) {
+				event.preventDefault();
+			}
+		}
+	</script>
+
 	<p class="description">
 		<?php
 		printf(
@@ -194,5 +252,178 @@ function wpe_headless_display_frontend_uri_field() {
 	<p class="description">
 		<?php esc_html_e( 'The URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'wpe-headless' ); ?>
 	</p>
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the enable/disable features section.
+ *
+ * @return void
+ */
+function wpe_headless_display_enable_disable_fields() {
+	$disable_theme    = wpe_headless_is_themes_disabled();
+	$enable_rewrites  = wpe_headless_is_rewrites_enabled();
+	$enable_redirects = wpe_headless_is_redirects_enabled();
+
+	?>
+	<fieldset>
+		<label for="disable_theme">
+			<input type="checkbox" id="disable_theme" name="wpe_headless[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
+			<?php esc_html_e( 'Disable WordPress theme functionality', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_rewrites">
+			<input type="checkbox" id="enable_rewrites" name="wpe_headless[enable_rewrites]" value="1" <?php checked( $enable_rewrites ); ?> />
+			<?php esc_html_e( 'Enable Post and Category URL rewrites', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_redirects">
+			<input type="checkbox" id="enable_redirects" name="wpe_headless[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
+			<?php esc_html_e( 'Enable public route redirects', 'wpe-headless' ); ?>
+		</label>
+	</fieldset>
+	<?php
+}
+
+add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_graphql_dependency' );
+/**
+ * Verifies the WP GraphQL dependency is met.
+ *
+ * If not, it adds an admin notice and related scripts
+ * for installing and activating the plugin.
+ *
+ * @return void
+ */
+function wpe_headless_verify_graphql_dependency() {
+	if ( function_exists( 'graphql' ) ) {
+		return;
+	}
+
+	add_action( 'admin_notices', 'wpe_headless_display_graphql_notice' );
+	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_graphql_scripts' );
+}
+
+/**
+ * Displays the WP GraphQL dependency notice.
+ */
+function wpe_headless_display_graphql_notice() {
+	?>
+	<div id="wpe-headless-notice-graphql" class="notice notice-info wpe-headless-notice wpe-headless-notice-graphql">
+		<p>
+			<?php
+			printf(
+			/* translators: %s: Link to plugin install page. */
+				wp_kses_post( __( 'WP Engine Headless requires the WP GraphQL plugin. <a id="wpe-headless-link-install-graphql" href="%s">Install and activate it now</a>.', 'wpe-headless' ) ),
+				esc_url( admin_url( 'plugin-install.php?s=wp+graphql&tab=search&type=term' ) )
+			);
+			?>
+		</p>
+	</div>
+	<?php
+}
+
+/**
+ * Adds the scripts required to install the
+ * WP GraphQL plugin dependency.
+ */
+function wpe_headless_add_graphql_scripts() {
+	wp_enqueue_script( 'wp-api-fetch' );
+
+	?>
+	<script>
+		document.addEventListener( 'DOMContentLoaded', function() {
+			document.getElementById( 'wpe-headless-link-install-graphql' ).onclick = ( event ) => {
+				event.preventDefault();
+				doGraphQLInstall();
+			}
+		} );
+
+		// Installs and activates the WP GraphQL plugin.
+		async function doGraphQLInstall() {
+			updateGraphQLNotice( 'installing' );
+
+			let installed = false;
+
+			/**
+			 * Check if the plugin is installed first.
+			 * Otherwise the REST endpoint downloads
+			 * and tries to install the plugin before
+			 * returning an error that the folder
+			 * already exists.
+			 */
+			await isGraphQLPluginInstalled().then( ( result ) => {
+				installed = result;
+			} ).catch( ( result ) => {
+				console.log( result );
+				installed = false;
+			} );
+
+			if ( installed ) {
+				await activateGraphQL();
+			} else {
+				await installActivateGraphQLPlugin();
+			}
+			updateGraphQLNotice( 'complete' );
+		}
+
+		// Updates the admin notice text.
+		function updateGraphQLNotice( type = 'installing' ) {
+			const notices = document.getElementsByClassName( 'wpe-headless-notice-graphql' );
+			const notice = notices[0];
+			switch ( type ) {
+				case 'installing':
+					notice.innerHTML = '<p>Installing and activating the WP GraphQL plugin...</p>';
+					break;
+
+				case 'complete':
+					notice.innerHTML = '<p>GraphQL installed and activated!</p>';
+					break;
+			}
+		}
+
+		// Returns whether or not the WP GraphQL plugin is installed.
+		async function isGraphQLPluginInstalled() {
+			let installed = false;
+			await wp.apiFetch( {
+				path: '/wp/v2/plugins/wp-graphql/wp-graphql',
+				method: 'GET'
+			} ).then( ( result ) => {
+				if ( result.hasOwnProperty( 'code' ) && result.code === 'rest_plugin_not_found' ) {
+					installed = false;
+				}
+
+				if ( result.hasOwnProperty( 'plugin' ) && result.plugin === 'wp-graphql/wp-graphql' ) {
+					installed = true;
+				}
+			} );
+			return installed;
+		}
+
+		// Activates the plugin if it already exists.
+		async function activateGraphQL() {
+			await wp.apiFetch( {
+				path: '/wp/v2/plugins/wp-graphql/wp-graphql',
+				method: 'POST',
+				data: { status: 'active' },
+			} ).then( ( result ) => {
+				console.log( result );
+			} )
+		}
+
+		// Installs and activates the plugin.
+		async function installActivateGraphQLPlugin() {
+			await wp.apiFetch( {
+				path: '/wp/v2/plugins',
+				method: 'POST',
+				data: { slug: 'wp-graphql', status: 'active' }
+			} ).then( ( result ) => {
+				console.log(result);
+			} );
+		}
+	</script>
 	<?php
 }

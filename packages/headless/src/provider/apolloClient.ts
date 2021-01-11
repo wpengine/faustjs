@@ -4,12 +4,15 @@
 import { useMemo } from 'react';
 import {
   ApolloClient,
-  HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+import { BatchHttpLink } from '@apollo/client/link/batch-http';
+import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
+import { GetServerSidePropsResult, GetStaticPropsResult } from 'next';
 import { isServerSide, trimTrailingSlash } from '../utils';
+import { getAccessToken } from '../auth';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -20,10 +23,6 @@ const WP_URL = trimTrailingSlash(
 if (!WP_URL) {
   if (isServerSide()) {
     throw new Error(
-      'NEXT_PUBLIC_WORDPRESS_URL environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use client-side requests.',
-    );
-  } else {
-    throw new Error(
       'WORDPRESS_URL and NEXT_PUBLIC_WORDPRESS_URL environment variables are not set. Please set WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.',
     );
   }
@@ -33,11 +32,31 @@ if (!WP_URL) {
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
 function createApolloClient(): ApolloClient<NormalizedCacheObject> {
+  const authLink = setContext((_, { headers }) => {
+    const token = getAccessToken();
+
+    if (!token) {
+      return {};
+    }
+
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  });
+
   return new ApolloClient({
     ssrMode: isServerSide(),
-    link: new HttpLink({
-      uri: `${WP_URL as string}/graphql`,
-    }),
+    link: WP_URL
+      ? authLink.concat(
+          new BatchHttpLink({
+            uri: `${WP_URL}/graphql`,
+          }),
+        )
+      : undefined,
+
     cache: new InMemoryCache(),
   });
 }
@@ -127,13 +146,15 @@ export function initializeApollo(
 export function addApolloState(
   client: ApolloClient<any>,
   pageProps: { [prop: string]: any },
-) {
+): GetServerSidePropsResult<any> | GetStaticPropsResult<any> {
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }
 
-  return pageProps;
+  return pageProps as {
+    props: unknown;
+  };
 }
 
 /**
