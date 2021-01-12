@@ -154,19 +154,7 @@ function wpe_headless_handle_regenerate_secret_key() {
  * @return void
  */
 function wpe_headless_display_settings_page() {
-	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Headless Settings', 'wpe-headless' ); ?></h1>
-
-		<form action="options.php" method="POST">
-			<?php settings_fields( 'wpe_headless' ); ?>
-
-			<?php do_settings_sections( 'wpe-headless-settings' ); ?>
-
-			<?php submit_button(); ?>
-		</form>
-	</div>
-	<?php
+	require WPE_HEADLESS_DIR . '/includes/settings/views/headless-settings.php';
 }
 
 /**
