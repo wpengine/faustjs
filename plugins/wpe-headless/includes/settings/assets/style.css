@@ -61,6 +61,13 @@ svg.wpengine {
 	padding-right: 12px;
 }
 
+/* Forms
+---------------------------------------------------------------------------- */
+
+.field-action {
+	margin-left: 26px;
+}
+
 /* Sidebar. Based on https://every-layout.dev/layouts/sidebar/#the-generator.
 ---------------------------------------------------------------------------- */
 

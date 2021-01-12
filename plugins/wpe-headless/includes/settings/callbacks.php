@@ -201,6 +201,7 @@ function wpe_headless_display_secret_key_field() {
 		href="<?php echo esc_url( $regenerate_url ); ?>"
 		title="<?php esc_attr_e( 'Regenerate Secret Key', 'wpe-headless' ); ?>"
 		onclick="confirm_regenerate_key( event )"
+		class="field-action"
 	>
 		<?php esc_html_e( 'Regenerate', 'wpe-headless' ); ?>
 	</a>
