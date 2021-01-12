@@ -154,19 +154,7 @@ function wpe_headless_handle_regenerate_secret_key() {
  * @return void
  */
 function wpe_headless_display_settings_page() {
-	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Headless Settings', 'wpe-headless' ); ?></h1>
-
-		<form action="options.php" method="POST">
-			<?php settings_fields( 'wpe_headless' ); ?>
-
-			<?php do_settings_sections( 'wpe-headless-settings' ); ?>
-
-			<?php submit_button(); ?>
-		</form>
-	</div>
-	<?php
+	require WPE_HEADLESS_DIR . '/includes/settings/views/headless-settings.php';
 }
 
 /**
@@ -206,13 +194,14 @@ function wpe_headless_display_secret_key_field() {
 	);
 
 	?>
-	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" disabled />
+	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" readonly />
 	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
 
 	<a
 		href="<?php echo esc_url( $regenerate_url ); ?>"
 		title="<?php esc_attr_e( 'Regenerate Secret Key', 'wpe-headless' ); ?>"
 		onclick="confirm_regenerate_key( event )"
+		class="field-action"
 	>
 		<?php esc_html_e( 'Regenerate', 'wpe-headless' ); ?>
 	</a>
@@ -299,12 +288,30 @@ add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_gra
  * @return void
  */
 function wpe_headless_verify_graphql_dependency() {
+	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_settings_styles' );
+
 	if ( function_exists( 'graphql' ) ) {
 		return;
 	}
 
 	add_action( 'admin_notices', 'wpe_headless_display_graphql_notice' );
 	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_graphql_scripts' );
+}
+
+/**
+ * Enqueues the settings stylesheet on the Settings → Headless admin page.
+ *
+ * Callback for admin_enqueue_scripts.
+ */
+function wpe_headless_add_settings_styles() {
+	$plugin = get_plugin_data( WPE_HEADLESS_FILE );
+
+	wp_enqueue_style(
+		'wpe-headless-settings',
+		WPE_HEADLESS_URL . 'includes/settings/assets/style.css',
+		array(),
+		$plugin['Version']
+	);
 }
 
 /**

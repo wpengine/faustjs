@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'WPE_HEADLESS_FILE', __FILE__ );
 define( 'WPE_HEADLESS_DIR', dirname( __FILE__ ) );
+define( 'WPE_HEADLESS_URL', plugin_dir_url( __FILE__ ) );
 define( 'WPE_HEADLESS_PATH', plugin_basename( WPE_HEADLESS_FILE ) );
 define( 'WPE_HEADLESS_SLUG', dirname( plugin_basename( WPE_HEADLESS_FILE ) ) );
 
