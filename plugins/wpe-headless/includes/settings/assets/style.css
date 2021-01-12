@@ -117,6 +117,7 @@ svg.wpengine {
 	content: url(icons/doc.svg);
 	height: 1em;
 	margin-left: -30px;
+	margin-top: -2px;
 	position: absolute;
 	width: 0.5em;
 }
