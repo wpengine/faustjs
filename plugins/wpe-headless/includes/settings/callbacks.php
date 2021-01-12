@@ -299,12 +299,30 @@ add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_gra
  * @return void
  */
 function wpe_headless_verify_graphql_dependency() {
+	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_settings_styles' );
+
 	if ( function_exists( 'graphql' ) ) {
 		return;
 	}
 
 	add_action( 'admin_notices', 'wpe_headless_display_graphql_notice' );
 	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_graphql_scripts' );
+}
+
+/**
+ * Enqueues the settings stylesheet on the Settings → Headless admin page.
+ *
+ * Callback for admin_enqueue_scripts.
+ */
+function wpe_headless_add_settings_styles() {
+	$plugin = get_plugin_data( WPE_HEADLESS_FILE );
+
+	wp_enqueue_style(
+		'wpe-headless-settings',
+		WPE_HEADLESS_URL . 'includes/settings/assets/style.css',
+		array(),
+		$plugin['Version']
+	);
 }
 
 /**
