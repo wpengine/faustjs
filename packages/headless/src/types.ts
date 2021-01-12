@@ -147,6 +147,7 @@ export interface Post extends ContentNode {
   excerpt: string;
   isSticky: boolean;
   preview?: PostPreview;
+  enqueuedStylesheets?: EnqueuedStylesheets;
 }
 
 /**
@@ -160,6 +161,7 @@ export interface Page extends ContentNode {
   isFrontPage: boolean;
   isPostsPage: boolean;
   preview?: PagePreview;
+  enqueuedStylesheets?: EnqueuedStylesheets;
 }
 
 /**
@@ -171,4 +173,25 @@ export interface Page extends ContentNode {
 export interface GeneralSettings {
   title: string;
   description: string;
+}
+
+/**
+ * An object with Post stylesheets objects
+ *
+ * @export
+ * @interface EnqueuedStylesheets
+ */
+export interface EnqueuedStylesheets {
+  node: Array<EnqueuedStylesheet>;
+}
+
+/**
+ * An object with WordPress Post stylesheet information
+ *
+ * @export
+ * @interface EnqueuedStylesheet
+ */
+export interface EnqueuedStylesheet {
+  src: string;
+  handle: string;
 }
