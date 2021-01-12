@@ -4,11 +4,20 @@ import { UriInfo } from '../types';
 
 function resolveTemplate(
   pageInfo: UriInfo | undefined,
-): React.FunctionComponent {
+): React.FunctionComponent | null {
   /**
    * List out files in main project using Webpack.
    */
-  const context = require.context('theme', false, /.*/);
+  let context;
+
+  try {
+    context = require.context('theme', false, /.*/);
+  } catch (e) {
+    console.warn(
+      '"theme" directory not detected in Next.js project. Please add it to take advantage of <TemplateLoader />.',
+    );
+    return null;
+  }
 
   if (!pageInfo || !pageInfo.templates) {
     return context(`./index`).default as React.FunctionComponent;
@@ -31,10 +40,14 @@ function resolveTemplate(
   return context(`./index`).default as React.FunctionComponent;
 }
 
-export default function TemplateLoader(): JSX.Element {
+export default function TemplateLoader(): JSX.Element | null {
   const pageInfo = useNextUriInfo();
 
   const Component = resolveTemplate(pageInfo);
+
+  if (!Component) {
+    return null;
+  }
 
   return <Component />;
 }
