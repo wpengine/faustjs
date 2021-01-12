@@ -133,6 +133,12 @@ export async function getContentNode(
                 status
               }
             }
+            enqueuedStylesheets {
+              nodes {
+                src
+                handle
+              }
+            }
           }
           ... on Page {
             id
@@ -157,6 +163,12 @@ export async function getContentNode(
                 isPostsPage
                 uri
                 status
+              }
+            }
+            enqueuedStylesheets {
+              nodes {
+                src
+                handle
               }
             }
           }
@@ -197,6 +209,7 @@ export async function getContentNode(
     status: node.status,
     isFrontPage: (node as Page).isFrontPage,
     isPostsPage: (node as Page).isPostsPage,
+    enqueuedStylesheets: node.enqueuedStylesheets,
   };
 }
 
