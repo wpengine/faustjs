@@ -182,7 +182,7 @@ export interface GeneralSettings {
  * @interface EnqueuedStylesheets
  */
 export interface EnqueuedStylesheets {
-  node: Array<EnqueuedStylesheet>;
+  nodes: Array<EnqueuedStylesheet>;
 }
 
 /**
