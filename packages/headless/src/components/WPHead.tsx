@@ -25,9 +25,11 @@ export default function WPHead(): JSX.Element {
   }
 
   if (post?.enqueuedStylesheets?.nodes) {
-    stylesheet = post.enqueuedStylesheets.nodes.filter((node) => {
-      return 'wp-block-library' === node.handle;
-    }).pop();
+    stylesheet = post.enqueuedStylesheets.nodes
+      .filter((node) => {
+        return node.handle === 'wp-block-library';
+      })
+      .pop();
   }
 
   return (
@@ -35,7 +37,11 @@ export default function WPHead(): JSX.Element {
       <title>{title}</title>
 
       {stylesheet && (
-        <link href={`${WP_URL}${stylesheet.src}`} rel="stylesheet" key={stylesheet.handle} />
+        <link
+          href={`${WP_URL as string}${stylesheet.src}`}
+          rel="stylesheet"
+          key={stylesheet.handle}
+        />
       )}
     </Head>
   );
