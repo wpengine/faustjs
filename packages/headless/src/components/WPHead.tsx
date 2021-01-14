@@ -30,13 +30,19 @@ export default function WPHead(): JSX.Element {
     });
   }
 
+  const stylesheetUrl = (stylesheet: EnqueuedStylesheet) => {
+    return stylesheet.src.indexOf('http') == 0
+      ? stylesheet.src
+      : `${WP_URL as string}${stylesheet.src}`;
+  };
+
   return (
     <Head>
       <title>{title}</title>
 
       {stylesheets.map((stylesheet) => (
         <link
-          href={`${WP_URL as string}${stylesheet.src}`}
+          href={stylesheetUrl(stylesheet)}
           rel="stylesheet"
           key={stylesheet.handle}
         />
