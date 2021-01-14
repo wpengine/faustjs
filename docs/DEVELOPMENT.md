@@ -16,8 +16,8 @@ When working on the NPM packages in this repository, we recommend utilizing our 
 
 To get going, you can run the following:
 
-1. `npm run bootstrap`
-2. Ensure that `.env.local` is properly configured in `examples/preview`
+1. Ensure that `.env.local` is properly configured in `examples/preview`
+2. `npm run bootstrap`
 3. `npm run dev`
 
 ### Plugins
