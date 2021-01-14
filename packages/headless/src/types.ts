@@ -100,6 +100,28 @@ export interface PageInfo {
 }
 
 /**
+ * A WordPress featured image object obtained through a WPGraphQL request
+ *
+ * @export
+ * @interface FeaturedImageNode
+ */
+export interface FeaturedImageNode {
+  id: string;
+  altText: string;
+  sourceUrl: string;
+}
+
+/**
+ * A WordPress featured image node object obtained through a WPGraphQL request
+ *
+ * @export
+ * @interface FeaturedImage
+ */
+export interface FeaturedImage {
+  node: FeaturedImageNode;
+}
+
+/**
  * A WordPress Page or Post object obtained through a WPGraphQL request
  *
  * @export
@@ -114,6 +136,7 @@ export interface ContentNode {
   isRevision: boolean;
   isPreview: boolean;
   uri: string;
+  featuredImage: FeaturedImage;
 }
 
 /**
