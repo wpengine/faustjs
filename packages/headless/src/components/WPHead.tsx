@@ -13,7 +13,7 @@ export default function WPHead(): JSX.Element {
   const post = usePost();
 
   let title: string;
-  let stylesheet: EnqueuedStylesheet | undefined;
+  let stylesheets: Array<EnqueuedStylesheet> = [];
 
   const siteTitle: string = settings?.title ?? '';
   const siteTagline: string = settings?.description ?? '';
@@ -25,24 +25,22 @@ export default function WPHead(): JSX.Element {
   }
 
   if (post?.enqueuedStylesheets?.nodes) {
-    stylesheet = post.enqueuedStylesheets.nodes
-      .filter((node) => {
-        return node.handle === 'wp-block-library';
-      })
-      .pop();
+    stylesheets = post.enqueuedStylesheets.nodes.filter((node) => {
+      return node.src.indexOf('wp-content/themes') < 0;
+    });
   }
 
   return (
     <Head>
       <title>{title}</title>
 
-      {stylesheet && (
+      {stylesheets.map((stylesheet) => (
         <link
           href={`${WP_URL as string}${stylesheet.src}`}
           rel="stylesheet"
           key={stylesheet.handle}
         />
-      )}
+      ))}
     </Head>
   );
 }
