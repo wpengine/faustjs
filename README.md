@@ -12,7 +12,7 @@ Eager to try out the Headless Framework? Here's how you can get started with our
 4. [Clone this repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to a directory of your choice
 5. Navigate to `examples/preview` in the cloned repository
 6. `cp .env.local.sample .env.local`
-7. Populate `NEXT_PUBLIC_WORDPRESS_URL` and `WPE_HEADLESS_SECRET` accordingly in `.env.local`
+7. Populate `WORDPRESS_URL` (or `NEXT_PUBLIC_WORDPRESS_URL`) and `WPE_HEADLESS_SECRET` accordingly in `.env.local`
 8. `npm install && npm run dev`
 
 ## Framework Features
