@@ -1,0 +1,4 @@
+{
+  "name": "WP GraphQL + WP Engine Headless Schema",
+  "schemaPath": "wpgraphql-schema.graphql"
+}
