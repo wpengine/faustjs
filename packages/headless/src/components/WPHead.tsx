@@ -31,7 +31,7 @@ export default function WPHead(): JSX.Element {
   }
 
   const stylesheetUrl = (stylesheet: EnqueuedStylesheet) => {
-    return stylesheet.src.indexOf('http') == 0
+    return stylesheet.src.indexOf('http') === 0
       ? stylesheet.src
       : `${WP_URL as string}${stylesheet.src}`;
   };
