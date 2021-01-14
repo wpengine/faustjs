@@ -45,6 +45,13 @@ export async function getPosts(
               excerpt
               uri
               status
+              featuredImage {
+                node {
+                  id
+                  altText
+                  sourceUrl
+                }
+              }
             }
           }
         }
@@ -119,6 +126,13 @@ export async function getContentNode(
             excerpt
             uri
             status
+            featuredImage {
+              node {
+                id
+                altText
+                sourceUrl
+              }
+            }
             preview {
               node {
                 id
@@ -131,6 +145,13 @@ export async function getContentNode(
                 excerpt
                 uri
                 status
+                featuredImage {
+                  node {
+                    id
+                    altText
+                    sourceUrl
+                  }
+                }
               }
             }
             enqueuedStylesheets {
@@ -151,6 +172,13 @@ export async function getContentNode(
             isPostsPage
             uri
             status
+            featuredImage {
+              node {
+                id
+                altText
+                sourceUrl
+              }
+            }
             preview {
               node {
                 id
@@ -163,6 +191,13 @@ export async function getContentNode(
                 isPostsPage
                 uri
                 status
+                featuredImage {
+                  node {
+                    id
+                    altText
+                    sourceUrl
+                  }
+                }
               }
             }
             enqueuedStylesheets {
