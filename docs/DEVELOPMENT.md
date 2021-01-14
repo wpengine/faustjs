@@ -10,6 +10,15 @@ Create an issue in this repository to report bugs or feature requests.
 - `/packages` - NPM packages
 - `/plugins` - WordPress Plugins
 
+### NPM Packages
+
+When working on the NPM packages in this repository, we recommend utilizing our Lerna setup in the root of the repository.
+
+To get going, you can run the following:
+
+1. `npm run bootstrap`
+2. `npm run dev`
+
 ### Plugins
 
 As this is a monorepo, you will not be able to check out this repository into `wp-content/themes` or `wp-content/plugins`.
@@ -70,15 +79,3 @@ or
 ```
 composer test
 ```
-
-### NPM Packages
-
-When working on the NPM packages in this repository, you'll likely want to test them in a project that pulls them in
-as dependencies.
-
-To pull in your code changes into the dependent project, you can [npm link](https://docs.npmjs.com/cli/v6/commands/npm-link)
-or [yarn link](https://classic.yarnpkg.com/en/docs/cli/link/). This will create symlinks from your dependent project's
-`node_modules` directory into this repository.
-
-**Note!** If using Next.js, you'll likely need to add [`next-transpile-modules`](https://www.npmjs.com/package/next-transpile-modules)
-to your `next.config.js`. Without doing this, you may run errors such as `Error: Cannot find module 'react'`.
