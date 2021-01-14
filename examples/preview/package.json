@@ -1,11 +1,13 @@
 {
   "name": "preview",
   "version": "1.0.0",
+  "private": true,
   "description": "WP Headless Previews",
   "main": "index.js",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "dev-lerna": "wait-on ./node_modules/@wpengine/headless/dist/index.js && npm run dev",
     "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
     "lint": "tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
@@ -51,6 +53,7 @@
     "husky": "^4.3.5",
     "open-cli": "^6.0.1",
     "prettier": "^2.2.1",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.2",
+    "wait-on": "^5.2.1"
   }
 }

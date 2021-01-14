@@ -7,6 +7,7 @@
   "scripts": {
     "build": "run-s clean ts",
     "dev": "run-s clean ts:watch",
+    "dev-lerna": "run-s dev",
     "clean": "rimraf dist",
     "lint": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
     "prepublish": "run-s build",
