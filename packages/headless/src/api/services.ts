@@ -77,6 +77,7 @@ export async function getPosts(
       excerpt,
       uri,
       status,
+      featuredImage,
     } = thePost;
 
     return {
@@ -90,6 +91,7 @@ export async function getPosts(
       excerpt,
       uri: utils.getUrlPath(uri),
       status,
+      featuredImage,
     };
   });
 }
@@ -242,6 +244,7 @@ export async function getContentNode(
     excerpt: (node as Post).excerpt,
     uri: node.uri,
     status: node.status,
+    featuredImage: node.featuredImage,
     isFrontPage: (node as Page).isFrontPage,
     isPostsPage: (node as Page).isPostsPage,
     enqueuedStylesheets: node.enqueuedStylesheets,
