@@ -12,7 +12,7 @@ export default function WPHead(): JSX.Element {
   const settings = useGeneralSettings();
   const post = usePost();
 
-  let title: string;
+  let title = 'Loading...';
   let stylesheets: Array<EnqueuedStylesheet> = [];
 
   const siteTitle: string = settings?.title ?? '';
@@ -20,7 +20,7 @@ export default function WPHead(): JSX.Element {
 
   if (post) {
     title = `${post.title} – ${siteTitle}`;
-  } else {
+  } else if (siteTitle && siteTagline) {
     title = `${siteTitle} – ${siteTagline}`;
   }
 
