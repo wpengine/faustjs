@@ -23,7 +23,7 @@ function wpe_headless_content_replacement( $content ) {
 		return $content;
 	}
 
-	$replacement = wpe_headless_get_setting( 'frontend_uri' );
+	$replacement = untrailingslashit( wpe_headless_get_setting( 'frontend_uri' ) );
 	$site_url    = site_url();
 
 	if ( ! $replacement ) {
