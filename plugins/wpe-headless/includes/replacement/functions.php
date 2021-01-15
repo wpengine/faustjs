@@ -20,11 +20,11 @@ function wpe_headless_domain_replacement_enabled() {
 	$enabled = false;
 
 	if ( wpe_headless_is_rewrites_enabled() ) {
-		if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['replace-domain'] ) || isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
 			$enabled = true;
 		}
 
-		if ( isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
+		if ( ( function_exists( 'is_graphql_http_request' ) && is_graphql_http_request() ) ) {
 			$enabled = true;
 		}
 	}
