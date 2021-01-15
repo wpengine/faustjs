@@ -41,7 +41,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-assignment': 0,
         '@typescript-eslint/no-unsafe-member-access': 0,
         'jsx-a11y/anchor-is-valid': 0,
-        'no-console': ["error", { allow: ["warn", "error"] }]
+        'no-console': ["error", { allow: ["warn", "error", "debug"] }]
     },
     settings: {
         react: {
