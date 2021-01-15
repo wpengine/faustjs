@@ -65,8 +65,7 @@ export function usePosts(): Post[] | undefined {
             setResult(posts);
           }
         } catch (e) {
-          console.log('Error getting posts');
-          console.log(e);
+          console.error('Error getting posts', e);
         }
       })();
     }
@@ -122,8 +121,7 @@ export function useGeneralSettings() {
             setResult(settings);
           }
         } catch (e) {
-          console.log('Error getting settings');
-          console.log(e);
+          console.error('Error getting settings', e);
         }
       })();
     }
@@ -184,8 +182,7 @@ export function useNextUriInfo() {
 
           setUriInfo(info as UriInfo);
         } catch (e) {
-          console.log('Error getting URI info');
-          console.log(e);
+          console.error('Error getting URI info', e);
         }
       })();
     }
@@ -259,8 +256,7 @@ export function useUriInfo(uri?: string) {
 
           setUriInfo(info as UriInfo);
         } catch (e) {
-          console.log('Error getting URI info');
-          console.log(e);
+          console.error('Error getting URI info', e);
         }
       })();
     }
@@ -422,8 +418,7 @@ export function usePost(
             setResult(post);
           }
         } catch (e) {
-          console.log('Error getting a post');
-          console.log(e);
+          console.error('Error getting a post', e);
         }
       })();
     }
