@@ -35,7 +35,7 @@
 						<p><a href="https://www.wpgraphql.com/docs/quick-start/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn about the plugin', 'wpe-headless' ); ?></a>.</p>
 						<?php if ( function_exists( 'graphql' ) ) : ?>
 							<button class="button-primary" disabled><?php esc_html_e( '☑️ WPGraphQL is active', 'wpe-headless' ); ?></button>
-						<?php else: ?>
+						<?php else : ?>
 							<button class="button-primary" id="wpe-headless-button-install-graphql" aria-label="<?php esc_html_e( 'Install and Activate the WPGraphQL plugin', 'wpe-headless' ); ?>"><?php esc_html_e( 'Install and Activate', 'wpe-headless' ); ?></button>
 							<span class="spinner"></span>
 						<?php endif; ?>
