@@ -45,7 +45,6 @@ wpeHeadless.installWPGraphQL = (() => {
 			case 'complete':
 				wp.a11y.speak(wpeHeadless.strings.active, 'polite');
 				$button.innerHTML = `☑️ ${wpeHeadless.strings.active}`;
-				$button.classList.add('active');
 				$spinner.style.visibility = 'hidden';
 				break;
 		}
