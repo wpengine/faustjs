@@ -155,6 +155,7 @@ svg.wpengine {
 
 .sidebar .box.get-started #wpe-headless-button-install-graphql {
 	float: left;
+	margin-bottom: 5px;
 }
 
 .sidebar .box.get-started .spinner {
@@ -162,6 +163,10 @@ svg.wpengine {
 	margin-top: 7px;
 }
 
+.sidebar .error-message {
+	color: #cf0000;
+	clear: both;
+}
 
 /* WP Admin Layout Overrides
 ---------------------------------------------------------------------------- */

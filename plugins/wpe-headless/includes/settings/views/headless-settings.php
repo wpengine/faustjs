@@ -38,6 +38,7 @@
 						<?php else : ?>
 							<button class="button-primary" id="wpe-headless-button-install-graphql" aria-label="<?php esc_html_e( 'Install and Activate the WPGraphQL plugin', 'wpe-headless' ); ?>"><?php esc_html_e( 'Install and Activate', 'wpe-headless' ); ?></button>
 							<span class="spinner"></span>
+							<p class="error-message"></p>
 						<?php endif; ?>
 					</section>
 					<section>

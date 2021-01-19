@@ -318,8 +318,10 @@ function wpe_headless_add_settings_assets() {
 		$wpe_headless = array(
 			'wpgraphqlIsInstalled' => array_key_exists( 'wp-graphql/wp-graphql.php', get_plugins() ),
 			'strings'              => array(
+				'default'    => esc_html__( 'Install and Activate', 'wpe-headless' ),
 				'installing' => esc_html__( 'Installing…', 'wpe-headless' ),
 				'active'     => esc_html__( 'WPGraphQL is active', 'wpe-headless' ),
+				'failed'     => esc_html__( 'Installation failed', 'wpe-headless' ),
 			),
 		);
 
