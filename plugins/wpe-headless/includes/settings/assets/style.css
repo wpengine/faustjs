@@ -68,6 +68,10 @@ svg.wpengine {
 	margin-left: 26px;
 }
 
+.form-table .align-middle th {
+	padding-top: 30px;
+}
+
 /* Sidebar. Based on https://every-layout.dev/layouts/sidebar/#the-generator.
 ---------------------------------------------------------------------------- */
 

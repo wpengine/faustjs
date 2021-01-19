@@ -83,7 +83,11 @@ function wpe_headless_register_settings_fields() {
 		__( 'Front-end site URL', 'wpe-headless' ),
 		'wpe_headless_display_frontend_uri_field',
 		'wpe-headless-settings',
-		'settings_section'
+		'settings_section',
+		array(
+			'class'     => 'align-middle',
+			'label_for' => 'frontend_uri',
+		)
 	);
 
 	add_settings_field(
@@ -91,7 +95,11 @@ function wpe_headless_register_settings_fields() {
 		__( 'Secret Key', 'wpe-headless' ),
 		'wpe_headless_display_secret_key_field',
 		'wpe-headless-settings',
-		'settings_section'
+		'settings_section',
+		array(
+			'class'     => 'align-middle',
+			'label_for' => 'secret_key',
+		)
 	);
 
 	add_settings_field(
@@ -99,7 +107,11 @@ function wpe_headless_register_settings_fields() {
 		__( 'Menu Locations', 'wpe-headless' ),
 		'wpe_headless_display_menu_locations_field',
 		'wpe-headless-settings',
-		'settings_section'
+		'settings_section',
+		array(
+			'class'     => 'align-middle',
+			'label_for' => 'menu_locations',
+		)
 	);
 
 	add_settings_field(
