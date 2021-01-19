@@ -22,7 +22,7 @@ wpeHeadless.installWPGraphQL = (() => {
 		}
 	}
 
-	// Installs and activates the WP GraphQL plugin.
+	// Installs and activates the WPGraphQL plugin.
 	async function installWPGraphQL() {
 		update('installing');
 
@@ -43,7 +43,7 @@ wpeHeadless.installWPGraphQL = (() => {
 	}
 
 	// Updates the button and spinner.
-	function update(state = 'installing', error = "") {
+	function update(state = 'installing', error = '') {
 		switch (state) {
 			case 'installing':
 				wp.a11y.speak(wpeHeadless.strings.installing, 'polite');
