@@ -20,7 +20,7 @@ function wpe_headless_domain_replacement_enabled() {
 	$enabled = false;
 
 	if ( wpe_headless_is_rewrites_enabled() ) {
-		if ( isset( $_GET['replace-domain'] ) || isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
+		if ( isset( $_GET['replace-domain'] ) || isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$enabled = true;
 		}
 
