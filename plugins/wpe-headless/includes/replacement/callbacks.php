@@ -102,7 +102,7 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @return string URL used for the post.
  */
 function wpe_headless_post_link( $link ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+	if ( ! wpe_headless_is_rewrites_enabled() ) {
 		return $link;
 	}
 
@@ -124,7 +124,7 @@ add_filter( 'term_link', 'wpe_headless_term_link' );
  * @return string
  */
 function wpe_headless_term_link( $term_link ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+	if ( ! wpe_headless_is_rewrites_enabled() ) {
 		return $term_link;
 	}
 
