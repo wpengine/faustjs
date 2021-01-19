@@ -1,32 +1,55 @@
-# WordPress Headless Framework (PREVIEW/ALPHA)
+# Headless WordPress Framework
 
-🚧 **Note:** This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like plugins and npm packages that assist in authentication and previews.
+## Introduction
+
+WP Engine's Headless WordPress Framework provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites in [Next.js](https://nextjs.org/).
+
+_🚧 **Note:** This project is in the early stages of development_
+
 
 ## Quick Start
 
-Eager to try out the Headless Framework? Here's how you can get started with our Preview example:
+Eager to try out the Headless Framework? Here's how you can get started:
 
 1. Create a WordPress site if you haven't already. We recommend using [Local](https://localwp.com/)!
-2. Download, upload, and activate the `wpe-headless` plugin in this repository. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
-3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed
-4. [Clone this repository](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to a directory of your choice
-5. Navigate to `examples/preview` in the cloned repository
+2. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
+4. Create a new Next.js app from our [example project](https://github.com/wpengine/headless-framework/tree/canary/examples/preview): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/preview --use-npm`
 6. `cp .env.local.sample .env.local`
-7. Populate `WORDPRESS_URL` (or `NEXT_PUBLIC_WORDPRESS_URL`) and `WPE_HEADLESS_SECRET` accordingly in `.env.local`
-8. `npm install && npm run dev`
+7. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
+8. Populate `WPE_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+9. `cd my-app && npm run dev`
 
 ## Framework Features
 
-- Headless Auth Flows
-  - OAuth token authentication for users
-  - Auth handler for Express/Next that exchanges a code for an access token. The access token can be used to make authenticated calls to WordPress via WPGraphQL or REST.
-- [Previews](./docs/previews/README.md)
-  - Rewrite preview and draft links in WP Admin to redirect to the frontend.
+### Plugin Features
+
+- **[Headless post previewing](./docs/previews/README.md)**
+  - OAuth token authentication creation
+  - Preview and draft link rewrites in WP Admin to redirect to the front-end
+- **Smart content redirects**
+  - Automatically redirects content from the WP site to the front-end site to minimize site visitors’ confusion and avoid SEO penalties for duplicate content
+  - Redirects hyperlinks inserted into posts’ content to the front-end site
+- **Removal of WP themes**
+  - Prevents confusion around the active theme
+- **Ability to define custom menus in a GUI**
+- **Additional data exposed through WPGraphQL**
+  - Block stylesheets
+
+### npm Package Features
+- [Post previewing integration]((./docs/previews/README.md))
+  - Auth handler that exchanges a code for an access token
+- A `HeadlessProvider` component to ease communication with WordPress via [Apollo](https://www.apollographql.com/) and [WPGraphQL](https://www.wpgraphql.com/).
+- A `TemplateLoader` component that optionally allows you to follow the WordPress [template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) pattern in Next.js
+  - Load page templates based on the current URL path and page type
+  - Utilize functions like `getPropsMiddleware` for adding to/manipulating data depending on the template
+- Display WordPress menus with our `Menu` component
+- React hooks for pulling data from WordPress
+- “Sensible defaults” for Next.js props and paths
 
 ## Download & Installation
 
-There are two key parts of the WordPress Headless Framework. To take full advantage, you will need to install the plugin
-in addition to the npm package.
+There are two key parts of the WordPress Headless Framework. To take full advantage, you will need to install the plugin in addition to the npm package.
 
 ### WordPress Plugin
 
