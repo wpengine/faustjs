@@ -11,7 +11,7 @@
     "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
     "lint": "tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
-    "start": "next start",
+    "start": "next start -p 8080",
     "test": "echo \"Error: no test specified\" && exit 1",
     "wpe-build": "next build"
   },
