@@ -15,7 +15,7 @@ npm i typescript @types/react @types/react-dom @types/node -D
 ```
 
 TL;DR
-Checkout the [example project](../../examples/preview) to see how it works.
+Checkout the [example project](/examples/preview) to see how it works.
 
 ## WPE Headless Plugin
 
@@ -29,13 +29,13 @@ In addition, the plugin will rewrite URLs in WordPress so that when a user click
 
 Go to Settings->Headless to view the plugin's settings page:
 
-![Headless Plugin Menu](./headless-settings.jpg)
+![Headless Plugin Menu](/docs/previews/headless-settings.jpg)
 
 There are 2 settings that assist in previews. The first setting is the location of your frontend. You'll need to enter a `Front-end site URL`, which will be `http://localhost:3000` for this example.
 
 The second one is read-only. It gives you an API secret key that you need to use on your backend for your frontend.
 
-![Headless Plugin Auth Settings](./headless-settings-auth.jpg)
+![Headless Plugin Auth Settings](/docs/previews/headless-settings-auth.jpg)
 
 ## Headless Framework (@wpengine/headless)
 
@@ -214,7 +214,7 @@ We need to let the frontend know about our WordPress instance. The framework exp
 
 ```bash
 # Base URL for WordPress
-NEXT_PUBLIC_WORDPRESS_URL=http://yourwp.com
+NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
 WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
