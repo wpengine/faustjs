@@ -229,8 +229,8 @@ function wpe_headless_display_secret_key_field() {
 	<p class="description">
 		<?php
 		printf(
-			/* translators: %s: link to documentation */
-			wp_kses_post( 'This key is used to enable post previewing with Next.js. Read about post previewing <a href="%s" target="_blank" rel="noopener noreferrer">here</a>.', 'wpe-headless' ),
+			/* translators: %s: Documentation URL. */
+			wp_kses_post( __( 'This key is used to enable <a href="%s" target="_blank" rel="noopener noreferrer">headless post previews</a>.', 'wpe-headless' ) ),
 			'https://github.com/wpengine/headless-framework/blob/main/docs/previews/README.md'
 		);
 		?>
