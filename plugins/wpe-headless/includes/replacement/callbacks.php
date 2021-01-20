@@ -35,7 +35,7 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10 );
+add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
 /**
  * Callback for WordPress 'preview_post_link' filter.
  *
@@ -45,7 +45,7 @@ add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10 );
  *
  * @return string URL used for the post preview.
  */
-function wpe_headless_post_preview_link( $link ) {
+function wpe_headless_post_preview_link( $link , $post ) {
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
@@ -59,7 +59,7 @@ function wpe_headless_post_preview_link( $link ) {
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
 		$args       = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
-		$preview_id = $args['preview_id'];
+		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
 		/**
 		 * Remove query vars as Next.js cannot read query params in SSG
