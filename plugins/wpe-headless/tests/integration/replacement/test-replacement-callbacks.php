@@ -6,6 +6,18 @@
  */
 
 class ReplacementCallbacksTestCases extends WP_UnitTestCase {
+	protected $post_id;
+
+	public function setUp() {
+		parent::setUp();
+
+		$this->post_id = wp_insert_post( [
+			'title'        => 'Hello world',
+			'post_content' => 'Hi',
+			'post_status'  => 'publish',
+		] );
+	}
+
 	public function test_the_content_filter() {
 		$this->assertSame( 10, has_action( 'the_content', 'wpe_headless_content_replacement' ) );
 	}
@@ -51,13 +63,7 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	 * @covers ::wpe_headless_post_link() which runs on post_link filter.
 	 */
 	public function test_wpe_headless_post_link_returns_unfiltered_link_when_content_replacement_is_not_enabled() {
-		$post_id = wp_insert_post( [
-			'title'        => 'Hello world',
-			'post_content' => 'Hi',
-			'post_status'  => 'publish',
-		] );
-
-		$this->assertSame( 'http://example.org/?p=' . $post_id, get_permalink( $post_id ) );
+		$this->assertSame( 'http://example.org/?p=' . $this->post_id, get_permalink( $this->post_id ) );
 	}
 
 	/**
@@ -66,14 +72,8 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	public function test_wpe_headless_post_link_returns_filtered_link_when_content_replacement_enabled() {
 		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
 		wpe_headless_update_setting( 'enable_rewrites', true );
-		$post_id = wp_insert_post( [
-			'title'        => 'Hello world',
-			'post_content' => 'Hi',
-			'post_status'  => 'publish',
-		] );
-
 		// @todo this feels like a hack
-		$this->assertSame( 'http://moo/api/auth/wpe-headless?redirect_uri=' . urlencode( '?p=' . $post_id . '/preview/' . $post_id ), get_preview_post_link( $post_id ) );
+		$this->assertSame( 'http://moo/api/auth/wpe-headless?redirect_uri=' . urlencode( '?p=' . $this->post_id . '/preview/' . $this->post_id ), get_preview_post_link( $this->post_id ) );
 	}
 
 	/**
