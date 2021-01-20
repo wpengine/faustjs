@@ -41,11 +41,12 @@ add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
  *
  * Swap the post preview link for headless front-end and to use the API entry to support Next.js preview mode.
  *
- * @param string $link URL used for the post preview.
+ * @param string  $link URL used for the post preview.
+ * @param WP_Post $post Post object.
  *
  * @return string URL used for the post preview.
  */
-function wpe_headless_post_preview_link( $link , $post ) {
+function wpe_headless_post_preview_link( $link, $post ) {
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
