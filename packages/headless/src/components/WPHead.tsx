@@ -26,7 +26,7 @@ export default function WPHead(): JSX.Element {
 
   if (post?.enqueuedStylesheets?.nodes) {
     stylesheets = post.enqueuedStylesheets.nodes.filter((node) => {
-      return node.src.indexOf('wp-content/themes') < 0;
+      return node.src?.indexOf('wp-content/themes') < 0;
     });
   }
 
