@@ -1,8 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import { usePost, useGeneralSettings } from '../api';
-import { EnqueuedStylesheet } from '../types';
 import { trimTrailingSlash } from '../utils';
+import { WPGraphQL } from '../types';
 
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
@@ -13,12 +13,15 @@ export default function WPHead(): JSX.Element {
   const post = usePost();
 
   let title = 'Loading...';
-  let stylesheets: Array<EnqueuedStylesheet> = [];
+  let stylesheets: Array<
+    Required<Pick<WPGraphQL.EnqueuedStylesheet, 'src' | 'handle'>>
+  > = [];
 
   const siteTitle: string = settings?.title ?? '';
   const siteTagline: string = settings?.description ?? '';
 
-  if (post) {
+  if (post?.title) {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     title = `${post.title} – ${siteTitle}`;
   } else if (siteTitle && siteTagline) {
     title = `${siteTitle} – ${siteTagline}`;
@@ -30,7 +33,9 @@ export default function WPHead(): JSX.Element {
     });
   }
 
-  const stylesheetUrl = (stylesheet: EnqueuedStylesheet) => {
+  const stylesheetUrl = (
+    stylesheet: Required<Pick<WPGraphQL.EnqueuedStylesheet, 'src'>>,
+  ): string => {
     return stylesheet.src.indexOf('http') === 0
       ? stylesheet.src
       : `${WP_URL as string}${stylesheet.src}`;
@@ -40,13 +45,19 @@ export default function WPHead(): JSX.Element {
     <Head>
       <title>{title}</title>
 
-      {stylesheets.map((stylesheet) => (
-        <link
-          href={stylesheetUrl(stylesheet)}
-          rel="stylesheet"
-          key={stylesheet.handle}
-        />
-      ))}
+      {stylesheets.map((stylesheet) => {
+        if (!stylesheet.src) {
+          return null;
+        }
+
+        return (
+          <link
+            href={stylesheetUrl(stylesheet)}
+            rel="stylesheet"
+            key={stylesheet.handle}
+          />
+        );
+      })}
     </Head>
   );
 }

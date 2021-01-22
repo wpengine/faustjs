@@ -7,7 +7,7 @@ import {
 } from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { ContentNodeIdType, UriInfo } from '../types';
+import { UriInfo, WPGraphQL } from '../types';
 import { resolvePrefixedUrlPath, resolveTemplate } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
@@ -76,7 +76,7 @@ export async function initializeNextServerSideProps(
       ? getContentNode(
           apolloClient,
           currentUrlPath,
-          ContentNodeIdType.URI,
+          WPGraphQL.ContentNodeIdTypeEnum.Uri,
           isPreview(context),
         )
       : undefined,

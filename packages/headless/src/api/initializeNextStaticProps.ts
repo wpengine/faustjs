@@ -7,7 +7,7 @@ import {
 } from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { ContentNodeIdType, UriInfo } from '../types';
+import { WPGraphQL, UriInfo } from '../types';
 import { resolvePrefixedUrlPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
@@ -79,7 +79,7 @@ export async function initializeNextStaticProps(
       ? getContentNode(
           apolloClient,
           currentUrlPath,
-          ContentNodeIdType.URI,
+          WPGraphQL.ContentNodeIdTypeEnum.Uri,
           isPreview(context),
         )
       : undefined,

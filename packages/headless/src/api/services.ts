@@ -1,12 +1,5 @@
 import { gql, ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import {
-  GeneralSettings,
-  ContentNodeIdType,
-  Connection,
-  Post,
-  Page,
-  UriInfo,
-} from '../types';
+import { WPGraphQL, UriInfo } from '../types';
 import * as utils from '../utils';
 import { ensureAuthorization } from '../auth';
 import { isServerSide } from '../utils';
@@ -21,36 +14,27 @@ import { isServerSide } from '../utils';
  */
 export async function getPosts(
   client: ApolloClient<NormalizedCacheObject>,
-): Promise<Post[]> {
-  const result = await client.query<{ posts: Connection<Post> }>({
+): Promise<WPGraphQL.GetPostsQuery['posts']['nodes']> {
+  const result = await client.query<WPGraphQL.GetPostsQuery>({
     query: gql`
-      query {
+      query GetPosts {
         posts {
-          pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
-          }
-          edges {
-            cursor
-            node {
-              id
-              slug
-              title
-              content
-              isRevision
-              isPreview
-              isSticky
-              excerpt
-              uri
-              status
-              featuredImage {
-                node {
-                  id
-                  altText
-                  sourceUrl
-                }
+          nodes {
+            id
+            slug
+            title
+            content
+            isRevision
+            isPreview
+            isSticky
+            excerpt
+            uri
+            status
+            featuredImage {
+              node {
+                id
+                altText
+                sourceUrl
               }
             }
           }
@@ -59,41 +43,7 @@ export async function getPosts(
     `,
   });
 
-  const thePosts = result?.data?.posts?.edges.map(({ node }) => node);
-
-  if (!thePosts) {
-    return thePosts;
-  }
-
-  return thePosts.map((thePost) => {
-    const {
-      id,
-      slug,
-      title,
-      content,
-      isRevision,
-      isPreview,
-      isSticky,
-      excerpt,
-      uri,
-      status,
-      featuredImage,
-    } = thePost;
-
-    return {
-      id,
-      slug,
-      title,
-      content,
-      isRevision,
-      isPreview,
-      isSticky,
-      excerpt,
-      uri: utils.getUrlPath(uri),
-      status,
-      featuredImage,
-    };
-  });
+  return result.data.posts.nodes;
 }
 
 /**
@@ -103,19 +53,27 @@ export async function getPosts(
  * @export
  * @param {ApolloClient<NormalizedCacheObject>} client
  * @param {string} id The identifier for the Post or Page
- * @param {ContentNodeIdType} [idType=ContentNodeIdType.URI] The type of identifier
+ * @param [idType=ContentNodeIdType.URI] The type of identifier
  * @param {boolean} [asPreview=false] Whether or not to grab preview information (requires Authorization)
  * @returns {(Promise<Post | Page>)}
  */
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
   id: string,
-  idType: ContentNodeIdType = ContentNodeIdType.URI,
+  idType: WPGraphQL.ContentNodeIdTypeEnum = WPGraphQL.ContentNodeIdTypeEnum.Uri,
   asPreview = false,
-): Promise<Post | Page> {
-  const result = await client.query<{ contentNode: Post | Page }>({
+): Promise<
+  | WPGraphQL.GetContentNodeQuery['contentNode']
+  | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
+  | undefined
+> {
+  const result = await client.query<WPGraphQL.GetContentNodeQuery>({
     query: gql`
-      query($id: ID!, $idType: ContentNodeIdTypeEnum, $asPreview: Boolean) {
+      query GetContentNode(
+        $id: ID!
+        $idType: ContentNodeIdTypeEnum
+        $asPreview: Boolean
+      ) {
         contentNode(id: $id, idType: $idType, asPreview: $asPreview) {
           ... on Post {
             id
@@ -219,36 +177,22 @@ export async function getContentNode(
     },
   });
 
-  let node = result?.data?.contentNode;
+  const node = result?.data?.contentNode;
 
   if (!node) {
-    return node;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return undefined;
   }
 
-  if (asPreview && !node.isPreview) {
+  if (asPreview && node.isPreview) {
     if (!node.preview?.node) {
       return node;
     }
 
-    node = node.preview.node;
+    return node.preview.node;
   }
 
-  return {
-    id: node.id,
-    slug: node.slug,
-    title: node.title,
-    content: node.content,
-    isRevision: node.isRevision,
-    isPreview: node.isPreview,
-    isSticky: (node as Post).isSticky,
-    excerpt: (node as Post).excerpt,
-    uri: node.uri,
-    status: node.status,
-    featuredImage: node.featuredImage,
-    isFrontPage: (node as Page).isFrontPage,
-    isPostsPage: (node as Page).isPostsPage,
-    enqueuedStylesheets: node.enqueuedStylesheets,
-  };
+  return node;
 }
 
 /**
@@ -261,10 +205,10 @@ export async function getContentNode(
  */
 export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
-): Promise<GeneralSettings> {
-  const result = await client.query<{ generalSettings: GeneralSettings }>({
+): Promise<WPGraphQL.GeneralSettingsQuery['generalSettings']> {
+  const result = await client.query<WPGraphQL.GeneralSettingsQuery>({
     query: gql`
-      query {
+      query GeneralSettings {
         generalSettings {
           title
           description
@@ -303,9 +247,12 @@ export async function getUriInfo(
     }
   }
 
-  const response = await client.query<{ nodeByUri?: UriInfo }>({
+  const response = await client.query<
+    WPGraphQL.GetUriInfoQuery,
+    WPGraphQL.GetUriInfoQueryVariables
+  >({
     query: gql`
-      query($uri: String!) {
+      query GetUriInfo($uri: String!) {
         nodeByUri(uri: $uri) {
           id
           templates
@@ -337,11 +284,15 @@ export async function getUriInfo(
     };
   }
 
-  const { isPostsPage, isFrontPage, id, templates } = result;
+  const { id, templates } = result;
 
   return {
-    isPostsPage,
-    isFrontPage,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    isPostsPage: result?.isPostsPage,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    isFrontPage: result?.isFrontPage,
     id,
     isPreview,
     uriPath,
