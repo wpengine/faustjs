@@ -51,7 +51,16 @@ export async function nextAuthorizeHandler(
      * Set cookie to enable previewing.
      */
     console.debug('Setting Next.js Preview Data');
-    res.setPreviewData({});
+
+    /**
+     * Add server host to previewData so initializeNextStaticProps() can properly redirect as getStaticProps() does not
+     * have the headers or host in the context.
+     */
+    res.setPreviewData({
+      serverInfo: {
+        host: req.headers.host,
+      },
+    });
 
     res.redirect(302, redirectUri as string);
   } catch (e) {
