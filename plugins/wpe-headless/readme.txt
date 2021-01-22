@@ -4,7 +4,7 @@ Tags:
 Requires at least: 5.3
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 0.1.0
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -22,6 +22,9 @@ Proof of concept for working with the Headless API.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.4.0 =
+- Redesigned settings page.
 
 = 0.1.0 =
 - Proof of concept
