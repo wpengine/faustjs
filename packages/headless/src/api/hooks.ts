@@ -106,7 +106,7 @@ export function usePosts():
  * @export
  * @returns {(GeneralSettings | undefined)}
  */
-export function useGeneralSettings() {
+export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
   const [result, setResult] = useState<WPGraphQL.GeneralSettings>();
   const client = useApolloClient();
 
@@ -155,7 +155,7 @@ export function useGeneralSettings() {
  * @export
  * @returns {(UriInfo | undefined)}
  */
-export function useNextUriInfo() {
+export function useNextUriInfo(): UriInfo | undefined {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const router = useRouter();
   const client = useApolloClient();
@@ -225,7 +225,7 @@ export function useNextUriInfo() {
  * @export
  * @returns {(UriInfo | undefined)}
  */
-export function useUriInfo(uri?: string) {
+export function useUriInfo(uri?: string): UriInfo | undefined {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const client = useApolloClient();
   let localUri = uri;
