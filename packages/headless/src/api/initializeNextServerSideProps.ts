@@ -8,10 +8,16 @@ import {
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
 import { UriInfo, WPGraphQL } from '../types';
-import { resolvePrefixedUrlPath, resolveTemplate } from '../utils';
+import {
+  resolvePrefixedUrlPath,
+  resolveTemplate,
+  isPreview,
+  isPreviewPath,
+} from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
-import { isPreview, isPreviewPath } from '../utils/preview';
+import isHTTPS from '../utils/isHTTPS';
+
 import type { Template } from '../components/TemplateLoader';
 
 /**
@@ -35,9 +41,9 @@ export async function initializeNextServerSideProps(
 
   if (isPreview(context)) {
     const host = context.req.headers.host as string;
-    const protocol = /localhost/.test(host) ? 'http:' : 'https:';
+    const protocol = isHTTPS(host, context) ? 'https' : 'http';
     const response = ensureAuthorization(
-      `${protocol}//${context.req.headers.host as string}${
+      `${protocol}://${context.req.headers.host as string}${
         context.resolvedUrl ?? ''
       }`,
     );
