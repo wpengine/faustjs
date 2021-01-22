@@ -272,7 +272,7 @@ function wpe_headless_display_enable_disable_fields() {
 	<fieldset>
 		<label for="disable_theme">
 			<input type="checkbox" id="disable_theme" name="wpe_headless[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
-			<?php esc_html_e( 'Disable WordPress theme functionality', 'wpe-headless' ); ?>
+			<?php esc_html_e( 'Disable WordPress theme admin pages', 'wpe-headless' ); ?>
 		</label>
 		<br />
 
