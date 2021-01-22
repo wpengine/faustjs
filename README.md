@@ -30,8 +30,8 @@ Eager to try out the Headless Framework? Here's how you can get started:
 - **Smart content redirects**
   - Automatically redirects content from the WP site to the front-end site to minimize site visitors’ confusion and avoid SEO penalties for duplicate content
   - Redirects hyperlinks inserted into posts’ content to the front-end site
-- **Removal of WP themes**
-  - Prevents confusion around the active theme
+- **Disable WP theme admin pages**
+  - Prevents access to admin pages that have no effect on the headless front-end appearance, such as Appearance → Themes.
 - **Ability to define custom menus in a GUI**
 - **Additional data exposed through WPGraphQL**
   - Block stylesheets
