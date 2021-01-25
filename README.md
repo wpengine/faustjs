@@ -20,11 +20,13 @@ Eager to try out the Headless Framework? Here's how you can get started:
 8. Populate `WPE_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
 9. `cd my-app && npm run dev`
 
+➡️ [Learn more about getting started](/docs/getting-started/)
+
 ## Framework Features
 
 ### Plugin Features
 
-- **[Headless post previewing](./docs/previews/README.md)**
+- **[Headless post previewing](/docs/previews/README.md)**
   - OAuth token authentication creation
   - Preview and draft link rewrites in WP Admin to redirect to the front-end
 - **Smart content redirects**
@@ -37,10 +39,10 @@ Eager to try out the Headless Framework? Here's how you can get started:
   - Block stylesheets
 
 ### npm Package Features
-- [Post previewing integration]((./docs/previews/README.md))
+- [Post previewing integration]((/docs/previews/README.md))
   - Auth handler that exchanges a code for an access token
 - A `HeadlessProvider` component to ease communication with WordPress via [Apollo](https://www.apollographql.com/) and [WPGraphQL](https://www.wpgraphql.com/).
-- A `TemplateLoader` component that optionally allows you to follow the WordPress [template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) pattern in Next.js
+- A [TemplateLoader](/docs/templating/README.md) component that optionally allows you to follow the WordPress [template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) pattern in Next.js
   - Load page templates based on the current URL path and page type
   - Utilize functions like `getPropsMiddleware` for adding to/manipulating data depending on the template
 - Display WordPress menus with our `Menu` component
@@ -75,14 +77,16 @@ npm install --save @wpengine/headless
 
 ## Guides
 
-* [Creating a Next.js application from scratch and integrating `@wpengine/headless` to enable post previewing](./docs/previews/README.md)
+* [Getting started with the Headless Framework](/docs/getting-started/README.mid)
+* [Enabling post previews in Next.js](/docs/previews/README.md)
+* [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
 
 ## Contributing
 
 Since we're in the early stages of development, we are not currently accepting outside contributions; although, we are
 interested in any problems that you encounter while using the framework.
 
-### [Development Guide](./docs/DEVELOPMENT.md)
+### [Development Guide](/docs/DEVELOPMENT.md)
 
 As this repository contains a WordPress plugin as well as npm packages, we have a few recommendations to help
 streamline your development process.
