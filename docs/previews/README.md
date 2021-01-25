@@ -174,7 +174,7 @@ export default function Post() {
 }
 ```
 
-`/lib/ components/Posts.tsx`
+`/lib/components/Posts.tsx`
 
 ```jsx
 import React from 'react';
