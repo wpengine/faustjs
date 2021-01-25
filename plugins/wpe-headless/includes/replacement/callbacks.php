@@ -56,9 +56,7 @@ function wpe_headless_content_media_replacement( $content ) {
 		$frontend_uri = '/';
 	}
 
-	$content = str_replace( "src=\"{$frontend_uri}", "src=\"{$site_url}", $content );
-
-	return str_replace( 'src="//', 'src="/', $content );
+	return str_replace( "src=\"{$frontend_uri}/", "src=\"{$site_url}/", $content );
 }
 
 add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
