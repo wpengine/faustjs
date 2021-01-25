@@ -4,7 +4,7 @@
  * @export
  * @returns {boolean}
  */
-export function isServerSide() {
+export function isServerSide(): boolean {
   return typeof window === 'undefined';
 }
 
@@ -15,7 +15,7 @@ export function isServerSide() {
  * @param {string} str
  * @returns
  */
-export function isBase64(str: string) {
+export function isBase64(str: string): boolean {
   if (!str) {
     return false;
   }

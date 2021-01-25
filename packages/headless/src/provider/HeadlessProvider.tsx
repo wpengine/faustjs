@@ -4,7 +4,7 @@ import { useApollo } from './apolloClient';
 
 interface Props {
   children: React.ReactNode;
-  pageProps: { [prop: string]: any };
+  pageProps: NextPageProps;
 }
 
 /**
@@ -27,7 +27,7 @@ interface Props {
  * export default MyApp
  * ```
  */
-export function HeadlessProvider({ children, pageProps }: Props) {
+export function HeadlessProvider({ children, pageProps }: Props): JSX.Element {
   const apolloClient = useApollo(pageProps);
 
   return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;

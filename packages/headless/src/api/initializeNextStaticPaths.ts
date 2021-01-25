@@ -6,7 +6,9 @@
  */
 import { GetStaticPathsResult } from 'next';
 
-export function initializeNextStaticPaths(override?: GetStaticPathsResult) {
+export function initializeNextStaticPaths(
+  override?: GetStaticPathsResult,
+): GetStaticPathsResult {
   return {
     /**
      * Only render the root path by default as we're also leveraging the fallback below which will render missing pages
