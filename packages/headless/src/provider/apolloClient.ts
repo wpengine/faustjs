@@ -102,11 +102,11 @@ export function initializeApollo(
     const existingCache = localApolloClient.extract();
 
     const overwriteMerge = (
-      target: any[],
-      source: any[],
+      target: never,
+      source: unknown[],
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       options?: merge.Options,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    ): any[] => source;
+    ): unknown[] => source;
 
     // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
@@ -144,9 +144,9 @@ export function initializeApollo(
  * ```
  */
 export function addApolloState(
-  client: ApolloClient<any>,
-  pageProps: { [prop: string]: any },
-): GetServerSidePropsResult<any> | GetStaticPropsResult<any> {
+  client: ApolloClient<NormalizedCacheObject>,
+  pageProps: NextPageProps,
+): GetServerSidePropsResult<unknown> | GetStaticPropsResult<unknown> {
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
@@ -162,7 +162,9 @@ export function addApolloState(
  *
  * @see WPGraphQLProvider
  */
-export function useApollo(pageProps: { [prop: string]: any }) {
+export function useApollo(
+  pageProps: NextPageProps,
+): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
   return useMemo(() => initializeApollo(state), [state]);

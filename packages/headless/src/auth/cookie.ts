@@ -36,7 +36,7 @@ export function getAccessToken(): string | undefined {
 export function storeAccessToken(
   token: string | undefined,
   res: ServerResponse,
-) {
+): void {
   if (!token) {
     cookies.remove(TOKEN_KEY);
     const yesterday = new Date();

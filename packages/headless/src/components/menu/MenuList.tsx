@@ -11,7 +11,10 @@ const defaultAnchor = (item: MenuItem) => <a href={item.href}>{item.title}</a>;
 /**
  * MenuList component to recursively build menu items and submenus.
  */
-const MenuList = ({ items, anchor = defaultAnchor }: Props) => {
+const MenuList = ({
+  items,
+  anchor = defaultAnchor,
+}: Props): JSX.Element[] | null => {
   if (!items) {
     return null;
   }

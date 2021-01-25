@@ -10,7 +10,7 @@ import { storeAccessToken } from './cookie';
 export async function nextAuthorizeHandler(
   req: NextApiRequest,
   res: NextApiResponse,
-) {
+): Promise<void> {
   try {
     const { code, redirect_uri: redirectUri } = req.query;
 
