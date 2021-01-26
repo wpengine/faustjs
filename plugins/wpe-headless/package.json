@@ -1,0 +1,10 @@
+{
+    "name": "root",
+    "private": true,
+    "scripts": {
+        "wp-env": "wp-env"
+    },
+    "devDependencies": {
+        "@wordpress/env": "^3.0.1"
+    }
+}
