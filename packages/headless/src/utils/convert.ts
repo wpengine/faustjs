@@ -8,7 +8,7 @@ import { isBase64, isServerSide } from './assert';
  * @param {string} str
  * @returns
  */
-export function base64Decode(str: string) {
+export function base64Decode(str: string): string {
   if (!isBase64(str)) {
     return str;
   }
@@ -27,7 +27,7 @@ export function base64Decode(str: string) {
  * @param {string} str
  * @returns
  */
-export function base64Encode(str: string) {
+export function base64Encode(str: string): string {
   if (isServerSide()) {
     return Buffer.from(str, 'utf8').toString('base64');
   }
@@ -114,7 +114,7 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
  * @param {string} [url]
  * @returns
  */
-export function getUrlPath(url?: string) {
+export function getUrlPath(url?: string): string {
   const parsedUrl = parseUrl(url);
 
   if (!parsedUrl) {
@@ -132,7 +132,7 @@ export function getUrlPath(url?: string) {
  * @param {string} [prefix]
  * @returns
  */
-export function resolvePrefixedUrlPath(url: string, prefix?: string) {
+export function resolvePrefixedUrlPath(url: string, prefix?: string): string {
   let resolvedUrl = url;
 
   if (prefix) {
@@ -164,7 +164,7 @@ export function resolvePrefixedUrlPath(url: string, prefix?: string) {
  * @param {(string | undefined)} str
  * @returns
  */
-export function trimLeadingSlash(str: string | undefined) {
+export function trimLeadingSlash(str: string | undefined): string | undefined {
   if (!str) {
     return str;
   }

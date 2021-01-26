@@ -7,12 +7,17 @@ import {
 } from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { ContentNodeIdType, UriInfo } from '../types';
-import { resolvePrefixedUrlPath } from '../utils';
+import { WPGraphQL, UriInfo } from '../types';
+import {
+  resolvePrefixedUrlPath,
+  isPreview,
+  isPreviewPath,
+  resolveTemplate,
+} from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
-import { isPreview, isPreviewPath } from '../utils/preview';
-import { resolveTemplate } from '../utils/resolveTemplate';
+import isHTTPS from '../utils/isHTTPS';
+
 import type { Template } from '../components/TemplateLoader';
 
 /**
@@ -38,11 +43,11 @@ export async function initializeNextStaticProps(
       ? context.params?.page ?? []
       : [context.params?.page];
 
-    /**
-     * @todo make this host dynamic... unfortunately it's not available in static
-     */
+    const host = context.previewData.serverInfo.host as string;
+    const protocol = isHTTPS(host, context) ? 'https' : 'http';
+
     const response = ensureAuthorization(
-      `http://localhost:3000/${path.join('/') ?? ''}`,
+      `${protocol}://${host}/${path.join('/') ?? ''}`,
     );
 
     if (typeof response !== 'string' && response?.redirect) {
@@ -79,7 +84,7 @@ export async function initializeNextStaticProps(
       ? getContentNode(
           apolloClient,
           currentUrlPath,
-          ContentNodeIdType.URI,
+          WPGraphQL.ContentNodeIdTypeEnum.Uri,
           isPreview(context),
         )
       : undefined,

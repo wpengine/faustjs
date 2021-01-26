@@ -5,13 +5,7 @@ import {
   useApolloClient,
 } from '@apollo/client';
 import { useRouter } from 'next/router';
-import {
-  Page,
-  Post,
-  ContentNodeIdType,
-  GeneralSettings,
-  UriInfo,
-} from '../types';
+import { WPGraphQL, UriInfo } from '../types';
 import {
   getPosts,
   getGeneralSettings,
@@ -19,8 +13,12 @@ import {
   getUriInfo,
 } from './services';
 import { headlessConfig } from '../config';
-import { getUrlPath, isServerSide, resolvePrefixedUrlPath } from '../utils';
-import { isPreviewPath } from '../utils/preview';
+import {
+  getUrlPath,
+  isServerSide,
+  resolvePrefixedUrlPath,
+  isPreviewPath,
+} from '../utils';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -48,8 +46,12 @@ import { isPreviewPath } from '../utils/preview';
  * @export
  * @returns {(Post[] | undefined)}
  */
-export function usePosts(): Post[] | undefined {
-  const [result, setResult] = useState<Post[]>();
+export function usePosts():
+  | WPGraphQL.GetPostsQuery['posts']['nodes']
+  | undefined {
+  const [result, setResult] = useState<
+    WPGraphQL.GetPostsQuery['posts']['nodes']
+  >();
   const client = useApolloClient();
 
   useEffect(() => {
@@ -75,6 +77,7 @@ export function usePosts(): Post[] | undefined {
     };
   }, [client]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result;
 }
 
@@ -103,8 +106,8 @@ export function usePosts(): Post[] | undefined {
  * @export
  * @returns {(GeneralSettings | undefined)}
  */
-export function useGeneralSettings() {
-  const [result, setResult] = useState<GeneralSettings>();
+export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
+  const [result, setResult] = useState<WPGraphQL.GeneralSettings>();
   const client = useApolloClient();
 
   useEffect(() => {
@@ -152,7 +155,7 @@ export function useGeneralSettings() {
  * @export
  * @returns {(UriInfo | undefined)}
  */
-export function useNextUriInfo() {
+export function useNextUriInfo(): UriInfo | undefined {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const router = useRouter();
   const client = useApolloClient();
@@ -222,7 +225,7 @@ export function useNextUriInfo() {
  * @export
  * @returns {(UriInfo | undefined)}
  */
-export function useUriInfo(uri?: string) {
+export function useUriInfo(uri?: string): UriInfo | undefined {
   const [pageInfo, setUriInfo] = useState<UriInfo>();
   const client = useApolloClient();
   let localUri = uri;
@@ -303,7 +306,9 @@ export function useUriInfo(uri?: string) {
  * @export
  * @returns {(Post | Page | undefined)}
  */
-export function usePost(): Post | Page | undefined;
+export function usePost():
+  | WPGraphQL.GetContentNodeQuery['contentNode']
+  | undefined;
 /**
  * React Hook for retrieving the post based on the passed-in uriInfo.
  *
@@ -332,7 +337,9 @@ export function usePost(): Post | Page | undefined;
  * @param {UriInfo} uriInfo
  * @returns {(Post | Page | undefined)}
  */
-export function usePost(uriInfo: UriInfo): Post | Page | undefined;
+export function usePost(
+  uriInfo: UriInfo,
+): WPGraphQL.GetContentNodeQuery['contentNode'] | undefined;
 /**
  * React Hook for retrieving the post based on the passed-in id and idType.
  *
@@ -366,13 +373,21 @@ export function usePost(uriInfo: UriInfo): Post | Page | undefined;
  */
 export function usePost(
   id: string,
-  idType: ContentNodeIdType,
-): Post | Page | undefined;
+  idType: WPGraphQL.ContentNodeIdTypeEnum,
+): WPGraphQL.GetContentNodeQuery['contentNode'];
+
 export function usePost(
   idOrUriInfo?: UriInfo | string,
-  idType?: ContentNodeIdType,
-): Post | Page | undefined {
-  const [result, setResult] = useState<Post | Page>();
+  idType?: WPGraphQL.ContentNodeIdTypeEnum,
+):
+  | WPGraphQL.GetContentNodeQuery['contentNode']
+  | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
+  | undefined {
+  const [result, setResult] = useState<
+    | WPGraphQL.GetContentNodeQuery['contentNode']
+    | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
+    | undefined
+  >();
   const client = useApolloClient();
   let id: string | undefined;
   let uri: string | undefined;
@@ -397,7 +412,10 @@ export function usePost(
     if (client) {
       void (async () => {
         try {
-          let post: Post | Page | undefined;
+          let post:
+            | WPGraphQL.GetContentNodeQuery['contentNode']
+            | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
+            | undefined;
 
           if (id) {
             post = await getContentNode(
@@ -409,7 +427,7 @@ export function usePost(
             post = await getContentNode(
               client as ApolloClient<NormalizedCacheObject>,
               pageInfo.uriPath,
-              ContentNodeIdType.URI,
+              WPGraphQL.ContentNodeIdTypeEnum.Uri,
               isPreviewPath(window.location.href),
             );
           }
@@ -428,5 +446,6 @@ export function usePost(
     };
   }, [client, pageInfo, id, idType]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result;
 }
