@@ -8,17 +8,13 @@ import {
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
 import { WPGraphQL, UriInfo } from '../types';
-import {
-  resolvePrefixedUrlPath,
-  isPreview,
-  isPreviewPath,
-  resolveTemplate,
-} from '../utils';
+import { resolvePrefixedUrlPath, isPreview, isPreviewPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
 import isHTTPS from '../utils/isHTTPS';
 
 import type { Template } from '../components/TemplateLoader';
+import { resolveTemplate } from '../utils/resolveTemplate';
 
 /**
  * Must be called from getServerSideProps within a Next app in order to support SSR. It will
