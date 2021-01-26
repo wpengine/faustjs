@@ -35,7 +35,7 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'the_content', 'wpe_headless_content_media_replacement' );
+add_filter( 'the_content', 'wpe_headless_image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -43,8 +43,8 @@ add_filter( 'the_content', 'wpe_headless_content_media_replacement' );
  *
  * @return string The post content.
  */
-function wpe_headless_content_media_replacement( $content ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+function wpe_headless_image_source_replacement( $content ) {
+	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
 		return $content;
 	}
 
@@ -59,7 +59,7 @@ function wpe_headless_content_media_replacement( $content ) {
 	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
 }
 
-add_filter( 'wp_calculate_image_srcset', 'wpe_headless_content_media_srcset_replacement' );
+add_filter( 'wp_calculate_image_srcset', 'wpe_headless_image_source_srcset_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -67,9 +67,9 @@ add_filter( 'wp_calculate_image_srcset', 'wpe_headless_content_media_srcset_repl
  *
  * @return string One or more arrays of source data.
  */
-function wpe_headless_content_media_srcset_replacement( $sources ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
-		return $content;
+function wpe_headless_image_source_srcset_replacement( $sources ) {
+	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
+		return $sources;
 	}
 
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );

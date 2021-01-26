@@ -40,4 +40,15 @@ class FunctionsTest extends \WP_UnitTestCase {
 
 		$this->assertTrue( wpe_headless_is_themes_disabled() );
 	}
+
+	/** @test */
+	public function wpe_headless_is_image_source_replacement_enabled_will_return_true_if_disabled() {
+		delete_option( 'wpe_headless' );
+
+		$this->assertFalse( wpe_headless_is_image_source_replacement_enabled() );
+
+		update_option( 'wpe_headless', array( 'enable_image_source' => '1' ) );
+
+		$this->assertTrue( wpe_headless_is_image_source_replacement_enabled() );
+	}
 }
