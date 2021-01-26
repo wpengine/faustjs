@@ -2,6 +2,7 @@ import { GetServerSidePropsResult, GetStaticPropsContext } from 'next';
 import {
   getUriInfo,
   getPosts,
+  getMenus,
   getContentNode,
   getGeneralSettings,
 } from './services';
@@ -80,6 +81,7 @@ export async function initializeNextStaticProps(
   const promises = [
     getGeneralSettings(apolloClient),
     getPosts(apolloClient),
+    getMenus(apolloClient),
     currentUrlPath !== '/'
       ? getContentNode(
           apolloClient,
