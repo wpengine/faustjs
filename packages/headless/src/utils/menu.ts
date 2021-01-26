@@ -1,6 +1,10 @@
 import { WPGraphQL } from '../types';
 import MenuItem from '../components/menu/MenuItemInterface';
 
+interface Children {
+  [key: string]: MenuItem[];
+}
+
 type WPGraphQLMenuItems =
   | WPGraphQL.GetMenusQuery['menuItems']['nodes']
   | undefined;
@@ -11,23 +15,27 @@ type WPGraphQLMenuItems =
  *
  * @see https://www.wpgraphql.com/docs/menus/#hierarchical-data.
  */
-const flatToTree = (
-  data = [],
-  { idKey = 'id', parentKey = 'parentId', childrenKey = 'children' } = {},
-) => {
-  const tree = [];
-  const childrenOf = {};
+const flatToTree = (data: WPGraphQLMenuItems = []) => {
+  const tree: MenuItem[] = [];
+  const childrenOf: Children = {};
   data.forEach((item) => {
-    const newItem = { ...item };
-    const { [idKey]: id, [parentKey]: parentId = 0 } = newItem;
-    childrenOf[id] = childrenOf[id] || [];
-    newItem[childrenKey] = childrenOf[id];
-    if (parentId) {
-      (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem);
+    const newItem: MenuItem = {
+      id: item.id,
+      title: item.title,
+      href: item.href,
+      children: [],
+    };
+    childrenOf[item.id] = childrenOf[item.id] || [];
+    newItem.children = childrenOf[item.id];
+    if (item.parentId) {
+      (childrenOf[item.parentId] = childrenOf[item.parentId] || []).push(
+        newItem,
+      );
     } else {
       tree.push(newItem);
     }
   });
+
   return tree;
 };
 
@@ -44,7 +52,9 @@ export function menuLocation(
   location: WPGraphQL.MenuLocationEnum,
 ): MenuItem[] | undefined {
   if (menus) {
-    const locationItems = menus.filter((m) => m.locations.includes(location));
+    const locationItems: WPGraphQLMenuItems = menus.filter((m) =>
+      m.locations.includes(location),
+    );
     return flatToTree(locationItems);
   }
 
