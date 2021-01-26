@@ -53,7 +53,7 @@ function MyApp2() {
   const nextLink = (item: MenuItem): React.ReactNode => (
     <Link href={item.href}>
       <a>{item.title}</a>
-      </Link>
+    </Link>
   );
 
   return (
