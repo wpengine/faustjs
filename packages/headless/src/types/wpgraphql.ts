@@ -8006,4 +8006,4 @@ export type GetUriInfoQuery = { nodeByUri: Maybe<{ id: string, templates: Maybe<
 export type GetMenusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMenusQuery = { menuItems: Maybe<{ nodes: Maybe<Array<Maybe<{ id: string, parentId: Maybe<string>, label: Maybe<string>, url: Maybe<string>, locations: Maybe<Array<Maybe<MenuLocationEnum>>> }>>> }> };
+export type GetMenusQuery = { menuItems: Maybe<{ nodes: Maybe<Array<Maybe<{ id: string, parentId: Maybe<string>, locations: Maybe<Array<Maybe<MenuLocationEnum>>>, title: Maybe<string>, href: Maybe<string> }>>> }> };
