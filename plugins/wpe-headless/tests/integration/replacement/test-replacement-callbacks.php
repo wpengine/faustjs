@@ -58,9 +58,9 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests wpe_headless_image_source_replacement() replaces the frontend_uri value when content replacement is enabled.
+	 * Tests wpe_headless_image_source_replacement() replaces the frontend_uri value when image replacement is enabled.
 	 */
-	public function test_wpe_headless_image_source_replacement_filters_content_when_content_replacement_enabled() {
+	public function test_wpe_headless_image_source_replacement_filters_content_when_image_replacement_enabled() {
 		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
 		wpe_headless_update_setting( 'enable_image_source', '1' );
 		# Do not replace partial domain match.
@@ -73,9 +73,9 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests wpe_headless_image_source_srcset_replacement() replaces the frontend_uri value when content replacement is enabled.
+	 * Tests wpe_headless_image_source_srcset_replacement() replaces the frontend_uri value when image replacement is enabled.
 	 */
-	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_content_replacement_enabled() {
+	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_image_replacement_enabled() {
 		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
 		wpe_headless_update_setting( 'enable_image_source', '1' );
 		# Do not replace partial domain match.
@@ -93,6 +93,25 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 		$this->assertSame( $expected, wpe_headless_image_source_srcset_replacement( $sources ) );
 		wpe_headless_update_setting( 'frontend_uri', null );
 		wpe_headless_update_setting( 'enable_image_source', '0' );
+	}
+
+	/**
+	 * Tests wpe_headless_image_source_replacement() doesn't replace when image replacement is not enabled.
+	 */
+	public function test_wpe_headless_image_source_replacement_filters_content_when_image_replacement_not_enabled() {
+		wpe_headless_update_setting( 'enable_image_source', '0' );
+		$this->assertSame( '<img src="/image.png">', wpe_headless_image_source_replacement( '<img src="/image.png">' ) );
+	}
+
+	/**
+	 * Tests wpe_headless_image_source_srcset_replacement() doesn't replace when image replacement is not enabled.
+	 */
+	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_image_replacement_not_enabled() {
+		wpe_headless_update_setting( 'enable_image_source', '0' );
+		$sources = array (
+			100 => array('url' => '/wp-content/uploads/image.jpg'),
+		);
+		$this->assertSame( $sources, wpe_headless_image_source_srcset_replacement( $sources ) );
 	}
 
 	/**
