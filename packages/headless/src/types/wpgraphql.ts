@@ -8002,3 +8002,10 @@ export type GetUriInfoQueryVariables = Exact<{
 
 
 export type GetUriInfoQuery = { nodeByUri: Maybe<{ id: string, templates: Maybe<Array<Maybe<string>>> } | { isFrontPage: boolean, isPostsPage: boolean, id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> }> };
+
+export type GetMenusQueryVariables = Exact<{
+  location: Maybe<MenuLocationEnum>;
+}>;
+
+
+export type GetMenusQuery = { menuItems: Maybe<{ nodes: Maybe<Array<Maybe<{ id: string, parentId: Maybe<string>, label: Maybe<string>, url: Maybe<string> }>>> }> };

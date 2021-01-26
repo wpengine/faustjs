@@ -300,3 +300,42 @@ export async function getUriInfo(
   };
 }
 /* eslint-enable consistent-return */
+
+/**
+ * Gets menu items from the named location from WordPress.
+ *
+ * Valid locations are exposed by WPGraphQL in MenuLocationEnum.
+ *
+ * @async
+ * @export
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @param {MenuLocationEnum} location
+ * @returns
+ */
+export async function getMenu(
+  client: ApolloClient<NormalizedCacheObject>,
+  location: WPGraphQL.MenuLocationEnum,
+): Promise<WPGraphQL.GetMenusQuery['menuItems']['nodes']> {
+  const result = await client.query<
+    WPGraphQL.GetMenusQuery,
+    WPGraphQL.GetMenusQueryVariables
+  >({
+    query: gql`
+      query GetMenus($location: MenuLocationEnum) {
+        menuItems(where: { location: $location }) {
+          nodes {
+            id
+            parentId
+            label
+            url
+          }
+        }
+      }
+    `,
+    variables: {
+      location,
+    },
+  });
+
+  return result?.data?.menuItems?.nodes;
+}
