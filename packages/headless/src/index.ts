@@ -8,3 +8,4 @@ export * from './components';
 export * from './provider';
 // eslint-disable-next-line import/export
 export * from './types';
+export * from './utils';
