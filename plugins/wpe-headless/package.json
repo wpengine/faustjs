@@ -2,7 +2,10 @@
     "name": "root",
     "private": true,
     "scripts": {
-        "wp-env": "wp-env"
+        "wp-env": "wp-env",
+        "wp:start": "wp-env start",
+        "wp:stop": "wp-env stop",
+        "wp:destroy": "wp-env destroy"
     },
     "devDependencies": {
         "@wordpress/env": "^3.0.1"
