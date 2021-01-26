@@ -35,6 +35,30 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
+add_filter( 'the_content', 'wpe_headless_content_media_replacement' );
+/**
+ * Callback for WordPress 'the_content' filter to replace paths to media.
+ *
+ * @param string $content The post content.
+ *
+ * @return string The post content.
+ * @todo Needs work...
+ */
+function wpe_headless_content_media_replacement( $content ) {
+	if ( ! wpe_headless_domain_replacement_enabled() ) {
+		return $content;
+	}
+
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$site_url     = site_url();
+
+	if ( ! $frontend_uri ) {
+		$frontend_uri = '/';
+	}
+
+	return str_replace( "src=\"{$frontend_uri}/", "src=\"{$site_url}/", $content );
+}
+
 add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
 /**
  * Callback for WordPress 'preview_post_link' filter.

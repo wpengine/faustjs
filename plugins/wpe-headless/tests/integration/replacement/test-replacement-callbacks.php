@@ -58,6 +58,20 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests wpe_headless_content_media_replacement() replaces the frontend_uri value when content replacement is enabled.
+	 */
+	public function test_wpe_headless_content_media_replacement_filters_content_when_content_replacement_enabled() {
+		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
+		add_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
+		# Do not replace partial domain match.
+		$this->assertSame( '<img src="http://foo.com/image.png">', wpe_headless_content_media_replacement( '<img src="http://foo.com/image.png">' ) );
+		# Do replace exact domain match
+		$this->assertSame( '<img src="http://example.org/image.png">', wpe_headless_content_media_replacement( '<img src="http://foo.co/image.png">' ) );
+		wpe_headless_update_setting( 'frontend_uri', null );
+		remove_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
+	}
+
+	/**
 	 * Tests get_permalink() returns the original value when content replacement is not enabled.
 	 *
 	 * @covers ::wpe_headless_post_link() which runs on post_link filter.
