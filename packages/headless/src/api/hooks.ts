@@ -11,6 +11,7 @@ import {
   getGeneralSettings,
   getContentNode,
   getUriInfo,
+  getMenus,
 } from './services';
 import { headlessConfig } from '../config';
 import {
@@ -445,6 +446,44 @@ export function usePost(
       subscribed = false;
     };
   }, [client, pageInfo, id, idType]);
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return result;
+}
+
+/**
+ * React Hook for retrieving menus from your WordPress site
+ */
+export function useMenus():
+  | WPGraphQL.GetMenusQuery['menuItems']['nodes']
+  | undefined {
+  const [result, setResult] = useState<
+    WPGraphQL.GetMenusQuery['menuItems']['nodes'] | undefined
+  >();
+  const client = useApolloClient();
+
+  useEffect(() => {
+    let subscribed = true;
+    if (client) {
+      void (async () => {
+        try {
+          const menu = await getMenus(
+            client as ApolloClient<NormalizedCacheObject>,
+          );
+
+          if (subscribed) {
+            setResult(menu);
+          }
+        } catch (e) {
+          console.error('Error getting menu', e);
+        }
+      })();
+    }
+
+    return () => {
+      subscribed = false;
+    };
+  }, [result, client]);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result;
