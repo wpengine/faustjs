@@ -41,7 +41,7 @@ interface Props
  *     return (
  *         <>
  *             <Menu items={items} />
- *             <Menu items={items} className="menu" ariaLabel="main" />
+ *             <Menu items={items} className="menu" aria-label="main" />
  *             <Menu items={items} anchor={nextLink} />
  *             <Menu items={items} anchor={reactRouterLink} />
  *         </>
@@ -56,7 +56,7 @@ export default function Menu({
   anchor,
   ...attributes
 }: Props): JSX.Element | null {
-  if (items.length === 0) {
+  if (items?.length === 0) {
     return null;
   }
 
