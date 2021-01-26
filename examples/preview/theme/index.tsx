@@ -1,14 +1,35 @@
 import React from 'react';
 import Link from 'next/link';
-import { usePosts, WPHead } from '@wpengine/headless';
+import {
+  usePosts,
+  useMenus,
+  menuLocation,
+  WPGraphQL,
+  WPHead,
+  Menu,
+  MenuItem,
+} from '@wpengine/headless';
 
 export default function Index() {
   const posts = usePosts();
 
+  const menus = useMenus();
+  const primaryMenu = menuLocation(menus, WPGraphQL.MenuLocationEnum.Primary);
+  const nextLink = (item: MenuItem): React.ReactNode => (
+    <Link href={item.href}>
+      <a>{item.title}</a>
+    </Link>
+  );
+
   return (
     <>
       <WPHead />
-
+      <Menu
+        items={primaryMenu}
+        className="header"
+        aria-label="Main"
+        anchor={nextLink}
+      />
       <div>
         {posts &&
           posts.map((post) => (
