@@ -33,7 +33,7 @@ function wpe_headless_url_replacement( $response ) {
 		array_walk_recursive(
 			$response->data,
 			function( &$value, $key ) {
-				if ( 'url' === $key ) {
+				if ( 'url' === $key || 'href' === $key ) {
 					$replacement = wpe_headless_get_setting( 'frontend_uri', '/' );
 					$value       = str_replace( site_url(), $replacement, $value );
 				}
