@@ -5,9 +5,12 @@
         "wp-env": "wp-env",
         "wp:start": "wp-env start",
         "wp:stop": "wp-env stop",
-        "wp:destroy": "wp-env destroy"
+        "wp:destroy": "wp-env destroy",
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run"
     },
     "devDependencies": {
-        "@wordpress/env": "^3.0.1"
+        "@wordpress/env": "^3.0.1",
+        "cypress": "^6.3.0"
     }
 }
