@@ -61,6 +61,7 @@ jobs:
           name: Composer PHP lint and code sniffer
           command: |
             /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
+            rm -v composer-setup.php
           working_directory: .
       - persist_to_workspace:
           root: ~/project
