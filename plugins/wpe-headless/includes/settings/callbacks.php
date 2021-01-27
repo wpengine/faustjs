@@ -264,9 +264,10 @@ function wpe_headless_display_frontend_uri_field() {
  * @return void
  */
 function wpe_headless_display_enable_disable_fields() {
-	$disable_theme    = wpe_headless_is_themes_disabled();
-	$enable_rewrites  = wpe_headless_is_rewrites_enabled();
-	$enable_redirects = wpe_headless_is_redirects_enabled();
+	$disable_theme       = wpe_headless_is_themes_disabled();
+	$enable_rewrites     = wpe_headless_is_rewrites_enabled();
+	$enable_redirects    = wpe_headless_is_redirects_enabled();
+	$enable_image_source = wpe_headless_is_image_source_replacement_enabled();
 
 	?>
 	<fieldset>
@@ -285,6 +286,12 @@ function wpe_headless_display_enable_disable_fields() {
 		<label for="enable_redirects">
 			<input type="checkbox" id="enable_redirects" name="wpe_headless[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
 			<?php esc_html_e( 'Enable public route redirects', 'wpe-headless' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_image_source">
+			<input type="checkbox" id="enable_image_source" name="wpe_headless[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
+			<?php esc_html_e( 'Use the WordPress domain for media URLs in post content', 'wpe-headless' ); ?>
 		</label>
 	</fieldset>
 	<?php
