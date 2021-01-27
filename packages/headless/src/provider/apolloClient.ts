@@ -52,7 +52,7 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
     link: WP_URL
       ? authLink.concat(
           new BatchHttpLink({
-            uri: `${WP_URL}/graphql`,
+            uri: `${WP_URL}/graphql?replace-domain=1`,
           }),
         )
       : undefined,
