@@ -2,7 +2,6 @@ import React from 'react';
 import Head from 'next/head';
 import { usePost, useGeneralSettings } from '../api';
 import { trimTrailingSlash } from '../utils';
-import { WPGraphQL } from '../types';
 
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,

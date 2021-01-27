@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { WPGraphQL, UriInfo } from '../types';
+import { UriInfo } from '../types';
 import { headlessConfig } from '../config';
 import {
   getUrlPath,
@@ -247,7 +247,7 @@ export function usePost():
  * ```
  * @export
  * @param {string} id The identifier for the post based on ContentNodeIdType
- * @param {ContentNodeIdType} idType The description of the type of id passed in
+ * @param {WPGraphQL.ContentNodeIdTypeEnum} idType The description of the type of id passed in
  * @returns {(Post | Page | undefined)}
  */
 export function usePost(
@@ -264,7 +264,7 @@ export function usePost(
   | undefined {
   const pageInfo = useNextUriInfo();
 
-  let variables;
+  let variables: Partial<WPGraphQL.GetContentNodeQueryVariables>;
 
   if (id) {
     variables = {
@@ -275,14 +275,15 @@ export function usePost(
     variables = {
       asPreview: isPreviewPath(pageInfo.uriPath),
       id: pageInfo.uriPath,
-      idType: WPGraphQL.ContentNodeIdTypeEnum.Uri,
+      idType: 'URI',
     };
   }
 
   const result = useQuery<WPGraphQL.GetContentNodeQuery>(GET_CONTENT_NODE, {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     variables,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result?.data?.contentNode;
 }

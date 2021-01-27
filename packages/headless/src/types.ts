@@ -1,5 +1,3 @@
-export * as WPGraphQL from './types/wpgraphql';
-
 /**
  * The configuration for your headless site
  *
