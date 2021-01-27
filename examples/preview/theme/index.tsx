@@ -19,7 +19,7 @@ export default function Index() {
                     <a href={post.uri}>{post.title}</a>
                   </h5>
                 </Link>
-                <p dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }} />
+                <div dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }} />
               </div>
             </div>
           ))}
