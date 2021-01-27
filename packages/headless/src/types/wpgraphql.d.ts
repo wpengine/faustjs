@@ -1,3 +1,13 @@
+/* eslint-disable */
+/**
+ * Important note! This file is auto-generated using graphql-codegen and based on wpgraphql-schema.graphql
+ * in the root of the project. Additionally, packages/headless will be scanned for
+ * operations (queries, mutations, etc) and types will be generated for them as well.
+ *
+ * This file can be manually regenerated using `npm run generate-graphql`
+ */
+declare namespace WPGraphQL {
+
 export type Maybe<T> = T;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -4086,1378 +4096,1346 @@ export type WritingSettings = {
 };
 
 /** What rating to display avatars up to. Accepts 'G', 'PG', 'R', 'X', and are judged in that order. Default is the value of the 'avatar_rating' option */
-export enum AvatarRatingEnum {
-  G = 'G',
-  Pg = 'PG',
-  R = 'R',
-  X = 'X'
-}
+export type AvatarRatingEnum = 
+  | 'G'
+  | 'PG'
+  | 'R'
+  | 'X';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum CategoryIdType {
+export type CategoryIdType = 
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Options for ordering the connection */
-export enum CommentsConnectionOrderbyEnum {
-  CommentAgent = 'COMMENT_AGENT',
-  CommentApproved = 'COMMENT_APPROVED',
-  CommentAuthor = 'COMMENT_AUTHOR',
-  CommentAuthorEmail = 'COMMENT_AUTHOR_EMAIL',
-  CommentAuthorIp = 'COMMENT_AUTHOR_IP',
-  CommentAuthorUrl = 'COMMENT_AUTHOR_URL',
-  CommentContent = 'COMMENT_CONTENT',
-  CommentDate = 'COMMENT_DATE',
-  CommentDateGmt = 'COMMENT_DATE_GMT',
-  CommentId = 'COMMENT_ID',
-  CommentIn = 'COMMENT_IN',
-  CommentKarma = 'COMMENT_KARMA',
-  CommentParent = 'COMMENT_PARENT',
-  CommentPostId = 'COMMENT_POST_ID',
-  CommentType = 'COMMENT_TYPE',
-  UserId = 'USER_ID'
-}
+export type CommentsConnectionOrderbyEnum = 
+  | 'COMMENT_AGENT'
+  | 'COMMENT_APPROVED'
+  | 'COMMENT_AUTHOR'
+  | 'COMMENT_AUTHOR_EMAIL'
+  | 'COMMENT_AUTHOR_IP'
+  | 'COMMENT_AUTHOR_URL'
+  | 'COMMENT_CONTENT'
+  | 'COMMENT_DATE'
+  | 'COMMENT_DATE_GMT'
+  | 'COMMENT_ID'
+  | 'COMMENT_IN'
+  | 'COMMENT_KARMA'
+  | 'COMMENT_PARENT'
+  | 'COMMENT_POST_ID'
+  | 'COMMENT_TYPE'
+  | 'USER_ID';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum ContentNodeIdTypeEnum {
+export type ContentNodeIdTypeEnum = 
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Allowed Content Types */
-export enum ContentTypeEnum {
+export type ContentTypeEnum = 
   /** The Type of Content object */
-  Attachment = 'ATTACHMENT',
+  | 'ATTACHMENT'
   /** The Type of Content object */
-  Page = 'PAGE',
+  | 'PAGE'
   /** The Type of Content object */
-  Post = 'POST'
-}
+  | 'POST';
 
 /** The Type of Identifier used to fetch a single Content Type node. To be used along with the "id" field. Default is "ID". */
-export enum ContentTypeIdTypeEnum {
+export type ContentTypeIdTypeEnum = 
   /** The globally unique ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the content type. */
-  Name = 'NAME'
-}
+  | 'NAME';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum MediaItemIdType {
+export type MediaItemIdType = 
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Identify a media item by its source url */
-  SourceUrl = 'SOURCE_URL',
+  | 'SOURCE_URL'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** The size of the media item object. */
-export enum MediaItemSizeEnum {
+export type MediaItemSizeEnum = 
   /** MediaItem with the large size */
-  Large = 'LARGE',
+  | 'LARGE'
   /** MediaItem with the medium size */
-  Medium = 'MEDIUM',
+  | 'MEDIUM'
   /** MediaItem with the medium_large size */
-  MediumLarge = 'MEDIUM_LARGE',
+  | 'MEDIUM_LARGE'
   /** MediaItem with the post-thumbnail size */
-  PostThumbnail = 'POST_THUMBNAIL',
+  | 'POST_THUMBNAIL'
   /** MediaItem with the thumbnail size */
-  Thumbnail = 'THUMBNAIL',
+  | 'THUMBNAIL'
   /** MediaItem with the twentytwenty-fullscreen size */
-  TwentytwentyFullscreen = 'TWENTYTWENTY_FULLSCREEN',
+  | 'TWENTYTWENTY_FULLSCREEN'
   /** MediaItem with the 1536x1536 size */
-  '1536X1536' = '_1536X1536',
+  | '_1536X1536'
   /** MediaItem with the 2048x2048 size */
-  '2048X2048' = '_2048X2048'
-}
+  | '_2048X2048';
 
 /** The status of the media item object. */
-export enum MediaItemStatusEnum {
+export type MediaItemStatusEnum = 
   /** Objects with the auto-draft status */
-  AutoDraft = 'AUTO_DRAFT',
+  | 'AUTO_DRAFT'
   /** Objects with the inherit status */
-  Inherit = 'INHERIT',
+  | 'INHERIT'
   /** Objects with the private status */
-  Private = 'PRIVATE',
+  | 'PRIVATE'
   /** Objects with the trash status */
-  Trash = 'TRASH'
-}
+  | 'TRASH';
 
 /** The Type of Identifier used to fetch a single node. Default is "ID". To be used along with the "id" field. */
-export enum MenuItemNodeIdTypeEnum {
+export type MenuItemNodeIdTypeEnum = 
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID'
-}
+  | 'ID';
 
 /** Registered menu locations */
-export enum MenuLocationEnum {
-  Expanded = 'EXPANDED',
-  Footer = 'FOOTER',
-  Mobile = 'MOBILE',
-  Primary = 'PRIMARY',
-  Social = 'SOCIAL',
-  Test = 'TEST'
-}
+export type MenuLocationEnum = 
+  | 'EXPANDED'
+  | 'FOOTER'
+  | 'MOBILE'
+  | 'PRIMARY'
+  | 'SOCIAL'
+  | 'TEST';
 
 /** The Type of Identifier used to fetch a single node. Default is "ID". To be used along with the "id" field. */
-export enum MenuNodeIdTypeEnum {
+export type MenuNodeIdTypeEnum = 
   /** Identify a menu node by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a menu node by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a menu node by it's name */
-  Name = 'NAME'
-}
+  | 'NAME';
 
 /** The MimeType of the object */
-export enum MimeTypeEnum {
-  ApplicationJava = 'APPLICATION_JAVA',
-  ApplicationMsword = 'APPLICATION_MSWORD',
-  ApplicationOctetStream = 'APPLICATION_OCTET_STREAM',
-  ApplicationOnenote = 'APPLICATION_ONENOTE',
-  ApplicationOxps = 'APPLICATION_OXPS',
-  ApplicationPdf = 'APPLICATION_PDF',
-  ApplicationRar = 'APPLICATION_RAR',
-  ApplicationRtf = 'APPLICATION_RTF',
-  ApplicationTtafXml = 'APPLICATION_TTAF_XML',
-  ApplicationVndAppleKeynote = 'APPLICATION_VND_APPLE_KEYNOTE',
-  ApplicationVndAppleNumbers = 'APPLICATION_VND_APPLE_NUMBERS',
-  ApplicationVndApplePages = 'APPLICATION_VND_APPLE_PAGES',
-  ApplicationVndMsAccess = 'APPLICATION_VND_MS_ACCESS',
-  ApplicationVndMsExcel = 'APPLICATION_VND_MS_EXCEL',
-  ApplicationVndMsExcelAddinMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_ADDIN_MACROENABLED_12',
-  ApplicationVndMsExcelSheetBinaryMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_SHEET_BINARY_MACROENABLED_12',
-  ApplicationVndMsExcelSheetMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_SHEET_MACROENABLED_12',
-  ApplicationVndMsExcelTemplateMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_TEMPLATE_MACROENABLED_12',
-  ApplicationVndMsPowerpoint = 'APPLICATION_VND_MS_POWERPOINT',
-  ApplicationVndMsPowerpointAddinMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_ADDIN_MACROENABLED_12',
-  ApplicationVndMsPowerpointPresentationMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_PRESENTATION_MACROENABLED_12',
-  ApplicationVndMsPowerpointSlideshowMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_SLIDESHOW_MACROENABLED_12',
-  ApplicationVndMsPowerpointSlideMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_SLIDE_MACROENABLED_12',
-  ApplicationVndMsPowerpointTemplateMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_TEMPLATE_MACROENABLED_12',
-  ApplicationVndMsProject = 'APPLICATION_VND_MS_PROJECT',
-  ApplicationVndMsWordDocumentMacroenabled_12 = 'APPLICATION_VND_MS_WORD_DOCUMENT_MACROENABLED_12',
-  ApplicationVndMsWordTemplateMacroenabled_12 = 'APPLICATION_VND_MS_WORD_TEMPLATE_MACROENABLED_12',
-  ApplicationVndMsWrite = 'APPLICATION_VND_MS_WRITE',
-  ApplicationVndMsXpsdocument = 'APPLICATION_VND_MS_XPSDOCUMENT',
-  ApplicationVndOasisOpendocumentChart = 'APPLICATION_VND_OASIS_OPENDOCUMENT_CHART',
-  ApplicationVndOasisOpendocumentDatabase = 'APPLICATION_VND_OASIS_OPENDOCUMENT_DATABASE',
-  ApplicationVndOasisOpendocumentFormula = 'APPLICATION_VND_OASIS_OPENDOCUMENT_FORMULA',
-  ApplicationVndOasisOpendocumentGraphics = 'APPLICATION_VND_OASIS_OPENDOCUMENT_GRAPHICS',
-  ApplicationVndOasisOpendocumentPresentation = 'APPLICATION_VND_OASIS_OPENDOCUMENT_PRESENTATION',
-  ApplicationVndOasisOpendocumentSpreadsheet = 'APPLICATION_VND_OASIS_OPENDOCUMENT_SPREADSHEET',
-  ApplicationVndOasisOpendocumentText = 'APPLICATION_VND_OASIS_OPENDOCUMENT_TEXT',
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlPresentation = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION',
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlSlide = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDE',
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlSlideshow = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDESHOW',
-  ApplicationVndOpenxmlformatsOfficedocumentPresentationmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_TEMPLATE',
-  ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET',
-  ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_TEMPLATE',
-  ApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT',
-  ApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_TEMPLATE',
-  ApplicationWordperfect = 'APPLICATION_WORDPERFECT',
-  ApplicationX_7ZCompressed = 'APPLICATION_X_7Z_COMPRESSED',
-  ApplicationXGzip = 'APPLICATION_X_GZIP',
-  ApplicationXTar = 'APPLICATION_X_TAR',
-  ApplicationZip = 'APPLICATION_ZIP',
-  AudioAac = 'AUDIO_AAC',
-  AudioFlac = 'AUDIO_FLAC',
-  AudioMidi = 'AUDIO_MIDI',
-  AudioMpeg = 'AUDIO_MPEG',
-  AudioOgg = 'AUDIO_OGG',
-  AudioWav = 'AUDIO_WAV',
-  AudioXMatroska = 'AUDIO_X_MATROSKA',
-  AudioXMsWax = 'AUDIO_X_MS_WAX',
-  AudioXMsWma = 'AUDIO_X_MS_WMA',
-  AudioXRealaudio = 'AUDIO_X_REALAUDIO',
-  ImageBmp = 'IMAGE_BMP',
-  ImageGif = 'IMAGE_GIF',
-  ImageHeic = 'IMAGE_HEIC',
-  ImageJpeg = 'IMAGE_JPEG',
-  ImagePng = 'IMAGE_PNG',
-  ImageTiff = 'IMAGE_TIFF',
-  ImageXIcon = 'IMAGE_X_ICON',
-  TextCalendar = 'TEXT_CALENDAR',
-  TextCss = 'TEXT_CSS',
-  TextCsv = 'TEXT_CSV',
-  TextPlain = 'TEXT_PLAIN',
-  TextRichtext = 'TEXT_RICHTEXT',
-  TextTabSeparatedValues = 'TEXT_TAB_SEPARATED_VALUES',
-  TextVtt = 'TEXT_VTT',
-  Video_3Gpp = 'VIDEO_3GPP',
-  Video_3Gpp2 = 'VIDEO_3GPP2',
-  VideoAvi = 'VIDEO_AVI',
-  VideoDivx = 'VIDEO_DIVX',
-  VideoMp4 = 'VIDEO_MP4',
-  VideoMpeg = 'VIDEO_MPEG',
-  VideoOgg = 'VIDEO_OGG',
-  VideoQuicktime = 'VIDEO_QUICKTIME',
-  VideoWebm = 'VIDEO_WEBM',
-  VideoXFlv = 'VIDEO_X_FLV',
-  VideoXMatroska = 'VIDEO_X_MATROSKA',
-  VideoXMsAsf = 'VIDEO_X_MS_ASF',
-  VideoXMsWm = 'VIDEO_X_MS_WM',
-  VideoXMsWmv = 'VIDEO_X_MS_WMV',
-  VideoXMsWmx = 'VIDEO_X_MS_WMX'
-}
+export type MimeTypeEnum = 
+  | 'APPLICATION_JAVA'
+  | 'APPLICATION_MSWORD'
+  | 'APPLICATION_OCTET_STREAM'
+  | 'APPLICATION_ONENOTE'
+  | 'APPLICATION_OXPS'
+  | 'APPLICATION_PDF'
+  | 'APPLICATION_RAR'
+  | 'APPLICATION_RTF'
+  | 'APPLICATION_TTAF_XML'
+  | 'APPLICATION_VND_APPLE_KEYNOTE'
+  | 'APPLICATION_VND_APPLE_NUMBERS'
+  | 'APPLICATION_VND_APPLE_PAGES'
+  | 'APPLICATION_VND_MS_ACCESS'
+  | 'APPLICATION_VND_MS_EXCEL'
+  | 'APPLICATION_VND_MS_EXCEL_ADDIN_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_EXCEL_SHEET_BINARY_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_EXCEL_SHEET_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_EXCEL_TEMPLATE_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_POWERPOINT'
+  | 'APPLICATION_VND_MS_POWERPOINT_ADDIN_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_POWERPOINT_PRESENTATION_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_POWERPOINT_SLIDESHOW_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_POWERPOINT_SLIDE_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_POWERPOINT_TEMPLATE_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_PROJECT'
+  | 'APPLICATION_VND_MS_WORD_DOCUMENT_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_WORD_TEMPLATE_MACROENABLED_12'
+  | 'APPLICATION_VND_MS_WRITE'
+  | 'APPLICATION_VND_MS_XPSDOCUMENT'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_CHART'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_DATABASE'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_FORMULA'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_GRAPHICS'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_PRESENTATION'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_SPREADSHEET'
+  | 'APPLICATION_VND_OASIS_OPENDOCUMENT_TEXT'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDE'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDESHOW'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_TEMPLATE'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_TEMPLATE'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT'
+  | 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_TEMPLATE'
+  | 'APPLICATION_WORDPERFECT'
+  | 'APPLICATION_X_7Z_COMPRESSED'
+  | 'APPLICATION_X_GZIP'
+  | 'APPLICATION_X_TAR'
+  | 'APPLICATION_ZIP'
+  | 'AUDIO_AAC'
+  | 'AUDIO_FLAC'
+  | 'AUDIO_MIDI'
+  | 'AUDIO_MPEG'
+  | 'AUDIO_OGG'
+  | 'AUDIO_WAV'
+  | 'AUDIO_X_MATROSKA'
+  | 'AUDIO_X_MS_WAX'
+  | 'AUDIO_X_MS_WMA'
+  | 'AUDIO_X_REALAUDIO'
+  | 'IMAGE_BMP'
+  | 'IMAGE_GIF'
+  | 'IMAGE_HEIC'
+  | 'IMAGE_JPEG'
+  | 'IMAGE_PNG'
+  | 'IMAGE_TIFF'
+  | 'IMAGE_X_ICON'
+  | 'TEXT_CALENDAR'
+  | 'TEXT_CSS'
+  | 'TEXT_CSV'
+  | 'TEXT_PLAIN'
+  | 'TEXT_RICHTEXT'
+  | 'TEXT_TAB_SEPARATED_VALUES'
+  | 'TEXT_VTT'
+  | 'VIDEO_3GPP'
+  | 'VIDEO_3GPP2'
+  | 'VIDEO_AVI'
+  | 'VIDEO_DIVX'
+  | 'VIDEO_MP4'
+  | 'VIDEO_MPEG'
+  | 'VIDEO_OGG'
+  | 'VIDEO_QUICKTIME'
+  | 'VIDEO_WEBM'
+  | 'VIDEO_X_FLV'
+  | 'VIDEO_X_MATROSKA'
+  | 'VIDEO_X_MS_ASF'
+  | 'VIDEO_X_MS_WM'
+  | 'VIDEO_X_MS_WMV'
+  | 'VIDEO_X_MS_WMX';
 
 /** The cardinality of the connection order */
-export enum OrderEnum {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
+export type OrderEnum = 
+  | 'ASC'
+  | 'DESC';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum PageIdType {
+export type PageIdType = 
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum PostFormatIdType {
+export type PostFormatIdType = 
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum PostIdType {
+export type PostIdType = 
   /** Identify a resource by the Database ID. */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** Identify a resource by the (hashed) Global ID. */
-  Id = 'ID',
+  | 'ID'
   /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Identify a resource by the URI. */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** The format of post field data. */
-export enum PostObjectFieldFormatEnum {
+export type PostObjectFieldFormatEnum = 
   /** Provide the field value directly from database */
-  Raw = 'RAW',
+  | 'RAW'
   /** Apply the default WordPress rendering */
-  Rendered = 'RENDERED'
-}
+  | 'RENDERED';
 
 /** The column to use when filtering by date */
-export enum PostObjectsConnectionDateColumnEnum {
-  Date = 'DATE',
-  Modified = 'MODIFIED'
-}
+export type PostObjectsConnectionDateColumnEnum = 
+  | 'DATE'
+  | 'MODIFIED';
 
 /** Field to order the connection by */
-export enum PostObjectsConnectionOrderbyEnum {
+export type PostObjectsConnectionOrderbyEnum = 
   /** Order by author */
-  Author = 'AUTHOR',
+  | 'AUTHOR'
   /** Order by the number of comments it has acquired */
-  CommentCount = 'COMMENT_COUNT',
+  | 'COMMENT_COUNT'
   /** Order by publish date */
-  Date = 'DATE',
+  | 'DATE'
   /** Preserve the ID order given in the IN array */
-  In = 'IN',
+  | 'IN'
   /** Order by the menu order value */
-  MenuOrder = 'MENU_ORDER',
+  | 'MENU_ORDER'
   /** Order by last modified date */
-  Modified = 'MODIFIED',
+  | 'MODIFIED'
   /** Preserve slug order given in the NAME_IN array */
-  NameIn = 'NAME_IN',
+  | 'NAME_IN'
   /** Order by parent ID */
-  Parent = 'PARENT',
+  | 'PARENT'
   /** Order by slug */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** Order by title */
-  Title = 'TITLE'
-}
+  | 'TITLE';
 
 /** The status of the object. */
-export enum PostStatusEnum {
+export type PostStatusEnum = 
   /** Objects with the auto-draft status */
-  AutoDraft = 'AUTO_DRAFT',
+  | 'AUTO_DRAFT'
   /** Objects with the draft status */
-  Draft = 'DRAFT',
+  | 'DRAFT'
   /** Objects with the future status */
-  Future = 'FUTURE',
+  | 'FUTURE'
   /** Objects with the inherit status */
-  Inherit = 'INHERIT',
+  | 'INHERIT'
   /** Objects with the pending status */
-  Pending = 'PENDING',
+  | 'PENDING'
   /** Objects with the private status */
-  Private = 'PRIVATE',
+  | 'PRIVATE'
   /** Objects with the publish status */
-  Publish = 'PUBLISH',
+  | 'PUBLISH'
   /** Objects with the request-completed status */
-  RequestCompleted = 'REQUEST_COMPLETED',
+  | 'REQUEST_COMPLETED'
   /** Objects with the request-confirmed status */
-  RequestConfirmed = 'REQUEST_CONFIRMED',
+  | 'REQUEST_CONFIRMED'
   /** Objects with the request-failed status */
-  RequestFailed = 'REQUEST_FAILED',
+  | 'REQUEST_FAILED'
   /** Objects with the request-pending status */
-  RequestPending = 'REQUEST_PENDING',
+  | 'REQUEST_PENDING'
   /** Objects with the trash status */
-  Trash = 'TRASH'
-}
+  | 'TRASH';
 
 /** The logical relation between each item in the array when there are more than one. */
-export enum RelationEnum {
-  And = 'AND',
-  Or = 'OR'
-}
+export type RelationEnum = 
+  | 'AND'
+  | 'OR';
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
-export enum TagIdType {
+export type TagIdType = 
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Allowed taxonomies */
-export enum TaxonomyEnum {
-  Category = 'CATEGORY',
-  Postformat = 'POSTFORMAT',
-  Tag = 'TAG'
-}
+export type TaxonomyEnum = 
+  | 'CATEGORY'
+  | 'POSTFORMAT'
+  | 'TAG';
 
 /** The Type of Identifier used to fetch a single Taxonomy node. To be used along with the "id" field. Default is "ID". */
-export enum TaxonomyIdTypeEnum {
+export type TaxonomyIdTypeEnum = 
   /** The globally unique ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the taxonomy */
-  Name = 'NAME'
-}
+  | 'NAME';
 
 /** The Type of Identifier used to fetch a single resource. Default is "ID". To be used along with the "id" field. */
-export enum TermNodeIdTypeEnum {
+export type TermNodeIdTypeEnum = 
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The name of the node */
-  Name = 'NAME',
+  | 'NAME'
   /** Url friendly name of the node */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI'
-}
+  | 'URI';
 
 /** Options for ordering the connection by */
-export enum TermObjectsConnectionOrderbyEnum {
-  Count = 'COUNT',
-  Description = 'DESCRIPTION',
-  Name = 'NAME',
-  Slug = 'SLUG',
-  TermGroup = 'TERM_GROUP',
-  TermId = 'TERM_ID',
-  TermOrder = 'TERM_ORDER'
-}
+export type TermObjectsConnectionOrderbyEnum = 
+  | 'COUNT'
+  | 'DESCRIPTION'
+  | 'NAME'
+  | 'SLUG'
+  | 'TERM_GROUP'
+  | 'TERM_ID'
+  | 'TERM_ORDER';
 
 /** Available timezones */
-export enum TimezoneEnum {
+export type TimezoneEnum = 
   /** Abidjan */
-  AfricaAbidjan = 'AFRICA_ABIDJAN',
+  | 'AFRICA_ABIDJAN'
   /** Accra */
-  AfricaAccra = 'AFRICA_ACCRA',
+  | 'AFRICA_ACCRA'
   /** Addis Ababa */
-  AfricaAddisAbaba = 'AFRICA_ADDIS_ABABA',
+  | 'AFRICA_ADDIS_ABABA'
   /** Algiers */
-  AfricaAlgiers = 'AFRICA_ALGIERS',
+  | 'AFRICA_ALGIERS'
   /** Asmara */
-  AfricaAsmara = 'AFRICA_ASMARA',
+  | 'AFRICA_ASMARA'
   /** Bamako */
-  AfricaBamako = 'AFRICA_BAMAKO',
+  | 'AFRICA_BAMAKO'
   /** Bangui */
-  AfricaBangui = 'AFRICA_BANGUI',
+  | 'AFRICA_BANGUI'
   /** Banjul */
-  AfricaBanjul = 'AFRICA_BANJUL',
+  | 'AFRICA_BANJUL'
   /** Bissau */
-  AfricaBissau = 'AFRICA_BISSAU',
+  | 'AFRICA_BISSAU'
   /** Blantyre */
-  AfricaBlantyre = 'AFRICA_BLANTYRE',
+  | 'AFRICA_BLANTYRE'
   /** Brazzaville */
-  AfricaBrazzaville = 'AFRICA_BRAZZAVILLE',
+  | 'AFRICA_BRAZZAVILLE'
   /** Bujumbura */
-  AfricaBujumbura = 'AFRICA_BUJUMBURA',
+  | 'AFRICA_BUJUMBURA'
   /** Cairo */
-  AfricaCairo = 'AFRICA_CAIRO',
+  | 'AFRICA_CAIRO'
   /** Casablanca */
-  AfricaCasablanca = 'AFRICA_CASABLANCA',
+  | 'AFRICA_CASABLANCA'
   /** Ceuta */
-  AfricaCeuta = 'AFRICA_CEUTA',
+  | 'AFRICA_CEUTA'
   /** Conakry */
-  AfricaConakry = 'AFRICA_CONAKRY',
+  | 'AFRICA_CONAKRY'
   /** Dakar */
-  AfricaDakar = 'AFRICA_DAKAR',
+  | 'AFRICA_DAKAR'
   /** Dar es Salaam */
-  AfricaDarEsSalaam = 'AFRICA_DAR_ES_SALAAM',
+  | 'AFRICA_DAR_ES_SALAAM'
   /** Djibouti */
-  AfricaDjibouti = 'AFRICA_DJIBOUTI',
+  | 'AFRICA_DJIBOUTI'
   /** Douala */
-  AfricaDouala = 'AFRICA_DOUALA',
+  | 'AFRICA_DOUALA'
   /** El Aaiun */
-  AfricaElAaiun = 'AFRICA_EL_AAIUN',
+  | 'AFRICA_EL_AAIUN'
   /** Freetown */
-  AfricaFreetown = 'AFRICA_FREETOWN',
+  | 'AFRICA_FREETOWN'
   /** Gaborone */
-  AfricaGaborone = 'AFRICA_GABORONE',
+  | 'AFRICA_GABORONE'
   /** Harare */
-  AfricaHarare = 'AFRICA_HARARE',
+  | 'AFRICA_HARARE'
   /** Johannesburg */
-  AfricaJohannesburg = 'AFRICA_JOHANNESBURG',
+  | 'AFRICA_JOHANNESBURG'
   /** Juba */
-  AfricaJuba = 'AFRICA_JUBA',
+  | 'AFRICA_JUBA'
   /** Kampala */
-  AfricaKampala = 'AFRICA_KAMPALA',
+  | 'AFRICA_KAMPALA'
   /** Khartoum */
-  AfricaKhartoum = 'AFRICA_KHARTOUM',
+  | 'AFRICA_KHARTOUM'
   /** Kigali */
-  AfricaKigali = 'AFRICA_KIGALI',
+  | 'AFRICA_KIGALI'
   /** Kinshasa */
-  AfricaKinshasa = 'AFRICA_KINSHASA',
+  | 'AFRICA_KINSHASA'
   /** Lagos */
-  AfricaLagos = 'AFRICA_LAGOS',
+  | 'AFRICA_LAGOS'
   /** Libreville */
-  AfricaLibreville = 'AFRICA_LIBREVILLE',
+  | 'AFRICA_LIBREVILLE'
   /** Lome */
-  AfricaLome = 'AFRICA_LOME',
+  | 'AFRICA_LOME'
   /** Luanda */
-  AfricaLuanda = 'AFRICA_LUANDA',
+  | 'AFRICA_LUANDA'
   /** Lubumbashi */
-  AfricaLubumbashi = 'AFRICA_LUBUMBASHI',
+  | 'AFRICA_LUBUMBASHI'
   /** Lusaka */
-  AfricaLusaka = 'AFRICA_LUSAKA',
+  | 'AFRICA_LUSAKA'
   /** Malabo */
-  AfricaMalabo = 'AFRICA_MALABO',
+  | 'AFRICA_MALABO'
   /** Maputo */
-  AfricaMaputo = 'AFRICA_MAPUTO',
+  | 'AFRICA_MAPUTO'
   /** Maseru */
-  AfricaMaseru = 'AFRICA_MASERU',
+  | 'AFRICA_MASERU'
   /** Mbabane */
-  AfricaMbabane = 'AFRICA_MBABANE',
+  | 'AFRICA_MBABANE'
   /** Mogadishu */
-  AfricaMogadishu = 'AFRICA_MOGADISHU',
+  | 'AFRICA_MOGADISHU'
   /** Monrovia */
-  AfricaMonrovia = 'AFRICA_MONROVIA',
+  | 'AFRICA_MONROVIA'
   /** Nairobi */
-  AfricaNairobi = 'AFRICA_NAIROBI',
+  | 'AFRICA_NAIROBI'
   /** Ndjamena */
-  AfricaNdjamena = 'AFRICA_NDJAMENA',
+  | 'AFRICA_NDJAMENA'
   /** Niamey */
-  AfricaNiamey = 'AFRICA_NIAMEY',
+  | 'AFRICA_NIAMEY'
   /** Nouakchott */
-  AfricaNouakchott = 'AFRICA_NOUAKCHOTT',
+  | 'AFRICA_NOUAKCHOTT'
   /** Ouagadougou */
-  AfricaOuagadougou = 'AFRICA_OUAGADOUGOU',
+  | 'AFRICA_OUAGADOUGOU'
   /** Porto-Novo */
-  AfricaPortoNovo = 'AFRICA_PORTO_NOVO',
+  | 'AFRICA_PORTO_NOVO'
   /** Sao Tome */
-  AfricaSaoTome = 'AFRICA_SAO_TOME',
+  | 'AFRICA_SAO_TOME'
   /** Tripoli */
-  AfricaTripoli = 'AFRICA_TRIPOLI',
+  | 'AFRICA_TRIPOLI'
   /** Tunis */
-  AfricaTunis = 'AFRICA_TUNIS',
+  | 'AFRICA_TUNIS'
   /** Windhoek */
-  AfricaWindhoek = 'AFRICA_WINDHOEK',
+  | 'AFRICA_WINDHOEK'
   /** Adak */
-  AmericaAdak = 'AMERICA_ADAK',
+  | 'AMERICA_ADAK'
   /** Anchorage */
-  AmericaAnchorage = 'AMERICA_ANCHORAGE',
+  | 'AMERICA_ANCHORAGE'
   /** Anguilla */
-  AmericaAnguilla = 'AMERICA_ANGUILLA',
+  | 'AMERICA_ANGUILLA'
   /** Antigua */
-  AmericaAntigua = 'AMERICA_ANTIGUA',
+  | 'AMERICA_ANTIGUA'
   /** Araguaina */
-  AmericaAraguaina = 'AMERICA_ARAGUAINA',
+  | 'AMERICA_ARAGUAINA'
   /** Argentina - Buenos Aires */
-  AmericaArgentinaBuenosAires = 'AMERICA_ARGENTINA_BUENOS_AIRES',
+  | 'AMERICA_ARGENTINA_BUENOS_AIRES'
   /** Argentina - Catamarca */
-  AmericaArgentinaCatamarca = 'AMERICA_ARGENTINA_CATAMARCA',
+  | 'AMERICA_ARGENTINA_CATAMARCA'
   /** Argentina - Cordoba */
-  AmericaArgentinaCordoba = 'AMERICA_ARGENTINA_CORDOBA',
+  | 'AMERICA_ARGENTINA_CORDOBA'
   /** Argentina - Jujuy */
-  AmericaArgentinaJujuy = 'AMERICA_ARGENTINA_JUJUY',
+  | 'AMERICA_ARGENTINA_JUJUY'
   /** Argentina - La Rioja */
-  AmericaArgentinaLaRioja = 'AMERICA_ARGENTINA_LA_RIOJA',
+  | 'AMERICA_ARGENTINA_LA_RIOJA'
   /** Argentina - Mendoza */
-  AmericaArgentinaMendoza = 'AMERICA_ARGENTINA_MENDOZA',
+  | 'AMERICA_ARGENTINA_MENDOZA'
   /** Argentina - Rio Gallegos */
-  AmericaArgentinaRioGallegos = 'AMERICA_ARGENTINA_RIO_GALLEGOS',
+  | 'AMERICA_ARGENTINA_RIO_GALLEGOS'
   /** Argentina - Salta */
-  AmericaArgentinaSalta = 'AMERICA_ARGENTINA_SALTA',
+  | 'AMERICA_ARGENTINA_SALTA'
   /** Argentina - San Juan */
-  AmericaArgentinaSanJuan = 'AMERICA_ARGENTINA_SAN_JUAN',
+  | 'AMERICA_ARGENTINA_SAN_JUAN'
   /** Argentina - San Luis */
-  AmericaArgentinaSanLuis = 'AMERICA_ARGENTINA_SAN_LUIS',
+  | 'AMERICA_ARGENTINA_SAN_LUIS'
   /** Argentina - Tucuman */
-  AmericaArgentinaTucuman = 'AMERICA_ARGENTINA_TUCUMAN',
+  | 'AMERICA_ARGENTINA_TUCUMAN'
   /** Argentina - Ushuaia */
-  AmericaArgentinaUshuaia = 'AMERICA_ARGENTINA_USHUAIA',
+  | 'AMERICA_ARGENTINA_USHUAIA'
   /** Aruba */
-  AmericaAruba = 'AMERICA_ARUBA',
+  | 'AMERICA_ARUBA'
   /** Asuncion */
-  AmericaAsuncion = 'AMERICA_ASUNCION',
+  | 'AMERICA_ASUNCION'
   /** Atikokan */
-  AmericaAtikokan = 'AMERICA_ATIKOKAN',
+  | 'AMERICA_ATIKOKAN'
   /** Bahia */
-  AmericaBahia = 'AMERICA_BAHIA',
+  | 'AMERICA_BAHIA'
   /** Bahia Banderas */
-  AmericaBahiaBanderas = 'AMERICA_BAHIA_BANDERAS',
+  | 'AMERICA_BAHIA_BANDERAS'
   /** Barbados */
-  AmericaBarbados = 'AMERICA_BARBADOS',
+  | 'AMERICA_BARBADOS'
   /** Belem */
-  AmericaBelem = 'AMERICA_BELEM',
+  | 'AMERICA_BELEM'
   /** Belize */
-  AmericaBelize = 'AMERICA_BELIZE',
+  | 'AMERICA_BELIZE'
   /** Blanc-Sablon */
-  AmericaBlancSablon = 'AMERICA_BLANC_SABLON',
+  | 'AMERICA_BLANC_SABLON'
   /** Boa Vista */
-  AmericaBoaVista = 'AMERICA_BOA_VISTA',
+  | 'AMERICA_BOA_VISTA'
   /** Bogota */
-  AmericaBogota = 'AMERICA_BOGOTA',
+  | 'AMERICA_BOGOTA'
   /** Boise */
-  AmericaBoise = 'AMERICA_BOISE',
+  | 'AMERICA_BOISE'
   /** Cambridge Bay */
-  AmericaCambridgeBay = 'AMERICA_CAMBRIDGE_BAY',
+  | 'AMERICA_CAMBRIDGE_BAY'
   /** Campo Grande */
-  AmericaCampoGrande = 'AMERICA_CAMPO_GRANDE',
+  | 'AMERICA_CAMPO_GRANDE'
   /** Cancun */
-  AmericaCancun = 'AMERICA_CANCUN',
+  | 'AMERICA_CANCUN'
   /** Caracas */
-  AmericaCaracas = 'AMERICA_CARACAS',
+  | 'AMERICA_CARACAS'
   /** Cayenne */
-  AmericaCayenne = 'AMERICA_CAYENNE',
+  | 'AMERICA_CAYENNE'
   /** Cayman */
-  AmericaCayman = 'AMERICA_CAYMAN',
+  | 'AMERICA_CAYMAN'
   /** Chicago */
-  AmericaChicago = 'AMERICA_CHICAGO',
+  | 'AMERICA_CHICAGO'
   /** Chihuahua */
-  AmericaChihuahua = 'AMERICA_CHIHUAHUA',
+  | 'AMERICA_CHIHUAHUA'
   /** Costa Rica */
-  AmericaCostaRica = 'AMERICA_COSTA_RICA',
+  | 'AMERICA_COSTA_RICA'
   /** Creston */
-  AmericaCreston = 'AMERICA_CRESTON',
+  | 'AMERICA_CRESTON'
   /** Cuiaba */
-  AmericaCuiaba = 'AMERICA_CUIABA',
+  | 'AMERICA_CUIABA'
   /** Curacao */
-  AmericaCuracao = 'AMERICA_CURACAO',
+  | 'AMERICA_CURACAO'
   /** Danmarkshavn */
-  AmericaDanmarkshavn = 'AMERICA_DANMARKSHAVN',
+  | 'AMERICA_DANMARKSHAVN'
   /** Dawson */
-  AmericaDawson = 'AMERICA_DAWSON',
+  | 'AMERICA_DAWSON'
   /** Dawson Creek */
-  AmericaDawsonCreek = 'AMERICA_DAWSON_CREEK',
+  | 'AMERICA_DAWSON_CREEK'
   /** Denver */
-  AmericaDenver = 'AMERICA_DENVER',
+  | 'AMERICA_DENVER'
   /** Detroit */
-  AmericaDetroit = 'AMERICA_DETROIT',
+  | 'AMERICA_DETROIT'
   /** Dominica */
-  AmericaDominica = 'AMERICA_DOMINICA',
+  | 'AMERICA_DOMINICA'
   /** Edmonton */
-  AmericaEdmonton = 'AMERICA_EDMONTON',
+  | 'AMERICA_EDMONTON'
   /** Eirunepe */
-  AmericaEirunepe = 'AMERICA_EIRUNEPE',
+  | 'AMERICA_EIRUNEPE'
   /** El Salvador */
-  AmericaElSalvador = 'AMERICA_EL_SALVADOR',
+  | 'AMERICA_EL_SALVADOR'
   /** Fortaleza */
-  AmericaFortaleza = 'AMERICA_FORTALEZA',
+  | 'AMERICA_FORTALEZA'
   /** Fort Nelson */
-  AmericaFortNelson = 'AMERICA_FORT_NELSON',
+  | 'AMERICA_FORT_NELSON'
   /** Glace Bay */
-  AmericaGlaceBay = 'AMERICA_GLACE_BAY',
+  | 'AMERICA_GLACE_BAY'
   /** Godthab */
-  AmericaGodthab = 'AMERICA_GODTHAB',
+  | 'AMERICA_GODTHAB'
   /** Goose Bay */
-  AmericaGooseBay = 'AMERICA_GOOSE_BAY',
+  | 'AMERICA_GOOSE_BAY'
   /** Grand Turk */
-  AmericaGrandTurk = 'AMERICA_GRAND_TURK',
+  | 'AMERICA_GRAND_TURK'
   /** Grenada */
-  AmericaGrenada = 'AMERICA_GRENADA',
+  | 'AMERICA_GRENADA'
   /** Guadeloupe */
-  AmericaGuadeloupe = 'AMERICA_GUADELOUPE',
+  | 'AMERICA_GUADELOUPE'
   /** Guatemala */
-  AmericaGuatemala = 'AMERICA_GUATEMALA',
+  | 'AMERICA_GUATEMALA'
   /** Guayaquil */
-  AmericaGuayaquil = 'AMERICA_GUAYAQUIL',
+  | 'AMERICA_GUAYAQUIL'
   /** Guyana */
-  AmericaGuyana = 'AMERICA_GUYANA',
+  | 'AMERICA_GUYANA'
   /** Halifax */
-  AmericaHalifax = 'AMERICA_HALIFAX',
+  | 'AMERICA_HALIFAX'
   /** Havana */
-  AmericaHavana = 'AMERICA_HAVANA',
+  | 'AMERICA_HAVANA'
   /** Hermosillo */
-  AmericaHermosillo = 'AMERICA_HERMOSILLO',
+  | 'AMERICA_HERMOSILLO'
   /** Indiana - Indianapolis */
-  AmericaIndianaIndianapolis = 'AMERICA_INDIANA_INDIANAPOLIS',
+  | 'AMERICA_INDIANA_INDIANAPOLIS'
   /** Indiana - Knox */
-  AmericaIndianaKnox = 'AMERICA_INDIANA_KNOX',
+  | 'AMERICA_INDIANA_KNOX'
   /** Indiana - Marengo */
-  AmericaIndianaMarengo = 'AMERICA_INDIANA_MARENGO',
+  | 'AMERICA_INDIANA_MARENGO'
   /** Indiana - Petersburg */
-  AmericaIndianaPetersburg = 'AMERICA_INDIANA_PETERSBURG',
+  | 'AMERICA_INDIANA_PETERSBURG'
   /** Indiana - Tell City */
-  AmericaIndianaTellCity = 'AMERICA_INDIANA_TELL_CITY',
+  | 'AMERICA_INDIANA_TELL_CITY'
   /** Indiana - Vevay */
-  AmericaIndianaVevay = 'AMERICA_INDIANA_VEVAY',
+  | 'AMERICA_INDIANA_VEVAY'
   /** Indiana - Vincennes */
-  AmericaIndianaVincennes = 'AMERICA_INDIANA_VINCENNES',
+  | 'AMERICA_INDIANA_VINCENNES'
   /** Indiana - Winamac */
-  AmericaIndianaWinamac = 'AMERICA_INDIANA_WINAMAC',
+  | 'AMERICA_INDIANA_WINAMAC'
   /** Inuvik */
-  AmericaInuvik = 'AMERICA_INUVIK',
+  | 'AMERICA_INUVIK'
   /** Iqaluit */
-  AmericaIqaluit = 'AMERICA_IQALUIT',
+  | 'AMERICA_IQALUIT'
   /** Jamaica */
-  AmericaJamaica = 'AMERICA_JAMAICA',
+  | 'AMERICA_JAMAICA'
   /** Juneau */
-  AmericaJuneau = 'AMERICA_JUNEAU',
+  | 'AMERICA_JUNEAU'
   /** Kentucky - Louisville */
-  AmericaKentuckyLouisville = 'AMERICA_KENTUCKY_LOUISVILLE',
+  | 'AMERICA_KENTUCKY_LOUISVILLE'
   /** Kentucky - Monticello */
-  AmericaKentuckyMonticello = 'AMERICA_KENTUCKY_MONTICELLO',
+  | 'AMERICA_KENTUCKY_MONTICELLO'
   /** Kralendijk */
-  AmericaKralendijk = 'AMERICA_KRALENDIJK',
+  | 'AMERICA_KRALENDIJK'
   /** La Paz */
-  AmericaLaPaz = 'AMERICA_LA_PAZ',
+  | 'AMERICA_LA_PAZ'
   /** Lima */
-  AmericaLima = 'AMERICA_LIMA',
+  | 'AMERICA_LIMA'
   /** Los Angeles */
-  AmericaLosAngeles = 'AMERICA_LOS_ANGELES',
+  | 'AMERICA_LOS_ANGELES'
   /** Lower Princes */
-  AmericaLowerPrinces = 'AMERICA_LOWER_PRINCES',
+  | 'AMERICA_LOWER_PRINCES'
   /** Maceio */
-  AmericaMaceio = 'AMERICA_MACEIO',
+  | 'AMERICA_MACEIO'
   /** Managua */
-  AmericaManagua = 'AMERICA_MANAGUA',
+  | 'AMERICA_MANAGUA'
   /** Manaus */
-  AmericaManaus = 'AMERICA_MANAUS',
+  | 'AMERICA_MANAUS'
   /** Marigot */
-  AmericaMarigot = 'AMERICA_MARIGOT',
+  | 'AMERICA_MARIGOT'
   /** Martinique */
-  AmericaMartinique = 'AMERICA_MARTINIQUE',
+  | 'AMERICA_MARTINIQUE'
   /** Matamoros */
-  AmericaMatamoros = 'AMERICA_MATAMOROS',
+  | 'AMERICA_MATAMOROS'
   /** Mazatlan */
-  AmericaMazatlan = 'AMERICA_MAZATLAN',
+  | 'AMERICA_MAZATLAN'
   /** Menominee */
-  AmericaMenominee = 'AMERICA_MENOMINEE',
+  | 'AMERICA_MENOMINEE'
   /** Merida */
-  AmericaMerida = 'AMERICA_MERIDA',
+  | 'AMERICA_MERIDA'
   /** Metlakatla */
-  AmericaMetlakatla = 'AMERICA_METLAKATLA',
+  | 'AMERICA_METLAKATLA'
   /** Mexico City */
-  AmericaMexicoCity = 'AMERICA_MEXICO_CITY',
+  | 'AMERICA_MEXICO_CITY'
   /** Miquelon */
-  AmericaMiquelon = 'AMERICA_MIQUELON',
+  | 'AMERICA_MIQUELON'
   /** Moncton */
-  AmericaMoncton = 'AMERICA_MONCTON',
+  | 'AMERICA_MONCTON'
   /** Monterrey */
-  AmericaMonterrey = 'AMERICA_MONTERREY',
+  | 'AMERICA_MONTERREY'
   /** Montevideo */
-  AmericaMontevideo = 'AMERICA_MONTEVIDEO',
+  | 'AMERICA_MONTEVIDEO'
   /** Montserrat */
-  AmericaMontserrat = 'AMERICA_MONTSERRAT',
+  | 'AMERICA_MONTSERRAT'
   /** Nassau */
-  AmericaNassau = 'AMERICA_NASSAU',
+  | 'AMERICA_NASSAU'
   /** New York */
-  AmericaNewYork = 'AMERICA_NEW_YORK',
+  | 'AMERICA_NEW_YORK'
   /** Nipigon */
-  AmericaNipigon = 'AMERICA_NIPIGON',
+  | 'AMERICA_NIPIGON'
   /** Nome */
-  AmericaNome = 'AMERICA_NOME',
+  | 'AMERICA_NOME'
   /** Noronha */
-  AmericaNoronha = 'AMERICA_NORONHA',
+  | 'AMERICA_NORONHA'
   /** North Dakota - Beulah */
-  AmericaNorthDakotaBeulah = 'AMERICA_NORTH_DAKOTA_BEULAH',
+  | 'AMERICA_NORTH_DAKOTA_BEULAH'
   /** North Dakota - Center */
-  AmericaNorthDakotaCenter = 'AMERICA_NORTH_DAKOTA_CENTER',
+  | 'AMERICA_NORTH_DAKOTA_CENTER'
   /** North Dakota - New Salem */
-  AmericaNorthDakotaNewSalem = 'AMERICA_NORTH_DAKOTA_NEW_SALEM',
+  | 'AMERICA_NORTH_DAKOTA_NEW_SALEM'
   /** Ojinaga */
-  AmericaOjinaga = 'AMERICA_OJINAGA',
+  | 'AMERICA_OJINAGA'
   /** Panama */
-  AmericaPanama = 'AMERICA_PANAMA',
+  | 'AMERICA_PANAMA'
   /** Pangnirtung */
-  AmericaPangnirtung = 'AMERICA_PANGNIRTUNG',
+  | 'AMERICA_PANGNIRTUNG'
   /** Paramaribo */
-  AmericaParamaribo = 'AMERICA_PARAMARIBO',
+  | 'AMERICA_PARAMARIBO'
   /** Phoenix */
-  AmericaPhoenix = 'AMERICA_PHOENIX',
+  | 'AMERICA_PHOENIX'
   /** Porto Velho */
-  AmericaPortoVelho = 'AMERICA_PORTO_VELHO',
+  | 'AMERICA_PORTO_VELHO'
   /** Port-au-Prince */
-  AmericaPortAuPrince = 'AMERICA_PORT_AU_PRINCE',
+  | 'AMERICA_PORT_AU_PRINCE'
   /** Port of Spain */
-  AmericaPortOfSpain = 'AMERICA_PORT_OF_SPAIN',
+  | 'AMERICA_PORT_OF_SPAIN'
   /** Puerto Rico */
-  AmericaPuertoRico = 'AMERICA_PUERTO_RICO',
+  | 'AMERICA_PUERTO_RICO'
   /** Punta Arenas */
-  AmericaPuntaArenas = 'AMERICA_PUNTA_ARENAS',
+  | 'AMERICA_PUNTA_ARENAS'
   /** Rainy River */
-  AmericaRainyRiver = 'AMERICA_RAINY_RIVER',
+  | 'AMERICA_RAINY_RIVER'
   /** Rankin Inlet */
-  AmericaRankinInlet = 'AMERICA_RANKIN_INLET',
+  | 'AMERICA_RANKIN_INLET'
   /** Recife */
-  AmericaRecife = 'AMERICA_RECIFE',
+  | 'AMERICA_RECIFE'
   /** Regina */
-  AmericaRegina = 'AMERICA_REGINA',
+  | 'AMERICA_REGINA'
   /** Resolute */
-  AmericaResolute = 'AMERICA_RESOLUTE',
+  | 'AMERICA_RESOLUTE'
   /** Rio Branco */
-  AmericaRioBranco = 'AMERICA_RIO_BRANCO',
+  | 'AMERICA_RIO_BRANCO'
   /** Santarem */
-  AmericaSantarem = 'AMERICA_SANTAREM',
+  | 'AMERICA_SANTAREM'
   /** Santiago */
-  AmericaSantiago = 'AMERICA_SANTIAGO',
+  | 'AMERICA_SANTIAGO'
   /** Santo Domingo */
-  AmericaSantoDomingo = 'AMERICA_SANTO_DOMINGO',
+  | 'AMERICA_SANTO_DOMINGO'
   /** Sao Paulo */
-  AmericaSaoPaulo = 'AMERICA_SAO_PAULO',
+  | 'AMERICA_SAO_PAULO'
   /** Scoresbysund */
-  AmericaScoresbysund = 'AMERICA_SCORESBYSUND',
+  | 'AMERICA_SCORESBYSUND'
   /** Sitka */
-  AmericaSitka = 'AMERICA_SITKA',
+  | 'AMERICA_SITKA'
   /** St Barthelemy */
-  AmericaStBarthelemy = 'AMERICA_ST_BARTHELEMY',
+  | 'AMERICA_ST_BARTHELEMY'
   /** St Johns */
-  AmericaStJohns = 'AMERICA_ST_JOHNS',
+  | 'AMERICA_ST_JOHNS'
   /** St Kitts */
-  AmericaStKitts = 'AMERICA_ST_KITTS',
+  | 'AMERICA_ST_KITTS'
   /** St Lucia */
-  AmericaStLucia = 'AMERICA_ST_LUCIA',
+  | 'AMERICA_ST_LUCIA'
   /** St Thomas */
-  AmericaStThomas = 'AMERICA_ST_THOMAS',
+  | 'AMERICA_ST_THOMAS'
   /** St Vincent */
-  AmericaStVincent = 'AMERICA_ST_VINCENT',
+  | 'AMERICA_ST_VINCENT'
   /** Swift Current */
-  AmericaSwiftCurrent = 'AMERICA_SWIFT_CURRENT',
+  | 'AMERICA_SWIFT_CURRENT'
   /** Tegucigalpa */
-  AmericaTegucigalpa = 'AMERICA_TEGUCIGALPA',
+  | 'AMERICA_TEGUCIGALPA'
   /** Thule */
-  AmericaThule = 'AMERICA_THULE',
+  | 'AMERICA_THULE'
   /** Thunder Bay */
-  AmericaThunderBay = 'AMERICA_THUNDER_BAY',
+  | 'AMERICA_THUNDER_BAY'
   /** Tijuana */
-  AmericaTijuana = 'AMERICA_TIJUANA',
+  | 'AMERICA_TIJUANA'
   /** Toronto */
-  AmericaToronto = 'AMERICA_TORONTO',
+  | 'AMERICA_TORONTO'
   /** Tortola */
-  AmericaTortola = 'AMERICA_TORTOLA',
+  | 'AMERICA_TORTOLA'
   /** Vancouver */
-  AmericaVancouver = 'AMERICA_VANCOUVER',
+  | 'AMERICA_VANCOUVER'
   /** Whitehorse */
-  AmericaWhitehorse = 'AMERICA_WHITEHORSE',
+  | 'AMERICA_WHITEHORSE'
   /** Winnipeg */
-  AmericaWinnipeg = 'AMERICA_WINNIPEG',
+  | 'AMERICA_WINNIPEG'
   /** Yakutat */
-  AmericaYakutat = 'AMERICA_YAKUTAT',
+  | 'AMERICA_YAKUTAT'
   /** Yellowknife */
-  AmericaYellowknife = 'AMERICA_YELLOWKNIFE',
+  | 'AMERICA_YELLOWKNIFE'
   /** Casey */
-  AntarcticaCasey = 'ANTARCTICA_CASEY',
+  | 'ANTARCTICA_CASEY'
   /** Davis */
-  AntarcticaDavis = 'ANTARCTICA_DAVIS',
+  | 'ANTARCTICA_DAVIS'
   /** DumontDUrville */
-  AntarcticaDumontdurville = 'ANTARCTICA_DUMONTDURVILLE',
+  | 'ANTARCTICA_DUMONTDURVILLE'
   /** Macquarie */
-  AntarcticaMacquarie = 'ANTARCTICA_MACQUARIE',
+  | 'ANTARCTICA_MACQUARIE'
   /** Mawson */
-  AntarcticaMawson = 'ANTARCTICA_MAWSON',
+  | 'ANTARCTICA_MAWSON'
   /** McMurdo */
-  AntarcticaMcmurdo = 'ANTARCTICA_MCMURDO',
+  | 'ANTARCTICA_MCMURDO'
   /** Palmer */
-  AntarcticaPalmer = 'ANTARCTICA_PALMER',
+  | 'ANTARCTICA_PALMER'
   /** Rothera */
-  AntarcticaRothera = 'ANTARCTICA_ROTHERA',
+  | 'ANTARCTICA_ROTHERA'
   /** Syowa */
-  AntarcticaSyowa = 'ANTARCTICA_SYOWA',
+  | 'ANTARCTICA_SYOWA'
   /** Troll */
-  AntarcticaTroll = 'ANTARCTICA_TROLL',
+  | 'ANTARCTICA_TROLL'
   /** Vostok */
-  AntarcticaVostok = 'ANTARCTICA_VOSTOK',
+  | 'ANTARCTICA_VOSTOK'
   /** Longyearbyen */
-  ArcticLongyearbyen = 'ARCTIC_LONGYEARBYEN',
+  | 'ARCTIC_LONGYEARBYEN'
   /** Aden */
-  AsiaAden = 'ASIA_ADEN',
+  | 'ASIA_ADEN'
   /** Almaty */
-  AsiaAlmaty = 'ASIA_ALMATY',
+  | 'ASIA_ALMATY'
   /** Amman */
-  AsiaAmman = 'ASIA_AMMAN',
+  | 'ASIA_AMMAN'
   /** Anadyr */
-  AsiaAnadyr = 'ASIA_ANADYR',
+  | 'ASIA_ANADYR'
   /** Aqtau */
-  AsiaAqtau = 'ASIA_AQTAU',
+  | 'ASIA_AQTAU'
   /** Aqtobe */
-  AsiaAqtobe = 'ASIA_AQTOBE',
+  | 'ASIA_AQTOBE'
   /** Ashgabat */
-  AsiaAshgabat = 'ASIA_ASHGABAT',
+  | 'ASIA_ASHGABAT'
   /** Atyrau */
-  AsiaAtyrau = 'ASIA_ATYRAU',
+  | 'ASIA_ATYRAU'
   /** Baghdad */
-  AsiaBaghdad = 'ASIA_BAGHDAD',
+  | 'ASIA_BAGHDAD'
   /** Bahrain */
-  AsiaBahrain = 'ASIA_BAHRAIN',
+  | 'ASIA_BAHRAIN'
   /** Baku */
-  AsiaBaku = 'ASIA_BAKU',
+  | 'ASIA_BAKU'
   /** Bangkok */
-  AsiaBangkok = 'ASIA_BANGKOK',
+  | 'ASIA_BANGKOK'
   /** Barnaul */
-  AsiaBarnaul = 'ASIA_BARNAUL',
+  | 'ASIA_BARNAUL'
   /** Beirut */
-  AsiaBeirut = 'ASIA_BEIRUT',
+  | 'ASIA_BEIRUT'
   /** Bishkek */
-  AsiaBishkek = 'ASIA_BISHKEK',
+  | 'ASIA_BISHKEK'
   /** Brunei */
-  AsiaBrunei = 'ASIA_BRUNEI',
+  | 'ASIA_BRUNEI'
   /** Chita */
-  AsiaChita = 'ASIA_CHITA',
+  | 'ASIA_CHITA'
   /** Choibalsan */
-  AsiaChoibalsan = 'ASIA_CHOIBALSAN',
+  | 'ASIA_CHOIBALSAN'
   /** Colombo */
-  AsiaColombo = 'ASIA_COLOMBO',
+  | 'ASIA_COLOMBO'
   /** Damascus */
-  AsiaDamascus = 'ASIA_DAMASCUS',
+  | 'ASIA_DAMASCUS'
   /** Dhaka */
-  AsiaDhaka = 'ASIA_DHAKA',
+  | 'ASIA_DHAKA'
   /** Dili */
-  AsiaDili = 'ASIA_DILI',
+  | 'ASIA_DILI'
   /** Dubai */
-  AsiaDubai = 'ASIA_DUBAI',
+  | 'ASIA_DUBAI'
   /** Dushanbe */
-  AsiaDushanbe = 'ASIA_DUSHANBE',
+  | 'ASIA_DUSHANBE'
   /** Famagusta */
-  AsiaFamagusta = 'ASIA_FAMAGUSTA',
+  | 'ASIA_FAMAGUSTA'
   /** Gaza */
-  AsiaGaza = 'ASIA_GAZA',
+  | 'ASIA_GAZA'
   /** Hebron */
-  AsiaHebron = 'ASIA_HEBRON',
+  | 'ASIA_HEBRON'
   /** Hong Kong */
-  AsiaHongKong = 'ASIA_HONG_KONG',
+  | 'ASIA_HONG_KONG'
   /** Hovd */
-  AsiaHovd = 'ASIA_HOVD',
+  | 'ASIA_HOVD'
   /** Ho Chi Minh */
-  AsiaHoChiMinh = 'ASIA_HO_CHI_MINH',
+  | 'ASIA_HO_CHI_MINH'
   /** Irkutsk */
-  AsiaIrkutsk = 'ASIA_IRKUTSK',
+  | 'ASIA_IRKUTSK'
   /** Jakarta */
-  AsiaJakarta = 'ASIA_JAKARTA',
+  | 'ASIA_JAKARTA'
   /** Jayapura */
-  AsiaJayapura = 'ASIA_JAYAPURA',
+  | 'ASIA_JAYAPURA'
   /** Jerusalem */
-  AsiaJerusalem = 'ASIA_JERUSALEM',
+  | 'ASIA_JERUSALEM'
   /** Kabul */
-  AsiaKabul = 'ASIA_KABUL',
+  | 'ASIA_KABUL'
   /** Kamchatka */
-  AsiaKamchatka = 'ASIA_KAMCHATKA',
+  | 'ASIA_KAMCHATKA'
   /** Karachi */
-  AsiaKarachi = 'ASIA_KARACHI',
+  | 'ASIA_KARACHI'
   /** Kathmandu */
-  AsiaKathmandu = 'ASIA_KATHMANDU',
+  | 'ASIA_KATHMANDU'
   /** Khandyga */
-  AsiaKhandyga = 'ASIA_KHANDYGA',
+  | 'ASIA_KHANDYGA'
   /** Kolkata */
-  AsiaKolkata = 'ASIA_KOLKATA',
+  | 'ASIA_KOLKATA'
   /** Krasnoyarsk */
-  AsiaKrasnoyarsk = 'ASIA_KRASNOYARSK',
+  | 'ASIA_KRASNOYARSK'
   /** Kuala Lumpur */
-  AsiaKualaLumpur = 'ASIA_KUALA_LUMPUR',
+  | 'ASIA_KUALA_LUMPUR'
   /** Kuching */
-  AsiaKuching = 'ASIA_KUCHING',
+  | 'ASIA_KUCHING'
   /** Kuwait */
-  AsiaKuwait = 'ASIA_KUWAIT',
+  | 'ASIA_KUWAIT'
   /** Macau */
-  AsiaMacau = 'ASIA_MACAU',
+  | 'ASIA_MACAU'
   /** Magadan */
-  AsiaMagadan = 'ASIA_MAGADAN',
+  | 'ASIA_MAGADAN'
   /** Makassar */
-  AsiaMakassar = 'ASIA_MAKASSAR',
+  | 'ASIA_MAKASSAR'
   /** Manila */
-  AsiaManila = 'ASIA_MANILA',
+  | 'ASIA_MANILA'
   /** Muscat */
-  AsiaMuscat = 'ASIA_MUSCAT',
+  | 'ASIA_MUSCAT'
   /** Nicosia */
-  AsiaNicosia = 'ASIA_NICOSIA',
+  | 'ASIA_NICOSIA'
   /** Novokuznetsk */
-  AsiaNovokuznetsk = 'ASIA_NOVOKUZNETSK',
+  | 'ASIA_NOVOKUZNETSK'
   /** Novosibirsk */
-  AsiaNovosibirsk = 'ASIA_NOVOSIBIRSK',
+  | 'ASIA_NOVOSIBIRSK'
   /** Omsk */
-  AsiaOmsk = 'ASIA_OMSK',
+  | 'ASIA_OMSK'
   /** Oral */
-  AsiaOral = 'ASIA_ORAL',
+  | 'ASIA_ORAL'
   /** Phnom Penh */
-  AsiaPhnomPenh = 'ASIA_PHNOM_PENH',
+  | 'ASIA_PHNOM_PENH'
   /** Pontianak */
-  AsiaPontianak = 'ASIA_PONTIANAK',
+  | 'ASIA_PONTIANAK'
   /** Pyongyang */
-  AsiaPyongyang = 'ASIA_PYONGYANG',
+  | 'ASIA_PYONGYANG'
   /** Qatar */
-  AsiaQatar = 'ASIA_QATAR',
+  | 'ASIA_QATAR'
   /** Qostanay */
-  AsiaQostanay = 'ASIA_QOSTANAY',
+  | 'ASIA_QOSTANAY'
   /** Qyzylorda */
-  AsiaQyzylorda = 'ASIA_QYZYLORDA',
+  | 'ASIA_QYZYLORDA'
   /** Riyadh */
-  AsiaRiyadh = 'ASIA_RIYADH',
+  | 'ASIA_RIYADH'
   /** Sakhalin */
-  AsiaSakhalin = 'ASIA_SAKHALIN',
+  | 'ASIA_SAKHALIN'
   /** Samarkand */
-  AsiaSamarkand = 'ASIA_SAMARKAND',
+  | 'ASIA_SAMARKAND'
   /** Seoul */
-  AsiaSeoul = 'ASIA_SEOUL',
+  | 'ASIA_SEOUL'
   /** Shanghai */
-  AsiaShanghai = 'ASIA_SHANGHAI',
+  | 'ASIA_SHANGHAI'
   /** Singapore */
-  AsiaSingapore = 'ASIA_SINGAPORE',
+  | 'ASIA_SINGAPORE'
   /** Srednekolymsk */
-  AsiaSrednekolymsk = 'ASIA_SREDNEKOLYMSK',
+  | 'ASIA_SREDNEKOLYMSK'
   /** Taipei */
-  AsiaTaipei = 'ASIA_TAIPEI',
+  | 'ASIA_TAIPEI'
   /** Tashkent */
-  AsiaTashkent = 'ASIA_TASHKENT',
+  | 'ASIA_TASHKENT'
   /** Tbilisi */
-  AsiaTbilisi = 'ASIA_TBILISI',
+  | 'ASIA_TBILISI'
   /** Tehran */
-  AsiaTehran = 'ASIA_TEHRAN',
+  | 'ASIA_TEHRAN'
   /** Thimphu */
-  AsiaThimphu = 'ASIA_THIMPHU',
+  | 'ASIA_THIMPHU'
   /** Tokyo */
-  AsiaTokyo = 'ASIA_TOKYO',
+  | 'ASIA_TOKYO'
   /** Tomsk */
-  AsiaTomsk = 'ASIA_TOMSK',
+  | 'ASIA_TOMSK'
   /** Ulaanbaatar */
-  AsiaUlaanbaatar = 'ASIA_ULAANBAATAR',
+  | 'ASIA_ULAANBAATAR'
   /** Urumqi */
-  AsiaUrumqi = 'ASIA_URUMQI',
+  | 'ASIA_URUMQI'
   /** Ust-Nera */
-  AsiaUstNera = 'ASIA_UST_NERA',
+  | 'ASIA_UST_NERA'
   /** Vientiane */
-  AsiaVientiane = 'ASIA_VIENTIANE',
+  | 'ASIA_VIENTIANE'
   /** Vladivostok */
-  AsiaVladivostok = 'ASIA_VLADIVOSTOK',
+  | 'ASIA_VLADIVOSTOK'
   /** Yakutsk */
-  AsiaYakutsk = 'ASIA_YAKUTSK',
+  | 'ASIA_YAKUTSK'
   /** Yangon */
-  AsiaYangon = 'ASIA_YANGON',
+  | 'ASIA_YANGON'
   /** Yekaterinburg */
-  AsiaYekaterinburg = 'ASIA_YEKATERINBURG',
+  | 'ASIA_YEKATERINBURG'
   /** Yerevan */
-  AsiaYerevan = 'ASIA_YEREVAN',
+  | 'ASIA_YEREVAN'
   /** Azores */
-  AtlanticAzores = 'ATLANTIC_AZORES',
+  | 'ATLANTIC_AZORES'
   /** Bermuda */
-  AtlanticBermuda = 'ATLANTIC_BERMUDA',
+  | 'ATLANTIC_BERMUDA'
   /** Canary */
-  AtlanticCanary = 'ATLANTIC_CANARY',
+  | 'ATLANTIC_CANARY'
   /** Cape Verde */
-  AtlanticCapeVerde = 'ATLANTIC_CAPE_VERDE',
+  | 'ATLANTIC_CAPE_VERDE'
   /** Faroe */
-  AtlanticFaroe = 'ATLANTIC_FAROE',
+  | 'ATLANTIC_FAROE'
   /** Madeira */
-  AtlanticMadeira = 'ATLANTIC_MADEIRA',
+  | 'ATLANTIC_MADEIRA'
   /** Reykjavik */
-  AtlanticReykjavik = 'ATLANTIC_REYKJAVIK',
+  | 'ATLANTIC_REYKJAVIK'
   /** South Georgia */
-  AtlanticSouthGeorgia = 'ATLANTIC_SOUTH_GEORGIA',
+  | 'ATLANTIC_SOUTH_GEORGIA'
   /** Stanley */
-  AtlanticStanley = 'ATLANTIC_STANLEY',
+  | 'ATLANTIC_STANLEY'
   /** St Helena */
-  AtlanticStHelena = 'ATLANTIC_ST_HELENA',
+  | 'ATLANTIC_ST_HELENA'
   /** Adelaide */
-  AustraliaAdelaide = 'AUSTRALIA_ADELAIDE',
+  | 'AUSTRALIA_ADELAIDE'
   /** Brisbane */
-  AustraliaBrisbane = 'AUSTRALIA_BRISBANE',
+  | 'AUSTRALIA_BRISBANE'
   /** Broken Hill */
-  AustraliaBrokenHill = 'AUSTRALIA_BROKEN_HILL',
+  | 'AUSTRALIA_BROKEN_HILL'
   /** Currie */
-  AustraliaCurrie = 'AUSTRALIA_CURRIE',
+  | 'AUSTRALIA_CURRIE'
   /** Darwin */
-  AustraliaDarwin = 'AUSTRALIA_DARWIN',
+  | 'AUSTRALIA_DARWIN'
   /** Eucla */
-  AustraliaEucla = 'AUSTRALIA_EUCLA',
+  | 'AUSTRALIA_EUCLA'
   /** Hobart */
-  AustraliaHobart = 'AUSTRALIA_HOBART',
+  | 'AUSTRALIA_HOBART'
   /** Lindeman */
-  AustraliaLindeman = 'AUSTRALIA_LINDEMAN',
+  | 'AUSTRALIA_LINDEMAN'
   /** Lord Howe */
-  AustraliaLordHowe = 'AUSTRALIA_LORD_HOWE',
+  | 'AUSTRALIA_LORD_HOWE'
   /** Melbourne */
-  AustraliaMelbourne = 'AUSTRALIA_MELBOURNE',
+  | 'AUSTRALIA_MELBOURNE'
   /** Perth */
-  AustraliaPerth = 'AUSTRALIA_PERTH',
+  | 'AUSTRALIA_PERTH'
   /** Sydney */
-  AustraliaSydney = 'AUSTRALIA_SYDNEY',
+  | 'AUSTRALIA_SYDNEY'
   /** Amsterdam */
-  EuropeAmsterdam = 'EUROPE_AMSTERDAM',
+  | 'EUROPE_AMSTERDAM'
   /** Andorra */
-  EuropeAndorra = 'EUROPE_ANDORRA',
+  | 'EUROPE_ANDORRA'
   /** Astrakhan */
-  EuropeAstrakhan = 'EUROPE_ASTRAKHAN',
+  | 'EUROPE_ASTRAKHAN'
   /** Athens */
-  EuropeAthens = 'EUROPE_ATHENS',
+  | 'EUROPE_ATHENS'
   /** Belgrade */
-  EuropeBelgrade = 'EUROPE_BELGRADE',
+  | 'EUROPE_BELGRADE'
   /** Berlin */
-  EuropeBerlin = 'EUROPE_BERLIN',
+  | 'EUROPE_BERLIN'
   /** Bratislava */
-  EuropeBratislava = 'EUROPE_BRATISLAVA',
+  | 'EUROPE_BRATISLAVA'
   /** Brussels */
-  EuropeBrussels = 'EUROPE_BRUSSELS',
+  | 'EUROPE_BRUSSELS'
   /** Bucharest */
-  EuropeBucharest = 'EUROPE_BUCHAREST',
+  | 'EUROPE_BUCHAREST'
   /** Budapest */
-  EuropeBudapest = 'EUROPE_BUDAPEST',
+  | 'EUROPE_BUDAPEST'
   /** Busingen */
-  EuropeBusingen = 'EUROPE_BUSINGEN',
+  | 'EUROPE_BUSINGEN'
   /** Chisinau */
-  EuropeChisinau = 'EUROPE_CHISINAU',
+  | 'EUROPE_CHISINAU'
   /** Copenhagen */
-  EuropeCopenhagen = 'EUROPE_COPENHAGEN',
+  | 'EUROPE_COPENHAGEN'
   /** Dublin */
-  EuropeDublin = 'EUROPE_DUBLIN',
+  | 'EUROPE_DUBLIN'
   /** Gibraltar */
-  EuropeGibraltar = 'EUROPE_GIBRALTAR',
+  | 'EUROPE_GIBRALTAR'
   /** Guernsey */
-  EuropeGuernsey = 'EUROPE_GUERNSEY',
+  | 'EUROPE_GUERNSEY'
   /** Helsinki */
-  EuropeHelsinki = 'EUROPE_HELSINKI',
+  | 'EUROPE_HELSINKI'
   /** Isle of Man */
-  EuropeIsleOfMan = 'EUROPE_ISLE_OF_MAN',
+  | 'EUROPE_ISLE_OF_MAN'
   /** Istanbul */
-  EuropeIstanbul = 'EUROPE_ISTANBUL',
+  | 'EUROPE_ISTANBUL'
   /** Jersey */
-  EuropeJersey = 'EUROPE_JERSEY',
+  | 'EUROPE_JERSEY'
   /** Kaliningrad */
-  EuropeKaliningrad = 'EUROPE_KALININGRAD',
+  | 'EUROPE_KALININGRAD'
   /** Kiev */
-  EuropeKiev = 'EUROPE_KIEV',
+  | 'EUROPE_KIEV'
   /** Kirov */
-  EuropeKirov = 'EUROPE_KIROV',
+  | 'EUROPE_KIROV'
   /** Lisbon */
-  EuropeLisbon = 'EUROPE_LISBON',
+  | 'EUROPE_LISBON'
   /** Ljubljana */
-  EuropeLjubljana = 'EUROPE_LJUBLJANA',
+  | 'EUROPE_LJUBLJANA'
   /** London */
-  EuropeLondon = 'EUROPE_LONDON',
+  | 'EUROPE_LONDON'
   /** Luxembourg */
-  EuropeLuxembourg = 'EUROPE_LUXEMBOURG',
+  | 'EUROPE_LUXEMBOURG'
   /** Madrid */
-  EuropeMadrid = 'EUROPE_MADRID',
+  | 'EUROPE_MADRID'
   /** Malta */
-  EuropeMalta = 'EUROPE_MALTA',
+  | 'EUROPE_MALTA'
   /** Mariehamn */
-  EuropeMariehamn = 'EUROPE_MARIEHAMN',
+  | 'EUROPE_MARIEHAMN'
   /** Minsk */
-  EuropeMinsk = 'EUROPE_MINSK',
+  | 'EUROPE_MINSK'
   /** Monaco */
-  EuropeMonaco = 'EUROPE_MONACO',
+  | 'EUROPE_MONACO'
   /** Moscow */
-  EuropeMoscow = 'EUROPE_MOSCOW',
+  | 'EUROPE_MOSCOW'
   /** Oslo */
-  EuropeOslo = 'EUROPE_OSLO',
+  | 'EUROPE_OSLO'
   /** Paris */
-  EuropeParis = 'EUROPE_PARIS',
+  | 'EUROPE_PARIS'
   /** Podgorica */
-  EuropePodgorica = 'EUROPE_PODGORICA',
+  | 'EUROPE_PODGORICA'
   /** Prague */
-  EuropePrague = 'EUROPE_PRAGUE',
+  | 'EUROPE_PRAGUE'
   /** Riga */
-  EuropeRiga = 'EUROPE_RIGA',
+  | 'EUROPE_RIGA'
   /** Rome */
-  EuropeRome = 'EUROPE_ROME',
+  | 'EUROPE_ROME'
   /** Samara */
-  EuropeSamara = 'EUROPE_SAMARA',
+  | 'EUROPE_SAMARA'
   /** San Marino */
-  EuropeSanMarino = 'EUROPE_SAN_MARINO',
+  | 'EUROPE_SAN_MARINO'
   /** Sarajevo */
-  EuropeSarajevo = 'EUROPE_SARAJEVO',
+  | 'EUROPE_SARAJEVO'
   /** Saratov */
-  EuropeSaratov = 'EUROPE_SARATOV',
+  | 'EUROPE_SARATOV'
   /** Simferopol */
-  EuropeSimferopol = 'EUROPE_SIMFEROPOL',
+  | 'EUROPE_SIMFEROPOL'
   /** Skopje */
-  EuropeSkopje = 'EUROPE_SKOPJE',
+  | 'EUROPE_SKOPJE'
   /** Sofia */
-  EuropeSofia = 'EUROPE_SOFIA',
+  | 'EUROPE_SOFIA'
   /** Stockholm */
-  EuropeStockholm = 'EUROPE_STOCKHOLM',
+  | 'EUROPE_STOCKHOLM'
   /** Tallinn */
-  EuropeTallinn = 'EUROPE_TALLINN',
+  | 'EUROPE_TALLINN'
   /** Tirane */
-  EuropeTirane = 'EUROPE_TIRANE',
+  | 'EUROPE_TIRANE'
   /** Ulyanovsk */
-  EuropeUlyanovsk = 'EUROPE_ULYANOVSK',
+  | 'EUROPE_ULYANOVSK'
   /** Uzhgorod */
-  EuropeUzhgorod = 'EUROPE_UZHGOROD',
+  | 'EUROPE_UZHGOROD'
   /** Vaduz */
-  EuropeVaduz = 'EUROPE_VADUZ',
+  | 'EUROPE_VADUZ'
   /** Vatican */
-  EuropeVatican = 'EUROPE_VATICAN',
+  | 'EUROPE_VATICAN'
   /** Vienna */
-  EuropeVienna = 'EUROPE_VIENNA',
+  | 'EUROPE_VIENNA'
   /** Vilnius */
-  EuropeVilnius = 'EUROPE_VILNIUS',
+  | 'EUROPE_VILNIUS'
   /** Volgograd */
-  EuropeVolgograd = 'EUROPE_VOLGOGRAD',
+  | 'EUROPE_VOLGOGRAD'
   /** Warsaw */
-  EuropeWarsaw = 'EUROPE_WARSAW',
+  | 'EUROPE_WARSAW'
   /** Zagreb */
-  EuropeZagreb = 'EUROPE_ZAGREB',
+  | 'EUROPE_ZAGREB'
   /** Zaporozhye */
-  EuropeZaporozhye = 'EUROPE_ZAPOROZHYE',
+  | 'EUROPE_ZAPOROZHYE'
   /** Zurich */
-  EuropeZurich = 'EUROPE_ZURICH',
+  | 'EUROPE_ZURICH'
   /** Antananarivo */
-  IndianAntananarivo = 'INDIAN_ANTANANARIVO',
+  | 'INDIAN_ANTANANARIVO'
   /** Chagos */
-  IndianChagos = 'INDIAN_CHAGOS',
+  | 'INDIAN_CHAGOS'
   /** Christmas */
-  IndianChristmas = 'INDIAN_CHRISTMAS',
+  | 'INDIAN_CHRISTMAS'
   /** Cocos */
-  IndianCocos = 'INDIAN_COCOS',
+  | 'INDIAN_COCOS'
   /** Comoro */
-  IndianComoro = 'INDIAN_COMORO',
+  | 'INDIAN_COMORO'
   /** Kerguelen */
-  IndianKerguelen = 'INDIAN_KERGUELEN',
+  | 'INDIAN_KERGUELEN'
   /** Mahe */
-  IndianMahe = 'INDIAN_MAHE',
+  | 'INDIAN_MAHE'
   /** Maldives */
-  IndianMaldives = 'INDIAN_MALDIVES',
+  | 'INDIAN_MALDIVES'
   /** Mauritius */
-  IndianMauritius = 'INDIAN_MAURITIUS',
+  | 'INDIAN_MAURITIUS'
   /** Mayotte */
-  IndianMayotte = 'INDIAN_MAYOTTE',
+  | 'INDIAN_MAYOTTE'
   /** Reunion */
-  IndianReunion = 'INDIAN_REUNION',
+  | 'INDIAN_REUNION'
   /** Apia */
-  PacificApia = 'PACIFIC_APIA',
+  | 'PACIFIC_APIA'
   /** Auckland */
-  PacificAuckland = 'PACIFIC_AUCKLAND',
+  | 'PACIFIC_AUCKLAND'
   /** Bougainville */
-  PacificBougainville = 'PACIFIC_BOUGAINVILLE',
+  | 'PACIFIC_BOUGAINVILLE'
   /** Chatham */
-  PacificChatham = 'PACIFIC_CHATHAM',
+  | 'PACIFIC_CHATHAM'
   /** Chuuk */
-  PacificChuuk = 'PACIFIC_CHUUK',
+  | 'PACIFIC_CHUUK'
   /** Easter */
-  PacificEaster = 'PACIFIC_EASTER',
+  | 'PACIFIC_EASTER'
   /** Efate */
-  PacificEfate = 'PACIFIC_EFATE',
+  | 'PACIFIC_EFATE'
   /** Enderbury */
-  PacificEnderbury = 'PACIFIC_ENDERBURY',
+  | 'PACIFIC_ENDERBURY'
   /** Fakaofo */
-  PacificFakaofo = 'PACIFIC_FAKAOFO',
+  | 'PACIFIC_FAKAOFO'
   /** Fiji */
-  PacificFiji = 'PACIFIC_FIJI',
+  | 'PACIFIC_FIJI'
   /** Funafuti */
-  PacificFunafuti = 'PACIFIC_FUNAFUTI',
+  | 'PACIFIC_FUNAFUTI'
   /** Galapagos */
-  PacificGalapagos = 'PACIFIC_GALAPAGOS',
+  | 'PACIFIC_GALAPAGOS'
   /** Gambier */
-  PacificGambier = 'PACIFIC_GAMBIER',
+  | 'PACIFIC_GAMBIER'
   /** Guadalcanal */
-  PacificGuadalcanal = 'PACIFIC_GUADALCANAL',
+  | 'PACIFIC_GUADALCANAL'
   /** Guam */
-  PacificGuam = 'PACIFIC_GUAM',
+  | 'PACIFIC_GUAM'
   /** Honolulu */
-  PacificHonolulu = 'PACIFIC_HONOLULU',
+  | 'PACIFIC_HONOLULU'
   /** Kiritimati */
-  PacificKiritimati = 'PACIFIC_KIRITIMATI',
+  | 'PACIFIC_KIRITIMATI'
   /** Kosrae */
-  PacificKosrae = 'PACIFIC_KOSRAE',
+  | 'PACIFIC_KOSRAE'
   /** Kwajalein */
-  PacificKwajalein = 'PACIFIC_KWAJALEIN',
+  | 'PACIFIC_KWAJALEIN'
   /** Majuro */
-  PacificMajuro = 'PACIFIC_MAJURO',
+  | 'PACIFIC_MAJURO'
   /** Marquesas */
-  PacificMarquesas = 'PACIFIC_MARQUESAS',
+  | 'PACIFIC_MARQUESAS'
   /** Midway */
-  PacificMidway = 'PACIFIC_MIDWAY',
+  | 'PACIFIC_MIDWAY'
   /** Nauru */
-  PacificNauru = 'PACIFIC_NAURU',
+  | 'PACIFIC_NAURU'
   /** Niue */
-  PacificNiue = 'PACIFIC_NIUE',
+  | 'PACIFIC_NIUE'
   /** Norfolk */
-  PacificNorfolk = 'PACIFIC_NORFOLK',
+  | 'PACIFIC_NORFOLK'
   /** Noumea */
-  PacificNoumea = 'PACIFIC_NOUMEA',
+  | 'PACIFIC_NOUMEA'
   /** Pago Pago */
-  PacificPagoPago = 'PACIFIC_PAGO_PAGO',
+  | 'PACIFIC_PAGO_PAGO'
   /** Palau */
-  PacificPalau = 'PACIFIC_PALAU',
+  | 'PACIFIC_PALAU'
   /** Pitcairn */
-  PacificPitcairn = 'PACIFIC_PITCAIRN',
+  | 'PACIFIC_PITCAIRN'
   /** Pohnpei */
-  PacificPohnpei = 'PACIFIC_POHNPEI',
+  | 'PACIFIC_POHNPEI'
   /** Port Moresby */
-  PacificPortMoresby = 'PACIFIC_PORT_MORESBY',
+  | 'PACIFIC_PORT_MORESBY'
   /** Rarotonga */
-  PacificRarotonga = 'PACIFIC_RAROTONGA',
+  | 'PACIFIC_RAROTONGA'
   /** Saipan */
-  PacificSaipan = 'PACIFIC_SAIPAN',
+  | 'PACIFIC_SAIPAN'
   /** Tahiti */
-  PacificTahiti = 'PACIFIC_TAHITI',
+  | 'PACIFIC_TAHITI'
   /** Tarawa */
-  PacificTarawa = 'PACIFIC_TARAWA',
+  | 'PACIFIC_TARAWA'
   /** Tongatapu */
-  PacificTongatapu = 'PACIFIC_TONGATAPU',
+  | 'PACIFIC_TONGATAPU'
   /** Wake */
-  PacificWake = 'PACIFIC_WAKE',
+  | 'PACIFIC_WAKE'
   /** Wallis */
-  PacificWallis = 'PACIFIC_WALLIS',
+  | 'PACIFIC_WALLIS'
   /** UTC offset: UTC+0 */
-  Utc_0 = 'UTC_0',
+  | 'UTC_0'
   /** UTC offset: UTC+0:30 */
-  Utc_0_30 = 'UTC_0_30',
+  | 'UTC_0_30'
   /** UTC offset: UTC+1 */
-  Utc_1 = 'UTC_1',
+  | 'UTC_1'
   /** UTC offset: UTC+10 */
-  Utc_10 = 'UTC_10',
+  | 'UTC_10'
   /** UTC offset: UTC+10:30 */
-  Utc_10_30 = 'UTC_10_30',
+  | 'UTC_10_30'
   /** UTC offset: UTC+11 */
-  Utc_11 = 'UTC_11',
+  | 'UTC_11'
   /** UTC offset: UTC+11:30 */
-  Utc_11_30 = 'UTC_11_30',
+  | 'UTC_11_30'
   /** UTC offset: UTC+12 */
-  Utc_12 = 'UTC_12',
+  | 'UTC_12'
   /** UTC offset: UTC+12:45 */
-  Utc_12_45 = 'UTC_12_45',
+  | 'UTC_12_45'
   /** UTC offset: UTC+13 */
-  Utc_13 = 'UTC_13',
+  | 'UTC_13'
   /** UTC offset: UTC+13:45 */
-  Utc_13_45 = 'UTC_13_45',
+  | 'UTC_13_45'
   /** UTC offset: UTC+14 */
-  Utc_14 = 'UTC_14',
+  | 'UTC_14'
   /** UTC offset: UTC+1:30 */
-  Utc_1_30 = 'UTC_1_30',
+  | 'UTC_1_30'
   /** UTC offset: UTC+2 */
-  Utc_2 = 'UTC_2',
+  | 'UTC_2'
   /** UTC offset: UTC+2:30 */
-  Utc_2_30 = 'UTC_2_30',
+  | 'UTC_2_30'
   /** UTC offset: UTC+3 */
-  Utc_3 = 'UTC_3',
+  | 'UTC_3'
   /** UTC offset: UTC+3:30 */
-  Utc_3_30 = 'UTC_3_30',
+  | 'UTC_3_30'
   /** UTC offset: UTC+4 */
-  Utc_4 = 'UTC_4',
+  | 'UTC_4'
   /** UTC offset: UTC+4:30 */
-  Utc_4_30 = 'UTC_4_30',
+  | 'UTC_4_30'
   /** UTC offset: UTC+5 */
-  Utc_5 = 'UTC_5',
+  | 'UTC_5'
   /** UTC offset: UTC+5:30 */
-  Utc_5_30 = 'UTC_5_30',
+  | 'UTC_5_30'
   /** UTC offset: UTC+5:45 */
-  Utc_5_45 = 'UTC_5_45',
+  | 'UTC_5_45'
   /** UTC offset: UTC+6 */
-  Utc_6 = 'UTC_6',
+  | 'UTC_6'
   /** UTC offset: UTC+6:30 */
-  Utc_6_30 = 'UTC_6_30',
+  | 'UTC_6_30'
   /** UTC offset: UTC+7 */
-  Utc_7 = 'UTC_7',
+  | 'UTC_7'
   /** UTC offset: UTC+7:30 */
-  Utc_7_30 = 'UTC_7_30',
+  | 'UTC_7_30'
   /** UTC offset: UTC+8 */
-  Utc_8 = 'UTC_8',
+  | 'UTC_8'
   /** UTC offset: UTC+8:30 */
-  Utc_8_30 = 'UTC_8_30',
+  | 'UTC_8_30'
   /** UTC offset: UTC+8:45 */
-  Utc_8_45 = 'UTC_8_45',
+  | 'UTC_8_45'
   /** UTC offset: UTC+9 */
-  Utc_9 = 'UTC_9',
+  | 'UTC_9'
   /** UTC offset: UTC+9:30 */
-  Utc_9_30 = 'UTC_9_30'
-}
+  | 'UTC_9_30';
 
 /** The Type of Identifier used to fetch a single User node. To be used along with the "id" field. Default is "ID". */
-export enum UserNodeIdTypeEnum {
+export type UserNodeIdTypeEnum = 
   /** The Database ID for the node */
-  DatabaseId = 'DATABASE_ID',
+  | 'DATABASE_ID'
   /** The Email of the User */
-  Email = 'EMAIL',
+  | 'EMAIL'
   /** The hashed Global ID */
-  Id = 'ID',
+  | 'ID'
   /** The slug of the User */
-  Slug = 'SLUG',
+  | 'SLUG'
   /** The URI for the node */
-  Uri = 'URI',
+  | 'URI'
   /** The username the User uses to login with */
-  Username = 'USERNAME'
-}
+  | 'USERNAME';
 
 /** Names of available user roles */
-export enum UserRoleEnum {
-  Administrator = 'ADMINISTRATOR',
-  Author = 'AUTHOR',
-  Contributor = 'CONTRIBUTOR',
-  Editor = 'EDITOR',
-  Subscriber = 'SUBSCRIBER'
-}
+export type UserRoleEnum = 
+  | 'ADMINISTRATOR'
+  | 'AUTHOR'
+  | 'CONTRIBUTOR'
+  | 'EDITOR'
+  | 'SUBSCRIBER';
 
 /** Field to order the connection by */
-export enum UsersConnectionOrderbyEnum {
+export type UsersConnectionOrderbyEnum = 
   /** Order by display name */
-  DisplayName = 'DISPLAY_NAME',
+  | 'DISPLAY_NAME'
   /** Order by email address */
-  Email = 'EMAIL',
+  | 'EMAIL'
   /** Order by login */
-  Login = 'LOGIN',
+  | 'LOGIN'
   /** Preserve the login order given in the LOGIN_IN array */
-  LoginIn = 'LOGIN_IN',
+  | 'LOGIN_IN'
   /** Order by nice name */
-  NiceName = 'NICE_NAME',
+  | 'NICE_NAME'
   /** Preserve the nice name order given in the NICE_NAME_IN array */
-  NiceNameIn = 'NICE_NAME_IN',
+  | 'NICE_NAME_IN'
   /** Order by registration date */
-  Registered = 'REGISTERED',
+  | 'REGISTERED'
   /** Order by URL */
-  Url = 'URL'
-}
+  | 'URL';
 
 /** Names of available user roles */
-export enum UsersConnectionSearchColumnEnum {
-  Administrator = 'ADMINISTRATOR',
-  Author = 'AUTHOR',
-  Contributor = 'CONTRIBUTOR',
-  Editor = 'EDITOR',
-  Subscriber = 'SUBSCRIBER'
-}
+export type UsersConnectionSearchColumnEnum = 
+  | 'ADMINISTRATOR'
+  | 'AUTHOR'
+  | 'CONTRIBUTOR'
+  | 'EDITOR'
+  | 'SUBSCRIBER';
 
 /** Arguments for filtering the CategoryToCategoryConnection connection */
 export type CategoryToCategoryConnectionWhereArgs = {
@@ -7977,10 +7955,10 @@ export type UsersConnectionOrderbyInput = {
   order?: Maybe<OrderEnum>;
 };
 
-export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GeneralSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsQuery = { posts: Maybe<{ nodes: Maybe<Array<Maybe<{ id: string, slug: Maybe<string>, title: Maybe<string>, content: Maybe<string>, isRevision: Maybe<boolean>, isPreview: Maybe<boolean>, isSticky: boolean, excerpt: Maybe<string>, uri: string, status: Maybe<string>, featuredImage: Maybe<{ node: Maybe<{ id: string, altText: Maybe<string>, sourceUrl: Maybe<string> }> }> }>>> }> };
+export type GeneralSettingsQuery = { generalSettings: Maybe<{ title: Maybe<string>, description: Maybe<string> }> };
 
 export type GetContentNodeQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -7991,10 +7969,10 @@ export type GetContentNodeQueryVariables = Exact<{
 
 export type GetContentNodeQuery = { contentNode: Maybe<{ id: string, slug: Maybe<string>, title: Maybe<string>, content: Maybe<string>, isPreview: Maybe<boolean>, isRevision: Maybe<boolean>, isFrontPage: boolean, isPostsPage: boolean, uri: string, status: Maybe<string>, featuredImage: Maybe<{ node: Maybe<{ id: string, altText: Maybe<string>, sourceUrl: Maybe<string> }> }>, preview: Maybe<{ node: Maybe<{ id: string, slug: Maybe<string>, title: Maybe<string>, content: Maybe<string>, isPreview: Maybe<boolean>, isRevision: Maybe<boolean>, isFrontPage: boolean, isPostsPage: boolean, uri: string, status: Maybe<string>, featuredImage: Maybe<{ node: Maybe<{ id: string, altText: Maybe<string>, sourceUrl: Maybe<string> }> }> }> }>, enqueuedStylesheets: Maybe<{ nodes: Maybe<Array<Maybe<{ src: Maybe<string>, handle: Maybe<string> }>>> }> } | { id: string, slug: Maybe<string>, title: Maybe<string>, content: Maybe<string>, isRevision: Maybe<boolean>, isPreview: Maybe<boolean>, isSticky: boolean, excerpt: Maybe<string>, uri: string, status: Maybe<string>, featuredImage: Maybe<{ node: Maybe<{ id: string, altText: Maybe<string>, sourceUrl: Maybe<string> }> }>, preview: Maybe<{ node: Maybe<{ id: string, slug: Maybe<string>, title: Maybe<string>, content: Maybe<string>, isRevision: Maybe<boolean>, isPreview: Maybe<boolean>, isSticky: boolean, excerpt: Maybe<string>, uri: string, status: Maybe<string>, featuredImage: Maybe<{ node: Maybe<{ id: string, altText: Maybe<string>, sourceUrl: Maybe<string> }> }> }> }>, enqueuedStylesheets: Maybe<{ nodes: Maybe<Array<Maybe<{ src: Maybe<string>, handle: Maybe<string> }>>> }> }> };
 
-export type GeneralSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GeneralSettingsQuery = { generalSettings: Maybe<{ title: Maybe<string>, description: Maybe<string> }> };
+export type GetPostsQuery = { posts: Maybe<{ nodes: Maybe<Array<Maybe<{ id: string, slug: Maybe<string>, title: Maybe<string>, content: Maybe<string>, isRevision: Maybe<boolean>, isPreview: Maybe<boolean>, isSticky: boolean, excerpt: Maybe<string>, uri: string, status: Maybe<string>, featuredImage: Maybe<{ node: Maybe<{ id: string, altText: Maybe<string>, sourceUrl: Maybe<string> }> }> }>>> }> };
 
 export type GetUriInfoQueryVariables = Exact<{
   uri: Scalars['String'];
@@ -8002,3 +7980,5 @@ export type GetUriInfoQueryVariables = Exact<{
 
 
 export type GetUriInfoQuery = { nodeByUri: Maybe<{ id: string, templates: Maybe<Array<Maybe<string>>> } | { isFrontPage: boolean, isPostsPage: boolean, id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> } | { id: string, templates: Maybe<Array<Maybe<string>>> }> };
+
+}

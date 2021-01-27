@@ -1,5 +1,5 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { WPGraphQL, UriInfo } from '../types';
+import { UriInfo } from '../types';
 import * as utils from '../utils';
 import { ensureAuthorization } from '../auth';
 import { isServerSide } from '../utils';
@@ -42,7 +42,7 @@ export async function getPosts(
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
   id: string,
-  idType: WPGraphQL.ContentNodeIdTypeEnum = WPGraphQL.ContentNodeIdTypeEnum.Uri,
+  idType: WPGraphQL.ContentNodeIdTypeEnum = 'URI',
   asPreview = false,
 ): Promise<
   | WPGraphQL.GetContentNodeQuery['contentNode']

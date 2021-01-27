@@ -17,10 +17,15 @@
 			"dom.iterable",
 			"esnext"
 		],
+		"typeRoots": [
+			"src/types",
+			"node_modules/@types"
+		],
 		"jsx": "react"
 	},
 	"include": [
-		"src"
+		"src",
+		"src/types/wpgraphql.d.ts"
 	],
 	"exclude": [
 		"node_modules",
