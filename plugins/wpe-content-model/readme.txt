@@ -1,15 +1,15 @@
-=== Headless Plugin ===
+=== Content Model Plugin ===
 Contributors:
 Tags:
 Requires at least: 5.3
 Tested up to: 5.5
-Requires PHP: 5.6
+Requires PHP: 7.0
 Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
 
-Transform your WordPress site to a powerful Headless API.
+Headless WordPress content modeling plugin.
 
 == Description ==
 
