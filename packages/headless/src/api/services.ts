@@ -1,8 +1,14 @@
-import { gql, ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { WPGraphQL, UriInfo } from '../types';
 import * as utils from '../utils';
 import { ensureAuthorization } from '../auth';
 import { isServerSide } from '../utils';
+import {
+  GET_POSTS,
+  GET_CONTENT_NODE,
+  GENERAL_SETTINGS,
+  GET_URI_INFO,
+} from './queries';
 
 /**
  * Gets all posts from WordPress
@@ -16,31 +22,7 @@ export async function getPosts(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<WPGraphQL.GetPostsQuery['posts']['nodes']> {
   const result = await client.query<WPGraphQL.GetPostsQuery>({
-    query: gql`
-      query GetPosts {
-        posts {
-          nodes {
-            id
-            slug
-            title
-            content
-            isRevision
-            isPreview
-            isSticky
-            excerpt
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
-          }
-        }
-      }
-    `,
+    query: GET_POSTS,
   });
 
   return result.data.posts.nodes;
@@ -68,108 +50,7 @@ export async function getContentNode(
   | undefined
 > {
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
-    query: gql`
-      query GetContentNode(
-        $id: ID!
-        $idType: ContentNodeIdTypeEnum
-        $asPreview: Boolean
-      ) {
-        contentNode(id: $id, idType: $idType, asPreview: $asPreview) {
-          ... on Post {
-            id
-            slug
-            title
-            content
-            isRevision
-            isPreview
-            isSticky
-            excerpt
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
-            preview {
-              node {
-                id
-                slug
-                title
-                content
-                isRevision
-                isPreview
-                isSticky
-                excerpt
-                uri
-                status
-                featuredImage {
-                  node {
-                    id
-                    altText
-                    sourceUrl
-                  }
-                }
-              }
-            }
-            enqueuedStylesheets {
-              nodes {
-                src
-                handle
-              }
-            }
-          }
-          ... on Page {
-            id
-            slug
-            title
-            content
-            isPreview
-            isRevision
-            isFrontPage
-            isPostsPage
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
-            preview {
-              node {
-                id
-                slug
-                title
-                content
-                isPreview
-                isRevision
-                isFrontPage
-                isPostsPage
-                uri
-                status
-                featuredImage {
-                  node {
-                    id
-                    altText
-                    sourceUrl
-                  }
-                }
-              }
-            }
-            enqueuedStylesheets {
-              nodes {
-                src
-                handle
-              }
-            }
-          }
-        }
-      }
-    `,
+    query: GET_CONTENT_NODE,
     variables: {
       id,
       idType,
@@ -207,14 +88,7 @@ export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<WPGraphQL.GeneralSettingsQuery['generalSettings']> {
   const result = await client.query<WPGraphQL.GeneralSettingsQuery>({
-    query: gql`
-      query GeneralSettings {
-        generalSettings {
-          title
-          description
-        }
-      }
-    `,
+    query: GENERAL_SETTINGS,
   });
 
   return result?.data?.generalSettings;
@@ -251,18 +125,7 @@ export async function getUriInfo(
     WPGraphQL.GetUriInfoQuery,
     WPGraphQL.GetUriInfoQueryVariables
   >({
-    query: gql`
-      query GetUriInfo($uri: String!) {
-        nodeByUri(uri: $uri) {
-          id
-          templates
-          ... on ContentType {
-            isFrontPage
-            isPostsPage
-          }
-        }
-      }
-    `,
+    query: GET_URI_INFO,
     variables: {
       uri: urlPath,
     },
