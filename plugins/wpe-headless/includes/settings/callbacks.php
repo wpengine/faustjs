@@ -291,7 +291,7 @@ function wpe_headless_display_enable_disable_fields() {
 
 		<label for="enable_image_source">
 			<input type="checkbox" id="enable_image_source" name="wpe_headless[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
-			<?php esc_html_e( 'Enable media images served from WP endpoint', 'wpe-headless' ); ?>
+			<?php esc_html_e( 'Use the WordPress domain for media URLs in post content', 'wpe-headless' ); ?>
 		</label>
 	</fieldset>
 	<?php
