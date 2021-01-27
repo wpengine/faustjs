@@ -9,7 +9,7 @@ context('WPE Headless', () => {
         })
 
         it('will display the settings page header', () => {
-            cy.get('h1').invoke('html').should('eq', 'Headless by WP&nbsp;Engine2')
+            cy.get('h1').invoke('html').should('eq', 'Headless by WP&nbsp;Engine')
             cy.get('h2.main').should('have.text', 'Headless Settings')
         })
     })
