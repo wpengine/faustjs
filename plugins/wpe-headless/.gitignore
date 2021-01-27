@@ -1,3 +1,9 @@
 .DS_Store
 Thumbs.db
 /vendor/
+cypress/fixtures/*
+cypress/screenshots/*
+cypress/videos/*
+!cypress/fixtures/.gitkeep
+!cypress/screenshots/.gitkeep
+!cypress/videos/.gitkeep
