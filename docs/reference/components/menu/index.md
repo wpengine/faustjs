@@ -67,7 +67,7 @@ function MyApp2() {
     </>
   );
 }
-export default MyApp2
+export default MyApp2;
 ```
 
 ## Fetch menu items from WordPress
