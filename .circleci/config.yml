@@ -17,11 +17,16 @@ jobs:
           paths:
             - .
 
-  plugin-wpe-headless-checkout:
+  plugin-checkout:
     executor: wp-product-orb/default
-    working_directory: ~/project/plugins/wpe-headless
+    working_directory: ~/project/plugins/<<parameters.slug>>
     environment:
       WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
+      filename:
+        type: string
     steps:
       - attach_workspace:
           at: ~/project
@@ -30,7 +35,7 @@ jobs:
           command: |
             [ ! -d "build" ] && mkdir build &>/dev/null
       - wp-product-orb/get-version-from-php:
-          filename: wpe-headless.php
+          filename: <<parameters.filename>>
           return_var: BUILD_VERSION
       - wp-product-orb/variable:
           var: BUILD_VERSION
@@ -38,11 +43,14 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/wpe-headless
+            - plugins/<<parameters.slug>>
 
-  plugin-wpe-headless-composer:
+  plugin-composer:
     executor: php/default
-    working_directory: ~/project/plugins/wpe-headless
+    working_directory: ~/project/plugins/<<parameters.slug>>
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: ~/project
@@ -53,22 +61,26 @@ jobs:
           name: Composer PHP lint and code sniffer
           command: |
             /usr/local/bin/composer lint && /usr/local/bin/composer phpcs
+            rm -v composer-setup.php
           working_directory: .
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/wpe-headless
+            - plugins/<<parameters.slug>>
 
-  plugin-wpe-headless-test:
-    working_directory: ~/project/plugins/wpe-headless
+  plugin-test:
+    working_directory: ~/project/plugins/<<parameters.slug>>
     docker:
       - image: cimg/php:7.4
       - image: circleci/mysql:5.7
         environment:
-          MYSQL_DATABASE: wpe_headless_tests
-          MYSQL_USER: wpe_headless_user
-          MYSQL_PASSWORD: wpe_headless_pass
+          MYSQL_DATABASE: wp_database
+          MYSQL_USER: wp_user
+          MYSQL_PASSWORD: wp_pass
           MYSQL_ROOT_PASSWORD: password
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: ~/project
@@ -83,7 +95,7 @@ jobs:
       - run:
           name: Setup WordPress testing framework
           command: |
-            /bin/bash tests/install-wp-tests.sh wpe_headless_tests wpe_headless_user wpe_headless_pass 127.0.0.1 latest true
+            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
           working_directory: .
       - run:
           name: Run testing suite
@@ -91,11 +103,14 @@ jobs:
             composer test
           working_directory: .
 
-  plugin-wpe-headless-bundle-zip:
+  plugin-bundle-zip:
     executor: wp-product-orb/default
-    working_directory: ~/project/plugins/wpe-headless
+    working_directory: ~/project/plugins/<<parameters.slug>>
     environment:
       WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: ~/project
@@ -104,42 +119,47 @@ jobs:
           name: "Bundle plugin files into a zip"
           command: |
             cd ..
-            zip --verbose -x@wpe-headless/.zipignore -x *.wpe/* */build/ -r "wpe-headless/build/wpe-headless.$BUILD_VERSION.zip" wpe-headless
+            zip --verbose -x@<<parameters.slug>>/.zipignore -x *.wpe/* */build/ -r "<<parameters.slug>>/build/<<parameters.slug>>.$BUILD_VERSION.zip" <<parameters.slug>>
       - store_artifacts:
           path: build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/wpe-headless/build
+            - plugins/<<parameters.slug>>/build
 
-  plugin-wpe-headless-bundle-json:
+  plugin-bundle-json:
     executor: wp-product-orb/parser
-    working_directory: ~/project/plugins/wpe-headless
+    working_directory: ~/project/plugins/<<parameters.slug>>
     environment:
       WPE_SESSION_DIR: ./.wpe
+    parameters:
+      slug:
+        type: string
     steps:
       - attach_workspace:
           at: ~/project
       - wp-product-orb/variable-load
       - wp-product-orb/parse-wp-readme:
           infile: readme.txt
-          outfile: build/wpe-headless.$BUILD_VERSION.json
+          outfile: build/<<parameters.slug>>.$BUILD_VERSION.json
       - store_artifacts:
           path: build
       - persist_to_workspace:
           root: ~/project
           paths:
-            - plugins/wpe-headless/build
+            - plugins/<<parameters.slug>>/build
 
-  plugin-wpe-headless-deploy:
+  plugin-deploy:
     executor: wp-product-orb/authenticate
-    working_directory: ~/project/plugins/wpe-headless
+    working_directory: ~/project/plugins/<<parameters.slug>>
     environment:
       WPE_SESSION_DIR: ./.wpe
     parameters:
       auth_url:
         type: string
       upload_url:
+        type: string
+      slug:
         type: string
     steps:
       - attach_workspace:
@@ -148,17 +168,15 @@ jobs:
       - wp-product-orb/authenticate:
           user: WPE_LDAP_USER
           pass: WPE_LDAP_PASS
-          url: << parameters.auth_url >>
+          url: <<parameters.auth_url>>
       - wp-product-orb/post-zip:
-          url: << parameters.upload_url >>/wpe-headless
-          zip: build/wpe-headless.$BUILD_VERSION.zip
-          json: build/wpe-headless.$BUILD_VERSION.json
+          url: <<parameters.upload_url>>/<<parameters.slug>>
+          zip: build/<<parameters.slug>>.$BUILD_VERSION.zip
+          json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
 workflows:
-  version: 2
-
-  # Workflows defined for each package.
+  # Workflows defined for each package and plugin.
   # tag example for deploying an update for wpe-headless: plugin/wpe-headless/1.0.0
   plugin-wpe-headless:
     jobs:
@@ -166,46 +184,58 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - plugin-wpe-headless-checkout:
+      - plugin-checkout:
+          name: plugin-checkout-wpe-headless
+          slug: wpe-headless
+          filename: wpe-headless.php
           requires:
             - checkout
           # Enable running this job when a tag is published
           filters:
             tags:
               only: /.*/
-      - plugin-wpe-headless-composer:
+      - plugin-composer:
+          name: plugin-composer-wpe-headless
+          slug: wpe-headless
           requires:
-            - plugin-wpe-headless-checkout
+            - plugin-checkout-wpe-headless
           # Enable running this job when a tag is published
           filters:
             tags:
               only: /.*/
-      - plugin-wpe-headless-test:
+      - plugin-test:
+          name: plugin-test-wpe-headless
+          slug: wpe-headless
           requires:
-            - plugin-wpe-headless-composer
+            - plugin-composer-wpe-headless
           # Enable running this job when a tag is published
           filters:
             tags:
               only: /.*/
-      - plugin-wpe-headless-bundle-zip:
+      - plugin-bundle-zip:
+          name: plugin-bundle-zip-wpe-headless
+          slug: wpe-headless
           requires:
-            - plugin-wpe-headless-test
+            - plugin-test-wpe-headless
           # Run this job on every commit/PR so the plugin is available as a build artifact
           filters:
             tags:
               only: /.*/
-      - plugin-wpe-headless-bundle-json:
+      - plugin-bundle-json:
+          name: plugin-bundle-json-wpe-headless
+          slug: wpe-headless
           requires:
-            - plugin-wpe-headless-test
+            - plugin-test-wpe-headless
           # Run this job on every commit/PR to make sure it's in working order prior to deploying
           filters:
             tags:
               only: /.*/
-      - plugin-wpe-headless-deploy:
-          name: "Deploy zip to api (staging)"
+      - plugin-deploy:
+          name: "Deploy zip to api (staging) wpe-headless"
+          slug: wpe-headless
           requires:
-            - plugin-wpe-headless-bundle-zip
-            - plugin-wpe-headless-bundle-json
+            - plugin-bundle-zip-wpe-headless
+            - plugin-bundle-json-wpe-headless
           filters:
             branches:
               only:
@@ -216,17 +246,101 @@ workflows:
           context: wpe-ldap-creds
           auth_url: https://auth-staging.wpengine.io/v1/tokens
           upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
-      - plugin-wpe-headless-deploy:
-          name: "Deploy zip to api (production)"
+      - plugin-deploy:
+          name: "Deploy zip to api (production) wpe-headless"
+          slug: wpe-headless
           requires:
-            - plugin-wpe-headless-bundle-zip
-            - plugin-wpe-headless-bundle-json
+            - "Deploy zip to api (staging) wpe-headless"
           filters:
             branches:
               ignore: /.*/
             tags:
               # tag ex. plugin/wpe-headless/1.0.0
               only: /^plugin\/wpe-headless\/\S+/
+          context: wpe-ldap-creds
+          auth_url: https://auth.wpengine.io/v1/tokens
+          upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+
+  # tag example for deploying an update for wpe-content-model: plugin/wpe-content-model/1.0.0
+  plugin-wpe-content-model:
+    jobs:
+      - checkout:
+          filters:
+            tags:
+              only: /.*/
+      - plugin-checkout:
+          name: plugin-checkout-wpe-content-model
+          slug: wpe-content-model
+          filename: wpe-content-model.php
+          requires:
+            - checkout
+          # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
+      - plugin-composer:
+          name: plugin-composer-wpe-content-model
+          slug: wpe-content-model
+          requires:
+            - plugin-checkout-wpe-content-model
+          # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
+      - plugin-test:
+          name: plugin-test-wpe-content-model
+          slug: wpe-content-model
+          requires:
+            - plugin-composer-wpe-content-model
+          # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
+      - plugin-bundle-zip:
+          name: plugin-bundle-zip-wpe-content-model
+          slug: wpe-content-model
+          requires:
+            - plugin-test-wpe-content-model
+          # Run this job on every commit/PR so the plugin is available as a build artifact
+          filters:
+            tags:
+              only: /.*/
+      - plugin-bundle-json:
+          name: plugin-bundle-json-wpe-content-model
+          slug: wpe-content-model
+          requires:
+            - plugin-test-wpe-content-model
+          # Run this job on every commit/PR to make sure it's in working order prior to deploying
+          filters:
+            tags:
+              only: /.*/
+      - plugin-deploy:
+          name: "Deploy zip to api (staging) wpe-content-model"
+          slug: wpe-content-model
+          requires:
+            - plugin-bundle-zip-wpe-content-model
+            - plugin-bundle-json-wpe-content-model
+          filters:
+            branches:
+              only:
+                - main
+                - canary
+            tags:
+              only: /.*/
+          context: wpe-ldap-creds
+          auth_url: https://auth-staging.wpengine.io/v1/tokens
+          upload_url: https://wp-product-info-staging.wpesvc.net/v1/plugins
+      - plugin-deploy:
+          name: "Deploy zip to api (production) wpe-content-model"
+          slug: wpe-content-model
+          requires:
+            - "Deploy zip to api (staging) wpe-content-model"
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              # tag ex. plugin/wpe-content-model/1.0.0
+              only: /^plugin\/wpe-content-model\/\S+/
           context: wpe-ldap-creds
           auth_url: https://auth.wpengine.io/v1/tokens
           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
