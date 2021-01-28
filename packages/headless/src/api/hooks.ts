@@ -143,6 +143,7 @@ export function useUriInfo(
     isFrontPage: result?.isFrontPage,
     id,
     uriPath: utils.getUrlPath(localUri),
+    isPreview: isPreviewPath(resolvedUri ?? localUri),
     templates,
   };
 
@@ -264,7 +265,7 @@ export function usePost(
   | undefined {
   const pageInfo = useNextUriInfo();
 
-  let variables: Partial<WPGraphQL.GetContentNodeQueryVariables>;
+  let variables: Partial<WPGraphQL.GetContentNodeQueryVariables> = {};
 
   if (id) {
     variables = {
@@ -273,7 +274,7 @@ export function usePost(
     };
   } else if (pageInfo) {
     variables = {
-      asPreview: isPreviewPath(pageInfo.uriPath),
+      asPreview: pageInfo.isPreview,
       id: pageInfo.uriPath,
       idType: 'URI',
     };
@@ -284,6 +285,16 @@ export function usePost(
     // @ts-ignore
     variables,
   });
+
+  const node = result?.data?.contentNode;
+
+  if (variables?.asPreview && !node?.isPreview) {
+    if (!node?.preview?.node) {
+      return node;
+    }
+
+    return node.preview.node;
+  }
 
   return result?.data?.contentNode;
 }
