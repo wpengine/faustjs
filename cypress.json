@@ -1,0 +1,6 @@
+{
+    "env": {
+        "host": "http://localhost:8889"
+    },
+    "video": false
+}
