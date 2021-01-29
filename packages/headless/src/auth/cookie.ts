@@ -12,7 +12,10 @@ const WP_URL = trimTrailingSlash(
 );
 export const COOKIE_KEY = `${WP_URL as string}-at`;
 
-export function initializeCookies({ request, cookies }: CookieOptions = {}) {
+export function initializeCookies({
+  request,
+  cookies,
+}: CookieOptions = {}): Cookies {
   if (!(request || cookies)) {
     return new Cookies();
   }
@@ -50,7 +53,9 @@ export function getAccessToken(options?: CookieOptions): string | undefined {
  * @export
  * @returns {(string | undefined)}
  */
-export function getAccessTokenAsCookie(options?: CookieOptions): string | undefined {
+export function getAccessTokenAsCookie(
+  options?: CookieOptions,
+): string | undefined {
   const cookies = initializeCookies(options);
   const token: string = cookies.get(COOKIE_KEY);
 
@@ -72,7 +77,7 @@ export function getAccessTokenAsCookie(options?: CookieOptions): string | undefi
 export function storeAccessToken(
   token: string | undefined,
   res: ServerResponse,
-  options: CookieOptions
+  options: CookieOptions,
 ): void {
   const cookies = initializeCookies(options);
   if (!token) {

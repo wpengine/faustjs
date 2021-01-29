@@ -73,7 +73,7 @@ export async function authorize(
  */
 export function ensureAuthorization(
   redirectUri: string,
-  options?: CookieOptions
+  options?: CookieOptions,
 ): string | { redirect: string } | undefined {
   const accessToken = getAccessToken(options);
 

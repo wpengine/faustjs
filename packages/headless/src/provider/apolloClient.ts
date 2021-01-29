@@ -10,8 +10,18 @@ import {
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
-import { GetServerSidePropsContext, GetServerSidePropsResult, GetStaticPropsContext, GetStaticPropsResult, NextPageContext } from 'next';
-import { getCookiesFromContext, isServerSide, trimTrailingSlash } from '../utils';
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  NextPageContext,
+} from 'next';
+import {
+  getCookiesFromContext,
+  isServerSide,
+  trimTrailingSlash,
+} from '../utils';
 import { CookieOptions, getAccessToken } from '../auth';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
@@ -31,7 +41,9 @@ if (!WP_URL) {
 /**
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
-function createApolloClient(options?: CookieOptions): ApolloClient<NormalizedCacheObject> {
+function createApolloClient(
+  options?: CookieOptions,
+): ApolloClient<NormalizedCacheObject> {
   const authLink = setContext((_, { headers }) => {
     const token = getAccessToken(options);
 
@@ -98,7 +110,8 @@ export function initializeApollo(
     cookies: getCookiesFromContext(context),
   });
 
-  if (!!context) {
+  if (context) {
+    // eslint-disable-next-line no-underscore-dangle
     (context as WithApolloClient).__apollo_client = localApolloClient;
   }
 
@@ -154,9 +167,11 @@ export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
   pageProps: GetServerSidePropsResult<unknown> | GetStaticPropsResult<unknown>,
 ) {
-  if ((pageProps as { props: Record<string, any>; }).props) {
+  if ((pageProps as { props: Record<string, any> }).props) {
     // eslint-disable-next-line no-param-reassign
-    (pageProps as { props: Record<string, any>; }).props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
+    (pageProps as { props: Record<string, any> }).props[
+      APOLLO_STATE_PROP_NAME
+    ] = client.cache.extract();
   }
 
   return pageProps;
@@ -173,5 +188,5 @@ export function useApollo(
 ): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
-  return useMemo(() => initializeApollo(ctx, state), [state]);
+  return useMemo(() => initializeApollo(ctx, state), [ctx, state]);
 }

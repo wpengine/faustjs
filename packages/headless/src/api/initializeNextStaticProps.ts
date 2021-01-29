@@ -36,8 +36,8 @@ export async function initializeNextStaticProps(
     const response = ensureAuthorization(
       `${protocol}://${host}/${path.join('/') ?? ''}`,
       {
-        cookies
-      }
+        cookies,
+      },
     );
 
     if (typeof response !== 'string' && response?.redirect) {

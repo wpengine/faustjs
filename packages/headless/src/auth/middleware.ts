@@ -16,12 +16,12 @@ export async function nextAuthorizeHandler(
 
     const host = req.headers.host ?? '';
     const cookieOptions = {
-      request: req
+      request: req,
     };
     const cookies = getAccessTokenAsCookie(cookieOptions);
 
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = `${ protocol }//${ host }/${ redirectUri as string }`;
+    const fullRedirectUrl = `${protocol}//${host}/${redirectUri as string}`;
 
     /**
      * If missing code, this is a request that's meant to trigger authorization such as a preview.
@@ -62,7 +62,7 @@ export async function nextAuthorizeHandler(
 
     const result = await authorize(code as string);
     storeAccessToken(result.access_token, res, {
-      request: req
+      request: req,
     });
 
     /**
@@ -83,7 +83,6 @@ export async function nextAuthorizeHandler(
 
     res.redirect(redirectUri as string);
   } catch (e) {
-    console.log(e);
     console.debug('Clearing Next.js Preview Data');
     res.clearPreviewData();
 
