@@ -16,19 +16,33 @@ export async function nextAuthorizeHandler(
 
     const host = req.headers.host ?? '';
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = `${protocol}//${host}/${redirectUri as string}`;
+    const fullRedirectUrl = `${ protocol }//${ host }/${ redirectUri as string }`;
 
     /**
      * If missing code, this is a request that's meant to trigger authorization such as a preview.
      */
     if (!code && redirectUri) {
-      const response = ensureAuthorization(fullRedirectUrl);
+      const response = ensureAuthorization(fullRedirectUrl, {
+        request: req,
+      });
 
       if (typeof response !== 'string' && response?.redirect) {
         res.redirect(response.redirect);
 
         return;
       }
+
+
+      /**
+       * Add server host to previewData so initializeNextStaticProps() can properly redirect as getStaticProps() does not
+       * have the headers or host in the context.
+       */
+      res.setPreviewData({
+        serverInfo: {
+          host: req.headers.host,
+          cookies: req.headers.cookie,
+        },
+      });
 
       /**
        * We already have an auth code stored, go ahead and redirect.
@@ -45,7 +59,9 @@ export async function nextAuthorizeHandler(
     }
 
     const result = await authorize(code as string);
-    storeAccessToken(result.access_token, res);
+    storeAccessToken(result.access_token, res, {
+      request: req
+    });
 
     /**
      * Set cookie to enable previewing.
@@ -59,6 +75,7 @@ export async function nextAuthorizeHandler(
     res.setPreviewData({
       serverInfo: {
         host: req.headers.host,
+        cookies: req.headers.cookie,
       },
     });
 

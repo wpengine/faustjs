@@ -4,7 +4,7 @@ import {
   trimLeadingSlash,
   trimTrailingSlash,
 } from '../utils';
-import { getAccessToken } from './cookie';
+import { CookieOptions, getAccessToken } from './cookie';
 
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
@@ -73,8 +73,9 @@ export async function authorize(
  */
 export function ensureAuthorization(
   redirectUri: string,
+  options?: CookieOptions
 ): string | { redirect: string } | undefined {
-  const accessToken = getAccessToken();
+  const accessToken = getAccessToken(options);
 
   if (!WP_URL) {
     return undefined;

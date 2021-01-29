@@ -1,12 +1,28 @@
-import { ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import Cookies from 'universal-cookie';
 import { base64Decode, base64Encode, trimTrailingSlash } from '../utils';
 
-const cookies = new Cookies();
+export interface CookieOptions {
+  request?: IncomingMessage;
+  cookies?: string;
+}
+
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
 );
 const TOKEN_KEY = `${WP_URL as string}-at`;
+
+export function initializeCookies({ request, cookies }: CookieOptions = {}) {
+  if (!(request || cookies)) {
+    return new Cookies();
+  }
+
+  if (!cookies) {
+    return new Cookies(request?.headers.cookie);
+  }
+
+  return new Cookies(cookies);
+}
 
 /* eslint-disable consistent-return */
 /**
@@ -15,7 +31,8 @@ const TOKEN_KEY = `${WP_URL as string}-at`;
  * @export
  * @returns {(string | undefined)}
  */
-export function getAccessToken(): string | undefined {
+export function getAccessToken(options?: CookieOptions): string | undefined {
+  const cookies = initializeCookies(options);
   const token: string = cookies.get(TOKEN_KEY);
 
   if (!token) {
@@ -36,7 +53,9 @@ export function getAccessToken(): string | undefined {
 export function storeAccessToken(
   token: string | undefined,
   res: ServerResponse,
+  options: CookieOptions
 ): void {
+  const cookies = initializeCookies(options);
   if (!token) {
     cookies.remove(TOKEN_KEY);
     const yesterday = new Date();

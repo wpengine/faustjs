@@ -5,7 +5,7 @@ import { NextPageContext } from 'next';
 
 interface PageProps {
   pageProps: Record<string, any>;
-  ctx?: NextPageContext;
+  ctx: NextPageContext;
 }
 
 /**

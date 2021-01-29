@@ -31,11 +31,14 @@ export async function initializeNextStaticProps(
       ? context.params?.page ?? []
       : [context.params?.page];
 
-    const host = context.previewData.serverInfo.host as string;
+    const { host, cookies } = (context.previewData as PreviewData).serverInfo;
     const protocol = isHTTPS(host, context) ? 'https' : 'http';
 
     const response = ensureAuthorization(
       `${protocol}://${host}/${path.join('/') ?? ''}`,
+      {
+        cookies
+      }
     );
 
     if (typeof response !== 'string' && response?.redirect) {
