@@ -12,7 +12,7 @@ export default function Page() {
         {post && (
           <div>
             <div>
-              <h5>{post.title}</h5>
+              <h1>{post.title}</h1>
               <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
             </div>
           </div>
