@@ -28,6 +28,7 @@ export async function initializeNextStaticProps(
 ): Promise<GetServerSidePropsResult<unknown>> {
   const apolloClient = initializeApollo();
   const wpeConfig = headlessConfig();
+  (context as GetStaticPropsContextWithClient).__apollo_client = apolloClient;
 
   const currentUrlPath = resolvePrefixedUrlPath(
     getCurrentPath(context),

@@ -5,6 +5,7 @@ import { HeadlessProvider } from '@wpengine/headless';
 /* eslint-disable react/jsx-props-no-spreading */
 export default function App({
   Component,
+  ctx,
   pageProps,
 }: AppContext & AppInitialProps) {
   return (

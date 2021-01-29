@@ -27,6 +27,7 @@ export async function initializeNextServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<unknown>> {
   const apolloClient = initializeApollo();
+  (context as GetServerSidePropsContextWithClient).__apollo_client = apolloClient;
 
   const wpeConfig = headlessConfig();
 

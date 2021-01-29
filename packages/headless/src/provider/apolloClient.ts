@@ -10,7 +10,7 @@ import {
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
-import { GetServerSidePropsResult, GetStaticPropsResult } from 'next';
+import { GetServerSidePropsResult, GetStaticPropsResult, NextPageContext } from 'next';
 import { isServerSide, trimTrailingSlash } from '../utils';
 import { getAccessToken } from '../auth';
 
@@ -91,10 +91,11 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
  * ```
  */
 export function initializeApollo(
+  context?: WithApolloClient,
   initialState = null,
 ): ApolloClient<NormalizedCacheObject> {
   const localApolloClient = createApolloClient();
-
+  context?.__apollo_client = localApolloClient;
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
   if (initialState) {
@@ -145,16 +146,14 @@ export function initializeApollo(
  */
 export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: NextPageProps,
-): GetServerSidePropsResult<unknown> | GetStaticPropsResult<unknown> {
-  if (pageProps?.props) {
+  pageProps: GetServerSidePropsResult<unknown> | GetStaticPropsResult<unknown>,
+) {
+  if ((pageProps as { props: Record<string, any>; }).props) {
     // eslint-disable-next-line no-param-reassign
-    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
+    (pageProps as { props: Record<string, any>; }).props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }
 
-  return pageProps as {
-    props: unknown;
-  };
+  return pageProps;
 }
 
 /**
@@ -163,9 +162,10 @@ export function addApolloState(
  * @see WPGraphQLProvider
  */
 export function useApollo(
-  pageProps: NextPageProps,
+  ctx: NextPageContext,
+  pageProps: Record<string, any>,
 ): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
-  return useMemo(() => initializeApollo(state), [state]);
+  return useMemo(() => initializeApollo(ctx as WithApolloClient, state), [state]);
 }
