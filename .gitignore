@@ -4,3 +4,7 @@ dist
 .idea
 .DS_Store
 process.yml
+cypress/fixtures/*
+cypress/screenshots/*
+cypress/videos/*
+!cypress/fixtures/.gitkeep

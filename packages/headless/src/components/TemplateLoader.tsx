@@ -1,7 +1,7 @@
 import React from 'react';
 import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { useNextUriInfo } from '../api';
+import { useNextUriInfo } from '../api/hooks';
 import { resolveTemplate } from '../utils/resolveTemplate';
 
 export interface Template {

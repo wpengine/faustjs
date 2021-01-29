@@ -65,7 +65,7 @@ export async function getContentNode(
     return undefined;
   }
 
-  if (asPreview && node.isPreview) {
+  if (asPreview && !node.isPreview) {
     if (!node.preview?.node) {
       return node;
     }

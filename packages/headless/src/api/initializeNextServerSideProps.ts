@@ -1,20 +1,11 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import {
-  getUriInfo,
-  getPosts,
-  getContentNode,
-  getGeneralSettings,
-} from './services';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { UriInfo } from '../types';
 import { resolvePrefixedUrlPath, isPreview, isPreviewPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
 import isHTTPS from '../utils/isHTTPS';
-
-import type { Template } from '../components/TemplateLoader';
-import { resolveTemplate } from '../utils/resolveTemplate';
+import nextFetchFromWP from './nextFetchFromWP';
 
 /**
  * Must be called from getServerSideProps within a Next app in order to support SSR. It will
@@ -60,36 +51,7 @@ export async function initializeNextServerSideProps(
     };
   }
 
-  /**
-   * Cannot happen at the same time as the rest of the requests because we need to know which templates to load for
-   * middleware.
-   */
-  const pageInfo = await getUriInfo(
-    apolloClient,
-    currentUrlPath,
-    isPreview(context),
-  );
-
-  const template: Template | null = resolveTemplate(pageInfo as UriInfo);
-
-  const promises = [
-    getGeneralSettings(apolloClient),
-    getPosts(apolloClient),
-    currentUrlPath !== '/'
-      ? getContentNode(apolloClient, currentUrlPath, 'URI', isPreview(context))
-      : undefined,
-  ];
-
-  await Promise.all(
-    template?.getPropsMiddleware
-      ? template?.getPropsMiddleware(
-          promises,
-          apolloClient,
-          currentUrlPath,
-          context,
-        )
-      : promises,
-  );
+  await nextFetchFromWP({ apolloClient, currentUrlPath, context });
 
   return addApolloState(apolloClient, {
     props: { preview: context.preview ?? false },
