@@ -10,9 +10,9 @@ import {
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
-import { GetServerSidePropsResult, GetStaticPropsResult, NextPageContext } from 'next';
-import { isServerSide, trimTrailingSlash } from '../utils';
-import { getAccessToken } from '../auth';
+import { GetServerSidePropsContext, GetServerSidePropsResult, GetStaticPropsContext, GetStaticPropsResult, NextPageContext } from 'next';
+import { getCookiesFromContext, isServerSide, trimTrailingSlash } from '../utils';
+import { CookieOptions, getAccessToken } from '../auth';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -31,9 +31,9 @@ if (!WP_URL) {
 /**
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
-function createApolloClient(): ApolloClient<NormalizedCacheObject> {
+function createApolloClient(options?: CookieOptions): ApolloClient<NormalizedCacheObject> {
   const authLink = setContext((_, { headers }) => {
-    const token = getAccessToken();
+    const token = getAccessToken(options);
 
     if (!token) {
       return {};
@@ -91,13 +91,15 @@ function createApolloClient(): ApolloClient<NormalizedCacheObject> {
  * ```
  */
 export function initializeApollo(
-  context?: WithApolloClient,
+  context?: NextPageContext | GetStaticPropsContext | GetServerSidePropsContext,
   initialState = null,
 ): ApolloClient<NormalizedCacheObject> {
-  const localApolloClient = createApolloClient();
+  const localApolloClient = createApolloClient({
+    cookies: getCookiesFromContext(context),
+  });
 
   if (!!context) {
-    context.__apollo_client = localApolloClient;
+    (context as WithApolloClient).__apollo_client = localApolloClient;
   }
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -171,5 +173,5 @@ export function useApollo(
 ): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
-  return useMemo(() => initializeApollo(ctx as WithApolloClient, state), [state]);
+  return useMemo(() => initializeApollo(ctx, state), [state]);
 }

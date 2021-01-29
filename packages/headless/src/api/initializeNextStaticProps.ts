@@ -17,9 +17,8 @@ import nextFetchFromWP from './nextFetchFromWP';
 export async function initializeNextStaticProps(
   context: GetStaticPropsContext,
 ): Promise<GetServerSidePropsResult<unknown>> {
-  const apolloClient = initializeApollo();
+  const apolloClient = initializeApollo(context);
   const wpeConfig = headlessConfig();
-  (context as GetStaticPropsContextWithClient).__apollo_client = apolloClient;
 
   const currentUrlPath = resolvePrefixedUrlPath(
     getCurrentPath(context),

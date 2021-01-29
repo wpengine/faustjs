@@ -1,3 +1,4 @@
+import { GetServerSidePropsContext, GetStaticPropsContext, NextPageContext } from 'next';
 import { HeadlessConfig, ParsedUrlInfo } from '../types';
 import { isBase64, isServerSide } from './assert';
 
@@ -171,6 +172,22 @@ export function trimLeadingSlash(str: string | undefined): string | undefined {
 
   if (str[0] === '/') {
     return str.slice(1);
+  }
+}
+/* eslint-enable consistent-return */
+
+/* eslint-disable consistent-return */
+export function getCookiesFromContext(context?: NextPageContext | GetStaticPropsContext | GetServerSidePropsContext): string | undefined {
+  if (!context) {
+    return;
+  }
+
+  if (!!(context as GetStaticPropsContext).previewData && !!((context as GetStaticPropsContext).previewData as PreviewData).serverInfo) {
+    return ((context as GetStaticPropsContext).previewData as PreviewData).serverInfo.cookies;
+  }
+
+  if (!!(context as GetServerSidePropsContext).req) {
+    return (context as GetServerSidePropsContext).req.headers.cookie;
   }
 }
 /* eslint-enable consistent-return */
