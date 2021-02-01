@@ -52,9 +52,9 @@ export async function getContentNode(
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
     query: GET_CONTENT_NODE,
     variables: {
+      asPreview,
       id,
       idType,
-      asPreview,
     },
   });
 
