@@ -31,9 +31,11 @@
     "@wpengine/headless": "0.4.0",
     "graphql": "^15.4.0",
     "next": "^10.0.5",
+    "normalize.css": "^8.0.1",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "sass": "^1.32.5"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
