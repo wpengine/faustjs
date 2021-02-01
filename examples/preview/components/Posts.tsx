@@ -5,7 +5,7 @@ import styles from 'sass/components/Posts.module.scss';
 
 interface Props {
   posts: WPGraphQL.GetPostsQuery['posts']['nodes'] | undefined;
-  intro: string;
+  intro?: string;
   id?: string;
   count?: number;
   heading?: string;
