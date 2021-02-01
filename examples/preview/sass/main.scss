@@ -1,0 +1,43 @@
+@import "variables";
+@import "typography";
+
+body {
+	color: $color-black;
+	font-size: 18px;
+	line-height: 1.6;
+}
+
+.wrap {
+	margin: 0 auto;
+	max-width: $content-width;
+	overflow: auto;
+}
+
+.content .button {
+	background-color: $color-primary;
+	border-radius: 4px;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	float: left;
+	font-family: $font-family-bold;
+	padding: 12px 24px;
+	text-align: center;
+	text-decoration: none;
+	margin-right: 8px;
+}
+
+.content .button:focus,
+.content .button:hover {
+	background-color: lighten($color-primary, 10);
+}
+
+.content .button-secondary {
+	background-color: $color-white;
+	color: $color-black;
+}
+
+.content .button-secondary:focus,
+.content .button-secondary:hover {
+	background-color: darken($color-white, 10);
+}
