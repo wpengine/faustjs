@@ -10,7 +10,7 @@ export default function App({
 }: AppContext & AppInitialProps) {
   return (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    <HeadlessProvider pageProps={pageProps}>
+    <HeadlessProvider pageProps={pageProps} ctx={ctx}>
       <Component {...pageProps} />
     </HeadlessProvider>
   );
