@@ -185,7 +185,6 @@ jobs:
       - run:
           name: NPM package install and build
           command: |
-            node --version
             npm install
             npm run build
       - persist_to_workspace:
@@ -203,7 +202,7 @@ jobs:
       - run:
           name: NPM package tests
           command: |
-            node --version
+            npm install
             npm run test
 
 
