@@ -1,0 +1,11 @@
+@import "sass/variables";
+
+.title a {
+	color: $color-black;
+	text-decoration: none;
+}
+
+.title a:focus,
+.title a:hover {
+	color: $color-primary;
+}
