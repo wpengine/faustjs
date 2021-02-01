@@ -175,6 +175,38 @@ jobs:
           json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
+  package-build:
+    docker:
+      - image: cimg/node:lts
+    working_directory: ~/project/packages/headless
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: NPM package install and build
+          command: |
+            node --version
+            npm install
+            npm run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - packages/headless
+
+  package-test:
+    docker:
+      - image: cimg/node:lts
+    working_directory: ~/project/packages/headless
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: NPM package tests
+          command: |
+            node --version
+            npm run test
+
+
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for wpe-headless: plugin/wpe-headless/1.0.0
@@ -344,3 +376,24 @@ workflows:
           context: wpe-ldap-creds
           auth_url: https://auth.wpengine.io/v1/tokens
           upload_url: https://wp-product-info.wpesvc.net/v1/plugins
+
+  package-headless:
+    jobs:
+      - checkout:
+          filters:
+            tags:
+              only: /.*/
+      - package-build:
+          requires:
+            - checkout
+          # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
+      - package-test:
+          requires:
+            - package-build
+          # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
