@@ -22,7 +22,7 @@
 
 	<!-- Rules: Check PHP version compatibility -->
 	<!-- https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
-	<config name="testVersion" value="5.6-" />
+	<config name="testVersion" value="7.2-" />
 
 	<!-- https://github.com/PHPCompatibility/PHPCompatibilityWP -->
 	<rule ref="PHPCompatibilityWP" />
@@ -39,6 +39,7 @@
 			<property name="prefixes" type="array">
 				<element value="wpe_content_model" />
 				<element value="WPE_CONTENT_MODEL" />
+				<element value="WPE\ContentModel" />
 			</property>
 		</properties>
 	</rule>
