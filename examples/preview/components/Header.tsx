@@ -27,7 +27,9 @@ function Header({ title = 'Headless by WP Engine', description }: Props) {
         <div className={styles.wrap}>
           <div className={styles['title-wrap']}>
             <p className={styles['site-title']}>
-              <a href="/">{title}</a>
+              <Link href="/">
+                <a>{title}</a>
+              </Link>
             </p>
             {description && <p className={styles.description}>{description}</p>}
           </div>
