@@ -92,7 +92,7 @@ The end-2-end tests run using [Cypress](https://www.cypress.io/) while running o
     - Development site `http://localhost:8888`.
     - Testing site `http://localhost:8889`.
     - The plugins [WPGraphQL](https://www.wpgraphql.com/) and `plugins/wpe-headless` will automatically be installed and activated.
-4. Run `npm run cypress:open` to open the Cypress UI and manually run end-2-end the tests.
+4. Run `npm run cypress:open` to open the Cypress UI and manually run the end-2-end tests.
     - Run `npm run cypress:run` to run the end-2-end tests without the Cypress UI.
 5. Run `npm run wp:stop` to stop the development containers.
 
