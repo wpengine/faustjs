@@ -36,7 +36,10 @@ function Posts({
         <div className="posts">
           {thePosts &&
             thePosts.map((post) => (
-              <div key={post.id} id={`post-${post.id}`}>
+              <div
+                className={styles.single}
+                key={post.id}
+                id={`post-${post.id}`}>
                 <div>
                   <Link href={post.uri}>
                     <PostHeading className={styles.title}>
@@ -55,7 +58,7 @@ function Posts({
                 </div>
               </div>
             ))}
-          {!thePosts && <p>No posts found.</p>}
+          {thePosts && thePosts?.length < 1 && <p>No posts found.</p>}
         </div>
       </div>
     </section>
