@@ -16,8 +16,15 @@
 	margin: 0 auto;
 	max-width: $content-width;
 	overflow: auto;
+	padding: 0 10px;
 	position: relative;
 	z-index: 1;
+}
+
+@media screen and (min-width: $content-width) {
+	.wrap {
+		padding: 0;
+	}
 }
 
 .hero::before {
@@ -41,11 +48,13 @@
 	color: darken($color-white, 25);
 }
 
-.hero h1 {
-	max-width: 40%;
-}
+@media screen and (min-width: $breakpoint-medium) {
+	.hero h1 {
+		max-width: 80%;
+	}
 
-.intro {
-	margin-bottom: 2%;
-	max-width: 50%;
+	.intro {
+		margin-bottom: 2%;
+		max-width: 50%;
+	}
 }

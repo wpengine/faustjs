@@ -5,6 +5,13 @@
 .wrap {
 	margin: 0 auto;
 	max-width: $content-width-extended;
+	padding: 0 10px;
+}
+
+@media screen and (min-width: $content-width-extended) {
+	.wrap {
+		padding: 0;
+	}
 }
 
 footer.main {

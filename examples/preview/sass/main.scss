@@ -13,12 +13,26 @@ body {
 	margin: 0 auto;
 	max-width: $content-width;
 	overflow: auto;
+	padding: 0 10px;
 }
 
 .content-page .wrap,
 .content-single .wrap,
 .content-index .wrap {
-	padding: 3em 0;
+	padding: 55px 10px;
+}
+
+@media screen and (min-width: $content-width) {
+	.wrap {
+		padding: 0;
+	}
+
+	.content-page .wrap,
+	.content-single .wrap,
+	.content-index .wrap {
+		padding-left: 0;
+		padding-right: 0;
+	}
 }
 
 .content .button {

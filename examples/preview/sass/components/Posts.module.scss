@@ -11,3 +11,13 @@
 .title a:hover {
 	color: $color-primary;
 }
+
+.single {
+	margin-bottom: 2.5em;
+}
+
+@media screen and (min-width: $content-width) {
+	.single {
+		margin-bottom: 1em;
+	}
+}
