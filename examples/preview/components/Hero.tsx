@@ -3,6 +3,7 @@ import styles from 'sass/components/Hero.module.scss';
 
 interface Props {
   title: string;
+  id?: string;
   bgImage?: string;
   buttonText?: string;
   buttonURL?: string;
@@ -13,6 +14,7 @@ interface Props {
 
 function Hero({
   title = 'Hero Title',
+  id,
   bgImage,
   buttonText,
   buttonURL,
@@ -23,6 +25,7 @@ function Hero({
   return (
     <section
       style={{ backgroundImage: bgImage ? `url(${bgImage})` : 'none' }}
+      {...(id && { id })}
       className={styles.hero}>
       <div className={styles.wrap}>
         <h1>{title}</h1>

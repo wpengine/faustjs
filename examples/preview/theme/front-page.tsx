@@ -17,7 +17,8 @@ export default function FrontPage() {
           buttonURL="https://developers.wpengine.com/"
           button2Text="Headless on GitHub"
           button2URL="https://github.com/wpengine/headless-framework"
-          bgImage="/images/headless_hero_background.jpg">
+          bgImage="/images/headless_hero_background.jpg"
+          id={styles.home_hero}>
           <p>
             WP&nbsp;Engine’s Headless WordPress Framework includes this starter
             theme, the{' '}
@@ -112,7 +113,7 @@ export default function FrontPage() {
           headingLevel={2}
           postTitleLevel={3}
           count={6}
-          id={styles['post-list']}
+          id={styles.post_list}
         />
         <CTA
           title="Questions or comments?"
