@@ -1,6 +1,6 @@
 import React from 'react';
 import { WPHead } from '@wpengine/headless';
-import styles from 'sass/components/Header.module.scss';
+import styles from 'scss/components/Header.module.scss';
 import Link from 'next/link';
 
 interface Props {

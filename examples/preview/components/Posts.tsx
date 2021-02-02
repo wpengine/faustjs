@@ -1,7 +1,7 @@
 import React from 'react';
 import { WPGraphQL } from '@wpengine/headless';
 import Link from 'next/link';
-import styles from 'sass/components/Posts.module.scss';
+import styles from 'scss/components/Posts.module.scss';
 import Heading, { HeadingProps } from './Heading';
 
 interface Props {

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'sass/components/Hero.module.scss';
+import styles from 'scss/components/Hero.module.scss';
 
 interface Props {
   title: string;

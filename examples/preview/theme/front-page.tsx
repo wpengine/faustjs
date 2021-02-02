@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePosts, useGeneralSettings } from '@wpengine/headless';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
-import styles from '../sass/theme/front-page.module.scss';
+import styles from '../scss/theme/front-page.module.scss';
 
 export default function FrontPage() {
   const posts = usePosts();
@@ -58,7 +58,7 @@ export default function FrontPage() {
                   </a>
                   , where <code>single.tsx</code> displays posts and{' '}
                   <code>page.tsx</code> displays pages. Find page-specific CSS
-                  at <code>sass/theme</code>, which is scoped to the page with{' '}
+                  at <code>scss/theme</code>, which is scoped to the page with{' '}
                   <a href="https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css">
                     CSS modules
                   </a>
@@ -70,13 +70,13 @@ export default function FrontPage() {
                 <h3>Global Styles and Fonts</h3>
                 <p>
                   Add styles to load on every page, such as typography and
-                  layout rules, in <code>sass/main.scss</code>. The theme adds{' '}
+                  layout rules, in <code>scss/main.scss</code>. The theme adds{' '}
                   <a href="https://necolas.github.io/normalize.css/">
                     normalize.css
                   </a>{' '}
                   in <code>pages/_app.tsx</code>. Fonts live in{' '}
                   <code>public/fonts</code> and are defined in{' '}
-                  <code>sass/_font-face.scss</code>.
+                  <code>scss/_font-face.scss</code>.
                 </p>
               </div>
 
@@ -84,7 +84,7 @@ export default function FrontPage() {
                 <h3>Components</h3>
                 <p>
                   Add or edit components in the <code>components/</code> folder.
-                  Find component styles at <code>sass/components</code>, which
+                  Find component styles at <code>scss/components</code>, which
                   use{' '}
                   <a href="https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css">
                     CSS modules

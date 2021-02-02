@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'sass/components/CTA.module.scss';
+import styles from 'scss/components/CTA.module.scss';
 import Heading, { HeadingProps } from './Heading';
 
 interface Props {
