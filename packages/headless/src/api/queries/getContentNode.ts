@@ -7,14 +7,16 @@ import {
 } from './POST_DATA_FRAGMENT';
 
 export interface ContentNodeFragments {
-  postData?: DocumentNode;
-  pageData?: DocumentNode;
+  fragments?: {
+    postData?: DocumentNode;
+    pageData?: DocumentNode;
+  };
 }
 
-export function getContentNodeQuery({ postData, pageData }: ContentNodeFragments = {}) {
+export function getContentNodeQuery({ fragments }: ContentNodeFragments = {}) {
   return gql`
-    ${postData ?? POST_DATA_FRAGMENT}
-    ${pageData ?? PAGE_DATA_FRAGMENT}
+    ${fragments?.postData ?? POST_DATA_FRAGMENT}
+    ${fragments?.pageData ?? PAGE_DATA_FRAGMENT}
     query GetContentNode(
       $id: ID!
       $idType: ContentNodeIdTypeEnum
@@ -28,24 +30,12 @@ export function getContentNodeQuery({ postData, pageData }: ContentNodeFragments
               ...postData
             }
           }
-          enqueuedStylesheets {
-            nodes {
-              src
-              handle
-            }
-          }
         }
         ... on Page {
           ...pageData
           preview {
             node {
               ...pageData
-            }
-          }
-          enqueuedStylesheets {
-            nodes {
-              src
-              handle
             }
           }
         }

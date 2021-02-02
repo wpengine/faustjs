@@ -19,6 +19,12 @@ const POST_DATA_FRAGMENT = gql`
         sourceUrl
       }
     }
+    enqueuedStylesheets {
+        nodes {
+          src
+          handle
+        }
+      }
   }
 `;
 
