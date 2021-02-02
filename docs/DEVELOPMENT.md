@@ -81,6 +81,21 @@ or
 composer test
 ```
 
+## End-2-End Testing
+
+The end-2-end tests run using [Cypress](https://www.cypress.io/) while running on a local docker setup using [wp-env](https://github.com/WordPress/gutenberg/tree/master/packages/env#wp-env).
+
+1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running.
+2. Ensure you have ran `npm install` from the `headless-framework` root directory.
+3. Run `npm run wp:start` to start the development container.
+    - **Note: This may take some time on the initial start as it has to download and setup the needed files.**
+    - Development site `http://localhost:8888`.
+    - Testing site `http://localhost:8889`.
+    - The plugins [WPGraphQL](https://www.wpgraphql.com/) and `plugins/wpe-headless` will automatically be installed and activated.
+4. Run `npm run cypress:open` to open the Cypress UI and manually run the end-2-end tests.
+    - Run `npm run cypress:run` to run the end-2-end tests without the Cypress UI.
+5. Run `npm run wp:stop` to stop the development containers.
+
 ## Deployment
 
 Developers with full GitHub repository access can create public releases:
