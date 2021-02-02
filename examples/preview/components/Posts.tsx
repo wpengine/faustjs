@@ -44,11 +44,11 @@ function Posts({
                 key={post.id}
                 id={`post-${post.id}`}>
                 <div>
-                  <Link href={post.uri}>
-                    <Heading level={postTitleLevel} className={styles.title}>
+                  <Heading level={postTitleLevel} className={styles.title}>
+                    <Link href={post.uri}>
                       <a href={post.uri}>{post.title}</a>
-                    </Heading>
-                  </Link>
+                    </Link>
+                  </Heading>
                   <div
                     className={styles.excerpt}
                     dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
