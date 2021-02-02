@@ -3,15 +3,17 @@ import Link from 'next/link';
 import { usePosts, WPHead } from '@wpengine/headless';
 
 export default function Index() {
-  const posts = usePosts();
+  const posts = usePosts({variables: {
+    first: 1
+  }});
 
   return (
     <>
       <WPHead />
 
       <div>
-        {posts &&
-          posts.map((post) => (
+        {posts && posts.nodes &&
+          posts.nodes.map((post) => (
             <div key={post.id} id={`post-${post.id}`}>
               <div>
                 <Link href={post.uri}>

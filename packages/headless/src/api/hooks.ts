@@ -13,6 +13,7 @@ import {
   getContentNodeQuery,
   getPostsQuery,
   GET_URI_INFO,
+  ListPostOptions,
 } from './queries';
 import * as utils from '../utils';
 import trimOriginFromUrl from '../utils/trimOriginFromUrl';
@@ -43,12 +44,14 @@ import trimOriginFromUrl from '../utils/trimOriginFromUrl';
  * @export
  * @returns {(Post[] | undefined)}
  */
-export function usePosts():
-  | WPGraphQL.GetPostsQuery['posts']['nodes']
+export function usePosts(options?: ListPostOptions):
+  | WPGraphQL.RootQuery['posts']
   | undefined {
-  const result = useQuery<WPGraphQL.GetPostsQuery>(getPostsQuery());
+  const result = useQuery<WPGraphQL.RootQuery>(getPostsQuery(options), {
+    variables: options?.variables,
+  });
 
-  return result.data?.posts.nodes;
+  return result.data?.posts;
 }
 
 /**
