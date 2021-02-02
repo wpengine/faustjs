@@ -6,16 +6,16 @@ import {
   PAGE_INFO_DATA_FRAGMENT
 } from './PAGE_INFO_DATA_FRAGMENT';
 
-export interface ListPostOptions {
+export interface ListPostOptions<Args extends WPGraphQL.RootQueryPostArgs = WPGraphQL.RootQueryPostArgs> {
   listPostData?: DocumentNode;
-  variables?: WPGraphQL.RootQueryPostsArgs;
+  variables?: Args;
 }
 
 export function getPostsQuery({ listPostData }: ListPostOptions = {}) {
   return gql`
     ${listPostData ?? LIST_POST_DATA_FRAGMENT}
     ${PAGE_INFO_DATA_FRAGMENT}
-    query GetPosts($where: RootQueryToPostConnectionWhereArgs, $after: String, $before: String, $first: Int, $last: Int) {
+    query GetPosts($where: RootQueryToPostConnectionWhereArgs, $after: String!, $before: String!, $first: Int!, $last: Int!) {
       posts(where: $where, after: $after, before: $before, first: $first, last: $last) {
         pageInfo {
           ...pageInfoData

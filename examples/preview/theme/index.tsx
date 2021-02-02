@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { usePosts, WPHead } from '@wpengine/headless';
 
 export default function Index() {
-  const posts = usePosts({variables: {
-    first: 1
-  }});
+  const posts = usePosts({
+    variables: {
+      first: 1,
+    }
+  });
 
   return (
     <>
