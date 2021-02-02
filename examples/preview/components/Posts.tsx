@@ -24,7 +24,7 @@ function Posts({
   headingLevel = 'h1',
   postTitleLevel = 'h2',
   readMoreText = 'Read more',
-}: Props) {
+}: Props): JSX.Element {
   // TODO: deprecate `count` and limit posts at the query level instead.
   const thePosts = count > 0 ? posts?.slice(0, count) : posts;
   return (

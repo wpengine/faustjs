@@ -2,7 +2,7 @@ import React from 'react';
 import { useGeneralSettings, usePost } from '@wpengine/headless';
 import { Header, Hero, Footer } from '../components';
 
-export default function Page() {
+export default function Page(): JSX.Element {
   const post = usePost();
   const settings = useGeneralSettings();
 

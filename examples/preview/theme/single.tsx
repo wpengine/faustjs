@@ -5,7 +5,7 @@ import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { gql } from '@apollo/client';
 import { CTA, Footer, Header, Hero } from '../components';
 
-export default function Single() {
+export default function Single(): JSX.Element {
   const post = usePost();
   const settings = useGeneralSettings();
 

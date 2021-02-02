@@ -5,7 +5,7 @@ interface Props {
   copyrightHolder?: string;
 }
 
-function Footer({ copyrightHolder = 'Company Name'}: Props) {
+function Footer({ copyrightHolder = 'Company Name' }: Props): JSX.Element {
   const year = new Date().getFullYear();
 
   return (

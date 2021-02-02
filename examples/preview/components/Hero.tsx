@@ -21,7 +21,7 @@ function Hero({
   button2Text,
   button2URL,
   children,
-}: Props) {
+}: Props): JSX.Element {
   return (
     <section
       style={{ backgroundImage: bgImage ? `url(${bgImage})` : 'none' }}

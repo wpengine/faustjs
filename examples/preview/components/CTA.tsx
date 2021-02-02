@@ -16,7 +16,7 @@ function CTA({
   buttonURL,
   children,
   headingLevel = 'h1',
-}: Props) {
+}: Props): JSX.Element {
   return (
     <section className={styles.cta}>
       <div className={styles.wrap}>

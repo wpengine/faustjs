@@ -3,7 +3,7 @@ import { usePosts, useGeneralSettings } from '@wpengine/headless';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
 import styles from '../scss/theme/front-page.module.scss';
 
-export default function FrontPage() {
+export default function FrontPage(): JSX.Element {
   const posts = usePosts();
   const settings = useGeneralSettings();
 
