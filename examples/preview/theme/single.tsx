@@ -18,6 +18,7 @@ export default function Single(): JSX.Element {
           {post && (
             <div>
               <div>
+                {/* eslint-disable-next-line react/no-danger */}
                 <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
               </div>
             </div>
@@ -54,6 +55,7 @@ export default function Single(): JSX.Element {
 export function getPropsMiddleware(
   promises: Array<Promise<unknown> | undefined>,
   apolloClient: ApolloClient<NormalizedCacheObject>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   currentUrlPath: string,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context: GetStaticPropsContext | GetServerSidePropsContext,

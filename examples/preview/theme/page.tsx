@@ -15,6 +15,7 @@ export default function Page(): JSX.Element {
           {post && (
             <div>
               <div>
+                {/* eslint-disable-next-line react/no-danger */}
                 <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
               </div>
             </div>

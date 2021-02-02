@@ -52,6 +52,7 @@ function Posts({
                   </Heading>
                   <div
                     className={styles.excerpt}
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
                   />
                   <a
