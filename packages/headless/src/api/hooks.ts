@@ -128,7 +128,11 @@ export function useUriInfo(
   const nodeByUri = result?.data?.nodeByUri;
 
   if (!nodeByUri) {
-    return undefined;
+    return {
+      is404: true,
+      templates: ['404'],
+      uriPath: utils.getUrlPath(localUri),
+    };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
