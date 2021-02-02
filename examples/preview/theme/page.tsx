@@ -1,6 +1,6 @@
 import React from 'react';
-import { Header, Hero, Footer } from '../components';
 import { useGeneralSettings, usePost } from '@wpengine/headless';
+import { Header, Hero, Footer } from '../components';
 
 export default function Page() {
   const post = usePost();
