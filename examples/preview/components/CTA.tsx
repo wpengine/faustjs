@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from 'sass/components/CTA.module.scss';
+import Heading, { HeadingProps } from './Heading';
 
 interface Props {
   title: string;
   buttonText?: string;
   buttonURL?: string;
   children?: React.ReactNode;
-  headingLevel?: number;
+  headingLevel?: HeadingProps['level'];
 }
 
 function CTA({
@@ -14,13 +15,14 @@ function CTA({
   buttonText,
   buttonURL,
   children,
-  headingLevel = 1,
+  headingLevel = 'h1',
 }: Props) {
-  const Heading = `h${headingLevel}`;
   return (
     <section className={styles.cta}>
       <div className={styles.wrap}>
-        <Heading className={styles.title}>{title}</Heading>
+        <Heading level={headingLevel} className={styles.title}>
+          {title}
+        </Heading>
         <div className={styles.intro}>
           <div className={styles.children}>{children}</div>
           {buttonText && buttonURL && (

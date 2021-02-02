@@ -27,7 +27,7 @@ export default function Single() {
           title="Start your headless journey today"
           buttonText="Get Started"
           buttonURL="https://github.com/wpengine/headless-framework/"
-          headingLevel={2}>
+          headingLevel="h2">
           <p>
             Learn more in the{' '}
             <a href="https://github.com/wpengine/headless-framework">

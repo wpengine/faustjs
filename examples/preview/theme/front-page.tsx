@@ -110,8 +110,8 @@ export default function FrontPage() {
           posts={posts}
           heading="Latest Posts"
           intro="The Posts component in theme/front-page.tsx shows the latest six posts from the connected WordPress site."
-          headingLevel={2}
-          postTitleLevel={3}
+          headingLevel="h2"
+          postTitleLevel="h3"
           count={6}
           id={styles.post_list}
         />
@@ -119,7 +119,7 @@ export default function FrontPage() {
           title="Questions or comments?"
           buttonText="Join the discussion on GitHub"
           buttonURL="https://github.com/wpengine/headless-framework/discussions"
-          headingLevel={2}>
+          headingLevel="h2">
           <p>
             We welcome feature requests, bug reports and questions in the{' '}
             <a href="https://github.com/wpengine/headless-framework">

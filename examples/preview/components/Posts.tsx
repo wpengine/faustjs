@@ -2,6 +2,7 @@ import React from 'react';
 import { WPGraphQL } from '@wpengine/headless';
 import Link from 'next/link';
 import styles from 'sass/components/Posts.module.scss';
+import Heading, { HeadingProps } from './Heading';
 
 interface Props {
   posts: WPGraphQL.GetPostsQuery['posts']['nodes'] | undefined;
@@ -9,8 +10,8 @@ interface Props {
   id?: string;
   count?: number;
   heading?: string;
-  headingLevel?: number;
-  postTitleLevel?: number;
+  headingLevel?: HeadingProps['level'];
+  postTitleLevel?: HeadingProps['level'];
   readMoreText?: string;
 }
 
@@ -20,18 +21,20 @@ function Posts({
   heading,
   id,
   count = 0,
-  headingLevel = 1,
-  postTitleLevel = 2,
+  headingLevel = 'h1',
+  postTitleLevel = 'h2',
   readMoreText = 'Read more',
 }: Props) {
   // TODO: deprecate `count` and limit posts at the query level instead.
   const thePosts = count > 0 ? posts?.slice(0, count) : posts;
-  const Heading = `h${headingLevel}`;
-  const PostHeading = `h${postTitleLevel}`;
   return (
     <section className={styles['posts-block']} {...(id && { id })}>
       <div className="wrap">
-        {heading && <Heading className={styles.heading}>{heading}</Heading>}
+        {heading && (
+          <Heading level={headingLevel} className={styles.heading}>
+            {heading}
+          </Heading>
+        )}
         {intro && <p className={styles.intro}>{intro}</p>}
         <div className="posts">
           {thePosts &&
@@ -42,9 +45,9 @@ function Posts({
                 id={`post-${post.id}`}>
                 <div>
                   <Link href={post.uri}>
-                    <PostHeading className={styles.title}>
+                    <Heading level={postTitleLevel} className={styles.title}>
                       <a href={post.uri}>{post.title}</a>
-                    </PostHeading>
+                    </Heading>
                   </Link>
                   <div
                     className={styles.excerpt}
