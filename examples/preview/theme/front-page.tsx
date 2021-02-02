@@ -74,9 +74,8 @@ export default function FrontPage(): JSX.Element {
                   <a href="https://necolas.github.io/normalize.css/">
                     normalize.css
                   </a>{' '}
-                  in <code>pages/_app.tsx</code>. Fonts live in{' '}
-                  <code>public/fonts</code> and are defined in{' '}
-                  <code>scss/_font-face.scss</code>.
+                  in <code>pages/_app.tsx</code>. Google Fonts are enqueued in{' '}
+                  <code>components/Header.tsx</code>.
                 </p>
               </div>
 
