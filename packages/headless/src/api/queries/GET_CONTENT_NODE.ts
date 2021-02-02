@@ -1,6 +1,19 @@
-import { gql } from '@apollo/client';
+import { DocumentNode, gql } from '@apollo/client';
+import { 
+  PAGE_DATA_FRAGMENT
+} from './PAGE_DATA_FRAGMENT';
+import { 
+  POST_DATA_FRAGMENT
+} from './POST_DATA_FRAGMENT';
 
-const GET_CONTENT_NODE = gql`
+export interface ContentNodeFragments {
+  postData?: DocumentNode;
+  pageData?: DocumentNode;
+}
+
+const GET_CONTENT_NODE = ({ postData, pageData }: ContentNodeFragments = {}) => gql`
+  ${postData ?? POST_DATA_FRAGMENT}
+  ${pageData ?? PAGE_DATA_FRAGMENT}
   query GetContentNode(
     $id: ID!
     $idType: ContentNodeIdTypeEnum
@@ -8,42 +21,10 @@ const GET_CONTENT_NODE = gql`
   ) {
     contentNode(id: $id, idType: $idType, asPreview: $asPreview) {
       ... on Post {
-        id
-        slug
-        title
-        content
-        isRevision
-        isPreview
-        isSticky
-        excerpt
-        uri
-        status
-        featuredImage {
-          node {
-            id
-            altText
-            sourceUrl
-          }
-        }
+        ...postData
         preview {
           node {
-            id
-            slug
-            title
-            content
-            isRevision
-            isPreview
-            isSticky
-            excerpt
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
+            ...postData
           }
         }
         enqueuedStylesheets {
@@ -54,42 +35,10 @@ const GET_CONTENT_NODE = gql`
         }
       }
       ... on Page {
-        id
-        slug
-        title
-        content
-        isPreview
-        isRevision
-        isFrontPage
-        isPostsPage
-        uri
-        status
-        featuredImage {
-          node {
-            id
-            altText
-            sourceUrl
-          }
-        }
+        ...pageData
         preview {
           node {
-            id
-            slug
-            title
-            content
-            isPreview
-            isRevision
-            isFrontPage
-            isPostsPage
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
+            ...pageData
           }
         }
         enqueuedStylesheets {

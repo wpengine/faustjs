@@ -50,7 +50,7 @@ export async function getContentNode(
   | undefined
 > {
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
-    query: GET_CONTENT_NODE,
+    query: GET_CONTENT_NODE(),
     variables: {
       asPreview,
       id,

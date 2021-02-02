@@ -280,7 +280,7 @@ export function usePost(
     };
   }
 
-  const result = useQuery<WPGraphQL.GetContentNodeQuery>(GET_CONTENT_NODE, {
+  const result = useQuery<WPGraphQL.GetContentNodeQuery>(GET_CONTENT_NODE(), {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     variables,
