@@ -28,6 +28,7 @@ function Posts({
   // TODO: deprecate `count` and limit posts at the query level instead.
   const thePosts = count > 0 ? posts?.slice(0, count) : posts;
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <section className={styles['posts-block']} {...(id && { id })}>
       <div className="wrap">
         {heading && (

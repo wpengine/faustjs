@@ -24,8 +24,9 @@ function Hero({
 }: Props): JSX.Element {
   return (
     <section
-      style={{ backgroundImage: bgImage ? `url(${bgImage})` : 'none' }}
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...(id && { id })}
+      style={{ backgroundImage: bgImage ? `url(${bgImage})` : 'none' }}
       className={styles.hero}>
       <div className={styles.wrap}>
         <h1>{title}</h1>
