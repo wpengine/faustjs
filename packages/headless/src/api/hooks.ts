@@ -10,8 +10,8 @@ import {
 } from '../utils';
 import {
   GENERAL_SETTINGS,
-  GET_CONTENT_NODE,
-  GET_POSTS,
+  getContentNodeQuery,
+  getPostsQuery,
   GET_URI_INFO,
 } from './queries';
 import * as utils from '../utils';
@@ -46,7 +46,7 @@ import trimOriginFromUrl from '../utils/trimOriginFromUrl';
 export function usePosts():
   | WPGraphQL.GetPostsQuery['posts']['nodes']
   | undefined {
-  const result = useQuery<WPGraphQL.GetPostsQuery>(GET_POSTS);
+  const result = useQuery<WPGraphQL.GetPostsQuery>(getPostsQuery());
 
   return result.data?.posts.nodes;
 }
@@ -280,7 +280,7 @@ export function usePost(
     };
   }
 
-  const result = useQuery<WPGraphQL.GetContentNodeQuery>(GET_CONTENT_NODE(), {
+  const result = useQuery<WPGraphQL.GetContentNodeQuery>(getContentNodeQuery(), {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     variables,

@@ -4,8 +4,8 @@ import * as utils from '../utils';
 import { ensureAuthorization } from '../auth';
 import { isServerSide } from '../utils';
 import {
-  GET_POSTS,
-  GET_CONTENT_NODE,
+  getPostsQuery,
+  getContentNodeQuery,
   GENERAL_SETTINGS,
   GET_URI_INFO,
 } from './queries';
@@ -22,7 +22,7 @@ export async function getPosts(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<WPGraphQL.GetPostsQuery['posts']['nodes']> {
   const result = await client.query<WPGraphQL.GetPostsQuery>({
-    query: GET_POSTS,
+    query: getPostsQuery(),
   });
 
   return result.data.posts.nodes;
@@ -50,7 +50,7 @@ export async function getContentNode(
   | undefined
 > {
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
-    query: GET_CONTENT_NODE(),
+    query: getContentNodeQuery(),
     variables: {
       asPreview,
       id,
