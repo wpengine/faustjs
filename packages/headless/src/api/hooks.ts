@@ -9,6 +9,7 @@ import {
   isPreviewPath,
 } from '../utils';
 import {
+  ContentNodeOptions,
   GENERAL_SETTINGS,
   getContentNodeQuery,
   getPostsQuery,
@@ -220,76 +221,29 @@ export function useNextUriInfo(): UriInfo | undefined {
  * @export
  * @returns {(Post | Page | undefined)}
  */
-export function usePost():
-  | WPGraphQL.GetContentNodeQuery['contentNode']
-  | undefined;
-/**
- * React Hook for retrieving the post based on the passed-in id and idType.
- *
- * @see ContentNodeIdType For the different types of identifiers you can pass in
- *
- * @example
- * ```tsx
- * import { usePost, ContentNodeIdType } from '@wpengine/headless';
- *
- * export default function Post({ slug }: { slug: string; }) {
- *   const post = usePost(slug, ContentNodeIdType.SLUG);
- *
- *   return (
- *     <div>
- *       {post && (
- *         <div>
- *           <div>
- *             <h5>{post.title}</h5>
- *             <p dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
- *           </div>
- *         </div>
- *       )}
- *     </div>
- *   );
- * }
- * ```
- * @export
- * @param {string} id The identifier for the post based on ContentNodeIdType
- * @param {WPGraphQL.ContentNodeIdTypeEnum} idType The description of the type of id passed in
- * @returns {(Post | Page | undefined)}
- */
-export function usePost(
-  id: string,
-  idType: WPGraphQL.ContentNodeIdTypeEnum,
-): WPGraphQL.GetContentNodeQuery['contentNode'];
-
-export function usePost(
-  id?: string,
-  idType?: WPGraphQL.ContentNodeIdTypeEnum,
-):
-  | WPGraphQL.GetContentNodeQuery['contentNode']
-  | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
+export function usePost(options: ContentNodeOptions = {}):
+  | WPGraphQL.RootQuery['post']
+  | WPGraphQL.RootQuery['page']
   | undefined {
   const pageInfo = useNextUriInfo();
+  let opts: ContentNodeOptions = options;
 
-  let variables: Partial<WPGraphQL.GetContentNodeQueryVariables> = {};
-
-  if (id) {
-    variables = {
-      id,
-      idType,
-    };
-  } else if (pageInfo) {
-    variables = {
-      asPreview: pageInfo.isPreview,
-      id: pageInfo.uriPath,
-      idType: 'URI',
-    };
+  if (!opts) {
+    opts = {};
   }
 
-  const result = useQuery<WPGraphQL.GetContentNodeQuery>(getContentNodeQuery(), {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    variables,
+  opts.variables = Object.assign({
+    idType: 'URI',
+    asPreview: pageInfo?.isPreview,
+    id: pageInfo?.uriPath,
+  }, opts.variables);
+
+  const result = useQuery<WPGraphQL.RootQuery>(getContentNodeQuery(options), {
+    variables: opts.variables
   });
 
-  const node = result?.data?.contentNode;
+  const node = result?.data?.contentNode as WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'];
+  const { variables } = opts; 
 
   if (variables?.asPreview && !node?.isPreview) {
     if (!node?.preview?.node) {
@@ -299,5 +253,5 @@ export function usePost(
     return node.preview.node;
   }
 
-  return result?.data?.contentNode;
+  return node;
 }

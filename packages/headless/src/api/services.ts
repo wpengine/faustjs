@@ -9,6 +9,7 @@ import {
   ListPostOptions,
   GENERAL_SETTINGS,
   GET_URI_INFO,
+  ContentNodeOptions,
 } from './queries';
 
 /**
@@ -44,29 +45,36 @@ export async function getPosts(
  */
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
-  id: string,
-  idType: WPGraphQL.ContentNodeIdTypeEnum = 'URI',
-  asPreview = false,
+  options: ContentNodeOptions = {}
 ): Promise<
-  | WPGraphQL.GetContentNodeQuery['contentNode']
-  | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
+  | WPGraphQL.RootQuery['post']
+  | WPGraphQL.RootQuery['page']
   | undefined
 > {
+  let opts: ContentNodeOptions = options;
+
+  if (!opts) {
+    opts = {};
+  }
+
+  opts.variables = Object.assign({
+    idType: 'URI',
+    asPreview: false,
+  }, opts.variables);
+
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
     query: getContentNodeQuery(),
-    variables: {
-      asPreview,
-      id,
-      idType,
-    },
+    variables: opts.variables,
   });
 
-  const node = result?.data?.contentNode;
+  const node = result?.data?.contentNode as WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'];
 
   if (!node) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return undefined;
   }
+
+  const { asPreview } = opts.variables;
 
   if (asPreview && !node.isPreview) {
     if (!node.preview?.node) {

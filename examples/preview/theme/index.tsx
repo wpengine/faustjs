@@ -1,9 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
-import { usePosts, WPHead } from '@wpengine/headless';
+import { gql, usePosts, WPHead } from '@wpengine/headless';
 
 export default function Index() {
   const posts = usePosts({
+    fragments: {
+      listPostData: gql`
+      fragment listPostData on Post {
+        id
+        title
+        excerpt
+        uri
+      }
+      `
+    },
     variables: {
       first: 1,
     }

@@ -28,8 +28,12 @@ export default function WPHead(): JSX.Element {
 
   if (post?.enqueuedStylesheets?.nodes) {
     stylesheets = post.enqueuedStylesheets.nodes.filter((node) => {
-      return node.src?.indexOf('wp-content/themes') < 0;
-    });
+      if (!node || !node.src) {
+        return false;
+      }
+
+      return node.src.indexOf('wp-content/themes') < 0;
+    }) as Required<Pick<WPGraphQL.EnqueuedStylesheet, 'src' | 'handle'>>[];
   }
 
   const stylesheetUrl = (

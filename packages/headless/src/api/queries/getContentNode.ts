@@ -6,14 +6,15 @@ import {
   POST_DATA_FRAGMENT
 } from './POST_DATA_FRAGMENT';
 
-export interface ContentNodeFragments {
+export interface ContentNodeOptions<Args extends WPGraphQL.RootQueryContentNodeArgs = WPGraphQL.RootQueryContentNodeArgs> {
   fragments?: {
     postData?: DocumentNode;
     pageData?: DocumentNode;
   };
+  variables?: Args;
 }
 
-export function getContentNodeQuery({ fragments }: ContentNodeFragments = {}) {
+export function getContentNodeQuery({ fragments }: ContentNodeOptions = {}) {
   return gql`
     ${fragments?.postData ?? POST_DATA_FRAGMENT}
     ${fragments?.pageData ?? PAGE_DATA_FRAGMENT}

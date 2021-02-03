@@ -51,7 +51,13 @@ export default async function nextFetchFromWP({
       pageInfo?.isFrontPage &&
       pageInfo?.isPostsPage
     )
-      ? getContentNode(apolloClient, currentUrlPath, 'URI', isPreview(context))
+      ? getContentNode(apolloClient, {
+        variables: {
+          id: currentUrlPath, 
+          idType: 'URI', 
+          asPreview: isPreview(context)
+        }
+      })
       : undefined,
   ];
 
