@@ -213,12 +213,10 @@ jobs:
       image: ubuntu-2004:202010-01
     working_directory: ~/project
     steps:
-      - checkout:
-          path: ~/project
+      - attach_workspace:
+          at: ~/project
       - php/install-php:
           version: '7.4'
-      - node/install:
-          lts: true
       - node/install-packages
       - run:
           name: E2E tests
@@ -418,4 +416,10 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - package-e2e
+      - package-e2e:
+          requires:
+            - package-test
+          # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
