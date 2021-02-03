@@ -17,18 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool True if can proceed with replacement, false if else.
  */
 function wpe_headless_domain_replacement_enabled() {
-	$enabled = false;
-
-	if ( wpe_headless_is_rewrites_enabled() ) {
-		if ( isset( $_GET['replace-domain'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$enabled = true;
-		}
-
-		if ( isset( $_SERVER['HTTP_X_WP_HEADLESS'] ) ) {
-			$enabled = true;
-		}
-	}
-
 	/**
 	 * Filter 'wpe_headless_domain_replacement_enabled'.
 	 *
@@ -36,5 +24,5 @@ function wpe_headless_domain_replacement_enabled() {
 	 *
 	 * @param bool $enabled True if domain replacement is enabled, false if else.
 	 */
-	return apply_filters( 'wpe_headless_domain_replacement_enabled', $enabled );
+	return apply_filters( 'wpe_headless_domain_replacement_enabled', wpe_headless_is_rewrites_enabled() );
 }

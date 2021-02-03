@@ -1,25 +1,24 @@
 import React from 'react';
-import { useGeneralSettings, usePost } from '@wpengine/headless';
+import { useGeneralSettings } from '@wpengine/headless';
 import { Header, Hero, Footer } from '../components';
 
 export default function Page(): JSX.Element {
-  const post = usePost();
   const settings = useGeneralSettings();
 
   return (
     <>
       <Header title={settings?.title} description={settings?.description} />
       <main className="content content-page">
-        {post?.title && <Hero title={post?.title} />}
+        <Hero title={`Oops! That page can’t be found.`} />
         <div className="wrap">
-          {post && (
+          <div>
             <div>
-              <div>
-                {/* eslint-disable-next-line react/no-danger */}
-                <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
-              </div>
+              <p>
+                The page you were looking for does not exist or is no longer
+                available.
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </main>
       <Footer copyrightHolder={settings?.title} />

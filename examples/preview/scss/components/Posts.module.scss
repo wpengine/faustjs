@@ -1,0 +1,23 @@
+// CSS for the Posts component in components/Posts.tsx.
+
+@import "scss/variables";
+
+.title a {
+	color: $color-black;
+	text-decoration: none;
+}
+
+.title a:focus,
+.title a:hover {
+	color: $color-primary;
+}
+
+.single {
+	margin-bottom: 2.5em;
+}
+
+@media screen and (min-width: $content-width) {
+	.single {
+		margin-bottom: 1em;
+	}
+}
