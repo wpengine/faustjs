@@ -208,6 +208,25 @@ jobs:
           command: |
             npm run test
 
+  package-e2e:
+    machine:
+      image: ubuntu-2004:202010-01
+    working_directory: ~/project
+    steps:
+      - checkout:
+          path: ~/project
+      - php/install-php:
+          version: '7.4'
+      - node/install:
+          lts: true
+      - node/install-packages
+      - run:
+          name: E2E tests
+          command: |
+            pwd 
+            ls -la
+            npm run wp:start
+
 
 workflows:
   # Workflows defined for each package and plugin.
@@ -399,3 +418,4 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - package-e2e
