@@ -1,43 +1,18 @@
 import React from 'react';
-import Link from 'next/link';
-import { gql, usePosts, WPHead } from '@wpengine/headless';
+import { useGeneralSettings, usePosts } from '@wpengine/headless';
+import { Footer, Header, Posts } from '../components';
 
-export default function Index() {
-  const posts = usePosts({
-    fragments: {
-      listPostData: gql`
-      fragment listPostData on Post {
-        id
-        title
-        excerpt
-        uri
-      }
-      `
-    },
-    variables: {
-      first: 1,
-    }
-  });
+export default function Index(): JSX.Element {
+  const posts = usePosts();
+  const settings = useGeneralSettings();
 
   return (
     <>
-      <WPHead />
-
-      <div>
-        {posts && posts.nodes &&
-          posts.nodes.map((post) => (
-            <div key={post.id} id={`post-${post.id}`}>
-              <div>
-                <Link href={post.uri}>
-                  <h2>
-                    <a href={post.uri}>{post.title}</a>
-                  </h2>
-                </Link>
-                <div dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }} />
-              </div>
-            </div>
-          ))}
-      </div>
+      <Header title={settings?.title} description={settings?.description} />
+      <main className="content content-index">
+        <Posts posts={posts} />
+      </main>
+      <Footer copyrightHolder={settings?.title} />
     </>
   );
 }

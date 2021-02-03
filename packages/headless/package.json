@@ -13,7 +13,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prepublish": "run-s build",
     "generate-graphql": "graphql-codegen",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
     "ts:watch": "tsc -p . --watch"

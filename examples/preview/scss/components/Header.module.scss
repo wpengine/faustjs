@@ -1,0 +1,104 @@
+// CSS for the Header component in components/Header.tsx.
+
+@import "scss/variables";
+
+.site-title {
+	margin-bottom: 0;
+}
+
+.site-title a {
+	color: $color-black;
+	font-family: $font-family;
+	font-weight: $font-weight-bold;
+	font-size: 1.2em;
+	text-decoration: none;
+}
+
+.title-wrap {
+	padding: 20px 0 0;
+}
+
+@media screen and (min-width: $breakpoint-small) {
+	.title-wrap {
+		padding: 20px 0;
+	}
+}
+
+.title-wrap .description {
+	color: $color-mid-gray;
+	font-family: $font-family;
+	font-size: 0.8em;
+	margin-top: 0.1em;
+}
+
+.wrap {
+	padding: 0 10px;
+}
+
+@media screen and (min-width: $breakpoint-small) {
+	.wrap {
+		align-items: center;
+		display: flex;
+		flex-wrap: inherit;
+		justify-content: space-between;
+		margin: 0 auto;
+		max-width: $content-width-extended;
+	}
+
+	.menu {
+		max-width: 70%;
+	}
+}
+
+@media screen and (min-width: $content-width-extended) {
+	.wrap {
+		padding: 0;
+	}
+}
+
+.menu ul {
+	padding-left: 0
+}
+
+.menu li {
+	display: inline-block;
+	list-style-type: none;
+	padding: 0 1em;
+}
+
+
+.menu li:first-of-type {
+	padding-left: 0;
+}
+
+@media screen and (min-width: $breakpoint-small) {
+	.menu li:first-of-type {
+		padding-left: 1em;
+	}
+}
+
+.menu a {
+	color: $color-black;
+	font-family: $font-family;
+	font-weight: $font-weight-bold;
+	text-decoration: none;
+}
+
+.menu a:focus,
+.menu a:hover {
+	color: $color-primary;
+}
+
+.menu a:global(.button) {
+	background-color: $color-primary;
+	display: inline-block;
+	color: $color-white;
+	padding: 6px 16px;
+	border-radius: 4px;
+}
+
+.menu a:global(.button):focus,
+.menu a:global(.button):hover {
+	background-color: lighten($color-primary, 10);
+	color: $color-white;
+}

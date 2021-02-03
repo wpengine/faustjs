@@ -154,6 +154,7 @@ export async function getUriInfo(
 
     return {
       is404: true,
+      templates: ['404'],
       uriPath,
     };
   }
