@@ -223,7 +223,7 @@ jobs:
           command: |
             pwd 
             ls -la
-            npm run wp:start
+            npm run wp:start && npm run cypress:run && npm run wp:stop
 
 
 workflows:
