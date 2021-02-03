@@ -1,12 +1,13 @@
 {
-  "name": "preview",
+  "name": "getting-started",
   "version": "1.0.0",
   "private": true,
-  "description": "WP Headless Previews",
+  "description": "WordPress Headless Getting Started Template",
   "main": "index.js",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "dev-lerna": "wait-on ./node_modules/@wpengine/headless/dist/index.js && npm run dev",
     "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
     "lint": "tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
@@ -24,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/wpengine/headless-framework/tree/main/issues"
   },
-  "homepage": "https://github.com/wpengine/headless-framework/tree/main/examples/preview#readme",
+  "homepage": "https://github.com/wpengine/headless-framework/tree/main/examples/getting-started#readme",
   "dependencies": {
     "@apollo/client": "^3.3.4",
     "@wpengine/headless": "^0.4.1",
