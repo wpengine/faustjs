@@ -6,7 +6,7 @@ import {
   PAGE_INFO_DATA_FRAGMENT
 } from './PAGE_INFO_DATA_FRAGMENT';
 
-export interface ListPostOptions<Args extends WPGraphQL.RootQueryPostArgs = WPGraphQL.RootQueryPostArgs> {
+export interface ListPostOptions<Args extends WPGraphQL.RootQueryPostsArgs = WPGraphQL.RootQueryPostsArgs> {
   fragments?: {
     listPostData?: DocumentNode;
   };

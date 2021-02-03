@@ -106,7 +106,7 @@ export default function FrontPage(): JSX.Element {
           </div>
         </section>
         <Posts
-          posts={posts}
+          posts={posts?.nodes}
           heading="Latest Posts"
           intro="The Posts component in theme/front-page.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"
