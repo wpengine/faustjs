@@ -7,7 +7,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "dev-lerna": "wait-on ./node_modules/@wpengine/headless/dist/index.js && npm run dev",
     "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
     "lint": "tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
