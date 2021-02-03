@@ -61,6 +61,7 @@ function wpe_headless_register_templates_field() {
  * @return array|string[]
  */
 function wpe_headless_templates_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
+	global $wp_query;
 	global $wpe_headless_checked_templates;
 	$wpe_headless_checked_templates = array();
 
@@ -70,6 +71,12 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
 	}
 
 	$template = false;
+
+	/**
+	 * Force $wp_query to initialize as WP GraphQL does not always parse the query. This is important for getting
+	 * all of the templates for the site root.
+	 */
+	$wp_query->parse_query();
 
 	foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
 		if ( empty( $tag_info['template_getter'] ) ) {
@@ -106,7 +113,7 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
 	/**
 	 * Add index as the default template.
 	 */
-	return array_merge( $wpe_headless_checked_templates, array( 'index' ) );
+	return array_unique( array_merge( $wpe_headless_checked_templates, array( 'index' ) ) );
 }
 
 /**

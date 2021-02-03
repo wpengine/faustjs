@@ -1,26 +1,44 @@
 import React from 'react';
-import { usePost, WPHead } from '@wpengine/headless';
+import { useGeneralSettings, usePost } from '@wpengine/headless';
 import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { gql } from '@apollo/client';
+import { CTA, Footer, Header, Hero } from '../components';
 
-export default function Single() {
+export default function Single(): JSX.Element {
   const post = usePost();
+  const settings = useGeneralSettings();
 
   return (
     <>
-      <WPHead />
-
-      <div>
-        {post && (
-          <div>
+      <Header title={settings?.title} description={settings?.description} />
+      <main className="content content-single">
+        {post?.title && <Hero title={post?.title} />}
+        <div className="wrap">
+          {post && (
             <div>
-              <h1>{post.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
+              <div>
+                {/* eslint-disable-next-line react/no-danger */}
+                <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+        <CTA
+          title="Start your headless journey today"
+          buttonText="Get Started"
+          buttonURL="https://github.com/wpengine/headless-framework/"
+          headingLevel="h2">
+          <p>
+            Learn more in the{' '}
+            <a href="https://github.com/wpengine/headless-framework">
+              Headless Framework GitHub repository
+            </a>
+            .
+          </p>
+        </CTA>
+      </main>
+      <Footer copyrightHolder={settings?.title} />
     </>
   );
 }
@@ -37,6 +55,7 @@ export default function Single() {
 export function getPropsMiddleware(
   promises: Array<Promise<unknown> | undefined>,
   apolloClient: ApolloClient<NormalizedCacheObject>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   currentUrlPath: string,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   context: GetStaticPropsContext | GetServerSidePropsContext,
