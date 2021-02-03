@@ -20,8 +20,8 @@ export default function FrontPage(): JSX.Element {
           bgImage="/images/headless_hero_background.jpg"
           id={styles.home_hero}>
           <p>
-            WP&nbsp;Engine’s Headless WordPress Framework includes this starter
-            theme, the{' '}
+            WP&nbsp;Engine’s Headless WordPress Framework includes this example
+            project, the{' '}
             <a href="https://github.com/wpengine/headless-framework#plugin-features">
               headless WordPress plugin
             </a>
@@ -35,9 +35,9 @@ export default function FrontPage(): JSX.Element {
         </Hero>
         <section className={styles.explore}>
           <div className="wrap">
-            <h2>Explore the Starter Theme</h2>
+            <h2>Explore this Example Project</h2>
             <p>
-              This headless starter theme uses{' '}
+              This headless example project uses{' '}
               <a href="https://nextjs.org/">Next.js</a>,{' '}
               <a href="https://graphql.org/">GraphQL</a>,{' '}
               <a href="https://www.apollographql.com/">Apollo</a> and the{' '}
@@ -70,7 +70,7 @@ export default function FrontPage(): JSX.Element {
                 <h3>Global Styles and Fonts</h3>
                 <p>
                   Add styles to load on every page, such as typography and
-                  layout rules, in <code>scss/main.scss</code>. The theme adds{' '}
+                  layout rules, in <code>scss/main.scss</code>. The project adds{' '}
                   <a href="https://necolas.github.io/normalize.css/">
                     normalize.css
                   </a>{' '}
