@@ -68,7 +68,7 @@ The [@wpengine/headless](https://npmjs.org/package/@wpengine/headless) npm packa
 
 ## Learn more
 
-- [Enabling WordPress post previews](/docs/preview/)
+- [Enabling WordPress post previews](/docs/previews/)
 - [Using the WordPress template hierarchy in Next.js](/docs/templating/)
 
 
