@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { initializeApollo, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
-import { resolvePrefixedUrlPath, isPreview, isPreviewPath } from '../utils';
+import { resolvePrefixedUrlPath, isPreview } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
 import isHTTPS from '../utils/isHTTPS';
@@ -43,11 +43,6 @@ export async function initializeNextServerSideProps(
         },
       };
     }
-  } else if (isPreviewPath(context)) {
-    return {
-      notFound: true,
-      props: {},
-    };
   }
 
   await nextFetchFromWP({ apolloClient, currentUrlPath, context });

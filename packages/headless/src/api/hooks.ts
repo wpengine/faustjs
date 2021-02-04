@@ -1,4 +1,5 @@
-import { useQuery } from '@apollo/client';
+import { useEffect } from 'react';
+import { QueryResult, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { UriInfo } from '../types';
 import { headlessConfig } from '../config';
@@ -7,6 +8,7 @@ import {
   isServerSide,
   resolvePrefixedUrlPath,
   isPreviewPath,
+  getPreviewID,
 } from '../utils';
 import {
   GENERAL_SETTINGS,
@@ -126,6 +128,41 @@ export function useUriInfo(
   });
 
   const nodeByUri = result?.data?.nodeByUri;
+
+  const preview: QueryResult<WPGraphQL.GetContentNodeQuery> | void = isPreviewPath(
+    resolvedUri ?? localUri,
+    true,
+  )
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useQuery<
+        WPGraphQL.GetContentNodeQuery,
+        WPGraphQL.GetContentNodeQueryVariables
+      >(GET_CONTENT_NODE, {
+        variables: {
+          asPreview: true,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          id: getPreviewID(resolvedUri ?? localUri)!,
+          idType: 'DATABASE_ID',
+        },
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+      })
+    : // eslint-disable-next-line react-hooks/rules-of-hooks
+      useEffect(() => {});
+
+  if (preview && preview?.data?.contentNode) {
+    const previewNode = preview?.data?.contentNode;
+
+    return {
+      isPostsPage: false,
+      isFrontPage: false,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: getPreviewID(resolvedUri ?? localUri)!,
+      idType: 'DATABASE_ID',
+      uriPath: previewNode.uri,
+      isPreview: true,
+      templates: previewNode.templates,
+    };
+  }
 
   if (!nodeByUri) {
     return {
@@ -282,6 +319,14 @@ export function usePost(
       id: pageInfo.uriPath,
       idType: 'URI',
     };
+
+    if (pageInfo.id && pageInfo.idType) {
+      variables = {
+        ...variables,
+        id: pageInfo.id,
+        idType: pageInfo.idType,
+      };
+    }
   }
 
   const result = useQuery<WPGraphQL.GetContentNodeQuery>(GET_CONTENT_NODE, {

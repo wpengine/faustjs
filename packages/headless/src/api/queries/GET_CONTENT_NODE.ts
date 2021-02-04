@@ -16,6 +16,7 @@ const GET_CONTENT_NODE = gql`
         isPreview
         isSticky
         excerpt
+        templates
         uri
         status
         featuredImage {
@@ -36,6 +37,7 @@ const GET_CONTENT_NODE = gql`
             isSticky
             excerpt
             uri
+            templates
             status
             featuredImage {
               node {
@@ -64,6 +66,7 @@ const GET_CONTENT_NODE = gql`
         isPostsPage
         uri
         status
+        templates
         featuredImage {
           node {
             id
@@ -83,6 +86,7 @@ const GET_CONTENT_NODE = gql`
             isPostsPage
             uri
             status
+            templates
             featuredImage {
               node {
                 id

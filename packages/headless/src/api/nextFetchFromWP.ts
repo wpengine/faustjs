@@ -6,7 +6,7 @@ import {
   getPosts,
   getUriInfo,
 } from './services';
-import { isPreview } from '../utils';
+import { getPreviewID, isDraftPreview, isPreview } from '../utils';
 // eslint-disable-next-line import/no-cycle
 import { Template } from '../components/TemplateLoader';
 import { resolveTemplate } from '../utils/resolveTemplate';
@@ -52,6 +52,15 @@ export default async function nextFetchFromWP({
       pageInfo?.isPostsPage
     )
       ? getContentNode(apolloClient, currentUrlPath, 'URI', isPreview(context))
+      : undefined,
+    isDraftPreview(context)
+      ? getContentNode(
+          apolloClient,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          getPreviewID(context)!,
+          'DATABASE_ID',
+          true,
+        )
       : undefined,
   ];
 
