@@ -208,7 +208,7 @@ jobs:
           command: |
             npm run test
 
-  package-e2e:
+  test-e2e:
     machine:
       image: ubuntu-2004:202010-01
     working_directory: ~/project
@@ -221,8 +221,6 @@ jobs:
       - run:
           name: E2E tests
           command: |
-            pwd 
-            ls -la
             npm run wp:start && npm run cypress:run && npm run wp:stop
 
 
@@ -416,10 +414,17 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - package-e2e:
-          requires:
-            - package-test
+
+  test-end-2-end:
+    jobs:
+      - checkout:
+          filters:
+            tags:
+              only: /.*/
+      - test-e2e:
           # Enable running this job when a tag is published
+          requires:
+            - checkout
           filters:
             tags:
               only: /.*/
