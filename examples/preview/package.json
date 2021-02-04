@@ -27,7 +27,7 @@
   "homepage": "https://github.com/wpengine/headless-framework/tree/main/examples/preview#readme",
   "dependencies": {
     "@apollo/client": "^3.3.4",
-    "@wpengine/headless": "^0.4.1",
+    "@wpengine/headless": "^0.4.3",
     "graphql": "^15.4.0",
     "next": "^10.0.5",
     "normalize.css": "^8.0.1",
