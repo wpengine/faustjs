@@ -1,22 +1,13 @@
-# Headless WordPress Previews Example
+# Headless WordPress Getting Started Example
 
-[Preview Documentation](../../docs/previews/README.md)
+## Setup
 
-# Configuration
-
-## WordPress
-
-Install the latest plugin for this project and [WPGraphQL](https://wordpress.org/plugins/wp-graphql/)
-
-## Example Project
-
-The framework expects a few environment variables. Copy `.env.local.sample` to `.env.local` and fill out the variables
-accordingly.
+See the [setup steps](https://github.com/wpengine/headless-framework#quick-start).
 
 ## Run it
 
 ```bash
-npm i
+npm install
 npm run dev
 ```
 
