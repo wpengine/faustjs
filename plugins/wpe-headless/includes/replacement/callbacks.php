@@ -130,7 +130,13 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		/**
 		 * Add preview and preview ID back to path to support Next.js preview mode
 		 */
-		$path = trailingslashit( $path ) . 'preview/' . $preview_id;
+		if ( 'publish' !== $post->post_status ) {
+			$path = 'draft/';
+		} else {
+			$path = $path ? trailingslashit( $path ) : '';
+		}
+
+		$path .= 'preview/' . $preview_id;
 
 		$link = add_query_arg(
 			array(
