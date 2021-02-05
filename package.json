@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "bootstrap": "npm install && lerna bootstrap",
+    "clean": "lerna run --parallel --stream clean",
     "dev": "lerna run --parallel --stream --no-bail dev-lerna",
     "wp-env": "wp-env",
     "wp:start": "wp-env start",
