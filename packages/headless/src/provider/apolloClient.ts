@@ -106,9 +106,13 @@ export function initializeApollo(
   context?: NextPageContext | GetStaticPropsContext | GetServerSidePropsContext,
   initialState = null,
 ): ApolloClient<NormalizedCacheObject> {
-  const localApolloClient = createApolloClient({
-    cookies: getCookiesFromContext(context),
-  });
+  let localApolloClient: ApolloClient<NormalizedCacheObject> | undefined = (context as WithApolloClient)?.__apollo_client;
+
+  if (!localApolloClient) {
+    localApolloClient = createApolloClient({
+      cookies: getCookiesFromContext(context),
+    });
+  }
 
   if (context) {
     // eslint-disable-next-line no-underscore-dangle
@@ -183,8 +187,8 @@ export function addApolloState(
  * @see WPGraphQLProvider
  */
 export function useApollo(
-  ctx: NextPageContext,
   pageProps: Record<string, any>,
+  ctx?: NextPageContext,
 ): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 

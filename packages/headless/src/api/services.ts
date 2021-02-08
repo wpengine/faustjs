@@ -120,7 +120,7 @@ export async function getUriInfo(
   client: ApolloClient<NormalizedCacheObject>,
   uriPath: string,
   isPreview?: boolean,
-): Promise<UriInfo | void> {
+): Promise<UriInfo | undefined> {
   const urlPath = utils.getUrlPath(uriPath);
 
   if (isPreview && !isServerSide()) {
@@ -162,12 +162,8 @@ export async function getUriInfo(
   const { id, templates } = result;
 
   return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isPostsPage: result?.isPostsPage,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isFrontPage: result?.isFrontPage,
+    isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
+    isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
     id,
     isPreview,
     uriPath,

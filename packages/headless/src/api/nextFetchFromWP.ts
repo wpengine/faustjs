@@ -35,40 +35,43 @@ export default async function nextFetchFromWP({
   );
 
   const template: Template | null = resolveTemplate(pageInfo as UriInfo);
-
-  const promises = [
-    getGeneralSettings(apolloClient),
-    getPosts(apolloClient),
-    /**
-     * Running getContentNode blindly on the site root will result in a 500 error from WP GraphQL if the frontpage
-     * is not set.
-     *
-     * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and isPostsPage will be true.
-     */
-    !(
-      currentUrlPath === '/' &&
-      pageInfo &&
-      pageInfo?.isFrontPage &&
-      pageInfo?.isPostsPage
-    )
-      ? getContentNode(apolloClient, {
-        variables: {
-          id: currentUrlPath, 
-          idType: 'URI', 
-          asPreview: isPreview(context)
-        }
-      })
-      : undefined,
+  let promises: Promise<unknown>[] = [
+    getGeneralSettings(apolloClient)
   ];
+
+  if (pageInfo?.isPostsPage) {
+    promises.push(getPosts(apolloClient));
+  }
+
+  /**
+   * Running getContentNode blindly on the site root will result in a 500 error from WP GraphQL if the frontpage
+   * is not set.
+   *
+   * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and isPostsPage will be true.
+   */
+  if (!(
+    currentUrlPath === '/' &&
+    !!pageInfo &&
+    pageInfo.isFrontPage &&
+    pageInfo.isPostsPage
+  )) {
+    promises.push(getContentNode(apolloClient, {
+      variables: {
+        id: currentUrlPath,
+        idType: 'URI',
+        asPreview: isPreview(context)
+      }
+    }));
+  }
 
   await Promise.all(
     template?.getPropsMiddleware
       ? template?.getPropsMiddleware(
-          promises,
-          apolloClient,
-          currentUrlPath,
-          context,
-        )
+        promises,
+        apolloClient,
+        currentUrlPath,
+        context,
+      )
       : promises,
   );
 }

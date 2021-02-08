@@ -18,6 +18,7 @@ import {
 } from './queries';
 import * as utils from '../utils';
 import trimOriginFromUrl from '../utils/trimOriginFromUrl';
+import { useEffect } from 'react';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -119,8 +120,7 @@ export function useUriInfo(
   }
 
   localUri = trimOriginFromUrl(localUri);
-
-  const result = useQuery<
+  const response = useQuery<
     WPGraphQL.GetUriInfoQuery,
     WPGraphQL.GetUriInfoQueryVariables
   >(GET_URI_INFO, {
@@ -129,9 +129,9 @@ export function useUriInfo(
     },
   });
 
-  const nodeByUri = result?.data?.nodeByUri;
+  const result = response?.data?.nodeByUri;
 
-  if (!nodeByUri) {
+  if (!result) {
     return {
       is404: true,
       templates: ['404'],
@@ -139,16 +139,11 @@ export function useUriInfo(
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { id, templates } = nodeByUri;
+  const { id, templates } = result;
 
   const pageInfo = {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isPostsPage: result?.isPostsPage,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isFrontPage: result?.isFrontPage,
+    isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
+    isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
     id,
     uriPath: utils.getUrlPath(localUri),
     isPreview: isPreviewPath(resolvedUri ?? localUri),
@@ -236,6 +231,11 @@ export function usePost(options: ContentNodeOptions = {}):
     opts = {};
   }
 
+  if (pageInfo && pageInfo?.isPostsPage) {
+    useEffect(() => {});
+    return;
+  }
+
   opts.variables = Object.assign({
     idType: 'URI',
     asPreview: pageInfo?.isPreview,
@@ -247,7 +247,7 @@ export function usePost(options: ContentNodeOptions = {}):
   });
 
   const node = result?.data?.contentNode as WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'];
-  const { variables } = opts; 
+  const { variables } = opts;
 
   if (variables?.asPreview && !node?.isPreview) {
     if (!node?.preview?.node) {

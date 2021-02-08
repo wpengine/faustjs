@@ -4,7 +4,7 @@ import styles from 'scss/components/Posts.module.scss';
 import Heading, { HeadingProps } from './Heading';
 
 interface Props {
-  posts: WPGraphQL.GetPostsQuery['posts']['nodes'] | undefined;
+  posts: WPGraphQL.Post[] | undefined;
   intro?: string;
   id?: string;
   count?: number;

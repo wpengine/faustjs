@@ -3,7 +3,8 @@ import { usePosts, useGeneralSettings } from '@wpengine/headless';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
 import styles from '../scss/theme/front-page.module.scss';
 
-export default function FrontPage(): JSX.Element {
+export default function FrontPage(props: any): JSX.Element {
+  console.log(props);
   const posts = usePosts();
   const settings = useGeneralSettings();
 
@@ -106,7 +107,7 @@ export default function FrontPage(): JSX.Element {
           </div>
         </section>
         <Posts
-          posts={posts}
+          posts={posts?.nodes}
           heading="Latest Posts"
           intro="The Posts component in theme/front-page.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"

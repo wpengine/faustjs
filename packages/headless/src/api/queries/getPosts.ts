@@ -1,8 +1,8 @@
 import { DocumentNode, gql } from '@apollo/client';
-import { 
+import {
   LIST_POST_DATA_FRAGMENT
 } from './LIST_POST_DATA_FRAGMENT';
-import { 
+import {
   PAGE_INFO_DATA_FRAGMENT
 } from './PAGE_INFO_DATA_FRAGMENT';
 

@@ -1,11 +1,9 @@
 import React from 'react';
-import { NextPageContext } from 'next';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from './apolloClient';
 
 interface PageProps {
   pageProps: Record<string, any>;
-  ctx: NextPageContext;
 }
 
 /**
@@ -30,10 +28,9 @@ interface PageProps {
  */
 export function HeadlessProvider({
   children,
-  ctx,
   pageProps,
 }: React.PropsWithChildren<PageProps>): JSX.Element {
-  const apolloClient = useApollo(ctx, pageProps);
+  const apolloClient = useApollo(pageProps);
 
   return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
 }
