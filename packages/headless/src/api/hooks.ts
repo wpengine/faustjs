@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { QueryResult, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { UriInfo } from '../types';
@@ -18,6 +18,7 @@ import {
 } from './queries';
 import * as utils from '../utils';
 import trimOriginFromUrl from '../utils/trimOriginFromUrl';
+import NextPreviewContext from '../provider/NextPreviewContext';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -116,6 +117,8 @@ export function useUriInfo(
     );
   }
 
+  const { isPreview } = useContext(NextPreviewContext);
+
   localUri = trimOriginFromUrl(localUri);
 
   const result = useQuery<
@@ -129,25 +132,26 @@ export function useUriInfo(
 
   const nodeByUri = result?.data?.nodeByUri;
 
-  const preview: QueryResult<WPGraphQL.GetContentNodeQuery> | void = isPreviewPath(
-    resolvedUri ?? localUri,
-    true,
-  )
-    ? // eslint-disable-next-line react-hooks/rules-of-hooks
-      useQuery<
-        WPGraphQL.GetContentNodeQuery,
-        WPGraphQL.GetContentNodeQueryVariables
-      >(GET_CONTENT_NODE, {
-        variables: {
-          asPreview: true,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          id: getPreviewID(resolvedUri ?? localUri)!,
-          idType: 'DATABASE_ID',
-        },
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-      })
-    : // eslint-disable-next-line react-hooks/rules-of-hooks
-      useEffect(() => {});
+  /**
+   * Unpublished content need to be queried differently than published content.
+   */
+  const preview: QueryResult<WPGraphQL.GetContentNodeQuery> | void =
+    isPreviewPath(resolvedUri ?? localUri, true) && isPreview
+      ? // eslint-disable-next-line react-hooks/rules-of-hooks
+        useQuery<
+          WPGraphQL.GetContentNodeQuery,
+          WPGraphQL.GetContentNodeQueryVariables
+        >(GET_CONTENT_NODE, {
+          variables: {
+            asPreview: true,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            id: getPreviewID(resolvedUri ?? localUri)!,
+            idType: 'DATABASE_ID',
+          },
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+        })
+      : // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {});
 
   if (preview && preview?.data?.contentNode) {
     const previewNode = preview?.data?.contentNode;
@@ -184,7 +188,7 @@ export function useUriInfo(
     isFrontPage: result?.isFrontPage,
     id,
     uriPath: utils.getUrlPath(localUri),
-    isPreview: isPreviewPath(resolvedUri ?? localUri),
+    isPreview: isPreviewPath(resolvedUri ?? localUri) && isPreview,
     templates,
   };
 
