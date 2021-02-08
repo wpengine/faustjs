@@ -12,13 +12,13 @@ Create an issue in this repository to report bugs or feature requests.
 
 ### NPM Packages
 
-When working on the NPM packages in this repository, we recommend utilizing our Lerna setup in the root of the repository.
+When working on the npm packages in this repository, use our Lerna setup from the project root:
 
-To get going, you can run the following:
-
-1. Ensure that `.env.local` is properly configured in `examples/preview`
+1. Ensure that `.env.local` exists and is properly configured in `examples/getting-started` and `examples/preview`.
 2. `npm run bootstrap`
 3. `npm run dev`
+
+When switching git branch, run `npm run clean` from the root and then re-run `npm run bootstrap`.
 
 ### Plugins
 

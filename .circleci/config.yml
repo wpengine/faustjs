@@ -208,6 +208,21 @@ jobs:
           command: |
             npm run test
 
+  test-e2e:
+    machine:
+      image: ubuntu-2004:202010-01
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - php/install-php:
+          version: '7.4'
+      - node/install-packages
+      - run:
+          name: E2E tests
+          command: |
+            npm run wp:start && npm run cypress:run && npm run wp:stop
+
 
 workflows:
   # Workflows defined for each package and plugin.
@@ -396,6 +411,20 @@ workflows:
           requires:
             - package-build
           # Enable running this job when a tag is published
+          filters:
+            tags:
+              only: /.*/
+
+  test-end-2-end:
+    jobs:
+      - checkout:
+          filters:
+            tags:
+              only: /.*/
+      - test-e2e:
+          # Enable running this job when a tag is published
+          requires:
+            - checkout
           filters:
             tags:
               only: /.*/
