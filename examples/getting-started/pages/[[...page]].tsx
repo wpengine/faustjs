@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TemplateLoader,
+  NextTemplateLoader,
   initializeNextStaticProps,
   initializeNextStaticPaths,
 } from '@wpengine/headless';
@@ -12,7 +12,7 @@ import WPTemplates from '../wp-templates/_loader';
  */
 export default function Page() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  return <TemplateLoader templates={WPTemplates} />;
+  return <NextTemplateLoader templates={WPTemplates} />;
 }
 
 /**
