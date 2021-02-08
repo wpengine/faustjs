@@ -4,7 +4,6 @@ import { CTA, Header, Footer, Hero, Posts } from '../components';
 import styles from '../scss/theme/front-page.module.scss';
 
 export default function FrontPage(props: any): JSX.Element {
-  console.log(props);
   const posts = usePosts();
   const settings = useGeneralSettings();
 
