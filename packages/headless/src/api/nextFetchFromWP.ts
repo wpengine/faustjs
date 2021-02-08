@@ -8,7 +8,7 @@ import {
 } from './services';
 import { isPreview } from '../utils';
 // eslint-disable-next-line import/no-cycle
-import { Template } from '../components/TemplateLoader';
+import { WPTemplates } from '../components/TemplateLoader';
 import { resolveTemplate } from '../utils/resolveTemplate';
 import { UriInfo } from '../types';
 
@@ -19,10 +19,12 @@ export default async function nextFetchFromWP({
   apolloClient,
   currentUrlPath,
   context,
+  templates,
 }: {
   apolloClient: ApolloClient<NormalizedCacheObject>;
   currentUrlPath: string;
   context: GetStaticPropsContext | GetServerSidePropsContext;
+  templates: WPTemplates;
 }): Promise<void> {
   /**
    * Cannot happen at the same time as the rest of the requests because we need to know which templates to load for
@@ -34,7 +36,7 @@ export default async function nextFetchFromWP({
     isPreview(context),
   );
 
-  const template: Template | null = resolveTemplate(pageInfo as UriInfo);
+  const template = await resolveTemplate(pageInfo as UriInfo, templates);
 
   const promises = [
     getGeneralSettings(apolloClient),

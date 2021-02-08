@@ -1,13 +1,13 @@
 import React from 'react';
 import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import dynamic from 'next/dynamic';
 import { useNextUriInfo } from '../api/hooks';
 import { resolveTemplate } from '../utils/resolveTemplate';
 
 export interface Template {
-  default: React.FunctionComponent | null;
+  default: React.ComponentType;
   getPropsMiddleware?: (
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     promises: Array<Promise<unknown> | undefined>,
     apolloClient: ApolloClient<NormalizedCacheObject>,
     currentUrlPath: string,
@@ -15,10 +15,18 @@ export interface Template {
   ) => Array<Promise<unknown> | undefined>;
 }
 
-export default function TemplateLoader(): JSX.Element | null {
-  const pageInfo = useNextUriInfo();
+export interface WPTemplates {
+  index: Promise<Template>;
+  [template: string]: Promise<Template>;
+}
 
-  const Component = resolveTemplate(pageInfo)?.default;
+export default function TemplateLoader({
+  templates,
+}: {
+  templates: WPTemplates;
+}): JSX.Element | null {
+  const pageInfo = useNextUriInfo();
+  const Component = dynamic(() => resolveTemplate(pageInfo, templates));
 
   if (!Component) {
     return null;
