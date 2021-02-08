@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { initializeApollo, addApolloState } from '../provider';
+import { getApolloClient, addApolloState } from '../provider';
 import { headlessConfig } from '../config';
 import { resolvePrefixedUrlPath, isPreview, isPreviewPath } from '../utils';
 import getCurrentPath from '../utils/getCurrentPath';
@@ -17,7 +17,7 @@ import nextFetchFromWP from './nextFetchFromWP';
 export async function initializeNextServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<unknown>> {
-  const apolloClient = initializeApollo(context);
+  const apolloClient = getApolloClient(context);
 
   const wpeConfig = headlessConfig();
 

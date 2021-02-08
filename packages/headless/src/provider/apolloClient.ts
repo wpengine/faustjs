@@ -81,14 +81,14 @@ function createApolloClient(
  * @example
  * ```ts
  * // Client-side
- * // For client-side, it's recommended that you use useApollo() instead initializeApollo() directly.
+ * // For client-side, it's recommended that you use useApollo() instead getApolloClient() directly.
  * ```
  *
  * @example
  * ```ts
  * // Server-side
  * export async function getStaticProps() {
- *     const apolloClient = initializeApollo()
+ *     const apolloClient = getApolloClient()
  *
  *     await apolloClient.query({
  *         query: ALL_POSTS_QUERY,
@@ -102,7 +102,7 @@ function createApolloClient(
  * }
  * ```
  */
-export function initializeApollo(
+export function getApolloClient(
   context?: NextPageContext | GetStaticPropsContext | GetServerSidePropsContext,
   initialState = null,
 ): ApolloClient<NormalizedCacheObject> {
@@ -159,7 +159,7 @@ export function initializeApollo(
  * @example
  * ```ts
  * export async function getStaticProps({preview = false}) {
- *     const apolloClient = initializeApollo()
+ *     const apolloClient = getApolloClient()
  *
  *     await apolloClient.query({query: YOUR_QUERY})
  *
@@ -195,5 +195,5 @@ export function useApollo(
 ): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
-  return useMemo(() => initializeApollo(ctx, state), [ctx, state]);
+  return useMemo(() => getApolloClient(ctx, state), [ctx, state]);
 }
