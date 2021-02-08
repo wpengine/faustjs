@@ -24,7 +24,7 @@ export default async function nextFetchFromWP({
   apolloClient: ApolloClient<NormalizedCacheObject>;
   currentUrlPath: string;
   context: GetStaticPropsContext | GetServerSidePropsContext;
-  templates: WPTemplates;
+  templates: WPTemplates | undefined;
 }): Promise<void> {
   /**
    * Cannot happen at the same time as the rest of the requests because we need to know which templates to load for
@@ -36,7 +36,9 @@ export default async function nextFetchFromWP({
     isPreview(context),
   );
 
-  const template = await resolveTemplate(pageInfo as UriInfo, templates);
+  const template = templates
+    ? await resolveTemplate(pageInfo as UriInfo, templates)
+    : undefined;
 
   const promises = [
     getGeneralSettings(apolloClient),
