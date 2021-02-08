@@ -106,7 +106,10 @@ export function initializeApollo(
   context?: NextPageContext | GetStaticPropsContext | GetServerSidePropsContext,
   initialState = null,
 ): ApolloClient<NormalizedCacheObject> {
-  let localApolloClient: ApolloClient<NormalizedCacheObject> | undefined = (context as WithApolloClient)?.__apollo_client;
+  let localApolloClient:
+    | ApolloClient<NormalizedCacheObject>
+    // eslint-disable-next-line no-underscore-dangle
+    | undefined = (context as WithApolloClient)?.__apollo_client;
 
   if (!localApolloClient) {
     localApolloClient = createApolloClient({

@@ -20,11 +20,11 @@ const POST_DATA_FRAGMENT = gql`
       }
     }
     enqueuedStylesheets {
-        nodes {
-          src
-          handle
-        }
+      nodes {
+        src
+        handle
       }
+    }
   }
 `;
 

@@ -35,9 +35,7 @@ export default async function nextFetchFromWP({
   );
 
   const template: Template | null = resolveTemplate(pageInfo as UriInfo);
-  let promises: Promise<unknown>[] = [
-    getGeneralSettings(apolloClient)
-  ];
+  const promises: Promise<unknown>[] = [getGeneralSettings(apolloClient)];
 
   if (pageInfo?.isPostsPage) {
     promises.push(getPosts(apolloClient));
@@ -49,29 +47,33 @@ export default async function nextFetchFromWP({
    *
    * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and isPostsPage will be true.
    */
-  if (!(
-    currentUrlPath === '/' &&
-    !!pageInfo &&
-    pageInfo.isFrontPage &&
-    pageInfo.isPostsPage
-  )) {
-    promises.push(getContentNode(apolloClient, {
-      variables: {
-        id: currentUrlPath,
-        idType: 'URI',
-        asPreview: isPreview(context)
-      }
-    }));
+  if (
+    !(
+      currentUrlPath === '/' &&
+      !!pageInfo &&
+      pageInfo.isFrontPage &&
+      pageInfo.isPostsPage
+    )
+  ) {
+    promises.push(
+      getContentNode(apolloClient, {
+        variables: {
+          id: currentUrlPath,
+          idType: 'URI',
+          asPreview: isPreview(context),
+        },
+      }),
+    );
   }
 
   await Promise.all(
     template?.getPropsMiddleware
       ? template?.getPropsMiddleware(
-        promises,
-        apolloClient,
-        currentUrlPath,
-        context,
-      )
+          promises,
+          apolloClient,
+          currentUrlPath,
+          context,
+        )
       : promises,
   );
 }

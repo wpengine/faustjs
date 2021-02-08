@@ -45,11 +45,9 @@ export async function getPosts(
  */
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
-  options: ContentNodeOptions = {}
+  options: ContentNodeOptions = {},
 ): Promise<
-  | WPGraphQL.RootQuery['post']
-  | WPGraphQL.RootQuery['page']
-  | undefined
+  WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined
 > {
   let opts: ContentNodeOptions = options;
 
@@ -57,17 +55,20 @@ export async function getContentNode(
     opts = {};
   }
 
-  opts.variables = Object.assign({
+  opts.variables = {
     idType: 'URI',
     asPreview: false,
-  }, opts.variables);
+    ...opts.variables,
+  } as WPGraphQL.RootQueryContentNodeArgs;
 
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
     query: getContentNodeQuery(),
     variables: opts.variables,
   });
 
-  const node = result?.data?.contentNode as WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'];
+  const node = result?.data?.contentNode as
+    | WPGraphQL.RootQuery['post']
+    | WPGraphQL.RootQuery['page'];
 
   if (!node) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

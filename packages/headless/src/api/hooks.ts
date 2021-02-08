@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { UriInfo } from '../types';
 import { headlessConfig } from '../config';
 import {
@@ -18,7 +19,6 @@ import {
 } from './queries';
 import * as utils from '../utils';
 import trimOriginFromUrl from '../utils/trimOriginFromUrl';
-import { useEffect } from 'react';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -46,9 +46,9 @@ import { useEffect } from 'react';
  * @export
  * @returns {(Post[] | undefined)}
  */
-export function usePosts(options?: ListPostOptions):
-  | WPGraphQL.RootQuery['posts']
-  | undefined {
+export function usePosts(
+  options?: ListPostOptions,
+): WPGraphQL.RootQuery['posts'] | undefined {
   const result = useQuery<WPGraphQL.RootQuery>(getPostsQuery(options), {
     variables: options?.variables,
   });
@@ -193,6 +193,7 @@ export function useNextUriInfo(): UriInfo | undefined {
   return useUriInfo(page, router.asPath);
 }
 
+/* eslint-disable consistent-return */
 /**
  * React Hook for retrieving the post based on the current URI. Uses window.location if necessary
  *
@@ -220,10 +221,9 @@ export function useNextUriInfo(): UriInfo | undefined {
  * @export
  * @returns {(Post | Page | undefined)}
  */
-export function usePost(options: ContentNodeOptions = {}):
-  | WPGraphQL.RootQuery['post']
-  | WPGraphQL.RootQuery['page']
-  | undefined {
+export function usePost(
+  options: ContentNodeOptions = {},
+): WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined {
   const pageInfo = useNextUriInfo();
   let opts: ContentNodeOptions = options;
 
@@ -231,22 +231,27 @@ export function usePost(options: ContentNodeOptions = {}):
     opts = {};
   }
 
-  if (pageInfo && pageInfo?.isPostsPage) {
+  if (!pageInfo || pageInfo.isPostsPage) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {});
     return;
   }
 
-  opts.variables = Object.assign({
+  opts.variables = {
     idType: 'URI',
-    asPreview: pageInfo?.isPreview,
-    id: pageInfo?.uriPath,
-  }, opts.variables);
+    asPreview: pageInfo.isPreview,
+    id: pageInfo.uriPath,
+    ...opts.variables,
+  };
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const result = useQuery<WPGraphQL.RootQuery>(getContentNodeQuery(options), {
-    variables: opts.variables
+    variables: opts.variables,
   });
 
-  const node = result?.data?.contentNode as WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'];
+  const node = result?.data?.contentNode as
+    | WPGraphQL.RootQuery['post']
+    | WPGraphQL.RootQuery['page'];
   const { variables } = opts;
 
   if (variables?.asPreview && !node?.isPreview) {
@@ -259,3 +264,4 @@ export function usePost(options: ContentNodeOptions = {}):
 
   return node;
 }
+/* eslint-enable consistent-return */

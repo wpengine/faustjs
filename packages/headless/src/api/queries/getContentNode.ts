@@ -1,12 +1,10 @@
 import { DocumentNode, gql } from '@apollo/client';
-import { 
-  PAGE_DATA_FRAGMENT
-} from './PAGE_DATA_FRAGMENT';
-import { 
-  POST_DATA_FRAGMENT
-} from './POST_DATA_FRAGMENT';
+import { PAGE_DATA_FRAGMENT } from './PAGE_DATA_FRAGMENT';
+import { POST_DATA_FRAGMENT } from './POST_DATA_FRAGMENT';
 
-export interface ContentNodeOptions<Args extends WPGraphQL.RootQueryContentNodeArgs = WPGraphQL.RootQueryContentNodeArgs> {
+export interface ContentNodeOptions<
+  Args extends WPGraphQL.RootQueryContentNodeArgs = WPGraphQL.RootQueryContentNodeArgs
+> {
   fragments?: {
     postData?: DocumentNode;
     pageData?: DocumentNode;
