@@ -18,7 +18,7 @@ import type { WPTemplates } from '../components/TemplateLoader';
  */
 export async function initializeNextStaticProps(
   context: GetStaticPropsContext,
-  templates: WPTemplates,
+  templates?: WPTemplates,
 ): Promise<GetServerSidePropsResult<unknown>> {
   const apolloClient = initializeApollo(context);
   const wpeConfig = headlessConfig();
