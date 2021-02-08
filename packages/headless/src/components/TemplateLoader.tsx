@@ -28,6 +28,10 @@ export default function TemplateLoader({
   templates: WPTemplates;
   dynamicLoader: (loader: () => Promise<Template>) => React.ComponentType;
 }): JSX.Element | null {
+  if (!uriInfo) {
+    return null;
+  }
+
   const Component = dynamicLoader(() => resolveTemplate(uriInfo, templates));
 
   if (!Component) {
