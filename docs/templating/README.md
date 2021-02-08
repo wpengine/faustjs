@@ -21,13 +21,13 @@ Luckily, the WP Engine Headless Framework brings WordPress Template Hierarchy to
 
 The steps below assume that you have created a `pages/_app.tsx` file that uses `<HeadlessProvider />`.
 
-#### 1. Embed `<TemplateLoader />`
+#### 1. Embed `<NextTemplateLoader />`
 
 The first step in enabling Template Hierarchy in your Next.js project using this framework is to create an [optional catch-all route](https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes) in the `pages` directory named `[[...page]].tsx`.
 
 This optional catch-all route will act as a fallback for all pages and route all requests to the Headless Framework's Template Loader.
 
-The component in this page should simply return `<TemplateLoader />`. Example:
+The component in this page should simply return `<NextTemplateLoader />` with a `templates` prop. Example:
 
 ```tsx
 import React from 'react';
@@ -37,12 +37,14 @@ import {
   initializeNextStaticPaths,
 } from '@wpengine/headless';
 
+import WPTemplates from '../wp-templates/_loader';
+
 export default function Page() {
-  return <TemplateLoader />;
+  return <NextTemplateLoader templates={WPTemplates} />;
 }
 
 export function getStaticProps(context: any) {
-  return initializeNextStaticProps(context);
+  return initializeNextStaticProps(context, WPTemplates);
 }
 
 export function getStaticPaths() {
@@ -52,16 +54,31 @@ export function getStaticPaths() {
 
 #### 2. Add Templates
 
-After setting up the Template Loader, the next step is to simply add templates. Templates should be added to a directory named `theme` adjacent to the `pages` folder in a Next.js project.
+After setting up the Template Loader, the next step is to add templates and a loader file that exports all of the templates. Templates should be added to a directory named `wp-templates` adjacent to the `pages` folder in a Next.js project.
 
 The name of the template should follow WordPress' template hierarchy above, but the files should be JSX/TSX instead of PHP.
 
 **Examples:**
 
-* `theme/index.tsx`
-* `theme/single.tsx`
-* `theme/page.tsx`
-* `theme/page-example-slug.tsx`
+* `wp-templates/index.tsx`
+* `wp-templates/single.tsx`
+* `wp-templates/page.tsx`
+* `wp-templates/page-example-slug.tsx`
+
+#### 2b. Export templates
+
+After adding the templates, you will want to export them in a file named `wp-templates/_loader.ts`.
+
+```typescript
+const templates = {
+  index: import('./index'),
+  page: import('./page'),
+  'page-example-slug': import('./page-example-slug'),
+  single: import('./single'),
+};
+
+export default templates;
+```
 
 ## Anatomy of a Template
 
