@@ -1,9 +1,8 @@
 import React from 'react';
 import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import dynamic from 'next/dynamic';
-import { useNextUriInfo } from '../api/hooks';
 import { resolveTemplate } from '../utils/resolveTemplate';
+import { UriInfo } from '../types';
 
 export interface Template {
   default: React.ComponentType;
@@ -22,11 +21,14 @@ export interface WPTemplates {
 
 export default function TemplateLoader({
   templates,
+  uriInfo,
+  dynamicLoader = React.lazy,
 }: {
+  uriInfo: UriInfo | undefined;
   templates: WPTemplates;
+  dynamicLoader: (loader: () => Promise<Template>) => React.ComponentType;
 }): JSX.Element | null {
-  const pageInfo = useNextUriInfo();
-  const Component = dynamic(() => resolveTemplate(pageInfo, templates));
+  const Component = dynamicLoader(() => resolveTemplate(uriInfo, templates));
 
   if (!Component) {
     return null;
