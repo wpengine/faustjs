@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePosts, useGeneralSettings } from '@wpengine/headless';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
-import styles from '../scss/theme/front-page.module.scss';
+import styles from '../scss/wp-templates/front-page.module.scss';
 
 export default function FrontPage(): JSX.Element {
   const posts = usePosts();
@@ -45,20 +45,20 @@ export default function FrontPage(): JSX.Element {
                 WP&nbsp;Engine headless package
               </a>{' '}
               for WordPress integration. Dive in and edit this template at{' '}
-              <code>theme/front-page.tsx</code> or discover more below.
+              <code>wp-templates/front-page.tsx</code> or discover more below.
             </p>
             <div className={styles.features}>
               <div className={styles.feature}>
                 <h3>Page Templates</h3>
                 <p>
-                  Find templates in the the <code>theme/</code> folder. These
+                  Find templates in the the <code>wp-templates/</code> folder. These
                   use the same convention as the{' '}
                   <a href="https://developer.wordpress.org/themes/basics/template-hierarchy/">
                     WordPress template hierarchy
                   </a>
                   , where <code>single.tsx</code> displays posts and{' '}
                   <code>page.tsx</code> displays pages. Find page-specific CSS
-                  at <code>scss/theme</code>, which is scoped to the page with{' '}
+                  at <code>scss/wp-templates</code>, which is scoped to the page with{' '}
                   <a href="https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css">
                     CSS modules
                   </a>
@@ -99,7 +99,7 @@ export default function FrontPage(): JSX.Element {
                   <code>usePosts</code>, <code>useGeneralSettings</code> and
                   other custom hooks. Use these hooks in your page templates to
                   pass data to custom components. See{' '}
-                  <code>theme/front-page.tsx</code> for examples.
+                  <code>wp-templates/front-page.tsx</code> for examples.
                 </p>
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function FrontPage(): JSX.Element {
         <Posts
           posts={posts}
           heading="Latest Posts"
-          intro="The Posts component in theme/front-page.tsx shows the latest six posts from the connected WordPress site."
+          intro="The Posts component in wp-templates/front-page.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"
           postTitleLevel="h3"
           count={6}
