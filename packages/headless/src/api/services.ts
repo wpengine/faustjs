@@ -150,6 +150,8 @@ export async function getUriInfo(
 
   const { id, templates } = result;
 
+  const { isArchive, isSingular } = response?.data?.nodeByUri?.conditionalTags;
+
   return {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -161,6 +163,8 @@ export async function getUriInfo(
     isPreview,
     uriPath,
     templates,
+    isArchive,
+    isSingular,
   };
 }
 /* eslint-enable consistent-return */
