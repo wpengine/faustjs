@@ -44,6 +44,8 @@ export interface UriInfo {
   isPostsPage?: boolean;
   isFrontPage?: boolean;
   isPreview?: boolean;
+  isArchive?: boolean;
+  isSingular?: boolean;
   is404?: boolean;
   uriPath: string;
   templates?: string[];
