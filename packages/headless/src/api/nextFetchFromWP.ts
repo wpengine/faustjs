@@ -55,7 +55,7 @@ export default async function nextFetchFromWP({
    * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and
    * isPostsPage will be true.
    */
-  if (!isStaticFrontPage && pageInfo?.isSingular) {
+  if (pageInfo && pageInfo?.isSingular && !isStaticFrontPage) {
     getContentNodeQuery = getContentNode(
       apolloClient,
       currentUrlPath,
