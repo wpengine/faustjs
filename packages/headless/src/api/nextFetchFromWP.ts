@@ -40,7 +40,7 @@ export default async function nextFetchFromWP({
     ? await resolveTemplate(pageInfo as UriInfo, templates)
     : undefined;
 
-  const isStaticFrontPage =
+  const isLatestPostsFrontPage =
     currentUrlPath === '/' &&
     pageInfo &&
     pageInfo?.isFrontPage &&
@@ -55,7 +55,7 @@ export default async function nextFetchFromWP({
    * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and
    * isPostsPage will be true.
    */
-  if (pageInfo && pageInfo?.isSingular && !isStaticFrontPage) {
+  if (pageInfo && pageInfo?.isSingular && !isLatestPostsFrontPage) {
     getContentNodeQuery = getContentNode(
       apolloClient,
       currentUrlPath,
