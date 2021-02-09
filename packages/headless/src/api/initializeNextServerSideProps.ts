@@ -6,6 +6,7 @@ import getCurrentPath from '../utils/getCurrentPath';
 import { ensureAuthorization } from '../auth';
 import isHTTPS from '../utils/isHTTPS';
 import nextFetchFromWP from './nextFetchFromWP';
+import type { WPTemplates } from '../components/TemplateLoader';
 
 /**
  * Must be called from getServerSideProps within a Next app in order to support SSR. It will
@@ -13,9 +14,11 @@ import nextFetchFromWP from './nextFetchFromWP';
  * rehydration on the frontend.
  *
  * @param {GetServerSidePropsContext} context The Next SSR context
+ * @param {WPTemplates} templates to be made available to the template loader
  */
 export async function initializeNextServerSideProps(
   context: GetServerSidePropsContext,
+  templates?: WPTemplates,
 ): Promise<GetServerSidePropsResult<unknown>> {
   const apolloClient = getApolloClient(context);
 
@@ -50,7 +53,7 @@ export async function initializeNextServerSideProps(
     };
   }
 
-  await nextFetchFromWP({ apolloClient, currentUrlPath, context });
+  await nextFetchFromWP({ apolloClient, currentUrlPath, context, templates });
 
   return addApolloState(apolloClient, {
     props: { preview: context.preview ?? false },

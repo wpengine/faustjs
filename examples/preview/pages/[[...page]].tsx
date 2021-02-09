@@ -1,15 +1,18 @@
 import React from 'react';
 import {
-  TemplateLoader,
+  NextTemplateLoader,
   initializeNextStaticProps,
   initializeNextStaticPaths,
 } from '@wpengine/headless';
+
+import WPTemplates from '../wp-templates/_loader';
 
 /**
  * @todo make conditionalTags available
  */
 export default function Page() {
-  return <TemplateLoader />;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  return <NextTemplateLoader templates={WPTemplates} />;
 }
 
 /**
@@ -17,7 +20,7 @@ export default function Page() {
  */
 
 export function getStaticProps(context: any) {
-  return initializeNextStaticProps(context);
+  return initializeNextStaticProps(context, WPTemplates);
 }
 
 export function getStaticPaths() {
