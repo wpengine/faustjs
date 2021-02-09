@@ -41,10 +41,7 @@ export default async function nextFetchFromWP({
     : undefined;
 
   const isLatestPostsFrontPage =
-    currentUrlPath === '/' &&
-    pageInfo &&
-    pageInfo?.isFrontPage &&
-    pageInfo?.isPostsPage;
+    pageInfo && pageInfo?.isFrontPage && pageInfo?.isPostsPage;
 
   let getContentNodeQuery;
 
