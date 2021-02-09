@@ -49,11 +49,8 @@ export default async function nextFetchFromWP({
   let getContentNodeQuery;
 
   /**
-   * Running getContentNode blindly on the site root will result in a 500 error
-   * from WP GraphQL if the frontpage is not set.
-   *
-   * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and
-   * isPostsPage will be true.
+   * Running getContentNode on the site root results in a 500 error from
+   * WPGraphQL if the front page is set to “Latest Posts” in Settings → Reading.
    */
   if (pageInfo && pageInfo?.isSingular && !isLatestPostsFrontPage) {
     getContentNodeQuery = getContentNode(
