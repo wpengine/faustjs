@@ -1,11 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import { usePost, useGeneralSettings } from '../api';
-import { trimTrailingSlash } from '../utils';
-
-const WP_URL = trimTrailingSlash(
-  process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
-);
 
 export default function WPHead(): JSX.Element {
   const settings = useGeneralSettings();
@@ -39,9 +34,11 @@ export default function WPHead(): JSX.Element {
   const stylesheetUrl = (
     stylesheet: Required<Pick<WPGraphQL.EnqueuedStylesheet, 'src'>>,
   ): string => {
+    const WP_URL = settings?.url || '';
+
     return stylesheet.src.indexOf('http') === 0
       ? stylesheet.src
-      : `${WP_URL as string}${stylesheet.src}`;
+      : `${WP_URL}${stylesheet.src}`;
   };
 
   return (
