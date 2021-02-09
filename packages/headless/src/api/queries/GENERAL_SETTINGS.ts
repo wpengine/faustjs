@@ -5,6 +5,7 @@ const GENERAL_SETTINGS = gql`
     generalSettings {
       title
       description
+      url
     }
   }
 `;
