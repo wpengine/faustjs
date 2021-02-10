@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePosts, useGeneralSettings } from '@wpengine/headless';
+import { usePosts, useGeneralSettings } from '@wpengine/headless/react';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
 import styles from '../scss/wp-templates/front-page.module.scss';
 

@@ -1,16 +1,15 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { useNextUriInfo } from '../api/hooks';
+import { useNextUriInfo } from '../react/hooks';
 import {
   TemplateLoader,
   Template,
   resolveTemplate,
   Templates,
-} from '../components';
-import { getApolloClient } from '../provider';
+} from '../react/components';
 import { getCurrentUrlPath, isPreview } from './utils';
-import { getUriInfo } from '../api';
+import { getUriInfo, getApolloClient } from '../api';
 
 export interface NextTemplate extends Template {
   getStaticProps?: (context: GetStaticPropsContext) => Promise<unknown>;

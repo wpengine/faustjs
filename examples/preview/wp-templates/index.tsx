@@ -1,5 +1,6 @@
 import React from 'react';
-import { gql, useGeneralSettings, usePosts } from '@wpengine/headless';
+import { gql } from '@apollo/client';
+import { useGeneralSettings, usePosts } from '@wpengine/headless/react';
 import { Footer, Header, Posts } from '../components';
 
 export default function Index(): JSX.Element {

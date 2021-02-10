@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGeneralSettings, usePosts } from '@wpengine/headless';
+import { useGeneralSettings, usePosts } from '@wpengine/headless/react';
 import { Footer, Header, Posts } from '../components';
 
 export default function Index(): JSX.Element {

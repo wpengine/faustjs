@@ -1,4 +1,4 @@
-import type { Templates } from '@wpengine/headless/components';
+import type { Templates } from '@wpengine/headless/react';
 import type { NextTemplate } from '@wpengine/headless/next';
 
 const templates: Templates<NextTemplate> = {

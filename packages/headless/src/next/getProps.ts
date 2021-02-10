@@ -1,10 +1,10 @@
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { addApolloState, getApolloClient, QueriesConfig } from '../provider';
-import { getUriInfo } from '../api';
+import { addApolloState, QueriesConfig } from '../react/provider';
+import { getUriInfo, getApolloClient } from '../api';
 import * as templateLoader from './NextTemplateLoader';
 import { ensureAuthorization } from '../auth';
 import { fetchData } from './serverSide';
-import { Templates } from '../components/TemplateLoader';
+import { Templates } from '../react/components/TemplateLoader';
 import { headlessConfig } from '../config';
 import { getCurrentPath, isPreview, isPreviewPath } from './utils';
 import { resolvePrefixedUrlPath, stringifyGql } from '../utils';

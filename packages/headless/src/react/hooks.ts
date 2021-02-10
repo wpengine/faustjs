@@ -17,8 +17,8 @@ import {
   getPostsQuery,
   GET_URI_INFO,
   ListPostOptions,
-} from './queries';
-import { HeadlessContext, QueriesConfig } from '../provider';
+} from '../api/queries';
+import { HeadlessContext, QueriesConfig } from './provider';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site

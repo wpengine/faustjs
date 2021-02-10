@@ -1,10 +1,10 @@
 import React from 'react';
-import { useGeneralSettings, usePost } from '@wpengine/headless';
+import { useGeneralSettings, usePost } from '@wpengine/headless/react';
 import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import {
   getApolloClient,
-  gql,
 } from '@wpengine/headless';
+import { gql } from '@apollo/client';
 import { CTA, Footer, Header, Hero } from '../components';
 
 export default function Single(): JSX.Element {

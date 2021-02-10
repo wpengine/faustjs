@@ -4,9 +4,10 @@ import {
   getGeneralSettings,
   getPosts,
   getUriInfo,
+  getApolloClient,
 } from '../api';
 import { headlessConfig } from '../config';
-import { getApolloClient, QueriesConfig } from '../provider';
+import { QueriesConfig } from '../react/provider';
 import { getCurrentPath, isPreview } from './utils';
 import { resolvePrefixedUrlPath } from '../utils';
 

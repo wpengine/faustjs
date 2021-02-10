@@ -7,7 +7,6 @@ import {
 
 import WPTemplates from '../wp-templates/_loader';
 import { GetStaticPropsContext } from 'next';
-import { gql } from '@wpengine/headless';
 
 /**
  * @todo make conditionalTags available
