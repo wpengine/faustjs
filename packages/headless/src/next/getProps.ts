@@ -4,7 +4,7 @@ import { getUriInfo, getApolloClient } from '../api';
 import * as templateLoader from './NextTemplateLoader';
 import { ensureAuthorization } from '../auth';
 import { fetchData } from './serverSide';
-import { Templates } from '../react/components/TemplateLoader';
+import { Templates } from '../react';
 import { headlessConfig } from '../config';
 import { getCurrentPath, isPreview, isPreviewPath } from './utils';
 import { resolvePrefixedUrlPath, stringifyGql } from '../utils';

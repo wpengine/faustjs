@@ -1,13 +1,13 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { useNextUriInfo } from '../react/hooks';
+import { useNextUriInfo } from '../react';
 import {
   TemplateLoader,
   Template,
   resolveTemplate,
   Templates,
-} from '../react/components';
+} from '../react';
 import { getCurrentUrlPath, isPreview } from './utils';
 import { getUriInfo, getApolloClient } from '../api';
 

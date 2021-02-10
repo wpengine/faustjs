@@ -7,7 +7,7 @@ import {
   getApolloClient,
 } from '../api';
 import { headlessConfig } from '../config';
-import { QueriesConfig } from '../react/provider';
+import type { QueriesConfig } from '../react';
 import { getCurrentPath, isPreview } from './utils';
 import { resolvePrefixedUrlPath } from '../utils';
 
