@@ -41,6 +41,7 @@ export interface ParsedUrlInfo {
  */
 export interface UriInfo {
   id?: string;
+  idType?: WPGraphQL.ContentNodeIdTypeEnum;
   isPostsPage?: boolean;
   isFrontPage?: boolean;
   isPreview?: boolean;

@@ -113,28 +113,25 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		 */
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
-		$args       = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
+		$args = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
+		$path = wp_parse_url( $link, PHP_URL_PATH );
+
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
-
-		/**
-		 * Remove query vars as Next.js cannot read query params in SSG
-		 */
-		$link = remove_query_arg( array( 'preview_id', 'preview_nonce', 'preview' ), $link );
-
-		/**
-		 * Replace the path with a query param
-		 */
-		$link_split = explode( '/', $link );
-		$path       = join( '/', array_slice( $link_split, 3 ) );
 
 		/**
 		 * Add preview and preview ID back to path to support Next.js preview mode
 		 */
-		$path = trailingslashit( $path ) . 'preview/' . $preview_id;
+		if ( 'publish' !== $post->post_status ) {
+			$path = 'draft/';
+		} else {
+			$path = $path ? trailingslashit( $path ) : '';
+		}
+
+		$path .= 'preview/' . $preview_id;
 
 		$link = add_query_arg(
 			array(
-				'redirect_uri' => rawurlencode( $path ),
+				'redirect_uri' => rawurlencode( ltrim( $path, '/' ) ),
 			),
 			$frontend_uri . 'api/auth/wpe-headless'
 		);
