@@ -15,11 +15,11 @@ const AUTH_URL = trimTrailingSlash(
     '/api/auth/wpe-headless',
 );
 
-const API_CLIENT_SECRET = process.env.WPE_HEADLESS_SECRET;
+const API_CLIENT_SECRET = process.env.WP_HEADLESS_SECRET;
 
 if (!API_CLIENT_SECRET && isServerSide()) {
   throw new Error(
-    'WPE_HEADLESS_SECRET environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use authenticated API calls.',
+    'WP_HEADLESS_SECRET environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use authenticated API calls.',
   );
 }
 
