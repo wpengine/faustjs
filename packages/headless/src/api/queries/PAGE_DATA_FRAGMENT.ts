@@ -1,6 +1,4 @@
-import { gql } from '@apollo/client';
-
-const PAGE_DATA_FRAGMENT = gql`
+export const PAGE_DATA_FRAGMENT = `
   fragment pageData on Page {
     id
     slug
@@ -27,5 +25,3 @@ const PAGE_DATA_FRAGMENT = gql`
     }
   }
 `;
-
-export { PAGE_DATA_FRAGMENT };

@@ -1,6 +1,4 @@
-import { gql } from '@apollo/client';
-
-const LIST_POST_DATA_FRAGMENT = gql`
+export const LIST_POST_DATA_FRAGMENT = `
   fragment listPostData on Post {
     id
     slug
@@ -21,5 +19,3 @@ const LIST_POST_DATA_FRAGMENT = gql`
     }
   }
 `;
-
-export { LIST_POST_DATA_FRAGMENT };

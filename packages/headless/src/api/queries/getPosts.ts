@@ -13,8 +13,13 @@ export interface ListPostOptions<
 
 export function getPostsQuery({ fragments }: ListPostOptions = {}) {
   return gql`
-    ${fragments?.listPostData ?? LIST_POST_DATA_FRAGMENT}
-    ${PAGE_INFO_DATA_FRAGMENT}
+    ${fragments?.listPostData ??
+    gql`
+      ${LIST_POST_DATA_FRAGMENT}
+    `}
+    ${gql`
+      ${PAGE_INFO_DATA_FRAGMENT}
+    `}
     query GetPosts(
       $where: RootQueryToPostConnectionWhereArgs
       $after: String

@@ -1,6 +1,4 @@
-import { gql } from '@apollo/client';
-
-export const PAGE_INFO_DATA_FRAGMENT = gql`
+export const PAGE_INFO_DATA_FRAGMENT = `
   fragment pageInfoData on WPPageInfo {
     endCursor
     hasNextPage

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client';
 import { UriInfo } from '../types';
 import { ensureAuthorization } from '../auth';
 import { isServerSide, getUrlPath } from '../utils';
@@ -99,7 +99,9 @@ export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<WPGraphQL.GeneralSettingsQuery['generalSettings']> {
   const result = await client.query<WPGraphQL.GeneralSettingsQuery>({
-    query: GENERAL_SETTINGS,
+    query: gql`
+      ${GENERAL_SETTINGS}
+    `,
   });
 
   return result?.data?.generalSettings;

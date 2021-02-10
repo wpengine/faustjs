@@ -6,7 +6,7 @@ import {
   getUriInfo,
 } from '../api';
 import { headlessConfig } from '../config';
-import { getApolloClient } from '../provider';
+import { getApolloClient, QueriesConfig } from '../provider';
 import { getCurrentPath, isPreview } from './utils';
 import { resolvePrefixedUrlPath } from '../utils';
 
@@ -19,6 +19,7 @@ import { resolvePrefixedUrlPath } from '../utils';
  */
 export async function fetchData(
   context: GetStaticPropsContext | GetServerSidePropsContext,
+  options: QueriesConfig = {},
 ): Promise<void> {
   const client = getApolloClient(context);
   const wpeConfig = headlessConfig();
@@ -35,7 +36,7 @@ export async function fetchData(
   }
 
   if (pageInfo.isPostsPage) {
-    await getPosts(client);
+    await getPosts(client, options.posts);
   }
 
   /**
@@ -47,12 +48,23 @@ export async function fetchData(
   if (
     !(currentUrlPath === '/' && pageInfo.isFrontPage && pageInfo.isPostsPage)
   ) {
+    const variables: WPGraphQL.RootQueryContentNodeArgs = {
+      id: currentUrlPath,
+      idType: 'URI',
+      asPreview: isPreview(context),
+    };
+    const opts = options;
+
+    if (opts.post && opts.post.variables) {
+      opts.post.variables = {
+        ...variables,
+        ...opts.post.variables,
+      };
+    }
+
     await getContentNode(client, {
-      variables: {
-        id: currentUrlPath,
-        idType: 'URI',
-        asPreview: isPreview(context),
-      },
+      fragments: opts.post?.fragments,
+      variables,
     });
   }
 }

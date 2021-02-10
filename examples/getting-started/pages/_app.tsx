@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppContext, AppInitialProps } from 'next/app';
-import { headlessConfig, HeadlessProvider } from '@wpengine/headless';
+import { HeadlessProvider } from '@wpengine/headless';
 import 'normalize.css/normalize.css';
 import 'scss/main.scss';
 

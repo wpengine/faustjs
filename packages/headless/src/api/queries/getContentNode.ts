@@ -14,8 +14,14 @@ export interface ContentNodeOptions<
 
 export function getContentNodeQuery({ fragments }: ContentNodeOptions = {}) {
   return gql`
-    ${fragments?.postData ?? POST_DATA_FRAGMENT}
-    ${fragments?.pageData ?? PAGE_DATA_FRAGMENT}
+    ${fragments?.postData ??
+    gql`
+      ${POST_DATA_FRAGMENT}
+    `}
+    ${fragments?.pageData ??
+    gql`
+      ${PAGE_DATA_FRAGMENT}
+    `}
     query GetContentNode(
       $id: ID!
       $idType: ContentNodeIdTypeEnum

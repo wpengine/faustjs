@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { addApolloState, getApolloClient } from '../provider';
+import { addApolloState, getApolloClient, QueriesConfig } from '../provider';
 import { getUriInfo } from '../api';
 import * as templateLoader from './NextTemplateLoader';
 import { ensureAuthorization } from '../auth';
@@ -7,11 +7,56 @@ import { fetchData } from './serverSide';
 import { Templates } from '../components/TemplateLoader';
 import { headlessConfig } from '../config';
 import { getCurrentPath, isPreview, isPreviewPath } from './utils';
-import { resolvePrefixedUrlPath } from '../utils';
+import { resolvePrefixedUrlPath, stringifyGql } from '../utils';
 
 export interface NextPropsConfig {
   templates?: Templates<templateLoader.NextTemplate>;
+  queries?: QueriesConfig;
 }
+
+/* eslint-disable consistent-return */
+function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
+  if (!queries) {
+    return;
+  }
+
+  let toStr: any = {};
+
+  if (queries.post) {
+    toStr = {
+      post: {
+        variables: queries.post.variables ?? null,
+      },
+      ...toStr,
+    };
+
+    if (queries.post.fragments) {
+      toStr.post.fragments = {
+        postData: stringifyGql(queries.post.fragments.postData) ?? null,
+        pageData: stringifyGql(queries.post.fragments.pageData) ?? null,
+      };
+    }
+  }
+
+  if (queries.posts) {
+    toStr = {
+      posts: {
+        variables: queries.posts.variables ?? null,
+      },
+      ...toStr,
+    };
+
+    if (queries.posts.fragments) {
+      toStr.posts.fragments = {
+        listPostData:
+          stringifyGql(queries.posts.fragments.listPostData) ?? null,
+      };
+    }
+  }
+
+  return toStr as QueriesConfig;
+}
+/* eslint-enable consistent-return */
 
 async function getProps<
   Context extends GetStaticPropsContext | GetStaticPropsContext
@@ -64,14 +109,17 @@ async function getProps<
     };
   }
 
-  await fetchData(context);
+  await fetchData(context, config.queries);
 
   if (config.templates) {
     await loadTemplates(context, config.templates);
   }
 
   return addApolloState(client, {
-    props: { preview: context.preview ?? false },
+    props: {
+      preview: context.preview ?? false,
+      queries: stringifyQueries(config.queries) ?? null,
+    },
     revalidate: 1,
   });
 }

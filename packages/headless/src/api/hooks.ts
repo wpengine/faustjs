@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { UriInfo } from '../types';
 import { headlessConfig } from '../config';
 import {
@@ -18,6 +18,7 @@ import {
   GET_URI_INFO,
   ListPostOptions,
 } from './queries';
+import { HeadlessContext, QueriesConfig } from '../provider';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -48,8 +49,23 @@ import {
 export function usePosts(
   options?: ListPostOptions,
 ): WPGraphQL.RootQuery['posts'] | undefined {
-  const result = useQuery<WPGraphQL.RootQuery>(getPostsQuery(options), {
-    variables: options?.variables,
+  const context = useContext<{ queries?: QueriesConfig }>(HeadlessContext);
+  const opts: ListPostOptions = options ?? {};
+
+  if (context?.queries?.posts) {
+    opts.fragments = {
+      ...context.queries.posts.fragments,
+      ...opts.fragments,
+    };
+
+    opts.variables = {
+      ...context.queries.posts.variables,
+      ...opts.variables,
+    };
+  }
+
+  const result = useQuery<WPGraphQL.RootQuery>(getPostsQuery(opts), {
+    variables: opts?.variables,
   });
 
   return result.data?.posts;
@@ -81,7 +97,11 @@ export function usePosts(
  * @returns {(GeneralSettings | undefined)}
  */
 export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
-  const result = useQuery<WPGraphQL.GeneralSettingsQuery>(GENERAL_SETTINGS);
+  const result = useQuery<WPGraphQL.GeneralSettingsQuery>(
+    gql`
+      ${GENERAL_SETTINGS}
+    `,
+  );
 
   return result.data?.generalSettings;
 }
@@ -226,11 +246,24 @@ export function useNextUriInfo(): UriInfo | undefined {
 export function usePost(
   options: ContentNodeOptions = {},
 ): WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined {
+  const context = useContext<{ queries?: QueriesConfig }>(HeadlessContext);
   const pageInfo = useNextUriInfo();
   let opts: ContentNodeOptions = options;
 
   if (!opts) {
     opts = {};
+  }
+
+  if (context.queries?.post) {
+    opts.variables = {
+      ...context.queries.post.variables,
+      ...opts.variables,
+    } as WPGraphQL.RootQueryContentNodeArgs;
+
+    opts.fragments = {
+      ...context.queries.post.fragments,
+      ...opts.fragments,
+    };
   }
 
   if (!pageInfo || pageInfo.isPostsPage) {
@@ -247,7 +280,7 @@ export function usePost(
   };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const result = useQuery<WPGraphQL.RootQuery>(getContentNodeQuery(options), {
+  const result = useQuery<WPGraphQL.RootQuery>(getContentNodeQuery(opts), {
     variables: opts.variables,
   });
 

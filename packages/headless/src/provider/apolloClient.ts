@@ -183,10 +183,10 @@ export function addApolloState(
  * @see WPGraphQLProvider
  */
 export function useApollo(
-  pageProps: Record<string, unknown>,
+  pageProps?: Record<string, unknown>,
   context?: PersistentContext,
 ): ApolloClient<NormalizedCacheObject> {
-  const state = pageProps[APOLLO_STATE_PROP_NAME];
+  const state = pageProps?.[APOLLO_STATE_PROP_NAME];
 
   return useMemo(() => getApolloClient(context, state), [context, state]);
 }

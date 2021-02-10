@@ -1,3 +1,4 @@
+import { print as gqlPrint, DocumentNode } from 'graphql';
 import { HeadlessConfig, ParsedUrlInfo } from '../types';
 import { isBase64, isServerSide } from './assert';
 
@@ -248,3 +249,13 @@ export function trimOriginFromUrl(url: string): string {
     return url;
   }
 }
+
+/* eslint-disable consistent-return */
+export function stringifyGql(doc?: DocumentNode): string | undefined {
+  if (!doc) {
+    return;
+  }
+
+  return gqlPrint(doc);
+}
+/* eslint-enable consistent-return */

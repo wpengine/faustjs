@@ -1,6 +1,4 @@
-import { gql } from '@apollo/client';
-
-const GENERAL_SETTINGS = gql`
+export const GENERAL_SETTINGS = `
   query GeneralSettings {
     generalSettings {
       title
@@ -9,5 +7,3 @@ const GENERAL_SETTINGS = gql`
     }
   }
 `;
-
-export { GENERAL_SETTINGS };
