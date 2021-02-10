@@ -8,7 +8,12 @@ import {
 } from '../api';
 import { headlessConfig } from '../config';
 import type { QueriesConfig } from '../react';
-import { getCurrentPath, isPreview } from './utils';
+import {
+  getCurrentPath,
+  getPreviewID,
+  isDraftPreview,
+  isPreview,
+} from './utils';
 import { resolvePrefixedUrlPath } from '../utils';
 
 /**
@@ -30,6 +35,9 @@ export async function fetchData(
   );
   const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
 
+  const isLatestPostsFrontPage =
+    pageInfo && pageInfo?.isFrontPage && pageInfo?.isPostsPage;
+
   await getGeneralSettings(client);
 
   if (!pageInfo) {
@@ -41,18 +49,36 @@ export async function fetchData(
   }
 
   /**
-   * Running getContentNode blindly on the site root will result in a 500 error from WP GraphQL if the frontpage
-   * is not set.
-   *
-   * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and isPostsPage will be true.
+   * Running getContentNode on the site root results in a 500 error from
+   * WPGraphQL if the front page is set to “Latest Posts” in Settings → Reading.
    */
-  if (
-    !(currentUrlPath === '/' && pageInfo.isFrontPage && pageInfo.isPostsPage)
-  ) {
+  if (pageInfo && pageInfo?.isSingular && !isLatestPostsFrontPage) {
     const variables: WPGraphQL.RootQueryContentNodeArgs = {
       id: currentUrlPath,
       idType: 'URI',
       asPreview: isPreview(context),
+    };
+    const opts = options;
+
+    if (opts.post && opts.post.variables) {
+      opts.post.variables = {
+        ...variables,
+        ...opts.post.variables,
+      };
+    }
+
+    await getContentNode(client, {
+      fragments: opts.post?.fragments,
+      variables,
+    });
+  }
+
+  if (isDraftPreview(context)) {
+    const variables: WPGraphQL.RootQueryContentNodeArgs = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: getPreviewID(context)!,
+      idType: 'DATABASE_ID',
+      asPreview: true,
     };
     const opts = options;
 

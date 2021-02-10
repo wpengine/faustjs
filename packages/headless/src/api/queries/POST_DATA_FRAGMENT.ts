@@ -10,6 +10,7 @@ export const POST_DATA_FRAGMENT = `
     excerpt
     uri
     status
+    templates
     featuredImage {
       node {
         id

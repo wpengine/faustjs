@@ -10,6 +10,7 @@ export const PAGE_DATA_FRAGMENT = `
     isPostsPage
     uri
     status
+    templates
     featuredImage {
       node {
         id

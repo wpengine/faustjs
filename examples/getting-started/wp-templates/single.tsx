@@ -1,5 +1,6 @@
 import React from 'react';
-import { useGeneralSettings, usePost } from '@wpengine/headless/react';
+import { useGeneralSettings } from '@wpengine/headless/react';
+import { usePost } from '@wpengine/headless/next';
 import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import {
   getApolloClient,

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useGeneralSettings, usePost } from '@wpengine/headless/react';
+import { useGeneralSettings } from '@wpengine/headless/react';
+import { usePost } from '@wpengine/headless/next';
 import { Header, Hero, Footer } from '../components';
 
 export default function Page(): JSX.Element {

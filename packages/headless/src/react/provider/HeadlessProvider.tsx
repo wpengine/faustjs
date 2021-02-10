@@ -14,11 +14,13 @@ export interface HeadlessProviderPageProps {
   };
 }
 
-export const HeadlessContext = React.createContext({});
+export const HeadlessContext = React.createContext<any>({});
 
 function parseContext(pageProps?: { queries?: QueriesConfig }) {
   if (!pageProps || !pageProps.queries) {
-    return {};
+    return {
+      ...pageProps,
+    };
   }
 
   const ctx: { queries: QueriesConfig } = {
@@ -67,6 +69,7 @@ function parseContext(pageProps?: { queries?: QueriesConfig }) {
   }
 
   return {
+    ...pageProps,
     queries: ctx.queries,
   };
 }

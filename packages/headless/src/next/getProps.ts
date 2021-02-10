@@ -74,6 +74,7 @@ async function getProps<
     getCurrentPath(context),
     wpeConfig.uriPrefix,
   );
+
   const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
 
   if (isPreview(context)) {

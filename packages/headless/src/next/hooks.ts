@@ -1,123 +1,33 @@
-import { gql, useQuery } from '@apollo/client';
-
+import { QueryResult, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import { UriInfo } from '../types';
+import {
+  ContentNodeOptions,
+  getContentNodeQuery,
+  GET_URI_INFO,
+} from '../api/queries';
 import { headlessConfig } from '../config';
+import { HeadlessContext, QueriesConfig } from '../react';
+import { UriInfo } from '../types';
 import {
   getUrlPath,
   isServerSide,
   resolvePrefixedUrlPath,
   trimOriginFromUrl,
-  isPreviewPath,
 } from '../utils';
-import {
-  ContentNodeOptions,
-  GENERAL_SETTINGS,
-  getContentNodeQuery,
-  getPostsQuery,
-  GET_URI_INFO,
-  ListPostOptions,
-} from '../api/queries';
-import { HeadlessContext, QueriesConfig } from './provider';
+import { getPreviewID, isPreviewPath } from './utils';
 
 /**
- * React Hook for retrieving a list of posts from your WordPress site
+ * React Hook for retrieving information about the current URI within a Next app.
+ *
+ * @see useUriInfo For similar functionality outside of Next apps.
  *
  * @example
  * ```tsx
- * import { usePosts } from '@wpengine/headless';
- *
- * export function ListPosts() {
- *   const posts = usePosts();
- *
- *   if (!posts) {
- *     return <></>;
- *   }
- *
- *   return (
- *     <>
- *       {posts.map((post) => (
- *         <div key={post.id} dangerouslySetInnerHTML={ { __html: post.content ?? '' } } />
- *       ))}
- *     </>
- *   );
- * }
- * ```
- * @export
- * @returns {(Post[] | undefined)}
- */
-export function usePosts(
-  options?: ListPostOptions,
-): WPGraphQL.RootQuery['posts'] | undefined {
-  const context = useContext<{ queries?: QueriesConfig }>(HeadlessContext);
-  const opts: ListPostOptions = options ?? {};
-
-  if (context?.queries?.posts) {
-    opts.fragments = {
-      ...context.queries.posts.fragments,
-      ...opts.fragments,
-    };
-
-    opts.variables = {
-      ...context.queries.posts.variables,
-      ...opts.variables,
-    };
-  }
-
-  const result = useQuery<WPGraphQL.RootQuery>(getPostsQuery(opts), {
-    variables: opts?.variables,
-  });
-
-  return result.data?.posts;
-}
-
-/**
- * React Hook for retrieving the general settings (title, description) from your WordPress site
- *
- * @example
- * ```tsx
- * import { useGeneralSettings } from '@wpengine/headless';
- *
- * export function Header() {
- *   const settings = useGeneralSettings();
- *
- *   if (!settings) {
- *     return <></>;
- *   }
- *
- *   return (
- *     <header>
- *       <h1>{settings.title}</h1>
- *       <h2>{settings.description}</h2>
- *     </header>
- *   );
- * }
- * ```
- * @export
- * @returns {(GeneralSettings | undefined)}
- */
-export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
-  const result = useQuery<WPGraphQL.GeneralSettingsQuery>(
-    gql`
-      ${GENERAL_SETTINGS}
-    `,
-  );
-
-  return result.data?.generalSettings;
-}
-
-/**
- * React Hook for retrieving information about the current URI. Expects you to
- * either pass in a URI, otherwise it will use window.location
- *
- * @see useNextUriInfo For similar functionality inside Next apps.
- *
- * @example
- * ```tsx
- * import { useUriInfo } from '@wpengine/headless';
+ * import { useNextUriInfo } from '@wpengine/headless';
  *
  * export function Screen() {
- *   const uriInfo = useUriInfo();
+ *   const uriInfo = useNextUriInfo();
  *
  *   console.log(uriInfo);
  * }
@@ -125,11 +35,20 @@ export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
  * @export
  * @returns {(UriInfo | undefined)}
  */
-export function useUriInfo(
-  uri?: string,
-  resolvedUri?: string,
-): UriInfo | undefined {
-  let localUri = uri ?? '';
+export function useUriInfo(): UriInfo | undefined {
+  const router = useRouter();
+  const { preview: isPreview } = useContext<{ preview: boolean }>(
+    HeadlessContext,
+  );
+  let page = '';
+
+  if (router.asPath.indexOf('[[') === -1) {
+    page = router.asPath;
+    page = resolvePrefixedUrlPath(page, headlessConfig().uriPrefix);
+  }
+
+  let localUri = page ?? '';
+  let resolvedUri = router.asPath;
 
   if (!localUri && !isServerSide()) {
     localUri = resolvePrefixedUrlPath(
@@ -153,6 +72,42 @@ export function useUriInfo(
 
   const result = response?.data?.nodeByUri;
 
+  /**
+   * Unpublished content need to be queried differently than published content.
+   */
+  const preview: QueryResult<WPGraphQL.GetContentNodeQuery> | void =
+    isPreviewPath(resolvedUri ?? localUri, true) && isPreview
+      ? // eslint-disable-next-line react-hooks/rules-of-hooks
+        useQuery<
+          WPGraphQL.GetContentNodeQuery,
+          WPGraphQL.GetContentNodeQueryVariables
+        >(getContentNodeQuery(), {
+          variables: {
+            asPreview: true,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            id: getPreviewID(resolvedUri ?? localUri)!,
+            idType: 'DATABASE_ID',
+          },
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+        })
+      : // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {});
+
+  if (preview && preview?.data?.contentNode) {
+    const previewNode = preview?.data?.contentNode;
+
+    return {
+      isPostsPage: false,
+      isFrontPage: false,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: getPreviewID(resolvedUri ?? localUri)!,
+      idType: 'DATABASE_ID',
+      uriPath: previewNode.uri,
+      isPreview: true,
+      templates: previewNode.templates,
+    };
+  }
+
   if (!result) {
     return {
       is404: true,
@@ -168,7 +123,7 @@ export function useUriInfo(
     isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
     id,
     uriPath: getUrlPath(localUri),
-    isPreview: isPreviewPath(resolvedUri ?? localUri),
+    isPreview: isPreviewPath(resolvedUri ?? localUri) && isPreview,
     templates,
   };
 
@@ -243,9 +198,12 @@ export function usePost(
   }
 
   opts.variables = {
-    idType: 'URI',
+    idType: pageInfo.idType ?? 'URI',
     asPreview: pageInfo.isPreview,
-    id: pageInfo.uriPath,
+    id:
+      pageInfo.idType === 'DATABASE_ID' && pageInfo.id
+        ? pageInfo.id
+        : pageInfo.uriPath,
     ...opts.variables,
   };
 

@@ -163,6 +163,8 @@ export async function getUriInfo(
 
   const { id, templates } = result;
 
+  const { isArchive, isSingular } = response?.data?.nodeByUri?.conditionalTags;
+
   return {
     isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
     isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
@@ -170,6 +172,8 @@ export async function getUriInfo(
     isPreview,
     uriPath,
     templates,
+    isArchive,
+    isSingular,
   };
 }
 /* eslint-enable consistent-return */

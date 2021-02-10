@@ -1,15 +1,12 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { useNextUriInfo } from '../react';
-import {
-  TemplateLoader,
-  Template,
-  resolveTemplate,
-  Templates,
-} from '../react';
-import { getCurrentUrlPath, isPreview } from './utils';
+import { useUriInfo } from './hooks';
+import { TemplateLoader, Template, resolveTemplate, Templates } from '../react';
+import { getCurrentPath, isPreview } from './utils';
 import { getUriInfo, getApolloClient } from '../api';
+import { resolvePrefixedUrlPath } from '../utils';
+import { headlessConfig } from '../config';
 
 export interface NextTemplate extends Template {
   getStaticProps?: (context: GetStaticPropsContext) => Promise<unknown>;
@@ -21,7 +18,7 @@ export function NextTemplateLoader({
 }: {
   templates: Templates<NextTemplate>;
 }): JSX.Element | null {
-  const uriInfo = useNextUriInfo();
+  const uriInfo = useUriInfo();
 
   return (
     <TemplateLoader
@@ -37,7 +34,12 @@ async function getTemplate(
   templates: Templates<NextTemplate>,
 ) {
   const client = getApolloClient(context);
-  const currentUrlPath = getCurrentUrlPath(context);
+  const wpeConfig = headlessConfig();
+  const currentUrlPath = resolvePrefixedUrlPath(
+    getCurrentPath(context),
+    wpeConfig.uriPrefix,
+  );
+
   const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
 
   return resolveTemplate(pageInfo, templates);
