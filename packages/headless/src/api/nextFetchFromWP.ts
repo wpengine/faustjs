@@ -40,23 +40,28 @@ export default async function nextFetchFromWP({
     ? await resolveTemplate(pageInfo as UriInfo, templates)
     : undefined;
 
+  const isLatestPostsFrontPage =
+    pageInfo && pageInfo?.isFrontPage && pageInfo?.isPostsPage;
+
+  let getContentNodeQuery;
+
+  /**
+   * Running getContentNode on the site root results in a 500 error from
+   * WPGraphQL if the front page is set to “Latest Posts” in Settings → Reading.
+   */
+  if (pageInfo && pageInfo?.isSingular && !isLatestPostsFrontPage) {
+    getContentNodeQuery = getContentNode(
+      apolloClient,
+      currentUrlPath,
+      'URI',
+      isPreview(context),
+    );
+  }
+
   const promises = [
     getGeneralSettings(apolloClient),
     getPosts(apolloClient),
-    /**
-     * Running getContentNode blindly on the site root will result in a 500 error from WP GraphQL if the frontpage
-     * is not set.
-     *
-     * If a frontpage/blog is not set in Settings » Reading, both isFrontPage and isPostsPage will be true.
-     */
-    !(
-      currentUrlPath === '/' &&
-      pageInfo &&
-      pageInfo?.isFrontPage &&
-      pageInfo?.isPostsPage
-    )
-      ? getContentNode(apolloClient, currentUrlPath, 'URI', isPreview(context))
-      : undefined,
+    getContentNodeQuery,
     isDraftPreview(context)
       ? getContentNode(
           apolloClient,

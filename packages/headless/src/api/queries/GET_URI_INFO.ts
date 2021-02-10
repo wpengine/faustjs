@@ -9,6 +9,10 @@ const GET_URI_INFO = gql`
         isFrontPage
         isPostsPage
       }
+      conditionalTags {
+        isArchive
+        isSingular
+      }
     }
   }
 `;
