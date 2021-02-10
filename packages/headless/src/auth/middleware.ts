@@ -5,7 +5,7 @@ import { storeAccessToken } from './cookie';
 
 function redirect(res: ServerResponse, url: string) {
   res.writeHead(302, {
-    'Location': url,
+    Location: url,
   });
 }
 
@@ -29,7 +29,7 @@ export async function authorizeHandler(
     };
 
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = `${protocol}//${host}/${redirectUri as string}`;
+    const fullRedirectUrl = `${protocol}//${host}/${redirectUri}`;
 
     /**
      * If missing code, this is a request that's meant to trigger authorization such as a preview.
@@ -57,7 +57,7 @@ export async function authorizeHandler(
       return;
     }
 
-    const result = await authorize(code as string);
+    const result = await authorize(code);
     storeAccessToken(result.access_token, res, {
       request: req,
     });

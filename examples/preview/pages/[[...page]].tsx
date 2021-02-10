@@ -3,9 +3,10 @@ import {
   NextTemplateLoader,
   getNextStaticPaths,
   getNextStaticProps,
-} from '@wpengine/headless/dist/next';
+} from '@wpengine/headless/next';
 
 import WPTemplates from '../wp-templates/_loader';
+import { GetStaticPropsContext } from 'next';
 
 /**
  * @todo make conditionalTags available
@@ -19,7 +20,7 @@ export default function Page() {
  * @todo Show how to switch between static and SSR
  */
 
-export function getStaticProps(context: any) {
+export function getStaticProps(context: GetStaticPropsContext) {
   return getNextStaticProps(context, {
     templates: WPTemplates
   });

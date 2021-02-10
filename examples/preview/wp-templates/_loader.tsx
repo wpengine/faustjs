@@ -1,5 +1,5 @@
-import type { Templates } from '@wpengine/headless/dist/components/TemplateLoader';
-import type { NextTemplate } from '@wpengine/headless/dist/next';
+import type { Templates } from '@wpengine/headless/components';
+import type { NextTemplate } from '@wpengine/headless/next';
 
 const templates: Templates<NextTemplate> = {
   '404': import('./404'),

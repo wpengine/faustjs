@@ -32,7 +32,7 @@ export function resolveTemplate<T extends Template>(
   return templates.index;
 }
 
-export default function TemplateLoader<T extends Template>({
+export function TemplateLoader<T extends Template>({
   templates,
   uriInfo,
   dynamicLoader = React.lazy,

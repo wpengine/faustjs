@@ -1,22 +1,23 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { useNextUriInfo } from '../api/hooks';
-import TemplateLoader, { Template, resolveTemplate, Templates } from '../components/TemplateLoader';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+import { useNextUriInfo } from '../api/hooks';
+import {
+  TemplateLoader,
+  Template,
+  resolveTemplate,
+  Templates,
+} from '../components';
 import { getApolloClient } from '../provider';
 import { getCurrentUrlPath, isPreview } from './utils';
 import { getUriInfo } from '../api';
 
 export interface NextTemplate extends Template {
-  getStaticProps?: (
-    context: GetStaticPropsContext
-  ) => Promise<unknown>;
-  getServerSideProps?: (
-    context: GetServerSidePropsContext
-  ) => Promise<unknown>;
+  getStaticProps?: (context: GetStaticPropsContext) => Promise<unknown>;
+  getServerSideProps?: (context: GetServerSidePropsContext) => Promise<unknown>;
 }
 
-export default function NextTemplateLoader({
+export function NextTemplateLoader({
   templates,
 }: {
   templates: Templates<NextTemplate>;
@@ -32,19 +33,23 @@ export default function NextTemplateLoader({
   );
 }
 
-async function getTemplate(context: GetServerSidePropsContext | GetStaticPropsContext, templates: Templates<NextTemplate>) {
+async function getTemplate(
+  context: GetServerSidePropsContext | GetStaticPropsContext,
+  templates: Templates<NextTemplate>,
+) {
   const client = getApolloClient(context);
   const currentUrlPath = getCurrentUrlPath(context);
-  const pageInfo = await getUriInfo(
-      client,
-      currentUrlPath,
-      isPreview(context),
-  );
+  const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
 
   return resolveTemplate(pageInfo, templates);
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext, templates: Templates<NextTemplate>) {
+/* eslint-disable consistent-return */
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+  templates: Templates<NextTemplate>,
+): Promise<unknown> {
   const template = await getTemplate(context, templates);
 
   if (template?.getServerSideProps) {
@@ -52,10 +57,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext, tem
   }
 }
 
-export async function getStaticProps(context: GetStaticPropsContext, templates: Templates<NextTemplate>) {
+export async function getStaticProps(
+  context: GetStaticPropsContext,
+  templates: Templates<NextTemplate>,
+): Promise<unknown> {
   const template = await getTemplate(context, templates);
 
   if (template?.getStaticProps) {
     return template.getStaticProps(context);
   }
 }
+
+/* eslint-enable consistent-return */

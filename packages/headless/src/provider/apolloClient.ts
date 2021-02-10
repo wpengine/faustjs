@@ -132,7 +132,7 @@ export function getApolloClient(
 
     // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-    const data = merge(initialState ?? {} as any, existingCache, {
+    const data = merge(initialState ?? ({} as any), existingCache, {
       arrayMerge: overwriteMerge,
     });
 
@@ -171,9 +171,7 @@ export function addApolloState(
 ) {
   if (pageProps.props) {
     // eslint-disable-next-line no-param-reassign
-    pageProps.props[
-      APOLLO_STATE_PROP_NAME
-    ] = client.cache.extract();
+    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }
 
   return pageProps;

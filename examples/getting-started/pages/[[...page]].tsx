@@ -8,9 +8,10 @@ import {
   NextTemplateLoader,
   getNextStaticPaths,
   getNextStaticProps,
-} from '@wpengine/headless/dist/next';
+} from '@wpengine/headless/next';
 
 import WPTemplates from '../wp-templates/_loader';
+import { GetStaticPropsContext } from 'next';
 
 const query = gql`
   query MyQuery {
@@ -36,12 +37,12 @@ export default function Page() {
  * @todo Show how to switch between static and SSR
  */
 
-export async function getStaticProps(context: any) {
+export async function getStaticProps(context: GetStaticPropsContext) {
   const apollo = getApolloClient(context);
   await apollo.query({ query });
 
   return getNextStaticProps(context, {
-    templates: WPTemplates
+    templates: WPTemplates,
   });
 }
 

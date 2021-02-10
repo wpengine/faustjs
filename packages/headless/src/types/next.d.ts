@@ -7,6 +7,6 @@ interface PreviewData {
   serverInfo: {
     host: string;
     protocol: 'http:' | 'https:';
-    cookies: string | undefined;
+    cookie: string | undefined;
   };
 }
