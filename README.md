@@ -17,7 +17,7 @@ Eager to try out the Headless Framework? Here's how you can get started:
 4. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
 6. `cp .env.local.sample .env.local`
 7. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
-8. Populate `WPE_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+8. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
 9. `cd my-app && npm run dev`
 
 ➡️ [Learn more about getting started](/docs/getting-started/)
