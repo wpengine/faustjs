@@ -7958,7 +7958,7 @@ export type UsersConnectionOrderbyInput = {
 export type GeneralSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GeneralSettingsQuery = { generalSettings: Maybe<{ title: Maybe<string>, description: Maybe<string> }> };
+export type GeneralSettingsQuery = { generalSettings: Maybe<{ title: Maybe<string>, description: Maybe<string>, url: Maybe<string> }> };
 
 export type GetContentNodeQueryVariables = Exact<{
   id: Scalars['ID'];

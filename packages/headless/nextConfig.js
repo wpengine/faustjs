@@ -1,8 +1,6 @@
 /**
  * Injects necessary config additions to the Next config to enable @wpengine/headless to function properly.
  *
- * Without this, the <TemplateLoader /> component will not be able to access the Webpack instance from Next.js.
- *
  * Additionally, this improves the developer experience when working on @wpengine/headless directly.
  *
  * @param nextConfig Config passed through next.config.js

@@ -119,7 +119,9 @@ export function useUriInfo(
 
   const { isPreview } = useContext(NextPreviewContext);
 
-  localUri = trimOriginFromUrl(localUri);
+  localUri = getUrlPath(localUri);
+  // eslint-disable-next-line no-param-reassign
+  resolvedUri = getUrlPath(resolvedUri);
 
   const result = useQuery<
     WPGraphQL.GetUriInfoQuery,
