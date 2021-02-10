@@ -7,6 +7,7 @@ import {
   getUrlPath,
   isServerSide,
   resolvePrefixedUrlPath,
+  trimOriginFromUrl,
   isPreviewPath,
 } from '../utils';
 import {
@@ -17,8 +18,6 @@ import {
   GET_URI_INFO,
   ListPostOptions,
 } from './queries';
-import * as utils from '../utils';
-import trimOriginFromUrl from '../utils/trimOriginFromUrl';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -138,7 +137,7 @@ export function useUriInfo(
     return {
       is404: true,
       templates: ['404'],
-      uriPath: utils.getUrlPath(localUri),
+      uriPath: getUrlPath(localUri),
     };
   }
 
@@ -148,7 +147,7 @@ export function useUriInfo(
     isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
     isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
     id,
-    uriPath: utils.getUrlPath(localUri),
+    uriPath: getUrlPath(localUri),
     isPreview: isPreviewPath(resolvedUri ?? localUri),
     templates,
   };

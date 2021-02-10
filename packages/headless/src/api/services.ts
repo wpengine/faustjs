@@ -1,8 +1,7 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { UriInfo } from '../types';
-import * as utils from '../utils';
 import { ensureAuthorization } from '../auth';
-import { isServerSide } from '../utils';
+import { isServerSide, getUrlPath } from '../utils';
 import {
   getPostsQuery,
   getContentNodeQuery,
@@ -122,7 +121,7 @@ export async function getUriInfo(
   uriPath: string,
   isPreview?: boolean,
 ): Promise<UriInfo | undefined> {
-  const urlPath = utils.getUrlPath(uriPath);
+  const urlPath = getUrlPath(uriPath);
 
   if (isPreview && !isServerSide()) {
     const response = ensureAuthorization(window.location.href);

@@ -6,6 +6,7 @@ type Props = {
 interface PreviewData {
   serverInfo: {
     host: string;
-    cookies: string;
+    protocol: 'http:' | 'https:';
+    cookies: string | undefined;
   };
 }

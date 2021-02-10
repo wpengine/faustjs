@@ -1,32 +1,45 @@
 import React from 'react';
-import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import type { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { resolveTemplate } from '../utils/resolveTemplate';
 import { UriInfo } from '../types';
 
 export interface Template {
   default: React.ComponentType;
-  getPropsMiddleware?: (
-    promises: Array<Promise<unknown> | undefined>,
-    apolloClient: ApolloClient<NormalizedCacheObject>,
-    currentUrlPath: string,
-    context: GetStaticPropsContext | GetServerSidePropsContext,
-  ) => Array<Promise<unknown> | undefined>;
 }
 
-export interface WPTemplates {
-  index: Promise<Template>;
-  [template: string]: Promise<Template>;
+export interface Templates<T extends Template> {
+  index: Promise<T>;
+  [template: string]: Promise<T>;
 }
 
-export default function TemplateLoader({
+export function resolveTemplate<T extends Template>(
+  pageInfo: UriInfo | undefined,
+  templates: Templates<T>,
+): Promise<T> {
+  if (!templates) {
+    throw new Error('No templates provided to template resolver.');
+  }
+
+  if (!pageInfo || !pageInfo.templates) {
+    return templates.index;
+  }
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const template of pageInfo.templates) {
+    if (typeof templates[template] !== 'undefined') {
+      return templates?.[template];
+    }
+  }
+
+  return templates.index;
+}
+
+export default function TemplateLoader<T extends Template>({
   templates,
   uriInfo,
   dynamicLoader = React.lazy,
 }: {
   uriInfo: UriInfo | undefined;
-  templates: WPTemplates;
-  dynamicLoader: (loader: () => Promise<Template>) => React.ComponentType;
+  templates: Templates<T>;
+  dynamicLoader: (loader: () => Promise<T>) => React.ComponentType;
 }): JSX.Element | null {
   if (!uriInfo) {
     return null;

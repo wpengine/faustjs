@@ -113,6 +113,43 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
 /* eslint-enable consistent-return */
 
 /**
+ * Gets query parameters from a url or search string
+ *
+ * @export
+ * @param {string} url
+ * @param {string} param
+ * @returns {string}
+ */
+export function getQueryParam(url: string, param: string) {
+  if (!url || url.length === 0) {
+    return '';
+  }
+
+  const parsedUrl = parseUrl(url);
+
+  if (!parsedUrl) {
+    return '';
+  }
+
+  let query = parsedUrl.search;
+
+  if (query[0] === '?') {
+    query = query.substring(1);
+  }
+
+  const params = query.split('&');
+
+  for (let i = 0; i < params.length; i += 1) {
+    const pair = params[i].split('=');
+    if (decodeURIComponent(pair[0]) === param) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+
+  return '';
+}
+
+/**
  * Gets the path without the protocol/host/port from a full URL string
  *
  * @export
@@ -201,3 +238,16 @@ export function getCookiesFromContext(
   }
 }
 /* eslint-enable consistent-return */
+
+/**
+ * Trims the origin (protocol, host, port) from URL so only the path and query params remain
+ */
+export function trimOriginFromUrl(url: string): string {
+  try {
+    const parsedUrl = new URL(url);
+
+    return url.replace(parsedUrl.origin, '');
+  } catch (e) {
+    return url;
+  }
+}

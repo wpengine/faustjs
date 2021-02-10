@@ -24,3 +24,13 @@ export function isBase64(str: string): boolean {
     str.replace(/\n/g, ''),
   );
 }
+
+export function isPreviewPath(uri: string): boolean {
+  if (typeof uri === 'string') {
+    const urlSplit = uri.split('/');
+
+    return urlSplit?.[urlSplit.length - 2] === 'preview';
+  }
+
+  return false;
+}

@@ -11,18 +11,13 @@ import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
 import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  NextPageContext,
-} from 'next';
-import {
   getCookiesFromContext,
   isServerSide,
   trimTrailingSlash,
 } from '../utils';
 import { CookieOptions, getAccessToken } from '../auth';
+
+export type PersistentContext = Record<string, unknown>;
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -103,8 +98,8 @@ function createApolloClient(
  * ```
  */
 export function getApolloClient(
-  context?: NextPageContext | GetStaticPropsContext | GetServerSidePropsContext,
-  initialState = null,
+  context?: PersistentContext,
+  initialState: unknown = null,
 ): ApolloClient<NormalizedCacheObject> {
   let localApolloClient:
     | ApolloClient<NormalizedCacheObject>
@@ -137,7 +132,7 @@ export function getApolloClient(
 
     // @see https://github.com/wpengine/headless-framework/pull/11#discussion_r533133428
     // Merge the existing cache into data passed from getStaticProps/getServerSideProps
-    const data = merge(initialState ?? {}, existingCache, {
+    const data = merge(initialState ?? {} as any, existingCache, {
       arrayMerge: overwriteMerge,
     });
 
@@ -172,11 +167,11 @@ export function getApolloClient(
  */
 export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: GetServerSidePropsResult<unknown> | GetStaticPropsResult<unknown>,
+  pageProps: Record<string, unknown> & { props: Record<string, unknown> },
 ) {
-  if ((pageProps as { props: Record<string, any> }).props) {
+  if (pageProps.props) {
     // eslint-disable-next-line no-param-reassign
-    (pageProps as { props: Record<string, any> }).props[
+    pageProps.props[
       APOLLO_STATE_PROP_NAME
     ] = client.cache.extract();
   }
@@ -190,10 +185,10 @@ export function addApolloState(
  * @see WPGraphQLProvider
  */
 export function useApollo(
-  pageProps: Record<string, any>,
-  ctx?: NextPageContext,
+  pageProps: Record<string, unknown>,
+  context?: PersistentContext,
 ): ApolloClient<NormalizedCacheObject> {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
 
-  return useMemo(() => getApolloClient(ctx, state), [ctx, state]);
+  return useMemo(() => getApolloClient(context, state), [context, state]);
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
   NextTemplateLoader,
-  initializeNextStaticProps,
-  initializeNextStaticPaths,
-} from '@wpengine/headless';
+  getNextStaticPaths,
+  getNextStaticProps,
+} from '@wpengine/headless/dist/next';
 
 import WPTemplates from '../wp-templates/_loader';
 
@@ -12,7 +12,7 @@ import WPTemplates from '../wp-templates/_loader';
  */
 export default function Page() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  return <NextTemplateLoader templates={WPTemplates} />;
+  return <NextTemplateLoader templates={ WPTemplates } />;
 }
 
 /**
@@ -20,9 +20,11 @@ export default function Page() {
  */
 
 export function getStaticProps(context: any) {
-  return initializeNextStaticProps(context, WPTemplates);
+  return getNextStaticProps(context, {
+    templates: WPTemplates
+  });
 }
 
 export function getStaticPaths() {
-  return initializeNextStaticPaths();
+  return getNextStaticPaths();
 }

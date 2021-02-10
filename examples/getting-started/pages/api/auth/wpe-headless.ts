@@ -1,3 +1,3 @@
-import { nextAuthorizeHandler } from '@wpengine/headless';
+import { authorizeHandler } from '@wpengine/headless/dist/next';
 
-export default nextAuthorizeHandler;
+export default authorizeHandler;

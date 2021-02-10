@@ -6,17 +6,16 @@
  */
 import { GetStaticPathsResult } from 'next';
 
-export function initializeNextStaticPaths(
+export function getNextStaticPaths(
   override?: GetStaticPathsResult,
 ): GetStaticPathsResult {
   return {
     /**
-     * Only render the root path by default as we're also leveraging the fallback below which will render missing pages
-     * during runtime and cache them.
+     * Don't render any paths by default, allow overriding
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    paths: ['/'],
+    paths: [],
     /**
      * Default to 'blocking' as the fallback method to remove the need to create a loading page for a limited subset
      * of visitors (those getting an uncached page).
