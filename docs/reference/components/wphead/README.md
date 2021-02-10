@@ -10,7 +10,7 @@ Add the `<WPHead>` component to your site's header:
 
 ```tsx
 import React from 'react';
-import { WPHead } from '@wpengine/headless';
+import { WPHead } from '@wpengine/headless/nest';
 
 function Header(): JSX.Element {
   return (
@@ -34,7 +34,7 @@ Use the [Next.js `Head` component](https://nextjs.org/docs/api-reference/next/he
 
 ```tsx
 import React from 'react';
-import { WPHead } from '@wpengine/headless';
+import { WPHead } from '@wpengine/headless/next';
 import Head from 'next/head';
 
 function Header(): JSX.Element {
@@ -78,7 +78,7 @@ Place a Next.js `Head` component _after_ `WPHead` to override its title:
 
 ```tsx
 import React from 'react';
-import { WPHead } from '@wpengine/headless';
+import { WPHead } from '@wpengine/headless/next';
 import Head from 'next/head';
 
 function Header(): JSX.Element {
