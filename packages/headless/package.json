@@ -34,6 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "deepmerge": "^4.2.2",
+    "is-number": "^7.0.0",
     "isomorphic-fetch": "^3.0.0",
     "next-transpile-modules": "^6.0.0",
     "universal-cookie": "^4.0.4"
@@ -54,6 +55,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@types/express": "^4.17.9",
+    "@types/is-number": "^7.0.1",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "^26.0.16",
     "@types/node": "^14.14.10",

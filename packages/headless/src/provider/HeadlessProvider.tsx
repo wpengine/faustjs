@@ -2,6 +2,7 @@ import React from 'react';
 import { NextPageContext } from 'next';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from './apolloClient';
+import NextPreviewContext from './NextPreviewContext';
 
 interface PageProps {
   pageProps: Record<string, any>;
@@ -35,5 +36,10 @@ export function HeadlessProvider({
 }: React.PropsWithChildren<PageProps>): JSX.Element {
   const apolloClient = useApollo(ctx, pageProps);
 
-  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+  return (
+    <NextPreviewContext.Provider
+      value={{ isPreview: pageProps?.preview ?? false }}>
+      <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
+    </NextPreviewContext.Provider>
+  );
 }
