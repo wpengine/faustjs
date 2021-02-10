@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import { usePost, useGeneralSettings } from '../hooks';
+import { usePost } from './hooks';
+import { useGeneralSettings } from '../react';
 
 export function WPHead(): JSX.Element {
   const settings = useGeneralSettings();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { WPHead } from '@wpengine/headless/react';
+import { WPHead } from '@wpengine/headless/next';
 import styles from 'scss/components/Header.module.scss';
 import Link from 'next/link';
 import Head from 'next/head';
