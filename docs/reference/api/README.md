@@ -1,3 +1,5 @@
+@wpengine/headless / [Exports](modules.md)
+
 # WordPress Headless Framework
 
 [![Version](https://img.shields.io/npm/v/@wpengine/headless.svg)](https://npmjs.org/package/@wpengine/headless)
