@@ -12,6 +12,7 @@
     "lint:fix": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prepublish": "run-s build",
+    "generate-docs": "typedoc",
     "generate-graphql": "graphql-codegen",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
@@ -81,6 +82,8 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
+    "typedoc": "^0.20.23",
+    "typedoc-plugin-markdown": "^3.4.5",
     "typescript": "^4.1.2",
     "webpack": "^5.10.0",
     "webpack-cli": "^4.2.0"
