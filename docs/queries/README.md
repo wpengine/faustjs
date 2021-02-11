@@ -75,7 +75,7 @@ The code above is the simplest example of using `getContentNode` to make a query
 #### usePost
 
 ```tsx
-import { usePosts } from '@wpengine/headless/react';
+import { usePost } from '@wpengine/headless/react';
 
 // ...
 export default function Component() {
@@ -90,7 +90,7 @@ The code above is intended to be used in a React app. The framework provides a `
 **If you are using Next.js** you should take advantage of the Next-specific `usePost` hook as follows:
 
 ```tsx
-import { usePosts } from '@wpengine/headless/next';
+import { usePost } from '@wpengine/headless/next';
 
 // ...
 export default function Component() {
