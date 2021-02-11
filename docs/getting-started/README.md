@@ -33,7 +33,7 @@ This config file is where you’ll set the WordPress URL and secret key that tie
 WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
-WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 ```
 
 Now you’re ready to run the app!

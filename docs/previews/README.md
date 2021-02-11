@@ -217,7 +217,7 @@ We need to let the frontend know about our WordPress instance. The framework exp
 NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
-WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 
 # Location of the auth handler endpoint
 NEXT_PUBLIC_AUTHORIZATION_URL=/api/authorize
