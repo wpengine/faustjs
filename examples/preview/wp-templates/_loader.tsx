@@ -1,6 +1,7 @@
-import type { WPTemplates } from '@wpengine/headless/dist/components/TemplateLoader';
+import type { Templates } from '@wpengine/headless/react';
+import type { NextTemplate } from '@wpengine/headless/next';
 
-const templates: WPTemplates = {
+const templates: Templates<NextTemplate> = {
   '404': import('./404'),
   'front-page': import('./front-page'),
   index: import('./index'),

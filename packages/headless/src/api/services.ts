@@ -1,13 +1,14 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client';
 import { UriInfo } from '../types';
-import * as utils from '../utils';
 import { ensureAuthorization } from '../auth';
-import { isServerSide } from '../utils';
+import { isServerSide, getUrlPath } from '../utils';
 import {
-  GET_POSTS,
-  GET_CONTENT_NODE,
+  getPostsQuery,
+  getContentNodeQuery,
+  ListPostOptions,
   GENERAL_SETTINGS,
   GET_URI_INFO,
+  ContentNodeOptions,
 } from './queries';
 
 /**
@@ -20,12 +21,14 @@ import {
  */
 export async function getPosts(
   client: ApolloClient<NormalizedCacheObject>,
-): Promise<WPGraphQL.GetPostsQuery['posts']['nodes']> {
-  const result = await client.query<WPGraphQL.GetPostsQuery>({
-    query: GET_POSTS,
+  options?: ListPostOptions,
+): Promise<WPGraphQL.RootQuery['posts']> {
+  const result = await client.query<WPGraphQL.RootQuery>({
+    query: getPostsQuery(options),
+    variables: options?.variables,
   });
 
-  return result.data.posts.nodes;
+  return result?.data?.posts;
 }
 
 /**
@@ -41,29 +44,37 @@ export async function getPosts(
  */
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
-  id: string,
-  idType: WPGraphQL.ContentNodeIdTypeEnum = 'URI',
-  asPreview = false,
+  options: ContentNodeOptions = {},
 ): Promise<
-  | WPGraphQL.GetContentNodeQuery['contentNode']
-  | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
-  | undefined
+  WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined
 > {
+  let opts: ContentNodeOptions = options;
+
+  if (!opts) {
+    opts = {};
+  }
+
+  opts.variables = {
+    idType: 'URI',
+    asPreview: false,
+    ...opts.variables,
+  } as WPGraphQL.RootQueryContentNodeArgs;
+
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
-    query: GET_CONTENT_NODE,
-    variables: {
-      asPreview,
-      id,
-      idType,
-    },
+    query: getContentNodeQuery(),
+    variables: opts.variables,
   });
 
-  const node = result?.data?.contentNode;
+  const node = result?.data?.contentNode as
+    | WPGraphQL.RootQuery['post']
+    | WPGraphQL.RootQuery['page'];
 
   if (!node) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return undefined;
   }
+
+  const { asPreview } = opts.variables;
 
   if (asPreview && !node.isPreview) {
     if (!node.preview?.node) {
@@ -88,7 +99,9 @@ export async function getGeneralSettings(
   client: ApolloClient<NormalizedCacheObject>,
 ): Promise<WPGraphQL.GeneralSettingsQuery['generalSettings']> {
   const result = await client.query<WPGraphQL.GeneralSettingsQuery>({
-    query: GENERAL_SETTINGS,
+    query: gql`
+      ${GENERAL_SETTINGS}
+    `,
   });
 
   return result?.data?.generalSettings;
@@ -109,8 +122,8 @@ export async function getUriInfo(
   client: ApolloClient<NormalizedCacheObject>,
   uriPath: string,
   isPreview?: boolean,
-): Promise<UriInfo | void> {
-  const urlPath = utils.getUrlPath(uriPath);
+): Promise<UriInfo | undefined> {
+  const urlPath = getUrlPath(uriPath);
 
   if (isPreview && !isServerSide()) {
     const response = ensureAuthorization(window.location.href);
@@ -153,12 +166,8 @@ export async function getUriInfo(
   const { isArchive, isSingular } = response?.data?.nodeByUri?.conditionalTags;
 
   return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isPostsPage: result?.isPostsPage,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isFrontPage: result?.isFrontPage,
+    isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
+    isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
     id,
     isPreview,
     uriPath,

@@ -1,3 +1,3 @@
-import { nextAuthorizeHandler } from '@wpengine/headless';
+import { previewHandler } from '@wpengine/headless/next';
 
-export default nextAuthorizeHandler;
+export default previewHandler;

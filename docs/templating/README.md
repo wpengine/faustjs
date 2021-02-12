@@ -32,10 +32,10 @@ The component in this page should simply return `<NextTemplateLoader />` with a 
 ```tsx
 import React from 'react';
 import {
-  TemplateLoader,
-  initializeNextStaticProps,
-  initializeNextStaticPaths,
-} from '@wpengine/headless';
+  NextTemplateLoader,
+  getNextStaticPaths,
+  getNextStaticProps,
+} from '@wpengine/headless/next';
 
 import WPTemplates from '../wp-templates/_loader';
 
@@ -44,11 +44,11 @@ export default function Page() {
 }
 
 export function getStaticProps(context: any) {
-  return initializeNextStaticProps(context, WPTemplates);
+  return getNextStaticProps(context, WPTemplates);
 }
 
 export function getStaticPaths() {
-  return initializeNextStaticPaths();
+  return getNextStaticPaths();
 }
 ```
 
@@ -86,27 +86,29 @@ export default templates;
 
 Much like a Next.js page, templates need to export a React component at a minimum.
 
-### `getPropsMiddleware`
+### `getServerSideProps` and `getStaticProps`
 
-Optionally, you can export a named function in the template called `getPropsMiddleware` with the following signature:
+Optionally, you can export named functions in the template called `getServerSideProps` and `getStaticProps` with the following signatures:
 
 ```tsx
-export function getPropsMiddleware(
-  promises: Array<Promise<unknown> | undefined>,
-  apolloClient: ApolloClient<NormalizedCacheObject>,
-  currentUrlPath: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  context: GetStaticPropsContext | GetServerSidePropsContext,
-): Array<Promise<unknown> | undefined>
+export async function getStaticProps(
+  context: GetStaticPropsContext,
+): Promise<void>;
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<void>;
 ```
 
-This function can be used to modify an array of Apollo Client promises that will be executed when Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
+These functions can be used to make additional requests using the Apollo Client that will be executed when Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
 
 You may find this useful if you find that you need additional data from the WordPress backend that isn't otherwise fetched by default.
 
+In a normal Next.js page you would only implement one of these functions. Since theme components are not Next.js pages these functions are called on by the framework, not Next.js. If you are shipping a reusable Theme component you will want to export both functions. The framework will call on the function that corresponds to what the Next.js page uses. So if the Next.js page is using `getStaticProps`, the framework will call the `getStaticProps` function on your theme component.
+
 ### Example
 
-See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/examples/preview/theme/single.tsx) in our preview example. This template exports both a component and `getPropsMiddleware` to modify the default data requested in the Next.js Data Fetchers.
+See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/examples/preview/theme/single.tsx) in our preview example. This template exports the component, `getStaticProps`, and `getServerSideProps` to modify the default data requested in the Next.js Data Fetchers.
 
 # CMS-Based Routing (Template Hierarchy) Flow
 

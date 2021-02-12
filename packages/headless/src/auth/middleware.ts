@@ -1,27 +1,37 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { IncomingMessage, ServerResponse } from 'http';
+import { getQueryParam } from '../utils';
 import { authorize, ensureAuthorization } from './authorize';
-import { getAccessTokenAsCookie, storeAccessToken } from './cookie';
+import { storeAccessToken } from './cookie';
+
+function redirect(res: ServerResponse, url: string) {
+  res.writeHead(302, {
+    Location: url,
+  });
+
+  res.end();
+}
 
 /**
  * A Node handler for processing incomming requests to exchange an Authorization Code
  * for an Access Token using the WordPress API. Once the code is exchanged, this
  * handler stores the Access Token on the cookie and redirects to the frontend.
  */
-export async function nextAuthorizeHandler(
-  req: NextApiRequest,
-  res: NextApiResponse,
+export async function authorizeHandler(
+  req: IncomingMessage,
+  res: ServerResponse,
 ): Promise<void> {
   try {
-    const { code, redirect_uri: redirectUri } = req.query;
+    const url = req.url as string;
+    const code = getQueryParam(url, 'code');
+    const redirectUri = getQueryParam(url, 'redirect_uri');
 
     const host = req.headers.host ?? '';
     const cookieOptions = {
       request: req,
     };
-    const cookies = getAccessTokenAsCookie(cookieOptions);
 
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = `${protocol}//${host}/${redirectUri as string}`;
+    const fullRedirectUrl = `${protocol}//${host}/${redirectUri}`;
 
     /**
      * If missing code, this is a request that's meant to trigger authorization such as a preview.
@@ -30,26 +40,15 @@ export async function nextAuthorizeHandler(
       const response = ensureAuthorization(fullRedirectUrl, cookieOptions);
 
       if (typeof response !== 'string' && response?.redirect) {
-        res.redirect(response.redirect);
+        redirect(res, response.redirect);
 
         return;
       }
 
       /**
-       * Add server host to previewData so initializeNextStaticProps() can properly redirect as getStaticProps() does not
-       * have the headers or host in the context.
-       */
-      res.setPreviewData({
-        serverInfo: {
-          host,
-          cookies,
-        },
-      });
-
-      /**
        * We already have an auth code stored, go ahead and redirect.
        */
-      res.redirect(fullRedirectUrl);
+      redirect(res, fullRedirectUrl);
       return;
     }
 
@@ -60,32 +59,13 @@ export async function nextAuthorizeHandler(
       return;
     }
 
-    const result = await authorize(code as string);
+    const result = await authorize(code);
     storeAccessToken(result.access_token, res, {
       request: req,
     });
 
-    /**
-     * Set cookie to enable previewing.
-     */
-    console.debug('Setting Next.js Preview Data');
-
-    /**
-     * Add server host to previewData so initializeNextStaticProps() can properly redirect as getStaticProps() does not
-     * have the headers or host in the context.
-     */
-    res.setPreviewData({
-      serverInfo: {
-        host,
-        cookies,
-      },
-    });
-
-    res.redirect(redirectUri as string);
+    redirect(res, redirectUri);
   } catch (e) {
-    console.debug('Clearing Next.js Preview Data');
-    res.clearPreviewData();
-
     res.statusCode = 500;
     res.end();
   }

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_URI_INFO = gql`
+export const GET_URI_INFO = gql`
   query GetUriInfo($uri: String!) {
     nodeByUri(uri: $uri) {
       id
@@ -16,5 +16,3 @@ const GET_URI_INFO = gql`
     }
   }
 `;
-
-export { GET_URI_INFO };

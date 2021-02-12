@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePosts, useGeneralSettings } from '@wpengine/headless';
+import { usePosts, useGeneralSettings } from '@wpengine/headless/react';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
 import styles from '../scss/wp-templates/front-page.module.scss';
 
@@ -106,7 +106,7 @@ export default function FrontPage(): JSX.Element {
           </div>
         </section>
         <Posts
-          posts={posts}
+          posts={posts?.nodes}
           heading="Latest Posts"
           intro="The Posts component in wp-templates/front-page.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"

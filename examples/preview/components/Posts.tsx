@@ -3,24 +3,8 @@ import Link from 'next/link';
 import styles from 'scss/components/Posts.module.scss';
 import Heading, { HeadingProps } from './Heading';
 
-interface Post {
-  id: string;
-  slug?: string;
-  title?: string;
-  content?: string;
-  isRevision?: boolean;
-  isPreview?: boolean;
-  isSticky: boolean;
-  excerpt?: string;
-  uri: string;
-  status?: string;
-  featuredImage?: {
-    node: { id: string; altText?: string; sourceUrl?: string };
-  };
-}
-
 interface Props {
-  posts: Post[] | undefined;
+  posts: WPGraphQL.Post[] | undefined;
   intro?: string;
   id?: string;
   count?: number;
