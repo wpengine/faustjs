@@ -112,4 +112,4 @@ See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/ex
 
 # CMS-Based Routing (Template Hierarchy) Flow
 
-![CMS-Based Routing](./cms-based-routing.jpg)
+![CMS-Based Routing](/docs/templating/cms-based-routing.jpg)
