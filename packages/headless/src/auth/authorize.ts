@@ -4,7 +4,7 @@ import {
   trimLeadingSlash,
   trimTrailingSlash,
 } from '../utils';
-import { getAccessToken } from './cookie';
+import { CookieOptions, getAccessToken } from './cookie';
 
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
@@ -15,11 +15,11 @@ const AUTH_URL = trimTrailingSlash(
     '/api/auth/wpe-headless',
 );
 
-const API_CLIENT_SECRET = process.env.WPE_HEADLESS_SECRET;
+const API_CLIENT_SECRET = process.env.WP_HEADLESS_SECRET;
 
 if (!API_CLIENT_SECRET && isServerSide()) {
   throw new Error(
-    'WPE_HEADLESS_SECRET environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use authenticated API calls.',
+    'WP_HEADLESS_SECRET environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use authenticated API calls.',
   );
 }
 
@@ -73,8 +73,9 @@ export async function authorize(
  */
 export function ensureAuthorization(
   redirectUri: string,
+  options?: CookieOptions,
 ): string | { redirect: string } | undefined {
-  const accessToken = getAccessToken();
+  const accessToken = getAccessToken(options);
 
   if (!WP_URL) {
     return undefined;

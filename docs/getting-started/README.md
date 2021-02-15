@@ -33,7 +33,7 @@ This config file is where you’ll set the WordPress URL and secret key that tie
 WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
-WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 ```
 
 Now you’re ready to run the app!
@@ -54,9 +54,9 @@ We’re using a Next.js [Custom App](https://nextjs.org/docs/advanced-features/c
 
 In Next.js, pages are used for both rendering and routing purposes. For instance, an `about.tsx` file would automatically be rendered at `/about`. In our example, we’re using an [optional catch-all route](https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes) - `[[..page]].tsx`, which Next.js will hit any time a request is made. This component simply returns a `<TemplateLoader />` component. `TemplateLoader` is imported from the [@wpengine/headless](https://npmjs.org/package/@wpengine/headless) npm package and is responsible for determining what template to render based on the requested URL’s content type in WordPress. This allows you to mimic the [WordPress template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) inside your Next.js app.
 
-### ```/theme/```
+### ```/wp-templates/```
 
-The `theme/` folder contains templates that are responsible for the final rendering of a page. They are rendered from the `<TemplateLoader />` in the catch-all route page mentioned above, in the same way that WordPress PHP theme files are loaded according to the template hierarchy. This is accomplished by the `TemplateLoader` picking up what type of WordPress content is sent over from GraphQL. The naming convention of files in the `theme/` directory follows 1:1 with the WordPress template hierarchy. For example, `single.tsx` is the template rendered for single posts, `page.tsx` is the template for pages, `category.tsx` is for categories, and so on.
+The `wp-templates/` folder contains templates that are responsible for the final rendering of a page. They are rendered from the `<NextTemplateLoader />` (`<TemplateLoader />` if not using Next.js) in the catch-all route page mentioned above, in the same way that WordPress PHP theme files are loaded according to the template hierarchy. This is accomplished by the `TemplateLoader` picking up what type of WordPress content is sent over from GraphQL. The naming convention of files in the `wp-templates/` directory follows 1:1 with the WordPress template hierarchy. For example, `single.tsx` is the template rendered for single posts, `page.tsx` is the template for pages, `category.tsx` is for categories, and so on.
 
 An `index.tsx` and `single.tsx` template is included in our example project. To handle other content types like pages or custom types, you can create a new `.tsx` file with the name of the desired template.
 
@@ -68,7 +68,5 @@ The [@wpengine/headless](https://npmjs.org/package/@wpengine/headless) npm packa
 
 ## Learn more
 
-- [Enabling WordPress post previews](/docs/preview/)
+- [Enabling WordPress post previews](/docs/previews/)
 - [Using the WordPress template hierarchy in Next.js](/docs/templating/)
-
-

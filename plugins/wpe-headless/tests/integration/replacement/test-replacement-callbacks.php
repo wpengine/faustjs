@@ -58,17 +58,60 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests wpe_headless_content_media_replacement() replaces the frontend_uri value when content replacement is enabled.
+	 * Tests wpe_headless_image_source_replacement() replaces the frontend_uri value when image replacement is enabled.
 	 */
-	public function test_wpe_headless_content_media_replacement_filters_content_when_content_replacement_enabled() {
+	public function test_wpe_headless_image_source_replacement_filters_content_when_image_replacement_enabled() {
 		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
-		add_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
+		wpe_headless_update_setting( 'enable_image_source', '1' );
 		# Do not replace partial domain match.
-		$this->assertSame( '<img src="http://foo.com/image.png">', wpe_headless_content_media_replacement( '<img src="http://foo.com/image.png">' ) );
+		$this->assertSame( '<img src="http://foo.com/image.png">', wpe_headless_image_source_replacement( '<img src="http://foo.com/image.png">' ) );
 		# Do replace exact domain match
-		$this->assertSame( '<img src="http://example.org/image.png">', wpe_headless_content_media_replacement( '<img src="http://foo.co/image.png">' ) );
+		$this->assertSame( '<img src="http://example.org/image.png">', wpe_headless_image_source_replacement( '<img src="http://foo.co/image.png">' ) );
+		$this->assertSame( '<img src="http://example.org/image.png">', wpe_headless_image_source_replacement( '<img src="/image.png">' ) );
 		wpe_headless_update_setting( 'frontend_uri', null );
-		remove_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
+		wpe_headless_update_setting( 'enable_image_source', '0' );
+	}
+
+	/**
+	 * Tests wpe_headless_image_source_srcset_replacement() replaces the frontend_uri value when image replacement is enabled.
+	 */
+	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_image_replacement_enabled() {
+		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
+		wpe_headless_update_setting( 'enable_image_source', '1' );
+		# Do not replace partial domain match.
+		# Do replace exact domain match
+		$sources = array (
+			100 => array('url' => 'http://foo.com/image100.png'),
+			300 => array('url' => '/wp-content/uploads/image300.jpg'),
+			400 => array('url' => 'http://foo.co/image400.png'),
+		);
+		$expected = array (
+			100 => array('url' => 'http://foo.com/image100.png'),
+			300 => array('url' => 'http://example.org/wp-content/uploads/image300.jpg'),
+			400 => array('url' => 'http://example.org/image400.png'),
+		);
+		$this->assertSame( $expected, wpe_headless_image_source_srcset_replacement( $sources ) );
+		wpe_headless_update_setting( 'frontend_uri', null );
+		wpe_headless_update_setting( 'enable_image_source', '0' );
+	}
+
+	/**
+	 * Tests wpe_headless_image_source_replacement() doesn't replace when image replacement is not enabled.
+	 */
+	public function test_wpe_headless_image_source_replacement_filters_content_when_image_replacement_not_enabled() {
+		wpe_headless_update_setting( 'enable_image_source', '0' );
+		$this->assertSame( '<img src="/image.png">', wpe_headless_image_source_replacement( '<img src="/image.png">' ) );
+	}
+
+	/**
+	 * Tests wpe_headless_image_source_srcset_replacement() doesn't replace when image replacement is not enabled.
+	 */
+	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_image_replacement_not_enabled() {
+		wpe_headless_update_setting( 'enable_image_source', '0' );
+		$sources = array (
+			100 => array('url' => '/wp-content/uploads/image.jpg'),
+		);
+		$this->assertSame( $sources, wpe_headless_image_source_srcset_replacement( $sources ) );
 	}
 
 	/**
@@ -87,7 +130,7 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
 		wpe_headless_update_setting( 'enable_rewrites', true );
 		// @todo this feels like a hack
-		$this->assertSame( 'http://moo/api/auth/wpe-headless?redirect_uri=' . urlencode( '?p=' . $this->post_id . '/preview/' . $this->post_id ), get_preview_post_link( $this->post_id ) );
+		$this->assertSame( 'http://moo/api/auth/wpe-headless?redirect_uri=' . urlencode( 'preview/' . $this->post_id ), get_preview_post_link( $this->post_id ) );
 	}
 
 	/**

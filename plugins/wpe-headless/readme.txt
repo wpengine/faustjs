@@ -4,12 +4,12 @@ Tags:
 Requires at least: 5.3
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
 
-Proof of concept for working with the Headless API.
+Transform your WordPress site to a powerful Headless API.
 
 == Description ==
 
@@ -22,6 +22,12 @@ Proof of concept for working with the Headless API.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.5.0 =
+- WPE_HEADLESS_SECRET_KEY has been renamed to WP_HEADLESS_SECRET_KEY.
+
+= 0.4.1 =
+- Fixed potential authentication issue with WP GraphQL
 
 = 0.4.0 =
 - Redesigned settings page.

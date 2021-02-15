@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless",
-  "version": "0.3.5-alpha.1",
+  "version": "0.6.0",
   "description": "This module helps you use WordPress as a Headless CMS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,8 +12,9 @@
     "lint:fix": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prepublish": "run-s build",
+    "generate-docs": "typedoc",
     "generate-graphql": "graphql-codegen",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
     "ts:watch": "tsc -p . --watch"
@@ -34,6 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "deepmerge": "^4.2.2",
+    "is-number": "^7.0.0",
     "isomorphic-fetch": "^3.0.0",
     "next-transpile-modules": "^6.0.0",
     "universal-cookie": "^4.0.4"
@@ -47,12 +49,14 @@
   },
   "devDependencies": {
     "@apollo/client": "^3.3.4",
+    "@graphql-codegen/add": "^2.0.2",
     "@graphql-codegen/cli": "^1.20.0",
     "@graphql-codegen/typescript": "^1.20.0",
     "@graphql-codegen/typescript-operations": "^1.17.13",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@types/express": "^4.17.9",
+    "@types/is-number": "^7.0.1",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/jest": "^26.0.16",
     "@types/node": "^14.14.10",
@@ -78,6 +82,8 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
+    "typedoc": "^0.20.23",
+    "typedoc-plugin-markdown": "^3.4.5",
     "typescript": "^4.1.2",
     "webpack": "^5.10.0",
     "webpack-cli": "^4.2.0"

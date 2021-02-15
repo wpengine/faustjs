@@ -7,7 +7,7 @@
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-headless
  * Domain Path: /languages
- * Version: 0.4.0
+ * Version: 0.5.0
  *
  * @package WPE_Headless
  */
@@ -44,17 +44,18 @@ if ( wpe_headless_is_events_enabled() ) {
 	require WPE_HEADLESS_DIR . '/includes/events/callbacks.php';
 }
 
+add_action( 'activated_plugin', 'wpe_headless_activated_plugin', 10, 2 );
 /**
- * Runs plugin activation tasks.
+ * Callback for WordPress 'activated_plugin' action.
+ *
+ * Redirect the user to WPE Headless settings page on activation.
+ *
+ * @param string $plugin       The plugin name.
+ * @param bool   $network_wide True if a network plugin, false if else.
  */
-add_action(
-	'activated_plugin',
-	static function( $plugin, $network_wide ) {
-		if ( ! $network_wide && plugin_basename( __FILE__ ) === $plugin ) {
-			wp_safe_redirect( esc_url( admin_url( 'options-general.php?page=wpe-headless-settings' ) ) );
-			exit;
-		}
-	},
-	10,
-	2
-);
+function wpe_headless_activated_plugin( $plugin, $network_wide ) {
+	if ( ! defined( 'WP_CLI' ) && ! $network_wide && WPE_HEADLESS_PATH === $plugin ) {
+		wp_safe_redirect( esc_url( admin_url( 'options-general.php?page=wpe-headless-settings' ) ) );
+		exit;
+	}
+}

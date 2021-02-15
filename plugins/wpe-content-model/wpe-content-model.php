@@ -21,3 +21,11 @@ define( 'WPE_CONTENT_MODEL_DIR', __DIR__ );
 define( 'WPE_CONTENT_MODEL_URL', plugin_dir_url( __FILE__ ) );
 define( 'WPE_CONTENT_MODEL_PATH', plugin_basename( WPE_CONTENT_MODEL_FILE ) );
 define( 'WPE_CONTENT_MODEL_SLUG', dirname( plugin_basename( WPE_CONTENT_MODEL_FILE ) ) );
+
+add_action( 'plugins_loaded', 'wpe_content_model_loader' );
+/**
+ * Bootstraps the plugin.
+ */
+function wpe_content_model_loader(): void {
+	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
+}

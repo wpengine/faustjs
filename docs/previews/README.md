@@ -116,15 +116,15 @@ For this example, we're only going to need one page to handle all of our routes 
 ```jsx
 import React from 'react';
 import {
-  useNextUriInfo,
-  initializeNextServerSideProps,
-} from '@wpengine/headless';
+  useUriInfo,
+  getNextServerSideProps,
+} from '@wpengine/headless/next';
 import { GetServerSidePropsContext } from 'next';
 import Posts from '../lib/components/Posts';
 import Post from '../lib/components/Post';
 
 export default function Page() {
-  const pageInfo = useNextUriInfo();
+  const pageInfo = useUriInfo();
 
   if (!pageInfo) {
     return <></>;
@@ -138,19 +138,19 @@ export default function Page() {
 }
 
 export function getServerSideProps(context: GetServerSidePropsContext) {
-  return initializeNextServerSideProps(context);
+  return getNextServerSideProps(context);
 }
 ```
 
-`useNextUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
+`useUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
 
-`initializeNextServerSideProps` is used to allow for Server Side Rendering. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
+`getNextServerSideProps` is used to allow for Server Side Rendering. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
 
 `/lib/components/Post.tsx`
 
 ```jsx
 import React from 'react';
-import { usePost } from '@wpengine/headless';
+import { usePost } from '@wpengine/headless/next';
 
 export default function Post() {
   const post = usePost();
@@ -179,7 +179,7 @@ export default function Post() {
 ```jsx
 import React from 'react';
 import Link from 'next/link';
-import { usePosts } from '@wpengine/headless';
+import { usePosts } from '@wpengine/headless/react';
 
 export default function Posts() {
   const posts = usePosts();
@@ -217,7 +217,7 @@ We need to let the frontend know about our WordPress instance. The framework exp
 NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
-WPE_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 
 # Location of the auth handler endpoint
 NEXT_PUBLIC_AUTHORIZATION_URL=/api/authorize

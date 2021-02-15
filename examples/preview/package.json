@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build": "next build",
+    "clean": "rimraf .next node_modules",
     "dev": "next dev",
-    "dev-lerna": "wait-on ./node_modules/@wpengine/headless/dist/index.js && npm run dev",
     "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
     "lint": "tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
@@ -28,12 +28,14 @@
   "homepage": "https://github.com/wpengine/headless-framework/tree/main/examples/preview#readme",
   "dependencies": {
     "@apollo/client": "^3.3.4",
-    "@wpengine/headless": "0.3.5-alpha.1",
+    "@wpengine/headless": "^0.6.0",
     "graphql": "^15.4.0",
-    "next": "^10.0.3",
+    "next": "^10.0.5",
+    "normalize.css": "^8.0.1",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "sass": "^1.32.5"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
@@ -53,6 +55,7 @@
     "husky": "^4.3.5",
     "open-cli": "^6.0.1",
     "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.1.2",
     "wait-on": "^5.2.1"
   }

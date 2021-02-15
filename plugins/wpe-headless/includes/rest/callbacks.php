@@ -23,7 +23,7 @@ add_filter( 'graphql_authentication_errors', 'wpe_headless_rest_validate_access_
  * @return bool True if the Authorization header exists and is invalid, false otherwise.
  */
 function wpe_headless_rest_validate_access_token( $authentication_errors ) {
-	if ( ! isset( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
+	if ( empty( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
 		return $authentication_errors;
 	}
 

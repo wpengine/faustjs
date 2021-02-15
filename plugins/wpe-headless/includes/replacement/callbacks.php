@@ -35,28 +35,58 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'the_content', 'wpe_headless_content_media_replacement' );
+add_filter( 'the_content', 'wpe_headless_image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
  * @param string $content The post content.
  *
  * @return string The post content.
- * @todo Needs work...
  */
-function wpe_headless_content_media_replacement( $content ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+function wpe_headless_image_source_replacement( $content ) {
+	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
 		return $content;
 	}
 
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 	$site_url     = site_url();
 
-	if ( ! $frontend_uri ) {
-		$frontend_uri = '/';
+	// For urls with no domain or the frontend domain, replace with the wp site_url.
+	$patterns = array(
+		"#src=\"{$frontend_uri}/#",
+		'#src="/#',
+	);
+	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
+}
+
+add_filter( 'wp_calculate_image_srcset', 'wpe_headless_image_source_srcset_replacement' );
+/**
+ * Callback for WordPress 'the_content' filter to replace paths to media.
+ *
+ * @param array $sources One or more arrays of source data to include in the 'srcset'.
+ *
+ * @return string One or more arrays of source data.
+ */
+function wpe_headless_image_source_srcset_replacement( $sources ) {
+	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
+		return $sources;
 	}
 
-	return str_replace( "src=\"{$frontend_uri}/", "src=\"{$site_url}/", $content );
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$site_url     = site_url();
+
+	if ( is_array( $sources ) ) {
+		// For urls with no domain or the frontend domain, replace with the wp site_url.
+		$patterns = array(
+			"#^{$frontend_uri}/#",
+			'#^/#',
+		);
+		foreach ( $sources as $width => $source ) {
+			$sources[ $width ]['url'] = preg_replace( $patterns, "$site_url/", $sources[ $width ]['url'] );
+		}
+	}
+
+	return $sources;
 }
 
 add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
@@ -83,28 +113,25 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		 */
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
-		$args       = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
+		$args = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
+		$path = wp_parse_url( $link, PHP_URL_PATH );
+
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
-
-		/**
-		 * Remove query vars as Next.js cannot read query params in SSG
-		 */
-		$link = remove_query_arg( array( 'preview_id', 'preview_nonce', 'preview' ), $link );
-
-		/**
-		 * Replace the path with a query param
-		 */
-		$link_split = explode( '/', $link );
-		$path       = join( '/', array_slice( $link_split, 3 ) );
 
 		/**
 		 * Add preview and preview ID back to path to support Next.js preview mode
 		 */
-		$path = trailingslashit( $path ) . 'preview/' . $preview_id;
+		if ( 'publish' !== $post->post_status ) {
+			$path = 'draft/';
+		} else {
+			$path = $path ? trailingslashit( $path ) : '';
+		}
+
+		$path .= 'preview/' . $preview_id;
 
 		$link = add_query_arg(
 			array(
-				'redirect_uri' => rawurlencode( $path ),
+				'redirect_uri' => rawurlencode( ltrim( $path, '/' ) ),
 			),
 			$frontend_uri . 'api/auth/wpe-headless'
 		);

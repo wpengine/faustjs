@@ -1,8 +1,15 @@
-import { gql, ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { WPGraphQL, UriInfo } from '../types';
-import * as utils from '../utils';
+import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client';
+import { UriInfo } from '../types';
 import { ensureAuthorization } from '../auth';
-import { isServerSide } from '../utils';
+import { isServerSide, getUrlPath } from '../utils';
+import {
+  getPostsQuery,
+  getContentNodeQuery,
+  ListPostOptions,
+  GENERAL_SETTINGS,
+  GET_URI_INFO,
+  ContentNodeOptions,
+} from './queries';
 
 /**
  * Gets all posts from WordPress
@@ -14,36 +21,14 @@ import { isServerSide } from '../utils';
  */
 export async function getPosts(
   client: ApolloClient<NormalizedCacheObject>,
-): Promise<WPGraphQL.GetPostsQuery['posts']['nodes']> {
-  const result = await client.query<WPGraphQL.GetPostsQuery>({
-    query: gql`
-      query GetPosts {
-        posts {
-          nodes {
-            id
-            slug
-            title
-            content
-            isRevision
-            isPreview
-            isSticky
-            excerpt
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
-          }
-        }
-      }
-    `,
+  options?: ListPostOptions,
+): Promise<WPGraphQL.RootQuery['posts']> {
+  const result = await client.query<WPGraphQL.RootQuery>({
+    query: getPostsQuery(options),
+    variables: options?.variables,
   });
 
-  return result.data.posts.nodes;
+  return result?.data?.posts;
 }
 
 /**
@@ -59,132 +44,39 @@ export async function getPosts(
  */
 export async function getContentNode(
   client: ApolloClient<NormalizedCacheObject>,
-  id: string,
-  idType: WPGraphQL.ContentNodeIdTypeEnum = WPGraphQL.ContentNodeIdTypeEnum.Uri,
-  asPreview = false,
+  options: ContentNodeOptions = {},
 ): Promise<
-  | WPGraphQL.GetContentNodeQuery['contentNode']
-  | WPGraphQL.GetContentNodeQuery['contentNode']['preview']['node']
-  | undefined
+  WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined
 > {
+  let opts: ContentNodeOptions = options;
+
+  if (!opts) {
+    opts = {};
+  }
+
+  opts.variables = {
+    idType: 'URI',
+    asPreview: false,
+    ...opts.variables,
+  } as WPGraphQL.RootQueryContentNodeArgs;
+
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
-    query: gql`
-      query GetContentNode(
-        $id: ID!
-        $idType: ContentNodeIdTypeEnum
-        $asPreview: Boolean
-      ) {
-        contentNode(id: $id, idType: $idType, asPreview: $asPreview) {
-          ... on Post {
-            id
-            slug
-            title
-            content
-            isRevision
-            isPreview
-            isSticky
-            excerpt
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
-            preview {
-              node {
-                id
-                slug
-                title
-                content
-                isRevision
-                isPreview
-                isSticky
-                excerpt
-                uri
-                status
-                featuredImage {
-                  node {
-                    id
-                    altText
-                    sourceUrl
-                  }
-                }
-              }
-            }
-            enqueuedStylesheets {
-              nodes {
-                src
-                handle
-              }
-            }
-          }
-          ... on Page {
-            id
-            slug
-            title
-            content
-            isPreview
-            isRevision
-            isFrontPage
-            isPostsPage
-            uri
-            status
-            featuredImage {
-              node {
-                id
-                altText
-                sourceUrl
-              }
-            }
-            preview {
-              node {
-                id
-                slug
-                title
-                content
-                isPreview
-                isRevision
-                isFrontPage
-                isPostsPage
-                uri
-                status
-                featuredImage {
-                  node {
-                    id
-                    altText
-                    sourceUrl
-                  }
-                }
-              }
-            }
-            enqueuedStylesheets {
-              nodes {
-                src
-                handle
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      id,
-      idType,
-      asPreview,
-    },
+    query: getContentNodeQuery(),
+    variables: opts.variables,
   });
 
-  const node = result?.data?.contentNode;
+  const node = result?.data?.contentNode as
+    | WPGraphQL.RootQuery['post']
+    | WPGraphQL.RootQuery['page'];
 
   if (!node) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return undefined;
   }
 
-  if (asPreview && node.isPreview) {
+  const { asPreview } = opts.variables;
+
+  if (asPreview && !node.isPreview) {
     if (!node.preview?.node) {
       return node;
     }
@@ -208,12 +100,7 @@ export async function getGeneralSettings(
 ): Promise<WPGraphQL.GeneralSettingsQuery['generalSettings']> {
   const result = await client.query<WPGraphQL.GeneralSettingsQuery>({
     query: gql`
-      query GeneralSettings {
-        generalSettings {
-          title
-          description
-        }
-      }
+      ${GENERAL_SETTINGS}
     `,
   });
 
@@ -235,8 +122,8 @@ export async function getUriInfo(
   client: ApolloClient<NormalizedCacheObject>,
   uriPath: string,
   isPreview?: boolean,
-): Promise<UriInfo | void> {
-  const urlPath = utils.getUrlPath(uriPath);
+): Promise<UriInfo | undefined> {
+  const urlPath = getUrlPath(uriPath);
 
   if (isPreview && !isServerSide()) {
     const response = ensureAuthorization(window.location.href);
@@ -251,18 +138,7 @@ export async function getUriInfo(
     WPGraphQL.GetUriInfoQuery,
     WPGraphQL.GetUriInfoQueryVariables
   >({
-    query: gql`
-      query GetUriInfo($uri: String!) {
-        nodeByUri(uri: $uri) {
-          id
-          templates
-          ... on ContentType {
-            isFrontPage
-            isPostsPage
-          }
-        }
-      }
-    `,
+    query: GET_URI_INFO,
     variables: {
       uri: urlPath,
     },
@@ -280,23 +156,24 @@ export async function getUriInfo(
 
     return {
       is404: true,
+      templates: ['404'],
       uriPath,
     };
   }
 
   const { id, templates } = result;
 
+  const { isArchive, isSingular } = response?.data?.nodeByUri?.conditionalTags;
+
   return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isPostsPage: result?.isPostsPage,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    isFrontPage: result?.isFrontPage,
+    isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
+    isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
     id,
     isPreview,
     uriPath,
     templates,
+    isArchive,
+    isSingular,
   };
 }
 /* eslint-enable consistent-return */

@@ -46,6 +46,16 @@ function wpe_headless_is_events_enabled() {
 }
 
 /**
+ * Determine if sourcing images from WP domain is enabled.
+ *
+ * @return bool True if image sources from WP are enabled, false if else.
+ */
+function wpe_headless_is_image_source_replacement_enabled() {
+	return '1' === wpe_headless_get_setting( 'enable_image_source' );
+}
+
+
+/**
  * Get the secret key setting.
  *
  * @return string The secret key.

@@ -21,47 +21,64 @@ Luckily, the WP Engine Headless Framework brings WordPress Template Hierarchy to
 
 The steps below assume that you have created a `pages/_app.tsx` file that uses `<HeadlessProvider />`.
 
-#### 1. Embed `<TemplateLoader />`
+#### 1. Embed `<NextTemplateLoader />`
 
 The first step in enabling Template Hierarchy in your Next.js project using this framework is to create an [optional catch-all route](https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes) in the `pages` directory named `[[...page]].tsx`.
 
 This optional catch-all route will act as a fallback for all pages and route all requests to the Headless Framework's Template Loader.
 
-The component in this page should simply return `<TemplateLoader />`. Example:
+The component in this page should simply return `<NextTemplateLoader />` with a `templates` prop. Example:
 
 ```tsx
 import React from 'react';
 import {
-  TemplateLoader,
-  initializeNextStaticProps,
-  initializeNextStaticPaths,
-} from '@wpengine/headless';
+  NextTemplateLoader,
+  getNextStaticPaths,
+  getNextStaticProps,
+} from '@wpengine/headless/next';
+
+import WPTemplates from '../wp-templates/_loader';
 
 export default function Page() {
-  return <TemplateLoader />;
+  return <NextTemplateLoader templates={WPTemplates} />;
 }
 
 export function getStaticProps(context: any) {
-  return initializeNextStaticProps(context);
+  return getNextStaticProps(context, WPTemplates);
 }
 
 export function getStaticPaths() {
-  return initializeNextStaticPaths();
+  return getNextStaticPaths();
 }
 ```
 
 #### 2. Add Templates
 
-After setting up the Template Loader, the next step is to simply add templates. Templates should be added to a directory named `theme` adjacent to the `pages` folder in a Next.js project.
+After setting up the Template Loader, the next step is to add templates and a loader file that exports all of the templates. Templates should be added to a directory named `wp-templates` adjacent to the `pages` folder in a Next.js project.
 
 The name of the template should follow WordPress' template hierarchy above, but the files should be JSX/TSX instead of PHP.
 
 **Examples:**
 
-* `theme/index.tsx`
-* `theme/single.tsx`
-* `theme/page.tsx`
-* `theme/page-example-slug.tsx`
+* `wp-templates/index.tsx`
+* `wp-templates/single.tsx`
+* `wp-templates/page.tsx`
+* `wp-templates/page-example-slug.tsx`
+
+#### 2b. Export templates
+
+After adding the templates, you will want to export them in a file named `wp-templates/_loader.ts`.
+
+```typescript
+const templates = {
+  index: import('./index'),
+  page: import('./page'),
+  'page-example-slug': import('./page-example-slug'),
+  single: import('./single'),
+};
+
+export default templates;
+```
 
 ## Anatomy of a Template
 
@@ -69,28 +86,30 @@ The name of the template should follow WordPress' template hierarchy above, but 
 
 Much like a Next.js page, templates need to export a React component at a minimum.
 
-### `getPropsMiddleware`
+### `getServerSideProps` and `getStaticProps`
 
-Optionally, you can export a named function in the template called `getPropsMiddleware` with the following signature:
+Optionally, you can export named functions in the template called `getServerSideProps` and `getStaticProps` with the following signatures:
 
 ```tsx
-export function getPropsMiddleware(
-  promises: Array<Promise<unknown> | undefined>,
-  apolloClient: ApolloClient<NormalizedCacheObject>,
-  currentUrlPath: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  context: GetStaticPropsContext | GetServerSidePropsContext,
-): Array<Promise<unknown> | undefined>
+export async function getStaticProps(
+  context: GetStaticPropsContext,
+): Promise<void>;
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<void>;
 ```
 
-This function can be used to modify an array of Apollo Client promises that will be executed when Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
+These functions can be used to make additional requests using the Apollo Client that will be executed when Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
 
 You may find this useful if you find that you need additional data from the WordPress backend that isn't otherwise fetched by default.
 
+In a normal Next.js page you would only implement one of these functions. Since theme components are not Next.js pages these functions are called on by the framework, not Next.js. If you are shipping a reusable Theme component you will want to export both functions. The framework will call on the function that corresponds to what the Next.js page uses. So if the Next.js page is using `getStaticProps`, the framework will call the `getStaticProps` function on your theme component.
+
 ### Example
 
-See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/examples/preview/theme/single.tsx) in our preview example. This template exports both a component and `getPropsMiddleware` to modify the default data requested in the Next.js Data Fetchers.
+See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/examples/preview/theme/single.tsx) in our preview example. This template exports the component, `getStaticProps`, and `getServerSideProps` to modify the default data requested in the Next.js Data Fetchers.
 
 # CMS-Based Routing (Template Hierarchy) Flow
 
-![CMS-Based Routing](./cms-based-routing.jpg)
+![CMS-Based Routing](/docs/templating/cms-based-routing.jpg)
