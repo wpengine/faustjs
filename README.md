@@ -77,7 +77,7 @@ npm install --save @wpengine/headless
 
 ## Guides
 
-* [Getting started with the Headless Framework](/docs/getting-started/README.mid)
+* [Getting started with the Headless Framework](/docs/getting-started/README.md)
 * [Enabling post previews in Next.js](/docs/previews/README.md)
 * [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
 
