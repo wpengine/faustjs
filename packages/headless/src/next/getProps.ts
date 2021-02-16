@@ -149,8 +149,13 @@ export async function getNextStaticProps(
     config,
   );
 
-  if (!!(pageProps as Record<string, any> & { props: Record<string, unknown>;})?.props) {
-    (pageProps as Record<string, any> & { props: Record<string, unknown>;}).revalidate = 1;
+  if (
+    (pageProps as Record<string, any> & { props: Record<string, unknown> })
+      ?.props
+  ) {
+    (pageProps as Record<string, any> & {
+      props: Record<string, unknown>;
+    }).revalidate = 1;
   }
 
   return pageProps;
