@@ -5,6 +5,7 @@ const templates: Templates<NextTemplate> = {
   '404': import('./404'),
   'front-page': import('./front-page'),
   index: import('./index'),
+  category: import('./category'),
   page: import('./page'),
   single: import('./single'),
 };
