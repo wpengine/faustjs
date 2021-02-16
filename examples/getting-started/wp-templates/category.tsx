@@ -1,9 +1,17 @@
 import React from 'react';
 import { useGeneralSettings, usePosts } from '@wpengine/headless/react';
-import { Footer, Header, PostsArchive } from '../components';
+import { getApolloClient, getPosts } from '@wpengine/headless';
+import { GetStaticPropsContext } from 'next';
+import { Footer, Header, Posts } from '../components';
 
 export default function Category(): JSX.Element {
-  const posts = usePosts();
+  const posts = usePosts({
+    variables: {
+      where: { categoryName: 'uncategorized' }, // TODO: Extract the category slug from the URL.
+      // TODO: add pagination vars.
+    },
+  });
+
   const settings = useGeneralSettings();
 
   return (
@@ -13,9 +21,19 @@ export default function Category(): JSX.Element {
         <section className="wrap">
           <p>TODO: remove me – checking that category.tsx is loading.</p>
         </section>
-        <PostsArchive posts={posts?.nodes} />
+        <Posts posts={posts?.nodes} />
       </main>
       <Footer copyrightHolder={settings?.title} />
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const client = getApolloClient(context);
+  await getPosts(client, {
+    variables: {
+      where: { categoryName: 'uncategorized' }, // TODO: extract the category slug from the URL.
+      // TODO: add pagination vars.
+    },
+  });
 }
