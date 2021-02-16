@@ -39,7 +39,7 @@ Eager to try out the Headless Framework? Here's how you can get started:
   - Block stylesheets
 
 ### npm Package Features
-- [Post previewing integration]((/docs/previews/README.md))
+- [Post previewing integration](/docs/previews/README.md)
   - Auth handler that exchanges a code for an access token
 - A `HeadlessProvider` component to ease communication with WordPress via [Apollo](https://www.apollographql.com/) and [WPGraphQL](https://www.wpgraphql.com/).
 - A [TemplateLoader](/docs/templating/README.md) component that optionally allows you to follow the WordPress [template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) pattern in Next.js
