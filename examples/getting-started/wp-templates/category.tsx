@@ -9,11 +9,9 @@ export default function Category(): JSX.Element {
   const router = useRouter();
   const urlParts = router.asPath.split('/').filter(Boolean);
   const category = urlParts[1];
-  // const pageNo = urlParts[3];
   const posts = usePosts({
     variables: {
       where: { categoryName: category },
-      // TODO: add pagination vars.
     },
   });
   const settings = useGeneralSettings();
@@ -22,9 +20,6 @@ export default function Category(): JSX.Element {
     <>
       <Header title={settings?.title} description={settings?.description} />
       <main className="content content-index">
-        <section className="wrap">
-          <p>TODO: remove me – checking that category.tsx is loading.</p>
-        </section>
         <Posts posts={posts?.nodes} />
       </main>
       <Footer copyrightHolder={settings?.title} />
@@ -38,12 +33,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     urlParts = context?.params?.page;
   }
   const category = urlParts[1];
-  // const pageNo = urlParts[3];
   const client = getApolloClient(context);
   await getPosts(client, {
     variables: {
       where: { categoryName: category },
-      // TODO: add pagination vars.
     },
   });
 }
