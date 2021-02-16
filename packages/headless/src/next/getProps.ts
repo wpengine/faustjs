@@ -121,7 +121,6 @@ async function getProps<
       preview: context.preview ?? false,
       queries: stringifyQueries(config.queries) ?? null,
     },
-    revalidate: 1,
   });
 }
 
@@ -142,11 +141,17 @@ export async function getNextStaticProps(
   context: GetStaticPropsContext,
   config: NextPropsConfig = {},
 ) {
-  return getProps(
+  const pageProps = await getProps(
     async (ctx, templates) => {
       return templateLoader.getStaticProps(ctx, templates);
     },
     context,
     config,
   );
+
+  if (!!(pageProps as Record<string, any> & { props: Record<string, unknown>;}).props) {
+    (pageProps as Record<string, any> & { props: Record<string, unknown>;}).revalidate = 1;
+  }
+
+  return pageProps;
 }
