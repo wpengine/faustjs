@@ -12,7 +12,7 @@ import styles from '../scss/wp-templates/front-page.module.scss';
 const firstSixInCategory = {
   variables: {
     first: 6,
-    where: { categoryName: 'uncategorized' },
+    where: { categoryName: 'uncategorized' }, // Omit this to get posts from all categories.
   },
 };
 
