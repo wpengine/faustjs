@@ -27,5 +27,6 @@ add_action( 'plugins_loaded', 'wpe_content_model_loader' );
  * Bootstraps the plugin.
  */
 function wpe_content_model_loader(): void {
+	require_once __DIR__ . '/includes/settings/settings-callbacks.php';
 	require_once __DIR__ . '/includes/content-registration/custom-post-types-registration.php';
 }
