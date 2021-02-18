@@ -6,6 +6,13 @@
 # If you need both WPWebDriver and WPBrowser tests - create a separate suite.
 
 actor: AcceptanceTester
+
+extensions:
+    enabled:
+        - Codeception\Extension\RunProcess:
+            0: chromedriver --url-base=/wd/hub --whitelisted-ips=
+            sleep: 3
+
 modules:
     enabled:
         - WPDb

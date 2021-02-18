@@ -89,9 +89,10 @@ composer test
 1. [Google Chrome](https://www.google.com/chrome/) will need to be install.
 2. Download [Chromedriver](https://chromedriver.chromium.org/downloads)
     - The major version will need to match your [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have) of Google Chrome. See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
-    - Unzip the file and move `chromedriver` into the plugin `bin` directory.
-    - In shell, run `./bin/chromedriver --version`. If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver.
-    - Run `./bin/chromedriver --version` again. If you are prompted again, click "Open". When you can see the version, chromedriver is ready.
+    - Unzip the file and move `chromedriver` into the plugin `/usr/local/bin` directory.
+      `mv chromedriver /usr/local/bin`
+    - In shell, run `chromedriver --version`. If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver.
+    - Run `chromedriver --version` again. If you are prompted again, click "Open". When you can see the version, chromedriver is ready.
 3. Prepare a test WordPress site.
     - Codeception will need it's own WordPress site and database to run tests.
       - Install and activate [WPGraphQL](https://www.wpgraphql.com/).
@@ -101,9 +102,7 @@ composer test
     - After creating a WordPress site for Codeception, save a database dump as `tests/_data/dump.sql`. This database dump will be reimported into the the test WordPress site after every test.
 4. Copy `.env.testing.example` to `.env.testing`.
     - Edit the `.env.testing` file with your test WordPress site information.
-5. In a separate shell window, start chromedriver
-    - `./bin/chromedriver --url-base=/wd/hub`
-6. Run codeception acceptance tests.
+5. Run codeception acceptance tests.
     - `vendor/bin/codecept run acceptance`
 
 ### Browser testing documentation
