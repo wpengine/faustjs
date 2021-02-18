@@ -32,7 +32,13 @@
 	<!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties -->
 	<config name="minimum_supported_wp_version" value="5.3" />
 
-	<rule ref="WordPress" />
+	<rule ref="WordPress">
+		<!-- Allow features discouraged by WordPress core -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+		<exclude name="WordPress.PHP.YodaConditions" />
+		<exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch" />
+	</rule>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
