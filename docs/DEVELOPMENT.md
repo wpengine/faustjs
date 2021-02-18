@@ -83,18 +83,34 @@ composer test
 
 ## End-2-End Testing
 
-The end-2-end tests run using [Cypress](https://www.cypress.io/) while running on a local docker setup using [wp-env](https://github.com/WordPress/gutenberg/tree/master/packages/env#wp-env).
+[Codeception](https://codeception.com/) is used for running end-2-end tests in the browser.
 
-1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running.
-2. Ensure you have ran `npm install` from the `headless-framework` root directory.
-3. Run `npm run wp:start` to start the development container.
-    - **Note: This may take some time on the initial start as it has to download and setup the needed files.**
-    - Development site `http://localhost:8888`.
-    - Testing site `http://localhost:8889`.
-    - The plugins [WPGraphQL](https://www.wpgraphql.com/) and `plugins/wpe-headless` will automatically be installed and activated.
-4. Run `npm run cypress:open` to open the Cypress UI and manually run the end-2-end tests.
-    - Run `npm run cypress:run` to run the end-2-end tests without the Cypress UI.
-5. Run `npm run wp:stop` to stop the development containers.
+### Getting started with browser tests
+1. [Google Chrome](https://www.google.com/chrome/) will need to be install.
+2. Download [Chromedriver](https://chromedriver.chromium.org/downloads)
+  - The major version will need to match your [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have) of Google Chrome. See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
+  - Unzip the file and move `chromedriver` into the plugin `bin` directory.
+  - In shell, run `./bin/chromedriver --version`. If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver.
+  - Run `./bin/chromedriver --version` again. If you are prompted again, click "Open". When you can see the version, chromedriver is ready.
+3. Prepare a test WordPress site.
+  - Codeception will need it's own WordPress site and database to run tests.
+    - Install and activate [WPGraphQL](https://www.wpgraphql.com/).
+    - Symlink the `wpe-headless` plugin and activate.
+      - Complete plugin settings.
+    - Enable permalinks.
+  - After creating a WordPress site for Codeception, save a database dump as `tests/_data/dump.sql`. This database dump will be reimported into the the test WordPress site after every test.
+4. Copy `.env.testing.example` to `.env.testing`.
+  - Edit the `.env.testing` file with your test WordPress site information.
+5. In a separate shell window, start chromedriver
+  - `./bin/chromedriver --url-base=/wd/hub`
+6. Run codeception acceptance tests.
+  - `vendor/bin/codecept run acceptance`
+
+### Browser testing documentation
+- [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
+  - Base framework for browser testing in php.
+- [WPBrowser](https://wpbrowser.wptestkit.dev/)
+  - WordPress framework wrapping Codeception for browser testing WordPress.
 
 ## Deployment
 
