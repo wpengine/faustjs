@@ -96,7 +96,7 @@ composer test
 3. Prepare a test WordPress site.
     - There are multiple ways to setup a WordPress site for Codeception to test.
       - We have provided a docker build to reduce the setup needed.
-        1. Install Docker.
+        1. Install [Docker](https://www.docker.com/get-started).
         2. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
         3. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
         4. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
