@@ -41,4 +41,4 @@ modules:
             window_size: false
             capabilities:
                 chromeOptions:
-                    args: ["--disable-gpu"]
+                    args: ["disable-gpu"]
