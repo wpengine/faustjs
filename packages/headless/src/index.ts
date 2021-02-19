@@ -1,4 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+/// <reference path="./types/next.d.ts" />
+/// <reference path="./types/request.d.ts" />
 /// <reference path="./types/wpgraphql.d.ts" />
 
 export * from './api';
