@@ -52,4 +52,17 @@ class SettingsCest
         $I->seeCheckboxIsChecked('#enable_redirects');
         $I->dontSeeCheckboxIsChecked('#enable_image_source');
     }
+
+    public function i_can_regenerate_my_secret_key(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+        $I->visitWPEngineHeadlessSettingsPage();
+
+        $old_secret_key = $I->grabValueFrom('wpe_headless[secret_key]');
+
+        $I->click('.content form a.field-action');
+        $I->acceptPopup();
+        $I->dontSeeInField('wpe_headless[secret_key]', '');
+        $I->dontSeeInField('wpe_headless[secret_key]', $old_secret_key);
+    }
 }
