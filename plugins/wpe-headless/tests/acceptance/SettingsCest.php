@@ -53,6 +53,9 @@ class SettingsCest
         $I->dontSeeCheckboxIsChecked('#enable_image_source');
     }
 
+    /**
+     * Ensure the secret_key is rolled when a user clicks 'regenerate'.
+     */
     public function i_can_regenerate_my_secret_key(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
@@ -64,5 +67,20 @@ class SettingsCest
         $I->acceptPopup();
         $I->dontSeeInField('wpe_headless[secret_key]', '');
         $I->dontSeeInField('wpe_headless[secret_key]', $old_secret_key);
+    }
+
+    /**
+     * Ensure that my secret key will not be regnerated if I click 'cancel' on the confirmation.
+     */
+    public function i_can_cancel_my_secret_key_from_being_regenerated(AcceptanceTester $I)
+    {
+        $I->loginAsAdmin();
+        $I->visitWPEngineHeadlessSettingsPage();
+
+        $secret_key = $I->grabValueFrom('wpe_headless[secret_key]');
+
+        $I->click('.content form a.field-action');
+        $I->cancelPopup();
+        $I->seeInField('wpe_headless[secret_key]', $secret_key);
     }
 }
