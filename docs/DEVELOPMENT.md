@@ -86,21 +86,22 @@ composer test
 [Codeception](https://codeception.com/) is used for running end-2-end tests in the browser.
 
 ### Getting started with browser tests
-1. [Google Chrome](https://www.google.com/chrome/) will need to be install.
-2. Download [Chromedriver](https://chromedriver.chromium.org/downloads)
-    - The major version will need to match your [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have) of Google Chrome. See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
-    - Unzip the file and move `chromedriver` into the plugin `/usr/local/bin` directory.
+1. Install [Google Chrome](https://www.google.com/chrome/).
+2. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
+    - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
+    - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
       `mv chromedriver /usr/local/bin`
-    - In shell, run `chromedriver --version`. If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver.
-    - Run `chromedriver --version` again. If you are prompted again, click "Open". When you can see the version, chromedriver is ready.
+    - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
+    - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 3. Prepare a test WordPress site.
-    - Codeception will need it's own WordPress site and database to run tests.
-      - Install and activate [WPGraphQL](https://www.wpgraphql.com/).
-      - Symlink the `wpe-headless` plugin and activate.
-        - Complete plugin settings.
-      - Enable permalinks.
-    - After creating a WordPress site for Codeception, save a database dump as `tests/_data/dump.sql`. This database dump will be reimported into the the test WordPress site after every test.
+    - There are multiple ways to setup a WordPress site for Codeception to test.
+      - We have provided a docker build to reduce the setup needed.
+        1. Install Docker.
+        2. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+        3. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
+        4. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
 4. Copy `.env.testing.example` to `.env.testing`.
+    - If you are using the docker build, you can skip adjusting the `.env.testing` file. It will already work.
     - Edit the `.env.testing` file with your test WordPress site information.
 5. Run codeception acceptance tests.
     - `vendor/bin/codecept run acceptance`
