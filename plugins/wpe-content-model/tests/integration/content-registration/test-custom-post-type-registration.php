@@ -7,6 +7,7 @@
 
 use function \WPE\ContentModel\ContentRegistration\generate_custom_post_type_labels;
 use function \WPE\ContentModel\ContentRegistration\register_content_types;
+use PHPUnit\Runner\Exception as PHPUnitRunnerException;
 
 /**
  * Post type registration case.
@@ -45,7 +46,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 
 		do_action( 'rest_api_init' );
 
-		$this->dog_post_id = wp_insert_post( [
+		$this->dog_post_id = $this->factory->post->create( [
 			'post_title' => 'Test dog',
 			'post_content' => 'Hello dog',
 			'status' => 'publish',
@@ -107,6 +108,42 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		] );
 
 		$this->assertSame( $labels, $this->expected_post_types()['dog']['labels'] );
+	}
+
+	public function test_defined_custom_post_types_have_show_in_graphql_argument(): void {
+		$this->assertTrue( $this->all_registered_post_types['dog']->show_in_graphql );
+		$this->assertFalse( $this->all_registered_post_types['cat']->show_in_graphql );
+	}
+
+//	public function test_defined_custom_fields_have_show_in_graphql_argument(): void {
+////		var_dump($this->all_registered_post_types['dog']);
+////		var_dump($this->all_registered_post_types['dog']->rest_controller->get_item_schema());
+////		$this->assertTrue( $this->all_registered_post_types['dog']->rest_controller->get_item_schema()['properties']['meta']['properties']['dog-test-field']['show_in_graphql'] );
+//	}
+
+	public function test_graphql_query_result_has_custom_fields_data(): void {
+		try {
+			$results = graphql( [
+				'query' => '
+				{
+					dogs {
+						nodes {
+							databaseId
+							title
+							content
+							dogTestField
+						}
+					}
+				}
+				'
+			] );
+
+			self::assertTrue( true, array_key_exists( 'dogTestField', $results['data']['dogs']['nodes'][0] ) );
+			self::assertSame( $results['data']['dogs']['nodes'][0]['dogTestField'], 'dog-test-field string value' );
+
+		} catch ( Exception $exception ) {
+			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
+		}
 	}
 
 	private function expected_post_types(): array {
