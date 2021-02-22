@@ -28,6 +28,7 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
  */
 function _manually_load_plugin() {
 	require dirname( dirname( __FILE__ ) ) . '/wpe-content-model.php';
+	require_once WP_CONTENT_DIR . '/plugins/wp-graphql/wp-graphql.php';
 }
 
 require $_tests_dir . '/includes/bootstrap.php';
