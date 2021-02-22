@@ -18,8 +18,8 @@ const AUTH_URL = trimTrailingSlash(
 const API_CLIENT_SECRET = process.env.WP_HEADLESS_SECRET;
 
 if (!API_CLIENT_SECRET && isServerSide()) {
-  throw new Error(
-    'WP_HEADLESS_SECRET environment variable is not set. Please set it to your WPGraphQL endpoint if you wish to use authenticated API calls.',
+  console.warn(
+    'The WP_HEADLESS_SECRET environment variable is not set. Install the WP Engine Headless plugin and set WP_HEADLESS_SECRET to the “Secret Key” from Settings → Headless to enable post previews.',
   );
 }
 
