@@ -115,12 +115,6 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$this->assertFalse( $this->all_registered_post_types['cat']->show_in_graphql );
 	}
 
-//	public function test_defined_custom_fields_have_show_in_graphql_argument(): void {
-////		var_dump($this->all_registered_post_types['dog']);
-////		var_dump($this->all_registered_post_types['dog']->rest_controller->get_item_schema());
-////		$this->assertTrue( $this->all_registered_post_types['dog']->rest_controller->get_item_schema()['properties']['meta']['properties']['dog-test-field']['show_in_graphql'] );
-//	}
-
 	public function test_graphql_query_result_has_custom_fields_data(): void {
 		try {
 			$results = graphql( [
