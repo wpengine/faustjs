@@ -68,20 +68,22 @@ The framework provides a Node.js auth handler to do the exchange for you.
 
 In order to support the exchange of the access code for an access token, the framework provides a Node authorization handler:
 
-```typescript
-import { authorizeHandler } from '@wpengine/headless';
+```ts
+import { previewHandler } from '@wpengine/headless/next';
 ```
 
-`authorizeHandler` accepts a Node request (IncomingMessage) and response (ServerResponse) which are compatible with ExpressJS, Next APIs, etc.
+`previewHandler` accepts a Next request (NextApiRequest) and Next response (NextApiResponse) which assume you are using a Next app.
+
+> **NOTE:** If you are not using Next, you can use the `authorizeHandler` from '@wpengine/headless` which takes in a Node request (IncomingMessage) and response (ServerResponse) and will work with any Node-based server library.
 
 In order to enable the handler in Next, create a new API route:
 
-`/pages/api/authorize.ts`
+`/pages/api/auth/wpe-headless.ts`
 
-```typescript
-import { authorizeHandler } from '@wpengine/headless';
+```ts
+import { previewHandler } from '@wpengine/headless/next';
 
-export default authorizeHandler;
+export default previewHandler;
 ```
 
 ### Next Integration
@@ -92,10 +94,10 @@ The framework provides a provider and hooks that assist in routing and server si
 
 The provider is the glue that allows the framework to communicate with WordPress. To set it up, create `/pages/_app.tsx`.
 
-```jsx
+```tsx
 import React from 'react';
 import { AppContext, AppInitialProps } from 'next/app';
-import { HeadlessProvider } from '@wpengine/headless';
+import { HeadlessProvider } from '@wpengine/headless/react';
 
 export default function App({
   Component,
@@ -113,13 +115,14 @@ export default function App({
 
 For this example, we're only going to need one page to handle all of our routes `/pages/[[...page]].tsx`. This is a catch-all route in Next. We'll use hooks provided by the framework to load the right content for each URL.
 
-```jsx
+```tsx
 import React from 'react';
 import {
   useUriInfo,
-  getNextServerSideProps,
+  getNextStaticPaths,
+  getNextStaticProps,
 } from '@wpengine/headless/next';
-import { GetServerSidePropsContext } from 'next';
+import { GetStaticPropsContext } from 'next';
 import Posts from '../lib/components/Posts';
 import Post from '../lib/components/Post';
 
@@ -137,18 +140,22 @@ export default function Page() {
   return <Post />;
 }
 
-export function getServerSideProps(context: GetServerSidePropsContext) {
-  return getNextServerSideProps(context);
+export function getStaticPaths() {
+  return getNextStaticPaths();
+}
+
+export function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context);
 }
 ```
 
 `useUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
 
-`getNextServerSideProps` is used to allow for Server Side Rendering. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
+`getNextStaticProps` is used to allow for Static Site Generation. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
 
 `/lib/components/Post.tsx`
 
-```jsx
+```tsx
 import React from 'react';
 import { usePost } from '@wpengine/headless/next';
 
@@ -161,7 +168,7 @@ export default function Post() {
         <div>
           <div>
             <h5>{post.title}</h5>
-            <p
+            <div
               dangerouslySetInnerHTML={{
                 __html: post.content ?? '',
               }}
@@ -176,7 +183,7 @@ export default function Post() {
 
 `/lib/components/Posts.tsx`
 
-```jsx
+```tsx
 import React from 'react';
 import Link from 'next/link';
 import { usePosts } from '@wpengine/headless/react';
@@ -187,7 +194,7 @@ export default function Posts() {
   return (
     <div>
       {posts &&
-        posts.map((post) => (
+        posts.nodes.map((post) => (
           <div key={post.id} id={`post-${post.id}`}>
             <div>
               <Link href={post.uri}>
@@ -195,7 +202,7 @@ export default function Posts() {
                   <a href={post.uri}>{post.title}</a>
                 </h5>
               </Link>
-              <p
+              <div
                 dangerouslySetInnerHTML={{
                   __html: post.excerpt ?? '',
                 }}
@@ -218,9 +225,6 @@ NEXT_PUBLIC_WORDPRESS_URL=http://yourwpsite.com
 
 # Plugin secret found in WordPress Settings->Headless
 WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
-
-# Location of the auth handler endpoint
-NEXT_PUBLIC_AUTHORIZATION_URL=/api/authorize
 ```
 
 ## Try it out!
