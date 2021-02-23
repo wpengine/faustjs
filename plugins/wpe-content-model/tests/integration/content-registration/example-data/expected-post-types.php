@@ -79,6 +79,12 @@ return array (
 					'show_in_rest' => false,
 					'show_in_graphql' => false,
 				),
+				'dog-weight' => array(
+					'type' => 'number',
+					'description' => 'dog-weight description',
+					'show_in_rest' => true,
+					'show_in_graphql' => true,
+				),
 			),
 		),
 	'cat' =>
