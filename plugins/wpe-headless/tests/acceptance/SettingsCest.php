@@ -3,19 +3,6 @@
 class SettingsCest
 {
     /**
-     * @type string
-     */
-    protected $wordPressUrl;
-
-    /**
-     * Save the WordPress url for later use.
-     */
-    public function _before(AcceptanceTester $I)
-    {
-        $this->wordPressUrl = getenv('TEST_SITE_WP_URL');
-    }
-
-    /**
      * Ensure the WPEngine Headless settings page is available.
      */
     public function i_can_access_the_settings_page(AcceptanceTester $I)
