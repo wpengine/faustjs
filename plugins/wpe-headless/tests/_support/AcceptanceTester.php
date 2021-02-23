@@ -21,9 +21,27 @@ class AcceptanceTester extends \Codeception\Actor
     use _generated\AcceptanceTesterActions;
 
     /**
-     * Define custom actions here
+     * Visit the headless site with optional path.
+     *
+     * Waits 1 second to allow rendering.
+     *
+     * @param string $path Optional path to visit.
      */
-    public function visitWPEngineHeadlessSettingsPage()
+    public function amOnHeadlessSite($path = '')
+    {
+        $this->amOnUrl(getenv('HEADLESS_SITE_URL'));
+
+        if ($path) {
+            $this->amOnPage($path);
+        }
+
+        $this->wait(1);
+    }
+
+    /**
+     * Visit the WPE Headless settings page.
+     */
+    public function amOnWPEngineHeadlessSettingsPage()
     {
         $this->amOnPage('/wp-admin/options-general.php?page=wpe-headless-settings');
     }
