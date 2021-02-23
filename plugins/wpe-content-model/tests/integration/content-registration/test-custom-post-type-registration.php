@@ -54,6 +54,7 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		] );
 
 		update_post_meta( $this->dog_post_id, 'dog-test-field', 'dog-test-field string value' );
+		update_post_meta( $this->dog_post_id, 'dog-weight', '100.25' );
 	}
 
 	public function tearDown() {
@@ -79,6 +80,9 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 		$response_data = $response->get_data();
 		$this->assertArrayHasKey( 'dog-test-field', $response_data['meta'] );
 		$this->assertSame( $response_data['meta']['dog-test-field'][0], 'dog-test-field string value' );
+
+		self::assertArrayHasKey( 'dog-weight', $response_data['meta'] );
+		self::assertEquals( '100.25', $response_data['meta']['dog-weight'][0] );
 	}
 
 	public function test_post_meta_that_is_configured_to_not_show_in_rest_is_not_accessible(): void {
@@ -126,14 +130,18 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 							title
 							content
 							dogTestField
+							dogWeight
 						}
 					}
 				}
 				'
 			] );
 
-			self::assertTrue( true, array_key_exists( 'dogTestField', $results['data']['dogs']['nodes'][0] ) );
+			self::assertArrayHasKey( 'dogTestField', $results['data']['dogs']['nodes'][0] );
 			self::assertSame( $results['data']['dogs']['nodes'][0]['dogTestField'], 'dog-test-field string value' );
+
+			self::assertArrayHasKey( 'dogWeight', $results['data']['dogs']['nodes'][0] );
+			self::assertSame( $results['data']['dogs']['nodes'][0]['dogWeight'], 100.25 );
 
 		} catch ( Exception $exception ) {
 			throw new PHPUnitRunnerException( sprintf( __FUNCTION__ . ' failed with exception: %s', $exception->getMessage() ) );
