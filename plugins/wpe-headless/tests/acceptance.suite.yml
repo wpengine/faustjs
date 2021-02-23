@@ -11,6 +11,7 @@ extensions:
     enabled:
         - Codeception\Extension\RunProcess:
             0: chromedriver --url-base=/wd/hub --whitelisted-ips=
+            1: npm run end2end
             sleep: 3
 
 modules:
