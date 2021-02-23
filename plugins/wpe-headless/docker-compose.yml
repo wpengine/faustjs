@@ -27,7 +27,6 @@ services:
       MYSQL_PASSWORD: wordpress
       MYSQL_ROOT_PASSWORD: wordpress
     volumes:
-      - db:/var/lib/mysql
       - ./.docker/mysql:/docker-entrypoint-initdb.d
 
 volumes:
