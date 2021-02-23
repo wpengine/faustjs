@@ -5,6 +5,7 @@
  * @package WPE_Content_Model
  */
 
+use function \WPE\ContentModel\ContentRegistration\generate_custom_post_type_labels;
 use function \WPE\ContentModel\ContentRegistration\register_content_types;
 
 /**
@@ -97,6 +98,15 @@ class PostTypeRegistrationTestCases extends WP_UnitTestCase {
 	public function test_defined_custom_post_types_are_registered(): void {
 		$this->assertArrayHasKey( 'cat', $this->all_registered_post_types );
 		$this->assertArrayHasKey( 'dog', $this->all_registered_post_types );
+	}
+
+	public function test_custom_post_type_labels_match_expected_format(): void {
+		$labels = generate_custom_post_type_labels( [
+			'singular' => 'Dog',
+			'plural'   => 'Dogs',
+		] );
+
+		$this->assertSame( $labels, $this->expected_post_types()['dog']['labels'] );
 	}
 
 	private function expected_post_types(): array {
