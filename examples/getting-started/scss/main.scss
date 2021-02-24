@@ -64,3 +64,17 @@ body {
 .content .button-secondary:hover {
 	background-color: darken($color-white, 10);
 }
+
+.pagination ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.pagination.has-next.has-previous ul {
+	column-count: 2;
+}
+
+.pagination-next {
+	text-align: right;
+}
