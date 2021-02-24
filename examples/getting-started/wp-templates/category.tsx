@@ -1,11 +1,7 @@
 import React from 'react';
 import { useGeneralSettings, usePosts } from '@wpengine/headless/react';
 import { Pagination } from '@wpengine/headless/next';
-import {
-  getApolloClient,
-  getPosts,
-  categoryOptions,
-} from '@wpengine/headless';
+import { getApolloClient, getPosts, categoryOptions } from '@wpengine/headless';
 import { useRouter } from 'next/router';
 import { GetStaticPropsContext } from 'next';
 import { Footer, Header, Posts } from '../components';
