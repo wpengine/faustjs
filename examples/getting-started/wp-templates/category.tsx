@@ -36,8 +36,8 @@ export default function Category(): JSX.Element {
 }
 
 /**
- * Fetch posts from WordPress. The query options in `getPosts()` here must match
- * those from `usePosts()` in the component above.
+ * Fetch posts for the current category from WordPress. The query options in
+ * `getPosts()` here must match those from `usePosts()` in the component above.
  *
  * @see https://github.com/wpengine/headless-framework/tree/canary/docs/queries
  */
