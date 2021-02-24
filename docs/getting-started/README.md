@@ -2,6 +2,43 @@
 
 This guide will get you up and running with our Headless Framework and help you understand what it offers.
 
+You should have [Node.js](https://nodejs.org/en/download/) installed first.
+
+## Create a Next.js app
+
+Our headless framework is built on top of [Next.js](https://nextjs.org/). You get all the amazing features that Next.js provides, plus an easy way to use it with WordPress!
+
+For this guide, we’ll start with an [example project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started) to quickly see the power of our framework. To pull it down, use npx (whcih comes with Node.js) with the URL to our example project:
+
+```npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/preview --use-npm```
+
+create-next-app will prompt you to provide a name for your project. Once you do that and the dependencies are installed, cd into the new project:
+
+```cd your-app-name```
+
+Then `npm run dev` and visit your site at http://localhost:3000.
+
+```cp .env.local.sample .env.local```
+
+## Connect the app to your WordPress site
+
+The sample app loads WordPress content from our demo site at https://headlessfw.wpengine.com.
+
+Point it to your own WordPress site instead:
+
+1. Create a WordPress site if you haven't already. We recommend [Local](https://localwp.com/) to try things out locally, or you can use a live WordPress site.
+2. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
+
+Then, in your front-end app directory:
+
+4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
+5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
+6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+6. `npm run dev` (kill and restart npm if it was already running)
+
+Open or refresh http://localhost:3000 and you should see a list of posts from your WordPress site at the bottom of the front page, and be able to view a single post.
+
 ## Set up the WordPress plugin
 
 Install our [Headless WordPress plugin](https://github.com/wpengine/headless-framework#wordpress-plugin) to get the full benefits of the framework. We recommend [Local](https://localwp.com/) to quickly spin up a local WordPress site. Once you have a WordPress site up and running, [download the plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) and upload and activate it [through the WordPress Admin](https://wordpress.org/support/article/managing-plugins/#manual-upload-via-wordpress-admin).
@@ -14,33 +51,6 @@ At this point, if you know what the URL to your front-end site is (or is going t
 
 The plugin ensures that your WordPress site runs smoothly as a headless CMS. From smart content redirects to enabling post previewing to ensuring the right data is available in WPGraphQL, installing the plugin gives you the things you need to run WordPress as a headless CMS. Find a [full list of plugin features here](https://github.com/wpengine/headless-framework#plugin-features).
 
-## Create a Next.js app
-
-Our headless framework is built on top of [Next.js](https://nextjs.org/). You get all the amazing features that Next.js provides, plus an easy way to use it with WordPress!
-
-For this guide, we’ll start with an [example project](https://github.com/wpengine/headless-framework/tree/canary/examples/preview) to quickly see the power of our framework. To pull it down, we recommend using npx and create-react-app with the URL to our example project:
-
-```npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/preview --use-npm```
-
-create-next-app will prompt you to provide a name for your project. Once you do that and the dependencies are installed, cd into the new project and make a copy of .env.local.sample.
-
-```cp .env.local.sample .env.local```
-
-This config file is where you’ll set the WordPress URL and secret key that ties it all together.
-
-```
-# Base URL for WordPress
-WORDPRESS_URL=http://yourwpsite.com
-
-# Plugin secret found in WordPress Settings->Headless
-WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
-```
-
-Now you’re ready to run the app!
-
-```npm run dev```
-
-Open up http://localhost:3000 and you should see a list of posts from your WordPress site and be able to view a single post.
 
 ## Breaking down the example project
 
