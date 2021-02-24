@@ -28,7 +28,8 @@ function wpe_headless_url_replacement( $response ) {
 		is_object( $response ) &&
 		property_exists( $response, 'data' ) &&
 		is_array( $response->data ) &&
-		wpe_headless_domain_replacement_enabled()
+		wpe_headless_domain_replacement_enabled() &&
+		! array_key_exists( 'generalSettings', $response->data )
 	) {
 		array_walk_recursive(
 			$response->data,
