@@ -7,7 +7,7 @@ import { ListPostOptions } from './getPosts';
 interface CategoryUrlParts {
   basePath: string; // '/category/uncategorized'
   category: string; // 'uncategorized'
-  keyword?: string; // 'before'
+  direction?: string; // 'before'
   id?: string; // 'abc123'
 }
 
@@ -20,7 +20,7 @@ const getCategoryUrlParts = (path: string | string[]): CategoryUrlParts => {
   return {
     basePath: parts.slice(0, 2).join('/'),
     category: parts[1],
-    keyword: parts[2],
+    direction: parts[2],
     id: parts[3],
   };
 };
@@ -33,10 +33,11 @@ const getCategoryUrlParts = (path: string | string[]): CategoryUrlParts => {
 const getQueryOptions = (url: CategoryUrlParts, postsPerPage: number) => {
   return {
     variables: {
-      first: url.keyword === 'after' || !url.keyword ? postsPerPage : undefined,
-      last: url.keyword === 'before' ? postsPerPage : undefined,
-      after: url.keyword === 'after' ? url.id : undefined,
-      before: url.keyword === 'before' ? url.id : undefined,
+      first:
+        url.direction === 'after' || !url.direction ? postsPerPage : undefined,
+      last: url.direction === 'before' ? postsPerPage : undefined,
+      after: url.direction === 'after' ? url.id : undefined,
+      before: url.direction === 'before' ? url.id : undefined,
       where: {
         categoryName: url.category,
       },
