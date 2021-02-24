@@ -87,23 +87,25 @@ composer test
 
 ### Getting started with browser tests
 1. Install [Google Chrome](https://www.google.com/chrome/).
-2. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
+1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
     - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
     - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
       `mv chromedriver /usr/local/bin`
     - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
     - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
-3. Prepare a test WordPress site.
-    - There are multiple ways to setup a WordPress site for Codeception to test.
-      - We have provided a docker build to reduce the setup needed.
-        1. Install [Docker](https://www.docker.com/get-started).
-        2. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-        3. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
-        4. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
-4. Copy `.env.testing.example` to `.env.testing`.
-    - If you are using the docker build, you can skip adjusting the `.env.testing` file. It will already work.
-    - Edit the `.env.testing` file with your test WordPress site information.
-5. Run codeception acceptance tests.
+1. Move into the WPE Headless plugin directory.
+    - `cd plugins/wpe-headless`
+1. Prepare a test WordPress site.
+    - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
+      1. Install [Docker](https://www.docker.com/get-started).
+      1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
+      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+1. Copy `.env.testing.example` to `.env.testing`.
+    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
+    - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
+1. Move into the `examples/getting-started` site and copy the `.env.test.sample` to `.env.test`. If you are using the provided Docker build, you do not need to adjust any variables.
+1. From within the `plugins/wpe-headless` directory, run codeception acceptance tests.
     - `vendor/bin/codecept run acceptance`
 
 ### Browser testing documentation
