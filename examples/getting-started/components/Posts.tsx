@@ -54,11 +54,14 @@ function Posts({
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
                   />
-                  <a
-                    href={post.uri}
-                    aria-label={`Read more about ${post.title}`}>
-                    {readMoreText}
-                  </a>
+                  <Link href={post.uri}>
+                    <a
+                      aria-label={`Read more about ${
+                        post.title || ' the post'
+                      }`}>
+                      {readMoreText}
+                    </a>
+                  </Link>
                 </div>
               </div>
             ))}
