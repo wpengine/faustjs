@@ -6,19 +6,20 @@ WP Engine's Headless WordPress Framework provides a set of tools to make buildin
 
 _🚧 **Note:** This project is in the early stages of development_
 
-
 ## Quick Start
 
 Eager to try out the Headless Framework? Here's how you can get started:
 
 1. Create a WordPress site if you haven't already. We recommend using [Local](https://localwp.com/)!
-2. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
-3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
-4. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
-6. `cp .env.local.sample .env.local`
-7. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
-8. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
-9. `cd my-app && npm run dev`
+1. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+1. Install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
+   - WPGraphQL can be installed directly from Settings → Headless as well!
+1. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
+1. `cp .env.local.sample .env.local`
+1. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
+1. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+1. In WordPress Settings → Headless, populate the "Front-end site URL" with `http://localhost:3000`
+1. `cd my-app && npm run dev`
 
 ➡️ [Learn more about getting started](/docs/getting-started/)
 
@@ -39,6 +40,7 @@ Eager to try out the Headless Framework? Here's how you can get started:
   - Block stylesheets
 
 ### npm Package Features
+
 - [Post previewing integration](/docs/previews/README.md)
   - Auth handler that exchanges a code for an access token
 - A `HeadlessProvider` component to ease communication with WordPress via [Apollo](https://www.apollographql.com/) and [WPGraphQL](https://www.wpgraphql.com/).
@@ -77,9 +79,9 @@ npm install --save @wpengine/headless
 
 ## Guides
 
-* [Getting started with the Headless Framework](/docs/getting-started/README.md)
-* [Enabling post previews in Next.js](/docs/previews/README.md)
-* [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
+- [Getting started with the Headless Framework](/docs/getting-started/README.md)
+- [Enabling post previews in Next.js](/docs/previews/README.md)
+- [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
 
 ## Contributing
 
@@ -93,5 +95,5 @@ streamline your development process.
 
 ### License
 
-* npm packages in this repository are MIT licensed
-* WordPress plugins in this repository are GPLv2+ licensed
+- npm packages in this repository are MIT licensed
+- WordPress plugins in this repository are GPLv2+ licensed
