@@ -1,0 +1,7 @@
+{
+  "name": "headless-block-components",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Headless block components",
+  "main": "index.ts"
+}
