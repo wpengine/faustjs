@@ -15,14 +15,16 @@ import { CookieOptions, getAccessToken } from '../auth';
 
 export type PersistentContext = Record<string, unknown>;
 
-const WP_URL = trimTrailingSlash(
+let WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
 );
 
 if (!WP_URL) {
+  WP_URL = 'https://headlessfw.wpengine.com';
+
   if (isServerSide()) {
-    throw new Error(
-      'WORDPRESS_URL and NEXT_PUBLIC_WORDPRESS_URL environment variables are not set. Please set WORDPRESS_URL (or NEXT_PUBLIC_WORDPRESS_URL if you wish to also use client-side requests) to your WPGraphQL endpoint.',
+    console.warn(
+      'DEMO MODE: The WORDPRESS_URL environment variable is not set. Using demo site URL of https://headlessfw.wpengine.com. Set WORDPRESS_URL to your WordPress site URL and install the WPGraphQL plugin to see your own content.',
     );
   }
 }

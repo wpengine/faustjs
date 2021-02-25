@@ -10,16 +10,32 @@ _🚧 **Note:** This project is in the early stages of development_
 
 Eager to try out the Headless Framework? Here's how you can get started:
 
-1. Create a WordPress site if you haven't already. We recommend using [Local](https://localwp.com/)!
-1. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
-1. Install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
-   - WPGraphQL can be installed directly from Settings → Headless as well!
+### Create a front-end app
+
 1. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
-1. `cp .env.local.sample .env.local`
-1. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
-1. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
-1. In WordPress Settings → Headless, populate the "Front-end site URL" with `http://localhost:3000`
-1. `cd my-app && npm run dev`
+2. `cd my-app && npm run dev`
+3. See your site at http://localhost:3000.
+
+### Point the app to your own WordPress site
+
+The sample app loads WordPress content from our demo site at https://headlessfw.wpengine.com.
+
+Point it to your own WordPress site instead:
+
+1. Create a WordPress site if you haven't already. We recommend [Local](https://localwp.com/) to try things out locally, or you can use a live WordPress site.
+2. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
+
+Then, in your front-end app directory:
+
+4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
+5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
+6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+7. `npm run dev` (kill and restart npm if it was already running)
+
+You'll see the same site with your WordPress posts instead of ours.
+
+To enable post previews, set your front-end app URL on the WordPress Settings → Headless page (for example, `http://localhost:3000` when testing locally).
 
 ➡️ [Learn more about getting started](/docs/getting-started/)
 
