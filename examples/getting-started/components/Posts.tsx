@@ -7,7 +7,6 @@ interface Props {
   posts: WPGraphQL.Post[] | undefined;
   intro?: string;
   id?: string;
-  count?: number;
   heading?: string;
   headingLevel?: HeadingProps['level'];
   postTitleLevel?: HeadingProps['level'];
@@ -19,13 +18,10 @@ function Posts({
   intro,
   heading,
   id,
-  count = 0,
   headingLevel = 'h1',
   postTitleLevel = 'h2',
   readMoreText = 'Read more',
 }: Props): JSX.Element {
-  // TODO: deprecate `count` and limit posts at the query level instead.
-  const thePosts = count > 0 ? posts?.slice(0, count) : posts;
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
     <section className={styles['posts-block']} {...(id && { id })}>
@@ -37,8 +33,8 @@ function Posts({
         )}
         {intro && <p className={styles.intro}>{intro}</p>}
         <div className="posts">
-          {thePosts &&
-            thePosts.map((post) => (
+          {posts &&
+            posts.map((post) => (
               <div
                 className={styles.single}
                 key={post.id}
@@ -46,7 +42,7 @@ function Posts({
                 <div>
                   <Heading level={postTitleLevel} className={styles.title}>
                     <Link href={post.uri}>
-                      <a href={post.uri}>{post.title}</a>
+                      <a>{post.title}</a>
                     </Link>
                   </Heading>
                   <div
@@ -54,15 +50,18 @@ function Posts({
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
                   />
-                  <a
-                    href={post.uri}
-                    aria-label={`Read more about ${post.title}`}>
-                    {readMoreText}
-                  </a>
+                  <Link href={post.uri}>
+                    <a
+                      aria-label={`Read more about ${
+                        post.title || 'the post'
+                      }`}>
+                      {readMoreText}
+                    </a>
+                  </Link>
                 </div>
               </div>
             ))}
-          {thePosts && thePosts?.length < 1 && <p>No posts found.</p>}
+          {posts && posts?.length < 1 && <p>No posts found.</p>}
         </div>
       </div>
     </section>

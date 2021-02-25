@@ -6,19 +6,36 @@ WP Engine's Headless WordPress Framework provides a set of tools to make buildin
 
 _🚧 **Note:** This project is in the early stages of development_
 
-
 ## Quick Start
 
 Eager to try out the Headless Framework? Here's how you can get started:
 
-1. Create a WordPress site if you haven't already. We recommend using [Local](https://localwp.com/)!
+### Create a front-end app
+
+1. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
+2. `cd my-app && npm run dev`
+3. See your site at http://localhost:3000.
+
+### Point the app to your own WordPress site
+
+The sample app loads WordPress content from our demo site at https://headlessfw.wpengine.com.
+
+Point it to your own WordPress site instead:
+
+1. Create a WordPress site if you haven't already. We recommend [Local](https://localwp.com/) to try things out locally, or you can use a live WordPress site.
 2. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
 3. Install [WP GraphQL](https://wordpress.org/plugins/wp-graphql/) on the WordPress site if it's not already installed.
-4. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
-6. `cp .env.local.sample .env.local`
-7. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
-8. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
-9. `cd my-app && npm run dev`
+
+Then, in your front-end app directory:
+
+4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
+5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
+6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+7. `npm run dev` (kill and restart npm if it was already running)
+
+You'll see the same site with your WordPress posts instead of ours.
+
+To enable post previews, set your front-end app URL on the WordPress Settings → Headless page (for example, `http://localhost:3000` when testing locally).
 
 ➡️ [Learn more about getting started](/docs/getting-started/)
 
@@ -39,6 +56,7 @@ Eager to try out the Headless Framework? Here's how you can get started:
   - Block stylesheets
 
 ### npm Package Features
+
 - [Post previewing integration](/docs/previews/README.md)
   - Auth handler that exchanges a code for an access token
 - A `HeadlessProvider` component to ease communication with WordPress via [Apollo](https://www.apollographql.com/) and [WPGraphQL](https://www.wpgraphql.com/).
@@ -77,9 +95,9 @@ npm install --save @wpengine/headless
 
 ## Guides
 
-* [Getting started with the Headless Framework](/docs/getting-started/README.md)
-* [Enabling post previews in Next.js](/docs/previews/README.md)
-* [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
+- [Getting started with the Headless Framework](/docs/getting-started/README.md)
+- [Enabling post previews in Next.js](/docs/previews/README.md)
+- [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
 
 ## Contributing
 
@@ -93,5 +111,5 @@ streamline your development process.
 
 ### License
 
-* npm packages in this repository are MIT licensed
-* WordPress plugins in this repository are GPLv2+ licensed
+- npm packages in this repository are MIT licensed
+- WordPress plugins in this repository are GPLv2+ licensed
