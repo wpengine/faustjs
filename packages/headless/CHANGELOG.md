@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.1] - 2021-02-25
 
-Requires the [WP Headless Plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) version 0.5.1 or higher for features such as post previews.
+Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) [zip] version 0.5.1 or higher for features such as post previews.
 
 ### Added
 - Pagination component and example in https://github.com/wpengine/headless-framework/blob/canary/examples/getting-started/wp-templates/category.tsx.
