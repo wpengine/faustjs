@@ -12,7 +12,7 @@ class PostPreviewCest
         $front_end_url = 'http://localhost:3000';
 
         $I->haveWpeHeadlessSetting('frontend_uri', $front_end_url);
-        $I->haveWpeHeadlessSetting('secret_key', '3c042434-155d-4612-bce9-fe1de743dc6e');
+        $I->haveWpeHeadlessSetting('secret_key', '00000000-0000-0000-0000-000000000001');
         $post_id = $I->havePostInDatabase([
             'post_type' => 'post',
             'post_title' => $post_title,
