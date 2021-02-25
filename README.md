@@ -6,7 +6,6 @@ WP Engine's Headless WordPress Framework provides a set of tools to make buildin
 
 _ðŸš§ **Note:** This project is in the early stages of development_
 
-
 ## Quick Start
 
 Eager to try out the Headless Framework? Here's how you can get started:
@@ -57,6 +56,7 @@ To enable post previews, set your front-end app URL on the WordPress Settings â†
   - Block stylesheets
 
 ### npm Package Features
+
 - [Post previewing integration](/docs/previews/README.md)
   - Auth handler that exchanges a code for an access token
 - A `HeadlessProvider` component to ease communication with WordPress via [Apollo](https://www.apollographql.com/) and [WPGraphQL](https://www.wpgraphql.com/).
@@ -95,9 +95,9 @@ npm install --save @wpengine/headless
 
 ## Guides
 
-* [Getting started with the Headless Framework](/docs/getting-started/README.md)
-* [Enabling post previews in Next.js](/docs/previews/README.md)
-* [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
+- [Getting started with the Headless Framework](/docs/getting-started/README.md)
+- [Enabling post previews in Next.js](/docs/previews/README.md)
+- [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
 
 ## Contributing
 
@@ -111,5 +111,5 @@ streamline your development process.
 
 ### License
 
-* npm packages in this repository are MIT licensed
-* WordPress plugins in this repository are GPLv2+ licensed
+- npm packages in this repository are MIT licensed
+- WordPress plugins in this repository are GPLv2+ licensed

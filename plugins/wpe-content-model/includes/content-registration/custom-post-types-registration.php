@@ -11,6 +11,9 @@ namespace WPE\ContentModel\ContentRegistration;
 
 use InvalidArgumentException;
 
+use WPGraphQL\Model\Post;
+use WPGraphQL\Registry\TypeRegistry;
+
 add_action( 'init', __NAMESPACE__ . '\register_content_types' );
 /**
  * Registers custom content types.
@@ -120,4 +123,117 @@ function generate_custom_post_type_labels( array $labels ): array {
 		'item_updated'             => sprintf( '%s updated.', $singular ),
 		'parent'                   => sprintf( 'Parent %s', $singular ),
 	];
+}
+
+/**
+ * Gets all content types registered with this plugin.
+ *
+ * @return array
+ */
+function get_registered_content_types(): array {
+	return get_option( 'wpe_content_model_post_types', array() );
+}
+
+/**
+ * Returns post types that have `show_in_graphql` support
+ * and were created with this plugin.
+ *
+ * @return array
+ */
+function get_graphql_enabled_post_types(): array {
+	$gql_post_types = array();
+	foreach ( get_registered_content_types() as $slug => $content_type ) {
+		if ( ! empty( $content_type['show_in_graphql'] ) ) {
+			$gql_post_types[ $slug ] = $content_type;
+		}
+	}
+	return $gql_post_types;
+}
+
+add_action( 'graphql_register_types', __NAMESPACE__ . '\register_content_fields_with_graphql' );
+/**
+ * Registers custom fields with the WPGraphQL API.
+ *
+ * @param TypeRegistry $type_registry The WPGraphQL Type Registry.
+ */
+function register_content_fields_with_graphql( TypeRegistry $type_registry ) {
+	$gql_post_types = get_graphql_enabled_post_types();
+
+	foreach ( $gql_post_types as $post_type => $post_type_args ) {
+		if ( empty( $post_type_args['fields'] ) ) {
+			continue;
+		}
+
+		foreach ( $post_type_args['fields'] as $key => $field ) {
+			if ( empty( $field['show_in_graphql'] ) ) {
+				continue;
+			}
+
+			$gql_field_type = map_html_field_type_to_graphql_field_type( $field['type'] );
+			if ( empty( $gql_field_type ) ) {
+				continue;
+			}
+
+			$field['type'] = $gql_field_type;
+
+			$field['resolve'] = static function( Post $post, $args, $context, $info ) use ( $key ) {
+				return get_post_meta( $post->databaseId, $key, true );
+			};
+
+			register_graphql_field(
+				$post_type_args['graphql_single_name'],
+				camelcase( $key ),
+				$field
+			);
+		}
+	}
+}
+
+/**
+ * Maps an HTML field type to a WPGraphQL field type.
+ *
+ * @param string $field_type The HTML field type.
+ * @access private
+ *
+ * @return string|null
+ */
+function map_html_field_type_to_graphql_field_type( string $field_type ): ?string {
+	if ( empty( $field_type ) ) {
+		return null;
+	}
+
+	switch ( $field_type ) {
+		case 'text':
+		case 'textarea':
+		case 'string':
+		case 'date':
+		case 'media':
+			return 'String';
+		case 'number':
+			return 'Float';
+		default:
+			return null;
+	}
+}
+
+/**
+ * Converts string to camelCase. Added to ensure that fields are compliant with the GraphQL spec.
+ *
+ * @param string $str The string to be converted to camelCase.
+ * @param array  $preserved_chars The characters to preserve.
+ *
+ * @credit http://www.mendoweb.be/blog/php-convert-string-to-camelcase-string/
+ *
+ * @return string camelCase'd string
+ */
+function camelcase( string $str, array $preserved_chars = array() ): string {
+	/* Convert non-alpha and non-numeric characters to spaces. */
+	$str = preg_replace( '/[^a-z0-9' . implode( '', $preserved_chars ) . ']+/i', ' ', $str );
+	$str = trim( $str );
+
+	/* Uppercase the first character of each word. */
+	$str = ucwords( $str );
+	$str = str_replace( ' ', '', $str );
+
+	return lcfirst( $str );
 }

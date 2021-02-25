@@ -38,6 +38,7 @@
 		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
 		<exclude name="WordPress.PHP.YodaConditions" />
 		<exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch" />
+		<exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase" />
 	</rule>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">

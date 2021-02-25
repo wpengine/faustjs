@@ -150,6 +150,15 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
+install_plugin_dependencies() {
+	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql ]; then
+		download https://downloads.wordpress.org/plugin/wp-graphql.latest-stable.zip $WP_CORE_DIR/wp-content/plugins/wp-graphql.latest-stable.zip
+		cd $WP_CORE_DIR/wp-content/plugins
+		unzip wp-graphql.latest-stable.zip
+	fi
+}
+
 install_wp
 install_test_suite
 install_db
+install_plugin_dependencies
