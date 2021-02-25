@@ -124,7 +124,6 @@ export default function FrontPage(props: any): JSX.Element {
           intro="The Posts component in wp-templates/front-page.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"
           postTitleLevel="h3"
-          count={6}
           id={styles.post_list}
         />
         <CTA
