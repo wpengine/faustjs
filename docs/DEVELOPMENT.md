@@ -103,7 +103,7 @@ Developers with full GitHub repository access can create public releases:
 ### Release the wpe-headless plugin
 
 1. Update the `Version` in the file header at `plugins/wpe-headless/wpe-headless.php`.
-2. Update the changelog in `plugins/wpe-headless/readme.txt`.
+2. Update the changelog and 'stable tag' in `plugins/wpe-headless/readme.txt`.
 3. Commit and push your changes for review.
 4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `plugin/wpe-headless/0.3.5-alpha.1` and push the tag. Or use GitHub to [create a new release](https://github.com/wpengine/headless-framework/releases/new) with that tag.
 
