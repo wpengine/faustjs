@@ -3,7 +3,7 @@
 class PostPreviewCest
 {
     /**
-     * Ensure the nodejs site url is set as the post preivew url.
+     * Ensure the nodejs site url is set as the post preview url.
      */
     public function i_can_view_the_post_preview_link(AcceptanceTester $I)
     {
