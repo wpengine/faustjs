@@ -85,7 +85,9 @@ composer test
 
 [Codeception](https://codeception.com/) is used for running end-2-end tests in the browser.
 
-### Getting started with browser tests
+### 1. Environment Setup
+1. Install [Composer](https://getcomposer.org/).
+    - Within the `plugins/wpe-headless` directory, run `composer install`.
 1. Install [Google Chrome](https://www.google.com/chrome/).
 1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
     - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
@@ -93,9 +95,13 @@ composer test
       `mv chromedriver /usr/local/bin`
     - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
     - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
-1. Move into the WPE Headless plugin directory.
-    - `cd plugins/wpe-headless`
-1. If you haven't already, run `composer install`.
+
+### 2. Headless Site Setup
+1. From within the headless site `examples/getting-started` copy `.env.test.sample` to `.env.test`.
+    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file, else you can adjust the environment variables as needed.
+
+### 3. WPE Headless Setup
+1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
 1. Prepare a test WordPress site.
     - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
       1. Install [Docker](https://www.docker.com/get-started).
@@ -105,9 +111,7 @@ composer test
 1. Copy `.env.testing.example` to `.env.testing`.
     - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
     - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
-1. Move into the `examples/getting-started` site and copy the `.env.test.sample` to `.env.test`. If you are using the provided Docker build, you do not need to adjust any variables.
-1. From within the `plugins/wpe-headless` directory, run codeception acceptance tests.
-    - `vendor/bin/codecept run acceptance`
+1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
 ### Browser testing documentation
 - [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
