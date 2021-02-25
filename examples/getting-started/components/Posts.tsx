@@ -53,7 +53,7 @@ function Posts({
                   <Link href={post.uri}>
                     <a
                       aria-label={`Read more about ${
-                        post.title || ' the post'
+                        post.title || 'the post'
                       }`}>
                       {readMoreText}
                     </a>
