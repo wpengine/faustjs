@@ -4,7 +4,7 @@ Tags:
 Requires at least: 5.3
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -22,6 +22,11 @@ Transform your WordPress site to a powerful Headless API.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.5.1 =
+Requires the @wpengine/headless package 0.6.1+ for features such as post previews. https://www.npmjs.com/package/@wpengine/headless
+
+- The site URL is longer rewritten as the app URL in WPGraphQL responses for general settings queries.
 
 = 0.5.0 =
 - WPE_HEADLESS_SECRET_KEY has been renamed to WP_HEADLESS_SECRET_KEY.

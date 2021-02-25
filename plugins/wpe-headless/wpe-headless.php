@@ -3,11 +3,11 @@
  * Plugin Name: WPEngine Headless
  * Plugin URI: https://wpengine.com/
  * Description: Plugin for working with headless WordPress.
- * Author: WPEngine
+ * Author: WP Engine
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-headless
  * Domain Path: /languages
- * Version: 0.5.0
+ * Version: 0.5.1
  *
  * @package WPE_Headless
  */
