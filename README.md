@@ -32,9 +32,11 @@ Then, in your front-end app directory:
 4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
 5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
 6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
-6. `npm run dev` (kill and restart npm if it was already running)
+7. `npm run dev` (kill and restart npm if it was already running)
 
 You'll see the same site with your WordPress posts instead of ours.
+
+To enable post previews, set your front-end app URL on the WordPress Settings → Headless page (for example, `http://localhost:3000` when testing locally).
 
 ➡️ [Learn more about getting started](/docs/getting-started/)
 
