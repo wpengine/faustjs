@@ -95,6 +95,7 @@ composer test
     - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 1. Move into the WPE Headless plugin directory.
     - `cd plugins/wpe-headless`
+1. If you haven't already, run `composer install`.
 1. Prepare a test WordPress site.
     - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
       1. Install [Docker](https://www.docker.com/get-started).
