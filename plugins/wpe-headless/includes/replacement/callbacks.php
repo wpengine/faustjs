@@ -118,22 +118,25 @@ function wpe_headless_post_preview_link( $link, $post ) {
 
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
-		/**
-		 * Add preview and preview ID back to path to support Next.js preview mode
-		 */
-		if ( 'publish' !== $post->post_status ) {
-			$path = 'draft/';
-		} else {
-			$path = $path ? trailingslashit( $path ) : '';
+		// Remove ?p=xx&preview=true from link temporarily.
+		$link = remove_query_arg(
+			array_keys( $args ),
+			$link
+		);
+
+		// Add p=xx if it's missing, which is the case for published posts.
+		if ( ! isset( $args['p'] ) ) {
+			$args['p'] = $preview_id;
 		}
 
-		$path .= 'preview/' . $preview_id;
+		$link = $frontend_uri . 'preview' . $path;
 
+		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
 			array(
-				'redirect_uri' => rawurlencode( ltrim( $path, '/' ) ),
+				$args,
 			),
-			$frontend_uri . 'api/auth/wpe-headless'
+			$link
 		);
 	}
 
