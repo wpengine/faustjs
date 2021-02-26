@@ -198,7 +198,10 @@ function wpe_headless_term_link( $term_link ) {
 
 /**
  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link
- **/
-add_action('enqueue_block_editor_assets', function() {
-	wp_enqueue_script('awp-gutenberg-filters', plugins_url('/previewlinks.js',__FILE__), ['wp-edit-post']);
-});
+ */
+add_action(
+	'enqueue_block_editor_assets',
+	function() {
+		wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), [ 'wp-edit-post' ], false );
+	}
+);
