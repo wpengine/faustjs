@@ -27,7 +27,8 @@ function ExampleBlock(props: ExampleProps): React.ReactElement {
 
   return (
     <div>
-      <h1>{blockAttributes.title}</h1>
+      <h2>This is your example block</h2>
+      <h3>{blockAttributes.title}</h3>
       <p>{blockAttributes.description}</p>
       <a role="button" href={blockAttributes['button-link']}>
         {blockAttributes['button-text']}
