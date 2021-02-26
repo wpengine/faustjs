@@ -12,8 +12,8 @@ window.addEventListener('DOMContentLoaded', () => {
           const link = document.querySelector(
             'a[class~="edit-post-header-preview__button-external"]',
           );
-          if (link) {
-            link.href = `${link.protocol}//${link.host}/preview${link.pathname}${link.search}`;
+          if (!!link && !/\/preview(\/\w|\?)/.test(link.href)) {
+            link.href = `${link.protocol}//${link.host}${link.pathname.replace(/\/$/, '')}/preview${link.search}`;
           }
         }, 100);
       });

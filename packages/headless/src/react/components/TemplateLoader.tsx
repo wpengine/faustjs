@@ -13,27 +13,23 @@ export interface Templates<T extends Template> {
 export function resolveTemplate<T extends Template>(
   pageInfo: UriInfo | undefined,
   templates: Templates<T>,
-): Promise<T> | T {
+): Promise<T> {
   if (!templates) {
     throw new Error('No templates provided to template resolver.');
   }
 
   if (!pageInfo || !pageInfo.templates) {
-    return templates.index;
+    return Promise.resolve(templates.index);
   }
 
   // eslint-disable-next-line no-restricted-syntax
   for (const template of pageInfo.templates) {
     if (typeof templates[template] !== 'undefined') {
-      return templates?.[template];
+      return Promise.resolve(templates?.[template]);
     }
   }
 
-  return templates.index;
-}
-
-function isPromise(component: any): component is Promise<any> {
-  return !!component.then;
+  return Promise.resolve(templates.index);
 }
 
 export function TemplateLoader<T extends Template>({
@@ -49,14 +45,7 @@ export function TemplateLoader<T extends Template>({
     return null;
   }
 
-  const template = resolveTemplate(uriInfo, templates);
-  let Component: React.ComponentType;
-
-  if (isPromise(template)) {
-    Component = dynamicLoader(() => template);
-  } else {
-    Component = template.default;
-  }
+  const Component = dynamicLoader(() => resolveTemplate(uriInfo, templates));
 
   if (!Component) {
     return null;
