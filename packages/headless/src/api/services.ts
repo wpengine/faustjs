@@ -147,9 +147,10 @@ export async function getGeneralSettings(
 export function composeUrlPath(uriPath?: string) {
   let urlPath = uriPath;
 
-  if (!urlPath) {
+  if (typeof urlPath !== 'string') {
     if (isServerSide()) {
       console.warn('Getting uri info requires a URI when server-side.');
+
       return undefined;
     }
 
