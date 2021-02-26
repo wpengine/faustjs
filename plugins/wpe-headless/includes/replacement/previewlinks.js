@@ -37,14 +37,10 @@ window.addEventListener('DOMContentLoaded', function () {
 
 			var copy = link.cloneNode(true);
 			copy.addEventListener('click', function(ev) {
-				ev.preventDefault();
 				previewButton[0].click();
 
 				wp.data.dispatch('core/editor')
-					.savePost()
-					.then(function() {
-						window.open(copy.href, '_blank');
-					});
+					.savePost();
 			});
 
 			link.parentElement.insertBefore(copy, link);
