@@ -69,21 +69,19 @@ The framework provides a Node.js auth handler to do the exchange for you.
 In order to support the exchange of the access code for an access token, the framework provides a Node authorization handler:
 
 ```ts
-import { previewHandler } from '@wpengine/headless/next';
+import { authorizeHandler } from '@wpengine/headless';
 ```
 
-`previewHandler` accepts a Next request (NextApiRequest) and Next response (NextApiResponse) which assume you are using a Next app.
-
-> **NOTE:** If you are not using Next, you can use the `authorizeHandler` from '@wpengine/headless` which takes in a Node request (IncomingMessage) and response (ServerResponse) and will work with any Node-based server library.
+`authorizeHandler` accepts a Node request (IncomingMessage) and response (ServerResponse) and will work with any Node-based server library.
 
 In order to enable the handler in Next, create a new API route:
 
 `/pages/api/auth/wpe-headless.ts`
 
 ```ts
-import { previewHandler } from '@wpengine/headless/next';
+import { authorizeHandler } from '@wpengine/headless';
 
-export default previewHandler;
+export default authorizeHandler;
 ```
 
 ### Next Integration
@@ -113,7 +111,7 @@ export default function App({
 
 #### Routes and Hooks
 
-For this example, we're only going to need one page to handle all of our routes `/pages/[[...page]].tsx`. This is a catch-all route in Next. We'll use hooks provided by the framework to load the right content for each URL.
+For this example, we're only going to need two pages. One page will handle all of our public routes (`/pages/[[...page]].tsx`) and another will handle our preview routes (`/pages/preview/[[...page]].tsx`). `[[...page]].tsx` is a catch-all route in Next. We'll use hooks provided by the framework to load the right content for each URL. Below is what will go in `/pages/[[...page]].tsx`:
 
 ```tsx
 import React from 'react';
@@ -214,6 +212,36 @@ export default function Posts() {
   );
 }
 ```
+
+To setup our previews route, we want to add the following to `/pages/preview/[[...page]].tsx`:
+
+```tsx
+import React from 'react';
+import {
+  useUriInfo,
+  getNextStaticPaths,
+  getNextStaticProps,
+} from '@wpengine/headless/next';
+import { GetStaticPropsContext } from 'next';
+import Posts from '../lib/components/Posts';
+import Post from '../lib/components/Post';
+
+export default function Page() {
+  const pageInfo = useUriInfo();
+
+  if (!pageInfo) {
+    return <></>;
+  }
+
+  if (pageInfo.isPostsPage) {
+    return <Posts />;
+  }
+
+  return <Post />;
+}
+```
+
+> **NOTE**: The only difference between our preview component and our page component is our preview component does not export `getStaticProps` or `getStaticPaths`. This is because the logic for getting a preview post is dynamic and will be handled client-side.
 
 #### Configuration
 
