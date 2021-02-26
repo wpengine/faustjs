@@ -202,6 +202,6 @@ function wpe_headless_term_link( $term_link ) {
 add_action(
 	'enqueue_block_editor_assets',
 	function() {
-		wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), [ 'wp-edit-post' ], false );
+		wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'wp-edit-post' ), '1.0.0', true );
 	}
 );
