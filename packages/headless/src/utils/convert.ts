@@ -1,6 +1,6 @@
 import { print as gqlPrint, DocumentNode } from 'graphql';
 import { HeadlessConfig, ParsedUrlInfo } from '../types';
-import { isBase64, isServerSide } from './assert';
+import { isBase64, isServerSide, previewRegex } from './assert';
 
 /**
  * Decodes a base64 string, compatible server-side and client-side
@@ -162,6 +162,14 @@ export function getUrlPath(url?: string): string {
   return `${parsedUrl?.pathname || '/'}${parsedUrl?.search || ''}`;
 }
 
+export function stripPreviewFromUrlPath(urlPath: string): string {
+  if (!urlPath) {
+    return urlPath;
+  }
+
+  return urlPath.replace(previewRegex, '$1');
+}
+
 /**
  * Ensures that a url does not have the specified prefix in it.
  *
@@ -175,26 +183,6 @@ export function resolvePrefixedUrlPath(url: string, prefix?: string): string {
 
   if (prefix) {
     resolvedUrl = url.replace(prefix, '');
-  }
-
-  const splitUrl = resolvedUrl.split('/');
-
-  /**
-   * Remove preview and preview ID if provided as WPGraphQL will not be able to resolve queries such as nodeByUri
-   * properly.
-   */
-  if (splitUrl?.[splitUrl.length - 2] === 'preview') {
-    resolvedUrl = splitUrl.slice(0, splitUrl.length - 2).join('/');
-  }
-
-  /**
-   * Paginated paths like /category/uncategorized/after/abc123 resolve to /category/uncategorized.
-   *
-   * WPGraphQL cannot natively parse the /after/abc123 portion, so we need to strip it from the query.
-   * Templates can still read the /after/abc123 portion to build custom queries from the URL.
-   */
-  if ((splitUrl[3] === 'after' || splitUrl[3] === 'before') && splitUrl[3]) {
-    resolvedUrl = splitUrl.slice(0, 3).join('/');
   }
 
   if (resolvedUrl === '') {
@@ -220,6 +208,8 @@ export function trimLeadingSlash(str: string | undefined): string | undefined {
   if (str[0] === '/') {
     return str.slice(1);
   }
+
+  return str;
 }
 /* eslint-enable consistent-return */
 

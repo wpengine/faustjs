@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { useUriInfo } from './hooks';
 import { TemplateLoader, Template, resolveTemplate, Templates } from '../react';
-import { getCurrentPath, isPreview } from './utils';
+import { getCurrentPath } from './utils';
 import { getUriInfo, getApolloClient } from '../api';
 import { resolvePrefixedUrlPath } from '../utils';
 import { headlessConfig } from '../config';
@@ -19,6 +19,10 @@ export function NextTemplateLoader({
   templates: Templates<NextTemplate>;
 }): JSX.Element | null {
   const uriInfo = useUriInfo();
+
+  if (!uriInfo) {
+    return null;
+  }
 
   return (
     <TemplateLoader
@@ -40,7 +44,7 @@ async function getTemplate(
     wpeConfig.uriPrefix,
   );
 
-  const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
+  const pageInfo = await getUriInfo(client, currentUrlPath);
 
   return resolveTemplate(pageInfo, templates);
 }
