@@ -198,6 +198,8 @@ function wpe_headless_term_link( $term_link ) {
 
 /**
  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link
+ *
+ * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
 add_action(
 	'enqueue_block_editor_assets',
