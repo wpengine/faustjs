@@ -20,4 +20,3 @@ Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/p
 ### Fixed
 - Types are now exported from non-core modules.
 - Prevent an issue with post previews that could result in “Additional keys were returned from `getServerSideProps`”.
-

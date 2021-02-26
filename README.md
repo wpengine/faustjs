@@ -29,7 +29,7 @@ Point it to your own WordPress site instead:
 Then, in your front-end app directory:
 
 4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
-5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
+5. Populate `NEXT_PUBLIC_WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
 6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
 7. `npm run dev` (kill and restart npm if it was already running)
 
