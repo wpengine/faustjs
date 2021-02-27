@@ -4,7 +4,7 @@
   "private": false,
   "description": "Headless block components",
   "repository": {
-    "url": "kienstra/headless-wordpress",
+    "url": "wpengine/headless-framework",
     "directory": "blocks"
   },
   "files": [
