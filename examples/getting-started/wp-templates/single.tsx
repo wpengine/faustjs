@@ -7,7 +7,7 @@ import {
 } from '@wpengine/headless';
 import { gql } from '@apollo/client';
 import { HeadlessBlocks } from 'headless-blocks';
-import blockComponents from 'blocks';
+import blockComponents from 'blocks/src';
 import { CTA, Footer, Header, Hero } from '../components';
 
 export default function Single(): JSX.Element {
