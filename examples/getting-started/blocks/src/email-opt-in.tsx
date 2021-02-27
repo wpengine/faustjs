@@ -20,9 +20,9 @@ function EmailOptIn(props: EmailOptInProps): React.ReactElement {
 
   return (
     <div>
-      <h3 className="text-lg mb-4">{blockAttributes.heading}</h3>
+      <h3>{blockAttributes.heading}</h3>
       {isSubmitted ? (
-        <div className="mt-4">
+        <div>
           {isSuccess ? (
             <p>{blockAttributes['submission-message']}</p>
           ) : (
@@ -32,19 +32,10 @@ function EmailOptIn(props: EmailOptInProps): React.ReactElement {
       ) : (
         <div>
           <p>{blockAttributes['main-copy']}</p>
-          <input
-            className="mr-4 h-8 rounded-sm border border-gray-600 mt-2 px-2 text-sm"
-            placeholder="First name"
-            type="text"
-          />
-          <input
-            className="mr-4 h-8 rounded-sm border border-gray-600 mt-2 px-2 text-sm"
-            placeholder="Your email"
-            type="text"
-          />
+          <input placeholder="First name" type="text" />
+          <input placeholder="Your email" type="text" />
           <button
             type="button"
-            className="h-8 px-3 bg-blue-700 text-white rounded-sm text-sm"
             onClick={() => {
               setIsSubmitted(!isSubmitted);
               setTimeout(() => setIsSuccess(!isSuccess), 2000);
