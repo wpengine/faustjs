@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', function () {
 				previewButton[0].click();
 
 				wp.data.dispatch('core/editor')
-					.savePost();
+					.autosave();
 			});
 
 			link.parentElement.insertBefore(copy, link);
