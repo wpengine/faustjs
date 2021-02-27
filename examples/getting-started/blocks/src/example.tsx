@@ -4,10 +4,7 @@
 import * as React from 'react';
 
 interface Attributes {
-  title: string;
-  description: string;
-  'button-text': string;
-  'button-link': string;
+  'new-field': string;
 }
 
 interface ExampleProps {
@@ -21,20 +18,16 @@ interface ExampleProps {
  * @param {ExampleProps} props
  * @return {React.ReactElement} An example preview component.
  */
-function ExampleBlock(props: ExampleProps): React.ReactElement {
+function Example(props: ExampleProps): React.ReactElement {
   const { attrs, attributes } = props;
   const blockAttributes = attrs || attributes;
 
   return (
     <div>
-      <h2>This is your example block</h2>
-      <h3>{blockAttributes.title}</h3>
-      <p>{blockAttributes.description}</p>
-      <a role="button" href={blockAttributes['button-link']}>
-        {blockAttributes['button-text']}
-      </a>
+      <p>This is an alternate preview component</p>
+      <p>{blockAttributes['new-field']}</p>
     </div>
   );
 }
 
-export default ExampleBlock;
+export default Example;

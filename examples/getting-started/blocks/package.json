@@ -1,7 +1,24 @@
 {
-  "name": "headless-block-components",
+  "name": "@getting-started/blocks",
   "version": "1.0.0",
   "private": false,
   "description": "Headless block components",
-  "main": "index.ts"
+  "repository": {
+    "url": "kienstra/headless-wordpress",
+    "directory": "blocks"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "tsc -d -p tsconfig.json",
+    "dev": "tsc -d -w -p tsconfig.json"
+  },
+  "dependencies": {
+    "typescript": "4.2.2"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  }
 }
