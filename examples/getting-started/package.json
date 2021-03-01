@@ -20,6 +20,9 @@
     "type": "git",
     "url": "git+https://github.com/wpengine/headless-framework/tree/main.git"
   },
+  "workspaces": [
+    "blocks"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

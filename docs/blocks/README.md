@@ -2,7 +2,6 @@
 
 Here's a built-in way for you to write custom blocks, with less than half the code.
 
-## Demo
 1. Clone the WordPress plugin [Headless Blocks](https://github.com/kienstra/headless-blocks) and follow its [setup instructions](https://github.com/kienstra/headless-blocks#setup), including installing the linked Genesis Custom Blocks `.zip`
 2. Go to `/wp-admin` > Posts > Add New
 3. Add the example 'Email Opt In' block that the Headless Blocks plugin registered: 
