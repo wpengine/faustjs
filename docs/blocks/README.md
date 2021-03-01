@@ -27,10 +27,10 @@ Here's a built-in way for you to write custom blocks, with less than half the co
 ![next-js-front-end](https://user-images.githubusercontent.com/4063887/109479512-12fd0700-7a40-11eb-94bf-4415990a1437.gif)
 
 ## Local development
-1. First, ensure that Headless Blocks is [set up](https://github.com/kienstra/headless-blocks#setup)
+1. Ensure that Headless Blocks is [set up](https://github.com/kienstra/headless-blocks#setup)
 1. `cd path/to/wp-content/plugins/headless-blocks`
 1. `npm link path/to/next.js/repo`
-1. That's the full path to your Next.js front-end repo
+1. That's the full path to your Next.js front-end repo. It will ensure the editor imports the block React components as you develop them.
 1. `npm run dev`
 1. Open a new Terminal tab
 1. `cd path/to/next.js/repo/blocks`
