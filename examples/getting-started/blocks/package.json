@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "build": "tsc -d -p tsconfig.json",
-    "dev": "tsc -d -w -p tsconfig.json"
+    "dev": "tsc -d -w -p tsconfig.json",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "typescript": "4.2.2"
