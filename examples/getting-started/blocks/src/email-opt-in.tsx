@@ -12,6 +12,12 @@ interface EmailOptInProps {
   attributes: Attributes;
 }
 
+/**
+ * An example interactive block component.
+ *
+ * Feel free to rename this and replace it with your own.
+ * The fields from Genesis Custom Blocks are in blockAttributes.
+ */
 function EmailOptIn(props: EmailOptInProps): React.ReactElement {
   const { attrs, attributes } = props;
   const blockAttributes = attrs || attributes;
