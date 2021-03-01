@@ -1,3 +1,9 @@
+export interface PaginationConfig {
+  after: string;
+  before: string;
+  replace(url: string): string;
+}
+
 /**
  * The configuration for your headless site
  *
@@ -15,6 +21,15 @@ export interface HeadlessConfig {
    * @memberof WPEHeadlessConfig
    */
   uriPrefix?: string;
+
+  /**
+   * Configure how pagination is handled by the framework. The default method is to
+   * assume `/after/<cursor>` and `/before/<cursor>`
+   *
+   * @type {PaginationConfig}
+   * @memberof HeadlessConfig
+   */
+  pagination?: PaginationConfig;
 }
 
 /**

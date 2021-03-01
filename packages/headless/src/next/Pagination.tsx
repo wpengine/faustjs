@@ -1,58 +1,56 @@
 import React from 'react';
 import Link from 'next/link';
+import { headlessConfig } from '../config';
+import {
+  Pagination as ReactPagination,
+  PageNavigationProps,
+  PaginationProps,
+} from '../react';
 
-interface Props {
-  pageInfo: WPGraphQL.WpPageInfo;
-  baseURL: string;
-  nextLabel?: string;
-  nextAriaLabel?: string;
-  previousLabel?: string;
-  previousAriaLabel?: string;
-  ariaLabel?: string;
+export function NextPageNavigation({
+  baseUrl,
+  cursor,
+  ariaLabel,
+  label,
+}: PageNavigationProps) {
+  const { pagination } = headlessConfig();
+  const href = `${baseUrl}/${pagination.after.replace('%cursor%', cursor)}`;
+  return (
+    <Link href={href}>
+      <a href={href} aria-label={ariaLabel}>
+        {label}
+      </a>
+    </Link>
+  );
 }
 
+export function PreviousPageNavigation({
+  baseUrl,
+  cursor,
+  ariaLabel,
+  label,
+}: PageNavigationProps) {
+  const { pagination } = headlessConfig();
+  const href = `${baseUrl}/${pagination.before.replace('%cursor%', cursor)}`;
+  return (
+    <Link href={href}>
+      <a href={href} aria-label={ariaLabel}>
+        {label}
+      </a>
+    </Link>
+  );
+}
+
+/* eslint-disable react/destructuring-assignment,react/jsx-props-no-spreading */
 /**
  * Pagination component to display a next and previous link on archives.
  *
  * @see https://github.com/wpengine/headless-framework/blob/canary/examples/getting-started/wp-templates/category.tsx.
  */
-export function Pagination({
-  nextLabel = 'Next Page →',
-  nextAriaLabel = 'Next page.',
-  previousLabel = '← Previous Page',
-  previousAriaLabel = 'Previous page.',
-  ariaLabel = 'Pagination',
-  pageInfo,
-  baseURL,
-}: Props): JSX.Element | null {
-  if (!pageInfo.hasNextPage && !pageInfo.hasPreviousPage) {
-    return null;
-  }
+export function Pagination(props: PaginationProps): JSX.Element | null {
+  const Next = props?.NextPage ?? NextPageNavigation;
+  const Previous = props?.PreviousPage ?? PreviousPageNavigation;
 
-  let classes = 'pagination';
-  if (pageInfo.hasNextPage) classes += ' has-next';
-  if (pageInfo.hasPreviousPage) classes += ' has-previous';
-
-  return (
-    <nav className={classes} aria-label={ariaLabel}>
-      <div className="wrap">
-        <ul>
-          {pageInfo.hasPreviousPage && (
-            <li className="pagination-previous">
-              <Link href={`${baseURL}/before/${pageInfo?.startCursor || ''}`}>
-                <a aria-label={previousAriaLabel}>{previousLabel}</a>
-              </Link>
-            </li>
-          )}
-          {pageInfo.hasNextPage && (
-            <li className="pagination-next">
-              <Link href={`${baseURL}/after/${pageInfo?.endCursor || ''}`}>
-                <a aria-label={nextAriaLabel}>{nextLabel}</a>
-              </Link>
-            </li>
-          )}
-        </ul>
-      </div>
-    </nav>
-  );
+  return <ReactPagination {...props} NextPage={Next} PreviousPage={Previous} />;
 }
+/* eslint-enable react/destructuring-assignment,react/jsx-props-no-spreading */

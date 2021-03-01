@@ -146,6 +146,7 @@ export async function getGeneralSettings(
 
 export function composeUrlPath(uriPath?: string) {
   let urlPath = uriPath;
+  const { uriPrefix, pagination } = headlessConfig();
 
   if (typeof urlPath !== 'string') {
     if (isServerSide()) {
@@ -156,10 +157,11 @@ export function composeUrlPath(uriPath?: string) {
 
     urlPath = resolvePrefixedUrlPath(
       getUrlPath(window.location.href),
-      headlessConfig().uriPrefix,
+      uriPrefix,
     );
   }
 
+  urlPath = pagination.replace(urlPath);
   urlPath = getUrlPath(urlPath);
   const isPreview = isPreviewPath(urlPath);
 

@@ -1,5 +1,5 @@
 import { print as gqlPrint, DocumentNode } from 'graphql';
-import { HeadlessConfig, ParsedUrlInfo } from '../types';
+import { ParsedUrlInfo } from '../types';
 import { isBase64, isServerSide, previewRegex } from './assert';
 
 /**
@@ -34,30 +34,6 @@ export function base64Encode(str: string): string {
   }
 
   return btoa(str);
-}
-
-/**
- * Takes a HeadlessConfig and ensures the properties that need to be normalized
- * (e.g. URL slashes trimmed, etc) are handled.
- *
- * @export
- * @param {HeadlessConfig} config
- * @returns {HeadlessConfig}
- */
-export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
-  let { uriPrefix } = config;
-
-  if (!uriPrefix) {
-    uriPrefix = '';
-  }
-
-  uriPrefix = uriPrefix.trim();
-
-  if (/\/$/.test(uriPrefix)) {
-    uriPrefix = uriPrefix.slice(0, -1);
-  }
-
-  return { ...config, uriPrefix };
 }
 
 /**
@@ -257,5 +233,22 @@ export function stringifyGql(doc?: DocumentNode): string | undefined {
   }
 
   return gqlPrint(doc);
+}
+/* eslint-enable consistent-return */
+
+/* eslint-disable consistent-return */
+/**
+ * Removes leading and trailing slashes from a string if they exist
+ *
+ * @export
+ * @param {(string | undefined)} str
+ * @returns
+ */
+export function trimSlashes(str: string | undefined): string | undefined {
+  if (!str) {
+    return str;
+  }
+
+  return trimLeadingSlash(trimTrailingSlash(str));
 }
 /* eslint-enable consistent-return */

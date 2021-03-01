@@ -66,11 +66,12 @@ async function getProps<
   config: NextPropsConfig = {},
 ) {
   const client = getApolloClient(context);
-  await fetchData(context, config.queries);
 
   if (config.templates) {
     await loadTemplates(context, config.templates);
   }
+
+  await fetchData(context, config.queries);
 
   return addApolloState(client, {
     props: {
