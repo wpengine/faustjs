@@ -3,21 +3,25 @@
 Here's a built-in way for you to write custom blocks, with less than half the code.
 
 1. Clone the WordPress plugin [Headless Blocks](https://github.com/kienstra/headless-blocks) and follow its [setup instructions](https://github.com/kienstra/headless-blocks#setup), including installing the linked Genesis Custom Blocks `.zip`
-1. Go to `/wp-admin` > Posts > Add New
-1. Add the example 'Email Opt In' block that the Headless Blocks plugin registered: 
+2. Go to `/wp-admin` > Posts > Add New
+3. Add the example 'Email Opt In' block that the Headless Blocks plugin registered: 
+
 ![email-opt-in-block](https://user-images.githubusercontent.com/4063887/109478584-0cba5b00-7a3f-11eb-92d0-64f067719ce0.png)
-1. Populate the fields with any text: 
+4. Populate the fields with any text: 
+
 ![populate-fields](https://user-images.githubusercontent.com/4063887/109478496-f1e7e680-7a3e-11eb-9655-cd86bb751644.png)
-1. Click outside the block so the preview displays
-1. You'll see the preview, a React component: 
-![preview-react-component](https://user-images.githubusercontent.com/4063887/109477726-0081ce00-7a3e-11eb-9e99-8cd3b52187fb.gif)
-1. Give the post a title of 'Headless Blocks', or whatever you'd lke
-1. Publish it
-1. On your Next.js front-end, go to that post, maybe http://localhost:3000/headless-blocks
-1. Notice how the block is the same as the preview you saw in the block editor
-1. Click the button
-1. See how the block is interactive, as it's a React component:
-![next-js-front-end](https://user-images.githubusercontent.com/4063887/109477841-2313e700-7a3e-11eb-91f0-1c07f6b37aad.gif)
+5. Click outside the block so the preview displays
+6. You'll see the preview, a React component: 
+
+![preview-react-component](https://user-images.githubusercontent.com/4063887/109479424-fc56b000-7a3f-11eb-92cb-dcacac7fbd65.gif)
+7. Give the post a title of 'Headless Blocks', or whatever you'd lke
+8. Publish it
+9. On your Next.js front-end, go to that post, maybe http://localhost:3000/headless-blocks
+10. Notice how the block is the same as the preview you saw in the block editor
+11. Click the button
+12. See how the block is interactive, as it's a React component:
+
+![next-js-front-end](https://user-images.githubusercontent.com/4063887/109479512-12fd0700-7a40-11eb-94bf-4415990a1437.gif)
 
 ## Local development
 1. First, ensure that Headless Blocks is [set up](https://github.com/kienstra/headless-blocks#setup)
