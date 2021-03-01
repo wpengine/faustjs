@@ -14,7 +14,7 @@ interface ExampleProps {
  *
  * Feel free to rename this and replace it with your own.
  * The fields from Genesis Custom Blocks are in blockAttributes.
- * For example, if you added a field with the name of 'example-field',
+ * For example, if you added a field with the name (slug) of 'example-field',
  * it will be in blockAttributes['example-field].
  */
 function Example(props: ExampleProps): React.ReactElement {
