@@ -5,6 +5,7 @@
     "bootstrap": "npm install && lerna bootstrap",
     "clean": "lerna run --parallel --stream clean",
     "dev": "lerna run --parallel --stream --no-bail dev-lerna",
+    "end2end": "lerna run --ignore packages dev:test",
     "wp-env": "wp-env",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",

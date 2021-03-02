@@ -83,18 +83,41 @@ composer test
 
 ## End-2-End Testing
 
-The end-2-end tests run using [Cypress](https://www.cypress.io/) while running on a local docker setup using [wp-env](https://github.com/WordPress/gutenberg/tree/master/packages/env#wp-env).
+[Codeception](https://codeception.com/) is used for running end-2-end tests in the browser.
 
-1. Ensure [Docker](https://docs.docker.com/get-docker/) is installed and running.
-2. Ensure you have ran `npm install` from the `headless-framework` root directory.
-3. Run `npm run wp:start` to start the development container.
-    - **Note: This may take some time on the initial start as it has to download and setup the needed files.**
-    - Development site `http://localhost:8888`.
-    - Testing site `http://localhost:8889`.
-    - The plugins [WPGraphQL](https://www.wpgraphql.com/) and `plugins/wpe-headless` will automatically be installed and activated.
-4. Run `npm run cypress:open` to open the Cypress UI and manually run the end-2-end tests.
-    - Run `npm run cypress:run` to run the end-2-end tests without the Cypress UI.
-5. Run `npm run wp:stop` to stop the development containers.
+### 1. Environment Setup
+1. Install [Composer](https://getcomposer.org/).
+    - Within the `plugins/wpe-headless` directory, run `composer install`.
+1. Install [Google Chrome](https://www.google.com/chrome/).
+1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
+    - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
+    - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
+      `mv chromedriver /usr/local/bin`
+    - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
+    - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
+
+### 2. Headless Site Setup
+1. From within the headless site `examples/getting-started` copy `.env.test.sample` to `.env.test`.
+    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file, else you can adjust the environment variables as needed.
+
+### 3. WPE Headless Setup
+1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
+1. Prepare a test WordPress site.
+    - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
+      1. Install [Docker](https://www.docker.com/get-started).
+      1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
+      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+1. Copy `.env.testing.example` to `.env.testing`.
+    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
+    - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
+1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
+
+### Browser testing documentation
+- [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
+  - Base framework for browser testing in php.
+- [WPBrowser](https://wpbrowser.wptestkit.dev/)
+  - WordPress framework wrapping Codeception for browser testing WordPress.
 
 ## Deployment
 

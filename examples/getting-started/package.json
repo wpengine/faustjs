@@ -8,6 +8,7 @@
     "build": "next build",
     "clean": "rimraf .next node_modules",
     "dev": "next dev",
+    "dev:test": "NODE_ENV=test next dev",
     "dev-lerna": "wait-on ./node_modules/@wpengine/headless/dist/index.js && npm run dev",
     "open": "run-s open:local",
     "open:local": "open-cli http://localhost:3000/",
