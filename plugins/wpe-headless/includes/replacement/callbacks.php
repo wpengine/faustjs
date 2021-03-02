@@ -118,22 +118,25 @@ function wpe_headless_post_preview_link( $link, $post ) {
 
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
-		/**
-		 * Add preview and preview ID back to path to support Next.js preview mode
-		 */
-		if ( 'publish' !== $post->post_status ) {
-			$path = 'draft/';
-		} else {
-			$path = $path ? trailingslashit( $path ) : '';
+		// Remove ?p=xx&preview=true from link temporarily.
+		$link = remove_query_arg(
+			array_keys( $args ),
+			$link
+		);
+
+		// Add p=xx if it's missing, which is the case for published posts.
+		if ( ! isset( $args['p'] ) ) {
+			$args['p'] = $preview_id;
 		}
 
-		$path .= 'preview/' . $preview_id;
+		$link = $frontend_uri . 'preview' . $path;
 
+		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
 			array(
-				'redirect_uri' => rawurlencode( ltrim( $path, '/' ) ),
+				$args,
 			),
-			$frontend_uri . 'api/auth/wpe-headless'
+			$link
 		);
 	}
 
@@ -191,3 +194,16 @@ function wpe_headless_term_link( $term_link ) {
 
 	return str_replace( $site_url, $frontend_uri, $term_link );
 }
+
+
+/**
+ * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link
+ *
+ * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
+ */
+add_action(
+	'enqueue_block_editor_assets',
+	function() {
+		wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'wp-edit-post' ), '1.0.0', true );
+	}
+);

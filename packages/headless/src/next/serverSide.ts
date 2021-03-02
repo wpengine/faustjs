@@ -6,15 +6,8 @@ import {
   getUriInfo,
   getApolloClient,
 } from '../api';
-import { headlessConfig } from '../config';
 import type { QueriesConfig } from '../react';
-import {
-  getCurrentPath,
-  getPreviewID,
-  isDraftPreview,
-  isPreview,
-} from './utils';
-import { resolvePrefixedUrlPath } from '../utils';
+import { getCurrentUrlPath } from './utils';
 
 /**
  * Makes the appropriate requests for WordPress data so it will exist client-side
@@ -28,12 +21,10 @@ export async function fetchData(
   options: QueriesConfig = {},
 ): Promise<void> {
   const client = getApolloClient(context);
-  const wpeConfig = headlessConfig();
-  const currentUrlPath = resolvePrefixedUrlPath(
-    getCurrentPath(context),
-    wpeConfig.uriPrefix,
-  );
-  const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
+  const currentUrlPath = getCurrentUrlPath(context);
+  const uriPath = currentUrlPath;
+
+  const pageInfo = await getUriInfo(client, uriPath);
 
   const isLatestPostsFrontPage =
     pageInfo && pageInfo?.isFrontPage && pageInfo?.isPostsPage;
@@ -54,31 +45,8 @@ export async function fetchData(
    */
   if (pageInfo && pageInfo?.isSingular && !isLatestPostsFrontPage) {
     const variables: WPGraphQL.RootQueryContentNodeArgs = {
-      id: currentUrlPath,
+      id: uriPath,
       idType: 'URI',
-      asPreview: isPreview(context),
-    };
-    const opts = options;
-
-    if (opts.post && opts.post.variables) {
-      opts.post.variables = {
-        ...variables,
-        ...opts.post.variables,
-      };
-    }
-
-    await getContentNode(client, {
-      fragments: opts.post?.fragments,
-      variables,
-    });
-  }
-
-  if (isDraftPreview(context)) {
-    const variables: WPGraphQL.RootQueryContentNodeArgs = {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      id: getPreviewID(context)!,
-      idType: 'DATABASE_ID',
-      asPreview: true,
     };
     const opts = options;
 

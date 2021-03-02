@@ -1,13 +1,10 @@
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { addApolloState, QueriesConfig } from '../react/provider';
-import { getUriInfo, getApolloClient } from '../api';
+import { getApolloClient } from '../api';
 import * as templateLoader from './NextTemplateLoader';
-import { ensureAuthorization } from '../auth';
 import { fetchData } from './serverSide';
 import { Templates } from '../react';
-import { headlessConfig } from '../config';
-import { getCurrentPath, isPreview, isPreviewPath } from './utils';
-import { resolvePrefixedUrlPath, stringifyGql } from '../utils';
+import { stringifyGql } from '../utils';
 
 export interface NextPropsConfig {
   templates?: Templates<templateLoader.NextTemplate>;
@@ -69,56 +66,15 @@ async function getProps<
   config: NextPropsConfig = {},
 ) {
   const client = getApolloClient(context);
-  const wpeConfig = headlessConfig();
-  const currentUrlPath = resolvePrefixedUrlPath(
-    getCurrentPath(context),
-    wpeConfig.uriPrefix,
-  );
-
-  const pageInfo = await getUriInfo(client, currentUrlPath, isPreview(context));
-
-  if (isPreview(context)) {
-    const path = Array.isArray(context.params?.page)
-      ? context.params?.page ?? []
-      : [context.params?.page];
-
-    const {
-      host,
-      protocol,
-      cookie: cookies,
-    } = (context.previewData as PreviewData).serverInfo;
-
-    const response = ensureAuthorization(
-      `${protocol}//${host}/${path.join('/') ?? ''}`,
-      {
-        cookies,
-      },
-    );
-
-    if (typeof response !== 'string' && response?.redirect) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: response.redirect,
-        },
-      };
-    }
-  } else if (pageInfo?.is404 || isPreviewPath(context)) {
-    return {
-      notFound: true,
-      props: {},
-    };
-  }
-
-  await fetchData(context, config.queries);
 
   if (config.templates) {
     await loadTemplates(context, config.templates);
   }
 
+  await fetchData(context, config.queries);
+
   return addApolloState(client, {
     props: {
-      preview: context.preview ?? false,
       queries: stringifyQueries(config.queries) ?? null,
     },
   });

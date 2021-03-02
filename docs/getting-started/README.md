@@ -16,9 +16,15 @@ create-next-app will prompt you to provide a name for your project. Once you do 
 
 ```cd your-app-name```
 
-Then `npm run dev` and visit your site at http://localhost:3000.
+Create a file to hold your environment variables, such as your WordPress site URL:
 
-```cp .env.local.sample .env.local```
+```
+cp .env.local.sample .env.local
+```
+
+You don't need to edit `.env.local` just yet.
+
+Then `npm run dev` and visit your site at http://localhost:3000.
 
 ## Connect the app to your WordPress site
 
@@ -32,9 +38,8 @@ Point it to your own WordPress site instead:
 
 Then, in your front-end app directory:
 
-4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
-5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
-6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
+4. Change `NEXT_PUBLIC_WORDPRESS_URL` in `.env.local` to the full URL to your WordPress site, including the `http://` or `https://` prefix.
+5. Change `WP_HEADLESS_SECRET` in `.env.local` to the secret key found at Settings → Headless in your WordPress admin area.
 6. `npm run dev` (kill and restart npm if it was already running)
 
 Open or refresh http://localhost:3000 and you should see a list of posts from your WordPress site at the bottom of the front page, and be able to view a single post.
@@ -58,7 +63,7 @@ The example project is set up with most of the features our [@wpengine/headless]
 
 ### ```pages/_app.tsx```
 
-We’re using a Next.js [Custom App](https://nextjs.org/docs/advanced-features/custom-app) to override the default `App` in order to inject our `<HeadlessProvider />` wrapper component. `HeadlessProvider` sets up an Apollo client that connects to WordPress via the `WORDPRESS_URL` environment variable. Our Apollo client is all set up to support both server side and client side rendering out of the box.
+We’re using a Next.js [Custom App](https://nextjs.org/docs/advanced-features/custom-app) to override the default `App` in order to inject our `<HeadlessProvider />` wrapper component. `HeadlessProvider` sets up an Apollo client that connects to WordPress via the `NEXT_PUBLIC_WORDPRESS_URL` environment variable. Our Apollo client is all set up to support both server side and client side rendering out of the box.
 
 ### ```pages/[[..page]].tsx```
 

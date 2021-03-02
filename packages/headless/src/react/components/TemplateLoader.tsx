@@ -6,8 +6,8 @@ export interface Template {
 }
 
 export interface Templates<T extends Template> {
-  index: Promise<T>;
-  [template: string]: Promise<T>;
+  index: Promise<T> | T;
+  [template: string]: Promise<T> | T;
 }
 
 export function resolveTemplate<T extends Template>(
@@ -19,17 +19,17 @@ export function resolveTemplate<T extends Template>(
   }
 
   if (!pageInfo || !pageInfo.templates) {
-    return templates.index;
+    return Promise.resolve(templates.index);
   }
 
   // eslint-disable-next-line no-restricted-syntax
   for (const template of pageInfo.templates) {
     if (typeof templates[template] !== 'undefined') {
-      return templates?.[template];
+      return Promise.resolve(templates?.[template]);
     }
   }
 
-  return templates.index;
+  return Promise.resolve(templates.index);
 }
 
 export function TemplateLoader<T extends Template>({

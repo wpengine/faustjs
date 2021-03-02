@@ -1,7 +1,20 @@
-import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloQueryResult,
+  gql,
+  NormalizedCacheObject,
+  QueryResult,
+} from '@apollo/client';
 import { UriInfo } from '../types';
 import { ensureAuthorization } from '../auth';
-import { isServerSide, getUrlPath } from '../utils';
+import {
+  isServerSide,
+  getUrlPath,
+  trimLeadingSlash,
+  resolvePrefixedUrlPath,
+  isPreviewPath,
+  stripPreviewFromUrlPath,
+} from '../utils';
 import {
   getPostsQuery,
   getContentNodeQuery,
@@ -10,6 +23,7 @@ import {
   GET_URI_INFO,
   ContentNodeOptions,
 } from './queries';
+import { headlessConfig } from '../config';
 
 /**
  * Gets all posts from WordPress
@@ -31,6 +45,58 @@ export async function getPosts(
   return result?.data?.posts;
 }
 
+export function composeContentNodeOptions(options: ContentNodeOptions = {}) {
+  let opts: ContentNodeOptions = options;
+
+  if (!opts) {
+    opts = {};
+  }
+
+  opts.variables = {
+    idType: 'URI',
+    asPreview: false,
+    ...opts.variables,
+  } as WPGraphQL.RootQueryContentNodeArgs;
+
+  if (opts.variables.idType === 'URI') {
+    opts.variables.id = trimLeadingSlash(opts.variables.id) as string;
+
+    if (!opts.variables.id) {
+      opts.variables.id = '/';
+    }
+  }
+
+  return opts;
+}
+
+export function parseContentNodeQuery(
+  result:
+    | ApolloQueryResult<WPGraphQL.GetContentNodeQuery>
+    | QueryResult<WPGraphQL.GetContentNodeQuery>,
+  options: ContentNodeOptions,
+) {
+  const node = result?.data?.contentNode as
+    | WPGraphQL.RootQuery['post']
+    | WPGraphQL.RootQuery['page'];
+
+  if (!node) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return undefined;
+  }
+
+  const { asPreview } = options.variables ?? {};
+
+  if (asPreview && !node.isPreview) {
+    if (!node.preview?.node) {
+      return node;
+    }
+
+    return node.preview.node;
+  }
+
+  return node;
+}
+
 /**
  * Gets an individual Post or Page from WordPress
  *
@@ -48,43 +114,14 @@ export async function getContentNode(
 ): Promise<
   WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined
 > {
-  let opts: ContentNodeOptions = options;
-
-  if (!opts) {
-    opts = {};
-  }
-
-  opts.variables = {
-    idType: 'URI',
-    asPreview: false,
-    ...opts.variables,
-  } as WPGraphQL.RootQueryContentNodeArgs;
+  const opts = composeContentNodeOptions(options);
 
   const result = await client.query<WPGraphQL.GetContentNodeQuery>({
     query: getContentNodeQuery(),
     variables: opts.variables,
   });
 
-  const node = result?.data?.contentNode as
-    | WPGraphQL.RootQuery['post']
-    | WPGraphQL.RootQuery['page'];
-
-  if (!node) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return undefined;
-  }
-
-  const { asPreview } = opts.variables;
-
-  if (asPreview && !node.isPreview) {
-    if (!node.preview?.node) {
-      return node;
-    }
-
-    return node.preview.node;
-  }
-
-  return node;
+  return parseContentNodeQuery(result, opts);
 }
 
 /**
@@ -107,43 +144,62 @@ export async function getGeneralSettings(
   return result?.data?.generalSettings;
 }
 
-/* eslint-disable consistent-return */
-/**
- * Gets information about the URI from WordPress
- *
- * @async
- * @export
- * @param {ApolloClient<NormalizedCacheObject>} client
- * @param {string} uriPath The path for the URI (e.g. '/hello-world')
- * @param {boolean} [isPreview] Whether or not the page being displayed is in preview mode or not.
- * @returns {(Promise<UriInfo | void>)}
- */
-export async function getUriInfo(
-  client: ApolloClient<NormalizedCacheObject>,
-  uriPath: string,
-  isPreview?: boolean,
-): Promise<UriInfo | undefined> {
-  const urlPath = getUrlPath(uriPath);
+export function composeUrlPath(uriPath?: string) {
+  let urlPath = uriPath;
+  const { uriPrefix, pagination } = headlessConfig();
+
+  if (typeof urlPath !== 'string') {
+    if (isServerSide()) {
+      console.warn('Getting uri info requires a URI when server-side.');
+
+      return undefined;
+    }
+
+    urlPath = resolvePrefixedUrlPath(
+      getUrlPath(window.location.href),
+      uriPrefix,
+    );
+  }
+
+  urlPath = pagination.replace(urlPath);
+  urlPath = getUrlPath(urlPath);
+  const isPreview = isPreviewPath(urlPath);
+
+  if (isPreview) {
+    urlPath = stripPreviewFromUrlPath(urlPath);
+  }
 
   if (isPreview && !isServerSide()) {
     const response = ensureAuthorization(window.location.href);
 
     if (typeof response !== 'string' && response?.redirect) {
-      window.location.replace(response.redirect);
+      setTimeout(() => {
+        window.location.replace(response.redirect);
+      }, 200);
+      /* eslint-disable-next-line consistent-return */
       return;
     }
   }
 
-  const response = await client.query<
-    WPGraphQL.GetUriInfoQuery,
-    WPGraphQL.GetUriInfoQueryVariables
-  >({
-    query: GET_URI_INFO,
-    variables: {
-      uri: urlPath,
-    },
-  });
+  urlPath = trimLeadingSlash(urlPath) as string;
 
+  if (!urlPath) {
+    urlPath = '/';
+  }
+
+  return {
+    urlPath,
+    isPreview,
+  };
+}
+
+export function parseUriInfoQuery(
+  response:
+    | ApolloQueryResult<WPGraphQL.GetUriInfoQuery>
+    | QueryResult<WPGraphQL.GetUriInfoQuery>,
+  uriPath: string,
+  isPreview?: boolean,
+): UriInfo {
   const result = response?.data?.nodeByUri;
 
   if (!result) {
@@ -163,7 +219,8 @@ export async function getUriInfo(
 
   const { id, templates } = result;
 
-  const { isArchive, isSingular } = response?.data?.nodeByUri?.conditionalTags;
+  const { isArchive, isSingular } =
+    response?.data?.nodeByUri?.conditionalTags ?? {};
 
   return {
     isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
@@ -175,5 +232,39 @@ export async function getUriInfo(
     isArchive,
     isSingular,
   };
+}
+
+/* eslint-disable consistent-return */
+/**
+ * Gets information about the URI from WordPress
+ *
+ * @async
+ * @export
+ * @param {ApolloClient<NormalizedCacheObject>} client
+ * @param {string} uriPath The path for the URI (e.g. '/hello-world')
+ * @param {boolean} [isPreview] Whether or not the page being displayed is in preview mode or not.
+ * @returns {(Promise<UriInfo | void>)}
+ */
+export async function getUriInfo(
+  client: ApolloClient<NormalizedCacheObject>,
+  uriPath?: string,
+): Promise<UriInfo | undefined> {
+  const { urlPath, isPreview } = composeUrlPath(uriPath) ?? {};
+
+  if (!urlPath) {
+    return;
+  }
+
+  const response = await client.query<
+    WPGraphQL.GetUriInfoQuery,
+    WPGraphQL.GetUriInfoQueryVariables
+  >({
+    query: GET_URI_INFO,
+    variables: {
+      uri: urlPath,
+    },
+  });
+
+  return parseUriInfoQuery(response, urlPath, isPreview);
 }
 /* eslint-enable consistent-return */

@@ -13,8 +13,9 @@ Eager to try out the Headless Framework? Here's how you can get started:
 ### Create a front-end app
 
 1. Create a new Next.js app from our [getting-started project](https://github.com/wpengine/headless-framework/tree/canary/examples/getting-started): `npx create-next-app -e https://github.com/wpengine/headless-framework/tree/canary --example-path examples/getting-started --use-npm`
-2. `cd my-app && npm run dev`
-3. See your site at http://localhost:3000.
+2. `cd my-app && cp .env.local.sample .env.local` to create a file that contains your environment variables.
+3. `npm run dev` to start the development server.
+4. See your site at http://localhost:3000.
 
 ### Point the app to your own WordPress site
 
@@ -28,10 +29,9 @@ Point it to your own WordPress site instead:
 
 Then, in your front-end app directory:
 
-4. `cp .env.local.sample .env.local` to create a file that will contain your environment variables.
-5. Populate `WORDPRESS_URL` in `.env.local` with the full URL to your WordPress site, including the `http://` or `https://` prefix.
-6. Populate `WP_HEADLESS_SECRET` in `.env.local` with the secret key found at Settings → Headless in your WordPress admin area.
-7. `npm run dev` (kill and restart npm if it was already running)
+4. Change `NEXT_PUBLIC_WORDPRESS_URL` in `.env.local` to the full URL to your WordPress site, including the `http://` or `https://` prefix.
+5. Change `WP_HEADLESS_SECRET` in `.env.local` to the secret key found at Settings → Headless in your WordPress admin area.
+6. `npm run dev` (kill and restart npm if it was already running)
 
 You'll see the same site with your WordPress posts instead of ours.
 

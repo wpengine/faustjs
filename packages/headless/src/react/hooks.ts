@@ -2,14 +2,6 @@ import { gql, useQuery } from '@apollo/client';
 
 import { useContext, useEffect } from 'react';
 import { UriInfo } from '../types';
-import { headlessConfig } from '../config';
-import {
-  getUrlPath,
-  isServerSide,
-  resolvePrefixedUrlPath,
-  trimOriginFromUrl,
-  isPreviewPath,
-} from '../utils';
 import {
   ContentNodeOptions,
   GENERAL_SETTINGS,
@@ -19,6 +11,11 @@ import {
   ListPostOptions,
 } from '../api/queries';
 import { HeadlessContext, QueriesConfig } from './provider';
+import {
+  parseUriInfoQuery,
+  composeUrlPath,
+  parseContentNodeQuery,
+} from '../api';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site
@@ -125,64 +122,29 @@ export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
  * @export
  * @returns {(UriInfo | undefined)}
  */
-export function useUriInfo(
-  uri?: string,
-  resolvedUri?: string,
-): UriInfo | undefined {
-  let localUri = uri ?? '';
+export function useUriInfo(uri?: string): UriInfo | undefined {
+  const { urlPath, isPreview } = composeUrlPath(uri) ?? {};
 
-  if (!localUri && !isServerSide()) {
-    localUri = resolvePrefixedUrlPath(
-      getUrlPath(window.location.href),
-      headlessConfig().uriPrefix,
-    );
+  if (!urlPath) {
+    /* eslint-disable-next-line react-hooks/rules-of-hooks */
+    useEffect(() => {});
+
+    /* eslint-disable-next-line consistent-return */
+    return;
   }
 
-  localUri = getUrlPath(localUri);
-  // eslint-disable-next-line no-param-reassign
-  resolvedUri = getUrlPath(resolvedUri);
-
+  /* eslint-disable-next-line react-hooks/rules-of-hooks */
   const response = useQuery<
     WPGraphQL.GetUriInfoQuery,
     WPGraphQL.GetUriInfoQueryVariables
   >(GET_URI_INFO, {
     variables: {
-      uri: localUri,
+      uri: urlPath,
     },
   });
 
-  const result = response?.data?.nodeByUri;
-
-  if (!result) {
-    return {
-      is404: true,
-      templates: ['404'],
-      uriPath: getUrlPath(localUri),
-    };
-  }
-
-  const { id, templates } = result;
-
-  const pageInfo = {
-    isPostsPage: (result as { isPostsPage: boolean }).isPostsPage ?? false,
-    isFrontPage: (result as { isFrontPage: boolean }).isFrontPage ?? false,
-    id,
-    uriPath: getUrlPath(localUri),
-    isPreview: isPreviewPath(resolvedUri ?? localUri),
-    templates,
-  };
-
-  if (
-    pageInfo?.uriPath !==
-    resolvePrefixedUrlPath(
-      trimOriginFromUrl(resolvedUri ?? localUri),
-      headlessConfig().uriPrefix,
-    )
-  ) {
-    return undefined;
-  }
-
-  return pageInfo;
+  /* eslint-disable-next-line consistent-return */
+  return parseUriInfoQuery(response, urlPath, isPreview);
 }
 
 /* eslint-disable consistent-return */
@@ -214,10 +176,18 @@ export function useUriInfo(
  * @returns {(Post | Page | undefined)}
  */
 export function usePost(
+  uri?: string,
   options: ContentNodeOptions = {},
 ): WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined {
   const context = useContext<{ queries?: QueriesConfig }>(HeadlessContext);
-  const pageInfo = useUriInfo();
+  const pageInfo = useUriInfo(uri);
+
+  if (!pageInfo || pageInfo.isPostsPage) {
+    /* eslint-disable-next-line react-hooks/rules-of-hooks */
+    useEffect(() => {});
+    return;
+  }
+
   let opts: ContentNodeOptions = options;
 
   if (!opts) {
@@ -236,37 +206,25 @@ export function usePost(
     };
   }
 
-  if (!pageInfo || pageInfo.isPostsPage) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {});
-    return;
-  }
-
   opts.variables = {
-    idType: 'URI',
+    idType: pageInfo.idType ?? 'URI',
     asPreview: pageInfo.isPreview,
-    id: pageInfo.uriPath,
+    id:
+      (pageInfo.idType === 'DATABASE_ID' || pageInfo.idType === 'ID') &&
+      pageInfo.id
+        ? pageInfo.id
+        : pageInfo.uriPath,
     ...opts.variables,
   };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const result = useQuery<WPGraphQL.RootQuery>(getContentNodeQuery(opts), {
-    variables: opts.variables,
-  });
+  const result = useQuery<WPGraphQL.GetContentNodeQuery>(
+    getContentNodeQuery(opts),
+    {
+      variables: opts.variables,
+    },
+  );
 
-  const node = result?.data?.contentNode as
-    | WPGraphQL.RootQuery['post']
-    | WPGraphQL.RootQuery['page'];
-  const { variables } = opts;
-
-  if (variables?.asPreview && !node?.isPreview) {
-    if (!node?.preview?.node) {
-      return node;
-    }
-
-    return node.preview.node;
-  }
-
-  return node;
+  return parseContentNodeQuery(result, opts);
 }
 /* eslint-enable consistent-return */

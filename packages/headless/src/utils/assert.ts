@@ -25,11 +25,11 @@ export function isBase64(str: string): boolean {
   );
 }
 
+export const previewRegex = /\/preview(\/\w|\?)/;
+
 export function isPreviewPath(uri: string): boolean {
   if (typeof uri === 'string') {
-    const urlSplit = uri.split('/');
-
-    return urlSplit?.[urlSplit.length - 2] === 'preview';
+    return previewRegex.test(uri);
   }
 
   return false;
