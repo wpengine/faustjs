@@ -64,7 +64,7 @@ The flow looks like this:
 
 The framework provides a Node.js auth handler to do the exchange for you.
 
-### Auth Hander
+### Auth Handler
 
 In order to support the exchange of the access code for an access token, the framework provides a Node authorization handler:
 
