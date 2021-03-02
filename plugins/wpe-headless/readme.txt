@@ -4,7 +4,7 @@ Tags:
 Requires at least: 5.3
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -22,6 +22,11 @@ Transform your WordPress site to a powerful Headless API.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.5.2 =
+Requires the @wpengine/headless package 0.6.2+ for features such as post previews. https://www.npmjs.com/package/@wpengine/headless
+
+- Fixes an issue that could cause a 404 response for post previews.
 
 = 0.5.1 =
 Requires the @wpengine/headless package 0.6.1+ for features such as post previews. https://www.npmjs.com/package/@wpengine/headless
