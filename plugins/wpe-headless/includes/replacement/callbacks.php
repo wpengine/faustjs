@@ -106,7 +106,6 @@ function wpe_headless_post_preview_link( $link, $post ) {
 	if ( $frontend_uri ) {
 		$home_url     = trailingslashit( get_home_url() );
 		$frontend_uri = trailingslashit( $frontend_uri );
-
 		/**
 		 * This should already be handled by wpe_headless_post_link, but it's here for verbosity's sake and if the
 		 * other filter changes for any reason.
@@ -114,7 +113,8 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
 		$args = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
-		$path = wp_parse_url( $link, PHP_URL_PATH );
+		$frontend_uri_path = wp_parse_url( $frontend_uri, PHP_URL_PATH );
+		$path = trailingslashit( str_replace( $frontend_uri_path, '', wp_parse_url( $link, PHP_URL_PATH ) ) );
 
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
@@ -129,7 +129,7 @@ function wpe_headless_post_preview_link( $link, $post ) {
 			$args['p'] = $preview_id;
 		}
 
-		$link = $frontend_uri . 'preview' . $path;
+		$link = untrailingslashit( $frontend_uri ) . '/preview/' . ltrim( $path, '/\\' ) ;
 
 		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
