@@ -147,9 +147,10 @@ export function getStaticProps(context: GetStaticPropsContext) {
 }
 ```
 
+`getNextStaticProps` is used to allow for Static Site Generation. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
+
 `useUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
 
-`getNextStaticProps` is used to allow for Static Site Generation. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
 
 `/lib/components/Post.tsx`
 
@@ -217,31 +218,14 @@ To setup our previews route, we want to add the following to `/pages/preview/[[.
 
 ```tsx
 import React from 'react';
-import {
-  useUriInfo,
-  getNextStaticPaths,
-  getNextStaticProps,
-} from '@wpengine/headless/next';
-import { GetStaticPropsContext } from 'next';
-import Posts from '../lib/components/Posts';
 import Post from '../lib/components/Post';
 
 export default function Page() {
-  const pageInfo = useUriInfo();
-
-  if (!pageInfo) {
-    return <></>;
-  }
-
-  if (pageInfo.isPostsPage) {
-    return <Posts />;
-  }
-
   return <Post />;
 }
 ```
 
-> **NOTE**: The only difference between our preview component and our page component is our preview component does not export `getStaticProps` or `getStaticPaths`. This is because the logic for getting a preview post is dynamic and will be handled client-side.
+> **NOTE**: Our preview component does not export `getStaticProps` or `getStaticPaths`. This is because the logic for getting a preview post is dynamic and will be handled client-side.
 
 #### Configuration
 
