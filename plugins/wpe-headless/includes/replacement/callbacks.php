@@ -112,9 +112,12 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		 */
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
-		$args = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
+		$parsed_link_query = wp_parse_url( $link, PHP_URL_QUERY );
+		$args = wp_parse_args( $parsed_link_query );
 		$frontend_uri_path = wp_parse_url( $frontend_uri, PHP_URL_PATH );
-		$path = trailingslashit( str_replace( $frontend_uri_path, '', wp_parse_url( $link, PHP_URL_PATH ) ) );
+		$parsed_link_path = wp_parse_url( $link, PHP_URL_PATH );
+		$link_path = str_replace( $frontend_uri_path, '', $parsed_link_path );
+		$path = trailingslashit( $link_path );
 
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
@@ -129,7 +132,9 @@ function wpe_headless_post_preview_link( $link, $post ) {
 			$args['p'] = $preview_id;
 		}
 
-		$link = untrailingslashit( $frontend_uri ) . '/preview/' . ltrim( $path, '/\\' ) ;
+		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
+		$unleadingslash_path = ltrim( $path, '/\\' );
+		$link = $untrailingslash_frontend_uri . '/preview/' . $unleadingslash_path;
 
 		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
