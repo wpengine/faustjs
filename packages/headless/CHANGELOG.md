@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.3] - 2021-03-03
+
+Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) [zip] version 0.5.3 or higher for features such as post previews.
+
+### Fixed
+- Fixes post previews for frontend apps running from a subfolder.
+
 ## [0.6.2] - 2021-03-02
 
 Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) [zip] version 0.5.2 or higher for features such as post previews.
