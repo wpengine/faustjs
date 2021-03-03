@@ -1,6 +1,6 @@
 import { print as gqlPrint, DocumentNode } from 'graphql';
-import { HeadlessConfig, ParsedUrlInfo } from '../types';
-import { isBase64, isServerSide } from './assert';
+import { ParsedUrlInfo } from '../types';
+import { isBase64, isServerSide, previewRegex } from './assert';
 
 /**
  * Decodes a base64 string, compatible server-side and client-side
@@ -34,30 +34,6 @@ export function base64Encode(str: string): string {
   }
 
   return btoa(str);
-}
-
-/**
- * Takes a HeadlessConfig and ensures the properties that need to be normalized
- * (e.g. URL slashes trimmed, etc) are handled.
- *
- * @export
- * @param {HeadlessConfig} config
- * @returns {HeadlessConfig}
- */
-export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
-  let { uriPrefix } = config;
-
-  if (!uriPrefix) {
-    uriPrefix = '';
-  }
-
-  uriPrefix = uriPrefix.trim();
-
-  if (/\/$/.test(uriPrefix)) {
-    uriPrefix = uriPrefix.slice(0, -1);
-  }
-
-  return { ...config, uriPrefix };
 }
 
 /**
@@ -162,6 +138,14 @@ export function getUrlPath(url?: string): string {
   return `${parsedUrl?.pathname || '/'}${parsedUrl?.search || ''}`;
 }
 
+export function stripPreviewFromUrlPath(urlPath: string): string {
+  if (!urlPath) {
+    return urlPath;
+  }
+
+  return urlPath.replace(previewRegex, '$1');
+}
+
 /**
  * Ensures that a url does not have the specified prefix in it.
  *
@@ -175,26 +159,6 @@ export function resolvePrefixedUrlPath(url: string, prefix?: string): string {
 
   if (prefix) {
     resolvedUrl = url.replace(prefix, '');
-  }
-
-  const splitUrl = resolvedUrl.split('/');
-
-  /**
-   * Remove preview and preview ID if provided as WPGraphQL will not be able to resolve queries such as nodeByUri
-   * properly.
-   */
-  if (splitUrl?.[splitUrl.length - 2] === 'preview') {
-    resolvedUrl = splitUrl.slice(0, splitUrl.length - 2).join('/');
-  }
-
-  /**
-   * Paginated paths like /category/uncategorized/after/abc123 resolve to /category/uncategorized.
-   *
-   * WPGraphQL cannot natively parse the /after/abc123 portion, so we need to strip it from the query.
-   * Templates can still read the /after/abc123 portion to build custom queries from the URL.
-   */
-  if ((splitUrl[3] === 'after' || splitUrl[3] === 'before') && splitUrl[3]) {
-    resolvedUrl = splitUrl.slice(0, 3).join('/');
   }
 
   if (resolvedUrl === '') {
@@ -220,6 +184,8 @@ export function trimLeadingSlash(str: string | undefined): string | undefined {
   if (str[0] === '/') {
     return str.slice(1);
   }
+
+  return str;
 }
 /* eslint-enable consistent-return */
 
@@ -267,5 +233,22 @@ export function stringifyGql(doc?: DocumentNode): string | undefined {
   }
 
   return gqlPrint(doc);
+}
+/* eslint-enable consistent-return */
+
+/* eslint-disable consistent-return */
+/**
+ * Removes leading and trailing slashes from a string if they exist
+ *
+ * @export
+ * @param {(string | undefined)} str
+ * @returns
+ */
+export function trimSlashes(str: string | undefined): string | undefined {
+  if (!str) {
+    return str;
+  }
+
+  return trimLeadingSlash(trimTrailingSlash(str));
 }
 /* eslint-enable consistent-return */

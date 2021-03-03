@@ -15,18 +15,14 @@ import { CookieOptions, getAccessToken } from '../auth';
 
 export type PersistentContext = Record<string, unknown>;
 
-let WP_URL = trimTrailingSlash(
+const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
 );
 
 if (!WP_URL) {
-  WP_URL = 'https://headlessfw.wpengine.com';
-
-  if (isServerSide()) {
-    console.warn(
-      'DEMO MODE: The WORDPRESS_URL environment variable is not set. Using demo site URL of https://headlessfw.wpengine.com. Set WORDPRESS_URL to your WordPress site URL and install the WPGraphQL plugin to see your own content.',
-    );
-  }
+  console.warn(
+    'Set NEXT_PUBLIC_WORDPRESS_URL to your WordPress site URL and install the WPGraphQL plugin to see your own content.',
+  );
 }
 
 /**

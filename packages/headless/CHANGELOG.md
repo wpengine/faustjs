@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.2] - 2021-03-02
+
+Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) [zip] version 0.5.2 or higher for features such as post previews.
+
+### Fixed
+- Fixes an issue that could cause a 404 response for post previews.
+
 ## [0.6.1] - 2021-02-25
 
 Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) [zip] version 0.5.1 or higher for features such as post previews.
@@ -20,4 +27,3 @@ Requires the [WP Engine Headless plugin](https://wp-product-info.wpesvc.net/v1/p
 ### Fixed
 - Types are now exported from non-core modules.
 - Prevent an issue with post previews that could result in “Additional keys were returned from `getServerSideProps`”.
-

@@ -130,7 +130,7 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
 		wpe_headless_update_setting( 'enable_rewrites', true );
 		// @todo this feels like a hack
-		$this->assertSame( 'http://moo/api/auth/wpe-headless?redirect_uri=' . urlencode( 'preview/' . $this->post_id ), get_preview_post_link( $this->post_id ) );
+		$this->assertSame( 'http://moo/preview/?p=' . $this->post_id . '&preview=true', get_preview_post_link( $this->post_id ) );
 	}
 
 	/**
