@@ -181,12 +181,7 @@ export function usePost(
 ): WPGraphQL.RootQuery['post'] | WPGraphQL.RootQuery['page'] | undefined {
   const context = useContext<{ queries?: QueriesConfig }>(HeadlessContext);
   const pageInfo = useUriInfo(uri);
-
-  if (!pageInfo || pageInfo.isPostsPage) {
-    /* eslint-disable-next-line react-hooks/rules-of-hooks */
-    useEffect(() => {});
-    return;
-  }
+  let skip = true;
 
   let opts: ContentNodeOptions = options;
 
@@ -194,34 +189,38 @@ export function usePost(
     opts = {};
   }
 
-  if (context.queries?.post) {
-    opts.variables = {
-      ...context.queries.post.variables,
-      ...opts.variables,
-    } as WPGraphQL.RootQueryContentNodeArgs;
+  if (!!pageInfo && !pageInfo.isPostsPage) {
+    skip = false;
+    if (context.queries?.post) {
+      opts.variables = {
+        ...context.queries.post.variables,
+        ...opts.variables,
+      } as WPGraphQL.RootQueryContentNodeArgs;
 
-    opts.fragments = {
-      ...context.queries.post.fragments,
-      ...opts.fragments,
+      opts.fragments = {
+        ...context.queries.post.fragments,
+        ...opts.fragments,
+      };
+    }
+
+    opts.variables = {
+      idType: pageInfo.idType ?? 'URI',
+      asPreview: pageInfo.isPreview,
+      id:
+        (pageInfo.idType === 'DATABASE_ID' || pageInfo.idType === 'ID') &&
+        pageInfo.id
+          ? pageInfo.id
+          : pageInfo.uriPath,
+      ...opts.variables,
     };
   }
-
-  opts.variables = {
-    idType: pageInfo.idType ?? 'URI',
-    asPreview: pageInfo.isPreview,
-    id:
-      (pageInfo.idType === 'DATABASE_ID' || pageInfo.idType === 'ID') &&
-      pageInfo.id
-        ? pageInfo.id
-        : pageInfo.uriPath,
-    ...opts.variables,
-  };
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const result = useQuery<WPGraphQL.GetContentNodeQuery>(
     getContentNodeQuery(opts),
     {
       variables: opts.variables,
+      skip,
     },
   );
 
