@@ -6,6 +6,7 @@
 *.circleci*
 *.sass-cache*
 *.editorconfig*
+*.env.testing*
 *eslint*
 *stylelint*
 deploy.sh
@@ -23,4 +24,7 @@ deploy.sh
 *composer.json*
 *composer.lock*
 *package-lock.json*
+*docker*
+*docker-compose.yml*
+*codeception.dist.yml*
 .zipignore
