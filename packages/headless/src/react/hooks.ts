@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { UriInfo } from '../types';
 import {
   ContentNodeOptions,
@@ -124,27 +124,25 @@ export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
  */
 export function useUriInfo(uri?: string): UriInfo | undefined {
   const { urlPath, isPreview } = composeUrlPath(uri) ?? {};
+  const skip = !urlPath;
 
-  if (!urlPath) {
-    /* eslint-disable-next-line react-hooks/rules-of-hooks */
-    useEffect(() => {});
-
-    /* eslint-disable-next-line consistent-return */
-    return;
-  }
-
-  /* eslint-disable-next-line react-hooks/rules-of-hooks */
   const response = useQuery<
     WPGraphQL.GetUriInfoQuery,
     WPGraphQL.GetUriInfoQueryVariables
   >(GET_URI_INFO, {
     variables: {
-      uri: urlPath,
+      uri: urlPath ?? '',
     },
+    skip,
   });
 
+  if (skip) {
+    /* eslint-disable-next-line consistent-return */
+    return;
+  }
+
   /* eslint-disable-next-line consistent-return */
-  return parseUriInfoQuery(response, urlPath, isPreview);
+  return parseUriInfoQuery(response, urlPath ?? '', isPreview);
 }
 
 /* eslint-disable consistent-return */
@@ -215,7 +213,6 @@ export function usePost(
     };
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const result = useQuery<WPGraphQL.GetContentNodeQuery>(
     getContentNodeQuery(opts),
     {
@@ -224,6 +221,12 @@ export function usePost(
     },
   );
 
+  if (skip) {
+    /* eslint-disable-next-line consistent-return */
+    return;
+  }
+
+  /* eslint-disable-next-line consistent-return */
   return parseContentNodeQuery(result, opts);
 }
 /* eslint-enable consistent-return */
