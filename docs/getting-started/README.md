@@ -30,7 +30,7 @@ Then `npm run dev` and visit your site at http://localhost:3000.
 
 The sample app loads WordPress content from our demo site at https://headlessfw.wpengine.com.
 
-To point it to your a differenct WordPress site:
+To point it to a different WordPress site:
 
 1. Create a WordPress site if you haven't already. We recommend [Local](https://localwp.com/) to try things out locally, or you can use a live WordPress site.
 2. Download, upload, and activate the `wpe-headless` plugin. [(Plugin Download)](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
