@@ -11,7 +11,7 @@ In the overview below, if you start with a page on the left and trace it to the 
 
 ## Template Hierarchy in Next.js
 
-While Next.js has a robust [routing layer](https://nextjs.org/docs/routing/introduction), it is not always ideal for WordPress-based sites routes are built around directory and file structures rather than content types.
+While Next.js has a robust [routing layer](https://nextjs.org/docs/routing/introduction), it is not always ideal for WordPress-based sites where routes are built around directory and file structures rather than content types.
 
 As an example, you can customize pages under an `/account` path by adding files to `pages/account`. While this is powerful, it doesn't immediately offer ways to customize specific content types like WordPress's Template Hierarchy allows for by adding files such as `single-$posttype.php` or `category.php`.
 
