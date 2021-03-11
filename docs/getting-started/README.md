@@ -54,7 +54,7 @@ At this point, if you know what the URL to your frontend site is (or is going to
 
 ### What is the WordPress plugin doing?
 
-The plugin ensures that your WordPress site runs smoothly as a headless CMS. From smart content redirects to enabling post previewing to providing the right data is available in WPGraphQL, installing the plugin gives you the things you need to run WordPress as a headless CMS. Find a [full list of plugin features here](https://github.com/wpengine/headless-framework#plugin-features).
+The plugin ensures that your WordPress site runs smoothly as a headless CMS. From smart content redirects to enabling post previewing to providing the right data in WPGraphQL, installing the plugin gives you the things you need to run WordPress as a headless CMS. Find a [full list of plugin features here](https://github.com/wpengine/headless-framework#plugin-features).
 
 
 ## Breaking down the example project
