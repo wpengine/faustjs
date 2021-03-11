@@ -50,7 +50,7 @@ Install our [Headless WordPress plugin](https://github.com/wpengine/headless-fra
 
 After activation, WordPress redirects to the Headless settings page. The plugin has a dependency on WPGraphQL, so you’ll see a button on the right under the “Get Started with Headless” box to install and activate the WPGraphQL plugin if it’s not already active.
 
-At this point, if you know what the URL to your frontend site is (or is going to be), you can enter that now in the Front-end Site URL field. That’s all you need to do for now through WordPress
+At this point, if you know what the URL to your frontend site is (or is going to be), you can enter that now in the Front-end Site URL field. That’s all you need to do for now through WordPress.
 
 ### What is the WordPress plugin doing?
 
