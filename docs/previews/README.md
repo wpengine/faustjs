@@ -4,7 +4,7 @@
 
 In this guide, we'll walk through how to configure a Next.js site for previews.
 
-We're going to use Next with TypeScript for this example.
+We're going to use Next.js with TypeScript for this example tutorial.
 
 ```bash
 npx create-next-app previews
@@ -14,24 +14,23 @@ npm i @wpengine/headless @apollo/client graphql
 npm i typescript @types/react @types/react-dom @types/node -D
 ```
 
-TL;DR
-Checkout the [example project](/examples/preview) to see how it works.
+**TL;DR:** Check out the [example project](/examples/preview) to see how it works.
 
 ## WPE Headless Plugin
 
-In order to enable previews in WordPress, you'll first need to install the [wpe-headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download). You also need to install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/).
+To enable previews in WordPress, you'll first need to install the [wpe-headless plugin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download). You also need to install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/).
 
-The plugin enables an OAuth flow for users to authenticate with WordPress and receive an access token which is used for subsequent API calls (i.e. GQL/REST).
+The plugin enables an OAuth flow for users to authenticate with WordPress and receive an access token for subsequent API calls (i.e., GQL/REST).
 
-In addition, the plugin will rewrite URLs in WordPress so that when a user clicks view/preview on a post, they will be taken to the frontend rather than WP.
+Also, the plugin will rewrite URLs in WordPress so that when a user clicks view/preview on a post, the URL goes to the frontend rather than WordPress.
 
 ### Plugin Settings
 
-Go to Settings->Headless to view the plugin's settings page:
+Go to **Settings->Headless** to view the plugin's settings page:
 
 ![Headless Plugin Menu](/docs/previews/headless-settings.jpg)
 
-There are 2 settings that assist in previews. The first setting is the location of your frontend. You'll need to enter a `Front-end site URL`, which will be `http://localhost:3000` for this example.
+Two settings assist in previews. The first setting is the location of your frontend. You'll need to enter a `Frontend site URL`, which will be `http://localhost:3000` for this example.
 
 The second one is read-only. It gives you an API secret key that you need to use on your backend for your frontend.
 
@@ -47,17 +46,17 @@ Install the npm package via:
 npm i @wpengine/headless
 ```
 
-The package contains an auth handler to get an access token for a user when trying to view a preview/draft post as well as React hooks to pull post(s).
+The package contains an auth handler to get an access token for a user when trying to view a preview/draft post and React hooks to pull post(s).
 
 ### Authorization Flow
 
-In order to submit secure requests to WordPress, we need to be able to verify that a user has access to the content that is being requested. The plugin exposes routes that allow us to create access codes and exchange them for access tokens.
+To submit secure requests to WordPress, we need to verify that a user has access to the content requested. The plugin exposes routes that allow us to create access codes and exchange them for access tokens.
 
 The flow looks like this:
 
-- User makes a request to a secure route (i.e. draft post)
+- User requests a secure route (i.e., draft post)
 - User is redirected to WordPress to login
-- WordPress redirects back to frontend with a temporary code
+- WordPress turns back to frontend with a temporary code
 - The frontend server exchanges the code for an access token
 - The access token is stored in a cookie
 - The user is finally redirected back to the original URL and uses the access token in the cookie to make the authenticated request
@@ -66,7 +65,7 @@ The framework provides a Node.js auth handler to do the exchange for you.
 
 ### Auth Handler
 
-In order to support the exchange of the access code for an access token, the framework provides a Node authorization handler:
+To support the exchange of the access code for an access token, the framework provides a Node authorization handler:
 
 ```ts
 import { authorizeHandler } from '@wpengine/headless';
@@ -74,7 +73,7 @@ import { authorizeHandler } from '@wpengine/headless';
 
 `authorizeHandler` accepts a Node request (IncomingMessage) and response (ServerResponse) and will work with any Node-based server library.
 
-In order to enable the handler in Next, create a new API route:
+To enable the handler in Next, create a new API route:
 
 `/pages/api/auth/wpe-headless.ts`
 
@@ -86,7 +85,7 @@ export default authorizeHandler;
 
 ### Next Integration
 
-The framework provides a provider and hooks that assist in routing and server side rendering.
+The framework provides a provider and hooks that assist in routing and server-side rendering.
 
 #### HeadlessProvider
 
@@ -147,7 +146,7 @@ export function getStaticProps(context: GetStaticPropsContext) {
 }
 ```
 
-`getNextStaticProps` is used to allow for Static Site Generation. It knows how to get URL information on the server so that we can query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
+`getNextStaticProps` is used to allow for Static Site Generation. It knows how to get URL information on the server to query WP and pull the right `pageInfo` on the initial request. This is critical for SEO. We want to return the rendered page on the first request so that search engines can index our content.
 
 `useUriInfo` gets the URL from the Next Router and queries WP to get information about the route. If the route has a list of posts, we'll show one component. If it has a single post, we'll show another. Let's add those components to `/lib/components`.
 
@@ -249,8 +248,9 @@ npm run dev
 
 The server will start on port 3000 by default: [http://localhost:3000](http://localhost:3000)
 
-You should see a list of posts on the home page and be able to view a single post.
+You should see a list of posts on the home page and view a single post.
 
 For previews, go to WP and create a new post, but don't publish it. Click preview, and you'll be sent to the frontend through the authorization flow.
 
-NOTE: If you open the preview link in a private window, you'll be prompted to login to WP before being redirected back to the frontend.
+**NOTE:** If you open the preview link in a private window, you'll be prompted to log in to WP before redirecting back to the frontend.
+
