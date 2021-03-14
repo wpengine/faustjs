@@ -254,7 +254,8 @@ The above code does a few things:
 It gets a Next context-bound Apollo client.
 It makes a query with the Apollo client.
 It calls `getNextStaticProps` and configures the fragment it wants to use for the `posts` query.
-Note that in **MyComponent** it simply calls `usePosts`. The call to `usePosts` will get the posts with the Apollo client cache's configured fields.
+
+Note that **MyComponent** calls `usePosts`. The call to `usePosts` will get the posts with the Apollo client cache's configured fields.
 
 
 You can configure `getNextStaticProps` and `getNextServerSideProps` exactly the same way.
