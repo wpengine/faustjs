@@ -102,7 +102,7 @@ export async function getServerSideProps(
 
 Use these functions to make additional requests using the Apollo Client, which executes with Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
 
-You may find this useful when you need additional data from the WordPress backend that doesn't fetch by default.
+You may find this useful when you need additional data from the WordPress backend that is not fetched by default.
 
 In an average Next.js page, you would only implement one of these functions. Since theme components are not Next.js pages, these functions call on the framework, not Next.js. If you are shipping a reusable Theme component you will want to export both functions. The framework will call on the function that corresponds to what the Next.js page uses. So if the Next.js page is using `getStaticProps`, the framework will call the `getStaticProps` function on your theme component.
 
