@@ -1,6 +1,6 @@
 # Template Hierarchy
 
-Arguably, one of the most powerful systems in WordPress' Theme API is its [Template Hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/). Template Hierarchy is WordPress' way of allowing customizations of various page types on highly dynamic websites while also allowing fine granularity to make templating exceptions.
+Arguably, one of the most powerful systems in WordPress Theme API is its [Template Hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/). Template Hierarchy is WordPress's way of allowing customizations of various page types on highly dynamic websites while also allowing fine granularity to make templating exceptions.
 
 ### Template Hierarchy Visual Overview
 
@@ -11,9 +11,9 @@ In the overview below, if you start with a page on the left and trace it to the 
 
 ## Template Hierarchy in Next.js
 
-While Next.js has a robust [routing layer](https://nextjs.org/docs/routing/introduction), it is not always ideal for WordPress-based sites as the routes are built around directory and file structures rather than content types.
+While Next.js has a robust [routing layer](https://nextjs.org/docs/routing/introduction), it is not always ideal for WordPress-based sites where routes are built around directory and file structures rather than content types.
 
-As an example, you can customize pages under an `/account` path by adding files to `pages/account`. While this is powerful, it doesn't immediately offer ways to customize specific content types like WordPress' Template Hierarchy allows for by adding files such as `single-$posttype.php` or `category.php`.
+As an example, you can customize pages under an `/account` path by adding files to `pages/account`. While this is powerful, it doesn't immediately offer ways to customize specific content types like WordPress's Template Hierarchy allows for by adding files such as `single-$posttype.php` or `category.php`.
 
 Luckily, the WP Engine Headless Framework brings WordPress Template Hierarchy to Next.js! 🚀
 
@@ -54,9 +54,9 @@ export function getStaticPaths() {
 
 #### 2. Add Templates
 
-After setting up the Template Loader, the next step is to add templates and a loader file that exports all of the templates. Templates should be added to a directory named `wp-templates` adjacent to the `pages` folder in a Next.js project.
+After setting up the Template Loader, the next step is to add templates and a loader file that exports all of the templates. We recommend adding templates to a directory named `wp-templates` adjacent to the `pages` folder in a Next.js project.
 
-The name of the template should follow WordPress' template hierarchy above, but the files should be JSX/TSX instead of PHP.
+The template's name should follow WordPress's template hierarchy above, but the files should be JSX/TSX instead of PHP.
 
 **Examples:**
 
@@ -100,15 +100,15 @@ export async function getServerSideProps(
 ): Promise<void>;
 ```
 
-These functions can be used to make additional requests using the Apollo Client that will be executed when Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
+Use these functions to make additional requests using the Apollo Client, which executes with Next.js [Data Fetchers](https://nextjs.org/docs/basic-features/data-fetching) run.
 
-You may find this useful if you find that you need additional data from the WordPress backend that isn't otherwise fetched by default.
+You may find this helpful when you need additional data from the WordPress backend that is not present by default.
 
-In a normal Next.js page you would only implement one of these functions. Since theme components are not Next.js pages these functions are called on by the framework, not Next.js. If you are shipping a reusable Theme component you will want to export both functions. The framework will call on the function that corresponds to what the Next.js page uses. So if the Next.js page is using `getStaticProps`, the framework will call the `getStaticProps` function on your theme component.
+In an average Next.js page, you would only implement one of these functions. Since theme components are not Next.js pages, these functions call on the framework, not Next.js. If you are shipping a reusable Theme component you will want to export both functions. The framework will call on the function that corresponds to what the Next.js page uses. So if the Next.js page is using `getStaticProps`, the framework will call the `getStaticProps` function on your theme component.
 
 ### Example
 
-See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/examples/preview/theme/single.tsx) in our preview example. This template exports the component, `getStaticProps`, and `getServerSideProps` to modify the default data requested in the Next.js Data Fetchers.
+See [`single.tsx`](https://github.com/wpengine/headless-framework/blob/canary/examples/preview/theme/single.tsx) in our preview example. This template exports the component `getStaticProps` and `getServerSideProps` to modify the default data requested in the Next.js Data Fetchers.
 
 # CMS-Based Routing (Template Hierarchy) Flow
 

@@ -14,7 +14,7 @@ Create an issue in this repository to report bugs or feature requests.
 
 When working on the npm packages in this repository, use our Lerna setup from the project root:
 
-1. Ensure that `.env.local` exists and is properly configured in `examples/getting-started` and `examples/preview`.
+1. Ensure that `.env.local` exists and is correctly configured in `examples/getting-started` and `examples/preview`.
 2. `npm run bootstrap`
 3. `npm run dev`
 
@@ -49,18 +49,20 @@ Run the syntax check.
 composer phpcs
 ```
 
-Some syntax errors can be fixed by phpcs.
+Use `phpcs` to fix some syntax errors:
+
 ```
 composer phpcs:fix
 ```
 
 **WordPress Unit Tests**
-In order to run WordPress unit tests, the test framework needs to be set up.
+To run WordPress unit tests, set up the test framework:
+ 
 ```
 /bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
 ```
 
-If you connect to mysql via a sock connection, you can run the following.
+If you connect to MySQL via a sock connection, you can run the following.
 ```
 /bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
 ```
@@ -70,7 +72,8 @@ Install the composer packages from within `wpe-headless` directory if you haven'
 composer install
 ```
 
-Within the `wpe-headless` directory, run `phpunit` either directly or as a composer command
+Within the `wpe-headless` directory, run `phpunit` either directly or as a composer command:
+
 ```
 vendor/bin/phpunit
 ```
@@ -83,9 +86,10 @@ composer test
 
 ## End-2-End Testing
 
-[Codeception](https://codeception.com/) is used for running end-2-end tests in the browser.
+Use [Codeception](https://codeception.com/) for running end-2-end tests in the browser.
 
 ### 1. Environment Setup
+
 1. Install [Composer](https://getcomposer.org/).
     - Within the `plugins/wpe-headless` directory, run `composer install`.
 1. Install [Google Chrome](https://www.google.com/chrome/).
@@ -98,7 +102,7 @@ composer test
 
 ### 2. Headless Site Setup
 1. From within the headless site `examples/getting-started` copy `.env.test.sample` to `.env.test`.
-    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file, else you can adjust the environment variables as needed.
+    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file; else, you can adjust the environment variables as needed.
 
 ### 3. WPE Headless Setup
 1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
