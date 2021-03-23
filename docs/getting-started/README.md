@@ -2,7 +2,7 @@
 
 This guide will get you up and running with our Headless Framework and help you understand what it offers.
 
-You will need to install the latest version of [Node.js](https://nodejs.org/en/download/) before using this guide.
+Make sure to install the latest version of [Node.js](https://nodejs.org/en/download/) before using this guide.
 
 ## Create a Next.js app
 
