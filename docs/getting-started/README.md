@@ -2,7 +2,7 @@
 
 This guide will get you up and running with our Headless Framework and help you understand what it offers.
 
-Make sure to install the latest version of[Node.js](https://nodejs.org/en/download/) before using this guide.
+Make sure to install the latest version of [Node.js](https://nodejs.org/en/download/) before using this guide.
 
 ## Create a Next.js app
 
@@ -59,7 +59,7 @@ The plugin ensures that your WordPress site runs smoothly as a headless CMS. Fro
 
 ## Breaking down the example project
 
-The example project is set up with most of the features our [@wpengine/headless](https://npmjs.org/package/@wpengine/headless) npm package provides, along with a way to structure your app. 
+The example project is set up with most of the features our [@wpengine/headless](https://npmjs.org/package/@wpengine/headless) npm package provides, along with a way to structure your app.
 
 ### pages/_app.tsx
 
