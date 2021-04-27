@@ -9,44 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'graphql_authentication_errors', 'wpe_headless_rest_validate_access_token' );
-/**
- * Callback for WPGraphQL 'graphql_authentication_errors' filter.
- *
- * If an Authorization header exists, validate it. If it is invalid return a response error. Note
- * that we are returning a WP_Error, but currently WPGraphQL ignores this and sends its own error.
- *
- * @link https://www.wpgraphql.com/filters/graphql_authentication_errors/
- *
- * @param bool $authentication_errors Whether there are authentication errors with the request.
- *
- * @return bool True if the Authorization header exists and is invalid, false otherwise.
- */
-function wpe_headless_rest_validate_access_token( $authentication_errors ) {
-	if ( empty( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
-		return $authentication_errors;
-	}
-
-	$parts = explode( ' ', trim( $_SERVER['HTTP_AUTHORIZATION'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
-	if ( count( $parts ) < 2 ) {
-		return true;
-	}
-
-	$wp_user = wpe_headless_get_user_from_access_token( $parts[1], 5 * MONTH_IN_SECONDS );
-	if ( $wp_user ) {
-		return false;
-	}
-
-	return true;
-}
-
 add_filter( 'determine_current_user', 'wpe_headless_rest_determine_current_user', 20 );
 /**
  * Callback for WordPress 'determine_current_user' filter.
  *
  * Determine the current user based on authentication token from http header.
- *
- * @todo Does the request type matter? rest, graphql, etc?
+ * Runs during GraphQL, REST and plain requests.
  *
  * @link https://developer.wordpress.org/reference/hooks/determine_current_user/
  *
