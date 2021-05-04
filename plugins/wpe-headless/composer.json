@@ -4,6 +4,7 @@
     "type": "project",
     "minimum-stability": "stable",
     "require-dev": {
+        "codeception/codeception": "^4.1",
         "codeception/module-asserts": "^1.0",
         "codeception/module-cli": "^1.0",
         "codeception/module-db": "^1.0",
