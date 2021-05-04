@@ -359,17 +359,3 @@ workflows:
               only: /^package\/headless\/\S+/
           context: wpe-npm-creds
           args: ""
-
-  test-end-2-end:
-    jobs:
-      - checkout:
-          filters:
-            tags:
-              only: /.*/
-      - test-e2e:
-          # Enable running this job when a tag is published
-          requires:
-            - checkout
-          filters:
-            tags:
-              only: /.*/
