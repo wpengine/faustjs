@@ -1,0 +1,80 @@
+{
+  "name": "@wpengine/headless",
+  "version": "0.6.3",
+  "description": "This module helps you use WordPress as a Headless CMS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "run-s clean ts",
+    "dev": "run-s clean ts:watch",
+    "dev-lerna": "run-s dev",
+    "clean": "rimraf dist",
+    "lint:fix": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepublish": "run-s build",
+    "generate-docs": "typedoc",
+    "generate-graphql": "graphql-codegen",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "ts": "tsc -p .",
+    "ts:watch": "tsc -p . --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless"
+  },
+  "keywords": [
+    "WordPress",
+    "WP",
+    "Headless",
+    "CMS",
+    "API",
+    "WP Engine"
+  ],
+  "author": "WP Engine",
+  "license": "MIT",
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "is-number": "^7.0.0",
+    "lodash": "^4.17.21",
+    "universal-cookie": "^4.0.4"
+  },
+  "peerDependencies": {
+    "@apollo/client": ">=3.3",
+    "graphql": ">=15.5"
+  },
+  "devDependencies": {
+    "@apollo/client": "^3.3.4",
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/typescript": "^1.22.0",
+    "@graphql-codegen/typescript-operations": "^1.17.16",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@types/express": "^4.17.11",
+    "@types/is-number": "^7.0.1",
+    "@types/jest": "^26.0.23",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^15.0.2",
+    "@types/webpack-env": "^1.16.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "graphql": "^15.4.0",
+    "jest": "^26.6.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.6",
+    "ts-loader": "^9.1.2",
+    "typedoc": "^0.20.36",
+    "typedoc-plugin-markdown": "^3.8.0",
+    "typescript": "^4.2.4"
+  }
+}
