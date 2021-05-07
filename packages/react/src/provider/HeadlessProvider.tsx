@@ -1,7 +1,10 @@
 import React, { useMemo } from 'react';
 import { ApolloProvider, DocumentNode, gql } from '@apollo/client';
 import { useApollo } from './apolloClient';
-import type { ContentNodeOptions, ListPostOptions } from '../../api';
+import type {
+  ContentNodeOptions,
+  ListPostOptions,
+} from '../../../core/src/api';
 
 export interface QueriesConfig {
   posts?: ListPostOptions;

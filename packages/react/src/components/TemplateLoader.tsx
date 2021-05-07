@@ -1,5 +1,5 @@
 import React from 'react';
-import { UriInfo } from '../../types';
+import { UriInfo } from '../types';
 
 export interface Template {
   default: React.ComponentType;

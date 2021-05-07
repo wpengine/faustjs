@@ -1,5 +1,5 @@
 import React from 'react';
-import { headlessConfig } from '../../config';
+import { headlessConfig } from '../../../core/src/config';
 
 export interface PaginationProps {
   pageInfo: WPGraphQL.WpPageInfo;
