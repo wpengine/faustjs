@@ -1,0 +1,14 @@
+scopes:
+  - project
+  - core
+  - react
+  - next
+  - plugin
+types:
+  - chore
+  - docs
+  - feat
+  - fix
+  - refactor
+  - style
+  - test
