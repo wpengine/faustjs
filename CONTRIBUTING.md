@@ -52,11 +52,11 @@ Your pull request should:
 * Contain proper [semantic commit messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716#gistcomment-3711094) as follows:
 
   ```
-    <type>[<scope>](<issue #>): <short summary>
-      │      │        |             │
-      |      |        |             └─> Summary in present tense. Not capitalized. No period at the end.
-      |      |        |
-      │      │        └─> Issue # (optional): Issue number if related to bug database.
+    <type>[<scope>]: (<issue #>) <short summary>
+      │      │           |             │
+      |      |           |             └─> Summary in present tense. Not capitalized. No period at the end.
+      |      |           |
+      │      │           └─> Issue # (optional): Issue number if related to bug database.
       │      │
       │      └─> Scope (optional): eg. common, compiler, authentication, core
       │
