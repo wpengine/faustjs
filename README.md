@@ -43,17 +43,17 @@ To enable post previews, set your front-end app URL on the WordPress Settings �
 
 ### Plugin Features
 
-- **[Headless post previewing](/docs/previews/README.md)**
-  - OAuth token authentication creation
-  - Preview and draft link rewrites in WP Admin to redirect to the front-end
-- **Smart content redirects**
-  - Automatically redirects content from the WP site to the front-end site to minimize site visitors’ confusion and avoid SEO penalties for duplicate content
-  - Redirects hyperlinks inserted into posts’ content to the front-end site
-- **Disable WP theme admin pages**
-  - Prevents access to admin pages that have no effect on the headless front-end appearance, such as Appearance → Themes.
-- **Ability to define custom menus in a GUI**
-- **Additional data exposed through WPGraphQL**
-  - Block stylesheets
+* **[Headless post previewing](/docs/previews/README.md)**
+  * OAuth token authentication creation
+  * Preview and draft link rewrites in WP Admin to redirect to the front-end
+* **Smart content redirects**
+  * Automatically redirects content from the WP site to the front-end site to minimize site visitors’ confusion and avoid SEO penalties for duplicate content
+  * Redirects hyperlinks inserted into posts’ content to the front-end site
+* **Disable WP theme admin pages**
+  * Prevents access to admin pages that have no effect on the headless front-end appearance, such as Appearance → Themes.
+* **Ability to define custom menus in a GUI**
+* **Additional data exposed through WPGraphQL**
+  * Block stylesheets
 
 ### npm Package Features
 
@@ -95,14 +95,18 @@ npm install --save @wpengine/headless
 
 ## Guides
 
-- [Getting started with the Headless Framework](/docs/getting-started/README.md)
-- [Enabling post previews in Next.js](/docs/previews/README.md)
-- [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
+* [Getting started with the Headless Framework](/docs/getting-started/README.md)
+* [Enabling post previews in Next.js](/docs/previews/README.md)
+* [Using the WordPress template hieararchy in Next.js](/docs/previews/README.md)
 
-## Contributing
+## Contribute
 
-Since we're in the early stages of development, we are not currently accepting outside contributions; although, we are
-interested in any problems that you encounter while using the framework.
+There are many ways to [contribute](/CONTRIBUTING.md) to this project.
+
+* [Discuss open issues](/issues) to help define the future of the project.
+* [Submit bugs](/issues) and help us verify fixes as they are checked in.
+* Review and discuss the [source code changes](pulls).
+* [Contribute bug fixes](/CONTRIBUTING.md)
 
 ### [Development Guide](/docs/DEVELOPMENT.md)
 
@@ -111,5 +115,5 @@ streamline your development process.
 
 ### License
 
-- npm packages in this repository are MIT licensed
-- WordPress plugins in this repository are GPLv2+ licensed
+* npm packages in this repository are MIT licensed
+* WordPress plugins in this repository are GPLv2+ licensed

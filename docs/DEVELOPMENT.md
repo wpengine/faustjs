@@ -1,8 +1,11 @@
 # Contributing
 
-Since we're in the early stages of development, we are not currently accepting outside contributions; although, we are interested in any problems that you encounter while using the framework.
+There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
-Create an issue in this repository to report bugs or feature requests.
+* [Discuss open issues](/issues) to help define the future of the project.
+* [Submit bugs](/issues) and help us verify fixes as they are checked in.
+* Review and discuss the [source code changes](pulls).
+* [Contribute bug fixes](/CONTRIBUTING.md)
 
 ## Project Structure
 
@@ -57,7 +60,7 @@ composer phpcs:fix
 
 **WordPress Unit Tests**
 To run WordPress unit tests, set up the test framework:
- 
+
 ```
 /bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
 ```
