@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
-
 import { useContext } from 'react';
 import { UriInfo } from './types';
+// TODO: Import core exports from core package
 import {
   ContentNodeOptions,
   GENERAL_SETTINGS,
@@ -11,6 +11,7 @@ import {
   ListPostOptions,
 } from '../../core/src/api/queries';
 import { HeadlessContext, QueriesConfig } from './provider';
+// TODO: Import core exports from core package
 import {
   parseUriInfoQuery,
   composeUrlPath,

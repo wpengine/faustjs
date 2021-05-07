@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { ApolloProvider, DocumentNode, gql } from '@apollo/client';
 import { useApollo } from './apolloClient';
+// TODO: Import core exports from core package
 import type {
   ContentNodeOptions,
   ListPostOptions,
