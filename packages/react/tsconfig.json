@@ -1,0 +1,39 @@
+{
+	"compilerOptions": {
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"target": "ES2017",
+		"removeComments": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"declaration": true,
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+		"typeRoots": [
+			"src/types",
+			"node_modules/@types"
+		],
+		"jsx": "react"
+	},
+	"typedocOptions": {
+		"entryPoints": ["src/index.ts"],
+		"out": "../../docs/reference/api/",
+		"excludeExternals": true
+	},
+	"include": [
+		"src",
+		"src/types/wpgraphql.d.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}
