@@ -1,4 +1,4 @@
-import { headlessConfig } from '../src/config';
+import { headlessConfig } from '../../src/config';
 
 describe('config', () => {
   test('headlessConfig() should throw an error if no config is set', () => {
