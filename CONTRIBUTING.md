@@ -2,7 +2,7 @@
 
 ## 1. Search For Duplicates
 
-[Search the existing issues](/search?type=Issues) before logging a new one.
+[Search the existing issues](https://github.com/wpengine/headless-framework/search?type=Issues) before logging a new one.
 
 Some search tips:
 * *Don't* restrict your search to only open issues. An issue with a title similar to yours may have been closed as a duplicate of one with a less-findable title.
@@ -20,7 +20,7 @@ When logging a bug, please be sure to include the following:
 
 ## 3. Do You Have A Suggestion?
 
-We also accept suggestions in the issue tracker. Be sure to [search](/search?q=is:issue) first.
+We also accept suggestions in the issue tracker. Be sure to [search](https://github.com/wpengine/headless-framework/search?type=Issues) first.
 
 
 In general, things we find useful when reviewing suggestions are:
@@ -35,7 +35,7 @@ In general, things we find useful when reviewing suggestions are:
 
 ## What You'll Need
 
-0. [A bug or feature you want to work on](/labels/help%20wanted)!
+0. [A bug or feature you want to work on](https://github.com/wpengine/headless-framework/labels/help%20wanted)!
 1. [A GitHub account](https://github.com/join).
 2. A working copy of the code. See [DEVELOPMENT](/docs/DEVELOPMENT.md)
 
