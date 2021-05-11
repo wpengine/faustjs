@@ -1,7 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
 import { useContext } from 'react';
-import { UriInfo } from './types';
-// TODO: Import core exports from core package
 import {
   ContentNodeOptions,
   GENERAL_SETTINGS,
@@ -9,14 +7,12 @@ import {
   getPostsQuery,
   GET_URI_INFO,
   ListPostOptions,
-} from '../../core/src/api/queries';
-import { HeadlessContext, QueriesConfig } from './provider';
-// TODO: Import core exports from core package
-import {
   parseUriInfoQuery,
   composeUrlPath,
   parseContentNodeQuery,
-} from '../../core/src/api';
+} from '@wpengine/headless-core';
+import { UriInfo } from './types';
+import { HeadlessContext, QueriesConfig } from './provider';
 
 /**
  * React Hook for retrieving a list of posts from your WordPress site

@@ -1,7 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { useMemo } from 'react';
-// TODO: Import core exports from core package
-import { getApolloClient, PersistentContext } from '../../../core/src/api';
+import { getApolloClient, PersistentContext } from '@wpengine/headless-core';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
