@@ -28,6 +28,20 @@ describe('config', () => {
     expect(headlessConfig().apiEndpoint).toBe('/api/auth');
   });
 
+  test('All strings should be trimmed', () => {
+    headlessConfig({
+      wpUrl: '   foo   ',
+      apiEndpoint: '   foo   ',
+      blogUrlPrefix: '   foo   ',
+    });
+
+    const cfg = headlessConfig();
+
+    expect(cfg.wpUrl).toBe('foo');
+    expect(cfg.apiEndpoint).toBe('foo');
+    expect(cfg.blogUrlPrefix).toBe('foo');
+  });
+
   test('URLs should never end in `/`', () => {
     headlessConfig({
       wpUrl: 'http://test.local/',
