@@ -40,11 +40,11 @@
     "universal-cookie": "^4.0.4"
   },
   "peerDependencies": {
-    "@apollo/client": ">=3.3",
+    "@apollo/client": "^3.3.17",
     "graphql": ">=15.5"
   },
   "devDependencies": {
-    "@apollo/client": "^3.3.4",
+    "@apollo/client": "3.3.17",
     "@graphql-codegen/add": "^2.0.2",
     "@graphql-codegen/cli": "^1.21.4",
     "@graphql-codegen/typescript": "^1.22.0",

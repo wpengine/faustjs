@@ -35,13 +35,13 @@
   "author": "WP Engine",
   "license": "MIT",
   "peerDependencies": {
-    "@apollo/client": ">=3.0",
+    "@apollo/client": "^3.3.17",
     "graphql": ">=15.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
   "devDependencies": {
-    "@apollo/client": "^3.3.4",
+    "@apollo/client": "3.3.17",
     "@graphql-codegen/add": "^2.0.2",
     "@graphql-codegen/cli": "^1.20.0",
     "@graphql-codegen/typescript": "^1.20.0",
