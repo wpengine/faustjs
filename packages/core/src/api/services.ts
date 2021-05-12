@@ -1,8 +1,4 @@
-import {
-  ApolloClient,
-  ApolloQueryResult,
-  gql,
-} from '@apollo/client/core';
+import { ApolloClient, ApolloQueryResult, gql } from '@apollo/client/core';
 import { ensureAuthorization } from '../auth';
 import {
   isServerSide,
@@ -21,6 +17,7 @@ import {
 } from './queries';
 import { headlessConfig } from '../config';
 import trimStart from 'lodash/trimStart';
+import { QueryResult } from '@apollo/client';
 
 /**
  * WordPress URI information
@@ -28,7 +25,7 @@ import trimStart from 'lodash/trimStart';
  * @export
  * @interface UriInfo
  */
- export interface UriInfo {
+export interface UriInfo {
   id?: string;
   idType?: WPGraphQL.ContentNodeIdTypeEnum;
   isPostsPage?: boolean;
@@ -85,7 +82,9 @@ export function composeContentNodeOptions(options: ContentNodeOptions = {}) {
 }
 
 export function parseContentNodeQuery(
-  result: ApolloQueryResult<WPGraphQL.GetContentNodeQuery>,
+  result:
+    | ApolloQueryResult<WPGraphQL.GetContentNodeQuery>
+    | QueryResult<WPGraphQL.GetContentNodeQuery>,
   options: ContentNodeOptions,
 ) {
   const node = result?.data?.contentNode as
@@ -206,7 +205,9 @@ export function composeUrlPath(uriPath?: string) {
 }
 
 export function parseUriInfoQuery(
-  response: ApolloQueryResult<WPGraphQL.GetUriInfoQuery>,
+  response:
+    | ApolloQueryResult<WPGraphQL.GetUriInfoQuery>
+    | QueryResult<WPGraphQL.GetUriInfoQuery>,
   uriPath: string,
   isPreview?: boolean,
 ): UriInfo {
