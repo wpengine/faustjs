@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { useMemo } from 'react';
 import { getApolloClient, PersistentContext } from '@wpengine/headless-core';
 
@@ -23,7 +23,7 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
  * ```
  */
 export function addApolloState(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient<any>,
   pageProps: Record<string, unknown> & { props: Record<string, unknown> },
 ) {
   if (pageProps.props) {
@@ -42,7 +42,7 @@ export function addApolloState(
 export function useApollo(
   pageProps?: Record<string, unknown>,
   context?: PersistentContext,
-): ApolloClient<NormalizedCacheObject> {
+): ApolloClient<any> {
   const state = pageProps?.[APOLLO_STATE_PROP_NAME];
 
   return useMemo(() => getApolloClient(context, state), [context, state]);
