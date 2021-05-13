@@ -4,6 +4,10 @@ import { getApolloClient, PersistentContext } from '../../api';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
+export interface PagePropsWithApollo extends Record<string, unknown> {
+  props: Record<string, unknown>;
+}
+
 /**
  * Merges the Apollo state with the page props passed through the various Next.js Data Fetching
  * functions such as getStaticProps, getServerSideProps, etc.
@@ -24,8 +28,8 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
  */
 export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: Record<string, unknown> & { props: Record<string, unknown> },
-) {
+  pageProps: PagePropsWithApollo,
+): PagePropsWithApollo {
   if (pageProps.props) {
     // eslint-disable-next-line no-param-reassign
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
