@@ -12,7 +12,9 @@ export interface ContentNodeOptions<
   variables?: Args;
 }
 
-export function getContentNodeQuery({ fragments }: ContentNodeOptions = {}) {
+export function getContentNodeQuery({
+  fragments,
+}: ContentNodeOptions = {}): DocumentNode {
   return gql`
     ${fragments?.postData ??
     gql`

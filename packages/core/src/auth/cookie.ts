@@ -8,7 +8,7 @@ export interface CookieOptions {
   cookies?: string;
 }
 
-export function cookieKey() {
+export function cookieKey(): string {
   const { wpUrl } = headlessConfig();
 
   return `${wpUrl}-at`;

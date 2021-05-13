@@ -56,7 +56,9 @@ export async function getPosts(
   return result?.data?.posts;
 }
 
-export function composeContentNodeOptions(options: ContentNodeOptions = {}) {
+export function composeContentNodeOptions(
+  options: ContentNodeOptions = {},
+): ContentNodeOptions {
   let opts: ContentNodeOptions = options;
 
   if (!opts) {
@@ -83,7 +85,7 @@ export function composeContentNodeOptions(options: ContentNodeOptions = {}) {
 export function parseContentNodeQuery(
   result: ApolloQueryResult<WPGraphQL.GetContentNodeQuery>,
   options: ContentNodeOptions,
-) {
+): WPGraphQL.Post | WPGraphQL.Page | undefined {
   const node = result?.data?.contentNode as
     | WPGraphQL.RootQuery['post']
     | WPGraphQL.RootQuery['page'];
@@ -153,7 +155,14 @@ export async function getGeneralSettings(
   return result?.data?.generalSettings;
 }
 
-export function composeUrlPath(uriPath?: string) {
+export function composeUrlPath(
+  uriPath?: string,
+):
+  | {
+      urlPath: string;
+      isPreview: boolean;
+    }
+  | undefined {
   let urlPath = uriPath;
   const { blogUrlPrefix } = headlessConfig();
 

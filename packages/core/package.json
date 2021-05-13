@@ -10,7 +10,7 @@
     "dev-lerna": "run-s dev",
     "clean": "rimraf dist",
     "lint:fix": "run-s clean && tsc --noEmit -p . && eslint src/**/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src/**/*.{ts,tsx} --parser-options=project:tsconfig.json",
     "prepublish": "run-s build",
     "generate-docs": "typedoc",
     "generate-graphql": "graphql-codegen",
