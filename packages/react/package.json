@@ -1,0 +1,78 @@
+{
+  "name": "@wpengine/headless-react",
+  "version": "0.6.3",
+  "description": "This module helps you use WordPress as a Headless CMS with React",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "run-s clean ts",
+    "dev": "run-s ts:watch",
+    "dev-lerna": "run-s dev",
+    "clean": "rimraf dist",
+    "lint:fix": "run-s clean && tsc --noEmit -p . && eslint **/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepublish": "run-s build",
+    "generate-docs": "typedoc",
+    "generate-graphql": "graphql-codegen",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "ts": "tsc -p .",
+    "ts:watch": "tsc -p . --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless/react"
+  },
+  "keywords": [
+    "WordPress",
+    "WP",
+    "Headless",
+    "CMS",
+    "API",
+    "WP Engine",
+    "React"
+  ],
+  "author": "WP Engine",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "^1.20.0",
+    "@graphql-codegen/typescript": "^1.20.0",
+    "@graphql-codegen/typescript-operations": "^1.17.13",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@types/jest": "^26.0.16",
+    "@types/node": "^14.14.10",
+    "@types/react": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "^6.0.1",
+    "graphql": "^15.4.0",
+    "jest": "^26.6.3",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.1.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.4",
+    "ts-loader": "^8.0.11",
+    "typedoc": "^0.20.23",
+    "typedoc-plugin-markdown": "^3.4.5",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@apollo/client": ">=3.3.17",
+    "@wpengine/headless-core": "^0.6.3",
+    "graphql": ">=15.5"
+  }
+}

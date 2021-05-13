@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloQueryResult, gql } from '@apollo/client/core';
+import { ApolloClient, gql } from '@apollo/client/core';
 import { ensureAuthorization } from '../auth';
 import {
   isServerSide,
@@ -83,7 +83,7 @@ export function composeContentNodeOptions(
 }
 
 export function parseContentNodeQuery(
-  result: ApolloQueryResult<WPGraphQL.GetContentNodeQuery>,
+  result: { data?: WPGraphQL.GetContentNodeQuery; },
   options: ContentNodeOptions,
 ): WPGraphQL.Post | WPGraphQL.Page | undefined {
   const node = result?.data?.contentNode as
@@ -155,9 +155,7 @@ export async function getGeneralSettings(
   return result?.data?.generalSettings;
 }
 
-export function composeUrlPath(
-  uriPath?: string,
-):
+export function composeUrlPath(uriPath?: string):
   | {
       urlPath: string;
       isPreview: boolean;
@@ -211,7 +209,7 @@ export function composeUrlPath(
 }
 
 export function parseUriInfoQuery(
-  response: ApolloQueryResult<WPGraphQL.GetUriInfoQuery>,
+  response: { data?: WPGraphQL.GetUriInfoQuery; },
   uriPath: string,
   isPreview?: boolean,
 ): UriInfo {
