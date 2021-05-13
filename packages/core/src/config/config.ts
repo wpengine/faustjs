@@ -66,13 +66,13 @@ let configSet = false;
  * @returns {HeadlessConfig}
  */
 function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
-  let cfg = defaults(config, {
+  const cfg = defaults(config, {
     blogUrlPrefix: '',
     apiEndpoint: '/api/auth/wpe-headless',
   });
 
   Object.keys(cfg).forEach((key) => {
-    let value = cfg[key as keyof HeadlessConfig];
+    const value = cfg[key as keyof HeadlessConfig];
 
     if (!isString(value)) {
       return;
@@ -101,13 +101,13 @@ function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
  * @param {HeadlessConfig} [config]
  * @returns {HeadlessConfig}
  */
-export function headlessConfig(
-  config?: HeadlessConfig,
-): HeadlessConfig {
+export function headlessConfig(config?: HeadlessConfig): HeadlessConfig {
   if (isObject(config)) {
     wpeConfig = config;
   } else if (!configSet) {
-    throw new Error('You must set your headless configuration at the highest level in your application. `headlessConfig` was called prior to setting the configuration.')
+    throw new Error(
+      'You must set your headless configuration at the highest level in your application. `headlessConfig` was called prior to setting the configuration.',
+    );
   }
 
   configSet = true;

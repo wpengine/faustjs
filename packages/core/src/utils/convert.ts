@@ -7,7 +7,7 @@ import { isBase64, isServerSide, previewRegex } from './assert';
  * @export
  * @interface ParsedUrlInfo
  */
- export interface ParsedUrlInfo {
+export interface ParsedUrlInfo {
   href: string;
   protocol: string;
   baseUrl: string;
@@ -92,7 +92,7 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
  * @param {string} param
  * @returns {string}
  */
-export function getQueryParam(url: string, param: string) {
+export function getQueryParam(url: string, param: string): string {
   if (!url || url.length === 0) {
     return '';
   }
@@ -168,7 +168,7 @@ export function resolvePrefixedUrlPath(url: string, prefix?: string): string {
   return resolvedUrl;
 }
 
-/* eslint-disable consistent-return */
+/* eslint-disable consistent-return, @typescript-eslint/explicit-module-boundary-types */
 export function getCookiesFromContext(context?: any): string | undefined {
   if (!context) {
     return;
@@ -190,7 +190,7 @@ export function getCookiesFromContext(context?: any): string | undefined {
     return context.cookie as string | undefined;
   }
 }
-/* eslint-enable consistent-return */
+/* eslint-enable consistent-return, @typescript-eslint/explicit-module-boundary-types */
 
 /**
  * Trims the origin (protocol, host, port) from URL so only the path and query params remain

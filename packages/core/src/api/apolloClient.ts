@@ -1,14 +1,8 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-} from '@apollo/client/core';
+import { ApolloClient, InMemoryCache } from '@apollo/client/core';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import merge from 'deepmerge';
-import {
-  getCookiesFromContext,
-  isServerSide,
-} from '../utils';
+import { getCookiesFromContext, isServerSide } from '../utils';
 import { CookieOptions, getAccessToken } from '../auth';
 import { headlessConfig } from '../config';
 
@@ -21,9 +15,7 @@ export type PersistentContext = Record<string, unknown>;
 /**
  * Creates Apollo Client instance and points it to the WordPress API endpoint specified via environment variables.
  */
-function createApolloClient(
-  options?: CookieOptions,
-): ApolloClient<any> {
+function createApolloClient(options?: CookieOptions): ApolloClient<any> {
   const { wpUrl } = headlessConfig();
   const authLink = setContext((_, { headers }) => {
     const token = getAccessToken(options);

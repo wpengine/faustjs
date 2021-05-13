@@ -7,12 +7,9 @@ module.exports = {
     },
     parser: '@typescript-eslint/parser', // Specifies the ESLint parser
     extends: [
-        'airbnb-typescript',
-        "airbnb/hooks",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
         'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     ],
     parserOptions: {
@@ -28,9 +25,9 @@ module.exports = {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         '@typescript-eslint/unbound-method': 0,
+        '@typescript-eslint/no-explicit-any': 0,
         'no-void': 0,
         'import/named': 0,
-        'import/no-extraneous-dependencies': ["error", {"devDependencies": ["jest.setup.ts", "**/__tests__/*", "**/*.test.ts", "**/*.test.tsx"]}],
         'import/prefer-default-export': 0,
         '@typescript-eslint/no-unsafe-assignment': 0,
         '@typescript-eslint/no-unsafe-member-access': 0,
