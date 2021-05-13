@@ -3,7 +3,7 @@ import { LIST_POST_DATA_FRAGMENT } from './LIST_POST_DATA_FRAGMENT';
 import { PAGE_INFO_DATA_FRAGMENT } from './PAGE_INFO_DATA_FRAGMENT';
 
 export interface ListPostOptions<
-  Args extends WPGraphQL.RootQueryPostsArgs = WPGraphQL.RootQueryPostsArgs
+  Args extends WPGraphQL.RootQueryPostsArgs = WPGraphQL.RootQueryPostsArgs,
 > {
   fragments?: {
     listPostData?: DocumentNode;
@@ -11,7 +11,9 @@ export interface ListPostOptions<
   variables?: Args;
 }
 
-export function getPostsQuery({ fragments }: ListPostOptions = {}) {
+export function getPostsQuery({
+  fragments,
+}: ListPostOptions = {}): DocumentNode {
   return gql`
     ${fragments?.listPostData ??
     gql`

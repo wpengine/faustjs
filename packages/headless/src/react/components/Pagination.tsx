@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { headlessConfig } from '../../config';
 
 export interface PaginationProps {
@@ -25,7 +25,7 @@ export function NextPageNavigation({
   cursor,
   ariaLabel,
   label,
-}: PageNavigationProps) {
+}: PageNavigationProps): ReactElement {
   const { pagination } = headlessConfig();
   const href = `${baseUrl}/${pagination.after.replace('%cursor%', cursor)}`;
   return (
@@ -40,7 +40,7 @@ export function PreviousPageNavigation({
   cursor,
   ariaLabel,
   label,
-}: PageNavigationProps) {
+}: PageNavigationProps): ReactElement {
   const { pagination } = headlessConfig();
   const href = `${baseUrl}/${pagination.before.replace('%cursor%', cursor)}`;
   return (

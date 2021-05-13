@@ -1,5 +1,9 @@
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { addApolloState, QueriesConfig } from '../react/provider';
+import {
+  addApolloState,
+  PagePropsWithApollo,
+  QueriesConfig,
+} from '../react/provider';
 import { getApolloClient } from '../api';
 import * as templateLoader from './NextTemplateLoader';
 import { fetchData } from './serverSide';
@@ -56,7 +60,7 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
 /* eslint-enable consistent-return */
 
 async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext
+  Context extends GetStaticPropsContext | GetStaticPropsContext,
 >(
   loadTemplates: (
     context: Context,
@@ -64,7 +68,7 @@ async function getProps<
   ) => Promise<unknown>,
   context: Context,
   config: NextPropsConfig = {},
-) {
+): Promise<PagePropsWithApollo> {
   const client = getApolloClient(context);
 
   if (config.templates) {
@@ -83,7 +87,7 @@ async function getProps<
 export async function getNextServerSideProps(
   context: GetServerSidePropsContext,
   config: NextPropsConfig = {},
-) {
+): Promise<PagePropsWithApollo> {
   return getProps(
     async (ctx, templates) => {
       return templateLoader.getServerSideProps(ctx, templates);
@@ -96,7 +100,7 @@ export async function getNextServerSideProps(
 export async function getNextStaticProps(
   context: GetStaticPropsContext,
   config: NextPropsConfig = {},
-) {
+): Promise<PagePropsWithApollo> {
   const pageProps = await getProps(
     async (ctx, templates) => {
       return templateLoader.getStaticProps(ctx, templates);
@@ -109,9 +113,11 @@ export async function getNextStaticProps(
     (pageProps as Record<string, any> & { props: Record<string, unknown> })
       ?.props
   ) {
-    (pageProps as Record<string, any> & {
-      props: Record<string, unknown>;
-    }).revalidate = 1;
+    (
+      pageProps as Record<string, any> & {
+        props: Record<string, unknown>;
+      }
+    ).revalidate = 1;
   }
 
   return pageProps;
