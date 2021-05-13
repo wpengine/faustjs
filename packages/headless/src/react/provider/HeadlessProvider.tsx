@@ -33,19 +33,19 @@ function parseContext(pageProps?: { queries?: QueriesConfig }) {
 
   if (typeof pageProps.queries.post?.fragments?.pageData === 'string') {
     pageData = gql`
-      ${(pageProps.queries.post.fragments.pageData as any) as string}
+      ${pageProps.queries.post.fragments.pageData as any as string}
     `;
   }
 
   if (typeof pageProps.queries.post?.fragments?.postData === 'string') {
     postData = gql`
-      ${(pageProps.queries.post.fragments.postData as any) as string}
+      ${pageProps.queries.post.fragments.postData as any as string}
     `;
   }
 
   if (typeof pageProps.queries.posts?.fragments?.listPostData === 'string') {
     listPostData = gql`
-      ${(pageProps.queries.posts.fragments.listPostData as any) as string}
+      ${pageProps.queries.posts.fragments.listPostData as any as string}
     `;
   }
 
