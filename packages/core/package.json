@@ -34,17 +34,13 @@
   "author": "WP Engine",
   "license": "MIT",
   "dependencies": {
+    "@apollo/client": ">=3.3.17",
     "deepmerge": "^4.2.2",
-    "is-number": "^7.0.0",
+    "graphql": ">=15.5",
     "lodash": "^4.17.21",
     "universal-cookie": "^4.0.4"
   },
-  "peerDependencies": {
-    "@apollo/client": ">=3.3.17",
-    "graphql": ">=15.5"
-  },
   "devDependencies": {
-    "@apollo/client": "^3.3.18",
     "@graphql-codegen/add": "^2.0.2",
     "@graphql-codegen/cli": "^1.21.4",
     "@graphql-codegen/typescript": "^1.22.0",
@@ -64,7 +60,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "graphql": "^15.4.0",
     "jest": "^26.6.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
