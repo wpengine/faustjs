@@ -11,7 +11,9 @@ export interface ListPostOptions<
   variables?: Args;
 }
 
-export function getPostsQuery({ fragments }: ListPostOptions = {}) {
+export function getPostsQuery({
+  fragments,
+}: ListPostOptions = {}): DocumentNode {
   return gql`
     ${fragments?.listPostData ??
     gql`

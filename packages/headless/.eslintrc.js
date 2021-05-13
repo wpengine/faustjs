@@ -29,6 +29,7 @@ module.exports = {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         '@typescript-eslint/unbound-method': 0,
+        '@typescript-eslint/no-explicit-any': 0,
         'no-void': 0,
         'import/named': 0,
         'import/no-extraneous-dependencies': ["error", {"devDependencies": ["jest.setup.ts", "**/__tests__/*", "**/*.test.ts", "**/*.test.tsx"]}],
