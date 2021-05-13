@@ -1,12 +1,12 @@
 {
   "name": "@wpengine/headless-core",
-  "version": "0.0.1",
+  "version": "0.6.3",
   "description": "This module helps you use WordPress as a Headless CMS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "run-s clean ts",
-    "dev": "run-s clean ts:watch",
+    "dev": "run-s ts:watch",
     "dev-lerna": "run-s dev",
     "clean": "rimraf dist",
     "lint:fix": "run-s clean && tsc --noEmit -p . && eslint src/**/*.{ts,tsx} --parser-options=project:tsconfig.json --quiet --fix",

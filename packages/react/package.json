@@ -74,6 +74,6 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
-    "@wpengine/headless-core": "^0.0.1"
+    "@wpengine/headless-core": "^0.6.3"
   }
 }
