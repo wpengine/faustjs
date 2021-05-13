@@ -60,7 +60,7 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
 /* eslint-enable consistent-return */
 
 async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext
+  Context extends GetStaticPropsContext | GetStaticPropsContext,
 >(
   loadTemplates: (
     context: Context,
@@ -113,9 +113,11 @@ export async function getNextStaticProps(
     (pageProps as Record<string, any> & { props: Record<string, unknown> })
       ?.props
   ) {
-    (pageProps as Record<string, any> & {
-      props: Record<string, unknown>;
-    }).revalidate = 1;
+    (
+      pageProps as Record<string, any> & {
+        props: Record<string, unknown>;
+      }
+    ).revalidate = 1;
   }
 
   return pageProps;

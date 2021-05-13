@@ -146,9 +146,7 @@ export async function getGeneralSettings(
   return result?.data?.generalSettings;
 }
 
-export function composeUrlPath(
-  uriPath?: string,
-):
+export function composeUrlPath(uriPath?: string):
   | {
       urlPath: string;
       isPreview: boolean;
