@@ -7,7 +7,7 @@ import { isBase64, isServerSide, previewRegex } from './assert';
  * @export
  * @interface ParsedUrlInfo
  */
- export interface ParsedUrlInfo {
+export interface ParsedUrlInfo {
   href: string;
   protocol: string;
   baseUrl: string;

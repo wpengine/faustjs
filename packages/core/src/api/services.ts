@@ -1,8 +1,4 @@
-import {
-  ApolloClient,
-  ApolloQueryResult,
-  gql,
-} from '@apollo/client/core';
+import { ApolloClient, ApolloQueryResult, gql } from '@apollo/client/core';
 import { ensureAuthorization } from '../auth';
 import {
   isServerSide,
@@ -28,7 +24,7 @@ import trimStart from 'lodash/trimStart';
  * @export
  * @interface UriInfo
  */
- export interface UriInfo {
+export interface UriInfo {
   id?: string;
   idType?: WPGraphQL.ContentNodeIdTypeEnum;
   isPostsPage?: boolean;
@@ -193,7 +189,7 @@ export function composeUrlPath(uriPath?: string) {
     }
   }
 
-  urlPath = trimStart(urlPath, '/') as string;
+  urlPath = trimStart(urlPath, '/');
 
   if (!urlPath) {
     urlPath = '/';
