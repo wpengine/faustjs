@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless-react",
-  "version": "0.1.0",
+  "version": "0.6.3",
   "description": "This module helps you use WordPress as a Headless CMS with React",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,13 +35,13 @@
   "author": "WP Engine",
   "license": "MIT",
   "peerDependencies": {
-    "@apollo/client": "^3.3.17",
+    "@apollo/client": ">=3.3.17",
     "graphql": ">=15.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
   "devDependencies": {
-    "@apollo/client": "3.3.17",
+    "@apollo/client": "^3.3.18",
     "@graphql-codegen/add": "^2.0.2",
     "@graphql-codegen/cli": "^1.20.0",
     "@graphql-codegen/typescript": "^1.20.0",
