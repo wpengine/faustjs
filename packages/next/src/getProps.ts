@@ -1,18 +1,14 @@
+import { getApolloClient, stringifyGql } from '@wpengine/headless-core';
+import { addApolloState, QueriesConfig } from '@wpengine/headless-react';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import {
-  addApolloState,
-  PagePropsWithApollo,
-  QueriesConfig,
-} from '../react/provider';
-import { getApolloClient } from '../api';
-import * as templateLoader from './NextTemplateLoader';
 import { fetchData } from './serverSide';
-import { Templates } from '../react';
-import { stringifyGql } from '../utils';
 
 export interface NextPropsConfig {
-  templates?: Templates<templateLoader.NextTemplate>;
   queries?: QueriesConfig;
+}
+
+export interface PagePropsWithApollo extends Record<string, unknown> {
+  props: Record<string, unknown>;
 }
 
 /* eslint-disable consistent-return */
@@ -60,20 +56,12 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
 /* eslint-enable consistent-return */
 
 async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext,
+  Context extends GetStaticPropsContext | GetStaticPropsContext
 >(
-  loadTemplates: (
-    context: Context,
-    templates: Templates<templateLoader.NextTemplate>,
-  ) => Promise<unknown>,
   context: Context,
   config: NextPropsConfig = {},
 ): Promise<PagePropsWithApollo> {
   const client = getApolloClient(context);
-
-  if (config.templates) {
-    await loadTemplates(context, config.templates);
-  }
 
   await fetchData(context, config.queries);
 
@@ -88,36 +76,22 @@ export async function getNextServerSideProps(
   context: GetServerSidePropsContext,
   config: NextPropsConfig = {},
 ): Promise<PagePropsWithApollo> {
-  return getProps(
-    async (ctx, templates) => {
-      return templateLoader.getServerSideProps(ctx, templates);
-    },
-    context,
-    config,
-  );
+  return getProps(context, config);
 }
 
 export async function getNextStaticProps(
   context: GetStaticPropsContext,
   config: NextPropsConfig = {},
 ): Promise<PagePropsWithApollo> {
-  const pageProps = await getProps(
-    async (ctx, templates) => {
-      return templateLoader.getStaticProps(ctx, templates);
-    },
-    context,
-    config,
-  );
+  const pageProps = await getProps(context, config);
 
   if (
     (pageProps as Record<string, any> & { props: Record<string, unknown> })
       ?.props
   ) {
-    (
-      pageProps as Record<string, any> & {
-        props: Record<string, unknown>;
-      }
-    ).revalidate = 1;
+    (pageProps as Record<string, any> & {
+      props: Record<string, unknown>;
+    }).revalidate = 1;
   }
 
   return pageProps;

@@ -1,12 +1,26 @@
-import { useRouter } from 'next/router';
-import { ContentNodeOptions } from '../api/queries';
-import { headlessConfig } from '../config';
 import {
-  useUriInfo as useReactUriInfo,
+  ContentNodeOptions,
+  headlessConfig,
+  resolvePrefixedUrlPath,
+} from '@wpengine/headless-core';
+import {
   usePost as useReactPost,
-} from '../react';
-import { UriInfo } from '../types';
-import { resolvePrefixedUrlPath } from '../utils';
+  useUriInfo as useReactUriInfo,
+} from '@wpengine/headless-react';
+import { useRouter } from 'next/router';
+
+export interface UriInfo {
+  id?: string;
+  idType?: WPGraphQL.ContentNodeIdTypeEnum;
+  isPostsPage?: boolean;
+  isFrontPage?: boolean;
+  isPreview?: boolean;
+  isArchive?: boolean;
+  isSingular?: boolean;
+  is404?: boolean;
+  uriPath: string;
+  templates?: string[];
+}
 
 /**
  * React Hook for retrieving information about the current URI within a Next app.
@@ -32,7 +46,7 @@ export function useUriInfo(): UriInfo | undefined {
 
   if (router.asPath.indexOf('[[') === -1) {
     page = router.asPath;
-    page = resolvePrefixedUrlPath(page, headlessConfig().uriPrefix);
+    page = resolvePrefixedUrlPath(page, headlessConfig().blogUrlPrefix);
   }
 
   return useReactUriInfo(page ?? '');
@@ -74,7 +88,7 @@ export function usePost(
 
   if (router.asPath.indexOf('[[') === -1) {
     page = router.asPath;
-    page = resolvePrefixedUrlPath(page, headlessConfig().uriPrefix);
+    page = resolvePrefixedUrlPath(page, headlessConfig().blogUrlPrefix);
   }
 
   return useReactPost(page, options);

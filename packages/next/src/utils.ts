@@ -1,6 +1,8 @@
+import {
+  headlessConfig,
+  resolvePrefixedUrlPath,
+} from '@wpengine/headless-core';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { resolvePrefixedUrlPath } from '../utils';
-import { headlessConfig } from '../config';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export function isServerSidePropsContext(
   context: any,
@@ -41,5 +43,8 @@ export function getCurrentUrlPath(
   context: GetServerSidePropsContext | GetStaticPropsContext,
 ): string {
   const wpeConfig = headlessConfig();
-  return resolvePrefixedUrlPath(getCurrentPath(context), wpeConfig.uriPrefix);
+  return resolvePrefixedUrlPath(
+    getCurrentPath(context),
+    wpeConfig.blogUrlPrefix,
+  );
 }

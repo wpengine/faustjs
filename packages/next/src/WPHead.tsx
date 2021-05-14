@@ -1,7 +1,7 @@
-import React from 'react';
+import { useGeneralSettings } from '@wpengine/headless-react';
 import Head from 'next/head';
+import React from 'react';
 import { usePost } from './hooks';
-import { useGeneralSettings } from '../react';
 
 export function WPHead(): JSX.Element {
   const settings = useGeneralSettings();

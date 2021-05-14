@@ -5,8 +5,8 @@ import {
   getPosts,
   getUriInfo,
   getApolloClient,
-} from '../api';
-import type { QueriesConfig } from '../react';
+} from '@wpengine/headless-core';
+import type { QueriesConfig } from '@wpengine/headless-react';
 import { getCurrentUrlPath } from './utils';
 
 /**
