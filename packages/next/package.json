@@ -1,7 +1,7 @@
 {
-  "name": "@wpengine/headless-react",
+  "name": "@wpengine/headless-next",
   "version": "0.6.3",
-  "description": "This module helps you use WordPress as a Headless CMS with React",
+  "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -30,7 +30,9 @@
     "CMS",
     "API",
     "WP Engine",
-    "React"
+    "React",
+    "Next",
+    "Next.js"
   ],
   "author": "WP Engine",
   "license": "MIT",
@@ -73,6 +75,7 @@
   "dependencies": {
     "@apollo/client": ">=3.3.17",
     "@wpengine/headless-core": "^0.6.3",
+    "@wpengine/headless-react": "^0.6.3",
     "graphql": ">=15.5"
   }
 }
