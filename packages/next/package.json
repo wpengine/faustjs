@@ -37,9 +37,9 @@
   "author": "WP Engine",
   "license": "MIT",
   "peerDependencies": {
+    "next": ">=10.0.0",
     "react": ">=16.9.0",
-    "react-dom": ">=16.9.0",
-    "next": ">=10.2"
+    "react-dom": ">=16.9.0"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
@@ -79,6 +79,7 @@
     "@wpengine/headless-core": "^0.6.3",
     "@wpengine/headless-react": "^0.6.3",
     "graphql": ">=15.5",
-    "next": "^10.2.0"
+    "next": "^10.2.0",
+    "next-transpile-modules": "^7.0.0"
   }
 }
