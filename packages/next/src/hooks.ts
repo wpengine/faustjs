@@ -1,8 +1,5 @@
-import {
-  ContentNodeOptions,
-  headlessConfig,
-  resolvePrefixedUrlPath,
-} from '@wpengine/headless-core';
+import { ContentNodeOptions, headlessConfig } from '@wpengine/headless-core';
+import { resolvePrefixedUrlPath } from '@wpengine/headless-core/utils';
 import {
   usePost as useReactPost,
   useUriInfo as useReactUriInfo,

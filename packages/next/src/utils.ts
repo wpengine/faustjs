@@ -1,7 +1,5 @@
-import {
-  headlessConfig,
-  resolvePrefixedUrlPath,
-} from '@wpengine/headless-core';
+import { headlessConfig } from '@wpengine/headless-core';
+import { resolvePrefixedUrlPath } from '@wpengine/headless-core/utils';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export function isServerSidePropsContext(

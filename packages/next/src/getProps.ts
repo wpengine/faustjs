@@ -1,4 +1,5 @@
-import { getApolloClient, stringifyGql } from '@wpengine/headless-core';
+import { getApolloClient } from '@wpengine/headless-core';
+import { stringifyGql } from '@wpengine/headless-core/utils';
 import { addApolloState, QueriesConfig } from '@wpengine/headless-react';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { fetchData } from './serverSide';
