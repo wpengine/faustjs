@@ -83,7 +83,7 @@ export function composeContentNodeOptions(
 }
 
 export function parseContentNodeQuery(
-  result: { data?: WPGraphQL.GetContentNodeQuery; },
+  result: { data?: WPGraphQL.GetContentNodeQuery },
   options: ContentNodeOptions,
 ): WPGraphQL.Post | WPGraphQL.Page | undefined {
   const node = result?.data?.contentNode as
@@ -209,7 +209,7 @@ export function composeUrlPath(uriPath?: string):
 }
 
 export function parseUriInfoQuery(
-  response: { data?: WPGraphQL.GetUriInfoQuery; },
+  response: { data?: WPGraphQL.GetUriInfoQuery },
   uriPath: string,
   isPreview?: boolean,
 ): UriInfo {
