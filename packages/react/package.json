@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "@apollo/client": ">=3.3.17",
-    "@wpengine/headless-core": "^0.6.3",
+    "@wpengine/headless-core": "canary",
     "graphql": ">=15.5"
   }
 }
