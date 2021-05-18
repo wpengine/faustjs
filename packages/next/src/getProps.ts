@@ -18,6 +18,7 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
     return;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let toStr: any = {};
 
   if (queries.post) {
@@ -57,7 +58,7 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
 /* eslint-enable consistent-return */
 
 async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext
+  Context extends GetStaticPropsContext | GetStaticPropsContext,
 >(
   context: Context,
   config: NextPropsConfig = {},
@@ -86,14 +87,18 @@ export async function getNextStaticProps(
 ): Promise<PagePropsWithApollo> {
   const pageProps = await getProps(context, config);
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   if (
     (pageProps as Record<string, any> & { props: Record<string, unknown> })
       ?.props
   ) {
-    (pageProps as Record<string, any> & {
-      props: Record<string, unknown>;
-    }).revalidate = 1;
+    (
+      pageProps as Record<string, any> & {
+        props: Record<string, unknown>;
+      }
+    ).revalidate = 1;
   }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   return pageProps;
 }

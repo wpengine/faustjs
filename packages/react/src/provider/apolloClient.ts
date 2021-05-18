@@ -23,9 +23,12 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
  * ```
  */
 export function addApolloState(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: ApolloClient<any>,
   pageProps: Record<string, unknown> & { props: Record<string, unknown> },
-) {
+): Record<string, unknown> & {
+  props: Record<string, unknown>;
+} {
   if (pageProps.props) {
     // eslint-disable-next-line no-param-reassign
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
@@ -42,6 +45,7 @@ export function addApolloState(
 export function useApollo(
   pageProps?: Record<string, unknown>,
   context?: PersistentContext,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): ApolloClient<any> {
   const state = pageProps?.[APOLLO_STATE_PROP_NAME];
 
