@@ -2,11 +2,23 @@
 /// <reference path="./types/next.d.ts" />
 /// <reference path="./types/wpgraphql.d.ts" />
 
-import { authorizeHandler } from '@wpengine/headless-core';
-import { HeadlessProvider } from '@wpengine/headless-react';
+import {
+  authorizeHandler,
+  headlessConfig,
+  getApolloClient,
+  getPosts,
+} from '@wpengine/headless-core';
+import { HeadlessProvider, useGeneralSettings } from '@wpengine/headless-react';
 
 export * from './getProps';
 export * from './getStaticPaths';
 export * from './hooks';
 
-export { authorizeHandler, HeadlessProvider };
+export {
+  authorizeHandler,
+  HeadlessProvider,
+  headlessConfig,
+  useGeneralSettings,
+  getApolloClient,
+  getPosts,
+};
