@@ -1,7 +1,7 @@
 import { headlessConfig } from '@wpengine/headless-core';
 import { resolvePrefixedUrlPath } from '@wpengine/headless-core/utils';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
 export function isServerSidePropsContext(
   context: any,
 ): context is GetServerSidePropsContext {
@@ -15,7 +15,7 @@ export function isStaticPropsContext(
 ): context is GetStaticPropsContext {
   return !isServerSidePropsContext(context);
 }
-/* eslint-enable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-enable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
 
 export function getCurrentPath(
   context: GetServerSidePropsContext | GetStaticPropsContext,
