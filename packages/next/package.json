@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless-next",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless-next"
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/next"
   },
   "keywords": [
     "WordPress",
@@ -76,8 +76,8 @@
   },
   "dependencies": {
     "@apollo/client": ">=3.3.17",
-    "@wpengine/headless-core": "^0.6.3",
-    "@wpengine/headless-react": "^0.6.3",
+    "@wpengine/headless-core": "canary",
+    "@wpengine/headless-react": "canary",
     "graphql": ">=15.5",
     "next-transpile-modules": "^7.0.0"
   }
