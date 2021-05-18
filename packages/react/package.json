@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless/react"
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/react"
   },
   "keywords": [
     "WordPress",
