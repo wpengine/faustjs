@@ -76,8 +76,8 @@
   },
   "dependencies": {
     "@apollo/client": ">=3.3.17",
-    "@wpengine/headless-core": "^0.6.3",
-    "@wpengine/headless-react": "^0.6.3",
+    "@wpengine/headless-core": "canary",
+    "@wpengine/headless-react": "canary",
     "graphql": ">=15.5",
     "next-transpile-modules": "^7.0.0"
   }
