@@ -8,8 +8,6 @@ headlessConfig({
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
 });
 
-console.log(headlessConfig());
-
 function MyApp({ Component, pageProps }) {
   return (
     <HeadlessProvider pageProps={pageProps}>

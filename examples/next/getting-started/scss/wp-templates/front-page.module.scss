@@ -19,7 +19,7 @@
 	.features {
 		column-gap: 20px;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 	}
 
 	#post_list :global(.posts) {

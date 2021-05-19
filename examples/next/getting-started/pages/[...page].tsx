@@ -1,10 +1,10 @@
-import { useGeneralSettings } from '@wpengine/headless-react';
 import {
   getNextStaticPaths,
   getNextStaticProps,
   usePost,
 } from '@wpengine/headless-next';
-import { CTA, Footer, Header } from 'components';
+import { useGeneralSettings } from '@wpengine/headless-react';
+import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 
 export default function Page() {
@@ -15,26 +15,14 @@ export default function Page() {
     <>
       <Header title={settings?.title} description={settings?.description} />
 
+      <Hero title={post?.title} bgImage={post?.featuredImageId} />
+
       <main className="content content-single">
         <div className="wrap">
           {post && (
             <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
           )}
         </div>
-
-        <CTA
-          title="Start your headless journey today"
-          buttonText="Get Started"
-          buttonURL="https://github.com/wpengine/headless-framework/"
-          headingLevel="h2">
-          <p>
-            Learn more in the{' '}
-            <a href="https://github.com/wpengine/headless-framework">
-              Headless Framework GitHub repository
-            </a>
-            .
-          </p>
-        </CTA>
       </main>
 
       <Footer copyrightHolder={settings?.title} />
@@ -43,7 +31,7 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  return getNextStaticProps(context, {});
+  return getNextStaticProps(context);
 }
 
 export function getStaticPaths() {
