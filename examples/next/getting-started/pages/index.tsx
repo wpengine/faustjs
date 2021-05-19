@@ -1,7 +1,11 @@
 import React from 'react';
 import { usePosts, useGeneralSettings } from '@wpengine/headless-react';
 import { GetStaticPropsContext } from 'next';
-import { getApolloClient, getPosts } from '@wpengine/headless-core';
+import {
+  getApolloClient,
+  getPosts,
+  headlessConfig,
+} from '@wpengine/headless-core';
 import { CTA, Header, Footer, Hero, Posts } from '../components';
 import styles from '../scss/wp-templates/front-page.module.scss';
 import { getNextStaticProps } from '@wpengine/headless-next';

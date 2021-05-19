@@ -43,9 +43,14 @@ export default function Page() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   const client = getApolloClient(context);
 
-  let archiveDirectoryName = 'category';
+  /**
+   * This value will depend on your WordPress permalink category base.
+   * This example assumes your permalink category base is the default.
+   */
+  let permalinkCategoryBase = 'category';
+
   let categoryOptionsUrlParams = [
-    archiveDirectoryName,
+    permalinkCategoryBase,
     ...Array.from(context?.params?.category),
   ];
 
