@@ -1,7 +1,7 @@
+import { useGeneralSettings } from '@wpengine/headless-react';
 import {
   getNextStaticPaths,
   getNextStaticProps,
-  useGeneralSettings,
   usePost,
 } from '@wpengine/headless-next';
 import { CTA, Footer, Header } from 'components';

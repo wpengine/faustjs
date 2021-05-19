@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "@wpengine/headless-next": "^0.6.3",
+    "@wpengine/headless-core": "^0.6.4",
+    "@wpengine/headless-next": "^0.6.4",
+    "@wpengine/headless-react": "^0.6.4",
     "next": "10.2.0",
     "normalize.css": "^8.0.1",
     "react": "17.0.2",
