@@ -12,11 +12,13 @@ export interface QueriesConfig {
 }
 
 export interface HeadlessProviderPageProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pageProps?: Record<string, any> & {
     queries?: QueriesConfig;
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const HeadlessContext = React.createContext<any>({});
 
 function parseContext(pageProps?: { queries?: QueriesConfig }) {
@@ -34,23 +36,25 @@ function parseContext(pageProps?: { queries?: QueriesConfig }) {
   let postData: DocumentNode | undefined;
   let listPostData: DocumentNode | undefined;
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   if (typeof pageProps.queries.post?.fragments?.pageData === 'string') {
     pageData = gql`
-      ${(pageProps.queries.post.fragments.pageData as any) as string}
+      ${pageProps.queries.post.fragments.pageData as any as string}
     `;
   }
 
   if (typeof pageProps.queries.post?.fragments?.postData === 'string') {
     postData = gql`
-      ${(pageProps.queries.post.fragments.postData as any) as string}
+      ${pageProps.queries.post.fragments.postData as any as string}
     `;
   }
 
   if (typeof pageProps.queries.posts?.fragments?.listPostData === 'string') {
     listPostData = gql`
-      ${(pageProps.queries.posts.fragments.listPostData as any) as string}
+      ${pageProps.queries.posts.fragments.listPostData as any as string}
     `;
   }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   if (pageData || postData) {
     ctx.queries.post = {

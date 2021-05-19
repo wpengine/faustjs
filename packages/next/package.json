@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless-next",
-  "version": "0.6.3",
+  "version": "0.6.5",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless-next"
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/next"
   },
   "keywords": [
     "WordPress",
@@ -37,48 +37,47 @@
   "author": "WP Engine",
   "license": "MIT",
   "peerDependencies": {
-    "next": ">=10.0.0",
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "next": ">=10.2.0",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
-    "@graphql-codegen/cli": "^1.20.0",
-    "@graphql-codegen/typescript": "^1.20.0",
-    "@graphql-codegen/typescript-operations": "^1.17.13",
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.2",
-    "@types/jest": "^26.0.16",
-    "@types/node": "^14.14.10",
-    "@types/react": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.9.1",
-    "@typescript-eslint/parser": "^4.9.1",
-    "eslint": "^7.15.0",
-    "eslint-config-airbnb-typescript": "^12.0.0",
-    "eslint-config-prettier": "^7.0.0",
-    "eslint-plugin-import": "^2.22.1",
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/typescript": "^1.22.0",
+    "@graphql-codegen/typescript-operations": "^1.17.16",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.7",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.3.0",
+    "@types/react": "^17.0.6",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.2.0",
-    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-simple-import-sort": "^6.0.1",
-    "graphql": "^15.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "jest": "^26.6.3",
     "next": "^10.2.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.1.2",
+    "prettier": "^2.3.0",
     "rimraf": "^3.0.2",
-    "ts-jest": "^26.4.4",
-    "ts-loader": "^8.0.11",
-    "typedoc": "^0.20.23",
-    "typedoc-plugin-markdown": "^3.4.5",
-    "typescript": "^4.1.2"
+    "ts-jest": "^26.5.6",
+    "ts-loader": "^9.2.0",
+    "typedoc": "^0.20.36",
+    "typedoc-plugin-markdown": "^3.8.1",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@apollo/client": ">=3.3.17",
-    "@wpengine/headless-core": "^0.6.3",
-    "@wpengine/headless-react": "^0.6.3",
+    "@apollo/client": ">=3.3.19",
+    "@wpengine/headless-core": "canary",
+    "@wpengine/headless-react": "canary",
     "graphql": ">=15.5",
-    "next-transpile-modules": "^7.0.0"
+    "next-transpile-modules": "^7.1.1"
   }
 }
