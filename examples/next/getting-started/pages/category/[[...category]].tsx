@@ -44,20 +44,15 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const client = getApolloClient(context);
 
   /**
-   * This value will depend on your WordPress permalink category base.
-   * This example assumes your permalink category base is the default.
+   * Construct the WordPress post category URL from getStaticProps params
+   * ex:
+   * category/uncategorized
+   * category/uncategorized/[before|after]/[abc123]
    */
-  let permalinkCategoryBase = 'category';
+  let urlPartFromParams = Array.from(context?.params?.category).join('/');
+  let categoryUrl = `category/${urlPartFromParams}`;
 
-  let categoryOptionsUrlParams = [
-    permalinkCategoryBase,
-    ...Array.from(context?.params?.category),
-  ];
-
-  await getPosts(
-    client,
-    categoryOptions(categoryOptionsUrlParams, POSTS_PER_PAGE),
-  );
+  await getPosts(client, categoryOptions(categoryUrl, POSTS_PER_PAGE));
 
   return getNextStaticProps(context);
 }
