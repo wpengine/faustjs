@@ -1,14 +1,11 @@
-import React from 'react';
-import { usePosts, useGeneralSettings } from '@wpengine/headless-react';
-import { GetStaticPropsContext } from 'next';
-import {
-  getApolloClient,
-  getPosts,
-  headlessConfig,
-} from '@wpengine/headless-core';
-import { CTA, Header, Footer, Hero, Posts } from '../components';
-import styles from '../scss/wp-templates/front-page.module.scss';
+import { getApolloClient, getPosts } from '@wpengine/headless-core';
 import { getNextStaticProps } from '@wpengine/headless-next';
+import { useGeneralSettings, usePosts } from '@wpengine/headless-react';
+import { GetStaticPropsContext } from 'next';
+import Head from 'next/head';
+import React from 'react';
+import { CTA, Footer, Header, Hero, Posts } from '../components';
+import styles from '../scss/pages/home.module.scss';
 
 /**
  * Example of post variables to query the first six posts in a named category.
@@ -28,6 +25,13 @@ export default function FrontPage(): JSX.Element {
   return (
     <>
       <Header title={settings?.title} description={settings?.description} />
+
+      <Head>
+        <title>
+          {settings?.title} - {settings?.description}
+        </title>
+      </Head>
+
       <main className="content">
         <Hero
           title="Get Started with Headless"

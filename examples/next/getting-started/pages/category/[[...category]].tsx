@@ -10,6 +10,7 @@ import {
 import { useGeneralSettings, usePosts } from '@wpengine/headless-react';
 import { Footer, Header, Posts, Pagination } from 'components';
 import { GetStaticPropsContext } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const POSTS_PER_PAGE = 10;
@@ -23,6 +24,10 @@ export default function Page() {
   return (
     <>
       <Header title={settings?.title} description={settings?.description} />
+
+      <Head>
+        <title>Posts - {settings?.title}</title>
+      </Head>
 
       <main className="content content-index">
         <Posts posts={posts?.nodes} />

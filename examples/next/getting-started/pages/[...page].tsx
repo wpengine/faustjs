@@ -6,6 +6,7 @@ import {
 import { useGeneralSettings } from '@wpengine/headless-react';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
+import Head from 'next/head';
 
 export default function Page() {
   const settings = useGeneralSettings();
@@ -14,6 +15,12 @@ export default function Page() {
   return (
     <>
       <Header title={settings?.title} description={settings?.description} />
+
+      <Head>
+        <title>
+          {post?.title} - {settings?.title}
+        </title>
+      </Head>
 
       <Hero title={post?.title} bgImage={post?.featuredImageId} />
 
