@@ -92,9 +92,11 @@ export async function getNextStaticProps(
     (pageProps as Record<string, any> & { props: Record<string, unknown> })
       ?.props
   ) {
-    (pageProps as Record<string, any> & {
-      props: Record<string, unknown>;
-    }).revalidate = 1;
+    (
+      pageProps as Record<string, any> & {
+        props: Record<string, unknown>;
+      }
+    ).revalidate = 1;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
