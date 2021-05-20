@@ -57,9 +57,8 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
 }
 /* eslint-enable consistent-return */
 
-/* eslint-disable @typescript-eslint/comma-dangle */
 async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext
+  Context extends GetStaticPropsContext | GetStaticPropsContext,
 >(
   context: Context,
   config: NextPropsConfig = {},
