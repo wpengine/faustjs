@@ -1,0 +1,80 @@
+// CSS for use on every page. Added with normalize.css in pages/_app.tsx.
+
+@import "variables";
+@import "typography";
+
+body {
+	color: $color-black;
+	font-size: 18px;
+	line-height: 1.6;
+}
+
+.wrap {
+	margin: 0 auto;
+	max-width: $content-width;
+	overflow: auto;
+	padding: 0 10px;
+}
+
+.content-page .wrap,
+.content-single .wrap,
+.content-index .wrap {
+	padding: 55px 10px;
+}
+
+@media screen and (min-width: $content-width) {
+	.wrap {
+		padding: 0;
+	}
+
+	.content-page .wrap,
+	.content-single .wrap,
+	.content-index .wrap {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.content .button {
+	background-color: $color-primary;
+	border-radius: 4px;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	float: left;
+	font-family: $font-family;
+	font-weight: $font-weight-bold;
+	padding: 12px 24px;
+	text-align: center;
+	text-decoration: none;
+	margin-right: 8px;
+}
+
+.content .button:focus,
+.content .button:hover {
+	background-color: lighten($color-primary, 10);
+}
+
+.content .button-secondary {
+	background-color: $color-white;
+	color: $color-black;
+}
+
+.content .button-secondary:focus,
+.content .button-secondary:hover {
+	background-color: darken($color-white, 10);
+}
+
+.pagination ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.pagination.has-next.has-previous ul {
+	column-count: 2;
+}
+
+.pagination-next {
+	text-align: right;
+}
