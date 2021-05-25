@@ -4,8 +4,8 @@ import { useGeneralSettings, usePosts } from '@wpengine/headless-react';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import React from 'react';
-import { CTA, Footer, Header, Hero, Posts } from '../components';
-import styles from '../scss/pages/home.module.scss';
+import { CTA, Footer, Header, Hero, Posts } from 'components';
+import styles from 'scss/pages/home.module.scss';
 
 /**
  * Example of post variables to query the first six posts in a named category.
