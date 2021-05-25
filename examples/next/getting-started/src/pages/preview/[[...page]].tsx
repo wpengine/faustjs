@@ -1,7 +1,6 @@
 import { useGeneralSettings } from '@wpengine/headless-react';
 import { usePost } from '@wpengine/headless-next';
 import { Footer, Header, CTA } from 'components';
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 
 export default function Page() {
   const settings = useGeneralSettings();
