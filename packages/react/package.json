@@ -14,7 +14,7 @@
     "prepublish": "run-s build",
     "generate-docs": "typedoc",
     "generate-graphql": "graphql-codegen",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
     "ts:watch": "tsc -p . --watch"
@@ -45,6 +45,7 @@
     "@graphql-codegen/typescript-operations": "^1.17.16",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.7",
+    "@testing-library/react-hooks": "^7.0.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.3.0",
     "@types/react": "^17.0.6",
