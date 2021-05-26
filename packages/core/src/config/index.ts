@@ -1,1 +1,1 @@
-export * from './config';
+export { HeadlessConfig, headlessConfig } from './config';

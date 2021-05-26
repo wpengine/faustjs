@@ -1,4 +1,4 @@
-import { headlessConfig } from '../../src/config';
+import { headlessConfig, normalizeConfig } from '../../src/config/config';
 
 describe('config', () => {
   test('headlessConfig() should throw an error if no config is set', () => {
@@ -13,46 +13,75 @@ describe('config', () => {
     expect(() => headlessConfig()).not.toThrowError();
   });
 
+  test('headlessConfig() called with no arguments should not modify the config', () => {
+    const config = headlessConfig({
+      wpUrl: '',
+      apiEndpoint: '',
+    });
+
+    expect(headlessConfig()).toBe(config);
+  });
+
+  test('headlessConfig() arguments should be immutable', () => {
+    const cfg = {
+      wpUrl: '',
+      apiEndpoint: '',
+    };
+
+    let config = headlessConfig(cfg);
+
+    expect(config).not.toBe(cfg);
+  });
+
+  test('headlessConfig() should always return the config', () => {
+    const cfg = {
+      wpUrl: '',
+      apiEndpoint: '',
+    };
+
+    const config1 = headlessConfig(cfg);
+    const config2 = headlessConfig();
+
+    expect(config1).toBe(config2);
+    expect(headlessConfig()).toBe(config1);
+  });
+
   test('apiEndpoint should default to `/api/auth/wpe-headless` unless set', () => {
-    headlessConfig({
+    let config = normalizeConfig({
       wpUrl: '',
     });
 
-    expect(headlessConfig().apiEndpoint).toBe('/api/auth/wpe-headless');
+    expect(config.apiEndpoint).toBe('/api/auth/wpe-headless');
 
-    headlessConfig({
+    config = normalizeConfig({
       wpUrl: '',
       apiEndpoint: '/api/auth',
     });
 
-    expect(headlessConfig().apiEndpoint).toBe('/api/auth');
+    expect(config.apiEndpoint).toBe('/api/auth');
   });
 
   test('All strings should be trimmed', () => {
-    headlessConfig({
+    const config = normalizeConfig({
       wpUrl: '   foo   ',
       apiEndpoint: '   foo   ',
       blogUrlPrefix: '   foo   ',
     });
 
-    const cfg = headlessConfig();
-
-    expect(cfg.wpUrl).toBe('foo');
-    expect(cfg.apiEndpoint).toBe('foo');
-    expect(cfg.blogUrlPrefix).toBe('foo');
+    expect(config.wpUrl).toBe('foo');
+    expect(config.apiEndpoint).toBe('foo');
+    expect(config.blogUrlPrefix).toBe('foo');
   });
 
   test('URLs should never end in `/`', () => {
-    headlessConfig({
+    const config = normalizeConfig({
       wpUrl: 'http://test.local/',
       apiEndpoint: '/api/auth/',
       blogUrlPrefix: '/blog/',
     });
 
-    const cfg = headlessConfig();
-
-    expect(cfg.wpUrl).toBe('http://test.local');
-    expect(cfg.apiEndpoint).toBe('/api/auth');
-    expect(cfg.blogUrlPrefix).toBe('/blog');
+    expect(config.wpUrl).toBe('http://test.local');
+    expect(config.apiEndpoint).toBe('/api/auth');
+    expect(config.blogUrlPrefix).toBe('/blog');
   });
 });
