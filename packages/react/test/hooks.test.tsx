@@ -1,13 +1,27 @@
-import React from 'react';
 import { gql } from '@apollo/client';
-import { useGeneralSettings } from '../src/hooks';
+import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { GENERAL_SETTINGS } from '@wpengine/headless-core';
+import {
+  GENERAL_SETTINGS,
+  getPostsQuery,
+  GET_URI_INFO,
+  headlessConfig,
+} from '@wpengine/headless-core';
+import React, { PropsWithChildren } from 'react';
+import { useGeneralSettings, usePosts, useUriInfo } from '../src/hooks';
+
+const TEST_WP_URL = 'http://headless.local';
+const TEST_REACT_URL = 'http://localhost:3000';
+
+beforeAll(() => {
+  headlessConfig({
+    wpUrl: TEST_WP_URL,
+  });
+});
 
 // Use mock data in the Apollo MockedProvider for our custom Hooks
-const generalSettingsMock = {
+const mockGeneralSettings = {
   request: {
     query: gql`
       ${GENERAL_SETTINGS}
@@ -18,17 +32,42 @@ const generalSettingsMock = {
       generalSettings: {
         title: 'My WordPress Site',
         description: 'Just another WordPress site',
-        url: 'http://headless.local',
+        url: TEST_WP_URL,
       },
     },
   },
 };
 
-const mocks: ReadonlyArray<MockedResponse> = [generalSettingsMock];
+const mockSamplePage = {
+  request: {
+    query: gql`
+      ${GET_URI_INFO}
+    `,
+    variables: {
+      uri: 'sample-page',
+    },
+  },
+  result: {
+    data: {
+      nodeByUri: {
+        id: 'cG9zdDoy',
+        conditionalTags: {
+          isArchive: false,
+          isSingular: true,
+        },
+      },
+    },
+  },
+};
+
+const mocks: ReadonlyArray<MockedResponse> = [
+  mockGeneralSettings,
+  mockSamplePage,
+];
 
 describe('useGeneralSettings', () => {
   test('useGeneralSettings() gets the title, description, and url', async () => {
-    const wrapper = ({ children }: any) => (
+    const wrapper = ({ children }: PropsWithChildren<{}>) => (
       <MockedProvider mocks={mocks} addTypename={false}>
         {children}
       </MockedProvider>
@@ -36,19 +75,42 @@ describe('useGeneralSettings', () => {
 
     const { result } = renderHook(() => useGeneralSettings(), { wrapper });
 
-    /**
-     * Use a setTimeout within an act() to test the "success" state of the hook.
-     * @link https://www.apollographql.com/docs/react/development-testing/testing/#testing-the-success-state
-     */
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
     const { title, description, url } =
-      generalSettingsMock.result.data.generalSettings;
+      mockGeneralSettings.result.data.generalSettings;
 
     expect(result.current?.title).toBe(title);
     expect(result.current?.description).toBe(description);
     expect(result.current?.url).toBe(url);
+  });
+});
+
+describe('useUriInfo', () => {
+  test('useUriInfo gets uri info from window', async () => {});
+
+  test('useUriInfo gets uri info from a specific WordPress page', async () => {
+    const wrapper = ({ children }: PropsWithChildren<{}>) => (
+      <MockedProvider mocks={mocks} addTypename={false}>
+        {children}
+      </MockedProvider>
+    );
+
+    const { result } = renderHook(
+      () => useUriInfo(`${TEST_REACT_URL}/sample-page`),
+      { wrapper },
+    );
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+
+    const { uri } = mockSamplePage.request.variables;
+    const { id } = mockSamplePage.result.data.nodeByUri;
+
+    expect(result.current?.uriPath).toBe(uri);
+    expect(result.current?.id).toBe(id);
   });
 });
