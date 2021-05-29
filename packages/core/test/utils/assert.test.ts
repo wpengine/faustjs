@@ -1,6 +1,6 @@
 import { isBase64, isPreviewPath, isServerSide } from '../../src/utils/assert';
 
-describe('assert', () => {
+describe('utils/assert', () => {
   test('isServerSide() is false when window is present', () => {
     expect(isServerSide()).toBe(typeof window === 'undefined');
   });

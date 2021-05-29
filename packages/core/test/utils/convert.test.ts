@@ -11,7 +11,7 @@ import {
 import { gql } from '@apollo/client/core';
 import { print } from 'graphql';
 
-describe('convert', () => {
+describe('utils/convert', () => {
   test('base64Decode() returns the argument for a non-base64 string', () => {
     //@ts-ignore
     expect(base64Decode()).toBeUndefined();

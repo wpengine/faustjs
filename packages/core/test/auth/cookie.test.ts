@@ -1,7 +1,7 @@
 import * as config from '../../src/config/config';
 import { cookieKey, getAccessToken } from '../../src/auth/cookie';
 
-describe('cookie', () => {
+describe('auth/cookie', () => {
   test('cookieKey() returns the key for cookie storage based on the wpUrl', () => {
     const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
       return { wpUrl: 'test' };

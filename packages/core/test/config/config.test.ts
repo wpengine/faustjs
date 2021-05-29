@@ -1,6 +1,6 @@
 import { headlessConfig, normalizeConfig } from '../../src/config/config';
 
-describe('config', () => {
+describe('config/config', () => {
   test('headlessConfig() should throw an error if no config is set', () => {
     expect(() => headlessConfig()).toThrowError();
   });
