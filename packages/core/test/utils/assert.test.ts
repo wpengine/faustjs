@@ -16,7 +16,6 @@ describe('assert', () => {
   });
 
   test('isBase64() returns true for valid base64 strings', () => {
-    expect(isBase64(btoa('test'))).toBe(true);
     expect(isBase64('aGVsbG8td29ybGQ=')).toBe(true);
   });
 
