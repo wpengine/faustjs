@@ -13,7 +13,9 @@ export interface PagePropsWithApollo extends Record<string, unknown> {
 }
 
 /* eslint-disable consistent-return */
-function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
+export function stringifyQueries(
+  queries?: QueriesConfig,
+): QueriesConfig | undefined {
   if (!queries) {
     return;
   }
@@ -57,7 +59,7 @@ function stringifyQueries(queries?: QueriesConfig): QueriesConfig | undefined {
 }
 /* eslint-enable consistent-return */
 
-async function getProps<
+export async function getProps<
   Context extends GetStaticPropsContext | GetStaticPropsContext,
 >(
   context: Context,
