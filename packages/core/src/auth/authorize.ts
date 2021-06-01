@@ -3,7 +3,7 @@ import isString from 'lodash/isString';
 import { parseUrl } from '../utils';
 import { CookieOptions, getAccessToken } from './cookie';
 import fetch from 'isomorphic-fetch';
-fetch;
+
 /**
  * Exchanges an Authorization Code for an Access Token that you can use to make authenticated requests to
  * the WordPress API
