@@ -1,4 +1,4 @@
-import isString from "lodash/isString";
+import isString from 'lodash/isString';
 
 /**
  * Returns whether or not the app execution context is currently Server-Side or Client-Side
