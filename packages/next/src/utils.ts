@@ -1,8 +1,10 @@
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import trim from 'lodash/trim';
 import { headlessConfig } from '@wpengine/headless-core';
 import { resolvePrefixedUrlPath } from '@wpengine/headless-core/utils';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
 export function isServerSidePropsContext(
   context: any,
@@ -50,10 +52,10 @@ export function getCurrentUrlPath(
 }
 
 /**
- * Determine from the static props context if the url is for posts
+ * Determine from the static props context params if is post URL
  * @param context GetStaticPropsContext
  */
-export function isPostStaticContext(context: GetStaticPropsContext): boolean {
+export function isPostParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
   if (!post) {
@@ -75,10 +77,10 @@ export function isPostStaticContext(context: GetStaticPropsContext): boolean {
 }
 
 /**
- * Determine from the static props context if the url is for pages
+ * Determine from the static props context params if is page URL
  * @param context GetStaticPropsContext
  */
-export function isPageStaticContext(context: GetStaticPropsContext): boolean {
+export function isPageParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
   if (!page) {
@@ -104,12 +106,10 @@ export function isPageStaticContext(context: GetStaticPropsContext): boolean {
 }
 
 /**
- * Determine from the static props context if the url is for categories
+ * Determine from the static props context params if is category URL
  * @param context GetStaticPropsContext
  */
-export function isCategoryStaticContext(
-  context: GetStaticPropsContext,
-): boolean {
+export function isCategoryParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
   if (!category) {
@@ -131,12 +131,10 @@ export function isCategoryStaticContext(
 }
 
 /**
- * Determine from the static props context if the url is for previews
+ * Determine from the static props context params if is preview URL
  * @param context GetStaticPropsContext
  */
-export function isPreviewStaticContext(
-  context: GetStaticPropsContext,
-): boolean {
+export function isPreviewParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
   if (!preview) {
@@ -160,11 +158,30 @@ export function isPreviewStaticContext(
 }
 
 /**
- * Construct an inferred url based on the static props context params.
- * @param context GetStaticPropsContext
+ * TODO: Determine if we want to allow these values to be modified via the config
+ * or if we want to have this directory structure be a permanent convention.
+ */
+const POSTS_PATH_PREFIX = '/posts';
+const PAGE_PATH_PREFIX = '/';
+const CATEGORY_PATH_PREFIX = '/category';
+const PREVIEW_PATH_PREFIX = '/preview';
+
+export function formatUrlPrefix(pathPrefix: string): string {
+  if (pathPrefix.length === 1 && pathPrefix === '/') {
+    return '';
+  }
+
+  const prefix = trim(pathPrefix, '/');
+
+  return `/${prefix}`;
+}
+
+/**
+ * Construct an inferred url based on the static props context params or the resolved URL if server side
+ * @param context GetServerSidePropsContext | GetStaticPropsContext
  * @returns String if URL can be resolved/inferred, undefined if not.
  */
-export function getUrlPathFromContext(
+export function getUrlFromContext(
   context: GetServerSidePropsContext | GetStaticPropsContext,
 ): string | undefined {
   if (isServerSidePropsContext(context)) {
@@ -173,21 +190,23 @@ export function getUrlPathFromContext(
 
   const { preview, post, category, page, pageUri } = context?.params || {};
 
-  if (isPostStaticContext(context)) {
-    return `/posts/${post as string}`;
+  if (isPostParams(context)) {
+    return `${formatUrlPrefix(POSTS_PATH_PREFIX)}/${post as string}`;
   }
 
-  if (isPageStaticContext(context)) {
+  if (isPageParams(context)) {
     const pageUriPart = pageUri ? `/${(pageUri as string[]).join('/')}` : '';
-    return `/${page as string}${pageUriPart}`;
+    return `${formatUrlPrefix(PAGE_PATH_PREFIX)}/${
+      page as string
+    }${pageUriPart}`;
   }
 
-  if (isCategoryStaticContext(context)) {
-    return `/category/${category as string}`;
+  if (isCategoryParams(context)) {
+    return `${formatUrlPrefix(CATEGORY_PATH_PREFIX)}/${category as string}`;
   }
 
-  if (isPreviewStaticContext(context)) {
-    return `/preview/${preview as string}`;
+  if (isPreviewParams(context)) {
+    return `${formatUrlPrefix(PREVIEW_PATH_PREFIX)}/${preview as string}`;
   }
 
   return undefined;
