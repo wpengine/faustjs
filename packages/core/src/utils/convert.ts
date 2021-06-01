@@ -1,4 +1,8 @@
 import { print as gqlPrint, DocumentNode } from 'graphql';
+import isArrayLike from 'lodash/isArrayLike';
+import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
+import isUndefined from 'lodash/isUndefined';
 import { isBase64, isServerSide, previewRegex } from './assert';
 
 /**
@@ -44,6 +48,10 @@ export function base64Decode(str: string): string {
  * @returns
  */
 export function base64Encode(str: string): string {
+  if (!isString(str)) {
+    return '';
+  }
+
   if (isServerSide()) {
     return Buffer.from(str, 'utf8').toString('base64');
   }
@@ -68,7 +76,7 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
 
   const parsed = URL_REGEX.exec(url);
 
-  if (!parsed || parsed.length < 1) {
+  if (!isArrayLike(parsed) || isEmpty(parsed) || isUndefined(parsed[4])) {
     return;
   }
 
@@ -93,13 +101,13 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
  * @returns {string}
  */
 export function getQueryParam(url: string, param: string): string {
-  if (!url || url.length === 0) {
+  if (!isString(url) || !isString(param) || isEmpty(url) || isEmpty(param)) {
     return '';
   }
 
   const parsedUrl = parseUrl(url);
 
-  if (!parsedUrl) {
+  if (isUndefined(parsedUrl) || !isString(parsedUrl.search)) {
     return '';
   }
 
@@ -131,11 +139,11 @@ export function getQueryParam(url: string, param: string): string {
 export function getUrlPath(url?: string): string {
   const parsedUrl = parseUrl(url);
 
-  if (!parsedUrl) {
+  if (isUndefined(parsedUrl)) {
     return '/';
   }
 
-  return `${parsedUrl?.pathname || '/'}${parsedUrl?.search || ''}`;
+  return `${parsedUrl.pathname || '/'}${parsedUrl.search || ''}`;
 }
 
 export function stripPreviewFromUrlPath(urlPath: string): string {
@@ -191,19 +199,6 @@ export function getCookiesFromContext(context?: any): string | undefined {
   }
 }
 /* eslint-enable consistent-return, @typescript-eslint/explicit-module-boundary-types */
-
-/**
- * Trims the origin (protocol, host, port) from URL so only the path and query params remain
- */
-export function trimOriginFromUrl(url: string): string {
-  try {
-    const parsedUrl = new URL(url);
-
-    return url.replace(parsedUrl.origin, '');
-  } catch (e) {
-    return url;
-  }
-}
 
 /* eslint-disable consistent-return */
 export function stringifyGql(doc?: DocumentNode): string | undefined {

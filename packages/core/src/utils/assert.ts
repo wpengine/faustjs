@@ -1,3 +1,5 @@
+import isString from 'lodash/isString';
+
 /**
  * Returns whether or not the app execution context is currently Server-Side or Client-Side
  *
@@ -16,7 +18,7 @@ export function isServerSide(): boolean {
  * @returns
  */
 export function isBase64(str: string): boolean {
-  if (!str) {
+  if (!isString(str) || str.length === 0) {
     return false;
   }
 
@@ -28,9 +30,9 @@ export function isBase64(str: string): boolean {
 export const previewRegex = /\/preview(\/\w|\?)/;
 
 export function isPreviewPath(uri: string): boolean {
-  if (typeof uri === 'string') {
-    return previewRegex.test(uri);
+  if (!isString(uri)) {
+    return false;
   }
 
-  return false;
+  return previewRegex.test(uri);
 }
