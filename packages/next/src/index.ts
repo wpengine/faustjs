@@ -2,6 +2,11 @@
 /// <reference path="./types/next.d.ts" />
 /// <reference path="./types/wpgraphql.d.ts" />
 
-export * from './getProps';
-export * from './getStaticPaths';
-export * from './hooks';
+export {
+  getNextServerSideProps,
+  getNextStaticProps,
+  NextPropsConfig,
+  PagePropsWithApollo,
+} from './getProps';
+export { getNextStaticPaths } from './getStaticPaths';
+export { useUriInfo, usePost } from './hooks';
