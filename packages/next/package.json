@@ -79,6 +79,7 @@
     "@apollo/client": ">=3.3.19",
     "@wpengine/headless-core": "canary",
     "@wpengine/headless-react": "canary",
-    "graphql": ">=15.5"
+    "graphql": ">=15.5",
+    "root": "file:../.."
   }
 }
