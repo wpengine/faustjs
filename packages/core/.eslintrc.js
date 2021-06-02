@@ -35,4 +35,13 @@ module.exports = {
         'no-console': ["error", { allow: ["warn", "error", "debug"] }]
     },
     settings: {},
+    ignorePatterns: [
+        'test/**/*',
+        '.prettierrc.js',
+        'jest.config.js',
+        'jest.setup.ts',
+        'utils.d.ts',
+        'utils.js',
+        '.eslintrc.js',
+    ],
 };
