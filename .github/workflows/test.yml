@@ -1,4 +1,4 @@
-name: lint
+name: test
 on: pull_request
 jobs:
   packages:
@@ -20,6 +20,6 @@ jobs:
         working-directory: packages/next
         env:
           CI: TRUE
-      - name: Run eslint
-        run:  npm run lint
+      - name: Run tests
+        run:  npm run test
         continue-on-error: FALSE
