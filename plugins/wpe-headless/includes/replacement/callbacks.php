@@ -162,7 +162,10 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @return string URL used for the post.
  */
 function wpe_headless_post_link( $link ) {
-	if ( ! wpe_headless_is_rewrites_enabled() ) {
+	if (
+		! wpe_headless_is_rewrites_enabled()
+		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+	) {
 		return $link;
 	}
 
