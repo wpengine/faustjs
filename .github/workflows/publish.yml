@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - canary
+    paths:
+      - 'packages/core/package.json'
+      - 'packages/react/package.json'
+      - 'packages/next/package.json'
 
 jobs:
   publish-core:
