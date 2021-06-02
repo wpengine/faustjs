@@ -1,9 +1,10 @@
 import { IncomingMessage, ServerResponse } from 'http';
+import trim from 'lodash/trim';
 import { getQueryParam } from '../utils';
 import { authorize, ensureAuthorization } from './authorize';
 import { storeAccessToken } from './cookie';
 
-function redirect(res: ServerResponse, url: string) {
+export function redirect(res: ServerResponse, url: string) {
   res.writeHead(302, {
     Location: url,
   });
@@ -31,7 +32,7 @@ export async function authorizeHandler(
     };
 
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = `${protocol}//${host}/${redirectUri}`;
+    const fullRedirectUrl = `${protocol}//${host}/${trim(redirectUri, '/')}`;
 
     /**
      * If missing code, this is a request that's meant to trigger authorization such as a preview.
@@ -46,7 +47,7 @@ export async function authorizeHandler(
       }
 
       /**
-       * We already have an auth code stored, go ahead and redirect.
+       * We already have an access token stored, go ahead and redirect.
        */
       redirect(res, fullRedirectUrl);
       return;
