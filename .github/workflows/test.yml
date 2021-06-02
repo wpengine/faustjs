@@ -5,19 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install core dependencies
-        run: npm install
-        working-directory: packages/core
-        env:
-          CI: TRUE
-      - name: Install react dependencies
-        run: npm install
-        working-directory: packages/react
-        env:
-          CI: TRUE
-      - name: Install next dependencies
-        run: npm install
-        working-directory: packages/next
+      - name: Bootstrap dependencies
+        run: npm run bootstrap
         env:
           CI: TRUE
       - name: Run tests
