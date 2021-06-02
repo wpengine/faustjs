@@ -36,6 +36,7 @@ export function isStaticPropsContext(
 export function isPostParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (isUndefined(post)) {
     return false;
   }
@@ -61,6 +62,7 @@ export function isPostParams(context: GetStaticPropsContext): boolean {
 export function isPageParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (isUndefined(page)) {
     return false;
   }
@@ -70,6 +72,7 @@ export function isPageParams(context: GetStaticPropsContext): boolean {
     throw new Error('Expected [page] param to be a string');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (pageUri && !isObject(pageUri)) {
     throw new Error('Expected [[...pageUri]] to be an object');
   }
@@ -90,6 +93,7 @@ export function isPageParams(context: GetStaticPropsContext): boolean {
 export function isCategoryParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (isUndefined(category)) {
     return false;
   }
@@ -115,6 +119,7 @@ export function isCategoryParams(context: GetStaticPropsContext): boolean {
 export function isPreviewParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (isUndefined(preview)) {
     return false;
   }
@@ -149,7 +154,8 @@ export function formatUrlPrefix(pathPrefix: string): string {
     return '';
   }
 
-  const prefix = trim(pathPrefix, '/');
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const prefix: string = trim(pathPrefix, '/');
 
   return `/${prefix}`;
 }
