@@ -9,8 +9,6 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"noUnusedLocals": true,
-		"outDir": "dist",
-		"rootDir": "src",
 		"declaration": true,
 		"lib": [
 			"dom",
@@ -18,21 +16,15 @@
 			"esnext"
 		],
 		"typeRoots": [
-			"src/types",
-			"node_modules/@types"
+			"../src/types",
+			"../node_modules/@types"
 		]
 	},
-	"typedocOptions": {
-		"entryPoints": ["src/index.ts"],
-		"out": "../../docs/reference/api/",
-		"excludeExternals": true
-	},
 	"include": [
-		"src",
-		"src/types/wpgraphql.d.ts"
+		"../src",
+		"**/*"
 	],
 	"exclude": [
-		"node_modules",
-		"dist"
+		"../node_modules"
 	]
 }
