@@ -11,7 +11,6 @@ import {
   composeUrlPath,
   parseContentNodeQuery,
 } from '@wpengine/headless-core';
-import { UriInfo } from './types';
 import { HeadlessContext, QueriesConfig } from './provider';
 
 /**
@@ -98,6 +97,25 @@ export function useGeneralSettings(): WPGraphQL.GeneralSettings | undefined {
   );
 
   return result.data?.generalSettings;
+}
+
+/**
+ * WordPress URI information
+ *
+ * @export
+ * @interface UriInfo
+ */
+export interface UriInfo {
+  id?: string;
+  idType?: WPGraphQL.ContentNodeIdTypeEnum;
+  isPostsPage?: boolean;
+  isFrontPage?: boolean;
+  isPreview?: boolean;
+  isArchive?: boolean;
+  isSingular?: boolean;
+  is404?: boolean;
+  uriPath: string;
+  templates?: string[];
 }
 
 /**

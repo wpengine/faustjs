@@ -4,7 +4,7 @@ import { getQueryParam } from '../utils';
 import { authorize, ensureAuthorization } from './authorize';
 import { storeAccessToken } from './cookie';
 
-export function redirect(res: ServerResponse, url: string) {
+export function redirect(res: ServerResponse, url: string): void {
   res.writeHead(302, {
     Location: url,
   });
