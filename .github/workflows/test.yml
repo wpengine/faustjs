@@ -1,4 +1,4 @@
-name: Testing
+name: test
 on: pull_request
 jobs:
   packages:

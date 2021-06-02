@@ -1,4 +1,4 @@
-name: ESLint
+name: lint
 on: pull_request
 jobs:
   packages:
