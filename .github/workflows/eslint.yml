@@ -1,57 +1,14 @@
 name: ESLint
 on: pull_request
 jobs:
-  lint-core:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install Node Dependencies
-        run: yarn install
-        working-directory: packages/core
+        run: npm install
         env:
           CI: TRUE
-      - name: Core Linting
-        run:  yarn run lint -- --output-file eslint_report.json --format json
-        working-directory: packages/core
-        continue-on-error: true
-      - name: Annotate Core Linting Results
-        uses: ataylorme/eslint-annotate-action@1.1.2
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "packages/core/eslint_report.json"
-  lint-react:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Node Dependencies
-        run: yarn install
-        working-directory: packages/react
-        env:
-          CI: TRUE
-      - name: React Linting
-        run:  yarn run lint -- --output-file eslint_report.json --format json
-        working-directory: packages/react
-        continue-on-error: true
-      - name: Annotate React Linting Results
-        uses: ataylorme/eslint-annotate-action@1.1.2
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "packages/react/eslint_report.json"
-  lint-next:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install Node Dependencies
-        run: yarn install
-        working-directory: packages/next
-        env:
-          CI: TRUE
-      - name: Next Linting
-        run:  yarn run lint -- --output-file eslint_report.json --format json
-        working-directory: packages/next
-        continue-on-error: true
-      - name: Annotate Next Linting Results
-        uses: ataylorme/eslint-annotate-action@1.1.2
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "packages/next/eslint_report.json"
+      - name: Linting
+        run:  npm run lint
+        continue-on-error: TRUE
