@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { NextApiRequestCookies } from 'next/dist/next-server/server/api-utils';
 import { IncomingMessage, ServerResponse } from 'http';
 import {
+  getCurrentUrlPath,
   getUrlFromContext,
   isCategoryParams,
   isPageParams,
@@ -10,6 +11,7 @@ import {
   isServerSidePropsContext,
   isStaticPropsContext,
 } from '../src/utils';
+import { headlessConfig } from '@wpengine/headless-core';
 
 /**
  * Next Server Side Props will always contain a req, res, query, and a resolvedUrl.
@@ -48,6 +50,35 @@ describe('isStaticPropsContext util', () => {
 
   test('isStaticPropsContext should return false with server side props context', () => {
     expect(isStaticPropsContext(mockedServerSidePropsContext)).toBe(false);
+  });
+});
+
+describe('getCurrentUrlPath', () => {
+  beforeAll(() => {
+    headlessConfig({
+      wpUrl: 'http://headless.local',
+      blogUrlPrefix: '/blog',
+    });
+  });
+
+  test('getCurrentUrlPath should remove the blog url prefix with static context', () => {
+    const context = {
+      ...mockedStaticPropsContext,
+      params: {
+        post: 'hello-world',
+      },
+    };
+
+    expect(getCurrentUrlPath(context)).toBe('/posts/hello-world');
+  });
+
+  test('getCurrentUrlPath should remove the blog url prefix with server side context', () => {
+    const context = {
+      ...mockedServerSidePropsContext,
+      resolvedUrl: '/blog/posts/hello-world',
+    };
+
+    expect(getCurrentUrlPath(context)).toBe('/posts/hello-world');
   });
 });
 

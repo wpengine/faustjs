@@ -1,10 +1,15 @@
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import isUndefined from 'lodash/isUndefined';
 import trim from 'lodash/trim';
 import { headlessConfig } from '@wpengine/headless-core';
 import { resolvePrefixedUrlPath } from '@wpengine/headless-core/utils';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 
+/**
+ *  Determine if the context provided is server side props context
+ * @param context
+ */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
 export function isServerSidePropsContext(
   context: any,
@@ -14,41 +19,14 @@ export function isServerSidePropsContext(
   return !!ctx.req && !!ctx.res && !!ctx.resolvedUrl;
 }
 
+/**
+ * Determine if the context provided is static props context
+ * @param context
+ */
 export function isStaticPropsContext(
   context: any,
 ): context is GetStaticPropsContext {
   return !isServerSidePropsContext(context);
-}
-/* eslint-enable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
-
-export function getCurrentPath(
-  context: GetServerSidePropsContext | GetStaticPropsContext,
-): string {
-  if (isServerSidePropsContext(context)) {
-    return context.resolvedUrl ?? '';
-  }
-
-  let url: string;
-
-  if (context.params?.page && Array.isArray(context.params?.page)) {
-    const pagePath: string[] = context.params?.page;
-
-    url = `/${pagePath.join('/')}`;
-  } else {
-    url = `/${(context.params?.page as string) ?? ''}`;
-  }
-
-  return url;
-}
-
-export function getCurrentUrlPath(
-  context: GetServerSidePropsContext | GetStaticPropsContext,
-): string {
-  const wpeConfig = headlessConfig();
-  return resolvePrefixedUrlPath(
-    getCurrentPath(context),
-    wpeConfig.blogUrlPrefix,
-  );
 }
 
 /**
@@ -58,7 +36,7 @@ export function getCurrentUrlPath(
 export function isPostParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
-  if (!post) {
+  if (isUndefined(post)) {
     return false;
   }
 
@@ -83,7 +61,7 @@ export function isPostParams(context: GetStaticPropsContext): boolean {
 export function isPageParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
-  if (!page) {
+  if (isUndefined(page)) {
     return false;
   }
 
@@ -112,7 +90,7 @@ export function isPageParams(context: GetStaticPropsContext): boolean {
 export function isCategoryParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
-  if (!category) {
+  if (isUndefined(category)) {
     return false;
   }
 
@@ -137,7 +115,7 @@ export function isCategoryParams(context: GetStaticPropsContext): boolean {
 export function isPreviewParams(context: GetStaticPropsContext): boolean {
   const { preview, post, category, page, pageUri } = context?.params || {};
 
-  if (!preview) {
+  if (isUndefined(preview)) {
     return false;
   }
 
@@ -183,7 +161,7 @@ export function formatUrlPrefix(pathPrefix: string): string {
  */
 export function getUrlFromContext(
   context: GetServerSidePropsContext | GetStaticPropsContext,
-): string | undefined {
+): string {
   if (isServerSidePropsContext(context)) {
     return context.resolvedUrl;
   }
@@ -209,5 +187,21 @@ export function getUrlFromContext(
     return `${formatUrlPrefix(PREVIEW_PATH_PREFIX)}/${preview as string}`;
   }
 
-  return undefined;
+  throw new Error('Could not infer URL based on context in getUrlFromContext');
+}
+
+/**
+ * Get the current URL path without the blog url prefix.
+ *
+ * @param context GetServerSidePropsContext | GetStaticPropsContext
+ * @returns a URL path like /posts/hello-world without the blog URL prefix.
+ */
+export function getCurrentUrlPath(
+  context: GetServerSidePropsContext | GetStaticPropsContext,
+): string {
+  const wpeConfig = headlessConfig();
+  return resolvePrefixedUrlPath(
+    getUrlFromContext(context),
+    wpeConfig.blogUrlPrefix,
+  );
 }
