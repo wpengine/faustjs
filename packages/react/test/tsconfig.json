@@ -10,7 +10,6 @@
 		"strict": true,
 		"noUnusedLocals": true,
 		"declaration": true,
-		"jsx": "react",
 		"lib": [
 			"dom",
 			"dom.iterable",

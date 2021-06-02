@@ -66,11 +66,4 @@ module.exports = {
       // It will default to "detect" in the future
     },
   },
-  ignorePatterns: [
-    'test/**/*',
-    '.prettierrc.js',
-    'jest.config.js',
-    'jest.setup.ts',
-    '.eslintrc.js',
-  ],
 };
