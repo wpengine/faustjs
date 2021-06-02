@@ -22,4 +22,26 @@ jobs:
           CI: TRUE
       - name: Linting
         run:  npm run lint
-        continue-on-error: TRUE
+        continue-on-error: FALSE
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Core Node Dependencies
+        run: npm install
+        working-directory: packages/core
+        env:
+          CI: TRUE
+      - name: Install React Node Dependencies
+        run: npm install
+        working-directory: packages/react
+        env:
+          CI: TRUE
+      - name: Install Next Node Dependencies
+        run: npm install
+        working-directory: packages/next
+        env:
+          CI: TRUE
+      - name: Testing
+        run:  npm run test
+        continue-on-error: FALSE
