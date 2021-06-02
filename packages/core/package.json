@@ -39,7 +39,6 @@
     "graphql": ">=15.5",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21",
-    "root": "file:../..",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
