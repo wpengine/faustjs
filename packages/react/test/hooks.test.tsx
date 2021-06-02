@@ -4,12 +4,11 @@ import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import {
   GENERAL_SETTINGS,
-  getPostsQuery,
   GET_URI_INFO,
   headlessConfig,
 } from '@wpengine/headless-core';
 import React, { PropsWithChildren } from 'react';
-import { useGeneralSettings, usePosts, useUriInfo } from '../src/hooks';
+import { useGeneralSettings, useUriInfo } from '../src/hooks';
 
 const TEST_WP_URL = 'http://headless.local';
 const TEST_REACT_URL = 'http://localhost:3000';
