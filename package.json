@@ -12,6 +12,7 @@
     "wp:destroy": "wp-env destroy"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "@wordpress/env": "^4.0.0",
     "lerna": "^4.0.0"
   }
