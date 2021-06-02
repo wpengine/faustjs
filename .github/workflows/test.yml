@@ -1,7 +1,7 @@
-name: ESLint
+name: Testing
 on: pull_request
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,6 +20,6 @@ jobs:
         working-directory: packages/next
         env:
           CI: TRUE
-      - name: Linting
-        run:  npm run lint
+      - name: Testing
+        run:  npm run test
         continue-on-error: FALSE
