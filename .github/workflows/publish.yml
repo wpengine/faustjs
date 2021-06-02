@@ -1,13 +1,13 @@
-name: Publish NPM Packages
+name: Possibly publish NPM Packages
 
 on:
   push:
     branches:
-      - publish-action
+      - canary
 
 jobs:
   publish-core:
-    name: Publish core to NPM
+    name: Possibly publish core to NPM
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,6 +23,46 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          access: "public"
+          access: 'public'
+          dry-run: TRUE
+          check-version: TRUE
+  publish-react:
+    name: Possibly publish react to NPM
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/react
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm install
+      - run: npm run build
+      - run: npm test
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: 'public'
+          dry-run: TRUE
+          check-version: TRUE
+  publish-next:
+    name: Possibly publish next to NPM
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/next
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: npm install
+      - run: npm run build
+      - run: npm test
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          access: 'public'
           dry-run: TRUE
           check-version: TRUE
