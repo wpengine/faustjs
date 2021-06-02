@@ -21,7 +21,9 @@ export interface HeadlessProviderPageProps {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const HeadlessContext = React.createContext<any>({});
 
-function parseContext(pageProps?: { queries?: QueriesConfig }) {
+export function parseContext(pageProps?: { queries?: QueriesConfig }): {
+  queries?: QueriesConfig | undefined;
+} {
   if (!pageProps || !pageProps.queries) {
     return {
       ...pageProps,
