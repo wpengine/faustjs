@@ -217,6 +217,33 @@ describe('getUrlFromContext', () => {
     expect(getUrlFromContext(context)).toBe('/category/uncategorized');
   });
 
+  test('getUrlFromContext infers a category page url with pagination from static props context', () => {
+    // /category/uncategorized/before/cursor-position
+    const beforeContext = {
+      ...mockedStaticPropsContext,
+      params: {
+        category: 'uncategorized',
+        categoryUri: ['before', 'cursor-position'],
+      },
+    };
+
+    // /category/uncategorized/after/cursor-position
+    const afterContext = {
+      ...mockedStaticPropsContext,
+      params: {
+        category: 'uncategorized',
+        categoryUri: ['after', 'cursor-position'],
+      },
+    };
+
+    expect(getUrlFromContext(beforeContext)).toBe(
+      '/category/uncategorized/before/cursor-position',
+    );
+    expect(getUrlFromContext(afterContext)).toBe(
+      '/category/uncategorized/after/cursor-position',
+    );
+  });
+
   test('getUrlFromContext infers a preview page url from static props context', () => {
     // /preview/page?page_id=3&preview=true
     const context = {

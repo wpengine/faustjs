@@ -1,5 +1,5 @@
-import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
 import isUndefined from 'lodash/isUndefined';
 import trim from 'lodash/trim';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
@@ -19,7 +19,8 @@ const PREVIEW_PATH_PREFIX = '/preview';
  * @param context GetStaticPropsContext
  */
 export function isPostParams(context: GetStaticPropsContext): boolean {
-  const { preview, post, category, page, pageUri } = context?.params || {};
+  const { preview, post, category, categoryUri, page, pageUri } =
+    context?.params || {};
 
   if (isUndefined(post)) {
     return false;
@@ -32,6 +33,7 @@ export function isPostParams(context: GetStaticPropsContext): boolean {
   if (
     !isUndefined(preview) ||
     !isUndefined(category) ||
+    !isUndefined(categoryUri) ||
     !isUndefined(page) ||
     !isUndefined(pageUri)
   ) {
@@ -48,7 +50,8 @@ export function isPostParams(context: GetStaticPropsContext): boolean {
  * @param context GetStaticPropsContext
  */
 export function isPageParams(context: GetStaticPropsContext): boolean {
-  const { preview, post, category, page, pageUri } = context?.params || {};
+  const { preview, post, category, categoryUri, page, pageUri } =
+    context?.params || {};
 
   if (isUndefined(page)) {
     return false;
@@ -62,7 +65,12 @@ export function isPageParams(context: GetStaticPropsContext): boolean {
     throw new Error('Expected [[...pageUri]] to be an object');
   }
 
-  if (!isUndefined(preview) || !isUndefined(category) || !isUndefined(post)) {
+  if (
+    !isUndefined(preview) ||
+    !isUndefined(category) ||
+    !isUndefined(categoryUri) ||
+    !isUndefined(post)
+  ) {
     throw new Error(
       'There were conflicting params! Expected to see [page] and [pageUri] params.',
     );
@@ -76,7 +84,8 @@ export function isPageParams(context: GetStaticPropsContext): boolean {
  * @param context GetStaticPropsContext
  */
 export function isCategoryParams(context: GetStaticPropsContext): boolean {
-  const { preview, post, category, page, pageUri } = context?.params || {};
+  const { preview, post, category, categoryUri, page, pageUri } =
+    context?.params || {};
 
   if (isUndefined(category)) {
     return false;
@@ -84,6 +93,10 @@ export function isCategoryParams(context: GetStaticPropsContext): boolean {
 
   if (!isString(category)) {
     throw new Error('Expected [category] param to be a string');
+  }
+
+  if (!isUndefined(categoryUri) && !isObject(categoryUri)) {
+    throw new Error('Expected [[[...categoryUri]] to be an object');
   }
 
   if (
@@ -105,7 +118,8 @@ export function isCategoryParams(context: GetStaticPropsContext): boolean {
  * @param context GetStaticPropsContext
  */
 export function isPreviewParams(context: GetStaticPropsContext): boolean {
-  const { preview, post, category, page, pageUri } = context?.params || {};
+  const { preview, post, category, categoryUri, page, pageUri } =
+    context?.params || {};
 
   if (isUndefined(preview)) {
     return false;
@@ -120,6 +134,7 @@ export function isPreviewParams(context: GetStaticPropsContext): boolean {
   if (
     !isUndefined(post) ||
     !isUndefined(category) ||
+    !isUndefined(categoryUri) ||
     !isUndefined(page) ||
     !isUndefined(pageUri)
   ) {
@@ -153,7 +168,8 @@ export function getUrlFromContext(
     return context.resolvedUrl;
   }
 
-  const { preview, post, category, page, pageUri } = context?.params || {};
+  const { preview, post, category, categoryUri, page, pageUri } =
+    context?.params || {};
 
   if (isPostParams(context)) {
     return `${formatUrlPrefix(POSTS_PATH_PREFIX)}/${post as string}`;
@@ -161,13 +177,20 @@ export function getUrlFromContext(
 
   if (isPageParams(context)) {
     const pageUriPart = pageUri ? `/${(pageUri as string[]).join('/')}` : '';
+
     return `${formatUrlPrefix(PAGE_PATH_PREFIX)}/${
       page as string
     }${pageUriPart}`;
   }
 
   if (isCategoryParams(context)) {
-    return `${formatUrlPrefix(CATEGORY_PATH_PREFIX)}/${category as string}`;
+    const categoryUriPart = categoryUri
+      ? `/${(categoryUri as string[]).join('/')}`
+      : '';
+
+    return `${formatUrlPrefix(CATEGORY_PATH_PREFIX)}/${
+      category as string
+    }${categoryUriPart}`;
   }
 
   if (isPreviewParams(context)) {
