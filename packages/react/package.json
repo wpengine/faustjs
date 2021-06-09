@@ -73,7 +73,6 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@apollo/client": ">=3.3.19",
     "@gqless/react": "^2.0.15",
     "@wpengine/headless-core": "canary",
     "gqless": "^2.0.14",
