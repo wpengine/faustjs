@@ -8,7 +8,6 @@ import {
   getCookiesFromContext,
   stringifyGql,
 } from '../../src/utils/convert';
-import { gql } from '@apollo/client/core';
 import { print } from 'graphql';
 
 describe('utils/convert', () => {
@@ -145,10 +144,5 @@ describe('utils/convert', () => {
 
   test('stringifyGql() returns undefined for a missing DocumentNode', () => {
     expect(stringifyGql()).toBeUndefined();
-  });
-
-  test('stringifyGql() returns a stringified DocumentNode', () => {
-    const g = gql`{ posts { id } }`;
-    expect(stringifyGql(g)).toBe(print(g));
   });
 });

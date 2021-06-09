@@ -1,3 +1,1 @@
-export * from './services';
-export * from './apolloClient';
-export * from './queries';
+export * from './client';
