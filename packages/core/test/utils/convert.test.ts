@@ -8,7 +8,6 @@ import {
   getCookiesFromContext,
   stringifyGql,
 } from '../../src/utils/convert';
-import { print } from 'graphql';
 
 describe('utils/convert', () => {
   test('base64Decode() returns the argument for a non-base64 string', () => {

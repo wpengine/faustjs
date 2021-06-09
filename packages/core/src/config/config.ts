@@ -5,7 +5,9 @@ import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
 
 import { GQlessClient } from 'gqless';
+import type { RequestContext } from '../api';
 
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * The configuration for your headless site
  *
@@ -66,7 +68,19 @@ export interface HeadlessConfig<
    * @memberof HeadlessConfig
    */
   apiClient?: GQlessClient<GeneratedSchema>;
+
+  /**
+   * Called before every request, use this to apply any headers you might
+   * need to for your requests or adjust the request to suite your needs.
+   *
+   * @param {string} url
+   * @param {RequestInit} init
+   * @returns {RequestContext}
+   * @memberof HeadlessConfig
+   */
+  applyRequestContext?(url: string, init: RequestInit): RequestContext;
 }
+/* eslint-enable @typescript-eslint/ban-types */
 
 let wpeConfig: HeadlessConfig = {
   wpUrl: '/',
