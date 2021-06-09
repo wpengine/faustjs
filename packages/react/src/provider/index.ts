@@ -1,2 +1,2 @@
-export * from './apolloClient';
+export * from './client';
 export * from './HeadlessProvider';
