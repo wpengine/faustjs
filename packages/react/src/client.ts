@@ -1,8 +1,13 @@
-import { createReactClient, ReactClient } from '@gqless/react';
+import {
+  createReactClient,
+  CreateReactClientOptions,
+  ReactClient,
+} from '@gqless/react';
 import {
   client as createClient,
   GeneratedSchema,
 } from '@wpengine/headless-core';
+import isObject from 'lodash/isObject';
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
 export function client<
@@ -14,10 +19,10 @@ export function client<
     mutation: {};
     subscription: {};
   } = GeneratedSchema,
->() {
+>(createReactClientOpts?: CreateReactClientOptions) {
   const coreClient = createClient<Schema>();
 
-  const reactClient = createReactClient<Schema>(coreClient, {
+  let reactClientOpts: CreateReactClientOptions = {
     defaults: {
       // Set this flag as "true" if your usage involves React Suspense
       // Keep in mind that you can overwrite it in a per-hook basis
@@ -26,7 +31,13 @@ export function client<
       // Set this flag based on your needs
       staleWhileRevalidate: false,
     },
-  });
+  };
+
+  if (isObject(createReactClientOpts)) {
+    reactClientOpts = { ...reactClientOpts, ...createReactClientOpts };
+  }
+
+  const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const { useQuery } = reactClient as any as ReactClient<GeneratedSchema>;
