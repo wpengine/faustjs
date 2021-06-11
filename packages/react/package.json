@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless-react",
-  "version": "0.6.6",
+  "version": "0.6.9",
   "description": "This module helps you use WordPress as a Headless CMS with React",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -75,7 +75,7 @@
   },
   "dependencies": {
     "@gqless/react": "^2.0.15",
-    "@wpengine/headless-core": "canary",
+    "@wpengine/headless-core": "^0.6.8",
     "gqless": "^2.0.14",
     "graphql": ">=15.5",
     "lodash": "^4.17.21"
