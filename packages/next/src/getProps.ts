@@ -1,104 +1,76 @@
-import { getApolloClient } from '@wpengine/headless-core';
-import { stringifyGql } from '@wpengine/headless-core/utils';
-import { addApolloState, QueriesConfig } from '@wpengine/headless-react';
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { fetchData } from './serverSide';
+import { isObject } from 'lodash';
+import isNil from 'lodash/isNil';
+import {
+  GetServerSidePropsContext,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  GetServerSidePropsResult,
+} from 'next';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-export interface NextPropsConfig {
-  queries?: QueriesConfig;
+import React, { FunctionComponent, ComponentClass } from 'react';
+import { client } from './client';
+
+export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
+
+export interface NextPropsConfig<Props = Record<string, unknown>> {
+  Page?: FunctionComponent | ComponentClass;
+  props?: Props;
 }
 
-export interface PagePropsWithApollo extends Record<string, unknown> {
-  props: Record<string, unknown>;
+export interface PageProps<Props> {
+  props: Props & { [CLIENT_CACHE_PROP]: string | null };
 }
-
-/* eslint-disable consistent-return */
-export function stringifyQueries(
-  queries?: QueriesConfig,
-): QueriesConfig | undefined {
-  if (!queries) {
-    return;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let toStr: any = {};
-
-  if (queries.post) {
-    toStr = {
-      post: {
-        variables: queries.post.variables ?? null,
-      },
-      ...toStr,
-    };
-
-    if (queries.post.fragments) {
-      toStr.post.fragments = {
-        postData: stringifyGql(queries.post.fragments.postData) ?? null,
-        pageData: stringifyGql(queries.post.fragments.pageData) ?? null,
-      };
-    }
-  }
-
-  if (queries.posts) {
-    toStr = {
-      posts: {
-        variables: queries.posts.variables ?? null,
-      },
-      ...toStr,
-    };
-
-    if (queries.posts.fragments) {
-      toStr.posts.fragments = {
-        listPostData:
-          stringifyGql(queries.posts.fragments.listPostData) ?? null,
-      };
-    }
-  }
-
-  return toStr as QueriesConfig;
-}
-/* eslint-enable consistent-return */
 
 export async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext,
+  Context extends GetStaticPropsContext | GetServerSidePropsContext,
+  Props,
 >(
   context: Context,
-  config: NextPropsConfig = {},
-): Promise<PagePropsWithApollo> {
-  const client = getApolloClient(context);
+  { Page, props }: NextPropsConfig = {},
+): Promise<PageProps<Props>> {
+  const c = client();
+  let cacheSnapshot: string | undefined;
 
-  await fetchData(context, config.queries);
+  if (!isNil(Page)) {
+    const renderResult = await c.prepareReactRender(
+      RouterContext.Provider({
+        value: {
+          query: context.params,
+        } as any,
+        children: React.createElement(Page, props),
+      }),
+    );
+    cacheSnapshot = renderResult.cacheSnapshot;
+  }
 
-  return addApolloState(client, {
+  return {
     props: {
-      queries: stringifyQueries(config.queries) ?? null,
+      [CLIENT_CACHE_PROP]: cacheSnapshot ?? null,
+      ...props,
     },
-  });
+  } as PageProps<Props>;
 }
 
-export async function getNextServerSideProps(
+export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
   config: NextPropsConfig = {},
-): Promise<PagePropsWithApollo> {
+): Promise<GetServerSidePropsResult<Props>> {
   return getProps(context, config);
 }
 
-export async function getNextStaticProps(
+export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   config: NextPropsConfig = {},
-): Promise<PagePropsWithApollo> {
-  const pageProps = await getProps(context, config);
+): Promise<GetStaticPropsResult<Props>> {
+  const pageProps: GetStaticPropsResult<Props> = await getProps(
+    context,
+    config,
+  );
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  if (
-    (pageProps as Record<string, any> & { props: Record<string, unknown> })
-      ?.props
-  ) {
-    (
-      pageProps as Record<string, any> & {
-        props: Record<string, unknown>;
-      }
-    ).revalidate = 1;
+  if (isObject(pageProps.props)) {
+    pageProps.revalidate = 1;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
