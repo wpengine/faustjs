@@ -143,7 +143,7 @@ export function headlessConfig(config?: HeadlessConfig): HeadlessConfig {
   }
 
   configSet = true;
-  wpeConfig = normalizeConfig(wpeConfig);
+  wpeConfig = normalizeConfig(config);
 
   return wpeConfig;
 }
