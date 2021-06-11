@@ -10,3 +10,4 @@ export {
 } from './getProps';
 export { getNextStaticPaths } from './getStaticPaths';
 export { useUriInfo, usePost } from './hooks';
+export { getUrlFromContext } from './getUrlFromContext';

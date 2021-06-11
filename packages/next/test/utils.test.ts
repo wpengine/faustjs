@@ -1,27 +1,8 @@
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { NextApiRequestCookies } from 'next/dist/next-server/server/api-utils';
-import { IncomingMessage, ServerResponse } from 'http';
+import {
+  mockedServerSidePropsContext,
+  mockedStaticPropsContext,
+} from '../jest.setup';
 import { isServerSidePropsContext, isStaticPropsContext } from '../src/utils';
-
-/**
- * Next Server Side Props will always contain a req, res, query, and a resolvedUrl.
- * @link https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
- */
-const mockedServerSidePropsContext: GetServerSidePropsContext = {
-  req: {} as IncomingMessage & {
-    cookies: NextApiRequestCookies;
-  },
-  res: {} as ServerResponse,
-  resolvedUrl: '/',
-  query: {},
-};
-
-const mockedStaticPropsContext: GetStaticPropsContext = {
-  params: { post: ['hello-world'] },
-  locales: undefined,
-  locale: undefined,
-  defaultLocale: undefined,
-};
 
 describe('isServerSidePropsContext util', () => {
   test('isServerSidePropsContext should return true with server side props context', () => {

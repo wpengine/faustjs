@@ -1,6 +1,11 @@
 import { headlessConfig } from '@wpengine/headless-core';
 import { resolvePrefixedUrlPath } from '@wpengine/headless-core/utils';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+
+/**
+ *  Determine if the context provided is server side props context
+ * @param context
+ */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
 export function isServerSidePropsContext(
   context: any,
@@ -10,12 +15,15 @@ export function isServerSidePropsContext(
   return !!ctx.req && !!ctx.res && !!ctx.resolvedUrl;
 }
 
+/**
+ * Determine if the context provided is static props context
+ * @param context
+ */
 export function isStaticPropsContext(
   context: any,
 ): context is GetStaticPropsContext {
   return !isServerSidePropsContext(context);
 }
-/* eslint-enable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
 
 export function getCurrentPath(
   context: GetServerSidePropsContext | GetStaticPropsContext,
