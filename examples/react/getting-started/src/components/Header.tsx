@@ -1,35 +1,54 @@
-import client from '../lib/client';
-import styles from '../styles/Header.module.css';
+import React from 'react';
+import styles from '../scss/components/Header.module.scss';
 import { Link } from 'react-router-dom';
 
-export default function Header() {
-  const { useGeneralSettings } = client;
-  const settings = useGeneralSettings();
+interface Props {
+  title?: string;
+  description?: string;
+}
 
+function Header({
+  title = 'Headless by WP Engine',
+  description,
+}: Props): JSX.Element {
+  // TODO: accept a `menuItems` prop to receive menu items from WordPress.
   const menuItems = [
     { title: 'Home', href: '/' },
     { title: 'About', href: '/about' },
     { title: 'Posts', href: '/category/uncategorized' },
+    {
+      title: 'GitHub',
+      href: 'https://github.com/wpengine/headless-framework',
+      class: 'button',
+    },
   ];
 
   return (
-    <header className={styles.header}>
-      <div className={styles.brand}>
-        <h2 className={styles.title}>
-          <Link to="/">{settings?.title}</Link>
-        </h2>
-        <p className={styles.description}>{settings?.description}</p>
-      </div>
-
-      <nav>
-        <ul className={styles.menu}>
-          {menuItems.map((item, index) => (
-            <li key={index}>
-              <Link to={item.href}>{item.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+    <>
+      <header>
+        <div className={styles.wrap}>
+          <div className={styles['title-wrap']}>
+            <p className={styles['site-title']}>
+              <Link to="/">{title}</Link>
+            </p>
+            {description && <p className={styles.description}>{description}</p>}
+          </div>
+          <div className={styles.menu}>
+            <ul>
+              {menuItems &&
+                menuItems.map((item) => (
+                  <li key={`${item.title}$-menu`}>
+                    <Link className={item?.class} to={item.href}>
+                      {item.title}
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      </header>
+    </>
   );
 }
+
+export default Header;

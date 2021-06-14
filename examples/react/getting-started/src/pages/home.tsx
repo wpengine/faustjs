@@ -1,3 +1,17 @@
+import { Header, Footer } from 'components';
+
 export default function Home() {
-  return <h1>Home Page</h1>;
+  return (
+    <>
+      <Header />
+
+      <main className="content content-single">
+        <div className="wrap">
+          <h1>Home</h1>
+        </div>
+      </main>
+
+      <Footer />
+    </>
+  );
 }
