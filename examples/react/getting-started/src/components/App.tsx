@@ -2,7 +2,7 @@ import 'normalize.css/normalize.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import 'scss/main.scss';
-import { Category, Home, Page, Post } from '../pages';
+import { Category, Home, Page, Post, Preview } from '../pages';
 
 function App() {
   return (
