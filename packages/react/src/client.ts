@@ -15,6 +15,7 @@ export function client<
     query: {
       posts: unknown;
       post: unknown;
+      page: unknown;
     };
     mutation: {};
     subscription: {};
@@ -126,10 +127,31 @@ export function client<
     return useQuery().generalSettings;
   };
 
+  const useIsLoading = () => {
+    return useQuery().$state.isLoading;
+  };
+
+  const usePage: Schema['query']['page'] | GeneratedSchema['query']['page'] = (
+    args,
+  ) => {
+    return useQuery().page(args);
+  };
+
+  const usePostsFromCategory = (categorySlug: string) => {
+    return useQuery().posts({
+      where: {
+        categoryIn: [categorySlug],
+      },
+    });
+  };
+
   return {
     ...reactClient,
     usePosts,
     usePost,
     useGeneralSettings,
+    useIsLoading,
+    usePage,
+    usePostsFromCategory,
   };
 }
