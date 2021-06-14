@@ -3,6 +3,7 @@ import React from 'react';
 import { client } from './client';
 import { CLIENT_CACHE_PROP, PageProps } from './getProps';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const HeadlessContext = React.createContext<any>({});
 
 export function HeadlessProvider<Props = Record<string, unknown>>({

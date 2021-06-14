@@ -180,6 +180,7 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   };
 
   return {
+    client: coreClient,
     ...reactClient,
     useCategory,
     usePosts,

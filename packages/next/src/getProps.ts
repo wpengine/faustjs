@@ -1,3 +1,8 @@
+import {
+  CategoryIdType,
+  PageIdType,
+  PostIdType,
+} from '@wpengine/headless-core';
 import { isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
@@ -10,6 +15,15 @@ import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
 import { client } from './client';
+import {
+  hasCategoryId,
+  hasCategorySlug,
+  hasPageId,
+  hasPageUri,
+  hasPostId,
+  hasPostSlug,
+  hasPostUri,
+} from './utils';
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 
@@ -50,6 +64,90 @@ export async function getProps<
       ...props,
     },
   } as PageProps<Props>;
+}
+
+export async function is404<
+  Context extends GetStaticPropsContext | GetServerSidePropsContext,
+>({ params }: Context): Promise<boolean> {
+  if (!params) {
+    return false;
+  }
+
+  const {
+    client: { inlineResolved, query },
+  } = client();
+  let entityExists = false;
+
+  try {
+    if (hasPostId(params)) {
+      const result = await inlineResolved(() => {
+        return query.post({
+          id: params.postId,
+          idType: PostIdType.ID,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPostSlug(params)) {
+      const result = await inlineResolved(() => {
+        return query.post({
+          id: params.postSlug,
+          idType: PostIdType.SLUG,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPostUri(params)) {
+      const result = await inlineResolved(() => {
+        return query.post({
+          id: params.postUri.join('/'),
+          idType: PostIdType.URI,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPageId(params)) {
+      const result = await inlineResolved(() => {
+        return query.page({
+          id: params.pageId,
+          idType: PageIdType.ID,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPageUri(params)) {
+      const result = await inlineResolved(() => {
+        return query.page({
+          id: params.pageUri.join('/'),
+          idType: PageIdType.URI,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasCategoryId(params)) {
+      const result = await inlineResolved(() => {
+        return query.category({
+          id: params.categoryId,
+          idType: CategoryIdType.ID,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasCategorySlug(params)) {
+      const result = await inlineResolved(() => {
+        return query.category({
+          id: params.categorySlug,
+          idType: CategoryIdType.SLUG,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    }
+  } catch (e) {
+    return true;
+  }
+
+  return !entityExists;
 }
 
 export async function getNextServerSideProps<Props>(
