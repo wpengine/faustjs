@@ -2,7 +2,6 @@ import 'normalize.css/normalize.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import 'scss/main.scss';
-import { Header } from '../components';
 import { Category, Home, Page, Post } from '../pages';
 
 function App() {
@@ -10,6 +9,9 @@ function App() {
     <Router>
       <div className="App">
         <Switch>
+          <Route path={`/preview`}>
+            <Preview />
+          </Route>
           <Route path={`/posts/:postSlug`}>
             <Post />
           </Route>

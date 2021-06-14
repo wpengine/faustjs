@@ -16,11 +16,6 @@ function Header({
     { title: 'Home', href: '/' },
     { title: 'About', href: '/about' },
     { title: 'Posts', href: '/category/uncategorized' },
-    {
-      title: 'GitHub',
-      href: 'https://github.com/wpengine/headless-framework',
-      class: 'button',
-    },
   ];
 
   return (
@@ -38,11 +33,18 @@ function Header({
               {menuItems &&
                 menuItems.map((item) => (
                   <li key={`${item.title}$-menu`}>
-                    <Link className={item?.class} to={item.href}>
-                      {item.title}
-                    </Link>
+                    <Link to={item.href}>{item.title}</Link>
                   </li>
                 ))}
+              <li>
+                <a
+                  href="https://github.com/wpengine/headless-framework"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="button">
+                  GitHub
+                </a>
+              </li>
             </ul>
           </div>
         </div>
