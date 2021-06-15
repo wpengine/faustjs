@@ -2,7 +2,7 @@ import { Post } from '@wpengine/headless-core';
 import { Footer, Header, Posts } from 'components';
 import client from 'lib/client';
 import { useParams } from 'react-router';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 type CategoryParams = {
   categorySlug: string;

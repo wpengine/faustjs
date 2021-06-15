@@ -183,12 +183,6 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     return useQuery().$state.isLoading;
   };
 
-  const usePage: Schema['query']['page'] | GeneratedSchema['query']['page'] = (
-    args,
-  ) => {
-    return useQuery().page(args);
-  };
-
   const usePostsFromCategory = (categorySlug: string) => {
     return useQuery().posts({
       where: {
@@ -207,7 +201,6 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePage,
     useGeneralSettings,
     useIsLoading,
-    usePage,
     usePostsFromCategory,
   };
 }

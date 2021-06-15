@@ -21,8 +21,6 @@ export default function Preview() {
       setTimeout(() => {
         window.location.replace(authRes.redirect);
       }, 200);
-      /* eslint-disable-next-line consistent-return */
-      return;
     }
   }, []);
 

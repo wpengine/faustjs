@@ -1,6 +1,6 @@
 import { Page } from '@wpengine/headless-core';
 import { Footer, Header, PostPageLoader } from 'components';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 type PageTemplateProps = {
   page: Page | undefined;
