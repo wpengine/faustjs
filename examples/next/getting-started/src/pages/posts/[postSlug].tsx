@@ -8,6 +8,10 @@ export default function Page() {
   const generalSettings = useGeneralSettings();
   const post = usePost();
 
+  if (useQuery().$state.isLoading) {
+    return <>Loading...</>;
+  }
+
   return (
     <>
       <Header
@@ -17,7 +21,7 @@ export default function Page() {
 
       <Head>
         <title>
-          {post?.title()} - {generalSettings.title}
+          {post.title()} - {generalSettings.title}
         </title>
       </Head>
 

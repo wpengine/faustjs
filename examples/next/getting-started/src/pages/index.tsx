@@ -1,34 +1,27 @@
-import { getApolloClient, getPosts } from '@wpengine/headless-core';
-import { getNextStaticProps } from '@wpengine/headless-next';
-import { useGeneralSettings, usePosts } from '@wpengine/headless-react';
+import { client, getNextStaticProps } from '@wpengine/headless-next';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { CTA, Footer, Header, Hero, Posts } from 'components';
 import styles from 'scss/pages/home.module.scss';
 
-/**
- * Example of post variables to query the first six posts in a named category.
- * @see https://github.com/wpengine/headless-framework/tree/canary/docs/queries
- */
-const firstSixInCategory = {
-  variables: {
-    first: 6,
-    where: { categoryName: 'uncategorized' }, // Omit this to get posts from all categories.
-  },
-};
-
 export default function FrontPage(): JSX.Element {
-  const posts = usePosts(firstSixInCategory);
-  const settings = useGeneralSettings();
+  const { usePosts, useGeneralSettings } = client();
+  const generalSettings = useGeneralSettings();
+  const posts = usePosts({
+    first: 6,
+    where: {
+      categoryName: 'uncategorized',
+    }
+  });
 
   return (
     <>
-      <Header title={settings?.title} description={settings?.description} />
+      <Header title={generalSettings.title} description={generalSettings.description} />
 
       <Head>
         <title>
-          {settings?.title} - {settings?.description}
+          {generalSettings.title} - {generalSettings.description}
         </title>
       </Head>
 
@@ -110,7 +103,7 @@ export default function FrontPage(): JSX.Element {
           </div>
         </section>
         <Posts
-          posts={posts?.nodes}
+          posts={posts.nodes}
           heading="Latest Posts"
           intro="The Posts component in pages/index.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"
@@ -131,22 +124,11 @@ export default function FrontPage(): JSX.Element {
           </p>
         </CTA>
       </main>
-      <Footer copyrightHolder={settings?.title} />
+      <Footer copyrightHolder={generalSettings.title} />
     </>
   );
 }
 
-/**
- * Get additional data from WordPress that is specific to this template.
- *
- * Here we retrieve the latest six WordPress posts in a named category to
- * display at the bottom of the front page.
- *
- * @see https://github.com/wpengine/headless-framework/tree/canary/docs/queries
- */
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const client = getApolloClient(context);
-  await getPosts(client, firstSixInCategory);
-
   return getNextStaticProps(context);
 }

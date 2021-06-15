@@ -26,7 +26,7 @@ function PreviousPageNavigation(props: PreviousPageNavigationProps) {
 }
 
 interface PaginationProps {
-  pageInfo: WPGraphQL.WpPageInfo;
+  pageInfo: any;
 }
 
 export default function Pagination(props: PaginationProps) {

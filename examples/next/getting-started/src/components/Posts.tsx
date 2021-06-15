@@ -3,8 +3,15 @@ import Link from 'next/link';
 import styles from 'scss/components/Posts.module.scss';
 import Heading, { HeadingProps } from './Heading';
 
+export interface Post {
+  id: string;
+  slug?: string;
+  title(): string;
+  excerpt(): string;
+}
+
 interface Props {
-  posts: WPGraphQL.Post[] | undefined;
+  posts: Post[] | undefined;
   intro?: string;
   id?: string;
   heading?: string;
@@ -33,24 +40,23 @@ function Posts({
         )}
         {intro && <p className={styles.intro}>{intro}</p>}
         <div className="posts">
-          {posts &&
-            posts.map((post) => (
+          {posts.map((post) => (
               <div
                 className={styles.single}
-                key={post.id}
+                key={post.id ?? ''}
                 id={`post-${post.id}`}>
                 <div>
                   <Heading level={postTitleLevel} className={styles.title}>
-                    <Link href={post.uri}>
-                      <a>{post.title}</a>
+                    <Link href={`/posts/${post.slug}`}>
+                      <a>{post.title()}</a>
                     </Link>
                   </Heading>
                   <div
                     className={styles.excerpt}
                     // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
+                    dangerouslySetInnerHTML={{ __html: post.excerpt() ?? '' }}
                   />
-                  <Link href={post.uri}>
+                  <Link href={`/posts/${post.slug}`}>
                     <a
                       aria-label={`Read more about ${
                         post.title || 'the post'

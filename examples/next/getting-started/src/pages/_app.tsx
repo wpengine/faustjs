@@ -1,5 +1,5 @@
 import { headlessConfig } from '@wpengine/headless-core';
-import { HeadlessProvider } from '@wpengine/headless-react';
+import { HeadlessProvider } from '@wpengine/headless-next';
 import 'normalize.css/normalize.css';
 import 'scss/main.scss';
 

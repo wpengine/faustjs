@@ -1,20 +1,27 @@
-import { useGeneralSettings } from '@wpengine/headless-react';
-import { usePost } from '@wpengine/headless-next';
+import { client } from '@wpengine/headless-next';
 import { Footer, Header, CTA } from 'components';
+import { useRouter } from 'next/router';
 
 export default function Page() {
-  const settings = useGeneralSettings();
+  const { usePost, useGeneralSettings, useQuery } = client();
+  const generalSettings = useGeneralSettings();
   const post = usePost();
+  const { $state } = useQuery();
+
+  if ($state.isLoading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>
-      <Header title={settings?.title} description={settings?.description} />
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
 
       <main className="content content-single">
         <div className="wrap">
-          {post && (
-            <div dangerouslySetInnerHTML={{ __html: post.content ?? '' }} />
-          )}
+          <div dangerouslySetInnerHTML={{ __html: post.content() ?? '' }} />
         </div>
 
         <CTA
@@ -32,7 +39,7 @@ export default function Page() {
         </CTA>
       </main>
 
-      <Footer copyrightHolder={settings?.title} />
+      <Footer copyrightHolder={generalSettings.title} />
     </>
   );
 }
