@@ -1,5 +1,6 @@
 import { Header, Footer, PostPageLoader } from 'components';
 import { Post } from '@wpengine/headless-core';
+import { Helmet } from 'react-helmet';
 
 type PostTemplateProps = {
   post: Post | undefined;
@@ -9,6 +10,10 @@ type PostTemplateProps = {
 export default function PostTemplate({ post, isLoading }: PostTemplateProps) {
   return (
     <>
+      <Helmet>
+        <title>{post?.title()}</title>
+      </Helmet>
+
       <Header />
 
       <main className="content content-single">

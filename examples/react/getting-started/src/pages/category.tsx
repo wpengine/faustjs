@@ -2,6 +2,7 @@ import { Post } from '@wpengine/headless-core';
 import { Footer, Header, Posts } from 'components';
 import client from 'lib/client';
 import { useParams } from 'react-router';
+import { Helmet } from 'react-helmet';
 
 type CategoryParams = {
   categorySlug: string;
@@ -20,6 +21,10 @@ export default function Category() {
 
   return (
     <>
+      <Helmet>
+        <title>Posts from {categorySlug}</title>
+      </Helmet>
+
       <Header />
 
       <main className="content content-single">

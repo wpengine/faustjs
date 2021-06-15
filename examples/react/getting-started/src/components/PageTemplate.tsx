@@ -1,5 +1,6 @@
 import { Page } from '@wpengine/headless-core';
 import { Footer, Header, PostPageLoader } from 'components';
+import { Helmet } from 'react-helmet';
 
 type PageTemplateProps = {
   page: Page | undefined;
@@ -9,6 +10,10 @@ type PageTemplateProps = {
 export default function PageTemplate({ page, isLoading }: PageTemplateProps) {
   return (
     <>
+      <Helmet>
+        <title>{page?.title()}</title>
+      </Helmet>
+
       <Header />
 
       <main className="content content-single">
