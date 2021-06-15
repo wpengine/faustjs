@@ -31,6 +31,7 @@ describe('auth/authorize', () => {
     const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
       return {
         wpUrl: 'https://developers.wpengine.com',
+        apiUrl: 'https://developers.wpengine.com',
         apiEndpoint: '/auth',
       };
     });
@@ -72,7 +73,8 @@ describe('auth/authorize', () => {
     const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
       return {
         wpUrl: 'https://developers.wpengine.com',
-        apiEndpoint: 'auth',
+        apiUrl: 'https://developers.wpengine.com',
+        apiEndpoint: '/auth',
       };
     });
     const accessTokenSpy = jest

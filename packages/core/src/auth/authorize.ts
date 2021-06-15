@@ -61,8 +61,14 @@ export function ensureAuthorization(
   redirectUri: string,
   options?: CookieOptions,
 ): string | { redirect: string } | undefined {
-  const { wpUrl, apiEndpoint } = headlessConfig();
+  const { wpUrl, apiUrl, apiEndpoint } = headlessConfig();
   const accessToken = getAccessToken(options);
+
+  if (!isString(apiUrl)) {
+    throw new Error(
+      'You must provide an apiUrl value in your Headless config in order to use the authorize middleware',
+    );
+  }
 
   if (!isString(apiEndpoint)) {
     throw new Error(
@@ -80,13 +86,9 @@ export function ensureAuthorization(
     throw new Error('Invalid redirectUri for authorization');
   }
 
-  const { baseUrl } = parsedUrl;
-
   return {
     redirect: `${wpUrl}/generate?redirect_uri=${encodeURIComponent(
-      `${baseUrl}/${apiEndpoint}?redirect_uri=${encodeURIComponent(
-        redirectUri,
-      )}`,
+      `${apiUrl}${apiEndpoint}?redirect_uri=${encodeURIComponent(redirectUri)}`,
     )}`,
   };
 }
