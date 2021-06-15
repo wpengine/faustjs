@@ -1,7 +1,7 @@
-import { PostIdType } from '@wpengine/headless-core';
-import { useParams } from 'react-router';
+import { Post as PostType, PostIdType } from '@wpengine/headless-core';
+import { PostTemplate } from 'components';
 import client from 'lib/client';
-import { Header, Footer, PostPageLoader } from 'components';
+import { useParams } from 'react-router';
 
 type PostParams = {
   postSlug: string;
@@ -17,20 +17,5 @@ export default function Post() {
     idType: PostIdType.URI,
   });
 
-  return (
-    <>
-      <Header />
-
-      <main className="content content-single">
-        <div className="wrap">
-          {isLoading && <PostPageLoader />}
-
-          <h1>{post?.title()}</h1>
-          <div dangerouslySetInnerHTML={{ __html: post?.content() || '' }} />
-        </div>
-      </main>
-
-      <Footer />
-    </>
-  );
+  return <PostTemplate post={post as PostType} isLoading={isLoading} />;
 }
