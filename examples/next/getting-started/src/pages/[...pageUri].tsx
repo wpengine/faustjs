@@ -4,9 +4,9 @@ import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 
 export default function Page() {
-  const { usePost, useGeneralSettings, useQuery } = client();
+  const { usePage, useGeneralSettings, useQuery } = client();
   const generalSettings = useGeneralSettings();
-  const post = usePost();
+  const page = usePage();
 
   return (
     <>
@@ -17,16 +17,16 @@ export default function Page() {
 
       <Head>
         <title>
-          {post?.title()} - {generalSettings.title}
+          {page.title()} - {generalSettings.title}
         </title>
       </Head>
 
-      <Hero title={post.title()} bgImage={post.featuredImageId} />
+      <Hero title={page.title()} bgImage={page.featuredImageId} />
 
       <main className="content content-single">
         <div className="wrap">
-          {post && (
-            <div dangerouslySetInnerHTML={{ __html: post.content() ?? '' }} />
+          {page && (
+            <div dangerouslySetInnerHTML={{ __html: page.content() ?? '' }} />
           )}
         </div>
       </main>
