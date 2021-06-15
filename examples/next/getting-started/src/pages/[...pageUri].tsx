@@ -37,7 +37,9 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  return getNextStaticProps(context);
+  return getNextStaticProps(context, {
+    Page,
+  });
 }
 
 export function getStaticPaths() {

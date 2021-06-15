@@ -5,19 +5,22 @@ import React from 'react';
 import { CTA, Footer, Header, Hero, Posts } from 'components';
 import styles from 'scss/pages/home.module.scss';
 
-export default function FrontPage(): JSX.Element {
+export default function Page() {
   const { usePosts, useGeneralSettings } = client();
   const generalSettings = useGeneralSettings();
   const posts = usePosts({
     first: 6,
     where: {
       categoryName: 'uncategorized',
-    }
+    },
   });
 
   return (
     <>
-      <Header title={generalSettings.title} description={generalSettings.description} />
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
 
       <Head>
         <title>
@@ -130,5 +133,7 @@ export default function FrontPage(): JSX.Element {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  return getNextStaticProps(context);
+  return getNextStaticProps(context, {
+    Page,
+  });
 }
