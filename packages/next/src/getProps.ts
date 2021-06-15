@@ -1,104 +1,174 @@
-import { getApolloClient } from '@wpengine/headless-core';
-import { stringifyGql } from '@wpengine/headless-core/utils';
-import { addApolloState, QueriesConfig } from '@wpengine/headless-react';
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { fetchData } from './serverSide';
+import {
+  CategoryIdType,
+  PageIdType,
+  PostIdType,
+} from '@wpengine/headless-core';
+import { isObject } from 'lodash';
+import isNil from 'lodash/isNil';
+import {
+  GetServerSidePropsContext,
+  GetStaticPropsContext,
+  GetStaticPropsResult,
+  GetServerSidePropsResult,
+} from 'next';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-export interface NextPropsConfig {
-  queries?: QueriesConfig;
+import React, { FunctionComponent, ComponentClass } from 'react';
+import { client } from './client';
+import {
+  hasCategoryId,
+  hasCategorySlug,
+  hasPageId,
+  hasPageUri,
+  hasPostId,
+  hasPostSlug,
+  hasPostUri,
+} from './utils';
+
+export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
+
+export interface NextPropsConfig<Props = Record<string, unknown>> {
+  Page?: FunctionComponent | ComponentClass;
+  props?: Props;
 }
 
-export interface PagePropsWithApollo extends Record<string, unknown> {
-  props: Record<string, unknown>;
+export interface PageProps<Props> {
+  props: Props & { [CLIENT_CACHE_PROP]: string | null };
 }
-
-/* eslint-disable consistent-return */
-export function stringifyQueries(
-  queries?: QueriesConfig,
-): QueriesConfig | undefined {
-  if (!queries) {
-    return;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let toStr: any = {};
-
-  if (queries.post) {
-    toStr = {
-      post: {
-        variables: queries.post.variables ?? null,
-      },
-      ...toStr,
-    };
-
-    if (queries.post.fragments) {
-      toStr.post.fragments = {
-        postData: stringifyGql(queries.post.fragments.postData) ?? null,
-        pageData: stringifyGql(queries.post.fragments.pageData) ?? null,
-      };
-    }
-  }
-
-  if (queries.posts) {
-    toStr = {
-      posts: {
-        variables: queries.posts.variables ?? null,
-      },
-      ...toStr,
-    };
-
-    if (queries.posts.fragments) {
-      toStr.posts.fragments = {
-        listPostData:
-          stringifyGql(queries.posts.fragments.listPostData) ?? null,
-      };
-    }
-  }
-
-  return toStr as QueriesConfig;
-}
-/* eslint-enable consistent-return */
 
 export async function getProps<
-  Context extends GetStaticPropsContext | GetStaticPropsContext,
+  Context extends GetStaticPropsContext | GetServerSidePropsContext,
+  Props,
 >(
   context: Context,
-  config: NextPropsConfig = {},
-): Promise<PagePropsWithApollo> {
-  const client = getApolloClient(context);
+  { Page, props }: NextPropsConfig = {},
+): Promise<PageProps<Props>> {
+  const c = client();
+  let cacheSnapshot: string | undefined;
 
-  await fetchData(context, config.queries);
+  if (!isNil(Page)) {
+    const renderResult = await c.prepareReactRender(
+      RouterContext.Provider({
+        value: {
+          query: context.params,
+        } as any,
+        children: React.createElement(Page, props),
+      }),
+    );
+    cacheSnapshot = renderResult.cacheSnapshot;
+  }
 
-  return addApolloState(client, {
+  return {
     props: {
-      queries: stringifyQueries(config.queries) ?? null,
+      [CLIENT_CACHE_PROP]: cacheSnapshot ?? null,
+      ...props,
     },
-  });
+  } as PageProps<Props>;
 }
 
-export async function getNextServerSideProps(
+export async function is404<
+  Context extends GetStaticPropsContext | GetServerSidePropsContext,
+>({ params }: Context): Promise<boolean> {
+  if (!params) {
+    return false;
+  }
+
+  const {
+    client: { inlineResolved, query },
+  } = client();
+  let entityExists = false;
+
+  try {
+    if (hasPostId(params)) {
+      const result = await inlineResolved(() => {
+        return query.post({
+          id: params.postId,
+          idType: PostIdType.ID,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPostSlug(params)) {
+      const result = await inlineResolved(() => {
+        return query.post({
+          id: params.postSlug,
+          idType: PostIdType.SLUG,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPostUri(params)) {
+      const result = await inlineResolved(() => {
+        return query.post({
+          id: params.postUri.join('/'),
+          idType: PostIdType.URI,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPageId(params)) {
+      const result = await inlineResolved(() => {
+        return query.page({
+          id: params.pageId,
+          idType: PageIdType.ID,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasPageUri(params)) {
+      const result = await inlineResolved(() => {
+        return query.page({
+          id: params.pageUri.join('/'),
+          idType: PageIdType.URI,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasCategoryId(params)) {
+      const result = await inlineResolved(() => {
+        return query.category({
+          id: params.categoryId,
+          idType: CategoryIdType.ID,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    } else if (hasCategorySlug(params)) {
+      const result = await inlineResolved(() => {
+        return query.category({
+          id: params.categorySlug,
+          idType: CategoryIdType.SLUG,
+        })?.id;
+      });
+
+      entityExists = !isNil(result);
+    }
+  } catch (e) {
+    return true;
+  }
+
+  return !entityExists;
+}
+
+export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
   config: NextPropsConfig = {},
-): Promise<PagePropsWithApollo> {
+): Promise<GetServerSidePropsResult<Props>> {
   return getProps(context, config);
 }
 
-export async function getNextStaticProps(
+export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   config: NextPropsConfig = {},
-): Promise<PagePropsWithApollo> {
-  const pageProps = await getProps(context, config);
+): Promise<GetStaticPropsResult<Props>> {
+  const pageProps: GetStaticPropsResult<Props> = await getProps(
+    context,
+    config,
+  );
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  if (
-    (pageProps as Record<string, any> & { props: Record<string, unknown> })
-      ?.props
-  ) {
-    (
-      pageProps as Record<string, any> & {
-        props: Record<string, unknown>;
-      }
-    ).revalidate = 1;
+  if (isObject(pageProps.props)) {
+    pageProps.revalidate = 1;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
