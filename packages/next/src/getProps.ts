@@ -48,7 +48,7 @@ export async function getProps<
 
   if (!isNil(Page)) {
     const renderResult = await c.prepareReactRender(
-      RouterContext.Provider({
+      React.createElement(RouterContext.Provider, {
         value: {
           query: context.params,
         } as any,
