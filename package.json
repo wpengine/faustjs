@@ -1,36 +1,22 @@
 {
   "name": "root",
   "private": true,
+  "workspaces":{
+    "packages": [
+      "packages/core",
+      "packages/react",
+      "packages/next",
+      "examples/next/getting-started",
+      "examples/react/getting-started"
+    ]
+  },
   "scripts": {
-    "bootstrap": "npm install && npm run refresh",
-    "clean": "run-p clean:*",
-    "clean:core": "npm run clean --prefix packages/core",
-    "clean:next": "npm run clean --prefix packages/next",
-    "clean:react": "npm run clean --prefix packages/react",
-    "link:all": "run-s link:core link:react link:next",
-    "link:core": "cd packages/core && npm run build && npm link && cd ../..",
-    "link:next": "cd packages/next && npm link @wpengine/headless-core @wpengine/headless-react && npm run build && npm link && rimraf ./node_modules/react && rimraf ./node_modules/react-dom && cd ../..",
-    "link:react": "cd packages/react && npm link @wpengine/headless-core && npm run build && npm link && rimraf ./node_modules/react && rimraf ./node_modules/react-dom && cd ../..",
-    "lint": "run-s lint:core lint:next lint:react",
-    "lint:core": "npm run lint --prefix packages/core",
-    "lint:next": "npm run lint --prefix packages/next",
-    "lint:react": "npm run lint --prefix packages/react",
-    "lint:fix": "run-s lint:fix:*",
-    "lint:fix:core": "npm run lint:fix --prefix packages/core",
-    "lint:fix:next": "npm run lint:fix --prefix packages/next",
-    "lint:fix:react": "npm run lint:fix --prefix packages/react",
-    "refresh": "npm run wipe && run-s refresh:*",
-    "refresh:core": "cd packages/core && npm install && cd ../..",
-    "refresh:next": "cd packages/next && npm install && cd ../..",
-    "refresh:react": "cd packages/react && npm install && cd ../..",
-    "test": "run-s test:*",
-    "test:core": "npm test --prefix packages/core",
-    "test:next": "npm test --prefix packages/next",
-    "test:react": "npm test --prefix packages/react",
-    "wipe": "run-p wipe:*",
-    "wipe:core": "rimraf packages/core/node_modules",
-    "wipe:next": "rimraf packages/next/node_modules",
-    "wipe:react": "rimraf packages/react/node_modules",
+    "build": "npm run build -workspace=packages/core -workspace=packages/react -workspace=packages/next",
+    "clean": "npm run clean -workspace=packages/core -workspace=packages/react -workspace=packages/next",
+    "clean:examples": "rimraf examples/**/node_modules",
+    "lint": "npm run lint -workspace=packages/core -workspace=packages/react -workspace=packages/next",
+    "lint:fix": "npm run lint:fix -workspace=packages/core -workspace=packages/react -workspace=packages/next",
+    "dev:next:getting-started": "npm run dev --workspace=examples/next/getting-started",
     "wp-env": "wp-env",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",
@@ -38,7 +24,6 @@
   },
   "devDependencies": {
     "@wordpress/env": "^4.0.0",
-    "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2"
   }
 }

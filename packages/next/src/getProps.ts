@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import {
   CategoryIdType,
   PageIdType,
@@ -81,57 +82,77 @@ export async function is404<
 
   try {
     if (hasPostId(params)) {
-      result = inlineResolved(() => {
-        return query.post({
-          id: params.postId,
-          idType: PostIdType.ID,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.post({
+            id: params.postId,
+            idType: PostIdType.ID,
+          })?.id;
+        },
+        { refetch: true },
+      );
     } else if (hasPostSlug(params)) {
-      result = inlineResolved(() => {
-        return query.post({
-          id: params.postSlug,
-          idType: PostIdType.SLUG,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.post({
+            id: params.postSlug,
+            idType: PostIdType.SLUG,
+          })?.id;
+        },
+        { refetch: true },
+      );
     } else if (hasPostUri(params)) {
-      result = inlineResolved(() => {
-        return query.post({
-          id: params.postUri.join('/'),
-          idType: PostIdType.URI,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.post({
+            id: params.postUri.join('/'),
+            idType: PostIdType.URI,
+          })?.id;
+        },
+        { refetch: true },
+      );
     } else if (hasPageId(params)) {
-      result = inlineResolved(() => {
-        return query.page({
-          id: params.pageId,
-          idType: PageIdType.ID,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.page({
+            id: params.pageId,
+            idType: PageIdType.ID,
+          })?.id;
+        },
+        { refetch: true },
+      );
     } else if (hasPageUri(params)) {
-      result = inlineResolved(() => {
-        return query.page({
-          id: params.pageUri.join('/'),
-          idType: PageIdType.URI,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.page({
+            id: params.pageUri.join('/'),
+            idType: PageIdType.URI,
+          })?.id;
+        },
+        { refetch: true },
+      );
     } else if (hasCategoryId(params)) {
-      result = inlineResolved(() => {
-        return query.category({
-          id: params.categoryId,
-          idType: CategoryIdType.ID,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.category({
+            id: params.categoryId,
+            idType: CategoryIdType.ID,
+          })?.id;
+        },
+        { refetch: true },
+      );
     } else if (hasCategorySlug(params)) {
-      result = inlineResolved(() => {
-        return query.category({
-          id: params.categorySlug,
-          idType: CategoryIdType.SLUG,
-        })?.id;
-      }, { refetch: true });
+      result = inlineResolved(
+        () => {
+          return query.category({
+            id: params.categorySlug,
+            idType: CategoryIdType.SLUG,
+          })?.id;
+        },
+        { refetch: true },
+      );
     }
   } catch (e) {
-    console.log(e);
     return true;
   }
 

@@ -55,7 +55,9 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     return useQuery().posts(args);
   };
 
-  function usePost(args?: Parameters<Schema['query']['post']>[0]): ReturnType<Schema['query']['post']> {
+  function usePost(
+    args?: Parameters<Schema['query']['post']>[0],
+  ): ReturnType<Schema['query']['post']> {
     const router = useRouter();
     const { post } = useQuery();
 
@@ -89,14 +91,18 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
       }
     }
 
-    return post(args as Parameters<Schema['query']['post']>[0]) as ReturnType<Schema['query']['post']>;
-  };
+    return post(args as Parameters<Schema['query']['post']>[0]) as ReturnType<
+      Schema['query']['post']
+    >;
+  }
 
   const usePages: Schema['query']['pages'] = (args) => {
     return useQuery().pages(args);
   };
 
-  function usePage(args?: Parameters<Schema['query']['page']>[0]): ReturnType<Schema['query']['page']> {
+  function usePage(
+    args?: Parameters<Schema['query']['page']>[0],
+  ): ReturnType<Schema['query']['page']> {
     const router = useRouter();
     const { page } = useQuery();
 
@@ -124,10 +130,14 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
       }
     }
 
-    return page(args as Parameters<Schema['query']['page']>[0]) as ReturnType<Schema['query']['page']>;
-  };
+    return page(args as Parameters<Schema['query']['page']>[0]) as ReturnType<
+      Schema['query']['page']
+    >;
+  }
 
-  function useCategory(args?: Parameters<Schema['query']['category']>[0]): ReturnType<Schema['query']['category']> {
+  function useCategory(
+    args?: Parameters<Schema['query']['category']>[0],
+  ): ReturnType<Schema['query']['category']> {
     const router = useRouter();
     const { category } = useQuery();
 
@@ -148,8 +158,10 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
       }
     }
 
-    return category(args as Parameters<Schema['query']['category']>[0]) as ReturnType<Schema['query']['category']>;
-  };
+    return category(
+      args as Parameters<Schema['query']['category']>[0],
+    ) as ReturnType<Schema['query']['category']>;
+  }
 
   const useGeneralSettings: () => Schema['query']['generalSettings'] = () => {
     return useQuery().generalSettings;
