@@ -9,5 +9,6 @@ jobs:
         with:
           node-version: '15'
       - run: npm install
-      - run: npm run test:packages
+      - run: npm run build
+      - run: npm test
         continue-on-error: FALSE

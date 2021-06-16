@@ -17,7 +17,7 @@
     "lint": "npm run lint -workspace=packages/core -workspace=packages/react -workspace=packages/next",
     "lint:fix": "npm run lint:fix -workspace=packages/core -workspace=packages/react -workspace=packages/next",
     "dev:next:getting-started": "npm run dev --workspace=examples/next/getting-started",
-    "test:packages": "npm run test -workspace=packages/core -workspace=packages/react -workspace=packages/next",
+    "test": "npm test -workspace=packages/core -workspace=packages/react -workspace=packages/next",
     "wp-env": "wp-env",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",
