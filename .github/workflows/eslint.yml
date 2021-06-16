@@ -8,7 +8,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: Run eslint
       - run: npm install
-      - run:  npm run lint
+      - run: npm run lint
         continue-on-error: FALSE
