@@ -42,7 +42,7 @@ function Posts({
             posts.map((post) => (
               <div
                 className={styles.single}
-                key={post?.id}
+                key={post?.id || ''}
                 id={`post-${post?.id}`}>
                 <div>
                   <Heading level={postTitleLevel} className={styles.title}>
