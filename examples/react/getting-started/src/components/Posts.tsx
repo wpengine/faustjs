@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from 'scss/components/Posts.module.scss';
-import { Post } from '@wpengine/headless-core';
+import { Post } from 'types';
 import Heading, { HeadingProps } from './Heading';
 import { PostListLoader } from 'components';
 

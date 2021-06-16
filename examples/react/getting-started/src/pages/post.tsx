@@ -1,7 +1,7 @@
-import { Post as PostType, PostIdType } from '@wpengine/headless-core';
 import { PostTemplate } from 'components';
 import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
+import { Post as PostType, PostIdType } from 'types';
 
 type PostParams = {
   postSlug: string;

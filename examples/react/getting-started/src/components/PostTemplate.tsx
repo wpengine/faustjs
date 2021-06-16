@@ -1,6 +1,6 @@
 import { Header, Footer, PostPageLoader } from 'components';
-import { Post } from '@wpengine/headless-core';
 import { Helmet } from 'react-helmet-async';
+import { Post } from 'types';
 
 type PostTemplateProps = {
   post: Post | undefined;

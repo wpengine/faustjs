@@ -1,4 +1,4 @@
-import { Post } from '@wpengine/headless-core';
+import { Post } from 'types';
 import { Footer, Header, Posts } from 'components';
 import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';

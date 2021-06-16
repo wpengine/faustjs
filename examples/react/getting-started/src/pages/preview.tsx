@@ -1,10 +1,10 @@
+import { ensureAuthorization } from '@wpengine/headless-core';
 import {
-  ensureAuthorization,
   Page as PageType,
   Post as PostType,
   PageIdType,
   PostIdType,
-} from '@wpengine/headless-core';
+} from 'types';
 import { PageTemplate, PostTemplate } from 'components';
 import { client } from '@wpengine/headless-react';
 import queryString from 'query-string';
