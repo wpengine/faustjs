@@ -54,6 +54,7 @@ export async function getProps<
         {
           value: {
             query: context.params,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any,
         },
         React.createElement(Page, props),

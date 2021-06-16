@@ -5,8 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Bootstrap dependencies
-        run: npm run bootstrap
+      - name: NPM Install
+        run: npm install
         env:
           CI: TRUE
       - name: Run eslint
