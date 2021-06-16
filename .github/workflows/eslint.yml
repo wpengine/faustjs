@@ -8,6 +8,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+          npm-version: '7'
       - run: npm install
-      - run: npm run lint
+      - run: npm version
         continue-on-error: FALSE
