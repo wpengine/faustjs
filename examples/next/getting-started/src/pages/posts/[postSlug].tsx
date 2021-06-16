@@ -1,4 +1,4 @@
-import { getNextStaticProps, client } from '@wpengine/headless-next';
+import { getNextStaticProps, client, is404 } from '@wpengine/headless-next';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
@@ -41,6 +41,12 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
+  if (await is404(context)) {
+    return {
+      notFound: true,
+    };
+  }
+
   return getNextStaticProps(context, {
     Page,
   });
