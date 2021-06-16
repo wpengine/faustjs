@@ -51,9 +51,36 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const { useQuery } = reactClient as ReactClient<GeneratedSchema>;
 
-  const usePosts: Schema['query']['posts'] = (args) => {
-    return useQuery().posts(args);
-  };
+  function usePosts(
+    args?: Parameters<Schema['query']['posts']>[0],
+  ): ReturnType<Schema['query']['posts']> {
+    const router = useRouter();
+    const { posts } = useQuery();
+
+    if (!isObject(args)) {
+      const { query } = router;
+
+      if (hasCategoryId(query)) {
+        return posts({
+          where: {
+            categoryId: Number(query.categoryId),
+          },
+        }) as ReturnType<Schema['query']['posts']>;
+      }
+
+      if (hasCategorySlug(query)) {
+        return posts({
+          where: {
+            categoryName: query.categorySlug,
+          },
+        }) as ReturnType<Schema['query']['posts']>;
+      }
+    }
+
+    return posts(args as Parameters<Schema['query']['posts']>[0]) as ReturnType<
+      Schema['query']['posts']
+    >;
+  }
 
   function usePost(
     args?: Parameters<Schema['query']['post']>[0],

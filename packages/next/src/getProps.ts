@@ -49,12 +49,15 @@ export async function getProps<
 
   if (!isNil(Page)) {
     const renderResult = await c.prepareReactRender(
-      React.createElement(RouterContext.Provider, {
-        value: {
-          query: context.params,
-        } as any,
-        children: React.createElement(Page, props),
-      }),
+      React.createElement(
+        RouterContext.Provider,
+        {
+          value: {
+            query: context.params,
+          } as any,
+        },
+        React.createElement(Page, props),
+      ),
     );
     cacheSnapshot = renderResult.cacheSnapshot;
   }
