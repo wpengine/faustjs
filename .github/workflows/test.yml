@@ -9,9 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - name: Run test
         with:
           node-version: '14'
+      - name: Run test
       - run: npm install
       - run:  npm test
         continue-on-error: FALSE

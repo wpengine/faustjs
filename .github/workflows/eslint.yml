@@ -6,9 +6,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - name: Run eslint
         with:
           node-version: '14'
+      - name: Run eslint
       - run: npm install
       - run:  npm run lint
         continue-on-error: FALSE
