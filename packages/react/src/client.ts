@@ -179,6 +179,18 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     return useQuery().generalSettings;
   };
 
+  const useIsLoading = () => {
+    return useQuery().$state.isLoading;
+  };
+
+  const usePostsFromCategory = (categorySlug: string) => {
+    return useQuery().posts({
+      where: {
+        categoryIn: [categorySlug],
+      },
+    });
+  };
+
   return {
     client: coreClient,
     ...reactClient,
@@ -188,5 +200,7 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePages,
     usePage,
     useGeneralSettings,
+    useIsLoading,
+    usePostsFromCategory,
   };
 }

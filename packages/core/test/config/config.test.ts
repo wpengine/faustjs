@@ -42,6 +42,15 @@ describe('config/config', () => {
     expect(config).not.toBe(cfg);
   });
 
+  test('headlessConfig() should return the set wpUrl', () => {
+    const cfg = {
+      wpUrl: 'http://my-headless-site.com',
+    };
+
+    const config = headlessConfig(cfg);
+    expect(config.wpUrl).toBe(cfg.wpUrl);
+  });
+
   test('headlessConfig() should always return the config', () => {
     const cfg = {
       wpUrl: '',
