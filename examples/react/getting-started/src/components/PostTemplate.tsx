@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Post } from 'types';
 
 type PostTemplateProps = {
-  post: Post | undefined;
+  post: Post | null;
   isLoading: boolean;
 };
 

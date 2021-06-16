@@ -1,4 +1,3 @@
-import { Post } from 'types';
 import { Footer, Header, Posts } from 'components';
 import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
@@ -31,7 +30,7 @@ export default function Category() {
         <div className="wrap">
           <Posts
             isLoading={isLoading}
-            posts={posts?.nodes as Post[] | undefined}
+            posts={posts?.nodes ?? []}
           />
         </div>
       </main>

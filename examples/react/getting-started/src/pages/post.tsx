@@ -1,7 +1,7 @@
 import { PostTemplate } from 'components';
 import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
-import { Post as PostType, PostIdType } from 'types';
+import { PostIdType } from 'types';
 
 type PostParams = {
   postSlug: string;
@@ -17,5 +17,5 @@ export default function Post() {
     idType: PostIdType.URI,
   });
 
-  return <PostTemplate post={post as PostType} isLoading={isLoading} />;
+  return <PostTemplate post={post} isLoading={isLoading} />;
 }

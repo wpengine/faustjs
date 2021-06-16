@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from 'scss/components/Posts.module.scss';
-import { Post } from 'types';
+import { Nil, Post } from 'types';
 import Heading, { HeadingProps } from './Heading';
 import { PostListLoader } from 'components';
 
 interface Props {
-  posts: Post[] | undefined;
+  posts: Nil<Post>[];
   intro?: string;
   id?: string;
   heading?: string;
@@ -42,20 +42,20 @@ function Posts({
             posts.map((post) => (
               <div
                 className={styles.single}
-                key={post.id}
-                id={`post-${post.id}`}>
+                key={post?.id}
+                id={`post-${post?.id}`}>
                 <div>
                   <Heading level={postTitleLevel} className={styles.title}>
-                    <Link to={`/posts/${post.slug}`}>{post.title()}</Link>
+                    <Link to={`/posts/${post?.slug}`}>{post?.title()}</Link>
                   </Heading>
                   <div
                     className={styles.excerpt}
                     // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{ __html: post.excerpt() ?? '' }}
+                    dangerouslySetInnerHTML={{ __html: post?.excerpt() ?? '' }}
                   />
                   <Link
-                    to={`/posts/${post.slug}`}
-                    aria-label={`Read more about ${post.title || 'the post'}`}>
+                    to={`/posts/${post?.slug}`}
+                    aria-label={`Read more about ${post?.title || 'the post'}`}>
                     {readMoreText}
                   </Link>
                 </div>

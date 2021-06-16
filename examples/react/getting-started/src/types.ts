@@ -1,9 +1,11 @@
+export type Nil<T> = T | null | undefined;
+
 export interface Post {
-  id: string;
-  slug?: string;
-  title(): string;
-  excerpt(): string;
-  content(): string;
+  id: string | undefined;
+  slug?: string | null;
+  title(): Nil<string>;
+  excerpt(): Nil<string>;
+  content(): Nil<string>;
 }
 
 export enum PostIdType {
@@ -14,10 +16,10 @@ export enum PostIdType {
 }
 
 export interface Page {
-  id: string;
-  slug?: string;
-  title(): string;
-  content(): string;
+  id: string | undefined;
+  slug?: string | null;
+  title(): Nil<string>;
+  content(): Nil<string>;
 }
 
 export enum PageIdType {

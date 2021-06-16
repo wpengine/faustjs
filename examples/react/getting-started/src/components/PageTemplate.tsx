@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Page } from 'types';
 
 type PageTemplateProps = {
-  page: Page | undefined;
+  page: Page | null;
   isLoading: boolean;
 };
 
