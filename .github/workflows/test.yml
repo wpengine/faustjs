@@ -3,12 +3,15 @@ on: pull_request
 jobs:
   packages:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
-      - name: NPM Install
-        run: npm install
-        env:
-          CI: TRUE
-      - name: Run tests
-        run:  npm run test
+      - uses: actions/setup-node@v2
+      - name: Run test
+        with:
+          node-version: '14'
+      - run: npm install
+      - run:  npm test
         continue-on-error: FALSE

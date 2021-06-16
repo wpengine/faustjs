@@ -5,10 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: NPM Install
-        run: npm install
-        env:
-          CI: TRUE
+      - uses: actions/setup-node@v2
       - name: Run eslint
-        run:  npm run lint
+        with:
+          node-version: '14'
+      - run: npm install
+      - run:  npm run lint
         continue-on-error: FALSE
