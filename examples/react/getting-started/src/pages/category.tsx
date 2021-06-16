@@ -1,6 +1,6 @@
 import { Post } from '@wpengine/headless-core';
 import { Footer, Header, Posts } from 'components';
-import client from 'lib/client';
+import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 
@@ -10,7 +10,7 @@ type CategoryParams = {
 
 export default function Category() {
   const { categorySlug } = useParams<CategoryParams>();
-  const { usePosts, useIsLoading } = client;
+  const { usePosts, useIsLoading } = client();
   const isLoading = useIsLoading();
 
   const posts = usePosts({

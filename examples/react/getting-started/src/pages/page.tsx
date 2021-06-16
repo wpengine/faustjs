@@ -1,6 +1,6 @@
 import { Page as PageType, PageIdType } from '@wpengine/headless-core';
 import { PageTemplate } from 'components';
-import client from 'lib/client';
+import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
 
 type PageParams = {
@@ -9,7 +9,7 @@ type PageParams = {
 
 export default function Page() {
   const { pageSlug } = useParams<PageParams>();
-  const { usePage, useIsLoading } = client;
+  const { usePage, useIsLoading } = client();
   const isLoading = useIsLoading();
   const page = usePage({
     id: pageSlug,

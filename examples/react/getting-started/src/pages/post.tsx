@@ -1,6 +1,6 @@
 import { Post as PostType, PostIdType } from '@wpengine/headless-core';
 import { PostTemplate } from 'components';
-import client from 'lib/client';
+import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
 
 type PostParams = {
@@ -9,7 +9,7 @@ type PostParams = {
 
 export default function Post() {
   const { postSlug } = useParams<PostParams>();
-  const { usePost, useIsLoading } = client;
+  const { usePost, useIsLoading } = client();
   const isLoading = useIsLoading();
 
   const post = usePost({
