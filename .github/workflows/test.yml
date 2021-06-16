@@ -12,5 +12,5 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
-      - run: npm test
+      - run: npm run test:packages
         continue-on-error: FALSE
