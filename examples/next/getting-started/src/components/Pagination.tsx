@@ -27,26 +27,24 @@ function PreviousPageNavigation(props: PreviousPageNavigationProps) {
 
 interface PaginationProps {
   pageInfo: any;
+  basePath: string;
 }
 
-export default function Pagination(props: PaginationProps) {
-  const router = useRouter();
-  const basePath = router.asPath.split('/').slice(0, 3).join('/');
-
-  let previousPageUrl = `${basePath}/before/${props.pageInfo?.startCursor}`;
-  let nextPageUrl = `${basePath}/after/${props.pageInfo?.endCursor}`;
+export default function Pagination({ pageInfo, basePath }: PaginationProps) {
+  let previousPageUrl = `${basePath}/before/${pageInfo?.startCursor}`;
+  let nextPageUrl = `${basePath}/after/${pageInfo?.endCursor}`;
 
   return (
     <nav className="pagination" aria-label="Pagination">
       <div className="wrap">
         <ul>
-          {props.pageInfo.hasPreviousPage && (
+          {pageInfo.hasPreviousPage && (
             <li className="pagination-previous">
               <PreviousPageNavigation href={previousPageUrl} />
             </li>
           )}
 
-          {props.pageInfo.hasNextPage && (
+          {pageInfo.hasNextPage && (
             <li className="pagination-next">
               <NextPageNavigation href={nextPageUrl} />
             </li>

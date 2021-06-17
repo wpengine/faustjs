@@ -1,5 +1,5 @@
 import { getNextStaticProps, client } from '@wpengine/headless-next';
-import { Footer, Header, Posts } from 'components';
+import { Footer, Header, Pagination, Posts } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -14,14 +14,13 @@ export default function Page() {
   const { postSlug, postCursor } = query;
   const { usePosts, useGeneralSettings, useQuery } = client();
   const generalSettings = useGeneralSettings();
-  const isAfter = postSlug === 'after';
+  const isBefore = postSlug === 'before';
   const posts = usePosts({
-    after: isAfter ? (postCursor as string) : undefined,
-    before: !isAfter ? (postCursor as string) : undefined,
-    first: isAfter ? 1 : undefined,
-    last: !isAfter ? 1 : undefined,
+    after: !isBefore ? (postCursor as string) : undefined,
+    before: isBefore ? (postCursor as string) : undefined,
+    first: !isBefore ? 6 : undefined,
+    last: isBefore ? 6 : undefined,
   });
-  const { hasNextPage, hasPreviousPage, startCursor, endCursor } = posts.pageInfo;
 
   if (useQuery().$state.isLoading) {
     return <>Loading...</>;
@@ -49,16 +48,7 @@ export default function Page() {
           postTitleLevel="h3"
           id={styles.post_list}
         />
-        {hasPreviousPage === true && (
-          <Link href={`/posts/before/${startCursor}`}>
-            <a href={`/posts/before/${startCursor}`}>Previous</a>
-          </Link>
-        )}
-        {hasNextPage === true && (
-          <Link href={`/posts/after/${endCursor}`}>
-            <a href={`/posts/after/${endCursor}`}>Next</a>
-          </Link>
-        )}
+        <Pagination pageInfo={posts.pageInfo} basePath="/posts" />
       </main>
 
       <Footer copyrightHolder={generalSettings.title} />
