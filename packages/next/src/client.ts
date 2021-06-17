@@ -3,7 +3,7 @@ import {
   CreateReactClientOptions,
   ReactClient,
 } from '@gqless/react';
-import type { LoggerOptions } from '@gqless/logger';
+// import type { LoggerOptions } from '@gqless/logger';
 import { useRouter } from 'next/router';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
@@ -13,19 +13,21 @@ import {
   GeneratedSchema,
   PostIdType,
   PageIdType,
+  ensureAuthorization,
 } from '@wpengine/headless-core';
+// import defaults from 'lodash/defaults';
+import { useEffect } from 'react';
+import isString from 'lodash/isString';
 import {
   hasCategoryId,
   hasCategorySlug,
+  HasObject,
   hasPageId,
   hasPageUri,
-  hasPagePreviewUri,
   hasPostId,
   hasPostSlug,
   hasPostUri,
-  hasPostPreviewUri,
 } from './utils';
-import defaults from 'lodash/defaults';
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
 export function client<Schema extends GeneratedSchema = GeneratedSchema>(
@@ -111,13 +113,6 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
           idType: PostIdType.URI,
         }) as ReturnType<Schema['query']['post']>;
       }
-      if (hasPostPreviewUri(query)) {
-        return post({
-          id: query.postPreviewUri.join('/'),
-          idType: PostIdType.URI,
-          asPreview: true,
-        }) as ReturnType<Schema['query']['post']>;
-      }
     }
 
     return post(args as Parameters<Schema['query']['post']>[0]) as ReturnType<
@@ -150,19 +145,58 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
           idType: PageIdType.URI,
         }) as ReturnType<Schema['query']['page']>;
       }
-      if (hasPagePreviewUri(query)) {
-        return page({
-          id: query.pagePreviewUri.join('/'),
-          idType: PageIdType.URI,
-          asPreview: true,
-        }) as ReturnType<Schema['query']['page']>;
-      }
     }
 
     return page(args as Parameters<Schema['query']['page']>[0]) as ReturnType<
       Schema['query']['page']
     >;
   }
+
+  /* eslint-disable consistent-return */
+
+  function usePreview(
+    args: Record<'pageId', string>,
+  ): ReturnType<Schema['query']['page']>;
+  function usePreview(
+    args: Record<'postId', string>,
+  ): ReturnType<Schema['query']['post']>;
+  function usePreview(
+    args: HasObject,
+  ): ReturnType<Schema['query']['page'] | Schema['query']['post']> | undefined {
+    useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      const authResult = ensureAuthorization(window.location.href);
+
+      if (!isString(authResult) && isString(authResult?.redirect)) {
+        setTimeout(() => {
+          window.location.replace(authResult?.redirect as string);
+        }, 200);
+      }
+    }, []);
+
+    const { post, page } = useQuery();
+
+    const pagePreview = page({
+      id: (args?.pageId as string) ?? '',
+      idType: PageIdType.DATABASE_ID,
+    }) as ReturnType<Schema['query']['page']>;
+
+    const postPreview = post({
+      id: (args?.postId as string) ?? '',
+      idType: PostIdType.DATABASE_ID,
+    }) as ReturnType<Schema['query']['post']>;
+
+    if (hasPageId(args)) {
+      return pagePreview;
+    }
+    if (hasPostId(args)) {
+      return postPreview;
+    }
+  }
+  /* eslint-enable consistent-return */
 
   function useCategory(
     args?: Parameters<Schema['query']['category']>[0],
@@ -204,22 +238,23 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePost,
     usePages,
     usePage,
+    usePreview,
     useGeneralSettings,
   };
 }
 
-export async function logQueries(options?: LoggerOptions): Promise<() => void> {
-  try {
-    const { createLogger } = await import('@gqless/logger');
-    const logger = createLogger(
-      client().client,
-      defaults({}, options, {
-        showSelections: false,
-        showCache: false,
-      } as LoggerOptions),
-    );
-    return logger.start();
-  } catch (e) {
-    return () => {};
-  }
-}
+// export async function logQueries(options?: LoggerOptions): Promise<() => void> {
+//   try {
+//     const { createLogger } = await import('@gqless/logger');
+//     const logger = createLogger(
+//       client().client,
+//       defaults({}, options, {
+//         showSelections: false,
+//         showCache: false,
+//       } as LoggerOptions),
+//     );
+//     return logger.start();
+//   } catch (e) {
+//     return () => {};
+//   }
+// }

@@ -1,8 +1,10 @@
 import { headlessConfig } from '../config';
 import isString from 'lodash/isString';
-import { parseUrl } from '../utils';
+import { isServerSide, parseUrl } from '../utils';
 import { CookieOptions, getAccessToken } from './cookie';
 import fetch from 'isomorphic-fetch';
+import isEmpty from 'lodash/isEmpty';
+import trimEnd from 'lodash/trimEnd';
 
 /**
  * Exchanges an Authorization Code for an Access Token that you can use to make authenticated requests to
@@ -61,23 +63,28 @@ export function ensureAuthorization(
   redirectUri: string,
   options?: CookieOptions,
 ): string | { redirect: string } | undefined {
-  const { wpUrl, apiUrl, apiEndpoint } = headlessConfig();
+  const { wpUrl, apiEndpoint } = headlessConfig();
+  let { apiUrl } = headlessConfig();
   const accessToken = getAccessToken(options);
 
-  if (!isString(apiUrl)) {
-    throw new Error(
-      'You must provide an apiUrl value in your Headless config in order to use the authorize middleware',
-    );
+  if (!!accessToken && accessToken.length > 0) {
+    return accessToken;
+  }
+
+  if (!isString(apiUrl) || isEmpty(apiUrl)) {
+    if (!isServerSide()) {
+      apiUrl = trimEnd(window.location.origin, '/');
+    } else {
+      throw new Error(
+        'You must provide an apiUrl value in your Headless config in order to use the authorize middleware',
+      );
+    }
   }
 
   if (!isString(apiEndpoint)) {
     throw new Error(
       'You must provide an apiEndpoint value in your Headless config in order to use the authorize middleware',
     );
-  }
-
-  if (!!accessToken && accessToken.length > 0) {
-    return accessToken;
   }
 
   const parsedUrl = parseUrl(redirectUri);

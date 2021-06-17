@@ -4,14 +4,14 @@ import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import styles from 'scss/pages/home.module.scss';
+import styles from 'scss/pages/posts.module.scss';
 
 export default function Page() {
   const {
     query = {},
   } = useRouter();
   const { postSlug, postCursor } = query;
-  const { usePosts, useGeneralSettings } = client();
+  const { usePosts, useGeneralSettings, useQuery, } = client();
   const generalSettings = useGeneralSettings();
   const isBefore = postSlug === 'before';
   const posts = usePosts({
@@ -20,6 +20,10 @@ export default function Page() {
     first: !isBefore ? 6 : undefined,
     last: isBefore ? 6 : undefined,
   });
+
+  if (useQuery().$state.isLoading) {
+    return null;
+  }
 
   return (
     <>
