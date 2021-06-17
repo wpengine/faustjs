@@ -5,6 +5,14 @@ import Page from '..';
 export default Page;
 
 export async function getStaticProps(context: GetStaticPropsContext) {
+  const { postSlug } = context.params;
+
+  if (!(postSlug === 'after' || postSlug === 'before')) {
+    return {
+      notFound: true,
+    };
+  }
+
   return getNextStaticProps(context, {
     Page,
   });
