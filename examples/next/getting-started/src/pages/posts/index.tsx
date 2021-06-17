@@ -2,7 +2,6 @@ import { getNextStaticProps, client } from '@wpengine/headless-next';
 import { Footer, Header, Pagination, Posts } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import styles from 'scss/pages/home.module.scss';
@@ -12,7 +11,7 @@ export default function Page() {
     query = {},
   } = useRouter();
   const { postSlug, postCursor } = query;
-  const { usePosts, useGeneralSettings, useQuery } = client();
+  const { usePosts, useGeneralSettings } = client();
   const generalSettings = useGeneralSettings();
   const isBefore = postSlug === 'before';
   const posts = usePosts({
@@ -21,10 +20,6 @@ export default function Page() {
     first: !isBefore ? 6 : undefined,
     last: isBefore ? 6 : undefined,
   });
-
-  if (useQuery().$state.isLoading) {
-    return <>Loading...</>;
-  }
 
   return (
     <>

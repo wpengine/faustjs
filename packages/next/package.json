@@ -72,6 +72,7 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
+    "@gqless/logger": "^2.0.11",
     "@gqless/react": "^2.0.15",
     "@wpengine/headless-core": "^0.6.9",
     "@wpengine/headless-react": "^0.6.9",

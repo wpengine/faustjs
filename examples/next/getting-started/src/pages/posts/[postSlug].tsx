@@ -4,13 +4,9 @@ import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 
 export default function Page() {
-  const { usePost, useGeneralSettings, useQuery } = client();
+  const { usePost, useGeneralSettings } = client();
   const generalSettings = useGeneralSettings();
   const post = usePost();
-
-  if (useQuery().$state.isLoading) {
-    return <>Loading...</>;
-  }
 
   return (
     <>
@@ -32,6 +28,7 @@ export default function Page() {
           {post && (
             <div dangerouslySetInnerHTML={{ __html: post.content() ?? '' }} />
           )}
+          <div>{ post.author.node.nicename }</div>
         </div>
       </main>
 

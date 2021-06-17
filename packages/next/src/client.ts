@@ -3,6 +3,7 @@ import {
   CreateReactClientOptions,
   ReactClient,
 } from '@gqless/react';
+import type { LoggerOptions } from '@gqless/logger';
 import { useRouter } from 'next/router';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
@@ -24,6 +25,7 @@ import {
   hasPostUri,
   hasPostPreviewUri,
 } from './utils';
+import defaults from 'lodash/defaults';
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
 export function client<Schema extends GeneratedSchema = GeneratedSchema>(
@@ -204,4 +206,20 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePage,
     useGeneralSettings,
   };
+}
+
+export async function logQueries(options?: LoggerOptions): Promise<() => void> {
+  try {
+    const { createLogger } = await import('@gqless/logger');
+    const logger = createLogger(
+      client().client,
+      defaults({}, options, {
+        showSelections: false,
+        showCache: false,
+      } as LoggerOptions),
+    );
+    return logger.start();
+  } catch (e) {
+    return () => {};
+  }
 }

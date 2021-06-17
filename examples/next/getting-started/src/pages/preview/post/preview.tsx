@@ -3,6 +3,7 @@ import { Footer, Header, CTA } from 'components';
 import { useRouter } from 'next/router';
 
 export default function Page() {
+  const { query: { p }} = useRouter();
   const { usePost, useGeneralSettings, useQuery } = client();
   const generalSettings = useGeneralSettings();
   const post = usePost();
