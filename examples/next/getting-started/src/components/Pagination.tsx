@@ -24,14 +24,14 @@ function PreviousPageNavigation(props: PreviousPageNavigationProps) {
   );
 }
 
-interface PaginationProps {
+export interface PaginationProps {
   pageInfo: any;
   basePath: string;
 }
 
 export default function Pagination({ pageInfo, basePath }: PaginationProps) {
-  let previousPageUrl = `${basePath}/before/${pageInfo?.startCursor}`;
-  let nextPageUrl = `${basePath}/after/${pageInfo?.endCursor}`;
+  const previousPageUrl = `${basePath}/before/${pageInfo?.startCursor}`;
+  const nextPageUrl = `${basePath}/after/${pageInfo?.endCursor}`;
 
   return (
     <nav className="pagination" aria-label="Pagination">
