@@ -5,6 +5,13 @@ import { getNextStaticProps } from '@wpengine/headless-next';
 export default Page;
 
 export async function getStaticProps(context: GetStaticPropsContext) {
+  const { paginationTerm } = context.params;
+  if (!(paginationTerm === 'after' || paginationTerm === 'before')) {
+    return {
+      notFound: true,
+    };
+  }
+
   return getNextStaticProps(context, {
     Page,
   });
