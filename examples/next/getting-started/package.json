@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "clean": "rimraf .next node_modules",
-    "dev-lerna": "wait-on ./node_modules/@wpengine/headless-next/dist/index.js && npm run dev",
     "lint": "next lint",
     "wpe-build": "next build"
   },
