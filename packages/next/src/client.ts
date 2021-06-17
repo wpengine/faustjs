@@ -14,6 +14,7 @@ import {
   PostIdType,
   PageIdType,
 } from '@wpengine/headless-core';
+import defaults from 'lodash/defaults';
 import {
   hasCategoryId,
   hasCategorySlug,
@@ -25,7 +26,6 @@ import {
   hasPostUri,
   hasPostPreviewUri,
 } from './utils';
-import defaults from 'lodash/defaults';
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
 export function client<Schema extends GeneratedSchema = GeneratedSchema>(
