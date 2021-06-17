@@ -6,10 +6,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import styles from 'scss/pages/home.module.scss';
 
+const POSTS_PER_PAGE = 6;
+
 export default function Page() {
-  const {
-    query = {},
-  } = useRouter();
+  const { query = {} } = useRouter();
   const { postSlug, postCursor } = query;
   const { usePosts, useGeneralSettings } = client();
   const generalSettings = useGeneralSettings();
@@ -17,8 +17,8 @@ export default function Page() {
   const posts = usePosts({
     after: !isBefore ? (postCursor as string) : undefined,
     before: isBefore ? (postCursor as string) : undefined,
-    first: !isBefore ? 6 : undefined,
-    last: isBefore ? 6 : undefined,
+    first: !isBefore ? POSTS_PER_PAGE : undefined,
+    last: isBefore ? POSTS_PER_PAGE : undefined,
   });
 
   return (

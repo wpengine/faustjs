@@ -28,7 +28,6 @@ export default function Page() {
           {post && (
             <div dangerouslySetInnerHTML={{ __html: post.content() ?? '' }} />
           )}
-          <div>{ post.author.node.nicename }</div>
         </div>
       </main>
 

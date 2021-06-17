@@ -1,12 +1,26 @@
 import { client, getNextStaticProps } from '@wpengine/headless-next';
 import Head from 'next/head';
-import { Header, Footer, Posts } from 'components';
+import { Header, Footer, Posts, Pagination } from 'components';
 import { GetStaticPropsContext } from 'next';
+import { useRouter } from 'next/router';
+
+const POSTS_PER_PAGE = 6;
 
 export default function Page() {
   const { useGeneralSettings, usePosts } = client();
+  const { query = {} } = useRouter();
+  const { categorySlug, paginationTerm, categoryCursor } = query;
   const generalSettings = useGeneralSettings();
-  const posts = usePosts();
+  const isBefore = paginationTerm === 'before';
+  const posts = usePosts({
+    after: !isBefore ? (categoryCursor as string) : undefined,
+    before: isBefore ? (categoryCursor as string) : undefined,
+    first: !isBefore ? POSTS_PER_PAGE : undefined,
+    last: isBefore ? POSTS_PER_PAGE : undefined,
+    where: {
+      categoryName: categorySlug as string,
+    },
+  });
 
   return (
     <>
@@ -21,7 +35,11 @@ export default function Page() {
 
       <main className="content content-index">
         <Posts posts={posts.nodes} />
-        {/* {posts?.pageInfo && <Pagination pageInfo={posts.pageInfo} />} */}
+
+        <Pagination
+          pageInfo={posts.pageInfo}
+          basePath={`/category/${categorySlug}`}
+        />
       </main>
 
       <Footer copyrightHolder={generalSettings.title} />
