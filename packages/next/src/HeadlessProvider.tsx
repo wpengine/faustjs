@@ -15,10 +15,6 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   const { useHydrateCache } = client();
   const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
 
-  if (typeof window !== 'undefined') {
-    console.log(JSON.parse(cacheSnapshot ?? '{}'));
-  }
-
   useHydrateCache({
     cacheSnapshot: isNil(cacheSnapshot) ? undefined : cacheSnapshot,
   });
