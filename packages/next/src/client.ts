@@ -3,7 +3,6 @@ import {
   CreateReactClientOptions,
   ReactClient,
 } from '@gqless/react';
-import type { LoggerOptions } from '@gqless/logger';
 import { useRouter } from 'next/router';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
@@ -15,9 +14,8 @@ import {
   PageIdType,
   ensureAuthorization,
 } from '@wpengine/headless-core';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import isString from 'lodash/isString';
-import defaults from 'lodash/defaults';
 import {
   hasCategoryId,
   hasCategorySlug,
@@ -230,9 +228,28 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     return useQuery().generalSettings;
   };
 
+  const useHydrateCache: typeof reactClient.useHydrateCache = ({
+    cacheSnapshot,
+    shouldRefetch,
+  }) => {
+    const snapshotCache = useRef('');
+    if (isString(cacheSnapshot) && snapshotCache.current !== cacheSnapshot) {
+      snapshotCache.current = cacheSnapshot;
+
+      coreClient.hydrateCache({ cacheSnapshot, shouldRefetch: false });
+    }
+
+    useEffect(() => {
+      if (shouldRefetch) {
+        coreClient.refetch(coreClient.query).catch(console.error);
+      }
+    }, [shouldRefetch]);
+  };
+
   return {
     client: coreClient,
     ...reactClient,
+    useHydrateCache,
     useCategory,
     usePosts,
     usePost,
@@ -241,20 +258,4 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePreview,
     useGeneralSettings,
   };
-}
-
-export async function logQueries(options?: LoggerOptions): Promise<() => void> {
-  try {
-    const { createLogger } = await import('@gqless/logger');
-    const logger = createLogger(
-      client().client,
-      defaults({}, options, {
-        showSelections: false,
-        showCache: false,
-      } as LoggerOptions),
-    );
-    return logger.start();
-  } catch (e) {
-    return () => {};
-  }
 }
