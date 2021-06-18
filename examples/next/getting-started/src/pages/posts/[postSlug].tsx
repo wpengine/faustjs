@@ -3,7 +3,6 @@ import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import type { Post } from '@wpengine/headless-core';
-import styles from 'scss/pages/post.module.scss';
 
 export interface PostProps {
   post: Post | Post['preview']['node'] | null | undefined;
@@ -22,12 +21,15 @@ export function PostComponent({ post, preview }: PostProps) {
           title={generalSettings.title}
           description={generalSettings.description}
         />
+
         <Hero title={'Loading...'} />
+
         <main className="content content-single">
           <div className="wrap">
             <div>Loading...</div>
           </div>
         </main>
+
         <Footer copyrightHolder={generalSettings.title} />
       </>
     );
@@ -48,7 +50,8 @@ export function PostComponent({ post, preview }: PostProps) {
 
       <Hero title={post?.title()} bgImage={post?.featuredImageId} />
 
-      <main className="content content-single">
+      <main
+        className="content content-single">
         <div className="wrap">
           <div dangerouslySetInnerHTML={{ __html: post?.content() ?? '' }} />
         </div>
