@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { WPPageInfo } from '@wpengine/headless-core';
 
 interface NextPageNavigationProps {
   href: string;
@@ -25,7 +26,7 @@ function PreviousPageNavigation(props: PreviousPageNavigationProps) {
 }
 
 export interface PaginationProps {
-  pageInfo: any;
+  pageInfo: WPPageInfo;
   basePath: string;
 }
 
