@@ -22,7 +22,7 @@ export function PostComponent({ post, preview }: PostProps) {
           description={generalSettings.description}
         />
 
-        <Hero title={'Loading...'} />
+        <Hero title="Loading..." />
 
         <main className="content content-single">
           <div className="wrap">
