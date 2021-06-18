@@ -18,8 +18,8 @@
 			"esnext"
 		],
 		"typeRoots": [
-			"src/types",
-			"node_modules/@types"
+			"node_modules/@types",
+			"../../node_modules/@types"
 		],
 		"jsx": "react"
 	},
@@ -29,8 +29,7 @@
 		"excludeExternals": true
 	},
 	"include": [
-		"src",
-		"src/types/wpgraphql.d.ts"
+		"src"
 	],
 	"exclude": [
 		"node_modules",

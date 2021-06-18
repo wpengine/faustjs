@@ -1,14 +1,15 @@
 name: test
 on: pull_request
 jobs:
-  packages:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Bootstrap dependencies
-        run: npm run bootstrap
-        env:
-          CI: TRUE
-      - name: Run tests
-        run:  npm run test
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '15'
+      - run: npm i -g npm@7 --registry=https://registry.npmjs.org
+      - run: npm install
+      - run: npm run build
+      - run: npm test
         continue-on-error: FALSE

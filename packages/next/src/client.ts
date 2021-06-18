@@ -12,17 +12,19 @@ import {
   GeneratedSchema,
   PostIdType,
   PageIdType,
+  ensureAuthorization,
 } from '@wpengine/headless-core';
+import { useEffect, useRef } from 'react';
+import isString from 'lodash/isString';
 import {
   hasCategoryId,
   hasCategorySlug,
+  HasObject,
   hasPageId,
   hasPageUri,
-  hasPagePreviewUri,
   hasPostId,
   hasPostSlug,
   hasPostUri,
-  hasPostPreviewUri,
 } from './utils';
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
@@ -51,11 +53,40 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const { useQuery } = reactClient as ReactClient<GeneratedSchema>;
 
-  const usePosts: Schema['query']['posts'] = (args) => {
-    return useQuery().posts(args);
-  };
+  function usePosts(
+    args?: Parameters<Schema['query']['posts']>[0],
+  ): ReturnType<Schema['query']['posts']> {
+    const router = useRouter();
+    const { posts } = useQuery();
 
-  const usePost: Schema['query']['post'] = (args) => {
+    if (!isObject(args)) {
+      const { query } = router;
+
+      if (hasCategoryId(query)) {
+        return posts({
+          where: {
+            categoryId: Number(query.categoryId),
+          },
+        }) as ReturnType<Schema['query']['posts']>;
+      }
+
+      if (hasCategorySlug(query)) {
+        return posts({
+          where: {
+            categoryName: query.categorySlug,
+          },
+        }) as ReturnType<Schema['query']['posts']>;
+      }
+    }
+
+    return posts(args as Parameters<Schema['query']['posts']>[0]) as ReturnType<
+      Schema['query']['posts']
+    >;
+  }
+
+  function usePost(
+    args?: Parameters<Schema['query']['post']>[0],
+  ): ReturnType<Schema['query']['post']> {
     const router = useRouter();
     const { post } = useQuery();
 
@@ -66,37 +97,34 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
         return post({
           id: query.postId,
           idType: PostIdType.ID,
-        });
+        }) as ReturnType<Schema['query']['post']>;
       }
       if (hasPostSlug(query)) {
         return post({
           id: query.postSlug,
           idType: PostIdType.SLUG,
-        });
+        }) as ReturnType<Schema['query']['post']>;
       }
       if (hasPostUri(query)) {
         return post({
           id: query.postUri.join('/'),
           idType: PostIdType.URI,
-        });
-      }
-      if (hasPostPreviewUri(query)) {
-        return post({
-          id: query.postPreviewUri.join('/'),
-          idType: PostIdType.URI,
-          asPreview: true,
-        });
+        }) as ReturnType<Schema['query']['post']>;
       }
     }
 
-    return post(args);
-  };
+    return post(args as Parameters<Schema['query']['post']>[0]) as ReturnType<
+      Schema['query']['post']
+    >;
+  }
 
   const usePages: Schema['query']['pages'] = (args) => {
     return useQuery().pages(args);
   };
 
-  const usePage: Schema['query']['page'] = (args) => {
+  function usePage(
+    args?: Parameters<Schema['query']['page']>[0],
+  ): ReturnType<Schema['query']['page']> {
     const router = useRouter();
     const { page } = useQuery();
 
@@ -107,27 +135,70 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
         return page({
           id: query.pageId,
           idType: PageIdType.ID,
-        });
+        }) as ReturnType<Schema['query']['page']>;
       }
       if (hasPageUri(query)) {
         return page({
           id: query.pageUri.join('/'),
           idType: PageIdType.URI,
-        });
-      }
-      if (hasPagePreviewUri(query)) {
-        return page({
-          id: query.pagePreviewUri.join('/'),
-          idType: PageIdType.URI,
-          asPreview: true,
-        });
+        }) as ReturnType<Schema['query']['page']>;
       }
     }
 
-    return page(args);
-  };
+    return page(args as Parameters<Schema['query']['page']>[0]) as ReturnType<
+      Schema['query']['page']
+    >;
+  }
 
-  const useCategory: Schema['query']['category'] = (args) => {
+  /* eslint-disable consistent-return */
+
+  function usePreview(
+    args: Record<'pageId', string>,
+  ): ReturnType<Schema['query']['page']>;
+  function usePreview(
+    args: Record<'postId', string>,
+  ): ReturnType<Schema['query']['post']>;
+  function usePreview(
+    args: HasObject,
+  ): ReturnType<Schema['query']['page'] | Schema['query']['post']> | undefined {
+    useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      const authResult = ensureAuthorization(window.location.href);
+
+      if (!isString(authResult) && isString(authResult?.redirect)) {
+        setTimeout(() => {
+          window.location.replace(authResult?.redirect as string);
+        }, 200);
+      }
+    }, []);
+
+    const { post, page } = useQuery();
+
+    const pagePreview = page({
+      id: (args?.pageId as string) ?? '',
+      idType: PageIdType.DATABASE_ID,
+    }) as ReturnType<Schema['query']['page']>;
+
+    const postPreview = post({
+      id: (args?.postId as string) ?? '',
+      idType: PostIdType.DATABASE_ID,
+    }) as ReturnType<Schema['query']['post']>;
+
+    if (hasPageId(args)) {
+      return pagePreview;
+    }
+    if (hasPostId(args)) {
+      return postPreview;
+    }
+  }
+  /* eslint-enable consistent-return */
+
+  function useCategory(
+    args?: Parameters<Schema['query']['category']>[0],
+  ): ReturnType<Schema['query']['category']> {
     const router = useRouter();
     const { category } = useQuery();
 
@@ -138,31 +209,53 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
         return category({
           id: query.categoryId,
           idType: CategoryIdType.ID,
-        });
+        }) as ReturnType<Schema['query']['category']>;
       }
       if (hasCategorySlug(query)) {
         return category({
           id: query.categorySlug,
           idType: CategoryIdType.SLUG,
-        });
+        }) as ReturnType<Schema['query']['category']>;
       }
     }
 
-    return category(args);
-  };
+    return category(
+      args as Parameters<Schema['query']['category']>[0],
+    ) as ReturnType<Schema['query']['category']>;
+  }
 
   const useGeneralSettings: () => Schema['query']['generalSettings'] = () => {
     return useQuery().generalSettings;
   };
 
+  const useHydrateCache: typeof reactClient.useHydrateCache = ({
+    cacheSnapshot,
+    shouldRefetch,
+  }) => {
+    const snapshotCache = useRef('');
+    if (isString(cacheSnapshot) && snapshotCache.current !== cacheSnapshot) {
+      snapshotCache.current = cacheSnapshot;
+
+      coreClient.hydrateCache({ cacheSnapshot, shouldRefetch: false });
+    }
+
+    useEffect(() => {
+      if (shouldRefetch) {
+        coreClient.refetch(coreClient.query).catch(console.error);
+      }
+    }, [shouldRefetch]);
+  };
+
   return {
     client: coreClient,
     ...reactClient,
+    useHydrateCache,
     useCategory,
     usePosts,
     usePost,
     usePages,
     usePage,
+    usePreview,
     useGeneralSettings,
   };
 }

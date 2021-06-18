@@ -109,7 +109,7 @@ let configSet = false;
 export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
   const cfg = defaults({}, config, {
     blogUrlPrefix: '',
-    apiUrl: config.wpUrl,
+    apiUrl: '',
     apiEndpoint: '/api/auth/wpe-headless',
   });
 

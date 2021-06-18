@@ -76,7 +76,11 @@ export function parseUrl(url: string | undefined): ParsedUrlInfo | undefined {
 
   const parsed = URL_REGEX.exec(url);
 
-  if (!isArrayLike(parsed) || isEmpty(parsed) || isUndefined(parsed[4])) {
+  if (
+    !isArrayLike(parsed) ||
+    isEmpty(parsed) ||
+    (isUndefined(parsed[4]) && url[0] !== '/')
+  ) {
     return;
   }
 

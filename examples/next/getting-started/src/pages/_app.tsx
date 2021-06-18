@@ -1,6 +1,7 @@
 import { headlessConfig } from '@wpengine/headless-core';
-import { HeadlessProvider } from '@wpengine/headless-react';
+import { HeadlessProvider } from '@wpengine/headless-next';
 import 'normalize.css/normalize.css';
+import React from 'react';
 import 'scss/main.scss';
 
 headlessConfig({
@@ -10,9 +11,11 @@ headlessConfig({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <HeadlessProvider pageProps={pageProps}>
-      <Component {...pageProps} />
-    </HeadlessProvider>
+    <>
+      <HeadlessProvider pageProps={pageProps}>
+        <Component {...pageProps} />
+      </HeadlessProvider>
+    </>
   );
 }
 

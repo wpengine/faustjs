@@ -1,4 +1,4 @@
-import isNull from 'lodash/isNull';
+import isNil from 'lodash/isNil';
 import React from 'react';
 import { client } from './client';
 import { CLIENT_CACHE_PROP, PageProps } from './getProps';
@@ -16,8 +16,7 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
 
   useHydrateCache({
-    cacheSnapshot: isNull(cacheSnapshot) ? undefined : cacheSnapshot,
-    shouldRefetch: false,
+    cacheSnapshot: isNil(cacheSnapshot) ? undefined : cacheSnapshot,
   });
 
   return (

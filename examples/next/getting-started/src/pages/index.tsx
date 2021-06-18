@@ -1,34 +1,30 @@
-import { getApolloClient, getPosts } from '@wpengine/headless-core';
-import { getNextStaticProps } from '@wpengine/headless-next';
-import { useGeneralSettings, usePosts } from '@wpengine/headless-react';
+import { client, getNextStaticProps } from '@wpengine/headless-next';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { CTA, Footer, Header, Hero, Posts } from 'components';
 import styles from 'scss/pages/home.module.scss';
 
-/**
- * Example of post variables to query the first six posts in a named category.
- * @see https://github.com/wpengine/headless-framework/tree/canary/docs/queries
- */
-const firstSixInCategory = {
-  variables: {
+export default function Page() {
+  const { usePosts, useGeneralSettings } = client();
+  const generalSettings = useGeneralSettings();
+  const posts = usePosts({
     first: 6,
-    where: { categoryName: 'uncategorized' }, // Omit this to get posts from all categories.
-  },
-};
-
-export default function FrontPage(): JSX.Element {
-  const posts = usePosts(firstSixInCategory);
-  const settings = useGeneralSettings();
+    where: {
+      categoryName: 'uncategorized',
+    },
+  });
 
   return (
     <>
-      <Header title={settings?.title} description={settings?.description} />
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
 
       <Head>
         <title>
-          {settings?.title} - {settings?.description}
+          {generalSettings.title} - {generalSettings.description}
         </title>
       </Head>
 
@@ -48,8 +44,8 @@ export default function FrontPage(): JSX.Element {
               headless WordPress plugin
             </a>
             ,{' '}
-            <a href="https://www.npmjs.com/package/@wpengine/headless">
-              headless package
+            <a href="https://github.com/wpengine/headless-framework">
+              headless packages
             </a>
             , and <a href="https://developers.wpengine.com/">tutorials</a> to
             make building headless WordPress sites fast and fun.
@@ -62,33 +58,34 @@ export default function FrontPage(): JSX.Element {
               This headless example project uses{' '}
               <a href="https://nextjs.org/">Next.js</a>,{' '}
               <a href="https://graphql.org/">GraphQL</a>,{' '}
-              <a href="https://www.apollographql.com/">Apollo</a> and the{' '}
-              <a href="https://www.npmjs.com/package/@wpengine/headless">
-                WP&nbsp;Engine headless package
+              <a href="https://gqless.com">GQless</a> and the{' '}
+              <a href="https://github.com/wpengine/headless-framework">
+                WP&nbsp;Engine headless packages
               </a>{' '}
               for WordPress integration. Dive in and edit this template at{' '}
-              <code>pages/index.tsx</code> or discover more below.
+              <code>src/pages/index.tsx</code> or discover more below.
             </p>
             <div className={styles.features}>
               <div className={styles.feature}>
                 <h3>Global Styles and Fonts</h3>
                 <p>
                   Add styles to load on every page, such as typography and
-                  layout rules, in <code>scss/main.scss</code>. The project adds{' '}
+                  layout rules, in <code>src/scss/main.scss</code>. The project
+                  adds{' '}
                   <a href="https://necolas.github.io/normalize.css/">
                     normalize.css
                   </a>{' '}
-                  in <code>pages/_app.tsx</code>. Google Fonts are enqueued in{' '}
-                  <code>components/Header.tsx</code>.
+                  in <code>src/pages/_app.tsx</code>. Google Fonts are enqueued
+                  in <code>src/pages/_document.tsx</code>.
                 </p>
               </div>
 
               <div className={styles.feature}>
                 <h3>Components</h3>
                 <p>
-                  Add or edit components in the <code>components/</code> folder.
-                  Find component styles at <code>scss/components</code>, which
-                  use{' '}
+                  Add or edit components in the <code>src/components</code>{' '}
+                  folder. Find component styles at{' '}
+                  <code>src/scss/components</code>, which use{' '}
                   <a href="https://nextjs.org/docs/basic-features/built-in-css-support#adding-component-level-css">
                     CSS modules
                   </a>{' '}
@@ -103,16 +100,16 @@ export default function FrontPage(): JSX.Element {
                   <code>usePosts</code>, <code>useGeneralSettings</code> and
                   other custom hooks. Use these hooks in your page templates to
                   pass data to custom components. See{' '}
-                  <code>pages/index.tsx</code> for examples.
+                  <code>src/pages/index.tsx</code> for examples.
                 </p>
               </div>
             </div>
           </div>
         </section>
         <Posts
-          posts={posts?.nodes}
+          posts={posts.nodes}
           heading="Latest Posts"
-          intro="The Posts component in pages/index.tsx shows the latest six posts from the connected WordPress site."
+          intro="The Posts component in src/pages/index.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"
           postTitleLevel="h3"
           id={styles.post_list}
@@ -131,22 +128,13 @@ export default function FrontPage(): JSX.Element {
           </p>
         </CTA>
       </main>
-      <Footer copyrightHolder={settings?.title} />
+      <Footer copyrightHolder={generalSettings.title} />
     </>
   );
 }
 
-/**
- * Get additional data from WordPress that is specific to this template.
- *
- * Here we retrieve the latest six WordPress posts in a named category to
- * display at the bottom of the front page.
- *
- * @see https://github.com/wpengine/headless-framework/tree/canary/docs/queries
- */
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const client = getApolloClient(context);
-  await getPosts(client, firstSixInCategory);
-
-  return getNextStaticProps(context);
+  return getNextStaticProps(context, {
+    Page,
+  });
 }
