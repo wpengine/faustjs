@@ -1,24 +1,20 @@
-import { client } from '@wpengine/headless-next';
-import { useRouter } from 'next/router';
-import { PageComponent } from './[...pageUri]';
-import type { Page, Post } from '@wpengine/headless-core';
-import { PostComponent } from './posts/[postSlug]';
+import { client } from "@wpengine/headless-next";
+import { useRouter } from "next/router";
+import { PageComponent } from "./[...pageUri]";
+import type { Page, Post } from "@wpengine/headless-core";
+import { PostComponent } from "./posts/[postSlug]";
 
 export default function Preview() {
-  const { query: { p, page_id }} = useRouter();
+  const {
+    query: { p, page_id },
+  } = useRouter();
   const { usePreview } = client();
   const isPage = !!page_id;
-  let postOrPage: Page | Post | null;
 
-  if (isPage) {
-    postOrPage = usePreview({
-      pageId: p as string,
-    });
-  } else {
-    postOrPage = usePreview({
-      postId: p as string,
-    });
-  }
+  const postOrPage: unknown = usePreview({
+    pageId: isPage ? (p as string) : undefined,
+    postId: !isPage ? (p as string) : undefined,
+  } as any);
 
   if (postOrPage === null) {
     return <>Not Found</>;
