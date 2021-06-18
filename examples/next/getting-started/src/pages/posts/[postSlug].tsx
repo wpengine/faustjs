@@ -48,10 +48,12 @@ export function PostComponent({ post, preview }: PostProps) {
         </title>
       </Head>
 
-      <Hero title={post?.title()} bgImage={post?.featuredImageId} />
+      <Hero
+        title={post?.title()}
+        bgImage={post?.featuredImage?.node?.sourceUrl()}
+      />
 
-      <main
-        className="content content-single">
+      <main className="content content-single">
         <div className="wrap">
           <div dangerouslySetInnerHTML={{ __html: post?.content() ?? '' }} />
         </div>

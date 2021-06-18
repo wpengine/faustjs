@@ -21,7 +21,10 @@ export default function Page() {
         </title>
       </Head>
 
-      <Hero title={page.title()} bgImage={page.featuredImageId} />
+      <Hero
+        title={page.title()}
+        bgImage={page?.featuredImage?.node.sourceUrl()}
+      />
 
       <main className="content content-single">
         <div className="wrap">
