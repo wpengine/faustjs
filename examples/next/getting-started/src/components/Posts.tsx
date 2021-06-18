@@ -1,14 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import { Post } from '@wpengine/headless-core';
 import styles from 'scss/components/Posts.module.scss';
 import Heading, { HeadingProps } from './Heading';
-
-export interface Post {
-  id: string;
-  slug?: string;
-  title(): string;
-  excerpt(): string;
-}
 
 interface Props {
   posts: Post[] | undefined;
@@ -41,32 +35,29 @@ function Posts({
         {intro && <p className={styles.intro}>{intro}</p>}
         <div className="posts">
           {posts.map((post) => (
-              <div
-                className={styles.single}
-                key={post.id ?? ''}
-                id={`post-${post.id}`}>
-                <div>
-                  <Heading level={postTitleLevel} className={styles.title}>
-                    <Link href={`/posts/${post.slug}`}>
-                      <a>{post.title()}</a>
-                    </Link>
-                  </Heading>
-                  <div
-                    className={styles.excerpt}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{ __html: post.excerpt() ?? '' }}
-                  />
+            <div
+              className={styles.single}
+              key={post.id ?? ''}
+              id={`post-${post.id}`}>
+              <div>
+                <Heading level={postTitleLevel} className={styles.title}>
                   <Link href={`/posts/${post.slug}`}>
-                    <a
-                      aria-label={`Read more about ${
-                        post.title || 'the post'
-                      }`}>
-                      {readMoreText}
-                    </a>
+                    <a>{post.title()}</a>
                   </Link>
-                </div>
+                </Heading>
+                <div
+                  className={styles.excerpt}
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={{ __html: post.excerpt() ?? '' }}
+                />
+                <Link href={`/posts/${post.slug}`}>
+                  <a aria-label={`Read more about ${post.title || 'the post'}`}>
+                    {readMoreText}
+                  </a>
+                </Link>
               </div>
-            ))}
+            </div>
+          ))}
           {posts && posts?.length < 1 && <p>No posts found.</p>}
         </div>
       </div>
