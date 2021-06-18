@@ -52,7 +52,7 @@
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.170",
-    "@types/node": "^15.12.2",
+    "@types/node": "^15.12.3",
     "@types/webpack-env": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
@@ -68,6 +68,6 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.6",
     "ts-loader": "^9.2.3",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.4"
   }
 }
