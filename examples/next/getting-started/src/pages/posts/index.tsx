@@ -11,7 +11,7 @@ const POSTS_PER_PAGE = 6;
 export default function Page() {
   const { query = {} } = useRouter();
   const { postSlug, postCursor } = query;
-  const { usePosts, useGeneralSettings, useQuery, } = client();
+  const { usePosts, useGeneralSettings, useQuery } = client();
   const generalSettings = useGeneralSettings();
   const isBefore = postSlug === 'before';
   const posts = usePosts({
@@ -42,7 +42,6 @@ export default function Page() {
         <Posts
           posts={posts.nodes}
           heading="Blog Posts"
-          intro="The Posts component in pages/index.tsx shows the latest six posts from the connected WordPress site."
           headingLevel="h2"
           postTitleLevel="h3"
           id={styles.post_list}

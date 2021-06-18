@@ -7,10 +7,11 @@ import { useRouter } from 'next/router';
 const POSTS_PER_PAGE = 6;
 
 export default function Page() {
-  const { useGeneralSettings, usePosts } = client();
+  const { useGeneralSettings, usePosts, useCategory } = client();
   const { query = {} } = useRouter();
   const { categorySlug, paginationTerm, categoryCursor } = query;
   const generalSettings = useGeneralSettings();
+  const category = useCategory();
   const isBefore = paginationTerm === 'before';
   const posts = usePosts({
     after: !isBefore ? (categoryCursor as string) : undefined,
@@ -33,13 +34,16 @@ export default function Page() {
         <title>Posts - {generalSettings?.title}</title>
       </Head>
 
-      <main className="content content-index">
-        <Posts posts={posts.nodes} />
+      <main className="content content-single">
+        <div className="wrap">
+          <h2>Category: {category?.name}</h2>
+          <Posts posts={posts.nodes} />
 
-        <Pagination
-          pageInfo={posts.pageInfo}
-          basePath={`/category/${categorySlug}`}
-        />
+          <Pagination
+            pageInfo={posts.pageInfo}
+            basePath={`/category/${categorySlug}`}
+          />
+        </div>
       </main>
 
       <Footer copyrightHolder={generalSettings.title} />
