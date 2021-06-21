@@ -176,59 +176,6 @@ jobs:
           json: build/<<parameters.slug>>.$BUILD_VERSION.json
           version: $BUILD_VERSION
 
-  package-build:
-    executor:
-      name: node/default
-      tag: lts
-    working_directory: ~/project/packages/headless
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - node/install-packages
-      - run:
-          name: NPM package install and build
-          command: |
-            npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - packages/headless
-
-  package-test:
-    executor:
-      name: node/default
-      tag: lts
-    working_directory: ~/project/packages/headless
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - node/install-packages
-      - run:
-          name: NPM package tests
-          command: |
-            npm run test
-
-  package-publish:
-    executor:
-      name: node/default
-      tag: lts
-    working_directory: ~/project/packages/headless
-    parameters:
-      args:
-        type: string
-        default: --dry-run
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          name: Authenticate with registry
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_API_KEY" > ~/project/packages/headless/.npmrc
-      - run:
-          name: NPM package publish
-          command: |
-            npm publish <<parameters.args>>
-
-
 workflows:
   # Workflows defined for each package and plugin.
   # tag example for deploying an update for wpe-headless: plugin/wpe-headless/1.0.0
