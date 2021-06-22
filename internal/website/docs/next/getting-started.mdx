@@ -1,0 +1,72 @@
+---
+id: next-getting-started
+slug: 'getting-started'
+title: Getting Started
+---
+
+# Getting Started with Next.js
+
+## Quick Start
+
+Please install our Next.js Getting Started example using the following command:
+
+```bash
+npx create-next-app \
+    -e https://github.com/wpengine/headless-framework/tree/canary \
+    --example-path examples/next/getting-started \
+    --use-npm \
+    my-app
+cd my-app
+```
+
+Now, copy the sample environment template:
+
+```bash
+cp .env.local.sample .env.local
+```
+
+Finally, run the dev server:
+
+```bash
+npm run dev
+```
+
+You can now visit [http://localhost:3000](http://localhost:3000) to see the example site!
+
+<p align="center">
+    <video src="/docs/video/next/getting-started-next-example.mp4" muted autoPlay playsInline controls loop />
+</p>
+
+Currently, the posts and pages you see are coming from our WordPress site at [https://headlessfw.wpengine.com](https://headlessfw.wpengine.com). In the next step, we'll show you how to hook up your own WordPresss site.
+
+## Connecting your WordPress site
+
+The example app above loads WordPress content from the demo site at [https://headlessfw.wpengine.com](https://headlessfw.wpengine.com).
+
+To point it to a different WordPress site, first, [make sure you have setup the necessary WordPress plugins.](/plugin-setup)
+
+Once the necessary plugins have been installed, open the `.env.local` file you created earlier, it should look something like this:
+
+```bash
+# Either WORDPRESS_URL or NEXT_PUBLIC_WORDPRESS_URL need to be populated. Not both!
+#
+# Setting WORDPRESS_URL instead of NEXT_PUBLIC_WORDPRESS_URL will limit requests to the WordPress backend
+# to only come from the Node.js server.
+#
+# Setting NEXT_PUBLIC_WORDPRESS_URL instead of WORDPRESS_URL will allow requests to come from the client-side which may
+# reduce site performance and put extra load on the WordPress backend.
+#
+# NOTE: In order for previews to work you must use NEXT_PUBLIC_WORDPRESS_URL
+
+NEXT_PUBLIC_WORDPRESS_URL=https://headlessfw.wpengine.com
+# WORDPRESS_URL=https://headlessfw.wpengine.com
+
+# Plugin secret found in WordPress Settings->Headless
+WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+```
+
+Update the `NEXT_PUBLIC_WORDPRESS_URL` value with your WordPress site URL (be sure to include `http://` or `https://`).
+
+Additionally, update the `WP_HEADLESS_SECRET` value with the secret key found in Settings → Headless in your WordPress admin area to support previews.
+    
+<img src="/docs/img/headless-admin-secret.png" alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field" />
