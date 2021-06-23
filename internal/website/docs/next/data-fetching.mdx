@@ -1,0 +1,129 @@
+---
+id: next-data-fetching
+slug: data-fetching
+title: Data Fetching
+sidebar_position: 2
+---
+
+# Data Fetching
+
+The Headless Framework uses [GQless](https://gqless.com/react/fetching-data) under the hood for its GraphQL client. GQless preforms an invisible render of the React component to identify what data is needed. [Learn more about how GQless works.](https://gqless.com/intro/how-it-works)
+
+## Hooks
+
+### `usePost`
+
+A hook to retrieve a single post.
+
+The `usePost` hook in Next.js will look for the following params in `getStaticProps`/`getServerSideProps` context to determine what post to fetch:
+
+* `[postSlug]`
+* `[postId]`
+* `[postUri]`
+
+```tsx title="/src/pages/posts/[postSlug].tsx" {6,10,11}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost();
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+Or, you can fetch a specific post:
+
+```tsx {4-9,13-16}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+enum PostIdType {
+    DATABASE_ID = "DATABASE_ID",
+    ID = "ID",
+    SLUG = "SLUG",
+    URI = "URI"
+}
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost({
+    id: 'hello-world',
+    idType: PostIdType.SLUG
+  })
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+### `usePosts`
+
+A hook to retrieve multiple posts.
+
+```tsx title="src/pages/index.tsx" {6-8,14-16}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Home() {
+  const { usePosts } = client();
+  const posts = usePosts({
+    first: 6,
+  });
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      <ul>
+        {posts?.nodes.map((post) => (
+          <li key={post.id}>{post.title()}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: Home,
+  });
+}
+```
+
+For an example of `usePosts` with pagination, [take a look at our Next.js getting started example.](https://github.com/wpengine/headless-framework/blob/canary/examples/next/getting-started/src/pages/posts/index.tsx#L17-L22)
