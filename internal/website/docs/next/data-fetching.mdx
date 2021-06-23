@@ -19,7 +19,7 @@ The `usePost` hook in Next.js will look for the following params in `getStaticPr
 
 * `[postSlug]`
 * `[postId]`
-* `[postUri]`
+* `[...postUri]`
 
 ```tsx title="/src/pages/posts/[postSlug].tsx" {6,10,11}
 import { client, getNextStaticProps } from '@wpengine/headless-next';
@@ -127,3 +127,84 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 ```
 
 For an example of `usePosts` with pagination, [take a look at our Next.js getting started example.](https://github.com/wpengine/headless-framework/blob/canary/examples/next/getting-started/src/pages/posts/index.tsx#L17-L22)
+
+### `usePage`
+
+A hook to retrieve a single page.
+
+The `usePage` hook in Next.js will look for the following params in `getStaticProps`/`getServerSideProps` context to determine what page to fetch:
+
+* `[pageId]`
+* `[...pageUri]`
+
+```tsx title="/src/pages/[...pageUri].tsx" {6,10,11}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePage } = client();
+  const page = usePage();
+
+  return (
+    <article>
+      <h1>{page?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: page?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+Or, you can fetch a specific page:
+
+```tsx {4-8,12-15,19-20}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+enum PageIdType {
+  DATABASE_ID = 'DATABASE_ID',
+  ID = 'ID',
+  URI = 'URI',
+}
+
+export default function Page() {
+  const { usePage } = client();
+  const page = usePage({
+    id: 'sample-page',
+    idType: PageIdType.URI,
+  });
+
+  return (
+    <article>
+      <h1>{page?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: page?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+
+```
