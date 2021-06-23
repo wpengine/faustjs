@@ -87,7 +87,7 @@ module.exports = {
       copyright: `&copy; ${new Date().getFullYear()} WPEngine, Inc. All rights reserved.`,
     },
     prism: {
-      theme: darkCodeTheme,
+      theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
     },
   },

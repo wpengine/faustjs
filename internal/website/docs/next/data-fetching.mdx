@@ -9,6 +9,32 @@ sidebar_position: 2
 
 The Headless Framework uses [GQless](https://gqless.com/react/fetching-data) under the hood for its GraphQL client. GQless preforms an invisible render of the React component to identify what data is needed. [Learn more about how GQless works.](https://gqless.com/intro/how-it-works)
 
+## `<HeadlessProvider />` Component
+
+The `<HeadlessProvider />` component is required to faciliate the client side caching and rehydration. This component is typically applied in the `_app.tsx`:
+
+```tsx title="/src/pages/_app.tsx" {2,12-14}
+import { headlessConfig } from '@wpengine/headless-core';
+import { HeadlessProvider } from '@wpengine/headless-next';
+
+headlessConfig({
+  wpUrl: process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+});
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <HeadlessProvider pageProps={pageProps}>
+        <Component {...pageProps} />
+      </HeadlessProvider>
+    </>
+  );
+}
+
+export default MyApp;
+```
+
 ## Hooks
 
 ### `usePost`
