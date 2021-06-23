@@ -206,5 +206,24 @@ export function getStaticPaths() {
     fallback: 'blocking',
   };
 }
+```
 
+### `useGeneralSettings`
+
+A hook to retrieve the WordPress sites' general settings.
+
+```tsx title="/src/components/header.tsx" {5,9-10}
+import { client } from '@wpengine/headless-next';
+
+export default function Header() {
+  const { useGeneralSettings } = client();
+  const generalSettings = useGeneralSettings();
+
+  return (
+    <header>
+      <h2>{generalSettings?.title}</h2>
+      <p>{generalSettings?.description}</p>
+    </header>
+  );
+}
 ```
