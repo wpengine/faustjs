@@ -8,12 +8,13 @@ import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 import {
   CategoryIdType,
-  client as createClient,
-  GeneratedSchema,
-  PostIdType,
+  ClientConfig,
+  getClient as getCoreClient,
   PageIdType,
+  PostIdType,
   ensureAuthorization,
 } from '@wpengine/headless-core';
+import type { RequiredSchema } from '@wpengine/headless-react';
 import { useEffect, useRef } from 'react';
 import isString from 'lodash/isString';
 import {
@@ -26,12 +27,24 @@ import {
   hasPostSlug,
   hasPostUri,
 } from './utils';
+import { defaults } from 'lodash';
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
-export function client<Schema extends GeneratedSchema = GeneratedSchema>(
+export function getClient<
+  Schema extends RequiredSchema,
+  ObjectTypesNames extends string = never,
+  ObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+>(
+  clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
   createReactClientOpts?: CreateReactClientOptions,
 ) {
-  const coreClient = createClient<Schema>();
+  const coreClient = getCoreClient<Schema, ObjectTypesNames, ObjectTypes>(
+    clientConfig,
+  );
 
   let reactClientOpts: CreateReactClientOptions = {
     defaults: {
@@ -51,37 +64,28 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const { useQuery } = reactClient as ReactClient<GeneratedSchema>;
+  const { useQuery } = reactClient as ReactClient<Schema>;
 
   function usePosts(
     args?: Parameters<Schema['query']['posts']>[0],
   ): ReturnType<Schema['query']['posts']> {
-    const router = useRouter();
+    const { query } = useRouter();
     const { posts } = useQuery();
+    const params = defaults({}, args);
 
-    if (!isObject(args)) {
-      const { query } = router;
-
-      if (hasCategoryId(query)) {
-        return posts({
-          where: {
-            categoryId: Number(query.categoryId),
-          },
-        }) as ReturnType<Schema['query']['posts']>;
-      }
-
-      if (hasCategorySlug(query)) {
-        return posts({
-          where: {
-            categoryName: query.categorySlug,
-          },
-        }) as ReturnType<Schema['query']['posts']>;
-      }
+    if (hasCategoryId(query)) {
+      params.where = {
+        categoryId: Number(query.categoryId),
+        ...params.where,
+      };
+    } else if (hasCategorySlug(query)) {
+      params.where = {
+        categoryName: query.categorySlug,
+        ...params.where,
+      };
     }
 
-    return posts(args as Parameters<Schema['query']['posts']>[0]) as ReturnType<
-      Schema['query']['posts']
-    >;
+    return posts(params) as ReturnType<Schema['query']['posts']>;
   }
 
   function usePost(
@@ -89,31 +93,39 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   ): ReturnType<Schema['query']['post']> {
     const router = useRouter();
     const { post } = useQuery();
+    let params: Partial<Parameters<Schema['query']['post']>[0]> = defaults(
+      {},
+      args,
+    );
+    const { query } = router;
 
-    if (!isObject(args)) {
-      const { query } = router;
-
-      if (hasPostId(query)) {
-        return post({
-          id: query.postId,
-          idType: PostIdType.ID,
-        }) as ReturnType<Schema['query']['post']>;
-      }
-      if (hasPostSlug(query)) {
-        return post({
-          id: query.postSlug,
-          idType: PostIdType.SLUG,
-        }) as ReturnType<Schema['query']['post']>;
-      }
-      if (hasPostUri(query)) {
-        return post({
-          id: query.postUri.join('/'),
-          idType: PostIdType.URI,
-        }) as ReturnType<Schema['query']['post']>;
-      }
+    if (hasPostId(query)) {
+      params = {
+        id: query.postId,
+        idType: PostIdType.ID,
+        ...params,
+      };
+    } else if (hasPostSlug(query)) {
+      params = {
+        id: query.postSlug,
+        idType: PostIdType.SLUG,
+        ...params,
+      };
+    } else if (hasPostUri(query)) {
+      params = {
+        id: query.postUri.join('/'),
+        idType: PostIdType.URI,
+        ...params,
+      };
     }
 
-    return post(args as Parameters<Schema['query']['post']>[0]) as ReturnType<
+    if (!isString(params.id)) {
+      throw new Error(
+        'Invalid parameters for usePost, you must send in an id or specify known URL params in your config',
+      );
+    }
+
+    return post(params as Parameters<Schema['query']['post']>[0]) as ReturnType<
       Schema['query']['post']
     >;
   }
@@ -125,27 +137,35 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   function usePage(
     args?: Parameters<Schema['query']['page']>[0],
   ): ReturnType<Schema['query']['page']> {
-    const router = useRouter();
+    const { query } = useRouter();
     const { page } = useQuery();
+    let params: Partial<Parameters<Schema['query']['page']>[0]> = defaults(
+      {},
+      args,
+    );
 
-    if (!isObject(args)) {
-      const { query } = router;
-
-      if (hasPageId(query)) {
-        return page({
-          id: query.pageId,
-          idType: PageIdType.ID,
-        }) as ReturnType<Schema['query']['page']>;
-      }
-      if (hasPageUri(query)) {
-        return page({
-          id: query.pageUri.join('/'),
-          idType: PageIdType.URI,
-        }) as ReturnType<Schema['query']['page']>;
-      }
+    if (hasPageId(query)) {
+      params = {
+        id: query.pageId,
+        idType: PageIdType.ID,
+        ...params,
+      };
+    }
+    if (hasPageUri(query)) {
+      params = {
+        id: query.pageUri.join('/'),
+        idType: PageIdType.URI,
+        ...params,
+      };
     }
 
-    return page(args as Parameters<Schema['query']['page']>[0]) as ReturnType<
+    if (!isString(params.id)) {
+      throw new Error(
+        'Invalid parameters for usePage, you must send in an id or specify known URL params in your config',
+      );
+    }
+
+    return page(params as Parameters<Schema['query']['page']>[0]) as ReturnType<
       Schema['query']['page']
     >;
   }
@@ -199,28 +219,36 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   function useCategory(
     args?: Parameters<Schema['query']['category']>[0],
   ): ReturnType<Schema['query']['category']> {
-    const router = useRouter();
+    const { query } = useRouter();
     const { category } = useQuery();
+    let params: Partial<Parameters<Schema['query']['category']>[0]> = defaults(
+      {},
+      args,
+    );
 
-    if (!isObject(args)) {
-      const { query } = router;
+    if (hasCategoryId(query)) {
+      params = {
+        id: query.categoryId,
+        idType: CategoryIdType.ID,
+        ...params,
+      };
+    }
+    if (hasCategorySlug(query)) {
+      params = {
+        id: query.categorySlug,
+        idType: CategoryIdType.SLUG,
+        ...params,
+      };
+    }
 
-      if (hasCategoryId(query)) {
-        return category({
-          id: query.categoryId,
-          idType: CategoryIdType.ID,
-        }) as ReturnType<Schema['query']['category']>;
-      }
-      if (hasCategorySlug(query)) {
-        return category({
-          id: query.categorySlug,
-          idType: CategoryIdType.SLUG,
-        }) as ReturnType<Schema['query']['category']>;
-      }
+    if (!isString(params.id)) {
+      throw new Error(
+        'Invalid parameters for useCategory, you must send in an id or specify known URL params in your config',
+      );
     }
 
     return category(
-      args as Parameters<Schema['query']['category']>[0],
+      params as Parameters<Schema['query']['category']>[0],
     ) as ReturnType<Schema['query']['category']>;
   }
 
@@ -246,6 +274,10 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     }, [shouldRefetch]);
   };
 
+  const useIsLoading = () => {
+    return useQuery().$state.isLoading;
+  };
+
   return {
     client: coreClient,
     ...reactClient,
@@ -257,5 +289,6 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePage,
     usePreview,
     useGeneralSettings,
+    useIsLoading,
   };
 }

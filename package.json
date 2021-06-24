@@ -7,7 +7,6 @@
       "packages/react",
       "packages/next",
       "examples/next/getting-started",
-      "examples/next/custom-client",
       "examples/react/getting-started"
     ]
   },
@@ -20,8 +19,7 @@
     "clean:examples": "rimraf examples/**/node_modules",
     "lint": "npm run lint --workspace=@wpengine/headless-core --workspace=@wpengine/headless-react --workspace=@wpengine/headless-next",
     "lint:fix": "npm run lint:fix --workspace=@wpengine/headless-core --workspace=@wpengine/headless-react --workspace=@wpengine/headless-next",
-    "dev": "npm run dev:next:custom-client",
-    "dev:next:custom-client": "npm run dev ---workspace=examples/next/custom-client",
+    "dev": "npm run dev:next:getting-started",
     "dev:next:getting-started": "npm run dev ---workspace=examples/next/getting-started",
     "test": "npm test --workspace=@wpengine/headless-core --workspace=@wpengine/headless-react --workspace=@wpengine/headless-next",
     "minor": "npm version minor --git-tag-verion=false --workspace=@wpengine/headless-core --workspace=@wpengine/headless-react --workspace=@wpengine/headless-next",

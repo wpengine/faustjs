@@ -4,17 +4,58 @@ import {
   ReactClient,
 } from '@gqless/react';
 import {
-  client as createClient,
-  GeneratedSchema,
+  CategoryIdType,
+  ClientConfig,
+  getClient as getCoreClient,
+  PageIdType,
+  PostIdType,
 } from '@wpengine/headless-core';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 
+export interface Node {
+  id?: string | null;
+}
+
+export interface RequiredQuery {
+  posts: (args?: {
+    where?: {
+      categoryId?: number;
+      categoryName?: string;
+    };
+  }) => unknown;
+  post: (args: { id: string; idType?: PostIdType }) => Node | null | undefined;
+  pages: (args?: any) => unknown;
+  page: (args: { id: string; idType?: PageIdType }) => Node | null | undefined;
+  category: (args: {
+    id: string;
+    idType?: CategoryIdType;
+  }) => Node | null | undefined;
+  generalSettings?: unknown;
+}
+
+export interface RequiredSchema {
+  query: RequiredQuery;
+  mutation: any;
+  subscription: any;
+}
+
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
-export function client<Schema extends GeneratedSchema = GeneratedSchema>(
+export function getClient<
+  Schema extends RequiredSchema,
+  ObjectTypesNames extends string = never,
+  ObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+>(
+  clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
   createReactClientOpts?: CreateReactClientOptions,
 ) {
-  const coreClient = createClient<Schema>();
+  const coreClient = getCoreClient<Schema, ObjectTypesNames, ObjectTypes>(
+    clientConfig,
+  );
 
   let reactClientOpts: CreateReactClientOptions = {
     defaults: {
@@ -34,7 +75,7 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
   const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const { useQuery } = reactClient as ReactClient<GeneratedSchema>;
+  const { useQuery } = reactClient as ReactClient<Schema>;
 
   /**
    * React Hook for retrieving a list of posts from your WordPress site
@@ -183,14 +224,6 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     return useQuery().$state.isLoading;
   };
 
-  const usePostsFromCategory = (categorySlug: string) => {
-    return useQuery().posts({
-      where: {
-        categoryIn: [categorySlug],
-      },
-    });
-  };
-
   return {
     client: coreClient,
     ...reactClient,
@@ -201,6 +234,5 @@ export function client<Schema extends GeneratedSchema = GeneratedSchema>(
     usePage,
     useGeneralSettings,
     useIsLoading,
-    usePostsFromCategory,
   };
 }

@@ -1,4 +1,5 @@
-import { getNextStaticProps, client, is404 } from '@wpengine/headless-next';
+import { getNextStaticProps, is404 } from '@wpengine/headless-next';
+import { client } from 'client';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
@@ -10,7 +11,7 @@ export interface PostProps {
 }
 
 export function PostComponent({ post, preview }: PostProps) {
-  const { useGeneralSettings, useQuery } = client();
+  const { useGeneralSettings, useQuery } = client;
   const generalSettings = useGeneralSettings();
   const { isLoading } = useQuery().$state;
 
@@ -65,14 +66,14 @@ export function PostComponent({ post, preview }: PostProps) {
 }
 
 export default function Page() {
-  const { usePost } = client();
+  const { usePost } = client;
   const post = usePost();
 
   return <PostComponent post={post} />;
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  if (await is404(context)) {
+  if (await is404(client, context)) {
     return {
       notFound: true,
     };
@@ -80,6 +81,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   return getNextStaticProps(context, {
     Page,
+    client,
   });
 }
 

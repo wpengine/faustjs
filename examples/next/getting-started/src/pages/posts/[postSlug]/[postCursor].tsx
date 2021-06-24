@@ -1,6 +1,7 @@
 import { getNextStaticProps } from '@wpengine/headless-next';
 import { GetStaticPropsContext } from 'next';
 import Page from '..';
+import { client } from 'client';
 
 export default Page;
 
@@ -15,6 +16,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   return getNextStaticProps(context, {
     Page,
+    client,
   });
 }
 

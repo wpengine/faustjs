@@ -1,9 +1,9 @@
 import React from 'react';
-import { client } from '@wpengine/headless-next';
+import { client } from 'client';
 import { Header, Hero, Footer } from '../components';
 
 export default function Page(): JSX.Element {
-  const { useGeneralSettings } = client();
+  const { useGeneralSettings } = client;
   const generalSettings = useGeneralSettings();
 
   return (

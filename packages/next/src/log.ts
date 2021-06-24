@@ -1,12 +1,12 @@
+import type { GQlessClient } from 'gqless';
 import { LoggerOptions } from '@gqless/logger';
 import defaults from 'lodash/defaults';
-import { client } from './client';
 
-export async function logQueries(options?: LoggerOptions): Promise<() => void> {
+export async function logQueries(client: GQlessClient<any>, options?: LoggerOptions): Promise<() => void> {
   try {
     const { createLogger } = await import('@gqless/logger');
     const logger = createLogger(
-      client().client,
+      client,
       defaults({}, options, {
         showSelections: false,
         showCache: false,

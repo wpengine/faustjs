@@ -1,12 +1,14 @@
-import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { getNextStaticProps } from '@wpengine/headless-next';
+
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { CTA, Footer, Header, Hero, Posts } from 'components';
 import styles from 'scss/pages/home.module.scss';
+import { client } from 'client';
 
 export default function Page() {
-  const { usePosts, useGeneralSettings } = client();
+  const { usePosts, useGeneralSettings } = client;
   const generalSettings = useGeneralSettings();
   const posts = usePosts({
     first: 6,
@@ -136,5 +138,6 @@ export default function Page() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   return getNextStaticProps(context, {
     Page,
+    client,
   });
 }
