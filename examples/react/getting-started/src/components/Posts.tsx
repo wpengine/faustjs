@@ -1,12 +1,12 @@
+import { RootQueryToPostConnection } from 'client';
+import { PostListLoader } from 'components';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from 'scss/components/Posts.module.scss';
-import { Nil, Post } from 'types';
 import Heading, { HeadingProps } from './Heading';
-import { PostListLoader } from 'components';
 
 interface Props {
-  posts: Nil<Post>[];
+  posts: RootQueryToPostConnection['nodes'];
   intro?: string;
   id?: string;
   heading?: string;

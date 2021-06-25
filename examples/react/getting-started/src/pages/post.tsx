@@ -1,7 +1,6 @@
 import { PostTemplate } from 'components';
-import { client } from 'client';
+import { client, PostIdType } from 'client';
 import { useParams } from 'react-router';
-import { PostIdType } from 'types';
 
 type PostParams = {
   postSlug: string;

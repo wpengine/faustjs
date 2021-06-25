@@ -28,7 +28,7 @@ export default function Category() {
 
       <main className="content content-single">
         <div className="wrap">
-          <Posts isLoading={isLoading} posts={posts?.nodes ?? []} />
+          <Posts isLoading={isLoading} posts={posts?.nodes} />
         </div>
       </main>
 

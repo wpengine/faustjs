@@ -114,7 +114,6 @@ export function getClient<
 
   const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const { useQuery } = reactClient;
 
   /**

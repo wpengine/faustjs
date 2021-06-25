@@ -1,7 +1,6 @@
-import { client } from 'client';
+import { client, PageIdType } from 'client';
 import { PageTemplate } from 'components';
 import { useParams } from 'react-router';
-import { PageIdType } from 'types';
 
 type PageParams = {
   pageSlug: string;
