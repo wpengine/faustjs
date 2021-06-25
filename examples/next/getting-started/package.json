@@ -12,8 +12,8 @@
     "wpe-build": "next build"
   },
   "dependencies": {
-    "@wpengine/headless-core": "^0.6.12",
-    "@wpengine/headless-next": "^0.6.12",
+    "@wpengine/headless-core": "^0.7.0",
+    "@wpengine/headless-next": "^0.7.0",
     "next": "^11.0.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
