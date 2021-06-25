@@ -1,8 +1,4 @@
-import {
-  createReactClient,
-  CreateReactClientOptions,
-  ReactClient,
-} from '@gqless/react';
+import { createReactClient, CreateReactClientOptions } from '@gqless/react';
 import {
   CategoryIdType,
   ClientConfig,
@@ -25,6 +21,7 @@ export interface RequiredQuery {
     };
   }) => unknown;
   post: (args: { id: string; idType?: PostIdType }) => Node | null | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pages: (args?: any) => unknown;
   page: (args: { id: string; idType?: PageIdType }) => Node | null | undefined;
   category: (args: {
@@ -36,7 +33,9 @@ export interface RequiredQuery {
 
 export interface RequiredSchema {
   query: RequiredQuery;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mutation: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscription: any;
 }
 
@@ -75,7 +74,7 @@ export function getClient<
   const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const { useQuery } = reactClient as ReactClient<Schema>;
+  const { useQuery } = reactClient;
 
   /**
    * React Hook for retrieving a list of posts from your WordPress site

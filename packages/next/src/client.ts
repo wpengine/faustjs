@@ -1,8 +1,10 @@
+import type { GQlessClient } from 'gqless';
 import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient,
 } from '@gqless/react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
@@ -13,10 +15,13 @@ import {
   PageIdType,
   PostIdType,
   ensureAuthorization,
+  WithClient,
 } from '@wpengine/headless-core';
 import type { RequiredSchema } from '@wpengine/headless-react';
-import { useEffect, useRef } from 'react';
 import isString from 'lodash/isString';
+import defaults from 'lodash/defaults';
+import isFunction from 'lodash/isFunction';
+import type { IncomingMessage } from 'http';
 import {
   hasCategoryId,
   hasCategorySlug,
@@ -27,7 +32,65 @@ import {
   hasPostSlug,
   hasPostUri,
 } from './utils';
-import { defaults } from 'lodash';
+
+export interface NextClient<
+  Schema extends RequiredSchema,
+  ObjectTypesNames extends string = never,
+  ObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+> extends ReactClient<Schema> {
+  client: GQlessClient<Schema>;
+
+  setAsRoot(): void;
+
+  context: WithClient<IncomingMessage, Schema> | undefined;
+
+  useQuery: ReactClient<Schema>['useQuery'];
+
+  useClient(): NextClient<Schema, ObjectTypesNames, ObjectTypes>;
+
+  useHydrateCache: ReactClient<Schema>['useHydrateCache'];
+
+  useCategory(
+    args?: Parameters<Schema['query']['category']>[0],
+  ): ReturnType<Schema['query']['category']>;
+
+  usePosts(
+    args?: Parameters<Schema['query']['posts']>[0],
+  ): ReturnType<Schema['query']['posts']>;
+
+  usePost(
+    args?: Parameters<Schema['query']['post']>[0],
+  ): ReturnType<Schema['query']['post']>;
+
+  usePages: Schema['query']['pages'];
+
+  usePage(
+    args?: Parameters<Schema['query']['page']>[0],
+  ): ReturnType<Schema['query']['page']>;
+
+  usePreview(
+    args: Record<'pageId', string>,
+  ): ReturnType<Schema['query']['page']>;
+  usePreview(
+    args: Record<'postId', string>,
+  ): ReturnType<Schema['query']['post']>;
+
+  useGeneralSettings(): Schema['query']['generalSettings'];
+
+  useIsLoading(): boolean;
+}
+
+export interface HeadlessContextType {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  client?: NextClient<RequiredSchema>;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const HeadlessContext = React.createContext<HeadlessContextType>({});
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
 export function getClient<
@@ -41,7 +104,7 @@ export function getClient<
 >(
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
   createReactClientOpts?: CreateReactClientOptions,
-) {
+): NextClient<Schema, ObjectTypesNames, ObjectTypes> {
   const coreClient = getCoreClient<Schema, ObjectTypesNames, ObjectTypes>(
     clientConfig,
   );
@@ -62,9 +125,23 @@ export function getClient<
   }
 
   const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
+  const haveServerContext = isObject(clientConfig.context?.apiClient);
+  let nextClient: NextClient<Schema, ObjectTypesNames, ObjectTypes>;
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const { useQuery } = reactClient as ReactClient<Schema>;
+  function useClient() {
+    let client: typeof nextClient | undefined = useContext(HeadlessContext)
+      ?.client as typeof nextClient;
+
+    if (haveServerContext || !isObject(client)) {
+      client = nextClient;
+    }
+
+    return client;
+  }
+
+  const useQuery: typeof reactClient.useQuery = () => {
+    return useClient().useQuery();
+  };
 
   function usePosts(
     args?: Parameters<Schema['query']['posts']>[0],
@@ -181,21 +258,29 @@ export function getClient<
   function usePreview(
     args: HasObject,
   ): ReturnType<Schema['query']['page'] | Schema['query']['post']> | undefined {
+    const client = useClient();
+
     useEffect(() => {
       if (typeof window === 'undefined') {
         return;
       }
 
-      const authResult = ensureAuthorization(window.location.href);
+      const authResult = ensureAuthorization(window.location.href, {
+        request: client.context,
+      });
 
-      if (!isString(authResult) && isString(authResult?.redirect)) {
+      if (
+        !isString(authResult) &&
+        isString(authResult?.redirect) &&
+        !haveServerContext
+      ) {
         setTimeout(() => {
           window.location.replace(authResult?.redirect as string);
         }, 200);
       }
-    }, []);
+    }, [client]);
 
-    const { post, page } = useQuery();
+    const { post, page } = client.useQuery();
 
     const pagePreview = page({
       id: (args?.pageId as string) ?? '',
@@ -253,7 +338,8 @@ export function getClient<
   }
 
   const useGeneralSettings: () => Schema['query']['generalSettings'] = () => {
-    return useQuery().generalSettings;
+    const client = useClient();
+    return client.useQuery().generalSettings;
   };
 
   const useHydrateCache: typeof reactClient.useHydrateCache = ({
@@ -261,26 +347,38 @@ export function getClient<
     shouldRefetch,
   }) => {
     const snapshotCache = useRef('');
+    const { client } = useClient();
     if (isString(cacheSnapshot) && snapshotCache.current !== cacheSnapshot) {
       snapshotCache.current = cacheSnapshot;
 
-      coreClient.hydrateCache({ cacheSnapshot, shouldRefetch: false });
+      client.hydrateCache({ cacheSnapshot, shouldRefetch: false });
     }
 
     useEffect(() => {
-      if (shouldRefetch) {
-        coreClient.refetch(coreClient.query).catch(console.error);
+      if (!isObject(client) || !isFunction(client.refetch)) {
+        return;
       }
-    }, [shouldRefetch]);
+
+      if (shouldRefetch) {
+        client.refetch(client.query).catch(console.error);
+      }
+    }, [shouldRefetch, client]);
   };
 
-  const useIsLoading = () => {
+  function useIsLoading() {
     return useQuery().$state.isLoading;
-  };
+  }
 
-  return {
+  nextClient = {
     client: coreClient,
     ...reactClient,
+    setAsRoot() {
+      nextClient.useQuery = reactClient.useQuery;
+      nextClient.useClient = () => nextClient;
+    },
+    context: clientConfig.context,
+    useQuery,
+    useClient,
     useHydrateCache,
     useCategory,
     usePosts,
@@ -291,4 +389,6 @@ export function getClient<
     useGeneralSettings,
     useIsLoading,
   };
+
+  return nextClient;
 }

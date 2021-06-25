@@ -5,7 +5,7 @@ import {
   GQlessClient,
   QueryFetcher,
   ScalarsEnumsHash,
-  Schema as GQlessSchema
+  Schema as GQlessSchema,
 } from 'gqless';
 import fetch from 'isomorphic-fetch';
 import isString from 'lodash/isString';

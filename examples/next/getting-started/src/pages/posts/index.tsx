@@ -1,5 +1,5 @@
 import { getNextStaticProps } from '@wpengine/headless-next';
-import { client } from 'client';
+import { client, OrderEnum, PostObjectsConnectionOrderbyEnum } from 'client';
 import { Footer, Header, Pagination, Posts } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
@@ -19,7 +19,7 @@ export default function Page() {
     after: !isBefore ? (postCursor as string) : undefined,
     before: isBefore ? (postCursor as string) : undefined,
     first: !isBefore ? POSTS_PER_PAGE : undefined,
-    last: isBefore ? POSTS_PER_PAGE : undefined,
+    last: isBefore ? POSTS_PER_PAGE : undefined
   });
 
   if (useQuery().$state.isLoading) {

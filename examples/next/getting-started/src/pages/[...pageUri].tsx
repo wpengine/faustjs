@@ -2,39 +2,15 @@ import { getNextStaticProps, is404 } from '@wpengine/headless-next';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
-import type { Page as PageType } from '@wpengine/headless-core';
-import { client } from 'client';
+import { client, Page as PageType  } from 'client';
 
 export interface PageProps {
   page: PageType | PageType['preview']['node'] | null | undefined;
-  preview?: boolean;
 }
 
-export function PageComponent({ page, preview }: PageProps) {
-  const { useGeneralSettings, useQuery } = client;
+export function PageComponent({ page }: PageProps) {
+  const { useGeneralSettings } = client;
   const generalSettings = useGeneralSettings();
-  const { isLoading } = useQuery().$state;
-
-  if (preview && (typeof window === 'undefined' || isLoading)) {
-    return (
-      <>
-        <Header
-          title={generalSettings.title}
-          description={generalSettings.description}
-        />
-
-        <Hero title="Loading..." />
-
-        <main className="content content-single">
-          <div className="wrap">
-            <div>Loading...</div>
-          </div>
-        </main>
-
-        <Footer copyrightHolder={generalSettings.title} />
-      </>
-    );
-  }
 
   return (
     <>

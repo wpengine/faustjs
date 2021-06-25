@@ -1,10 +1,8 @@
 import isNil from 'lodash/isNil';
 import React from 'react';
-import { getClient } from './client';
+import type { getClient } from './client';
 import { CLIENT_CACHE_PROP, PageProps } from './getProps';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const HeadlessContext = React.createContext<any>({});
+import { HeadlessContext } from './client';
 
 export function HeadlessProvider<Props = Record<string, unknown>>({
   children,
@@ -14,6 +12,7 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   pageProps: PageProps<Props>['props'];
   client: ReturnType<typeof getClient>;
 }>): JSX.Element {
+  client.setAsRoot();
   const { useHydrateCache } = client;
   const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
 
@@ -22,6 +21,11 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   });
 
   return (
-    <HeadlessContext.Provider value={{}}>{children}</HeadlessContext.Provider>
+    <HeadlessContext.Provider
+      value={{
+        client,
+      }}>
+      {children}
+    </HeadlessContext.Provider>
   );
 }

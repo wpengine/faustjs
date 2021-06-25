@@ -15,7 +15,8 @@ import {
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
-import { getClient } from './client';
+import { getClient, HeadlessContext } from './client';
+
 import {
   hasCategoryId,
   hasCategorySlug,
@@ -46,6 +47,7 @@ export async function getProps<
   { client, Page, props }: NextPropsConfig,
 ): Promise<PageProps<Props>> {
   let cacheSnapshot: string | undefined;
+  client.setAsRoot();
 
   if (!isNil(Page)) {
     const renderResult = await client.prepareReactRender(
@@ -53,13 +55,25 @@ export async function getProps<
         RouterContext.Provider,
         {
           value: {
-            query: context.params,
+            query: {
+              ...context.params,
+              ...(context as GetServerSidePropsContext).query,
+            },
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any,
         },
-        React.createElement(Page, props),
+        React.createElement(
+          HeadlessContext.Provider,
+          {
+            value: {
+              client,
+            },
+          },
+          React.createElement(Page, props),
+        ),
       ),
     );
+
     cacheSnapshot = renderResult.cacheSnapshot;
   }
 

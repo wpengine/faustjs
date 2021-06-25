@@ -21,8 +21,8 @@ export default function Preview() {
   }
 
   if (isPage) {
-    return <PageComponent preview page={postOrPage as Page} />;
+    return <PageComponent page={postOrPage as Page} />;
   }
 
-  return <PostComponent preview post={postOrPage as Post} />;
+  return <PostComponent post={postOrPage as Post} />;
 }

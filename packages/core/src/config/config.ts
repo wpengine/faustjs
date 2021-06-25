@@ -73,7 +73,10 @@ export interface HeadlessConfig {
    * @returns {RequestContext}
    * @memberof HeadlessConfig
    */
-  applyRequestContext?(url: string, init: RequestInit): Promise<RequestContext> | RequestContext;
+  applyRequestContext?(
+    url: string,
+    init: RequestInit,
+  ): Promise<RequestContext> | RequestContext;
 }
 /* eslint-enable @typescript-eslint/ban-types */
 
