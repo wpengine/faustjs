@@ -1,4 +1,5 @@
-import { getNextStaticProps, client } from '@wpengine/headless-next';
+import { getNextStaticProps } from '@wpengine/headless-next';
+import { client, OrderEnum, PostObjectsConnectionOrderbyEnum } from 'client';
 import { Footer, Header, Pagination, Posts } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
@@ -11,14 +12,14 @@ const POSTS_PER_PAGE = 6;
 export default function Page() {
   const { query = {} } = useRouter();
   const { postSlug, postCursor } = query;
-  const { usePosts, useGeneralSettings, useQuery } = client();
+  const { usePosts, useGeneralSettings, useQuery } = client;
   const generalSettings = useGeneralSettings();
   const isBefore = postSlug === 'before';
   const posts = usePosts({
     after: !isBefore ? (postCursor as string) : undefined,
     before: isBefore ? (postCursor as string) : undefined,
     first: !isBefore ? POSTS_PER_PAGE : undefined,
-    last: isBefore ? POSTS_PER_PAGE : undefined,
+    last: isBefore ? POSTS_PER_PAGE : undefined
   });
 
   if (useQuery().$state.isLoading) {
@@ -57,5 +58,6 @@ export default function Page() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   return getNextStaticProps(context, {
     Page,
+    client,
   });
 }

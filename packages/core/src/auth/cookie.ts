@@ -1,4 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http';
+import isNil from 'lodash/isNil';
+import isString from 'lodash/isString';
 import Cookies from 'universal-cookie';
 import { headlessConfig } from '../config';
 import { base64Decode, base64Encode } from '../utils';
@@ -18,15 +20,15 @@ export function initializeCookies({
   request,
   cookies,
 }: CookieOptions = {}): Cookies {
-  if (!(request || cookies)) {
-    return new Cookies();
+  if (!isNil(cookies)) {
+    return new Cookies(cookies);
   }
 
-  if (!cookies) {
-    return new Cookies(request?.headers.cookie);
+  if (!isNil(request) && isString(request.headers.cookie)) {
+    return new Cookies(request.headers.cookie);
   }
 
-  return new Cookies(cookies);
+  return new Cookies();
 }
 
 /* eslint-disable consistent-return */
@@ -101,6 +103,6 @@ export function storeAccessToken(
   cookies.set(COOKIE_KEY, encodedToken);
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_KEY}=${encodedToken}; Max-Age=2592000; path=/`,
+    `${COOKIE_KEY}=${encodedToken}; Max-Age=2592000; path=/; SameSite=Strict; Secure;`,
   );
 }

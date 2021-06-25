@@ -15,7 +15,8 @@ import {
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
-import { client } from './client';
+import { getClient, HeadlessContext } from './client';
+
 import {
   hasCategoryId,
   hasCategorySlug,
@@ -29,6 +30,7 @@ import {
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 
 export interface NextPropsConfig<Props = Record<string, unknown>> {
+  client: ReturnType<typeof getClient>;
   Page?: FunctionComponent | ComponentClass;
   props?: Props;
 }
@@ -42,24 +44,36 @@ export async function getProps<
   Props,
 >(
   context: Context,
-  { Page, props }: NextPropsConfig = {},
+  { client, Page, props }: NextPropsConfig,
 ): Promise<PageProps<Props>> {
-  const c = client();
   let cacheSnapshot: string | undefined;
+  client.setAsRoot();
 
   if (!isNil(Page)) {
-    const renderResult = await c.prepareReactRender(
+    const renderResult = await client.prepareReactRender(
       React.createElement(
         RouterContext.Provider,
         {
           value: {
-            query: context.params,
+            query: {
+              ...context.params,
+              ...(context as GetServerSidePropsContext).query,
+            },
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any,
         },
-        React.createElement(Page, props),
+        React.createElement(
+          HeadlessContext.Provider,
+          {
+            value: {
+              client,
+            },
+          },
+          React.createElement(Page, props),
+        ),
       ),
     );
+
     cacheSnapshot = renderResult.cacheSnapshot;
   }
 
@@ -73,16 +87,16 @@ export async function getProps<
 
 export async function is404<
   Context extends GetStaticPropsContext | GetServerSidePropsContext,
->({ params }: Context): Promise<boolean> {
+>(client: ReturnType<typeof getClient>, { params }: Context): Promise<boolean> {
   if (!params) {
     return false;
   }
 
   const {
     client: { inlineResolved, query },
-  } = client();
+  } = client;
   let entityExists = false;
-  let result: Promise<string | undefined> | string | undefined;
+  let result: Promise<string | null | undefined> | string | null | undefined;
 
   try {
     if (hasPostId(params)) {
@@ -171,14 +185,14 @@ export async function is404<
 
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
-  config: NextPropsConfig = {},
+  config: NextPropsConfig,
 ): Promise<GetServerSidePropsResult<Props>> {
   return getProps(context, config);
 }
 
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
-  config: NextPropsConfig = {},
+  config: NextPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
   const pageProps: GetStaticPropsResult<Props> = await getProps(
     context,

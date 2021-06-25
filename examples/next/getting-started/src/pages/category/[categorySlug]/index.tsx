@@ -1,13 +1,14 @@
-import { client, getNextStaticProps, is404 } from '@wpengine/headless-next';
+import { getNextStaticProps, is404 } from '@wpengine/headless-next';
 import Head from 'next/head';
 import { Header, Footer, Posts, Pagination } from 'components';
 import { GetStaticPropsContext } from 'next';
 import { useRouter } from 'next/router';
+import { client } from 'client';
 
 const POSTS_PER_PAGE = 6;
 
 export default function Page() {
-  const { useGeneralSettings, usePosts, useCategory } = client();
+  const { useGeneralSettings, usePosts, useCategory } = client;
   const { query = {} } = useRouter();
   const { categorySlug, paginationTerm, categoryCursor } = query;
   const generalSettings = useGeneralSettings();
@@ -52,7 +53,7 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  if (await is404(context)) {
+  if (await is404(client, context)) {
     return {
       notFound: true,
     };
@@ -60,6 +61,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   return getNextStaticProps(context, {
     Page,
+    client,
   });
 }
 
