@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
-    "@graphql-codegen/cli": "^1.21.5",
+    "@graphql-codegen/cli": "^1.21.4",
     "@graphql-codegen/typescript": "^1.22.1",
     "@graphql-codegen/typescript-operations": "^1.18.0",
     "@testing-library/jest-dom": "^5.14.1",
