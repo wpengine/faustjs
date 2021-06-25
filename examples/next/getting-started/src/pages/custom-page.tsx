@@ -1,10 +1,11 @@
-import { getNextStaticProps, client } from '@wpengine/headless-next';
+import { getNextStaticProps } from '@wpengine/headless-next';
+import { client } from 'client';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 
 export default function Page() {
-  const { useGeneralSettings } = client();
+  const { useGeneralSettings } = client;
   const generalSettings = useGeneralSettings();
 
   return (
@@ -44,5 +45,6 @@ export default function Page() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   return getNextStaticProps(context, {
     Page,
+    client,
   });
 }

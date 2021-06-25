@@ -1,100 +1,154 @@
-import { createClient, GQlessClient, QueryFetcher } from 'gqless';
+export * from './schema.generated';
+import {
+  ClientOptions,
+  createClient,
+  GQlessClient,
+  QueryFetcher,
+  ScalarsEnumsHash,
+  Schema as GQlessSchema,
+} from 'gqless';
 import fetch from 'isomorphic-fetch';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import { getAccessToken } from '../../auth';
 import { headlessConfig } from '../../config';
-import {
-  generatedSchema,
-  scalarsEnumsHash,
-  GeneratedSchema,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
-} from './schema.generated';
+
 import isFunction from 'lodash/isFunction';
+import isNil from 'lodash/isNil';
+import omit from 'lodash/omit';
+import type { IncomingMessage } from 'http';
+
+export interface GqlClientSchema {
+  query: any;
+  mutation: any;
+  subscription: any;
+}
 
 export interface RequestContext {
   url: string;
   init: RequestInit;
 }
 
-export function applyRequestContext(
-  url: string,
-  init: RequestInit,
-): RequestContext {
-  const config = headlessConfig();
-  const token = getAccessToken();
-
-  if (isString(token)) {
-    init.headers = {
-      ...init.headers,
-      authorization: `Bearer ${token}`,
+function createQueryFetcher(
+  context?: IncomingMessage,
+  applyRequestContext?: ClientConfig['applyRequestContext'],
+) {
+  return async function (query, variables): Promise<any> {
+    const { wpUrl } = headlessConfig();
+    const url = `${wpUrl}/graphql`;
+    const token = getAccessToken({
+      request: context,
+    });
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
     };
-  }
 
-  let requestContext = {
-    url,
-    init,
-  };
+    if (isString(token)) {
+      headers.Authorization = `Bearer ${token}`;
+    }
 
-  if (isFunction(config.applyRequestContext)) {
-    requestContext = config.applyRequestContext(url, init);
-  }
+    const init: RequestInit = {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+      mode: 'cors',
+    };
 
-  return requestContext;
+    let requestContext = { url, init };
+
+    if (isFunction(applyRequestContext)) {
+      requestContext = await applyRequestContext(url, init);
+    }
+
+    const response = await fetch(requestContext.url, requestContext.init);
+    const json = await response.json();
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return json;
+  } as QueryFetcher;
 }
 
-export const queryFetcher: QueryFetcher = async function (
-  query,
-  variables,
-): Promise<any> {
-  const { wpUrl } = headlessConfig();
-  const { url, init } = applyRequestContext(`${wpUrl}/graphql`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-    mode: 'cors',
-  });
+export interface ClientConfig<
+  Schema extends GqlClientSchema = never,
+  ObjectTypesNames extends string = never,
+  SchemaObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+> extends Omit<
+    ClientOptions<ObjectTypesNames, SchemaObjectTypes>,
+    'schema' | 'scalarsEnumsHash' | 'queryFetcher'
+  > {
+  schema?: Readonly<GQlessSchema>;
+  scalarsEnumsHash?: ScalarsEnumsHash;
+  queryFetcher?: QueryFetcher;
+  context?: WithClient<IncomingMessage, Schema>;
+  /**
+   * Called before every request, use this to apply any headers you might
+   * need to for your requests or adjust the request to suite your needs.
+   *
+   * @param {string} url
+   * @param {RequestInit} init
+   * @returns {RequestContext}
+   * @memberof HeadlessConfig
+   */
+  applyRequestContext?(
+    url: string,
+    init: RequestInit,
+  ): Promise<RequestContext> | RequestContext;
+}
 
-  const response = await fetch(url, init);
-  const json = await response.json();
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return json;
+export type WithClient<Type, Schema extends GqlClientSchema> = Type & {
+  apiClient?: GQlessClient<Schema>;
 };
-
-const defaultClient = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
-  schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-});
 
 /* eslint-disable @typescript-eslint/ban-types */
 
-export function client<
-  Schema extends {
-    query: {};
-    mutation: {};
-    subscription: {};
-  } = GeneratedSchema,
->(): GQlessClient<Schema> {
-  const { apiClient } = headlessConfig();
+export function getClient<
+  Schema extends GqlClientSchema = never,
+  ObjectTypesNames extends string = never,
+  ObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+>(
+  clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
+): GQlessClient<Schema> {
+  const {
+    context,
+    schema,
+    scalarsEnumsHash,
+    queryFetcher: configQueryFetcher,
+    applyRequestContext,
+  } = clientConfig;
 
-  if (!isObject(apiClient)) {
-    return defaultClient as any as GQlessClient<Schema>;
+  if (isObject(context) && isObject(context.apiClient)) {
+    return context.apiClient;
   }
 
-  return apiClient as GQlessClient<Schema>;
+  if (isNil(schema) || isNil(scalarsEnumsHash)) {
+    throw new Error(
+      'You must specify a schema and scalarEnumsHash in order to create a client.',
+    );
+  }
+
+  const apiClient = createClient<Schema, ObjectTypesNames, ObjectTypes>({
+    schema,
+    scalarsEnumsHash,
+    queryFetcher:
+      configQueryFetcher ?? createQueryFetcher(context, applyRequestContext),
+    ...omit(clientConfig, 'context', 'applyRequestContext'),
+  });
+
+  if (isObject(clientConfig.context)) {
+    clientConfig.context.apiClient = apiClient;
+  }
+
+  return apiClient;
 }
 /* eslint-enable @typescript-eslint/ban-types */
-
-export * from './schema.generated';
