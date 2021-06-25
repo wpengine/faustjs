@@ -1,6 +1,6 @@
 import { Header, Footer, PostPageLoader } from 'components';
 import { Helmet } from 'react-helmet-async';
-import { Post } from 'types';
+import { Post } from 'client';
 
 type PostTemplateProps = {
   post: Post | null;

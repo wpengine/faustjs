@@ -11,7 +11,6 @@
     "@wpengine/headless-react": "^0.7.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "sass": "^1.35.1",
     "normalize.css": "^8.0.1",
     "query-string": "^7.0.0",
     "react": "^17.0.2",
@@ -21,6 +20,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "sass": "^1.35.1",
     "typescript": "^4.3.4"
   },
   "scripts": {
@@ -28,7 +28,9 @@
     "start-server": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "wpe-build": "next build",
+    "generate": "gqless generate"
   },
   "eslintConfig": {
     "extends": [
@@ -47,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@gqless/cli": "^2.0.16"
   }
 }

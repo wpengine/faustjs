@@ -1,6 +1,6 @@
 import { Footer, Header, PostPageLoader } from 'components';
 import { Helmet } from 'react-helmet-async';
-import { Page } from 'types';
+import { Page } from 'client';
 
 type PageTemplateProps = {
   page: Page | null;
