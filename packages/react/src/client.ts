@@ -1,4 +1,8 @@
-import { createReactClient, CreateReactClientOptions } from '@gqless/react';
+import {
+  createReactClient,
+  CreateReactClientOptions,
+  ReactClient as GQlessReactClient,
+} from '@gqless/react';
 import {
   CategoryIdType,
   ClientConfig,
@@ -6,6 +10,7 @@ import {
   PageIdType,
   PostIdType,
 } from '@wpengine/headless-core';
+import { GQlessClient } from 'gqless';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 
@@ -37,6 +42,42 @@ export interface RequiredSchema {
   mutation: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscription: any;
+}
+
+export interface ReactClient<
+  Schema extends RequiredSchema,
+  ObjectTypesNames extends string = never,
+  ObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+> extends GQlessReactClient<Schema> {
+  client: GQlessClient<Schema>;
+
+  useCategory(
+    args: Parameters<Schema['query']['category']>[0],
+  ): ReturnType<Schema['query']['category']>;
+
+  usePosts(
+    args: Parameters<Schema['query']['posts']>[0],
+  ): ReturnType<Schema['query']['posts']>;
+
+  usePost(
+    args: Parameters<Schema['query']['post']>[0],
+  ): ReturnType<Schema['query']['post']>;
+
+  usePages(
+    args: Parameters<Schema['query']['pages']>[0],
+  ): ReturnType<Schema['query']['pages']>;
+
+  usePage(
+    args: Parameters<Schema['query']['page']>[0],
+  ): ReturnType<Schema['query']['page']>;
+
+  useGeneralSettings(): Schema['query']['generalSettings'];
+
+  useIsLoading(): boolean;
 }
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
@@ -101,8 +142,8 @@ export function getClient<
    * }
    * ```
    */
-  const usePosts: Schema['query']['posts'] = (args) => {
-    return useQuery().posts(args);
+  const usePosts = (args: Parameters<Schema['query']['posts']>[0]) => {
+    return useQuery().posts(args) as ReturnType<Schema['query']['posts']>;
   };
 
   /**
@@ -130,8 +171,8 @@ export function getClient<
    * }
    * ```
    */
-  const usePost: Schema['query']['post'] = (args) => {
-    return useQuery().post(args);
+  const usePost = (args: Parameters<Schema['query']['post']>[0]) => {
+    return useQuery().post(args) as ReturnType<Schema['query']['post']>;
   };
 
   /**
@@ -159,8 +200,8 @@ export function getClient<
    * }
    * ```
    */
-  const usePages: Schema['query']['pages'] = (args) => {
-    return useQuery().pages(args);
+  const usePages = (args: Parameters<Schema['query']['pages']>[0]) => {
+    return useQuery().pages(args) as ReturnType<Schema['query']['pages']>;
   };
 
   /**
@@ -188,12 +229,12 @@ export function getClient<
    * }
    * ```
    */
-  const usePage: Schema['query']['page'] = (args) => {
-    return useQuery().page(args);
+  const usePage = (args: Parameters<Schema['query']['page']>[0]) => {
+    return useQuery().page(args) as ReturnType<Schema['query']['page']>;
   };
 
-  const useCategory: Schema['query']['category'] = (args) => {
-    return useQuery().category(args);
+  const useCategory = (args: Parameters<Schema['query']['category']>[0]) => {
+    return useQuery().category(args) as ReturnType<Schema['query']['category']>;
   };
 
   /**
@@ -223,7 +264,7 @@ export function getClient<
     return useQuery().$state.isLoading;
   };
 
-  return {
+  const c: ReactClient<Schema, ObjectTypesNames, ObjectTypes> = {
     client: coreClient,
     ...reactClient,
     useCategory,
@@ -234,4 +275,6 @@ export function getClient<
     useGeneralSettings,
     useIsLoading,
   };
+
+  return c;
 }
