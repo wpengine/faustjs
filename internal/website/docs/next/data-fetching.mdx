@@ -79,16 +79,10 @@ export function getStaticPaths() {
 
 Or, you can fetch a specific post:
 
-```tsx {4-9,13-16}
+```tsx {3,6-10}
 import { client, getNextStaticProps } from '@wpengine/headless-next';
 import { GetStaticPropsContext } from 'next';
-
-enum PostIdType {
-    DATABASE_ID = "DATABASE_ID",
-    ID = "ID",
-    SLUG = "SLUG",
-    URI = "URI"
-}
+import {PostIdType} from 'src/client'
 
 export default function Page() {
   const { usePost } = client();
@@ -195,15 +189,10 @@ export function getStaticPaths() {
 
 Or, you can fetch a specific page:
 
-```tsx {4-8,12-15,19-20}
+```tsx {3,6-10}
 import { client, getNextStaticProps } from '@wpengine/headless-next';
 import { GetStaticPropsContext } from 'next';
-
-enum PageIdType {
-  DATABASE_ID = 'DATABASE_ID',
-  ID = 'ID',
-  URI = 'URI',
-}
+import {PageIdType} from 'src/client'
 
 export default function Page() {
   const { usePage } = client();
@@ -253,3 +242,52 @@ export default function Header() {
   );
 }
 ```
+
+### `usePreview`
+
+A hook to retrieve the page/post from a preview URL. Can only be used in client side requests.
+
+```tsx title="src/pages/preview.tsx" {14-17}
+import { useRouter } from "next/router";
+import { PageComponent } from "./[...pageUri]";
+import type { Page, Post } from "@wpengine/headless-core";
+import { PostComponent } from "./posts/[postSlug]";
+import { client } from 'client';
+
+export default function Preview() {
+  const {
+    query: { p, page_id },
+  } = useRouter();
+  const { usePreview } = client;
+  const isPage = !!page_id;
+
+  const postOrPage: unknown = usePreview({
+    pageId: isPage ? (p as string) : undefined,
+    postId: !isPage ? (p as string) : undefined,
+  } as any);
+
+  if (postOrPage === null) {
+    return <>Not Found</>;
+  }
+
+  if (isPage) {
+    return <PageComponent page={postOrPage as Page} />;
+  }
+
+  return <PostComponent post={postOrPage as Post} />;
+}
+```
+
+### `useQuery`
+
+If you want to make a custom query, use the `useQuery` hook. This hook will give you access to your entire WordPress schema.
+
+For example, you may want to get a list of your content types:
+
+```tsx
+const {useQuery} = client
+
+const contentTypes = useQuery().contentTypes()?.nodes
+```
+
+`useQuery`, along with all the other hooks, are typed. So you'll be able to see exactly what kind of data you have access to via your IDE's intellisense.

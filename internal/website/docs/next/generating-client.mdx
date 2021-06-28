@@ -6,7 +6,7 @@ title: Generating the Client
 
 # Generating the client
 
-We use a framework called [GQless](https://gqless.com) under the hood to faciliate GraphQL queries. GQless works by typing out your entire WordPress instance to a usable TypeScript object.
+We use the [GQless](https://gqless.com) library under the hood for our GraphQL client. GQless functions in a way by typing out your entire WordPress instance to a usable TypeScript object.
 
 ## Create the client file
 
@@ -130,6 +130,19 @@ npm run generate
 
 Once that's completed, your `src/client/schema.generated.ts` file will be generated and your client is ready to use!
 
+## Usage
+
+```tsx
+import client from 'src/client'
+
+export default function About() {
+    const {usePost, usePage, useGeneralSettings} = client 
+
+    return(
+        ...
+    )
+}
+```
 
 ## Troubleshooting
 
