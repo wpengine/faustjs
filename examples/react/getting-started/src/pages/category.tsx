@@ -1,7 +1,7 @@
 import { Footer, Header, Posts } from 'components';
-import { client } from '@wpengine/headless-react';
 import { useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
+import { client } from 'client';
 
 type CategoryParams = {
   categorySlug: string;
@@ -9,7 +9,7 @@ type CategoryParams = {
 
 export default function Category() {
   const { categorySlug } = useParams<CategoryParams>();
-  const { usePosts, useIsLoading } = client();
+  const { usePosts, useIsLoading } = client;
   const isLoading = useIsLoading();
 
   const posts = usePosts({
@@ -28,10 +28,7 @@ export default function Category() {
 
       <main className="content content-single">
         <div className="wrap">
-          <Posts
-            isLoading={isLoading}
-            posts={posts?.nodes ?? []}
-          />
+          <Posts isLoading={isLoading} posts={posts?.nodes} />
         </div>
       </main>
 

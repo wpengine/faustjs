@@ -3,8 +3,6 @@ import defaults from 'lodash/defaults';
 import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
-
-import { GQlessClient } from 'gqless';
 import type { RequestContext } from '../api';
 
 /* eslint-disable @typescript-eslint/ban-types */
@@ -14,13 +12,7 @@ import type { RequestContext } from '../api';
  * @export
  * @interface HeadlessConfig
  */
-export interface HeadlessConfig<
-  GeneratedSchema extends {
-    query: {};
-    mutation: {};
-    subscription: {};
-  } = { query: {}; mutation: {}; subscription: {} },
-> {
+export interface HeadlessConfig {
   /**
    * Set this value to the base URL of your WordPress site. This will be used in order to
    * make queries to your WordPress site.
@@ -73,14 +65,6 @@ export interface HeadlessConfig<
   apiClientSecret?: string;
 
   /**
-   * An optional gqless client used to make calls to the WP API
-   *
-   * @type {GQlessClient<GeneratedSchema>}
-   * @memberof HeadlessConfig
-   */
-  apiClient?: GQlessClient<GeneratedSchema>;
-
-  /**
    * Called before every request, use this to apply any headers you might
    * need to for your requests or adjust the request to suite your needs.
    *
@@ -89,7 +73,10 @@ export interface HeadlessConfig<
    * @returns {RequestContext}
    * @memberof HeadlessConfig
    */
-  applyRequestContext?(url: string, init: RequestInit): RequestContext;
+  applyRequestContext?(
+    url: string,
+    init: RequestInit,
+  ): Promise<RequestContext> | RequestContext;
 }
 /* eslint-enable @typescript-eslint/ban-types */
 

@@ -1,6 +1,6 @@
 {
   "name": "@wpengine/headless-next",
-  "version": "0.6.12",
+  "version": "0.7.0",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -40,10 +40,6 @@
     "react-dom": ">=17.0.2"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "^2.0.2",
-    "@graphql-codegen/cli": "^1.21.5",
-    "@graphql-codegen/typescript": "^1.22.1",
-    "@graphql-codegen/typescript-operations": "^1.18.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@types/jest": "^26.0.23",
@@ -61,6 +57,7 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "gqless": "^2.0.14",
     "jest": "^26.6.3",
     "next": "^11.0.0",
     "prettier": "^2.3.1",
@@ -74,8 +71,8 @@
   "dependencies": {
     "@gqless/logger": "^2.0.11",
     "@gqless/react": "^2.0.15",
-    "@wpengine/headless-core": "^0.6.12",
-    "@wpengine/headless-react": "^0.6.12",
+    "@wpengine/headless-core": "^0.7.0",
+    "@wpengine/headless-react": "^0.7.0",
     "graphql": ">=15.5",
     "lodash": "^4.17.21"
   }

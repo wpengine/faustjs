@@ -1,17 +1,17 @@
 import { ensureAuthorization } from '@wpengine/headless-core';
 import {
+  client,
   Page as PageType,
   Post as PostType,
   PageIdType,
   PostIdType,
-} from 'types';
+} from 'client';
 import { PageTemplate, PostTemplate } from 'components';
-import { client } from '@wpengine/headless-react';
 import queryString from 'query-string';
 import { useEffect } from 'react';
 
 export default function Preview() {
-  const { usePost, usePage, useIsLoading } = client();
+  const { usePost, usePage, useIsLoading } = client;
   const isLoading = useIsLoading();
 
   useEffect(() => {
