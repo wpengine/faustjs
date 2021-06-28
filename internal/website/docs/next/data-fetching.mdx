@@ -223,6 +223,39 @@ export function getStaticPaths() {
 }
 ```
 
+### `usePages`
+
+A hook to retrieve multiple pages.
+
+```tsx title="src/pages/index.tsx" {6-8,14-16}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Home() {
+  const { usePages } = client();
+  const pages = usePages({
+    first: 6,
+  });
+
+  return (
+    <>
+      <h2>Pages List</h2>
+      <ul>
+        {pages?.nodes.map((page) => (
+          <li key={page.id}>{page.title()}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: Home,
+  });
+}
+```
+
 ### `useGeneralSettings`
 
 A hook to retrieve the WordPress sites' general settings.
