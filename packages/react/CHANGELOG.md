@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.5] - 2021-05-25
 
-Version bumped to remain in lockstep with `@wpengine/headless-core` and `@wpengine/headless-next`. No changes.
+Version bumped to remain in lockstep with `@faustjs/core` and `@faustjs/next`. No changes.
 
 ## [0.6.4] - 2021-05-18
 
-Initial release of `@wpengine/headless-react`
+Initial release of `@faustjs/react`

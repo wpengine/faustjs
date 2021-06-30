@@ -1,4 +1,4 @@
-import { getNextStaticProps } from '@wpengine/headless-next';
+import { getNextStaticProps } from '@faustjs/next';
 import { client } from 'client';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';

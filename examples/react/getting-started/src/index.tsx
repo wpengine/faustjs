@@ -1,4 +1,4 @@
-import { headlessConfig } from '@wpengine/headless-core';
+import { headlessConfig } from '@faustjs/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';

@@ -1,4 +1,4 @@
-import { getNextStaticProps } from '@wpengine/headless-next';
+import { getNextStaticProps } from '@faustjs/next';
 
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';

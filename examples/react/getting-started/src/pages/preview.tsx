@@ -1,4 +1,4 @@
-import { ensureAuthorization } from '@wpengine/headless-core';
+import { ensureAuthorization } from '@faustjs/core';
 import {
   client,
   Page as PageType,

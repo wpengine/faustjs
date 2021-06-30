@@ -9,7 +9,7 @@ import {
   getClient as getCoreClient,
   PageIdType,
   PostIdType,
-} from '@wpengine/headless-core';
+} from '@faustjs/core';
 import { GQlessClient } from 'gqless';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
@@ -44,15 +44,8 @@ export interface RequiredSchema {
   subscription: any;
 }
 
-export interface ReactClient<
-  Schema extends RequiredSchema,
-  ObjectTypesNames extends string = never,
-  ObjectTypes extends {
-    [P in ObjectTypesNames]: {
-      __typename: P | undefined;
-    };
-  } = never,
-> extends GQlessReactClient<Schema> {
+export interface ReactClient<Schema extends RequiredSchema>
+  extends GQlessReactClient<Schema> {
   client: GQlessClient<Schema>;
 
   useCategory(
@@ -263,7 +256,7 @@ export function getClient<
     return useQuery().$state.isLoading;
   };
 
-  const c: ReactClient<Schema, ObjectTypesNames, ObjectTypes> = {
+  const c: ReactClient<Schema> = {
     client: coreClient,
     ...reactClient,
     useCategory,

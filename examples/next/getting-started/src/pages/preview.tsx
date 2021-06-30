@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { PageComponent } from "./[...pageUri]";
-import type { Page, Post } from "@wpengine/headless-core";
+import type { Page, Post } from "@faustjs/core";
 import { PostComponent } from "./posts/[postSlug]";
 import { client } from 'client';
 

@@ -1,5 +1,5 @@
 {
-  "name": "@wpengine/headless-core",
+  "name": "@faustjs/core",
   "version": "0.7.0",
   "description": "This module helps you use WordPress as a Headless CMS",
   "main": "dist/index.js",
