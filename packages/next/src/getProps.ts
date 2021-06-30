@@ -3,7 +3,7 @@ import {
   CategoryIdType,
   PageIdType,
   PostIdType,
-} from '@wpengine/headless-core';
+} from '@faustjs/core';
 import { isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {

@@ -9,7 +9,7 @@ import {
   getClient as getCoreClient,
   PageIdType,
   PostIdType,
-} from '@wpengine/headless-core';
+} from '@faustjs/core';
 import { GQlessClient } from 'gqless';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const { authorizeHandler, headlessConfig } = require('@wpengine/headless-core');
+const { authorizeHandler, headlessConfig } = require('@faustjs/core');
 const port = 5000;
 
 headlessConfig({

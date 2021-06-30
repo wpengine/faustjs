@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Refactor
 
 - Removed `nextConfig.js` & `next-transpile-modules` as a dependency
-- Removed unnecessary re-exports from `@wpengine/headless-core` and `@wpengine/headless-react`
+- Removed unnecessary re-exports from `@faustjs/core` and `@faustjs/react`
 
 ## [0.6.4] - 2021-05-18
 
-Initial release of `@wpengine/headless-next`
+Initial release of `@faustjs/next`

@@ -16,8 +16,8 @@ import {
   PostIdType,
   ensureAuthorization,
   WithClient,
-} from '@wpengine/headless-core';
-import type { RequiredSchema } from '@wpengine/headless-react';
+} from '@faustjs/core';
+import type { RequiredSchema } from '@faustjs/react';
 import isString from 'lodash/isString';
 import defaults from 'lodash/defaults';
 import isFunction from 'lodash/isFunction';
