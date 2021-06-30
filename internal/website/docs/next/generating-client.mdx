@@ -1,0 +1,155 @@
+---
+id: next-generating-client
+slug: generating-client
+title: Generating the Client
+---
+
+# Generating the client
+
+We use the [GQless](https://gqless.com) library under the hood for our GraphQL client. GQless functions in a way by typing out your entire WordPress instance to a usable TypeScript object.
+
+## Create the client file
+
+To get started, create the client file `src/client/index.ts` in your project:
+
+```tsx title="src/client/index.ts"
+/**
+ * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+ */
+import type { IncomingMessage } from 'http';
+import { getClient } from '@wpengine/headless-next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+});
+
+export function serverClient(req: IncomingMessage) {
+  return getClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
+    context: req,
+  });
+}
+
+export * from './schema.generated';
+```
+
+## Create the client config
+
+You'll first want to install `dotenv` as a dependency:
+
+```bash
+npm install dotenv
+```
+
+Now, create the client config file `gqless.config.js` at the root of your project:
+
+```tsx title="/gqless.config.js"
+
+const dotenv = require('dotenv');
+
+dotenv.config({
+  path: '.env.local',
+});
+
+/**
+ * @type {import("@gqless/cli").GQlessConfig}
+ */
+const config = {
+  react: false,
+  scalarTypes: { DateTime: 'string' },
+  introspection: {
+    endpoint: `${
+      process.env.NEXT_PUBLIC_WORDPRESS_URL ?? process.env.WORDPRESS_URL
+    }/graphql`,
+    headers: {},
+  },
+  destination: './src/client/index.ts',
+  subscriptions: false,
+  javascriptOutput: false,
+};
+
+module.exports = config;
+```
+
+## Generate your WordPress schema
+
+Finally, you can generate your schema. This is a TypeScript representation of your WordPress site.
+
+Download the `gqless-cli`:
+
+```bash
+npm install --save-dev @gqless/cli
+```
+
+And create a `generate` script in your `package.json`:
+
+```json title="package.json" {8}
+{
+  "name": "next-headless-getting-started",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "generate": "gqless generate"
+  },
+  "dependencies": {
+    "@wpengine/headless-core": "^0.7.0",
+    "@wpengine/headless-next": "^0.7.0",
+    "next": "^11.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@gqless/cli": "^2.0.16",
+    "@types/react": "^17.0.11",
+    "dotenv": "^10.0.0",
+    "typescript": "^4.3.4"
+  }
+}
+```
+
+Now, you can run the following command whenever your WordPress schema changes (new post types, custom fields, etc):
+
+```bash
+npm run generate
+```
+
+Once that's completed, your `src/client/schema.generated.ts` file will be generated and your client is ready to use!
+
+## Usage
+
+```tsx
+import client from 'src/client'
+
+export default function About() {
+    const {usePost, usePage, useGeneralSettings} = client 
+
+    return(
+        ...
+    )
+}
+```
+
+## Troubleshooting
+
+### "GraphQL introspection is not allowed"
+
+If you run into the error message `GraphQL introspection is not allowed, but the query contained __schema or __type`, you will have to temporarily enable introspection.
+
+[Introspection is disabled by default in WPGraphQL.](https://www.wpgraphql.com/docs/security/#introspection-disabled-by-default) To enable it, go to WP Admin -> GraphQL -> Enable Public Introspection.
+
+Once the schema file has been generated, you can then disable introspection again.

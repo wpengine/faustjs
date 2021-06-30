@@ -1,0 +1,326 @@
+---
+id: next-data-fetching
+slug: data-fetching
+title: Data Fetching
+sidebar_position: 2
+---
+
+# Data Fetching
+
+The Headless Framework uses [GQless](https://gqless.com/react/fetching-data) under the hood for its GraphQL client. GQless preforms an invisible render of the React component to identify what data is needed. [Learn more about how GQless works.](https://gqless.com/intro/how-it-works)
+
+## `<HeadlessProvider />` Component
+
+The `<HeadlessProvider />` component is required to faciliate the client side caching and rehydration. This component is typically applied in the `_app.tsx`:
+
+```tsx title="/src/pages/_app.tsx" {2,12-14}
+import { headlessConfig } from '@wpengine/headless-core';
+import { HeadlessProvider } from '@wpengine/headless-next';
+
+headlessConfig({
+  wpUrl: process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+});
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <HeadlessProvider pageProps={pageProps}>
+        <Component {...pageProps} />
+      </HeadlessProvider>
+    </>
+  );
+}
+
+export default MyApp;
+```
+
+## Hooks
+
+### `usePost`
+
+A hook to retrieve a single post.
+
+The `usePost` hook in Next.js will look for the following params in `getStaticProps`/`getServerSideProps` context to determine what post to fetch:
+
+* `[postSlug]`
+* `[postId]`
+* `[...postUri]`
+
+```tsx title="/src/pages/posts/[postSlug].tsx" {6,10,11}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost();
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+Or, you can fetch a specific post:
+
+```tsx {3,6-10}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+import {PostIdType} from 'src/client'
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost({
+    id: 'hello-world',
+    idType: PostIdType.SLUG
+  })
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+### `usePosts`
+
+A hook to retrieve multiple posts.
+
+```tsx title="src/pages/index.tsx" {6-8,14-16}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Home() {
+  const { usePosts } = client();
+  const posts = usePosts({
+    first: 6,
+  });
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      <ul>
+        {posts?.nodes.map((post) => (
+          <li key={post.id}>{post.title()}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: Home,
+  });
+}
+```
+
+For an example of `usePosts` with pagination, [take a look at our Next.js getting started example.](https://github.com/wpengine/headless-framework/blob/canary/examples/next/getting-started/src/pages/posts/index.tsx#L17-L22)
+
+### `usePage`
+
+A hook to retrieve a single page.
+
+The `usePage` hook in Next.js will look for the following params in `getStaticProps`/`getServerSideProps` context to determine what page to fetch:
+
+* `[pageId]`
+* `[...pageUri]`
+
+```tsx title="/src/pages/[...pageUri].tsx" {6,10,11}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePage } = client();
+  const page = usePage();
+
+  return (
+    <article>
+      <h1>{page?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: page?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+Or, you can fetch a specific page:
+
+```tsx {3,6-10}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+import {PageIdType} from 'src/client'
+
+export default function Page() {
+  const { usePage } = client();
+  const page = usePage({
+    id: 'sample-page',
+    idType: PageIdType.URI,
+  });
+
+  return (
+    <article>
+      <h1>{page?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: page?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+### `usePages`
+
+A hook to retrieve multiple pages.
+
+```tsx title="src/pages/index.tsx" {6-8,14-16}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Home() {
+  const { usePages } = client();
+  const pages = usePages({
+    first: 6,
+  });
+
+  return (
+    <>
+      <h2>Pages List</h2>
+      <ul>
+        {pages?.nodes.map((page) => (
+          <li key={page.id}>{page.title()}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: Home,
+  });
+}
+```
+
+### `useGeneralSettings`
+
+A hook to retrieve the WordPress sites' general settings.
+
+```tsx title="/src/components/header.tsx" {5,9-10}
+import { client } from '@wpengine/headless-next';
+
+export default function Header() {
+  const { useGeneralSettings } = client();
+  const generalSettings = useGeneralSettings();
+
+  return (
+    <header>
+      <h2>{generalSettings?.title}</h2>
+      <p>{generalSettings?.description}</p>
+    </header>
+  );
+}
+```
+
+### `usePreview`
+
+A hook to retrieve the page/post from a preview URL. Can only be used in client side requests.
+
+```tsx title="src/pages/preview.tsx" {14-17}
+import { useRouter } from "next/router";
+import { PageComponent } from "./[...pageUri]";
+import type { Page, Post } from "@wpengine/headless-core";
+import { PostComponent } from "./posts/[postSlug]";
+import { client } from 'client';
+
+export default function Preview() {
+  const {
+    query: { p, page_id },
+  } = useRouter();
+  const { usePreview } = client;
+  const isPage = !!page_id;
+
+  const postOrPage: unknown = usePreview({
+    pageId: isPage ? (p as string) : undefined,
+    postId: !isPage ? (p as string) : undefined,
+  } as any);
+
+  if (postOrPage === null) {
+    return <>Not Found</>;
+  }
+
+  if (isPage) {
+    return <PageComponent page={postOrPage as Page} />;
+  }
+
+  return <PostComponent post={postOrPage as Post} />;
+}
+```
+
+### `useQuery`
+
+If you want to make a custom query, use the `useQuery` hook. This hook will give you access to your entire WordPress schema.
+
+For example, you may want to get a list of your content types:
+
+```tsx
+const {useQuery} = client
+
+const contentTypes = useQuery().contentTypes()?.nodes
+```
+
+`useQuery`, along with all the other hooks, are typed. So you'll be able to see exactly what kind of data you have access to via your IDE's intellisense.

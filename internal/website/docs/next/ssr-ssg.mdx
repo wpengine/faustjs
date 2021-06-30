@@ -1,0 +1,116 @@
+---
+id: next-ssr-ssg
+slug: ssr-ssg
+title: SSR & SSG
+sidebar_position: 3
+---
+
+# SSR & SSG
+
+Server-Side Rendering and Static Site Generation are both accomplished in the framework by using either `getNextStaticProps` or `getNextServerSideProps`.
+
+## `getNextStaticProps`
+
+This helper function lets you build a static site with your WordPress data. The function should be returned from `getStaticProps`:
+
+```tsx
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+  });
+}
+```
+
+The function accepts two arguments: the static props context, and an object with a `Page` key. This should be your Next.js page component:
+
+```tsx {2,4,19}
+import { GetStaticPropsContext } from 'next';
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+
+export default function MyPage() {
+  const { usePosts } = client();
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+  });
+}
+```
+
+The reason `MyPage` is passed to `getNextStaticProps` is because under the hood we do a skeleton render of the page component to know what data to fetch/what queries to build. This allows the developer to not have to think about batching/constructing queries, or data fetching.
+
+## `getNextServerSideProps`
+
+This helper function lets you server side render your WordPress data. The function should be returned from `getServerSideProps`:
+
+```tsx
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+  });
+}
+```
+
+The function accepts two arguments: the server side props context, and an object with a `Page` key. This should be your Next.js page component:
+
+```tsx {2,4,19}
+import { GetServerSidePropsContext } from 'next';
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+
+export default function MyPage() {
+  const { usePosts } = client();
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+  });
+}
+```
+
+As mentioned in `getNextStaticProps`, the reason `MyPage` is passed to `getNextServerSideProps` is because under the hood we do a skeleton render of the page component to know what data to fetch/what queries to build. This allows the developer to not have to think about batching/constructing queries, or data fetching.
+
+## Helper Functions
+
+### `is404`
+
+```tsx title="src/pages/posts/[postSlug].tsx"
+import { getNextStaticProps, client, is404 } from '@wpengine/headless-next';
+
+export default function MyPage() {
+    return(
+        ...
+    )
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  if (await is404(context)) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+```
