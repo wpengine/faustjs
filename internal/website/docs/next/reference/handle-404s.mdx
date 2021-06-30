@@ -1,0 +1,30 @@
+---
+id: next-handle-404s
+slug: handle-404s
+title: Handling 404s with is404
+description: Use a built-in Faust.js function to automatically determine if a page is a 404
+---
+
+# Handling 404s with `is404`
+
+```tsx title="src/pages/posts/[postSlug].tsx"
+import { getNextStaticProps, client, is404 } from '@wpengine/headless-next';
+
+export default function MyPage() {
+    return(
+        ...
+    )
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  if (await is404(context)) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+```
