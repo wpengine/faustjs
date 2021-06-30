@@ -6,13 +6,13 @@ title: Interacting With Custom Post Types
 
 # Interacting with custom post types
 
-Querying data in custom post types is just as easy as querying for posts or pages in the framework.
+Querying data in custom post types is just as easy as querying for posts or pages in Faust.js.
 
 Before we start, if you haven't already, [setup your WordPress site for headless](/getting-started/setting-up-wordpress).
 
 ## Create a custom post type
 
-We'll be using the [Atlas Content Modeler](https://github.com/wpengine/atlas-content-modeler) plugin to create custom post types for this guide, but you can choose to create your custom post types in any way you'd like.
+We'll be using the [Atlas Content Modeler](https://github.com/wpengine/atlas-content-modeler) plugin to create custom post types for this guide, but you can choose to create custom post types in any way you'd like.
 
 Atlas Content Modeler is a WordPress plugin to create custom post types and fields for headless WordPress sites. Start by downloading the plugin and activating it on your WordPress site [(Download)](https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download)
 
@@ -40,17 +40,17 @@ We'll add three fields:
 
 Now that you have created a custom post type and fields, you can start entering data. Navigate to WP Admin -> Team Members to start creating!
 
-For this example, I've created two team members, Jane and Jonh Doe, with bios and profile pics:
+For this example, I've created two team members, Jane and John Doe, with bios and profile pics:
 
 <img src="/docs/img/content-modeler-add-team-member.png" alt="Atlas Content Modeler Custom Post Type interface for adding a new item" />
 
 ## Create your starter headless project
 
-From here, you have your WordPress site setup with the necessary headless plugins, and data. Now, we need to create a frontend app to consume this data.
+Thus far, you have created a WordPress site with the necessary headless plugins, and data. Now, we need to create a frontend app to consume this data.
 
-We are going to use a starter project in Next.js, but the same concepts apply in other frontend frameworks.
+We are going to use our getting started example project in Next.js, but the same concepts apply in other frontend frameworks.
 
-[Follow the steps in our Getting started with Next.js usage guide to create a frontend app.](/next/getting-started)
+[Follow the steps in our getting started with Next.js usage guide to create a frontend app](/next/getting-started)
 
 Once your frontend app is created, the structure should look something like this:
 
@@ -80,13 +80,13 @@ my-app/
 
 ### Regenerate your schema
 
-Your schema is a TypeScript representation of your WordPress site. Since we have added some custom post types and fields, we'll want to regenerate this schema to ensure it's up to date. To regenerate your schema from the Next.js starter, simply run:
+Your schema is a TypeScript representation of your WordPress site. Since we have added some custom post types and fields, we'll want to regenerate this schema to ensure it's up to date. To regenerate your schema from the Next.js getting started example, simply run:
 
 ```bash
 npm run generate
 ```
 
-[Learn more about generating your client/schema](next/generating-client)
+[Learn more about generating your client/schema here.](/next/generating-client)
 
 ### Run the dev server
 
@@ -119,7 +119,7 @@ export default function Team() {
       />
 
       <Head>
-        <title>Custom Page - {generalSettings.title}</title>
+        <title>Meet the Team - {generalSettings.title}</title>
       </Head>
 
       <main className="content content-single">
@@ -138,9 +138,9 @@ This will look something like:
 
 <img src="/docs/img/nextjs-empty-team-members-page.png" alt="An empty web page with a large title for team members" />
 
-### Query for team members
+### Query the team members
 
-When querying for custom post types, you can leverage the `useQuery` hook that is exported from the client. This allows you to access all of WordPress' data. You'll also notice it's typed from your schema, making things super easy to find.
+When querying custom post types in Faust.js, you can leverage the `useQuery` hook that is exported from the client. This allows you to access all of WordPress' data. You'll also notice it's typed from your schema, making things super easy to find.
 
 <img src="/docs/img/useQuery-typed.png" alt="A screenshot of the useQuery hook and its typings" />
 
@@ -164,7 +164,7 @@ export default function Team() {
       />
 
       <Head>
-        <title>Custom Page - {generalSettings.title}</title>
+        <title>Meet the Team - {generalSettings.title}</title>
       </Head>
 
       <main className="content content-single">
@@ -181,7 +181,7 @@ export default function Team() {
 
 Finally, we'll create a `teamMember.tsx` component to display each team member:
 
-```tsx title="/src/components/teamMember.tsx"
+```tsx title="/src/components/teamMember.tsx" {1}
 import { TeamMember as TeamMemberType } from 'client';
 
 interface TeamMemberProps {
@@ -205,11 +205,11 @@ export default function TeamMember({ teamMember }: TeamMemberProps) {
 }
 ```
 
-Notice how we are getting the `TeamMember` type from the client and generated schema.
+Notice we are getting the `TeamMember` TypeScript type from the client and generated schema.
 
 ### Put it all together
 
-Finally, let's hook up our `TeamMember` component to the Team page.
+Finally, let's hook up our `TeamMember` component to the team page.
 
 ```tsx title="src/pages/team.tsx" {4,27-29}
 import Head from 'next/head';
