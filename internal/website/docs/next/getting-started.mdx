@@ -44,7 +44,7 @@ Currently, the posts and pages you see are coming from our WordPress site at [ht
 
 The example app above loads WordPress content from the demo site at [https://headlessfw.wpengine.com](https://headlessfw.wpengine.com).
 
-To point it to a different WordPress site, first, [make sure you have setup the necessary WordPress plugins.](/getting-started#prerequisites)
+To point it to a different WordPress site, first, [make sure you have setup the necessary WordPress plugins.](/getting-started/setting-up-wordpress)
 
 Once the necessary plugins have been installed, open the `.env.local` file you created earlier, it should look something like this:
 
@@ -69,5 +69,5 @@ WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
 Update the `NEXT_PUBLIC_WORDPRESS_URL` value with your WordPress site URL (be sure to include `http://` or `https://`).
 
 Additionally, update the `WP_HEADLESS_SECRET` value with the secret key found in Settings → Headless in your WordPress admin area to support previews.
-    
+
 <img src="/docs/img/headless-admin-secret.png" alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field" />

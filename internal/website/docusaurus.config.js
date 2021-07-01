@@ -45,7 +45,7 @@ module.exports = {
             },
             {
               label: 'Getting Started',
-              to: '/getting-started',
+              to: '/getting-started/setting-up-wordpress',
             },
             {
               label: 'Usage with Next.js',
