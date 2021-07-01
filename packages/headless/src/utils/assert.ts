@@ -4,7 +4,7 @@
  * @export
  * @returns {boolean}
  */
-export function isServerSide() {
+export function isServerSide(): boolean {
   return typeof window === 'undefined';
 }
 
@@ -15,7 +15,7 @@ export function isServerSide() {
  * @param {string} str
  * @returns
  */
-export function isBase64(str: string) {
+export function isBase64(str: string): boolean {
   if (!str) {
     return false;
   }
@@ -23,4 +23,14 @@ export function isBase64(str: string) {
   return /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?\n?$/.test(
     str.replace(/\n/g, ''),
   );
+}
+
+export const previewRegex = /\/preview(\/\w|\?)/;
+
+export function isPreviewPath(uri: string): boolean {
+  if (typeof uri === 'string') {
+    return previewRegex.test(uri);
+  }
+
+  return false;
 }

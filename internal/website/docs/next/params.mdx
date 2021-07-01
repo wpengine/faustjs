@@ -1,0 +1,61 @@
+---
+id: next-params
+slug: params
+title: Params
+---
+
+# Params
+
+We rely on the `params` of [Static Props Context](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [Server Side Props Context](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) to fetch data in our hooks. Our hooks look for params in the shape of:
+
+```tsx
+interface Params {
+    postId: string;
+    postSlug: string;
+    postUri: string[];
+    pageId: string;
+    pageUri: string[];
+    categoryId: string;
+    categorySlug: string;
+}
+```
+
+This means by building your [Next.js pages](https://nextjs.org/docs/basic-features/pages) with these params in mind, our hooks will just work without having to specify any IDs, slugs, etc.
+
+For example, say you have a page:
+
+```
+/src/pages/posts/[postSlug].tsx
+```
+
+Since `[postSlug]` is one of the params we look for, you can use the `usePost()` hook, and it will just work!
+
+```tsx title="/src/pages/posts/[postSlug].tsx" {6}
+import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost();
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+  });
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```

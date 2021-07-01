@@ -1,0 +1,264 @@
+---
+id: custom-post-types-guide
+slug: interacting-with-custom-post-types
+title: Interacting With Custom Post Types
+---
+
+# Interacting with custom post types
+
+Querying data in custom post types is just as easy as querying for posts or pages in Faust.js.
+
+Before we start, if you haven't already, [setup your WordPress site for headless](/getting-started/setting-up-wordpress).
+
+## Create a custom post type
+
+We'll be using the [Atlas Content Modeler](https://github.com/wpengine/atlas-content-modeler) plugin to create custom post types for this guide, but you can choose to create custom post types in any way you'd like.
+
+Atlas Content Modeler is a WordPress plugin to create custom post types and fields for headless WordPress sites. Start by downloading the plugin and activating it on your WordPress site [(Download)](https://wp-product-info.wpesvc.net/v1/plugins/atlas-content-modeler?download)
+
+Now, navigate to WP Admin -> Content Modeler.
+
+<img src="/docs/img/empty-content-modeler.png" alt="The Atlas Content Modeler admin interface" />
+
+Let's create a custom post type for our team members. Click the "Get Started" button, and fill out the fields to create a new Content Model. Be sure to mark "API Visibility" to "Public" so we can query the data.
+
+<img src="/docs/img/team-members-content-modeler.png" alt="The Atlas Content Modeler admin interface with fields for a team member content type" />
+
+## Create fields for your custom post type
+
+Now, that we've created our custom post type, let's add some fields to it. From WP Admin -> Content Modeler, select the Team Members custom post type.
+
+We'll add three fields:
+
+1. A Media field type. The name will be "Profile Pic" and the API identifier "profilePic"
+2. A Text field type. The name will be "Full Name" and the API identifier "fullName". We'll also select "Use this field as the entry title"
+3. A Rich Text field type. The name will be "Bio" and the API identifier "bio".
+
+<img src="/docs/img/team-members-content-modeler-fields.png" alt="The Atlas Content Modeler admin interface with filled custom fields" />
+
+## Create some team members
+
+Now that you have created a custom post type and fields, you can start entering data. Navigate to WP Admin -> Team Members to start creating!
+
+For this example, I've created two team members, Jane and John Doe, with bios and profile pics:
+
+<img src="/docs/img/content-modeler-add-team-member.png" alt="Atlas Content Modeler Custom Post Type interface for adding a new item" />
+
+## Create your starter headless project
+
+Thus far, you have created a WordPress site with the necessary headless plugins, and data. Now, we need to create a frontend app to consume this data.
+
+We are going to use our getting started example project in Next.js, but the same concepts apply in other frontend frameworks.
+
+[Follow the steps in our getting started with Next.js usage guide to create a frontend app](/next/getting-started)
+
+Once your frontend app is created, the structure should look something like this:
+
+```
+my-app/
+  src/
+    client/
+      ..
+    pages/
+      ..
+    components/
+      ..
+    scss/
+      ..
+  public/
+  .env.local
+  .env.local.sample
+  .env.test.sample
+  .eslintrc
+  .gitignore
+  gqless.config.js
+  next-env.d.ts
+  package.json
+  README.md
+  tsconfig.json
+```
+
+### Regenerate your schema
+
+Your schema is a TypeScript representation of your WordPress site. Since we have added some custom post types and fields, we'll want to regenerate this schema to ensure it's up to date. To regenerate your schema from the Next.js getting started example, simply run:
+
+```bash
+npm run generate
+```
+
+[Learn more about generating your client/schema here.](/next/generating-client)
+
+### Run the dev server
+
+Run the following command to start the dev server:
+
+```bash
+npm run dev
+```
+
+You should now be able to access the starter project at [http://localhost:3000](http://localhost:3000)
+
+### Create a team page
+
+We'll create a team page in `src/pages/team.tsx` to display our team members:
+
+```tsx title="src/pages/team.tsx"
+import Head from 'next/head';
+import { Header, Footer } from '../components';
+import { client } from '../client';
+
+export default function Team() {
+  const { useGeneralSettings } = client;
+  const generalSettings = useGeneralSettings();
+
+  return (
+    <>
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
+
+      <Head>
+        <title>Meet the Team - {generalSettings.title}</title>
+      </Head>
+
+      <main className="content content-single">
+        <div className="wrap">
+          <h2>Team Members</h2>
+        </div>
+      </main>
+
+      <Footer copyrightHolder={generalSettings.title} />
+    </>
+  );
+}
+```
+
+This will look something like:
+
+<img src="/docs/img/nextjs-empty-team-members-page.png" alt="An empty web page with a large title for team members" />
+
+### Query the team members
+
+When querying custom post types in Faust.js, you can leverage the `useQuery` hook that is exported from the client. This allows you to access all of WordPress' data. You'll also notice it's typed from your schema, making things super easy to find.
+
+<img src="/docs/img/useQuery-typed.png" alt="A screenshot of the useQuery hook and its typings" />
+
+Let's get our team members using the `useQuery` hook:
+
+```tsx title="src/pages/team.tsx" {6,8}
+import Head from 'next/head';
+import { Header, Footer } from '../components';
+import { client } from '../client';
+
+export default function Team() {
+  const { useGeneralSettings, useQuery } = client;
+  const generalSettings = useGeneralSettings();
+  const teamMembers = useQuery().teamMembers()?.nodes;
+
+  return (
+    <>
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
+
+      <Head>
+        <title>Meet the Team - {generalSettings.title}</title>
+      </Head>
+
+      <main className="content content-single">
+        <div className="wrap">
+          <h2>Team Members</h2>
+        </div>
+      </main>
+
+      <Footer copyrightHolder={generalSettings.title} />
+    </>
+  );
+}
+```
+
+Finally, we'll create a `teamMember.tsx` component to display each team member:
+
+```tsx title="/src/components/teamMember.tsx" {1}
+import { TeamMember as TeamMemberType } from 'client';
+
+interface TeamMemberProps {
+  teamMember: TeamMemberType;
+}
+
+export default function TeamMember({ teamMember }: TeamMemberProps) {
+  return (
+    <div>
+      <img
+        src={teamMember?.profilePic.mediaItemUrl}
+        alt={teamMember?.profilePic?.altText}
+      />
+      <h2>{teamMember?.fullName}</h2>
+      <div
+        className="bio"
+        dangerouslySetInnerHTML={{ __html: teamMember?.bio }}
+      />
+    </div>
+  );
+}
+```
+
+Notice we are getting the `TeamMember` TypeScript type from the client and generated schema.
+
+### Put it all together
+
+Finally, let's hook up our `TeamMember` component to the team page.
+
+```tsx title="src/pages/team.tsx" {4,27-29}
+import Head from 'next/head';
+import { Header, Footer } from '../components';
+import { client } from '../client';
+import TeamMember from '../components/teamMember';
+
+export default function Team() {
+  const { useGeneralSettings, useQuery } = client;
+  const generalSettings = useGeneralSettings();
+
+  const teamMembers = useQuery().teamMembers()?.nodes;
+
+  return (
+    <>
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
+
+      <Head>
+        <title>Meet the Team - {generalSettings.title}</title>
+      </Head>
+
+      <main className="content content-single">
+        <div className="wrap">
+          <h2>Team Members</h2>
+
+          {teamMembers.map((teamMember) => (
+            <TeamMember key={teamMember.id} teamMember={teamMember} />
+          ))}
+        </div>
+      </main>
+
+      <Footer copyrightHolder={generalSettings.title} />
+    </>
+  );
+}
+```
+
+Now, head back over to [http://localhost:3000/team](http://localhost:3000/team) to see your WordPress data come to life!
+
+<img src="/docs/img/nextjs-team-page.png" alt="A web page with a list of team members" />
+
+## Learnings
+
+In this guide, we demonstrated:
+
+* How to create custom post types/fields using Atlas Content Modeler
+* Creating data for your custom post types
+* Creating a starter frontend project to consume your WordPress data
+* Using the `useQuery` custom React hook in the framework to query your custom post type data in GraphQL

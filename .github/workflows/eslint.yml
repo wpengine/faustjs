@@ -1,21 +1,15 @@
-name: ESLint
+name: lint
 on: pull_request
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Node Dependencies
-        run: yarn install
-        working-directory: packages/headless
-        env:
-          CI: TRUE
-      - name: Test Code Linting
-        run:  yarn run eslint --output-file eslint_report.json --format json . --ext .js,.jsx,.ts,.tsx
-        working-directory: packages/headless
-        continue-on-error: true
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@1.1.2
+      - uses: actions/setup-node@v2
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "packages/headless/eslint_report.json"
+          node-version: '15'
+      - run: npm i -g npm@7 --registry=https://registry.npmjs.org
+      - run: npm install
+      - run: npm run build
+      - run: npm run lint
+        continue-on-error: FALSE

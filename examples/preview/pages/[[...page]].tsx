@@ -1,25 +1,31 @@
 import React from 'react';
 import {
-  TemplateLoader,
-  initializeNextStaticProps,
-  initializeNextStaticPaths,
-} from '@wpengine/headless';
+  NextTemplateLoader,
+  getNextStaticPaths,
+  getNextStaticProps,
+} from '@wpengine/headless/next';
+
+import WPTemplates from '../wp-templates/_loader';
+import { GetStaticPropsContext } from 'next';
 
 /**
  * @todo make conditionalTags available
  */
 export default function Page() {
-  return <TemplateLoader />;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  return <NextTemplateLoader templates={ WPTemplates } />;
 }
 
 /**
  * @todo Show how to switch between static and SSR
  */
 
-export function getStaticProps(context: any) {
-  return initializeNextStaticProps(context);
+export function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    templates: WPTemplates
+  });
 }
 
 export function getStaticPaths() {
-  return initializeNextStaticPaths();
+  return getNextStaticPaths();
 }

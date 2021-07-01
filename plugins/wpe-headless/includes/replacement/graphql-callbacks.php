@@ -28,12 +28,13 @@ function wpe_headless_url_replacement( $response ) {
 		is_object( $response ) &&
 		property_exists( $response, 'data' ) &&
 		is_array( $response->data ) &&
-		wpe_headless_domain_replacement_enabled()
+		wpe_headless_domain_replacement_enabled() &&
+		! array_key_exists( 'generalSettings', $response->data )
 	) {
 		array_walk_recursive(
 			$response->data,
 			function( &$value, $key ) {
-				if ( 'url' === $key ) {
+				if ( 'url' === $key || 'href' === $key ) {
 					$replacement = wpe_headless_get_setting( 'frontend_uri', '/' );
 					$value       = str_replace( site_url(), $replacement, $value );
 				}

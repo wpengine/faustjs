@@ -1,3 +1,9 @@
+export interface PaginationConfig {
+  after: string;
+  before: string;
+  replace(url: string): string;
+}
+
 /**
  * The configuration for your headless site
  *
@@ -15,43 +21,15 @@ export interface HeadlessConfig {
    * @memberof WPEHeadlessConfig
    */
   uriPrefix?: string;
-}
 
-/**
- * WordPress Content Node types as defined in WPGraphQL
- *
- * @export
- * @enum {number}
- */
-export enum ContentNodeIdType {
-  DATABASE_ID = 'DATABASE_ID',
-  ID = 'ID',
-  URI = 'URI',
-  SLUG = 'SLUG',
-}
-
-/**
- * A WPGraphQL NodeType edge
- *
- * @export
- * @interface ConnectionEdge
- * @template NodeType
- */
-export interface ConnectionEdge<NodeType> {
-  cursor: string;
-  node: NodeType;
-}
-
-/**
- * The WPGraphQL Connection interface for a NodeType
- *
- * @export
- * @interface Connection
- * @template NodeType
- */
-export interface Connection<NodeType> {
-  pageInfo: PageInfo;
-  edges: ConnectionEdge<NodeType>[];
+  /**
+   * Configure how pagination is handled by the framework. The default method is to
+   * assume `/after/<cursor>` and `/before/<cursor>`
+   *
+   * @type {PaginationConfig}
+   * @memberof HeadlessConfig
+   */
+  pagination?: PaginationConfig;
 }
 
 /**
@@ -78,143 +56,13 @@ export interface ParsedUrlInfo {
  */
 export interface UriInfo {
   id?: string;
+  idType?: WPGraphQL.ContentNodeIdTypeEnum;
   isPostsPage?: boolean;
   isFrontPage?: boolean;
   isPreview?: boolean;
+  isArchive?: boolean;
+  isSingular?: boolean;
   is404?: boolean;
   uriPath: string;
   templates?: string[];
-}
-
-/**
- * WPGraphQL page information used for pagination
- *
- * @export
- * @interface PageInfo
- */
-export interface PageInfo {
-  endCursor: string;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  startCursor: string;
-}
-
-/**
- * A WordPress featured image object obtained through a WPGraphQL request
- *
- * @export
- * @interface FeaturedImageNode
- */
-export interface FeaturedImageNode {
-  id: string;
-  altText: string;
-  sourceUrl: string;
-}
-
-/**
- * A WordPress featured image node object obtained through a WPGraphQL request
- *
- * @export
- * @interface FeaturedImage
- */
-export interface FeaturedImage {
-  node: FeaturedImageNode;
-}
-
-/**
- * A WordPress Page or Post object obtained through a WPGraphQL request
- *
- * @export
- * @interface ContentNode
- */
-export interface ContentNode {
-  id: string;
-  title: string;
-  slug: string;
-  status: string;
-  content: string;
-  isRevision: boolean;
-  isPreview: boolean;
-  uri: string;
-  featuredImage: FeaturedImage;
-}
-
-/**
- * A WordPress Post object without preview information
- *
- * @export
- * @interface PostPreview
- */
-export interface PostPreview {
-  node: Omit<Post, 'preview'>;
-}
-
-/**
- * A WordPress Page object without preview information
- *
- * @export
- * @interface PagePreview
- */
-export interface PagePreview {
-  node: Omit<Page, 'preview'>;
-}
-
-/**
- * A WordPress Post object
- *
- * @export
- * @interface Post
- * @extends {ContentNode}
- */
-export interface Post extends ContentNode {
-  excerpt: string;
-  isSticky: boolean;
-  preview?: PostPreview;
-  enqueuedStylesheets?: EnqueuedStylesheets;
-}
-
-/**
- * A WordPress Page object
- *
- * @export
- * @interface Page
- * @extends {ContentNode}
- */
-export interface Page extends ContentNode {
-  isFrontPage: boolean;
-  isPostsPage: boolean;
-  preview?: PagePreview;
-  enqueuedStylesheets?: EnqueuedStylesheets;
-}
-
-/**
- * An object obtained from a WPGraphQL request to get WordPress General Settings
- *
- * @export
- * @interface GeneralSettings
- */
-export interface GeneralSettings {
-  title: string;
-  description: string;
-}
-
-/**
- * An object with Post stylesheets objects
- *
- * @export
- * @interface EnqueuedStylesheets
- */
-export interface EnqueuedStylesheets {
-  nodes: Array<EnqueuedStylesheet>;
-}
-
-/**
- * An object with WordPress Post stylesheet information
- *
- * @export
- * @interface EnqueuedStylesheet
- */
-export interface EnqueuedStylesheet {
-  src: string;
-  handle: string;
 }

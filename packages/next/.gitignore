@@ -1,0 +1,4 @@
+node_modules
+dist
+jest.setup.js
+jest.setup.d.ts

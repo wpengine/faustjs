@@ -1,11 +1,39 @@
 {
   "name": "root",
   "private": true,
+  "workspaces":{
+    "packages": [
+      "packages/core",
+      "packages/react",
+      "packages/next",
+      "examples/next/getting-started"
+    ]
+  },
   "scripts": {
-    "bootstrap": "npm install && lerna bootstrap",
-    "dev": "lerna run --parallel --stream --no-bail dev-lerna"
+    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "build:core": "npm run build --workspace=@faustjs/core",
+    "build:next": "npm run build --workspace=@faustjs/next",
+    "build:react": "npm run build --workspace=@faustjs/react",
+    "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "clean:examples": "rimraf examples/**/node_modules",
+    "lint": "npm run lint --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "lint:fix": "npm run lint:fix --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "dev": "npm run build && npm run dev:next:getting-started",
+    "dev:next:getting-started": "npm run dev ---workspace=examples/next/getting-started",
+    "docs": "npm start --prefix internal/website",
+    "docs:build": "npm run build --prefix internal/website",
+    "docs:install": "cd internal/website && npm i && cd ..",
+    "docs:start": "npm start --prefix internal/website",
+    "test": "npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "minor": "npm version minor --git-tag-version=false --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "patch": "npm version patch --git-tag-version=false --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "wp-env": "wp-env",
+    "wp:start": "wp-env start",
+    "wp:stop": "wp-env stop",
+    "wp:destroy": "wp-env destroy"
   },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "@wordpress/env": "^4.0.0",
+    "rimraf": "^3.0.2"
   }
 }

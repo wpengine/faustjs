@@ -28,16 +28,36 @@
 				</form>
 			</div>
 			<div class="sidebar">
+				<div class="box get-started primary">
+					<h3><?php esc_html_e( 'Get Started With Headless', 'wpe-headless' ); ?></h3>
+					<section>
+						<h4><?php esc_html_e( 'Install WPGraphQL', 'wpe-headless' ); ?></h4>
+						<p><a href="https://www.wpgraphql.com/docs/quick-start/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn about the plugin', 'wpe-headless' ); ?></a>.</p>
+						<?php if ( function_exists( 'graphql' ) ) : ?>
+							<button class="button-primary" disabled><?php esc_html_e( '☑️ WPGraphQL is active', 'wpe-headless' ); ?></button>
+						<?php else : ?>
+							<button class="button-primary" id="wpe-headless-button-install-graphql" aria-label="<?php esc_html_e( 'Install and Activate the WPGraphQL plugin', 'wpe-headless' ); ?>"><?php esc_html_e( 'Install and Activate', 'wpe-headless' ); ?></button>
+							<span class="spinner"></span>
+							<p class="error-message"></p>
+						<?php endif; ?>
+					</section>
+					<section>
+						<h4><?php esc_html_e( 'Create Your Headless App', 'wpe-headless' ); ?></h4>
+						<p><a href="https://github.com/wpengine/headless-framework/#readme" target="_blank" rel="noopener noreferrer">Follow our setup guide</a>.</p>
+					</section>
+				</div>
 				<div class="box docs">
 					<h3>Headless Documentation</h3>
-					<ul>
-						<li><a href="https://github.com/wpengine/headless-framework/#wordpress-headless-framework-previewalpha" target="_blank" rel="noopener noreferrer">Getting started</a></li>
-						<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/provider/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
-						<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/components/TemplateLoader.tsx" target="_blank" rel="noopener noreferrer">TemplateLoader component</a></li>
-						<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/components/menu/Menu.tsx" target="_blank" rel="noopener noreferrer">Menu component</a></li>
-						<li><a href="https://github.com/wpengine/headless-framework/blob/main/docs/previews/README.md" target="_blank" rel="noopener noreferrer">Post previews</a></li>
-					</ul>
-					<p><a class="button-primary" href="https://github.com/wpengine/headless-framework/" target="_blank" rel="noopener noreferrer">Headless on GitHub</a></p>
+					<section>
+						<ul>
+							<li><a href="https://github.com/wpengine/headless-framework/#wordpress-headless-framework-previewalpha" target="_blank" rel="noopener noreferrer">Getting started</a></li>
+							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/provider/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
+							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/components/TemplateLoader.tsx" target="_blank" rel="noopener noreferrer">TemplateLoader component</a></li>
+							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/components/menu/Menu.tsx" target="_blank" rel="noopener noreferrer">Menu component</a></li>
+							<li><a href="https://github.com/wpengine/headless-framework/blob/main/docs/previews/README.md" target="_blank" rel="noopener noreferrer">Post previews</a></li>
+						</ul>
+						<p><a class="button-primary" href="https://github.com/wpengine/headless-framework/" target="_blank" rel="noopener noreferrer">Headless on GitHub</a></p>
+					</section>
 				</div>
 			</div>
 		</div>

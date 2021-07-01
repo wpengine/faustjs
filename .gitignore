@@ -4,3 +4,4 @@ dist
 .idea
 .DS_Store
 process.yml
+.vscode

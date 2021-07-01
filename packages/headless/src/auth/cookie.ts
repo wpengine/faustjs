@@ -1,12 +1,31 @@
-import { ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import Cookies from 'universal-cookie';
 import { base64Decode, base64Encode, trimTrailingSlash } from '../utils';
 
-const cookies = new Cookies();
+export interface CookieOptions {
+  request?: IncomingMessage;
+  cookies?: string;
+}
+
 const WP_URL = trimTrailingSlash(
   process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL,
 );
-const TOKEN_KEY = `${WP_URL as string}-at`;
+export const COOKIE_KEY = `${WP_URL as string}-at`;
+
+export function initializeCookies({
+  request,
+  cookies,
+}: CookieOptions = {}): Cookies {
+  if (!(request || cookies)) {
+    return new Cookies();
+  }
+
+  if (!cookies) {
+    return new Cookies(request?.headers.cookie);
+  }
+
+  return new Cookies(cookies);
+}
 
 /* eslint-disable consistent-return */
 /**
@@ -15,14 +34,36 @@ const TOKEN_KEY = `${WP_URL as string}-at`;
  * @export
  * @returns {(string | undefined)}
  */
-export function getAccessToken(): string | undefined {
-  const token: string = cookies.get(TOKEN_KEY);
+export function getAccessToken(options?: CookieOptions): string | undefined {
+  const cookies = initializeCookies(options);
+  const token: string = cookies.get(COOKIE_KEY);
 
   if (!token) {
     return;
   }
 
   return base64Decode(token);
+}
+/* eslint-enable consistent-return */
+
+/* eslint-disable consistent-return */
+/**
+ * Gets an Access Token from the cookie and formats it as a cookie pair
+ *
+ * @export
+ * @returns {(string | undefined)}
+ */
+export function getAccessTokenAsCookie(
+  options?: CookieOptions,
+): string | undefined {
+  const cookies = initializeCookies(options);
+  const token: string = cookies.get(COOKIE_KEY);
+
+  if (!token) {
+    return;
+  }
+
+  return `${COOKIE_KEY}=${token};`;
 }
 /* eslint-enable consistent-return */
 
@@ -36,14 +77,16 @@ export function getAccessToken(): string | undefined {
 export function storeAccessToken(
   token: string | undefined,
   res: ServerResponse,
-) {
+  options: CookieOptions,
+): void {
+  const cookies = initializeCookies(options);
   if (!token) {
-    cookies.remove(TOKEN_KEY);
+    cookies.remove(COOKIE_KEY);
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     res.setHeader(
       'Set-Cookie',
-      `${TOKEN_KEY}=; expires=${yesterday.toUTCString()}; path=/`,
+      `${COOKIE_KEY}=; expires=${yesterday.toUTCString()}; path=/`,
     );
 
     return;
@@ -51,9 +94,9 @@ export function storeAccessToken(
 
   const encodedToken = base64Encode(token);
 
-  cookies.set(TOKEN_KEY, encodedToken);
+  cookies.set(COOKIE_KEY, encodedToken);
   res.setHeader(
     'Set-Cookie',
-    `${TOKEN_KEY}=${encodedToken}; Max-Age=2592000; path=/`,
+    `${COOKIE_KEY}=${encodedToken}; Max-Age=2592000; path=/`,
   );
 }

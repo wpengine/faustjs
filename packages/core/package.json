@@ -1,0 +1,69 @@
+{
+  "name": "@faustjs/core",
+  "version": "0.7.0",
+  "description": "This module helps you use WordPress as a Headless CMS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && npm run ts",
+    "dev": "npm run ts:watch",
+    "dev-lerna": "npm run dev",
+    "clean": "rimraf dist",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
+    "prepublish": "npm run build",
+    "generate:gqless": "gqless generate",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch",
+    "ts": "tsc -p .",
+    "ts:watch": "tsc -p . --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless"
+  },
+  "keywords": [
+    "WordPress",
+    "WP",
+    "Headless",
+    "CMS",
+    "API",
+    "WP Engine"
+  ],
+  "author": "WP Engine",
+  "license": "MIT",
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "gqless": "^2.0.14",
+    "graphql-tag": "^2.12.4",
+    "isomorphic-fetch": "^3.0.0",
+    "lodash": "^4.17.21",
+    "universal-cookie": "^4.0.4"
+  },
+  "devDependencies": {
+    "@gqless/cli": "^2.0.16",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@types/express": "^4.17.12",
+    "@types/is-number": "^7.0.1",
+    "@types/isomorphic-fetch": "^0.0.35",
+    "@types/jest": "^26.0.23",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^15.12.3",
+    "@types/webpack-env": "^1.16.0",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "graphql": ">=15.5",
+    "jest": "^26.6.3",
+    "prettier": "^2.3.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.6",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.4"
+  }
+}

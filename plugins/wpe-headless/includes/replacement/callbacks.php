@@ -35,53 +35,113 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10 );
+add_filter( 'the_content', 'wpe_headless_image_source_replacement' );
+/**
+ * Callback for WordPress 'the_content' filter to replace paths to media.
+ *
+ * @param string $content The post content.
+ *
+ * @return string The post content.
+ */
+function wpe_headless_image_source_replacement( $content ) {
+	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
+		return $content;
+	}
+
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$site_url     = site_url();
+
+	// For urls with no domain or the frontend domain, replace with the wp site_url.
+	$patterns = array(
+		"#src=\"{$frontend_uri}/#",
+		'#src="/#',
+	);
+	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
+}
+
+add_filter( 'wp_calculate_image_srcset', 'wpe_headless_image_source_srcset_replacement' );
+/**
+ * Callback for WordPress 'the_content' filter to replace paths to media.
+ *
+ * @param array $sources One or more arrays of source data to include in the 'srcset'.
+ *
+ * @return string One or more arrays of source data.
+ */
+function wpe_headless_image_source_srcset_replacement( $sources ) {
+	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
+		return $sources;
+	}
+
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$site_url     = site_url();
+
+	if ( is_array( $sources ) ) {
+		// For urls with no domain or the frontend domain, replace with the wp site_url.
+		$patterns = array(
+			"#^{$frontend_uri}/#",
+			'#^/#',
+		);
+		foreach ( $sources as $width => $source ) {
+			$sources[ $width ]['url'] = preg_replace( $patterns, "$site_url/", $sources[ $width ]['url'] );
+		}
+	}
+
+	return $sources;
+}
+
+add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
 /**
  * Callback for WordPress 'preview_post_link' filter.
  *
  * Swap the post preview link for headless front-end and to use the API entry to support Next.js preview mode.
  *
- * @param string $link URL used for the post preview.
+ * @param string  $link URL used for the post preview.
+ * @param WP_Post $post Post object.
  *
  * @return string URL used for the post preview.
  */
-function wpe_headless_post_preview_link( $link ) {
+function wpe_headless_post_preview_link( $link, $post ) {
 	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
 		$home_url     = trailingslashit( get_home_url() );
 		$frontend_uri = trailingslashit( $frontend_uri );
-
 		/**
 		 * This should already be handled by wpe_headless_post_link, but it's here for verbosity's sake and if the
 		 * other filter changes for any reason.
 		 */
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
-		$args       = wp_parse_args( wp_parse_url( $link, PHP_URL_QUERY ) );
-		$preview_id = $args['preview_id'];
+		$parsed_link_query = wp_parse_url( $link, PHP_URL_QUERY );
+		$args              = wp_parse_args( $parsed_link_query );
+		$frontend_uri_path = wp_parse_url( $frontend_uri, PHP_URL_PATH );
+		$parsed_link_path  = wp_parse_url( $link, PHP_URL_PATH );
+		$link_path         = str_replace( $frontend_uri_path, '', $parsed_link_path );
+		$path              = trailingslashit( $link_path );
 
-		/**
-		 * Remove query vars as Next.js cannot read query params in SSG
-		 */
-		$link = remove_query_arg( array( 'preview_id', 'preview_nonce', 'preview' ), $link );
+		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
-		/**
-		 * Replace the path with a query param
-		 */
-		$link_split = explode( '/', $link );
-		$path       = join( '/', array_slice( $link_split, 3 ) );
+		// Remove ?p=xx&preview=true from link temporarily.
+		$link = remove_query_arg(
+			array_keys( $args ),
+			$link
+		);
 
-		/**
-		 * Add preview and preview ID back to path to support Next.js preview mode
-		 */
-		$path = trailingslashit( $path ) . 'preview/' . $preview_id;
+		// Add p=xx if it's missing, which is the case for published posts.
+		if ( ! isset( $args['p'] ) ) {
+			$args['p'] = $preview_id;
+		}
 
+		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
+		$unleadingslash_path          = ltrim( $path, '/\\' );
+		$link                         = $untrailingslash_frontend_uri . '/preview/' . $unleadingslash_path;
+
+		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
 			array(
-				'redirect_uri' => rawurlencode( $path ),
+				$args,
 			),
-			$frontend_uri . 'api/auth/wpe-headless'
+			$link
 		);
 	}
 
@@ -102,7 +162,10 @@ add_filter( 'post_link', 'wpe_headless_post_link', 10 );
  * @return string URL used for the post.
  */
 function wpe_headless_post_link( $link ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+	if (
+		! wpe_headless_is_rewrites_enabled()
+		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+	) {
 		return $link;
 	}
 
@@ -124,7 +187,7 @@ add_filter( 'term_link', 'wpe_headless_term_link' );
  * @return string
  */
 function wpe_headless_term_link( $term_link ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+	if ( ! wpe_headless_is_rewrites_enabled() ) {
 		return $term_link;
 	}
 
@@ -139,3 +202,16 @@ function wpe_headless_term_link( $term_link ) {
 
 	return str_replace( $site_url, $frontend_uri, $term_link );
 }
+
+
+/**
+ * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link
+ *
+ * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
+ */
+add_action(
+	'enqueue_block_editor_assets',
+	function() {
+		wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'wp-edit-post' ), '1.0.0', true );
+	}
+);

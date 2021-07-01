@@ -1,0 +1,30 @@
+// CSS for the index.tsx template.
+
+@import "scss/variables";
+
+.explore {
+	margin: 5em 0 5em;
+}
+
+#post_list {
+	padding: 5em 0 6em;
+	background-color: $color-light-gray;
+}
+
+@media screen and (min-width: $breakpoint-medium) {
+	#home_hero h1 {
+		max-width: 40%; // Reduced from 80% on the front-page only to wrap the headline.
+	}
+
+	.features {
+		column-gap: 20px;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	#post_list :global(.posts) {
+		display: grid;
+		column-gap: 10px;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
