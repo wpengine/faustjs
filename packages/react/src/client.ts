@@ -1,15 +1,15 @@
 import {
-  createReactClient,
-  CreateReactClientOptions,
-  ReactClient as GQlessReactClient,
-} from '@gqless/react';
-import {
   CategoryIdType,
   ClientConfig,
   getClient as getCoreClient,
   PageIdType,
   PostIdType,
 } from '@faustjs/core';
+import {
+  createReactClient,
+  CreateReactClientOptions,
+  ReactClient as GQlessReactClient,
+} from '@gqless/react';
 import { GQlessClient } from 'gqless';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
@@ -47,29 +47,6 @@ export interface RequiredSchema {
 export interface ReactClient<Schema extends RequiredSchema>
   extends GQlessReactClient<Schema> {
   client: GQlessClient<Schema>;
-
-  useCategory(
-    args: Parameters<Schema['query']['category']>[0],
-  ): ReturnType<Schema['query']['category']>;
-
-  usePosts(
-    args: Parameters<Schema['query']['posts']>[0],
-  ): ReturnType<Schema['query']['posts']>;
-
-  usePost(
-    args: Parameters<Schema['query']['post']>[0],
-  ): ReturnType<Schema['query']['post']>;
-
-  usePages(
-    args: Parameters<Schema['query']['pages']>[0],
-  ): ReturnType<Schema['query']['pages']>;
-
-  usePage(
-    args: Parameters<Schema['query']['page']>[0],
-  ): ReturnType<Schema['query']['page']>;
-
-  useGeneralSettings(): Schema['query']['generalSettings'];
-
   useIsLoading(): boolean;
 }
 
@@ -109,149 +86,6 @@ export function getClient<
 
   const { useQuery } = reactClient;
 
-  /**
-   * React Hook for retrieving a list of posts from your WordPress site
-   *
-   * @example
-   * ```tsx
-   * import { usePosts } from '../client'
-   *
-   * export function ListPosts() {
-   *   const posts = usePosts();
-   *
-   *   if (!posts) {
-   *     return <></>;
-   *   }
-   *
-   *   return (
-   *     <>
-   *       {posts.map((post) => (
-   *         <div key={post?.id} dangerouslySetInnerHTML={ { __html: post?.content() ?? '' } } />
-   *       ))}
-   *     </>
-   *   );
-   * }
-   * }
-   * ```
-   */
-  const usePosts = (args: Parameters<Schema['query']['posts']>[0]) => {
-    return useQuery().posts(args) as ReturnType<Schema['query']['posts']>;
-  };
-
-  /**
-   * React Hook for retrieving the post based on the current URI. Uses window.location if necessary
-   *
-   * @example
-   * ```tsx
-   * import { usePost } from '../client';
-   *
-   * export default function Post() {
-   *   const post = usePost();
-   *
-   *   return (
-   *     <div>
-   *       {post && (
-   *         <div>
-   *           <div>
-   *             <h5>{post?.title}</h5>
-   *             <p dangerouslySetInnerHTML={{ __html: post?.content() ?? '' }} />
-   *           </div>
-   *         </div>
-   *       )}
-   *     </div>
-   *   );
-   * }
-   * ```
-   */
-  const usePost = (args: Parameters<Schema['query']['post']>[0]) => {
-    return useQuery().post(args) as ReturnType<Schema['query']['post']>;
-  };
-
-  /**
-   * React Hook for retrieving a list of posts from your WordPress site
-   *
-   * @example
-   * ```tsx
-   * import { usePages } from '../client'
-   *
-   * export function ListPages() {
-   *   const pages = usePages();
-   *
-   *   if (!pages) {
-   *     return <></>;
-   *   }
-   *
-   *   return (
-   *     <>
-   *       {pages.map((page) => (
-   *         <div key={page?.id} dangerouslySetInnerHTML={ { __html: page?.content() ?? '' } } />
-   *       ))}
-   *     </>
-   *   );
-   * }
-   * }
-   * ```
-   */
-  const usePages = (args: Parameters<Schema['query']['pages']>[0]) => {
-    return useQuery().pages(args) as ReturnType<Schema['query']['pages']>;
-  };
-
-  /**
-   * React Hook for retrieving the page based on the current URI. Uses window.location if necessary
-   *
-   * @example
-   * ```tsx
-   * import { usePage } from '../client';
-   *
-   * export default function Page() {
-   *   const page = usePage();
-   *
-   *   return (
-   *     <div>
-   *       {page && (
-   *         <div>
-   *           <div>
-   *             <h5>{page?.title}</h5>
-   *             <p dangerouslySetInnerHTML={{ __html: page?.content() ?? '' }} />
-   *           </div>
-   *         </div>
-   *       )}
-   *     </div>
-   *   );
-   * }
-   * ```
-   */
-  const usePage = (args: Parameters<Schema['query']['page']>[0]) => {
-    return useQuery().page(args) as ReturnType<Schema['query']['page']>;
-  };
-
-  const useCategory = (args: Parameters<Schema['query']['category']>[0]) => {
-    return useQuery().category(args) as ReturnType<Schema['query']['category']>;
-  };
-
-  /**
-   * React Hook for retrieving the general settings (title, description) form your WordPress site
-   *
-   * @example
-   * ```tsx
-   * import {useGeneralSettings} from '../client';
-   *
-   * export function Header() {
-   *  const settings = useGeneralSettings();
-   *
-   *  return(
-   *    <header>
-   *      <h1>{settings?.title}</h1>
-   *      <h2>{settings?.description}</h2>
-   *    </header>
-   *  )
-   * }
-   * ```
-   */
-  const useGeneralSettings: () => Schema['query']['generalSettings'] = () => {
-    return useQuery().generalSettings;
-  };
-
   const useIsLoading = () => {
     return useQuery().$state.isLoading;
   };
@@ -259,12 +93,6 @@ export function getClient<
   const c: ReactClient<Schema> = {
     client: coreClient,
     ...reactClient,
-    useCategory,
-    usePosts,
-    usePost,
-    usePages,
-    usePage,
-    useGeneralSettings,
     useIsLoading,
   };
 

@@ -9,10 +9,10 @@ type CategoryParams = {
 
 export default function Category() {
   const { categorySlug } = useParams<CategoryParams>();
-  const { usePosts, useIsLoading } = client;
+  const { useQuery, useIsLoading } = client;
   const isLoading = useIsLoading();
 
-  const posts = usePosts({
+  const posts = useQuery().posts({
     where: {
       categoryName: categorySlug,
     },
