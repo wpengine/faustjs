@@ -115,7 +115,7 @@ In order to properly facilitate SSR and SSG you must use the built-in component 
 
 Using the `HeadlessProvider` component us easy, and if you are using an example `next` project published by Faust.js it will happen automatically. If you are adding `Faust.js` to your project, you will want to put `HeadlessProvider` at the top of your component tree. Typically in a Next.js app this means in your `pages/_app.tsx` file as follows:
 
-```tsx {9,11}
+```tsx title="src/pages/_app.tsx" {9,11}
 import React from 'react';
 import { HeadlessProvider } from '@faustjs/next';
 import { client } from 'client';
