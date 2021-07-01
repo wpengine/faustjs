@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core';
-import { isObject } from 'lodash';
+import { isNumber, isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
   GetServerSidePropsContext,
@@ -25,10 +25,17 @@ import {
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 
-export interface NextPropsConfig<Props = Record<string, unknown>> {
+export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   client: ReturnType<typeof getClient>;
   Page?: FunctionComponent | ComponentClass;
   props?: Props;
+}
+
+export interface GetNextStaticPropsConfig<Props = Record<string, unknown>> {
+  client: ReturnType<typeof getClient>;
+  Page?: FunctionComponent | ComponentClass;
+  props?: Props;
+  revalidate?: number | boolean;
 }
 
 export interface PageProps<Props> {
@@ -40,7 +47,11 @@ export async function getProps<
   Props,
 >(
   context: Context,
-  { client, Page, props }: NextPropsConfig,
+  {
+    client,
+    Page,
+    props,
+  }: GetNextServerSidePropsConfig | GetNextStaticPropsConfig,
 ): Promise<PageProps<Props>> {
   let cacheSnapshot: string | undefined;
   client.setAsRoot();
@@ -181,14 +192,14 @@ export async function is404<
 
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
-  config: NextPropsConfig,
+  config: GetNextServerSidePropsConfig,
 ): Promise<GetServerSidePropsResult<Props>> {
   return getProps(context, config);
 }
 
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
-  config: NextPropsConfig,
+  config: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
   const pageProps: GetStaticPropsResult<Props> = await getProps(
     context,
@@ -197,7 +208,7 @@ export async function getNextStaticProps<Props>(
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {
-    pageProps.revalidate = 1;
+    pageProps.revalidate = isNumber(config?.revalidate) ? config.revalidate : 1;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
