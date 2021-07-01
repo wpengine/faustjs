@@ -1,12 +1,13 @@
 /* eslint-disable react/no-children-prop */
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core';
-import { isNumber, isObject } from 'lodash';
+import { isBoolean, isNumber, isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
   GetServerSidePropsContext,
   GetStaticPropsContext,
   GetStaticPropsResult,
   GetServerSidePropsResult,
+  Redirect,
 } from 'next';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
@@ -29,6 +30,8 @@ export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   client: ReturnType<typeof getClient>;
   Page?: FunctionComponent | ComponentClass;
   props?: Props;
+  notFound?: boolean;
+  redirect?: Redirect;
 }
 
 export interface GetNextStaticPropsConfig<Props = Record<string, unknown>> {
@@ -36,6 +39,8 @@ export interface GetNextStaticPropsConfig<Props = Record<string, unknown>> {
   Page?: FunctionComponent | ComponentClass;
   props?: Props;
   revalidate?: number | boolean;
+  notFound?: boolean;
+  redirect?: Redirect;
 }
 
 export interface PageProps<Props> {
@@ -194,6 +199,20 @@ export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
   config: GetNextServerSidePropsConfig,
 ): Promise<GetServerSidePropsResult<Props>> {
+  const { notFound, redirect } = config;
+
+  if (isBoolean(notFound) && notFound === true) {
+    return {
+      notFound,
+    };
+  }
+
+  if (isObject(redirect)) {
+    return {
+      redirect,
+    };
+  }
+
   return getProps(context, config);
 }
 
@@ -201,6 +220,20 @@ export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   config: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
+  const { notFound, redirect } = config;
+
+  if (isBoolean(notFound) && notFound === true) {
+    return {
+      notFound,
+    };
+  }
+
+  if (isObject(redirect)) {
+    return {
+      redirect,
+    };
+  }
+
   const pageProps: GetStaticPropsResult<Props> = await getProps(
     context,
     config,
