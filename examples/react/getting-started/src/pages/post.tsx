@@ -8,10 +8,10 @@ type PostParams = {
 
 export default function Post() {
   const { postSlug } = useParams<PostParams>();
-  const { usePost, useIsLoading } = client;
+  const { useQuery, useIsLoading } = client;
   const isLoading = useIsLoading();
 
-  const post = usePost({
+  const post = useQuery().post({
     id: postSlug,
     idType: PostIdType.URI,
   });

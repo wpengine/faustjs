@@ -8,9 +8,9 @@ type PageParams = {
 
 export default function Page() {
   const { pageSlug } = useParams<PageParams>();
-  const { usePage, useIsLoading } = client;
+  const { useQuery, useIsLoading } = client;
   const isLoading = useIsLoading();
-  const page = usePage({
+  const page = useQuery().page({
     id: pageSlug,
     idType: PageIdType.URI,
   });
