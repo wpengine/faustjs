@@ -220,7 +220,7 @@ export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   config: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
-  const { notFound, redirect } = config;
+  const { notFound, redirect, revalidate } = config;
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -241,7 +241,7 @@ export async function getNextStaticProps<Props>(
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {
-    pageProps.revalidate = isNumber(config?.revalidate) ? config.revalidate : 1;
+    pageProps.revalidate = isNumber(revalidate) ? revalidate : 1;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
