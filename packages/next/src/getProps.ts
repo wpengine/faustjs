@@ -1,12 +1,13 @@
 /* eslint-disable react/no-children-prop */
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core';
-import { isObject } from 'lodash';
+import { isBoolean, isNumber, isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
   GetServerSidePropsContext,
   GetStaticPropsContext,
   GetStaticPropsResult,
   GetServerSidePropsResult,
+  Redirect,
 } from 'next';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
@@ -25,14 +26,29 @@ import {
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 
-export interface NextPropsConfig<Props = Record<string, unknown>> {
+export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   client: ReturnType<typeof getClient>;
   Page?: FunctionComponent | ComponentClass;
   props?: Props;
+  notFound?: boolean;
+  redirect?: Redirect;
+}
+
+export interface GetNextStaticPropsConfig<Props = Record<string, unknown>> {
+  client: ReturnType<typeof getClient>;
+  Page?: FunctionComponent | ComponentClass;
+  props?: Props;
+  revalidate?: number | boolean;
+  notFound?: boolean;
+  redirect?: Redirect;
 }
 
 export interface PageProps<Props> {
   props: Props & { [CLIENT_CACHE_PROP]: string | null };
+}
+
+export interface Is404Config {
+  client: ReturnType<typeof getClient>;
 }
 
 export async function getProps<
@@ -40,7 +56,11 @@ export async function getProps<
   Props,
 >(
   context: Context,
-  { client, Page, props }: NextPropsConfig,
+  {
+    client,
+    Page,
+    props,
+  }: GetNextServerSidePropsConfig | GetNextStaticPropsConfig,
 ): Promise<PageProps<Props>> {
   let cacheSnapshot: string | undefined;
   client.setAsRoot();
@@ -83,7 +103,7 @@ export async function getProps<
 
 export async function is404<
   Context extends GetStaticPropsContext | GetServerSidePropsContext,
->(client: ReturnType<typeof getClient>, { params }: Context): Promise<boolean> {
+>({ params }: Context, { client }: Is404Config): Promise<boolean> {
   if (!params) {
     return false;
   }
@@ -181,15 +201,43 @@ export async function is404<
 
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
-  config: NextPropsConfig,
+  config: GetNextServerSidePropsConfig,
 ): Promise<GetServerSidePropsResult<Props>> {
+  const { notFound, redirect } = config;
+
+  if (isBoolean(notFound) && notFound === true) {
+    return {
+      notFound,
+    };
+  }
+
+  if (isObject(redirect)) {
+    return {
+      redirect,
+    };
+  }
+
   return getProps(context, config);
 }
 
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
-  config: NextPropsConfig,
+  config: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
+  const { notFound, redirect, revalidate } = config;
+
+  if (isBoolean(notFound) && notFound === true) {
+    return {
+      notFound,
+    };
+  }
+
+  if (isObject(redirect)) {
+    return {
+      redirect,
+    };
+  }
+
   const pageProps: GetStaticPropsResult<Props> = await getProps(
     context,
     config,
@@ -197,7 +245,7 @@ export async function getNextStaticProps<Props>(
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {
-    pageProps.revalidate = 1;
+    pageProps.revalidate = isNumber(revalidate) ? revalidate : 1;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 

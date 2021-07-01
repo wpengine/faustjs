@@ -53,15 +53,10 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  if (await is404(client, context)) {
-    return {
-      notFound: true,
-    };
-  }
-
   return getNextStaticProps(context, {
     Page,
     client,
+    notFound: await is404(context, { client }),
   });
 }
 
