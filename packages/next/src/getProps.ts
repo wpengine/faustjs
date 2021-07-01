@@ -47,6 +47,10 @@ export interface PageProps<Props> {
   props: Props & { [CLIENT_CACHE_PROP]: string | null };
 }
 
+export interface Is404Config {
+  client: ReturnType<typeof getClient>;
+}
+
 export async function getProps<
   Context extends GetStaticPropsContext | GetServerSidePropsContext,
   Props,
@@ -99,7 +103,7 @@ export async function getProps<
 
 export async function is404<
   Context extends GetStaticPropsContext | GetServerSidePropsContext,
->(client: ReturnType<typeof getClient>, { params }: Context): Promise<boolean> {
+>({ params }: Context, { client }: Is404Config): Promise<boolean> {
   if (!params) {
     return false;
   }

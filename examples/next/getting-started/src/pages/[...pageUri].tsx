@@ -2,7 +2,7 @@ import { getNextStaticProps, is404 } from '@faustjs/next';
 import { Footer, Header, Hero } from 'components';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
-import { client, Page as PageType  } from 'client';
+import { client, Page as PageType } from 'client';
 
 export interface PageProps {
   page: PageType | PageType['preview']['node'] | null | undefined;
@@ -49,7 +49,7 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  if (await is404(client, context)) {
+  if (await is404(context, { client })) {
     return {
       notFound: true,
     };

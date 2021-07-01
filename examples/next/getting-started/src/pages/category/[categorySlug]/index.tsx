@@ -53,7 +53,7 @@ export default function Page() {
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  if (await is404(client, context)) {
+  if (await is404(context, { client })) {
     return {
       notFound: true,
     };
