@@ -27,10 +27,12 @@
     "test": "npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "minor": "npm version minor --git-tag-version=false --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "patch": "npm version patch --git-tag-version=false --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "start": "npm run serve:prod --prefix internal/website",
     "wp-env": "wp-env",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",
-    "wp:destroy": "wp-env destroy"
+    "wp:destroy": "wp-env destroy",
+    "wpe-build": "npm run docs:build"
   },
   "devDependencies": {
     "@wordpress/env": "^4.0.0",
