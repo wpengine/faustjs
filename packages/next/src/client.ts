@@ -66,8 +66,6 @@ export interface NextClient<
     args?: Parameters<Schema['query']['post']>[0],
   ): ReturnType<Schema['query']['post']>;
 
-  usePages: Schema['query']['pages'];
-
   usePage(
     args?: Parameters<Schema['query']['page']>[0],
   ): ReturnType<Schema['query']['page']>;
@@ -78,8 +76,6 @@ export interface NextClient<
   usePreview(
     args: Record<'postId', string>,
   ): ReturnType<Schema['query']['post']>;
-
-  useGeneralSettings(): Schema['query']['generalSettings'];
 
   useIsLoading(): boolean;
 }
@@ -207,10 +203,6 @@ export function getClient<
     >;
   }
 
-  const usePages: Schema['query']['pages'] = (args) => {
-    return useQuery().pages(args);
-  };
-
   function usePage(
     args?: Parameters<Schema['query']['page']>[0],
   ): ReturnType<Schema['query']['page']> {
@@ -337,11 +329,6 @@ export function getClient<
     ) as ReturnType<Schema['query']['category']>;
   }
 
-  const useGeneralSettings: () => Schema['query']['generalSettings'] = () => {
-    const client = useClient();
-    return client.useQuery().generalSettings;
-  };
-
   const useHydrateCache: typeof reactClient.useHydrateCache = ({
     cacheSnapshot,
     shouldRefetch,
@@ -383,10 +370,8 @@ export function getClient<
     useCategory,
     usePosts,
     usePost,
-    usePages,
     usePage,
     usePreview,
-    useGeneralSettings,
     useIsLoading,
   };
 
