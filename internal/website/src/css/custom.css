@@ -28,6 +28,10 @@ html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.footer.footer--dark {
+html[data-theme='light'] .footer.footer--dark {
   background-color: #002838;
+}
+
+html[data-theme='dark'] .footer.footer--dark {
+  background-color: var(--ifm-navbar-background-color);
 }
