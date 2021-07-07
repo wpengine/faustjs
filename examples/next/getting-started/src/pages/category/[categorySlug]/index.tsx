@@ -8,10 +8,10 @@ import { client } from 'client';
 const POSTS_PER_PAGE = 6;
 
 export default function Page() {
-  const { useGeneralSettings, usePosts, useCategory } = client;
+  const { useQuery, usePosts, useCategory } = client;
   const { query = {} } = useRouter();
   const { categorySlug, paginationTerm, categoryCursor } = query;
-  const generalSettings = useGeneralSettings();
+  const generalSettings = useQuery().generalSettings;
   const category = useCategory();
   const isBefore = paginationTerm === 'before';
   const posts = usePosts({

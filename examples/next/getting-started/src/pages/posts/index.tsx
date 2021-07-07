@@ -12,14 +12,14 @@ const POSTS_PER_PAGE = 6;
 export default function Page() {
   const { query = {} } = useRouter();
   const { postSlug, postCursor } = query;
-  const { usePosts, useGeneralSettings, useQuery } = client;
-  const generalSettings = useGeneralSettings();
+  const { usePosts, useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
   const isBefore = postSlug === 'before';
   const posts = usePosts({
     after: !isBefore ? (postCursor as string) : undefined,
     before: isBefore ? (postCursor as string) : undefined,
     first: !isBefore ? POSTS_PER_PAGE : undefined,
-    last: isBefore ? POSTS_PER_PAGE : undefined
+    last: isBefore ? POSTS_PER_PAGE : undefined,
   });
 
   if (useQuery().$state.isLoading) {

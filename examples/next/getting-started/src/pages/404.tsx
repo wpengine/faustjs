@@ -3,8 +3,8 @@ import { client } from 'client';
 import { Header, Hero, Footer } from '../components';
 
 export default function Page(): JSX.Element {
-  const { useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
 
   return (
     <>
