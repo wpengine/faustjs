@@ -5,8 +5,8 @@ import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 
 export default function Page() {
-  const { useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
 
   return (
     <>
