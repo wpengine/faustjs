@@ -8,8 +8,8 @@ import styles from 'scss/pages/home.module.scss';
 import { client } from 'client';
 
 export default function Page() {
-  const { usePosts, useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { usePosts, useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
   const posts = usePosts({
     first: 6,
     where: {
