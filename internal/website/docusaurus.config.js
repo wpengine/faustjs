@@ -3,7 +3,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'Headless Framework',
+  title: 'Faust.js',
   tagline: 'Headless by WP Engine',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
@@ -14,7 +14,7 @@ module.exports = {
   projectName: 'headless-framework', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'Headless Framework',
+      title: 'Faust.js',
       // logo: {
       //   alt: 'My Site Logo',
       //   src: 'img/logo.svg',

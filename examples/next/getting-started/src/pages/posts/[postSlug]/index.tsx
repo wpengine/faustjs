@@ -9,8 +9,8 @@ export interface PostProps {
 }
 
 export function PostComponent({ post }: PostProps) {
-  const { useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
 
   return (
     <>

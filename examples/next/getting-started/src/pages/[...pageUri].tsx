@@ -9,8 +9,8 @@ export interface PageProps {
 }
 
 export function PageComponent({ page }: PageProps) {
-  const { useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
 
   return (
     <>

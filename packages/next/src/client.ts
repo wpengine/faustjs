@@ -135,8 +135,33 @@ export function getClient<
     return client;
   }
 
-  const useQuery: typeof reactClient.useQuery = () => {
-    return useClient().useQuery();
+  const useQuery: typeof reactClient.useQuery = (...args) => {
+    return useClient().useQuery(...args);
+  };
+
+  const useLazyQuery: typeof reactClient.useLazyQuery = (...args) => {
+    return useClient().useLazyQuery(...args);
+  };
+
+  const useTransactionQuery: typeof reactClient.useTransactionQuery = (
+    fn,
+    ...args
+  ) => {
+    return useClient().useTransactionQuery(fn, ...args);
+  };
+
+  const usePaginatedQuery: typeof reactClient.usePaginatedQuery = (...args) => {
+    return useClient().usePaginatedQuery(...args);
+  };
+
+  const useMutation: typeof reactClient.useMutation = (...args) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return useClient().useMutation(...args);
+  };
+
+  const useSubscription: typeof reactClient.useSubscription = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return useClient().useSubscription();
   };
 
   function usePosts(
@@ -361,10 +386,20 @@ export function getClient<
     ...reactClient,
     setAsRoot() {
       nextClient.useQuery = reactClient.useQuery;
+      nextClient.useLazyQuery = reactClient.useLazyQuery;
+      nextClient.useTransactionQuery = reactClient.useTransactionQuery;
+      nextClient.usePaginatedQuery = reactClient.usePaginatedQuery;
+      nextClient.useMutation = reactClient.useMutation;
+      nextClient.useSubscription = reactClient.useSubscription;
       nextClient.useClient = () => nextClient;
     },
     context: clientConfig.context,
     useQuery,
+    useLazyQuery,
+    useTransactionQuery,
+    usePaginatedQuery,
+    useMutation,
+    useSubscription,
     useClient,
     useHydrateCache,
     useCategory,
