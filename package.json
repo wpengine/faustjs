@@ -22,6 +22,7 @@
     "dev:next:getting-started": "npm run dev ---workspace=examples/next/getting-started",
     "docs": "npm start --prefix internal/website",
     "docs:build": "npm run build --prefix internal/website",
+    "docs:clear": "npm run clear --prefix internal/website",
     "docs:install": "cd internal/website && npm i && cd ..",
     "docs:start": "npm start --prefix internal/website",
     "test": "npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
