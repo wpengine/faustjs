@@ -19,9 +19,6 @@ export default function Page() {
     before: isBefore ? (categoryCursor as string) : undefined,
     first: !isBefore ? POSTS_PER_PAGE : undefined,
     last: isBefore ? POSTS_PER_PAGE : undefined,
-    where: {
-      categoryName: categorySlug as string,
-    },
   });
 
   return (
