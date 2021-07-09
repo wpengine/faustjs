@@ -35,7 +35,6 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "gqless": "^2.0.14",
-    "graphql-tag": "^2.12.4",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21",
     "universal-cookie": "^4.0.4"
@@ -58,7 +57,6 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "graphql": ">=15.5",
     "jest": "^26.6.3",
     "prettier": "^2.3.1",
     "rimraf": "^3.0.2",

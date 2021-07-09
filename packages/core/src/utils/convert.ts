@@ -1,4 +1,3 @@
-import { print as gqlPrint, DocumentNode } from 'graphql';
 import isArrayLike from 'lodash/isArrayLike';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
@@ -203,13 +202,3 @@ export function getCookiesFromContext(context?: any): string | undefined {
   }
 }
 /* eslint-enable consistent-return, @typescript-eslint/explicit-module-boundary-types */
-
-/* eslint-disable consistent-return */
-export function stringifyGql(doc?: DocumentNode): string | undefined {
-  if (!doc) {
-    return;
-  }
-
-  return gqlPrint(doc);
-}
-/* eslint-enable consistent-return */
