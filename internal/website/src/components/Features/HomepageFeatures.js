@@ -8,7 +8,8 @@ const FeatureList = [
     title: 'Next.js',
     description: (
       <>
-        Built on top of Next.js and React to take advantage of state-of-the-art frontend tools
+        Built on top of Next.js and React to take advantage of state-of-the-art
+        frontend tools
       </>
     ),
     link: '/next/getting-started',
@@ -17,7 +18,8 @@ const FeatureList = [
     title: 'GraphQL',
     description: (
       <>
-        Use GQless to fetch data from the WordPress GraphQL API without writing GraphQL queries.
+        Use GQless to fetch data from the WordPress GraphQL API without writing
+        GraphQL queries.
       </>
     ),
     link: '/next/guides/fetching-data',
@@ -26,7 +28,8 @@ const FeatureList = [
     title: 'Previews',
     description: (
       <>
-        Preview your posts and pages before publishing and rewrite WordPress preview URLs to your frontend.
+        Preview your posts and pages before publishing and rewrite WordPress
+        preview URLs to your frontend.
       </>
     ),
     link: '/next/guides/post-page-previews',
@@ -35,7 +38,8 @@ const FeatureList = [
     title: 'SSG and SSR',
     description: (
       <>
-        Easily render pages on the server, or generate static pages at build-time.
+        Easily render pages on the server, or generate static pages at
+        build-time.
       </>
     ),
     link: '/next/guides/ssr-ssg',
@@ -43,9 +47,7 @@ const FeatureList = [
   {
     title: 'React Hooks',
     description: (
-      <>
-        Fetch posts, categories, pages, and more using standard URL params.
-      </>
+      <>Fetch posts, categories, pages, and more using standard URL params.</>
     ),
     link: '/next/guides/ssr-ssg',
   },
@@ -53,7 +55,8 @@ const FeatureList = [
     title: 'Custom Post Types',
     description: (
       <>
-        Add custom post types to your WordPress site and easily fetch them from your frontend.
+        Add custom post types to your WordPress site and easily fetch them from
+        your frontend.
       </>
     ),
     link: '/next/guides/ssr-ssg',
@@ -70,9 +73,9 @@ function Feature({ title, description, link }) {
         <p>{description}</p>
       </div>
       <div className="card__footer">
-        <Link to={link} className="text--info">
+        <p className={clsx('text--info', styles.featuresLink)}>
           Documentation 🠖
-        </Link>
+        </p>
       </div>
     </Link>
   );
@@ -93,8 +96,8 @@ export default function HomepageFeatures() {
         </div>
         <div className={clsx('row', styles.featuresRow)}>
           {FeatureList.map((props, idx) => (
-            <div className={clsx('col col--4 margin-top--lg')}>
-              <Feature key={idx} {...props} />
+            <div key={idx} className={clsx('col col--4 margin-top--lg')}>
+              <Feature {...props} />
             </div>
           ))}
         </div>
