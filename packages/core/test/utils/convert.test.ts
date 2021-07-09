@@ -6,7 +6,6 @@ import {
   getUrlPath,
   resolvePrefixedUrlPath,
   getCookiesFromContext,
-  stringifyGql,
 } from '../../src/utils/convert';
 
 describe('utils/convert', () => {
@@ -139,9 +138,5 @@ describe('utils/convert', () => {
         cookie: 'test=true',
       }),
     ).toBe('test=true');
-  });
-
-  test('stringifyGql() returns undefined for a missing DocumentNode', () => {
-    expect(stringifyGql()).toBeUndefined();
   });
 });
