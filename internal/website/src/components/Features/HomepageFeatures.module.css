@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.featuresRow {
+	justify-content: center;
+}
+
 .featureSvg {
   height: 200px;
   width: 200px;
