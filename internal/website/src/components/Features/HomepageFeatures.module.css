@@ -7,6 +7,16 @@
   width: 100%;
 }
 
+.featuresCard {
+	color: var(--ifm-font-color-base);
+	text-decoration: none;
+}
+
+.featuresCard:hover {
+	color: var(--ifm-font-color-base);
+	text-decoration: none;
+}
+
 .featuresRow {
 	justify-content: center;
 }

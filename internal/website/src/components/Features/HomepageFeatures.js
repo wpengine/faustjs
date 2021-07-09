@@ -62,7 +62,7 @@ const FeatureList = [
 
 function Feature({ title, description, link }) {
   return (
-    <div className="card shadow--tl">
+    <Link to={link} className={clsx('card shadow--tl', styles.featuresCard)}>
       <div className="card__header">
         <h3>{title}</h3>
       </div>
@@ -74,7 +74,7 @@ function Feature({ title, description, link }) {
           Documentation 🠖
         </Link>
       </div>
-    </div>
+    </Link>
   );
 }
 
