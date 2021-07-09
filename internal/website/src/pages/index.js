@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import Head from '@docusaurus/Head';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -8,7 +9,7 @@ import HomepageFeatures from '../components/Features/HomepageFeatures';
 import HomepageGetStarted from '../components/GetStarted/HomepageGetStarted';
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
@@ -22,7 +23,10 @@ function HomepageHeader() {
           </Link>
         </div>
         <div className={styles.license}>
-          License: MIT <Link to="https://github.com/wpengine/headless-framework">GitHub</Link>
+          License: MIT{' '}
+          <Link to="https://github.com/wpengine/headless-framework">
+            GitHub
+          </Link>
         </div>
       </div>
     </header>
@@ -30,16 +34,22 @@ function HomepageHeader() {
 }
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
+  const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout
-      title={siteConfig.title}
-      description={siteConfig.description}>
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-        <HomepageGetStarted />
-      </main>
-    </Layout>
+    <>
+      <Head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self' data: 'unsafe-inline' 'unsafe-eval'"
+        />
+      </Head>
+      <Layout title={siteConfig.title} description={siteConfig.description}>
+        <HomepageHeader />
+        <main>
+          <HomepageFeatures />
+          <HomepageGetStarted />
+        </main>
+      </Layout>
+    </>
   );
 }

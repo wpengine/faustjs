@@ -26,6 +26,10 @@ html[data-theme='dark'] .features {
   justify-content: center;
 }
 
+.featuresLink:hover {
+	text-decoration: underline;
+}
+
 .featureSvg {
   height: 200px;
   width: 200px;
