@@ -39,15 +39,6 @@ function wpe_headless_register_templates_field() {
 			'resolve' => 'wpe_headless_templates_resolver',
 		)
 	);
-
-	register_graphql_field(
-		'ContentNode',
-		'templates',
-		array(
-			'type'    => array( 'list_of' => 'String' ),
-			'resolve' => 'wpe_headless_templates_resolver',
-		)
-	);
 }
 
 /**
@@ -164,15 +155,6 @@ function wpe_headless_register_conditional_tags_field() {
 
 	register_graphql_field(
 		'UniformResourceIdentifiable',
-		'conditionalTags',
-		array(
-			'type'    => 'ConditionalTags',
-			'resolve' => 'wpe_headless_conditional_tags_resolver',
-		)
-	);
-
-	register_graphql_field(
-		'ContentNode',
 		'conditionalTags',
 		array(
 			'type'    => 'ConditionalTags',
