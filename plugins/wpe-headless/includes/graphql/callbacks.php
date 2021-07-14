@@ -117,6 +117,7 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
 function wpe_headless_log_template_hierarchy( $templates ) {
 	global $wpe_headless_checked_templates;
 	$wpe_headless_checked_templates = array_merge( $wpe_headless_checked_templates, $templates );
+	return $wpe_headless_checked_templates;
 }
 
 add_action( 'graphql_register_types', 'wpe_headless_register_conditional_tags_field' );
