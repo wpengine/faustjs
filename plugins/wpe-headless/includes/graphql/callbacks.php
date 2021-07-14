@@ -112,7 +112,7 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
  *
  * @param string[] $templates Templates being loaded.
  *
- * @return void
+ * @return array
  */
 function wpe_headless_log_template_hierarchy( $templates ) {
 	global $wpe_headless_checked_templates;
