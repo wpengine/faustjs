@@ -66,28 +66,22 @@ export async function getProps<
   client.setAsRoot();
 
   if (!isNil(Page)) {
-    const renderResult = await client.prepareReactRender(
-      React.createElement(
-        RouterContext.Provider,
-        {
-          value: {
-            query: {
-              ...context.params,
-              ...(context as GetServerSidePropsContext).query,
-            },
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } as any,
-        },
-        React.createElement(
-          HeadlessContext.Provider,
-          {
-            value: {
-              client,
-            },
-          },
-          React.createElement(Page, props),
-        ),
-      ),
+    let renderResult = await client.prepareReactRender(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <RouterContext.Provider value={{ query: { ...context.params } } as any}>
+        <HeadlessContext.Provider value={{ client }}>
+          <Page {...props} />
+        </HeadlessContext.Provider>
+      </RouterContext.Provider>,
+    );
+
+    renderResult = await client.prepareReactRender(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      <RouterContext.Provider value={{ query: { ...context.params } } as any}>
+        <HeadlessContext.Provider value={{ client }}>
+          <Page {...props} />
+        </HeadlessContext.Provider>
+      </RouterContext.Provider>,
     );
 
     cacheSnapshot = renderResult.cacheSnapshot;
