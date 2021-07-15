@@ -70,6 +70,7 @@ export async function getProps<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       <RouterContext.Provider value={{ query: { ...context.params } } as any}>
         <HeadlessContext.Provider value={{ client }}>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Page {...props} />
         </HeadlessContext.Provider>
       </RouterContext.Provider>,
@@ -79,6 +80,7 @@ export async function getProps<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       <RouterContext.Provider value={{ query: { ...context.params } } as any}>
         <HeadlessContext.Provider value={{ client }}>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Page {...props} />
         </HeadlessContext.Provider>
       </RouterContext.Provider>,
