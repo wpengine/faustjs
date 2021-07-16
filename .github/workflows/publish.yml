@@ -28,7 +28,6 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: 'public'
-          dry-run: TRUE
           check-version: TRUE
   publish-react:
     name: Possibly publish react to NPM
@@ -48,7 +47,6 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: 'public'
-          dry-run: TRUE
           check-version: TRUE
   publish-next:
     name: Possibly publish next to NPM
@@ -68,5 +66,4 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: 'public'
-          dry-run: TRUE
           check-version: TRUE
