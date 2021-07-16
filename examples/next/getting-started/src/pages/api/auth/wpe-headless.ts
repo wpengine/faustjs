@@ -1,3 +1,3 @@
-import { authorizeHandler } from '@wpengine/headless-core';
+import { authorizeHandler } from '@faustjs/core';
 
 export default authorizeHandler;

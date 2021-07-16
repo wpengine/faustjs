@@ -6,10 +6,7 @@ import {
   getUrlPath,
   resolvePrefixedUrlPath,
   getCookiesFromContext,
-  stringifyGql,
 } from '../../src/utils/convert';
-import { gql } from '@apollo/client/core';
-import { print } from 'graphql';
 
 describe('utils/convert', () => {
   test('base64Decode() returns the argument for a non-base64 string', () => {
@@ -141,14 +138,5 @@ describe('utils/convert', () => {
         cookie: 'test=true',
       }),
     ).toBe('test=true');
-  });
-
-  test('stringifyGql() returns undefined for a missing DocumentNode', () => {
-    expect(stringifyGql()).toBeUndefined();
-  });
-
-  test('stringifyGql() returns a stringified DocumentNode', () => {
-    const g = gql`{ posts { id } }`;
-    expect(stringifyGql(g)).toBe(print(g));
   });
 });

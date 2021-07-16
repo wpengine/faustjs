@@ -22,6 +22,15 @@ describe('config/config', () => {
     expect(headlessConfig()).toBe(config);
   });
 
+  test('headlessConfig() should return the set wpUrl', () => {
+    const cfg = {
+      wpUrl: 'http://wpengine.com',
+    };
+
+    let config = headlessConfig(cfg);
+    expect(config.wpUrl).toBe(cfg.wpUrl);
+  });
+
   test('headlessConfig() arguments should be immutable', () => {
     const cfg = {
       wpUrl: '',
@@ -31,6 +40,15 @@ describe('config/config', () => {
     let config = headlessConfig(cfg);
 
     expect(config).not.toBe(cfg);
+  });
+
+  test('headlessConfig() should return the set wpUrl', () => {
+    const cfg = {
+      wpUrl: 'http://my-headless-site.com',
+    };
+
+    const config = headlessConfig(cfg);
+    expect(config.wpUrl).toBe(cfg.wpUrl);
   });
 
   test('headlessConfig() should always return the config', () => {

@@ -3,7 +3,9 @@ import defaults from 'lodash/defaults';
 import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
+import type { RequestContext } from '../api';
 
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * The configuration for your headless site
  *
@@ -19,6 +21,17 @@ export interface HeadlessConfig {
    * @memberof HeadlessConfig
    */
   wpUrl: string;
+
+  /**
+   * Set this value to the URL of your api that you want to use for this application.
+   *
+   * @example api.mysite.com
+   *
+   * @default wpUrl
+   * @type {string}
+   * @memberof HeadlessConfig
+   */
+  apiUrl?: string;
 
   /**
    * This is a prefix URL path that we will use as the base URL for your WordPress posts.
@@ -50,7 +63,22 @@ export interface HeadlessConfig {
    * @memberof HeadlessConfig
    */
   apiClientSecret?: string;
+
+  /**
+   * Called before every request, use this to apply any headers you might
+   * need to for your requests or adjust the request to suite your needs.
+   *
+   * @param {string} url
+   * @param {RequestInit} init
+   * @returns {RequestContext}
+   * @memberof HeadlessConfig
+   */
+  applyRequestContext?(
+    url: string,
+    init: RequestInit,
+  ): Promise<RequestContext> | RequestContext;
 }
+/* eslint-enable @typescript-eslint/ban-types */
 
 let wpeConfig: HeadlessConfig = {
   wpUrl: '/',
@@ -68,6 +96,7 @@ let configSet = false;
 export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
   const cfg = defaults({}, config, {
     blogUrlPrefix: '',
+    apiUrl: '',
     apiEndpoint: '/api/auth/wpe-headless',
   });
 
@@ -78,18 +107,20 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
       return;
     }
 
-    cfg[key as keyof HeadlessConfig] = value.trim();
+    cfg[key as keyof HeadlessConfig] = value.trim() as any;
   });
 
-  let { wpUrl, blogUrlPrefix, apiEndpoint } = cfg;
+  let { wpUrl, blogUrlPrefix, apiUrl, apiEndpoint } = cfg;
 
   wpUrl = trimEnd(wpUrl, '/');
   blogUrlPrefix = trimEnd(blogUrlPrefix, '/');
+  apiUrl = trimEnd(apiUrl, '/');
   apiEndpoint = trimEnd(apiEndpoint, '/');
 
   return extend(cfg, {
     wpUrl,
     blogUrlPrefix,
+    apiUrl,
     apiEndpoint,
   });
 }
@@ -113,7 +144,7 @@ export function headlessConfig(config?: HeadlessConfig): HeadlessConfig {
   }
 
   configSet = true;
-  wpeConfig = normalizeConfig(wpeConfig);
+  wpeConfig = normalizeConfig(config);
 
   return wpeConfig;
 }

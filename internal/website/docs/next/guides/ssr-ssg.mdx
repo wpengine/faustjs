@@ -1,0 +1,135 @@
+---
+id: ssr-ssg
+slug: ssr-ssg
+title: Server-side Rendering & Static Generation
+description: Use Faust.js and Next.js to statically generate your Headless WordPress site
+sidebar_position: 2
+sidebar_label: SSG & SSR
+---
+
+# Server-side Rendering & Static Generation
+
+Next.js supports Server-side Rendering (SSR) and Static Site Generation (SSG) out of the box for [pages](https://nextjs.org/docs/basic-features/pages). However, with Next.js you are responsible for defining `getStaticProps` or `getServersideProps`, fetching the necessary data, and providing it on `props`. Faust.js provides two functions that can be used for SSG and SSR respectively called `getNextStaticProps` and `getNextServerSideProps`.
+
+## SSG Using `getNextStaticProps`
+
+This helper function lets you build a static site with your WordPress data. The function should be returned from `getStaticProps`:
+
+```tsx
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+	client,
+  });
+}
+```
+
+The function accepts two arguments: the static props context, and an object with a `Page` key and `client` key. This should be your Next.js page component:
+
+```tsx {2,5,20,21}
+import { GetStaticPropsContext } from 'next';
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function MyPage() {
+  const { usePosts } = client;
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+The reason `MyPage` and `client` are passed to `getNextStaticProps` is because under the hood Faust.js perform a skeleton render of the page component to know what data to fetch and what queries to build. The flow is as follows:
+
+1. The passed in `client` is used for all requests.
+1. A skeleton render of the `Page` component is invoked, with `next/router` context and the proper `client` for making requests provided.
+1. After rendering, the `client` cache is serialized and stored on `props`.
+1. The `props` are returned in the standard Next.js format, with `revalidate: 1`
+
+This allows the developer to not have to think about batching/constructing queries, or data fetching. You are able to write your page as if you will be using Client-side Rendering (CSR). Then, you add the `getStaticProps` function above and can take advantage of SSG!
+
+## SSR Using `getNextServerSideProps`
+
+This helper function lets you server side render your page with WordPress data. The function should be returned from `getServerSideProps`:
+
+```tsx
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+	client,
+  });
+}
+```
+
+The function accepts two arguments: the server side props context, and an object with a `Page` key. This should be your Next.js page component:
+
+
+```tsx {2,5,20,21}
+import { GetServerSidePropsContext } from 'next';
+import { getNextServerSideProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function MyPage() {
+  const { usePosts } = client;
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+As mentioned in `getNextStaticProps`, the reason `MyPage` and `client` are passed to `getNextServerSideProps` is because under the hood Faust.js performs a skeleton render of the page component to know what data to fetch and what queries to build. This allows the developer to not have to think about batching/constructing queries, or data fetching.
+
+## Rehydration Using `<HeadlessProvider />`
+
+In order to properly facilitate SSR and SSG you must use the built-in component published in `faustjs/next` called `HeadlessProvider`. This component performs the following:
+
+1. Sets the `client` to be used with every request for WordPress data.
+1. Hydrates the `client` cache using the prepared cache snapshot from `getNextServerSideProps` or `getNextStaticProps`.
+1. Renders its `children`
+
+### Adding `<HeadlessProvider />` to your `_app.tsx`
+
+Using the `HeadlessProvider` component us easy, and if you are using an example `next` project published by Faust.js it will happen automatically. If you are adding `Faust.js` to your project, you will want to put `HeadlessProvider` at the top of your component tree. Typically in a Next.js app this means in your `pages/_app.tsx` file as follows:
+
+```tsx title="src/pages/_app.tsx" {9,11}
+import React from 'react';
+import { HeadlessProvider } from '@faustjs/next';
+import { client } from 'client';
+import { AppProps } from 'next/dist/next-server/lib/router/router';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <HeadlessProvider client={client} pageProps={pageProps}>
+        <Component {...pageProps} />
+      </HeadlessProvider>
+    </>
+  );
+}
+```
