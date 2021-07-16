@@ -110,8 +110,7 @@ import { Header, Footer } from '../components';
 import { client } from '../client';
 
 export default function Team() {
-  const { useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { generalSettings } = client.useQuery();
 
   return (
     <>
@@ -154,8 +153,8 @@ import { Header, Footer } from '../components';
 import { client } from '../client';
 
 export default function Team() {
-  const { useGeneralSettings, useQuery } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const { generalSettings } = useQuery();
   const teamMembers = useQuery().teamMembers()?.nodes;
 
   return (
@@ -220,8 +219,8 @@ import { client } from '../client';
 import TeamMember from '../components/teamMember';
 
 export default function Team() {
-  const { useGeneralSettings, useQuery } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const { generalSettings } = useQuery();
 
   const teamMembers = useQuery().teamMembers()?.nodes;
 
