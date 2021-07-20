@@ -1,13 +1,9 @@
-require('dotenv').config();
 const express = require('express');
 const app = express();
-const { authorizeHandler, headlessConfig } = require('@faustjs/core');
+const { authorizeHandler } = require('@faustjs/core');
 const port = 5000;
 
-headlessConfig({
-  wpUrl: process.env.REACT_APP_WORDPRESS_URL,
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
-});
+require('./src/config');
 
 app.get('/api/auth/wpe-headless', (req, res) => {
   // Get the full request URL
