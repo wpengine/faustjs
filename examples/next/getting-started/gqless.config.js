@@ -1,8 +1,5 @@
-const dotenv = require('dotenv');
-
-dotenv.config({
-  path: '.env.local',
-});
+require('./faust.config');
+const { getGqlUrl } = require('@faustjs/core');
 
 /**
  * @type {import("@gqless/cli").GQlessConfig}
@@ -11,9 +8,7 @@ const config = {
   react: false,
   scalarTypes: { DateTime: 'string' },
   introspection: {
-    endpoint: `${
-      process.env.NEXT_PUBLIC_WORDPRESS_URL ?? process.env.WORDPRESS_URL
-    }/graphql`,
+    endpoint: getGqlUrl(),
     headers: {},
   },
   destination: './src/client/index.ts',
@@ -22,3 +17,4 @@ const config = {
 };
 
 module.exports = config;
+k;

@@ -11,12 +11,12 @@ import fetch from 'isomorphic-fetch';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import { getAccessToken } from '../../auth';
-import { headlessConfig } from '../../config';
 
 import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
 import omit from 'lodash/omit';
 import type { IncomingMessage } from 'http';
+import { getGqlUrl } from '../../config/config';
 
 export interface GqlClientSchema {
   query: any;
@@ -34,8 +34,7 @@ function createQueryFetcher(
   applyRequestContext?: ClientConfig['applyRequestContext'],
 ) {
   return async function (query, variables): Promise<any> {
-    const { wpUrl } = headlessConfig();
-    const url = `${wpUrl}/graphql`;
+    const url = getGqlUrl();
     const token = getAccessToken({
       request: context,
     });
