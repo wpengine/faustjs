@@ -32,7 +32,9 @@ export async function authorizeHandler(
     };
 
     const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = isValidUrl(redirectUri) ? redirectUri : `${protocol}//${host}/${trim(redirectUri, '/')}`;
+    const fullRedirectUrl = isValidUrl(redirectUri)
+      ? redirectUri
+      : `${protocol}//${host}/${trim(redirectUri, '/')}`;
 
     /**
      * If missing code, this is a request that's meant to trigger authorization such as a preview.
