@@ -4,8 +4,8 @@ import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
 import type { RequestContext } from '../api';
-import validUrl from 'valid-url';
 import { isNil, trim } from 'lodash';
+import { isValidUrl } from '../utils';
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
@@ -176,7 +176,7 @@ export function getGqlUrl(): string {
     return `${wpUrl}/graphql`;
   }
 
-  if (validUrl.isUri(gqlUrl)) {
+  if (isValidUrl(gqlUrl)) {
     return trimEnd(gqlUrl, '/');
   } else {
     return `${wpUrl}/${trim(gqlUrl, '/')}`;
