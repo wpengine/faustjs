@@ -203,9 +203,8 @@ function wpe_headless_term_link( $term_link ) {
 	return str_replace( $site_url, $frontend_uri, $term_link );
 }
 
-
-add_action('load-post-new.php', 'wpe_headless_enqueue_preview_scripts');
-add_action('load-post.php', 'wpe_headless_enqueue_preview_scripts');
+add_action( 'load-post-new.php', 'wpe_headless_enqueue_preview_scripts' );
+add_action( 'load-post.php', 'wpe_headless_enqueue_preview_scripts' );
 /**
  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link
  *
