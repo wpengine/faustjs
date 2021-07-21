@@ -3,7 +3,7 @@ const app = express();
 const { authorizeHandler } = require('@faustjs/core');
 const port = 5000;
 
-require('./src/config');
+require('./src/faust.config');
 
 app.get('/api/auth/wpe-headless', (req, res) => {
   // Get the full request URL
