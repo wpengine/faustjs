@@ -1,4 +1,4 @@
-require('./config');
+require('./faust.config');
 const { getGqlUrl } = require('@faustjs/core');
 
 /**
@@ -17,4 +17,3 @@ const config = {
 };
 
 module.exports = config;
-k;
