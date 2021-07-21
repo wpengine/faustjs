@@ -1,4 +1,4 @@
-require('./faust.config');
+require('./src/faust.config');
 const { getGqlUrl } = require('@faustjs/core');
 
 /**
