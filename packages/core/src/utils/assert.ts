@@ -36,3 +36,18 @@ export function isPreviewPath(uri: string): boolean {
 
   return previewRegex.test(uri);
 }
+
+/**
+ * Returns whether or not a string is a valid URL
+ *
+ * @export
+ * @returns
+ */
+export function isValidUrl(url: string): boolean {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}

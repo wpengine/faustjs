@@ -4,6 +4,8 @@ import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
 import type { RequestContext } from '../api';
+import { isNil, trim } from 'lodash';
+import { isValidUrl } from '../utils';
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
@@ -21,6 +23,18 @@ export interface HeadlessConfig {
    * @memberof HeadlessConfig
    */
   wpUrl: string;
+
+  /**
+   * Set this value to the URL of your GraphQL endpoint.
+   *
+   * @example https://my-site.graphql-cdn.com
+   * @example /my-graphql-endpoint
+   *
+   * @default wpUrl + /graphql
+   * @type {string}
+   * @memberof HeadlessConfig
+   */
+  gqlUrl?: string;
 
   /**
    * Set this value to the URL of your api that you want to use for this application.
@@ -147,4 +161,24 @@ export function headlessConfig(config?: HeadlessConfig): HeadlessConfig {
   wpeConfig = normalizeConfig(config);
 
   return wpeConfig;
+}
+
+/**
+ * Get the full URL to the GraphQL endpoint
+ *
+ * @export
+ * @returns
+ */
+export function getGqlUrl(): string {
+  const { wpUrl, gqlUrl } = headlessConfig();
+
+  if (isNil(gqlUrl) || !isString(gqlUrl)) {
+    return `${wpUrl}/graphql`;
+  }
+
+  if (isValidUrl(gqlUrl)) {
+    return trimEnd(gqlUrl, '/');
+  } else {
+    return `${wpUrl}/${trim(gqlUrl, '/')}`;
+  }
 }
