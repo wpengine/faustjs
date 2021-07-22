@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/next",
-  "version": "0.7.1",
+  "version": "0.7.4",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -71,8 +71,8 @@
   "dependencies": {
     "@gqless/logger": "^2.0.11",
     "@gqless/react": "^2.0.15",
-    "@faustjs/core": "^0.7.0",
-    "@faustjs/react": "^0.7.0",
+    "@faustjs/core": "^0.7.4",
+    "@faustjs/react": "^0.7.4",
     "graphql": ">=15.5",
     "lodash": "^4.17.21"
   }

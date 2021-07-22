@@ -7,7 +7,7 @@
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-headless
  * Domain Path: /languages
- * Version: 0.5.5
+ * Version: 0.5.6
  *
  * @package WPE_Headless
  */

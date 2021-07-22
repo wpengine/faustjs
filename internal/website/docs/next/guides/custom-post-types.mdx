@@ -90,6 +90,18 @@ npm run generate
 
 [Learn more about generating your client/schema here.](fetching-data.mdx)
 
+#### Troubleshooting
+
+##### "GraphQL introspection is not allowed"
+
+If you run into the error message `GraphQL introspection is not allowed, but the query contained __schema or __type`, you will have to temporarily enable introspection.
+
+[Introspection is disabled by default in WPGraphQL.](https://www.wpgraphql.com/docs/security/#introspection-disabled-by-default) To enable it, go to WP Admin -> GraphQL -> Enable Public Introspection.
+
+If you are using something other than `WPGraphQL` you will need to refer to the documentation on how to enable introspection.
+
+Once the schema file has been generated, you can then disable introspection again.
+
 ### Run the dev server
 
 Run the following command to start the dev server:
@@ -110,8 +122,7 @@ import { Header, Footer } from '../components';
 import { client } from '../client';
 
 export default function Team() {
-  const { useGeneralSettings } = client;
-  const generalSettings = useGeneralSettings();
+  const { generalSettings } = client.useQuery();
 
   return (
     <>
@@ -154,8 +165,8 @@ import { Header, Footer } from '../components';
 import { client } from '../client';
 
 export default function Team() {
-  const { useGeneralSettings, useQuery } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const { generalSettings } = useQuery();
   const teamMembers = useQuery().teamMembers()?.nodes;
 
   return (
@@ -220,8 +231,8 @@ import { client } from '../client';
 import TeamMember from '../components/teamMember';
 
 export default function Team() {
-  const { useGeneralSettings, useQuery } = client;
-  const generalSettings = useGeneralSettings();
+  const { useQuery } = client;
+  const { generalSettings } = useQuery();
 
   const teamMembers = useQuery().teamMembers()?.nodes;
 
