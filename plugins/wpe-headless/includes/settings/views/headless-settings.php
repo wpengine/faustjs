@@ -13,6 +13,24 @@
 		</svg>
 		<h1><?php esc_html_e( 'Headless by WP&nbsp;Engine', 'wpe-headless' ); ?></h1>
 	</header>
+	
+	<?php
+		global $pagenow;
+		if (
+			$pagenow == 'options-general.php' &&
+			$_GET['page'] == 'wpe-headless-settings' &&
+			! empty( $_GET['new_activation'] ) &&
+			! get_option( 'permalink_structure' )
+		) : ?>
+				<div class="wp-header-end">
+					<div class="notice notice-warning is-dismissible" style="margin: 16px;">
+						<p>
+							<?php _e( 'Permalinks are not currently configured. Choose any setting to make your headless development easier.', 'wpe-headless' ); ?><br />
+							<a href="/wp-admin/options-permalink.php"><?php _e( 'Go to Permalinks Settings', 'wpe-headless' ); ?></a>
+						</p>
+					</div>
+				</div>
+		<?php endif; ?>
 
 	<h2 class="main"><?php esc_html_e( 'Headless Settings', 'wpe-headless' ); ?></h2>
 

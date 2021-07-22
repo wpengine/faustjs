@@ -55,7 +55,7 @@ add_action( 'activated_plugin', 'wpe_headless_activated_plugin', 10, 2 );
  */
 function wpe_headless_activated_plugin( $plugin, $network_wide ) {
 	if ( ! defined( 'WP_CLI' ) && ! $network_wide && WPE_HEADLESS_PATH === $plugin ) {
-		wp_safe_redirect( esc_url( admin_url( 'options-general.php?page=wpe-headless-settings' ) ) );
+		wp_safe_redirect( esc_url( admin_url( 'options-general.php?page=wpe-headless-settings&new_activation=1' ) ) );
 		exit;
 	}
 }
