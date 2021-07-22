@@ -15,10 +15,7 @@
 	</header>
 	
 	<?php
-		global $pagenow;
 		if (
-			$pagenow == 'options-general.php' &&
-			$_GET['page'] == 'wpe-headless-settings' &&
 			! empty( $_GET['new_activation'] ) &&
 			! get_option( 'permalink_structure' )
 		) : ?>
