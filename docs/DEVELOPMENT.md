@@ -134,32 +134,23 @@ Developers with full GitHub repository access can create public releases:
 
 1. Update the `Version` in the file header at `plugins/wpe-headless/wpe-headless.php`.
 2. Update the changelog and 'stable tag' in `plugins/wpe-headless/readme.txt`.
-3. Commit and push your changes for review.
-4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `git tag plugin/wpe-headless/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/headless-framework/releases/new) with that tag.
+3. Commit and push your changes for review **(DO NOT MERGE YET)**.
+4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `git tag plugin/wpe-headless/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/headless-framework/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
+5. Merge your changes into the `canary` branch
 
 CircleCI will build and deploy the plugin zip. The latest version will be available here:
 
 `https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download`
 
-### Release the @wpengine/headless package
+### Release the @faustjs packages
 
-1. Update the `version` in `packages/headless/package.json`.
-2. Update the changelog at `packages/headless/CHANGELOG.md`.
+1. From the monorepo root directory, run either `npm run patch` or `npm run minor`. This will increment all the packages' versions, keeping them in lockstep.
+2. Update the changelogs of the applicable packages.
 3. Commit and push your changes for review.
-4. Tag the approved commit with `package/headless/[version]`, for example: `git tag package/headless/0.6.1` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/headless-framework/releases/new) with that tag.
+4. Once reviewed and merged into `canary`, our GitHub Actions workflow will publish the packages to NPM.
 
-CircleCI will build and deploy the package to npm. The updated package will be visible here:
+Once deployed, the updated packages will be visible here:
 
-`https://www.npmjs.com/package/@wpengine/headless`
-
-To publish the package and plugin together, tag the commit you want to publish with two different tags in the above formats, then push the tags:
-
-```
-git checkout canary
-git pull
-git tag plugin/wpe-headless/1.0.0
-git tag package/headless/1.0.0
-git push --tags
-```
-
-This triggers the CircleCI jobs to publish the package and plugin.
+* https://www.npmjs.com/package/@faustjs/core
+* https://www.npmjs.com/package/@faustjs/react
+* https://www.npmjs.com/package/@faustjs/next
