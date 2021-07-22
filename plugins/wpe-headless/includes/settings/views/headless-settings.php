@@ -50,10 +50,8 @@
 					<h3>Headless Documentation</h3>
 					<section>
 						<ul>
-							<li><a href="https://github.com/wpengine/headless-framework/#wordpress-headless-framework-previewalpha" target="_blank" rel="noopener noreferrer">Getting started</a></li>
-							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/provider/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
-							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/components/TemplateLoader.tsx" target="_blank" rel="noopener noreferrer">TemplateLoader component</a></li>
-							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/headless/src/components/menu/Menu.tsx" target="_blank" rel="noopener noreferrer">Menu component</a></li>
+							<li><a href="https://github.com/wpengine/headless-framework/#headless-wordpress-framework" target="_blank" rel="noopener noreferrer">Getting started</a></li>
+							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/next/src/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
 							<li><a href="https://github.com/wpengine/headless-framework/blob/main/docs/previews/README.md" target="_blank" rel="noopener noreferrer">Post previews</a></li>
 						</ul>
 						<p><a class="button-primary" href="https://github.com/wpengine/headless-framework/" target="_blank" rel="noopener noreferrer">Headless on GitHub</a></p>
