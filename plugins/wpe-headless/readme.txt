@@ -26,7 +26,7 @@ Transform your WordPress site to a powerful Headless API.
 
 = 0.5.6 =
 
-- Fixes an issue where we were not properly returning the templates hierarchy from the templates hierarchy filter.
+- Fixes an issue where the templates hierarchy from the templates hierarchy filter was not being returned.
 
 = 0.5.5 =
 
