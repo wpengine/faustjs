@@ -4,8 +4,6 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   console.error(
     'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?',
   );
-
-  return;
 }
 
 /**
