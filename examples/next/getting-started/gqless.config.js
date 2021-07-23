@@ -1,4 +1,6 @@
-require('dotenv').config();
+require('dotenv').config({
+  path: '.env.local',
+});
 require('./src/faust.config');
 const { getGqlUrl } = require('@faustjs/core');
 
