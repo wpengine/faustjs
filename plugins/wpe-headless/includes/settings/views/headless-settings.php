@@ -13,17 +13,21 @@
 		</svg>
 		<h1><?php esc_html_e( 'Headless by WP&nbsp;Engine', 'wpe-headless' ); ?></h1>
 	</header>
-	
 	<?php
-		if (
-			! empty( $_GET['new_activation'] ) &&
+	/**
+	 * Since we are just checking for the existence of the "new_activation" query param,
+	 * and not using the value, there is no real need to verify the nonce.
+	 */
+	if (
+			! empty( $_GET['new_activation'] ) && // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			! get_option( 'permalink_structure' )
-		) : ?>
+		) :
+		?>
 				<div class="wp-header-end">
 					<div class="notice notice-warning is-dismissible" style="margin: 16px;">
 						<p>
-							<?php _e( 'Permalinks are not currently configured. Choose any setting to make your headless development easier.', 'wpe-headless' ); ?><br />
-							<a href="/wp-admin/options-permalink.php"><?php _e( 'Go to Permalinks Settings', 'wpe-headless' ); ?></a>
+						<?php esc_html_e( 'Permalinks are not currently configured. Choose any setting to make your headless development easier.', 'wpe-headless' ); ?><br />
+							<a href="/wp-admin/options-permalink.php"><?php esc_html_e( 'Go to Permalinks Settings', 'wpe-headless' ); ?></a>
 						</p>
 					</div>
 				</div>
