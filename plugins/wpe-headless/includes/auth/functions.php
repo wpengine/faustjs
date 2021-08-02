@@ -36,6 +36,20 @@ function wpe_headless_generate_authentication_code( $wp_user ) {
 }
 
 /**
+ * Generate an authorization code given a user and duration to expire.
+ *
+ * @uses wpe_headless_generate_token()
+ *
+ * @param WP_User $wp_user A WP_User object.
+ * @param int     $duration The duration in seconds.
+ *
+ * @return string|bool An encrypted string or false.
+ */
+function wpe_headless_generate_authorization_code( $wp_user, $duration ) {
+	return wpe_headless_generate_token( $wp_user, 'ac', $duration );
+}
+
+/**
  * Get a WP_User given an access token.
  *
  * @uses wpe_headless_get_user_from_code()
@@ -79,6 +93,21 @@ function wpe_headless_generate_user_code( $wp_user, $type ) {
 	}
 
 	return wpe_headless_encrypt( "{$type}|{$wp_user->ID}|" . time() );
+}
+
+/**
+ * Generate an encrypted token for the given WP_User, type, and duration to expire.
+ *
+ * @param WP_User $wp_user A WP_User object.
+ * @param string  $type    The type of code. Either 'ac' (authorization code), 'rt' (refresh token), or 'at' (access token).
+ * @param int     $duration The duration in seconds to remain valid.
+ */
+function wpe_headless_generate_token( $wp_user, $type, $duration ) {
+	if ( empty( $wp_user->ID ) ) {
+		return false;
+	}
+
+	return wpe_headless_encrypt( "{$type}|{$wp_user->ID}|" . ( time() + $duration ) );
 }
 
 /**

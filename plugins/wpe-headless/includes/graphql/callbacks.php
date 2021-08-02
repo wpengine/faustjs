@@ -183,3 +183,80 @@ function wpe_headless_conditional_tags_resolver( $root, $args, AppContext $conte
 
 	return $conditional_tag_values;
 }
+
+add_action( 'graphql_register_types', 'wpe_headless_register_generate_ac_mutation' );
+/**
+ * Register a mutation for exchanging a username/email and password for a short-lived authorization code.
+ *
+ * @return void
+ */
+function wpe_headless_register_generate_ac_mutation() {
+	register_graphql_mutation(
+		'generateAuthorizationCode',
+		array(
+			'inputFields'         => array(
+				'username' => array(
+					'type'        => 'String',
+					'description' => __( 'Username for WordPress user', 'wpe-headless' ),
+				),
+				'email'    => array(
+					'type'        => 'String',
+					'description' => __( 'Email for WordPress user', 'wpe-headless' ),
+				),
+				'password' => array(
+					'type'        => 'String',
+					'description' => __( 'Password for WordPress user', 'wpe-headless' ),
+				),
+			),
+			'outputFields'        => array(
+				'code'  => array(
+					'type'        => 'String',
+					'description' => __( 'Authorization code used for requesting refresh/access tokens', 'wpe-headless' ),
+				),
+				'error' => array(
+					'type'        => 'String',
+					'description' => __( 'Error encountered during user authentication, if any', 'wpe-headless' ),
+				),
+			),
+			'mutateAndGetPayload' => function( $input, $context, $info ) {
+				$is_email = isset( $input['email'] ) ? true : false;
+				$username = isset( $input['username'] ) ? $input['username'] : null;
+				$email = isset( $input['email'] ) ? $input['email'] : null;
+				$password = isset( $input['password'] ) ? $input['password'] : null;
+
+				if ( $is_email ) {
+					$authenticate = wp_authenticate_email_password(
+						null,
+						$email,
+						$password
+					);
+
+					$user = get_user_by( 'email', $email );
+				} else {
+					$authenticate = wp_authenticate_username_password(
+						null,
+						$username,
+						$password
+					);
+
+					$user = get_user_by( 'login', $username );
+				}
+
+				if ( is_wp_error( $authenticate ) ) {
+					return array(
+						'code'  => null,
+						'error' => $authenticate->get_error_message(),
+					);
+				}
+
+				// Generate an authorization code that expires in 1 minute.
+				$code = wpe_headless_generate_authorization_code( $user, MINUTE_IN_SECONDS * 1 );
+
+				return array(
+					'code'  => $code,
+					'error' => null,
+				);
+			},
+		)
+	);
+}
