@@ -37,7 +37,8 @@ function wpe_headless_handle_generate_endpoint() {
 	}
 
 	$auth_code = wpe_headless_generate_authentication_code(
-		wp_get_current_user()
+		wp_get_current_user(),
+		MINUTE_IN_SECONDS * 1
 	);
 
 	$redirect_uri = add_query_arg( 'code', rawurlencode( $auth_code ), $redirect_uri );

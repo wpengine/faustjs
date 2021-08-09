@@ -84,22 +84,39 @@ function wpe_headless_register_rest_routes() {
  * @return mixed A WP_REST_Response, array, or WP_Error.
  */
 function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request ) {
-	$code = trim( $request->get_param( 'code' ) );
-	if ( ! $code ) {
-		return new WP_Error( 'authentication_code_required', __( 'Authentication code required', 'wpe-headless' ), array( 'status' => 400 ) );
+	$code = trim($request->get_param( 'code' ));
+	$refresh_token = trim($request->get_param( 'refreshToken' ));
+
+	if( ! $code && ! $refresh_token ) {
+		return new WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
 	}
 
-	$wp_user = wpe_headless_get_user_from_authentication_code( $code, MINUTE_IN_SECONDS );
-	if ( ! $wp_user ) {
-		return new WP_Error( 'invalid_authentication_code', __( 'Invalid authentication code', 'wpe-headless' ), array( 'status' => 400 ) );
+	if ( $code && $refresh_token ) {
+		return new WP_Error( 'invalid_request', 'Cannot use both authorization code and refresh token.' );
 	}
 
-	$access_token = wpe_headless_generate_access_token( $wp_user );
-	if ( ! $access_token ) {
-		return new WP_Error( 'access_token_error', __( 'Access token error', 'wpe-headless' ) );
+	if ( $refresh_token ) {
+		$user = wpe_headless_get_user_from_refresh_token( $refresh_token );
+	} else {
+		$user = wpe_headless_get_user_from_authentication_code( $code );
 	}
 
-	return compact( 'access_token' );
+	if( ! $user ) {
+		return new WP_Error( 'invalid_request', 'Invalid authorization code or refresh token.' );
+	}
+
+	$refresh_token_expiration = WEEK_IN_SECONDS * 2;
+	$access_token_expiration = MINUTE_IN_SECONDS * 5;
+
+	$access_token = wpe_headless_generate_access_token( $user, $access_token_expiration );
+	$refresh_token = wpe_headless_generate_refresh_token( $user, $refresh_token_expiration );
+
+	return [
+		'accessToken' => $access_token,
+		'accessTokenExpiration' => ( time() + $access_token_expiration ),
+		'refreshToken' => $refresh_token,
+		'refreshTokenExpiration' => ( time() + $refresh_token_expiration ),
+	];
 }
 
 /**
@@ -115,12 +132,19 @@ function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request )
  * @return bool True if current user can, false if else.
  */
 function wpe_headless_rest_authorize_permission_callback( WP_REST_Request $request ) {
-	$secret_key = wpe_headless_get_secret_key();
-	$header_key = $request->get_header( 'x-wpe-headless-secret' );
+	$code = trim($request->get_param( 'code' ));
+	$refresh_token = trim($request->get_param( 'refresh_token' ));
 
-	if ( $secret_key && $header_key ) {
-		return $secret_key === $header_key;
+	if( $refresh_token && ! $code ) {
+		$secret_key = wpe_headless_get_secret_key();
+		$header_key = $request->get_header( 'x-wpe-headless-secret' );
+	
+		if ( $secret_key && $header_key ) {
+			return $secret_key === $header_key;
+		}
+	
+		return false;
+	} else {
+		return true;
 	}
-
-	return false;
 }

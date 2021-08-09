@@ -79,6 +79,17 @@ export interface HeadlessConfig {
   apiClientSecret?: string;
 
   /**
+   * Set this to the type of authentication you wan to use.
+   *
+   * Redirect authentication redirects users to the WordPress login page to authenticate,
+   * where local assumes that you have setup a login page on your frontend site.
+   *
+   * @default redirect
+   * @memberof HeadlessConfig
+   */
+  authType: 'redirect' | 'local';
+
+  /**
    * Called before every request, use this to apply any headers you might
    * need to for your requests or adjust the request to suite your needs.
    *
@@ -96,6 +107,7 @@ export interface HeadlessConfig {
 
 let wpeConfig: HeadlessConfig = {
   wpUrl: '/',
+  authType: 'redirect',
 };
 let configSet = false;
 
@@ -112,6 +124,7 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
     blogUrlPrefix: '',
     apiUrl: '',
     apiEndpoint: '/api/auth/wpe-headless',
+    authType: 'redirect',
   });
 
   Object.keys(cfg).forEach((key) => {
