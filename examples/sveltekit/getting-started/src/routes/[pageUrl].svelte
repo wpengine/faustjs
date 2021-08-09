@@ -9,30 +9,30 @@
 			client: { resolved, query }
 		}
 	}) {
-		const post = await resolved(() => {
-			const post = query.post({
+		const wpPage = await resolved(() => {
+			const pageRes = query.page({
 				asPreview: false,
-				id: page.params.slug,
+				id: page.params.pageSlug,
 				idType: 'SLUG'
 			});
 
-			if (!post) {
+			if (!pageRes) {
 				return null;
 			}
 
 			return {
-				title: post.title(),
-				content: post.content()
+				title: pageRes.title(),
+				content: pageRes.content()
 			};
 		});
 
-		if (!post) {
+		if (!wpPage) {
 			return null;
 		}
 
 		return {
 			props: {
-				data: post
+				data: wpPage
 			},
 			maxage: 5000
 		};
@@ -56,8 +56,8 @@
 	</article>
 	<section>
 		<pre>
-      {JSON.stringify(data, null, 2)}
-    </pre>
+    {JSON.stringify(data, null, 2)}
+  </pre>
 	</section>
 </div>
 

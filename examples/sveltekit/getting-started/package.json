@@ -1,38 +1,43 @@
 {
-  "name": "sveltekit-faustjs-getting-started",
-  "private": true,
-  "description": "SvelteKit + Atlas + WordPress Example",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "preview": "svelte-kit preview",
-    "lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "format": "prettier --write --plugin-search-dir=. .",
-    "wpe-build": "npm run build",
-    "generate": "gqless generate",
-    "start": "PORT=8080 node build"
-  },
-  "devDependencies": {
-    "@gqless/cli": "^2.0.16",
-    "@sveltejs/kit": "^1.0.0-next.123",
-    "dotenv": "^10.0.0",
-    "eslint": "^7.30.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-svelte3": "^3.2.0",
-    "prettier": "^2.3.1",
-    "prettier-plugin-svelte": "^2.3.1",
-    "svelte": "^3.38.3"
-  },
-  "type": "module",
-  "dependencies": {
-    "@faustjs/core": "^0.7.0",
-    "@fontsource/fira-mono": "^4.5.0",
-    "@lukeed/uuid": "^2.0.0",
-    "@sveltejs/adapter-node": "^1.0.0-next.32",
-    "cookie": "^0.4.1"
-  },
-  "engines": {
-    "node": ">=14.17.0"
-  }
+	"name": "sveltekit-faustjs-getting-started",
+	"private": true,
+	"description": "SvelteKit + Atlas + WordPress Example",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"preview": "svelte-kit preview",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
+		"format": "prettier --write --plugin-search-dir=. .",
+		"wpe-build": "npm run build",
+		"generate": "gqless generate",
+		"start": "PORT=8080 node build"
+	},
+	"devDependencies": {
+		"@gqless/cli": "^2.0.16",
+		"@sveltejs/kit": "^1.0.0-next.123",
+		"@typescript-eslint/eslint-plugin": "^4.19.0",
+		"@typescript-eslint/parser": "^4.19.0",
+		"dotenv": "^10.0.0",
+		"eslint": "^7.30.0",
+		"eslint-config-prettier": "^8.1.0",
+		"eslint-plugin-svelte3": "^3.2.0",
+		"prettier": "^2.3.1",
+		"prettier-plugin-svelte": "^2.3.1",
+		"svelte": "^3.38.3",
+		"svelte-check": "^2.0.0",
+		"svelte-preprocess": "^4.7.4",
+		"tslib": "^2.0.0",
+		"typescript": "^4.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@faustjs/core": "^0.7.4",
+		"@fontsource/fira-mono": "^4.5.0",
+		"@sveltejs/adapter-node": "^1.0.0-next.32",
+		"lodash": "^4.17.21"
+	},
+	"engines": {
+		"node": ">=14.17.0"
+	}
 }

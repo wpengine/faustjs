@@ -1,14 +1,9 @@
-<script context="module">
-    import { browser, dev } from '$app/env';
-
-
-
+<script context="module" lang="ts">
+	import { browser, dev } from '$app/env';
 </script>
 
-<script>
+<script lang="ts">
 	import Counter from '$lib/Counter/index.svelte';
-
-
 </script>
 
 <svelte:head>

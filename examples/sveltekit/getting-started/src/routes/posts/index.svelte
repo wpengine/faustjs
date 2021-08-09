@@ -1,41 +1,43 @@
-<script context="module">
+<script context="module" lang="ts">
 	// import { getPosts} from "@faustjs/core"
-  import { browser, dev } from '$app/env';
+	import { browser, dev } from '$app/env';
 
 	export const hydrate = false;
 
-
-	export async function load (loadApi) {
-		const { context: { client: { query, resolved }}} = loadApi
+	export async function load(loadApi) {
+		const {
+			context: {
+				client: { query, resolved }
+			}
+		} = loadApi;
 
 		const posts = await resolved(() => {
-			const allPosts = query.posts().nodes
-		
-			return allPosts.map(post => {
+			const allPosts = query.posts().nodes;
+
+			return allPosts.map((post) => {
 				const result = {
 					id: post.id,
 					excerpt: post.excerpt(),
 					title: post.title(),
-					uri: post.uri,
-				}
+					slug: post.slug
+				};
 
-				return result
-			})
+				return result;
+			});
 		});
-
-
 
 		return {
 			props: {
 				posts: posts
 			},
-			maxage: 5000,
-		}
+			maxage: 5000
+		};
 	}
 </script>
 
-<script>
-	export let posts;
+<script lang="ts">
+	import type { Post } from "$lib/client"
+	export let posts: Post[];
 
 	// if (!posts) {
 	// 	posts = [];
@@ -47,7 +49,7 @@
 		<!-- {@debug posts} -->
 		{#each posts as post}
 			<li>
-				<a href={post.uri}>
+				<a href={"/posts/" + post.slug}>
 					<article>
 						<h1>{post.title}</h1>
 						<div>

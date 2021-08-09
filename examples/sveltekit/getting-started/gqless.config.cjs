@@ -1,24 +1,22 @@
-const dotenv = require('dotenv');
+require('dotenv').config();
+const { headlessConfig, getGqlUrl } = require('@faustjs/core')
 
-dotenv.config({
-  path: '.env.local',
-});
-
+headlessConfig({
+	wpUrl: process.env.VITE_WORDPRESS_URL,
+})
 /**
  * @type {import("@gqless/cli").GQlessConfig}
  */
 const config = {
-  react: false,
-  scalarTypes: { DateTime: 'string' },
-  introspection: {
-    endpoint: `${
-      process.env.VITE_WORDPRESS_URL ?? process.env.WORDPRESS_URL
-    }/graphql`,
-    headers: {},
-  },
-  destination: './src/lib/client/index.ts',
-  subscriptions: false,
-  javascriptOutput: false,
+	react: false,
+	scalarTypes: { DateTime: 'string' },
+	introspection: {
+		endpoint: getGqlUrl(),
+		headers: {}
+	},
+	destination: './src/lib/client/index.ts',
+	subscriptions: false,
+	javascriptOutput: false
 };
 
 module.exports = config;

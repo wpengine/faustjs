@@ -1,6 +1,7 @@
-<script context='module'>
+<script context="module" lang="ts">
 	export const hydrate = false;
 </script>
+
 <script>
 	import { page } from '$app/stores';
 	import logo from './svelte-logo.svg';
@@ -20,9 +21,10 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			{#each menuItems as {path, label} }
-			<li class:active={$page.path + '/' === {path}}><a sveltekit:prefetch href={path}>{label}</a></li>
-				
+			{#each menuItems as { path, label }}
+				<li class:active={$page.path + '/' === { path }}>
+					<a sveltekit:prefetch href={path}>{label}</a>
+				</li>
 			{/each}
 			<!-- <li class:active={$page.path === '/about'}><a sveltekit:prefetch href="/about">About</a></li> -->
 			<!-- <li class:active={$page.path === '/todos'}><a sveltekit:prefetch href="/posts">Posts</a></li> -->

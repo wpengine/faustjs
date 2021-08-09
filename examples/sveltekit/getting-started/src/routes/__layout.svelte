@@ -1,48 +1,45 @@
-<script context="module">
-	import { headlessConfig } from "@faustjs/core"
-	import { WP_DOMAIN, WP_SECRET} from "$lib/env"
-	import { client } from "$lib/client"
+<script context="module" lang="ts">
+	import { headlessConfig } from '@faustjs/core';
+	import { WP_DOMAIN, WP_SECRET } from '$lib/env';
+	import { client, MenuNodeIdTypeEnum } from '$lib/client';
 
-	headlessConfig(
-		{
-			wpUrl: WP_DOMAIN,
-			apiClientSecret: WP_SECRET,
-		}
-	);
+	headlessConfig({
+		wpUrl: WP_DOMAIN,
+		apiClientSecret: WP_SECRET
+	});
 
 	export async function load(loadApi) {
-		const { page } = loadApi
+		const { page } = loadApi;
 
-		const { query, resolved } = client;
+		const gqlClient = client(loadApi);
+
+		const { resolved, query } = gqlClient;
 
 		const menuItems = await resolved(() => {
-			const menu = query.menu({id: "Main", idType: "NAME"})
+			const menu = query.menu({ id: 'Main', idType: MenuNodeIdTypeEnum.NAME });
 
 			if (!menu) {
-				return null
+				return null;
 			}
 
-			return menu.menuItems().nodes.map(item => {
+			return menu.menuItems().nodes.map((item) => {
 				return {
 					label: item.label,
-					path: item.path,
-				}
-			})
-	
-		
-		})
+					path: item.path
+				};
+			});
+		});
 
 		return {
 			props: {
 				menuItems
 			},
 			context: {
-				client,
+				client: gqlClient,
 				isPreview: page.query.get('preview') ? true : false
 			}
-		}
+		};
 	}
-
 </script>
 
 <script>

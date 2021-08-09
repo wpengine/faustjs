@@ -1,4 +1,4 @@
-<script context="module">
+<script context="module" lang="ts">
 	import { browser, dev } from '$app/env';
 
 	// we don't need any JS on this page, though we'll load
@@ -20,30 +20,26 @@
 				client: { query, resolved }
 			}
 		} = loadApi;
-		const post = await resolved(() => {
-			const post = query.post({
+		const pageContent = await resolved(() => {
+			const content = query.page({
 				asPreview: false,
 				id: page.path,
 				idType: 'URI'
 			});
 
-			if (!post) {
-				return null;
-			}
-
 			return {
-				title: post.title(),
-				content: post.content()
+				title: content.title(),
+				content: content.content()
 			};
 		});
 
-		if (!post) {
+		if (!pageContent) {
 			return null;
 		}
 
 		return {
 			props: {
-				data: post
+				data: pageContent
 			},
 			maxage: 5000
 		};

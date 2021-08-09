@@ -365,6 +365,8 @@ export enum MimeTypeEnum {
 	IMAGE_PNG = 'IMAGE_PNG',
 	/** MimeType image/tiff */
 	IMAGE_TIFF = 'IMAGE_TIFF',
+	/** MimeType image/webp */
+	IMAGE_WEBP = 'IMAGE_WEBP',
 	/** MimeType image/x-icon */
 	IMAGE_X_ICON = 'IMAGE_X_ICON',
 	/** MimeType text/calendar */
@@ -3461,6 +3463,8 @@ export enum TimezoneEnum {
 	AMERICA_FORT_NELSON = 'AMERICA_FORT_NELSON',
 	/** Glace Bay */
 	AMERICA_GLACE_BAY = 'AMERICA_GLACE_BAY',
+	/** Godthab */
+	AMERICA_GODTHAB = 'AMERICA_GODTHAB',
 	/** Goose Bay */
 	AMERICA_GOOSE_BAY = 'AMERICA_GOOSE_BAY',
 	/** Grand Turk */
@@ -3567,8 +3571,6 @@ export enum TimezoneEnum {
 	AMERICA_NORTH_DAKOTA_CENTER = 'AMERICA_NORTH_DAKOTA_CENTER',
 	/** North Dakota - New Salem */
 	AMERICA_NORTH_DAKOTA_NEW_SALEM = 'AMERICA_NORTH_DAKOTA_NEW_SALEM',
-	/** Nuuk */
-	AMERICA_NUUK = 'AMERICA_NUUK',
 	/** Ojinaga */
 	AMERICA_OJINAGA = 'AMERICA_OJINAGA',
 	/** Panama */
@@ -3865,6 +3867,8 @@ export enum TimezoneEnum {
 	AUSTRALIA_BRISBANE = 'AUSTRALIA_BRISBANE',
 	/** Broken Hill */
 	AUSTRALIA_BROKEN_HILL = 'AUSTRALIA_BROKEN_HILL',
+	/** Currie */
+	AUSTRALIA_CURRIE = 'AUSTRALIA_CURRIE',
 	/** Darwin */
 	AUSTRALIA_DARWIN = 'AUSTRALIA_DARWIN',
 	/** Eucla */
@@ -5793,9 +5797,42 @@ export const generatedSchema = {
 	},
 	NodeWithFeaturedImage: {
 		__typename: { __type: 'String!' },
+		conditionalTags: { __type: 'ConditionalTags' },
+		contentType: { __type: 'ContentNodeToContentTypeConnectionEdge' },
+		databaseId: { __type: 'Int!' },
+		date: { __type: 'String' },
+		dateGmt: { __type: 'String' },
+		desiredSlug: { __type: 'String' },
+		editingLockedBy: { __type: 'ContentNodeToEditLockConnectionEdge' },
+		enclosure: { __type: 'String' },
+		enqueuedScripts: {
+			__type: 'ContentNodeToEnqueuedScriptConnection',
+			__args: { first: 'Int', last: 'Int', after: 'String', before: 'String' }
+		},
+		enqueuedStylesheets: {
+			__type: 'ContentNodeToEnqueuedStylesheetConnection',
+			__args: { first: 'Int', last: 'Int', after: 'String', before: 'String' }
+		},
 		featuredImage: { __type: 'NodeWithFeaturedImageToMediaItemConnectionEdge' },
 		featuredImageDatabaseId: { __type: 'Int' },
-		featuredImageId: { __type: 'ID' }
+		featuredImageId: { __type: 'ID' },
+		guid: { __type: 'String' },
+		id: { __type: 'ID!' },
+		isContentNode: { __type: 'Boolean!' },
+		isPreview: { __type: 'Boolean' },
+		isRestricted: { __type: 'Boolean' },
+		isTermNode: { __type: 'Boolean!' },
+		lastEditedBy: { __type: 'ContentNodeToEditLastConnectionEdge' },
+		link: { __type: 'String' },
+		modified: { __type: 'String' },
+		modifiedGmt: { __type: 'String' },
+		previewRevisionDatabaseId: { __type: 'Int' },
+		previewRevisionId: { __type: 'ID' },
+		slug: { __type: 'String' },
+		status: { __type: 'String' },
+		template: { __type: 'ContentTemplate' },
+		templates: { __type: '[String]' },
+		uri: { __type: 'String' }
 	},
 	NodeWithFeaturedImageToMediaItemConnectionEdge: {
 		__typename: { __type: 'String!' },
@@ -9031,7 +9068,7 @@ export interface ContentNode {
 export interface ContentNodeToContentTypeConnectionEdge {
 	__typename: 'ContentNodeToContentTypeConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<ContentType>;
 }
@@ -9536,7 +9573,7 @@ export interface ContentNodeToEditLockConnectionEdge {
 	 */
 	lockTimestamp?: Maybe<ScalarsEnums['String']>;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<User>;
 }
@@ -10082,7 +10119,7 @@ export interface Comment extends Omit<Node, '__typename'>, Omit<DatabaseIdentifi
 export interface CommentToCommenterConnectionEdge {
 	__typename: 'CommentToCommenterConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Commenter>;
 }
@@ -10093,7 +10130,7 @@ export interface CommentToCommenterConnectionEdge {
 export interface CommentToContentNodeConnectionEdge {
 	__typename: 'CommentToContentNodeConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<ContentNode>;
 }
@@ -10104,7 +10141,7 @@ export interface CommentToContentNodeConnectionEdge {
 export interface CommentToParentCommentConnectionEdge {
 	__typename: 'CommentToParentCommentConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Comment>;
 }
@@ -10655,7 +10692,7 @@ export interface NodeWithAuthor {
 export interface NodeWithAuthorToUserConnectionEdge {
 	__typename: 'NodeWithAuthorToUserConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<User>;
 }
@@ -10818,7 +10855,7 @@ export interface HierarchicalContentNodeToContentNodeChildrenConnectionEdge {
 export interface HierarchicalContentNodeToParentContentNodeConnectionEdge {
 	__typename: 'HierarchicalContentNodeToParentContentNodeConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<ContentNode>;
 }
@@ -10931,7 +10968,7 @@ export interface ContentNodeToEnqueuedStylesheetConnectionEdge {
 export interface ContentNodeToEditLastConnectionEdge {
 	__typename: 'ContentNodeToEditLastConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<User>;
 }
@@ -11430,7 +11467,7 @@ export interface Page
 	 */
 	status?: Maybe<ScalarsEnums['String']>;
 	/**
-	 * The template assigned to the node
+	 * The template assigned to a node of content
 	 */
 	template?: Maybe<ContentTemplate>;
 	templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -11470,6 +11507,77 @@ export interface NodeWithContentEditor {
  */
 export interface NodeWithFeaturedImage {
 	__typename: 'NodeWithFeaturedImage' | undefined;
+	conditionalTags?: Maybe<ConditionalTags>;
+	/**
+	 * Connection between the ContentNode type and the ContentType type
+	 */
+	contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+	/**
+	 * The unique identifier stored in the database
+	 */
+	databaseId: ScalarsEnums['Int'];
+	/**
+	 * Post publishing date.
+	 */
+	date?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The publishing date set in GMT.
+	 */
+	dateGmt?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The desired slug of the post
+	 */
+	desiredSlug?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
+	 */
+	editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+	/**
+	 * The RSS enclosure for the object
+	 */
+	enclosure?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * Connection between the ContentNode type and the EnqueuedScript type
+	 */
+	enqueuedScripts: (args?: {
+		/**
+		 * The number of items to return after the referenced "after" cursor
+		 */
+		first?: Maybe<Scalars['Int']>
+		/**
+		 * The number of items to return before the referenced "before" cursor
+		 */;
+		last?: Maybe<Scalars['Int']>
+		/**
+		 * Cursor used along with the "first" argument to reference where in the dataset to get data
+		 */;
+		after?: Maybe<Scalars['String']>
+		/**
+		 * Cursor used along with the "last" argument to reference where in the dataset to get data
+		 */;
+		before?: Maybe<Scalars['String']>;
+	}) => Maybe<ContentNodeToEnqueuedScriptConnection>;
+	/**
+	 * Connection between the ContentNode type and the EnqueuedStylesheet type
+	 */
+	enqueuedStylesheets: (args?: {
+		/**
+		 * The number of items to return after the referenced "after" cursor
+		 */
+		first?: Maybe<Scalars['Int']>
+		/**
+		 * The number of items to return before the referenced "before" cursor
+		 */;
+		last?: Maybe<Scalars['Int']>
+		/**
+		 * Cursor used along with the "first" argument to reference where in the dataset to get data
+		 */;
+		after?: Maybe<Scalars['String']>
+		/**
+		 * Cursor used along with the "last" argument to reference where in the dataset to get data
+		 */;
+		before?: Maybe<Scalars['String']>;
+	}) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
 	/**
 	 * Connection between the NodeWithFeaturedImage type and the MediaItem type
 	 */
@@ -11482,6 +11590,71 @@ export interface NodeWithFeaturedImage {
 	 * Globally unique ID of the featured image assigned to the node
 	 */
 	featuredImageId?: Maybe<ScalarsEnums['ID']>;
+	/**
+	 * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
+	 */
+	guid?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The unique resource identifier path
+	 */
+	id: ScalarsEnums['ID'];
+	/**
+	 * Whether the node is a Content Node
+	 */
+	isContentNode: ScalarsEnums['Boolean'];
+	/**
+	 * Whether the object is a node in the preview state
+	 */
+	isPreview?: Maybe<ScalarsEnums['Boolean']>;
+	/**
+	 * Whether the object is restricted from the current viewer
+	 */
+	isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+	/**
+	 * Whether the node is a Term
+	 */
+	isTermNode: ScalarsEnums['Boolean'];
+	/**
+	 * The user that most recently edited the node
+	 */
+	lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+	/**
+	 * The permalink of the post
+	 */
+	link?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
+	 */
+	modified?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
+	 */
+	modifiedGmt?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The database id of the preview node
+	 */
+	previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
+	/**
+	 * Whether the object is a node in the preview state
+	 */
+	previewRevisionId?: Maybe<ScalarsEnums['ID']>;
+	/**
+	 * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
+	 */
+	slug?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The current status of the object
+	 */
+	status?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The template assigned to a node of content
+	 */
+	template?: Maybe<ContentTemplate>;
+	templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
+	/**
+	 * The unique resource identifier path
+	 */
+	uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -11490,7 +11663,7 @@ export interface NodeWithFeaturedImage {
 export interface NodeWithFeaturedImageToMediaItemConnectionEdge {
 	__typename: 'NodeWithFeaturedImageToMediaItemConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<MediaItem>;
 }
@@ -11532,7 +11705,7 @@ export interface NodeWithRevisions {
 export interface NodeWithRevisionsToContentNodeConnectionEdge {
 	__typename: 'NodeWithRevisionsToContentNodeConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<ContentNode>;
 }
@@ -11588,7 +11761,7 @@ export interface PageToCommentConnectionEdge {
 export interface PageToPreviewConnectionEdge {
 	__typename: 'PageToPreviewConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Page>;
 }
@@ -12012,7 +12185,7 @@ export interface Post
 		where?: Maybe<PostToTagConnectionWhereArgs>;
 	}) => Maybe<PostToTagConnection>;
 	/**
-	 * The template assigned to the node
+	 * The template assigned to a node of content
 	 */
 	template?: Maybe<ContentTemplate>;
 	templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -12421,7 +12594,7 @@ export interface PostFormatToPostConnectionEdge {
 export interface PostFormatToTaxonomyConnectionEdge {
 	__typename: 'PostFormatToTaxonomyConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Taxonomy>;
 }
@@ -12432,7 +12605,7 @@ export interface PostFormatToTaxonomyConnectionEdge {
 export interface PostToPreviewConnectionEdge {
 	__typename: 'PostToPreviewConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Post>;
 }
@@ -12746,7 +12919,7 @@ export interface TagToPostConnectionEdge {
 export interface TagToTaxonomyConnectionEdge {
 	__typename: 'TagToTaxonomyConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Taxonomy>;
 }
@@ -12886,7 +13059,7 @@ export interface UserRole extends Omit<Node, '__typename'> {
 export interface CategoryToParentCategoryConnectionEdge {
 	__typename: 'CategoryToParentCategoryConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Category>;
 }
@@ -12931,7 +13104,7 @@ export interface CategoryToPostConnectionEdge {
 export interface CategoryToTaxonomyConnectionEdge {
 	__typename: 'CategoryToTaxonomyConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Taxonomy>;
 }
@@ -13379,7 +13552,7 @@ export interface MenuItemToMenuItemConnectionEdge {
 export interface MenuItemToMenuItemLinkableConnectionEdge {
 	__typename: 'MenuItemToMenuItemLinkableConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<MenuItemLinkable>;
 }
@@ -13390,7 +13563,7 @@ export interface MenuItemToMenuItemLinkableConnectionEdge {
 export interface MenuItemToMenuConnectionEdge {
 	__typename: 'MenuItemToMenuConnectionEdge' | undefined;
 	/**
-	 * The nodes of the connection, without the edges
+	 * The node of the connection, without the edges
 	 */
 	node?: Maybe<Menu>;
 }
@@ -15363,7 +15536,7 @@ export type ContentRevisionUnion =
 				where?: Maybe<PostToTagConnectionWhereArgs>;
 			}) => Maybe<PostToTagConnection>;
 			/**
-			 * The template assigned to the node
+			 * The template assigned to a node of content
 			 */
 			template?: Maybe<ContentTemplate>;
 			templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -15742,7 +15915,7 @@ export type ContentRevisionUnion =
 			status?: Maybe<ScalarsEnums['String']>;
 			tags?: undefined;
 			/**
-			 * The template assigned to the node
+			 * The template assigned to a node of content
 			 */
 			template?: Maybe<ContentTemplate>;
 			templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -16118,7 +16291,7 @@ export type MenuItemObjectUnion =
 			}) => Maybe<PostToTagConnection>;
 			taxonomy?: undefined;
 			/**
-			 * The template assigned to the node
+			 * The template assigned to a node of content
 			 */
 			template?: Maybe<ContentTemplate>;
 			templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -16507,7 +16680,7 @@ export type MenuItemObjectUnion =
 			tags?: undefined;
 			taxonomy?: undefined;
 			/**
-			 * The template assigned to the node
+			 * The template assigned to a node of content
 			 */
 			template?: Maybe<ContentTemplate>;
 			templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -17360,7 +17533,7 @@ export type PostObjectUnion =
 				where?: Maybe<PostToTagConnectionWhereArgs>;
 			}) => Maybe<PostToTagConnection>;
 			/**
-			 * The template assigned to the node
+			 * The template assigned to a node of content
 			 */
 			template?: Maybe<ContentTemplate>;
 			templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -17751,7 +17924,7 @@ export type PostObjectUnion =
 			status?: Maybe<ScalarsEnums['String']>;
 			tags?: undefined;
 			/**
-			 * The template assigned to the node
+			 * The template assigned to a node of content
 			 */
 			template?: Maybe<ContentTemplate>;
 			templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
@@ -19049,6 +19222,35 @@ export interface NodeWithContentEditor {}
  * A node that can have a featured image set
  */
 export interface NodeWithFeaturedImage {
+	conditionalTags?: Maybe<ConditionalTags>;
+	/**
+	 * Connection between the ContentNode type and the ContentType type
+	 */
+	contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+	/**
+	 * The unique identifier stored in the database
+	 */
+	databaseId: ScalarsEnums['Int'];
+	/**
+	 * Post publishing date.
+	 */
+	date?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The publishing date set in GMT.
+	 */
+	dateGmt?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The desired slug of the post
+	 */
+	desiredSlug?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
+	 */
+	editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+	/**
+	 * The RSS enclosure for the object
+	 */
+	enclosure?: Maybe<ScalarsEnums['String']>;
 	/**
 	 * Connection between the NodeWithFeaturedImage type and the MediaItem type
 	 */
@@ -19061,6 +19263,71 @@ export interface NodeWithFeaturedImage {
 	 * Globally unique ID of the featured image assigned to the node
 	 */
 	featuredImageId?: Maybe<ScalarsEnums['ID']>;
+	/**
+	 * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
+	 */
+	guid?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The unique resource identifier path
+	 */
+	id: ScalarsEnums['ID'];
+	/**
+	 * Whether the node is a Content Node
+	 */
+	isContentNode: ScalarsEnums['Boolean'];
+	/**
+	 * Whether the object is a node in the preview state
+	 */
+	isPreview?: Maybe<ScalarsEnums['Boolean']>;
+	/**
+	 * Whether the object is restricted from the current viewer
+	 */
+	isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+	/**
+	 * Whether the node is a Term
+	 */
+	isTermNode: ScalarsEnums['Boolean'];
+	/**
+	 * The user that most recently edited the node
+	 */
+	lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+	/**
+	 * The permalink of the post
+	 */
+	link?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
+	 */
+	modified?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
+	 */
+	modifiedGmt?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The database id of the preview node
+	 */
+	previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
+	/**
+	 * Whether the object is a node in the preview state
+	 */
+	previewRevisionId?: Maybe<ScalarsEnums['ID']>;
+	/**
+	 * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
+	 */
+	slug?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The current status of the object
+	 */
+	status?: Maybe<ScalarsEnums['String']>;
+	/**
+	 * The template assigned to a node of content
+	 */
+	template?: Maybe<ContentTemplate>;
+	templates?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
+	/**
+	 * The unique resource identifier path
+	 */
+	uri?: Maybe<ScalarsEnums['String']>;
 }
 /**
  * A node that can have an excerpt
