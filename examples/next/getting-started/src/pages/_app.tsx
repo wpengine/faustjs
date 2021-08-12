@@ -4,7 +4,7 @@ import 'normalize.css/normalize.css';
 import React from 'react';
 import 'scss/main.scss';
 import { client } from 'client';
-import { AppProps } from 'next/dist/next-server/lib/router/router';
+import type { AppProps } from 'next/app';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (

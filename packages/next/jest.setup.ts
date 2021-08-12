@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'; // For custom matchers. See https://github.com/testing-library/jest-dom#custom-matchers.
 
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import { NextApiRequestCookies } from 'next/dist/next-server/server/api-utils';
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import { IncomingMessage, ServerResponse } from 'http';
 
 /**
