@@ -7,15 +7,14 @@ import {
   ScalarsEnumsHash,
   Schema as GQlessSchema,
 } from 'gqless';
+import type { IncomingMessage } from 'http';
 import fetch from 'isomorphic-fetch';
-import isString from 'lodash/isString';
-import isObject from 'lodash/isObject';
-import { getAccessToken } from '../../auth';
-
+import { isString } from 'lodash';
 import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
+import isObject from 'lodash/isObject';
 import omit from 'lodash/omit';
-import type { IncomingMessage } from 'http';
+import { getAccessTokenNew } from '../../auth';
 import { getGqlUrl } from '../../config/config';
 
 export interface GqlClientSchema {
@@ -35,9 +34,7 @@ function createQueryFetcher(
 ) {
   return async function (query, variables): Promise<any> {
     const url = getGqlUrl();
-    const token = getAccessToken({
-      request: context,
-    });
+    const token = getAccessTokenNew();
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };

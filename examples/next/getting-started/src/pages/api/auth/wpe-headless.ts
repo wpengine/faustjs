@@ -1,4 +1,4 @@
 import 'faust.config';
-import { authorizeHandler } from '@faustjs/core';
+import { authorizeHandlerNew } from '@faustjs/core';
 
-export default authorizeHandler;
+export default authorizeHandlerNew;

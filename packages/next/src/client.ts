@@ -1,27 +1,29 @@
-import type { GQlessClient } from 'gqless';
+import {
+  CategoryIdType,
+  ClientConfig,
+  ensureAuthorizationNew,
+  getClient as getCoreClient,
+  headlessConfig,
+  PageIdType,
+  PostIdType,
+  WithClient,
+} from '@faustjs/core';
+import type { RequiredSchema } from '@faustjs/react';
 import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient,
 } from '@gqless/react';
-import React, { useContext, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
-import isObject from 'lodash/isObject';
-import merge from 'lodash/merge';
-import {
-  CategoryIdType,
-  ClientConfig,
-  getClient as getCoreClient,
-  PageIdType,
-  PostIdType,
-  ensureAuthorization,
-  WithClient,
-} from '@faustjs/core';
-import type { RequiredSchema } from '@faustjs/react';
-import isString from 'lodash/isString';
+import type { GQlessClient } from 'gqless';
+import type { IncomingMessage } from 'http';
+import { isUndefined } from 'lodash';
 import defaults from 'lodash/defaults';
 import isFunction from 'lodash/isFunction';
-import type { IncomingMessage } from 'http';
+import isObject from 'lodash/isObject';
+import isString from 'lodash/isString';
+import merge from 'lodash/merge';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   hasCategoryId,
   hasCategorySlug,
@@ -78,6 +80,11 @@ export interface NextClient<
   ): ReturnType<Schema['query']['post']>;
 
   useIsLoading(): boolean;
+
+  useAuth(): {
+    isLoading: boolean;
+    isAuthenticated: boolean | undefined;
+  };
 }
 
 export interface HeadlessContextType {
@@ -276,28 +283,45 @@ export function getClient<
     args: HasObject,
   ): ReturnType<Schema['query']['page'] | Schema['query']['post']> | undefined {
     const client = useClient();
+    const { useAuth } = client;
+    const { isLoading, isAuthenticated } = useAuth();
 
-    useEffect(() => {
-      if (typeof window === 'undefined') {
-        return;
-      }
+    // const { authType } = headlessConfig();
 
-      const authResult = ensureAuthorization(window.location.href, {
-        request: client.context,
-      });
+    // useEffect(() => {
+    //   /* eslint-disable @typescript-eslint/no-floating-promises */
+    //   (async () => {
+    //     if (typeof window === 'undefined') {
+    //       return;
+    //     }
 
-      if (
-        !isString(authResult) &&
-        isString(authResult?.redirect) &&
-        !haveServerContext
-      ) {
-        setTimeout(() => {
-          window.location.replace(authResult?.redirect as string);
-        }, 200);
-      }
-    }, [client]);
+    //     /* eslint-disable @typescript-eslint/no-unsafe-call */
+    //     const isAuthenticated = await ensureAuthorizationNew({
+    //       redirectUri: window.location.href,
+    //       loginPageUri: `/login`,
+    //     });
+
+    //     if (isAuthenticated !== true) {
+    //       setTimeout(() => {
+    //         window.location.replace(
+    //           authType === 'local'
+    //             ? (isAuthenticated.login as string)
+    //             : (isAuthenticated.redirect as string),
+    //         );
+    //       }, 200);
+    //     }
+    //   })();
+    // }, [client, authType]);
 
     const { post, page } = client.useQuery();
+
+    if (isLoading) {
+      return;
+    }
+
+    if (!isAuthenticated) {
+      return;
+    }
 
     const pagePreview = page({
       id: (args?.pageId as string) ?? '',
@@ -381,6 +405,61 @@ export function getClient<
     return useQuery().$state.isLoading;
   }
 
+  function useAuth() {
+    const { authType } = headlessConfig();
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
+      undefined,
+    );
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [authResult, setAuthResult] = useState<
+      true | { redirect?: string; login?: string } | undefined
+    >(undefined);
+
+    useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      /* eslint-disable @typescript-eslint/no-floating-promises */
+      (async () => {
+        const auth = await ensureAuthorizationNew({
+          redirectUri: window.location.href,
+          loginPageUri: `/login`,
+        });
+
+        setAuthResult(auth);
+        setIsAuthenticated(authResult === true);
+        setIsLoading(false);
+      })();
+    }, []);
+
+    useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      if (isUndefined(isAuthenticated) || isAuthenticated === true) {
+        return;
+      }
+
+      setTimeout(() => {
+        if (!isObject(authResult)) {
+          return;
+        }
+
+        if (authType === 'local' && authResult.login) {
+          window.location.replace(authResult.login);
+        }
+
+        if (authType === 'redirect' && authResult.redirect) {
+          window.location.replace(authResult.redirect);
+        }
+      }, 200);
+    }, [isAuthenticated]);
+
+    return { isAuthenticated, isLoading };
+  }
+
   nextClient = {
     client: coreClient,
     ...reactClient,
@@ -408,6 +487,7 @@ export function getClient<
     usePage,
     usePreview,
     useIsLoading,
+    useAuth,
   };
 
   return nextClient;
