@@ -9,7 +9,7 @@ import {
   GetServerSidePropsResult,
   Redirect,
 } from 'next';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
 import { getClient, HeadlessContext } from './client';
