@@ -91,10 +91,6 @@ function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request )
 		return new WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
 	}
 
-	if ( $code && $refresh_token ) {
-		return new WP_Error( 'invalid_request', 'Cannot use both authorization code and refresh token.' );
-	}
-
 	if ( $refresh_token ) {
 		$user = wpe_headless_get_user_from_refresh_token( $refresh_token );
 	} else {

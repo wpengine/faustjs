@@ -4,7 +4,6 @@ import isNil from 'lodash/isNil';
 import Cookies from 'universal-cookie';
 import { headlessConfig } from '../config';
 import { base64Decode, base64Encode, getQueryParam } from '../utils';
-import { redirect } from './middleware';
 
 export interface CookieOptions {
   request?: IncomingMessage;
@@ -134,8 +133,14 @@ export interface EnsureAuthorizationOptions {
   loginPageUri?: string;
 }
 
-export async function fetchToken(): Promise<string | null> {
-  const response = await fetch(`http://localhost:3000/api/auth/wpe-headless`, {
+export async function fetchToken(code?: string): Promise<string | null> {
+  let url = `http://localhost:3000/api/auth/wpe-headless`;
+
+  if (isString(code) && code.length > 0) {
+    url += `?code=${code}`;
+  }
+
+  const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -159,6 +164,11 @@ export async function ensureAuthorizationNew(
   const { wpUrl } = headlessConfig();
   const { redirectUri, loginPageUri } = options || {};
 
+  const code: string | undefined =
+    typeof window !== 'undefined'
+      ? getQueryParam(window.location.href, 'code')
+      : undefined;
+
   const unauthorized: { redirect?: string; login?: string } = {};
 
   if (isString(redirectUri)) {
@@ -171,7 +181,7 @@ export async function ensureAuthorizationNew(
     unauthorized.login = loginPageUri;
   }
 
-  const token = await fetchToken();
+  const token = await fetchToken(code);
 
   if (!token) {
     return unauthorized;
@@ -180,7 +190,7 @@ export async function ensureAuthorizationNew(
   return true;
 }
 
-export async function localAuthorizeHandler(
+export async function authorizeHandlerNew(
   req: IncomingMessage,
   res: ServerResponse,
 ): Promise<void> {
@@ -230,37 +240,37 @@ export async function localAuthorizeHandler(
   return;
 }
 
-export function redirectAuthorizeHandler(
-  req: IncomingMessage,
-  res: ServerResponse,
-): void {
-  const { wpUrl } = headlessConfig();
-  const url = req.url as string;
-  const code = getQueryParam(url, 'code');
-  const refreshToken = getRefreshToken({ request: req });
+// export function redirectAuthorizeHandler(
+//   req: IncomingMessage,
+//   res: ServerResponse,
+// ): void {
+//   const { wpUrl } = headlessConfig();
+//   const url = req.url as string;
+//   const code = getQueryParam(url, 'code');
+//   const refreshToken = getRefreshToken({ request: req });
 
-  if (!refreshToken && !code) {
-    res.statusCode = 401;
-    res.end(JSON.stringify({ error: 'Unauthorized' }));
+//   if (!refreshToken && !code) {
+//     res.statusCode = 401;
+//     res.end(JSON.stringify({ error: 'Unauthorized' }));
 
-    return;
-  }
+//     return;
+//   }
 
-  const authResult = redirect(
-    res,
-    `${wpUrl}/generate?redirect_uri=http://localhost:3000`,
-  );
-}
+//   // const authResult = redirect(
+//   //   res,
+//   //   `${wpUrl}/generate?redirect_uri=http://localhost:3000`,
+//   // );
+// }
 
-export async function authorizeHandlerNew(
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> {
-  const { authType } = headlessConfig();
+// export async function authorizeHandlerNew(
+//   req: IncomingMessage,
+//   res: ServerResponse,
+// ): Promise<void> {
+//   const { authType } = headlessConfig();
 
-  if (authType === 'local') {
-    return localAuthorizeHandler(req, res);
-  } else {
-    return redirectAuthorizeHandler(req, res);
-  }
-}
+//   if (authType === 'local') {
+//     return localAuthorizeHandler(req, res);
+//   } else {
+//     return redirectAuthorizeHandler(req, res);
+//   }
+// }

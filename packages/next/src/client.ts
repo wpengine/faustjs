@@ -84,6 +84,7 @@ export interface NextClient<
   useAuth(): {
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
+    authResult: true | { redirect?: string; login?: string };
   };
 }
 
@@ -170,6 +171,62 @@ export function getClient<
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return useClient().useSubscription();
   };
+
+  function useAuth() {
+    const { authType } = headlessConfig();
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
+      undefined,
+    );
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [authResult, setAuthResult] = useState<
+      true | { redirect?: string; login?: string } | undefined
+    >(undefined);
+
+    useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      /* eslint-disable @typescript-eslint/no-floating-promises */
+      (async () => {
+        const auth = await ensureAuthorizationNew({
+          redirectUri: window.location.href,
+          loginPageUri: `/login`,
+        });
+
+        setAuthResult(auth);
+        setIsAuthenticated(auth === true);
+        setIsLoading(false);
+      })();
+    }, []);
+
+    // Redirect the user to the login page if they are not authenticated
+    useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      if (isUndefined(isAuthenticated) || isAuthenticated === true) {
+        return;
+      }
+
+      setTimeout(() => {
+        if (!isObject(authResult)) {
+          return;
+        }
+
+        if (authType === 'local' && authResult.login) {
+          window.location.replace(authResult.login);
+        }
+
+        if (authType === 'redirect' && authResult.redirect) {
+          window.location.replace(authResult.redirect);
+        }
+      }, 200);
+    }, [isAuthenticated, authResult, authType]);
+
+    return { isAuthenticated, isLoading, authResult };
+  }
 
   function usePosts(
     args?: Parameters<Schema['query']['posts']>[0],
@@ -283,45 +340,17 @@ export function getClient<
     args: HasObject,
   ): ReturnType<Schema['query']['page'] | Schema['query']['post']> | undefined {
     const client = useClient();
-    const { useAuth } = client;
-    const { isLoading, isAuthenticated } = useAuth();
-
-    // const { authType } = headlessConfig();
-
-    // useEffect(() => {
-    //   /* eslint-disable @typescript-eslint/no-floating-promises */
-    //   (async () => {
-    //     if (typeof window === 'undefined') {
-    //       return;
-    //     }
-
-    //     /* eslint-disable @typescript-eslint/no-unsafe-call */
-    //     const isAuthenticated = await ensureAuthorizationNew({
-    //       redirectUri: window.location.href,
-    //       loginPageUri: `/login`,
-    //     });
-
-    //     if (isAuthenticated !== true) {
-    //       setTimeout(() => {
-    //         window.location.replace(
-    //           authType === 'local'
-    //             ? (isAuthenticated.login as string)
-    //             : (isAuthenticated.redirect as string),
-    //         );
-    //       }, 200);
-    //     }
-    //   })();
-    // }, [client, authType]);
+    const { isAuthenticated } = useAuth();
 
     const { post, page } = client.useQuery();
 
-    if (isLoading) {
+    console.log('isAuthenticated', isAuthenticated);
+
+    if (isUndefined(isAuthenticated) || isAuthenticated !== true) {
       return;
     }
 
-    if (!isAuthenticated) {
-      return;
-    }
+    console.log('request');
 
     const pagePreview = page({
       id: (args?.pageId as string) ?? '',
@@ -405,61 +434,6 @@ export function getClient<
     return useQuery().$state.isLoading;
   }
 
-  function useAuth() {
-    const { authType } = headlessConfig();
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
-      undefined,
-    );
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [authResult, setAuthResult] = useState<
-      true | { redirect?: string; login?: string } | undefined
-    >(undefined);
-
-    useEffect(() => {
-      if (typeof window === 'undefined') {
-        return;
-      }
-
-      /* eslint-disable @typescript-eslint/no-floating-promises */
-      (async () => {
-        const auth = await ensureAuthorizationNew({
-          redirectUri: window.location.href,
-          loginPageUri: `/login`,
-        });
-
-        setAuthResult(auth);
-        setIsAuthenticated(authResult === true);
-        setIsLoading(false);
-      })();
-    }, []);
-
-    useEffect(() => {
-      if (typeof window === 'undefined') {
-        return;
-      }
-
-      if (isUndefined(isAuthenticated) || isAuthenticated === true) {
-        return;
-      }
-
-      setTimeout(() => {
-        if (!isObject(authResult)) {
-          return;
-        }
-
-        if (authType === 'local' && authResult.login) {
-          window.location.replace(authResult.login);
-        }
-
-        if (authType === 'redirect' && authResult.redirect) {
-          window.location.replace(authResult.redirect);
-        }
-      }, 200);
-    }, [isAuthenticated]);
-
-    return { isAuthenticated, isLoading };
-  }
-
   nextClient = {
     client: coreClient,
     ...reactClient,
@@ -481,13 +455,13 @@ export function getClient<
     useSubscription,
     useClient,
     useHydrateCache,
+    useAuth,
     useCategory,
     usePosts,
     usePost,
     usePage,
     usePreview,
     useIsLoading,
-    useAuth,
   };
 
   return nextClient;
