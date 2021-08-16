@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: WPEngine Headless
+ * Plugin Name: WP Engine Headless
  * Plugin URI: https://wpengine.com/
- * Description: Plugin for working with headless WordPress.
+ * Description: Plugin for working with Headless WordPress.
  * Author: WP Engine
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-headless
