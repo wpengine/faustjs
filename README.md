@@ -1,5 +1,5 @@
 <p align="center">
-  <strong>NOTE 🚧: This is prerelease software. As we work towards our first release, we will 💯 introduce breaking changes.</strong>
+  <strong>NOTE: This is prerelease software. As we work towards our first release, we will 💯 introduce breaking changes.</strong>
 </p>
 
 <p align="center">
@@ -9,19 +9,19 @@
 </p>
 
 <p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/next">
-    <img alt="" src="https://img.shields.io/npm/v/@faustjs/core?color=0ecad4&style=for-the-badge">
+  <a aria-label="NPM version" href="https://www.npmjs.com/package/@faustjs/core">
+    <img alt="" src="https://img.shields.io/npm/v/@faustjs/core?color=7e5cef&style=for-the-badge">
   </a>
 
-  <a aria-label="License" href="https://github.com/vercel/next.js/blob/canary/license.md">
-    <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=0ecad4&style=for-the-badge">
+  <a aria-label="License" href="https://github.com/wpengine/headless-framework/blob/canary/LICENSE">
+    <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=7e5cef&style=for-the-badge">
   </a>
 
 </p>
 
 ## Introduction
 
-Faust.js is a framework for building front-end applications for headless WordPress sites. Faust.js provides tooling to reduce the pains of building a headless WordPress site (namely around data-fetching, authentication, previews, and SSR/SSG) while offering a pleasant experience for both developers and publishers.
+Faust.js is a framework for building front-end applications for headless WordPress sites. Faust.js provides tooling to reduce the pains of building a headless WordPress site (namely around data fetching, authentication, previews, and SSR/SSG) while offering a pleasant experience for both developers and publishers.
 
 ## Getting Started
 
