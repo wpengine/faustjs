@@ -1,5 +1,8 @@
 <p align="center">
-  <strong>NOTE: This is prerelease software. As we work towards our first release, we will 💯 introduce breaking changes.</strong>
+  <strong>
+    NOTE: This is prerelease software. As we work towards our first release, we
+    will 💯 introduce breaking changes.
+  </strong>
 </p>
 
 <p align="center">
@@ -16,7 +19,20 @@
   <a aria-label="License" href="https://github.com/wpengine/headless-framework/blob/canary/LICENSE">
     <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=7e5cef&style=for-the-badge">
   </a>
+</p>
 
+<p align="center">
+  <a aria-label="Faust.js Core Downloads" href="https://www.npmjs.com/package/@faustjs/core">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/core?color=7e5cef&style=for-the-badge&label=@faustjs/core">
+  </a>
+<!--  -->
+  <a aria-label="Faust.js  Downloads" href="https://www.npmjs.com/package/@faustjs/react">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/react?color=7e5cef&style=for-the-badge&label=@faustjs/react">
+  </a>
+
+  <a aria-label="Faust.js  Downloads" href="https://www.npmjs.com/package/@faustjs/next">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/next?color=7e5cef&style=for-the-badge&label=@faustjs/next">
+  </a>
 </p>
 
 ## Introduction
