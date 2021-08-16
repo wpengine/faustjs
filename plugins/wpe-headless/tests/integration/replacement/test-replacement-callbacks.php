@@ -23,15 +23,15 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_preview_post_link_filter() {
-		$this->assertSame( 10, has_action( 'preview_post_link', 'wpe_headless_post_preview_link' ) );
+		$this->assertSame( 1000, has_action( 'preview_post_link', 'wpe_headless_post_preview_link' ) );
 	}
 
 	public function test_post_link_filter() {
-		$this->assertSame( 10, has_action( 'post_link', 'wpe_headless_post_link' ) );
+		$this->assertSame( 1000, has_action( 'post_link', 'wpe_headless_post_link' ) );
 	}
 
 	public function test_term_link_filter() {
-		$this->assertSame( 10, has_action( 'term_link', 'wpe_headless_term_link' ) );
+		$this->assertSame( 1000, has_action( 'term_link', 'wpe_headless_term_link' ) );
 	}
 
 	public function test_graphql_request_results_filter() {
