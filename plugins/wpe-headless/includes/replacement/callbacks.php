@@ -89,7 +89,7 @@ function wpe_headless_image_source_srcset_replacement( $sources ) {
 	return $sources;
 }
 
-add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 10, 2 );
+add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 1000, 2 );
 /**
  * Callback for WordPress 'preview_post_link' filter.
  *
@@ -149,7 +149,7 @@ function wpe_headless_post_preview_link( $link, $post ) {
 }
 
 
-add_filter( 'post_link', 'wpe_headless_post_link', 10 );
+add_filter( 'post_link', 'wpe_headless_post_link', 1000 );
 /**
  * Callback for WordPress 'preview_post_link' filter and 'post_link' filter.
  *
@@ -178,7 +178,7 @@ function wpe_headless_post_link( $link ) {
 	return $link;
 }
 
-add_filter( 'term_link', 'wpe_headless_term_link' );
+add_filter( 'term_link', 'wpe_headless_term_link', 1000 );
 /**
  * Rewrites term links to point to the specified front-end URL.
  *
