@@ -16,7 +16,7 @@ import {
 } from '@gqless/react';
 import type { GQlessClient } from 'gqless';
 import type { IncomingMessage } from 'http';
-import { isUndefined } from 'lodash';
+import { isUndefined, trim } from 'lodash';
 import defaults from 'lodash/defaults';
 import isFunction from 'lodash/isFunction';
 import isObject from 'lodash/isObject';
@@ -173,7 +173,8 @@ export function getClient<
   };
 
   function useAuth() {
-    const { authType } = headlessConfig();
+    const { authType, relativeLoginPage } = headlessConfig();
+
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
       undefined,
     );
@@ -191,7 +192,10 @@ export function getClient<
       (async () => {
         const auth = await ensureAuthorizationNew({
           redirectUri: window.location.href,
-          loginPageUri: `/login`,
+          loginPageUri: `/${trim(
+            relativeLoginPage,
+            '/',
+          )}/?redirect_uri=${encodeURIComponent(window.location.href)}`,
         });
 
         setAuthResult(auth);
@@ -344,13 +348,9 @@ export function getClient<
 
     const { post, page } = client.useQuery();
 
-    console.log('isAuthenticated', isAuthenticated);
-
     if (isUndefined(isAuthenticated) || isAuthenticated !== true) {
       return;
     }
-
-    console.log('request');
 
     const pagePreview = page({
       id: (args?.pageId as string) ?? '',

@@ -1,9 +1,14 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { isString } from 'lodash';
+import { isString, isUndefined } from 'lodash';
 import isNil from 'lodash/isNil';
 import Cookies from 'universal-cookie';
 import { headlessConfig } from '../config';
-import { base64Decode, base64Encode, getQueryParam } from '../utils';
+import {
+  base64Decode,
+  base64Encode,
+  getQueryParam,
+  removeURLParam,
+} from '../utils';
 
 export interface CookieOptions {
   request?: IncomingMessage;
@@ -134,7 +139,15 @@ export interface EnsureAuthorizationOptions {
 }
 
 export async function fetchToken(code?: string): Promise<string | null> {
-  let url = `http://localhost:3000/api/auth/wpe-headless`;
+  const { apiEndpoint } = headlessConfig();
+
+  if (isUndefined(apiEndpoint)) {
+    throw new Error(
+      'You must provide an apiEndpoint value in your Headless config in order to use the fetchToken middleware',
+    );
+  }
+
+  let url = apiEndpoint;
 
   if (isString(code) && code.length > 0) {
     url += `?code=${code}`;
@@ -170,7 +183,6 @@ export async function ensureAuthorizationNew(
       : undefined;
 
   const unauthorized: { redirect?: string; login?: string } = {};
-
   if (isString(redirectUri)) {
     unauthorized.redirect = `${wpUrl}/generate?redirect_uri=${encodeURIComponent(
       redirectUri,
@@ -187,6 +199,13 @@ export async function ensureAuthorizationNew(
     return unauthorized;
   }
 
+  if (code) {
+    window.history.replaceState(
+      {},
+      document.title,
+      removeURLParam(window.location.href, 'code'),
+    );
+  }
   return true;
 }
 
@@ -240,37 +259,11 @@ export async function authorizeHandlerNew(
   return;
 }
 
-// export function redirectAuthorizeHandler(
-//   req: IncomingMessage,
-//   res: ServerResponse,
-// ): void {
-//   const { wpUrl } = headlessConfig();
-//   const url = req.url as string;
-//   const code = getQueryParam(url, 'code');
-//   const refreshToken = getRefreshToken({ request: req });
+export function logoutHandler(req: IncomingMessage, res: ServerResponse): void {
+  storeRefreshToken(undefined, res, { request: req });
 
-//   if (!refreshToken && !code) {
-//     res.statusCode = 401;
-//     res.end(JSON.stringify({ error: 'Unauthorized' }));
+  res.statusCode = 200;
+  res.end(JSON.stringify({ success: true }));
 
-//     return;
-//   }
-
-//   // const authResult = redirect(
-//   //   res,
-//   //   `${wpUrl}/generate?redirect_uri=http://localhost:3000`,
-//   // );
-// }
-
-// export async function authorizeHandlerNew(
-//   req: IncomingMessage,
-//   res: ServerResponse,
-// ): Promise<void> {
-//   const { authType } = headlessConfig();
-
-//   if (authType === 'local') {
-//     return localAuthorizeHandler(req, res);
-//   } else {
-//     return redirectAuthorizeHandler(req, res);
-//   }
-// }
+  return;
+}

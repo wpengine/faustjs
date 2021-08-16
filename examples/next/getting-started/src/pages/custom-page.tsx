@@ -1,21 +1,57 @@
-import { useEffect } from 'react';
-import { ensureAuthorizationNew, getAccessTokenNew } from '@faustjs/core';
+import { getNextStaticProps } from '@faustjs/next';
 import { client } from 'client';
+import { Footer, Header, Hero } from 'components';
+import { GetStaticPropsContext } from 'next';
+import Head from 'next/head';
 
 export default function Page() {
-  const { useAuth } = client;
+  const { useQuery, useAuth } = client;
   const { isLoading, isAuthenticated } = useAuth();
+  const generalSettings = useQuery().generalSettings;
 
-  console.log('isLoading', isLoading);
-  console.log('isAuthenticated', isAuthenticated);
+  return (
+    <>
+      <Header
+        title={generalSettings.title}
+        description={generalSettings.description}
+      />
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+      <Head>
+        <title>Custom Page - {generalSettings.title}</title>
+      </Head>
 
-  if (!isAuthenticated) {
-    return <div>Please login</div>;
-  } else {
-    return <div>Welcome to the app</div>;
-  }
+      <Hero title="Custom Page" />
+
+      <main className="content content-single">
+        <div className="wrap">
+          {isLoading && <div>Loading...</div>}
+
+          {isAuthenticated && (
+            <p>
+              You can still create pages just as you would in{' '}
+              <a
+                href="https://nextjs.org/docs/basic-features/pages"
+                target="_blank"
+                rel="noreferrer">
+                Next.js
+              </a>
+              . Take a look at <code>src/pages/custom-page.tsx</code> for an
+              example.
+            </p>
+          )}
+
+          {!isLoading && !isAuthenticated && <p>Please login</p>}
+        </div>
+      </main>
+
+      <Footer copyrightHolder={generalSettings.title} />
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+    client,
+  });
 }

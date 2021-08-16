@@ -5,4 +5,5 @@ export {
   authorizeHandlerNew,
   ensureAuthorizationNew,
   getAccessTokenNew,
+  logoutHandler,
 } from './newAuth';
