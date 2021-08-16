@@ -2,12 +2,14 @@ import {
   CategoryIdType,
   ClientConfig,
   ensureAuthorizationNew,
+  fetchToken,
   getClient as getCoreClient,
   headlessConfig,
   PageIdType,
   PostIdType,
   WithClient,
 } from '@faustjs/core';
+import { getQueryParam } from '@faustjs/core/utils';
 import type { RequiredSchema } from '@faustjs/react';
 import {
   createReactClient,
@@ -85,6 +87,15 @@ export interface NextClient<
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
     authResult: true | { redirect?: string; login?: string };
+  };
+
+  useLogin(): {
+    login: (options: {
+      args: { usernameEmail: string; password: string };
+    }) => Promise<void>;
+    isLoading: boolean;
+    data: any;
+    error: any;
   };
 }
 
@@ -230,6 +241,46 @@ export function getClient<
     }, [isAuthenticated, authResult, authType]);
 
     return { isAuthenticated, isLoading, authResult };
+  }
+
+  function useLogin() {
+    const [login, { isLoading, data, error }] = useMutation(
+      (mutation, args: { username: string; password: string }) => {
+        const { usernameEmail, password } = args;
+
+        const { code, error: mutationError } =
+          mutation.generateAuthorizationCode({
+            input: {
+              username: usernameEmail,
+              password,
+            },
+          });
+
+        if (mutationError) {
+          return { error: mutationError };
+        }
+
+        return { code };
+      },
+    );
+
+    useEffect(() => {
+      if (!data || !data.code) {
+        return;
+      }
+
+      (async () => {
+        await fetchToken(data.code);
+
+        const redirectUri = getQueryParam(window.location.href, 'redirect_uri');
+
+        if (redirectUri) {
+          window.location.replace(redirectUri);
+        }
+      })();
+    }, [data]);
+
+    return { login, isLoading, data, error };
   }
 
   function usePosts(
@@ -456,6 +507,7 @@ export function getClient<
     useClient,
     useHydrateCache,
     useAuth,
+    useLogin,
     useCategory,
     usePosts,
     usePost,
