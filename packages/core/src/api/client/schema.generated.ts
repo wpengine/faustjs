@@ -1,8 +1,8 @@
 /**
- * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+ * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
 
-import { SchemaUnionsKey } from 'gqless';
+import { SchemaUnionsKey } from 'gqty';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -137,6 +137,8 @@ export interface CategoryToCategoryConnectionWhereArgs {
 
 /** Arguments for filtering the CategoryToContentNodeConnection connection */
 export interface CategoryToContentNodeConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypesOfCategoryEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -171,6 +173,12 @@ export interface CategoryToContentNodeConnectionWhereArgs {
   status?: Maybe<PostStatusEnum>;
   /** Title of the object */
   title?: Maybe<Scalars['String']>;
+}
+
+/** Allowed Content Types of the Category taxonomy. */
+export enum ContentTypesOfCategoryEnum {
+  /** The Type of Content object */
+  POST = 'POST',
 }
 
 /** Filter the connection based on input */
@@ -361,6 +369,8 @@ export enum MimeTypeEnum {
   IMAGE_PNG = 'IMAGE_PNG',
   /** MimeType image/tiff */
   IMAGE_TIFF = 'IMAGE_TIFF',
+  /** MimeType image/webp */
+  IMAGE_WEBP = 'IMAGE_WEBP',
   /** MimeType image/x-icon */
   IMAGE_X_ICON = 'IMAGE_X_ICON',
   /** MimeType text/calendar */
@@ -471,6 +481,8 @@ export enum PostStatusEnum {
 
 /** Arguments for filtering the ContentTypeToContentNodeConnection connection */
 export interface ContentTypeToContentNodeConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypeEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -505,6 +517,16 @@ export interface ContentTypeToContentNodeConnectionWhereArgs {
   status?: Maybe<PostStatusEnum>;
   /** Title of the object */
   title?: Maybe<Scalars['String']>;
+}
+
+/** Allowed Content Types */
+export enum ContentTypeEnum {
+  /** The Type of Content object */
+  ATTACHMENT = 'ATTACHMENT',
+  /** The Type of Content object */
+  PAGE = 'PAGE',
+  /** The Type of Content object */
+  POST = 'POST',
 }
 
 /** What rating to display avatars up to. Accepts 'G', 'PG', 'R', 'X', and are judged in that order. Default is the value of the 'avatar_rating' option */
@@ -579,16 +601,6 @@ export interface UserToCommentConnectionWhereArgs {
   status?: Maybe<Scalars['String']>;
   /** Include comments for a specific user ID. */
   userId?: Maybe<Scalars['ID']>;
-}
-
-/** Allowed Content Types */
-export enum ContentTypeEnum {
-  /** The Type of Content object */
-  ATTACHMENT = 'ATTACHMENT',
-  /** The Type of Content object */
-  PAGE = 'PAGE',
-  /** The Type of Content object */
-  POST = 'POST',
 }
 
 /** Options for ordering the connection */
@@ -807,6 +819,8 @@ export interface UserToMediaItemConnectionWhereArgs {
 
 /** Arguments for filtering the HierarchicalContentNodeToContentNodeAncestorsConnection connection */
 export interface HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypeEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -845,6 +859,8 @@ export interface HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArg
 
 /** Arguments for filtering the HierarchicalContentNodeToContentNodeChildrenConnection connection */
 export interface HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypeEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -951,6 +967,8 @@ export enum MediaItemSizeEnum {
   MEDIUM = 'MEDIUM',
   /** MediaItem with the medium_large size */
   MEDIUM_LARGE = 'MEDIUM_LARGE',
+  /** MediaItem with the post-thumbnail size */
+  POST_THUMBNAIL = 'POST_THUMBNAIL',
   /** MediaItem with the thumbnail size */
   THUMBNAIL = 'THUMBNAIL',
   /** MediaItem with the 1536x1536 size */
@@ -1331,6 +1349,8 @@ export interface PostToPostFormatConnectionWhereArgs {
 
 /** Arguments for filtering the PostFormatToContentNodeConnection connection */
 export interface PostFormatToContentNodeConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypesOfPostFormatEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -1365,6 +1385,12 @@ export interface PostFormatToContentNodeConnectionWhereArgs {
   status?: Maybe<PostStatusEnum>;
   /** Title of the object */
   title?: Maybe<Scalars['String']>;
+}
+
+/** Allowed Content Types of the PostFormat taxonomy. */
+export enum ContentTypesOfPostFormatEnum {
+  /** The Type of Content object */
+  POST = 'POST',
 }
 
 /** Arguments for filtering the PostFormatToPostConnection connection */
@@ -1545,6 +1571,8 @@ export interface PostToTagConnectionWhereArgs {
 
 /** Arguments for filtering the TagToContentNodeConnection connection */
 export interface TagToContentNodeConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypesOfTagEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -1579,6 +1607,12 @@ export interface TagToContentNodeConnectionWhereArgs {
   status?: Maybe<PostStatusEnum>;
   /** Title of the object */
   title?: Maybe<Scalars['String']>;
+}
+
+/** Allowed Content Types of the Tag taxonomy. */
+export enum ContentTypesOfTagEnum {
+  /** The Type of Content object */
+  POST = 'POST',
 }
 
 /** Arguments for filtering the TagToPostConnection connection */
@@ -1705,6 +1739,8 @@ export enum TaxonomyEnum {
 
 /** Arguments for filtering the UserToContentRevisionUnionConnection connection */
 export interface UserToContentRevisionUnionConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypeEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -2013,8 +2049,10 @@ export enum MenuNodeIdTypeEnum {
 
 /** Registered menu locations */
 export enum MenuLocationEnum {
-  /** Empty menu location */
-  EMPTY = 'EMPTY',
+  /** Put the menu in the footer location */
+  FOOTER = 'FOOTER',
+  /** Put the menu in the primary location */
+  PRIMARY = 'PRIMARY',
 }
 
 /** Arguments for filtering the MenuToMenuItemConnection connection */
@@ -2265,6 +2303,8 @@ export interface RootQueryToPostConnectionWhereArgs {
 
 /** Arguments for filtering the RootQueryToContentRevisionUnionConnection connection */
 export interface RootQueryToContentRevisionUnionConnectionWhereArgs {
+  /** The Types of content to filter */
+  contentTypes?: Maybe<Array<Maybe<ContentTypeEnum>>>;
   /** Filter the connection based on dates */
   dateQuery?: Maybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
@@ -3207,948 +3247,27 @@ export interface UpdateUserInput {
   yim?: Maybe<Scalars['String']>;
 }
 
-/** Available timezones */
-export enum TimezoneEnum {
-  /** Abidjan */
-  AFRICA_ABIDJAN = 'AFRICA_ABIDJAN',
-  /** Accra */
-  AFRICA_ACCRA = 'AFRICA_ACCRA',
-  /** Addis Ababa */
-  AFRICA_ADDIS_ABABA = 'AFRICA_ADDIS_ABABA',
-  /** Algiers */
-  AFRICA_ALGIERS = 'AFRICA_ALGIERS',
-  /** Asmara */
-  AFRICA_ASMARA = 'AFRICA_ASMARA',
-  /** Bamako */
-  AFRICA_BAMAKO = 'AFRICA_BAMAKO',
-  /** Bangui */
-  AFRICA_BANGUI = 'AFRICA_BANGUI',
-  /** Banjul */
-  AFRICA_BANJUL = 'AFRICA_BANJUL',
-  /** Bissau */
-  AFRICA_BISSAU = 'AFRICA_BISSAU',
-  /** Blantyre */
-  AFRICA_BLANTYRE = 'AFRICA_BLANTYRE',
-  /** Brazzaville */
-  AFRICA_BRAZZAVILLE = 'AFRICA_BRAZZAVILLE',
-  /** Bujumbura */
-  AFRICA_BUJUMBURA = 'AFRICA_BUJUMBURA',
-  /** Cairo */
-  AFRICA_CAIRO = 'AFRICA_CAIRO',
-  /** Casablanca */
-  AFRICA_CASABLANCA = 'AFRICA_CASABLANCA',
-  /** Ceuta */
-  AFRICA_CEUTA = 'AFRICA_CEUTA',
-  /** Conakry */
-  AFRICA_CONAKRY = 'AFRICA_CONAKRY',
-  /** Dakar */
-  AFRICA_DAKAR = 'AFRICA_DAKAR',
-  /** Dar es Salaam */
-  AFRICA_DAR_ES_SALAAM = 'AFRICA_DAR_ES_SALAAM',
-  /** Djibouti */
-  AFRICA_DJIBOUTI = 'AFRICA_DJIBOUTI',
-  /** Douala */
-  AFRICA_DOUALA = 'AFRICA_DOUALA',
-  /** El Aaiun */
-  AFRICA_EL_AAIUN = 'AFRICA_EL_AAIUN',
-  /** Freetown */
-  AFRICA_FREETOWN = 'AFRICA_FREETOWN',
-  /** Gaborone */
-  AFRICA_GABORONE = 'AFRICA_GABORONE',
-  /** Harare */
-  AFRICA_HARARE = 'AFRICA_HARARE',
-  /** Johannesburg */
-  AFRICA_JOHANNESBURG = 'AFRICA_JOHANNESBURG',
-  /** Juba */
-  AFRICA_JUBA = 'AFRICA_JUBA',
-  /** Kampala */
-  AFRICA_KAMPALA = 'AFRICA_KAMPALA',
-  /** Khartoum */
-  AFRICA_KHARTOUM = 'AFRICA_KHARTOUM',
-  /** Kigali */
-  AFRICA_KIGALI = 'AFRICA_KIGALI',
-  /** Kinshasa */
-  AFRICA_KINSHASA = 'AFRICA_KINSHASA',
-  /** Lagos */
-  AFRICA_LAGOS = 'AFRICA_LAGOS',
-  /** Libreville */
-  AFRICA_LIBREVILLE = 'AFRICA_LIBREVILLE',
-  /** Lome */
-  AFRICA_LOME = 'AFRICA_LOME',
-  /** Luanda */
-  AFRICA_LUANDA = 'AFRICA_LUANDA',
-  /** Lubumbashi */
-  AFRICA_LUBUMBASHI = 'AFRICA_LUBUMBASHI',
-  /** Lusaka */
-  AFRICA_LUSAKA = 'AFRICA_LUSAKA',
-  /** Malabo */
-  AFRICA_MALABO = 'AFRICA_MALABO',
-  /** Maputo */
-  AFRICA_MAPUTO = 'AFRICA_MAPUTO',
-  /** Maseru */
-  AFRICA_MASERU = 'AFRICA_MASERU',
-  /** Mbabane */
-  AFRICA_MBABANE = 'AFRICA_MBABANE',
-  /** Mogadishu */
-  AFRICA_MOGADISHU = 'AFRICA_MOGADISHU',
-  /** Monrovia */
-  AFRICA_MONROVIA = 'AFRICA_MONROVIA',
-  /** Nairobi */
-  AFRICA_NAIROBI = 'AFRICA_NAIROBI',
-  /** Ndjamena */
-  AFRICA_NDJAMENA = 'AFRICA_NDJAMENA',
-  /** Niamey */
-  AFRICA_NIAMEY = 'AFRICA_NIAMEY',
-  /** Nouakchott */
-  AFRICA_NOUAKCHOTT = 'AFRICA_NOUAKCHOTT',
-  /** Ouagadougou */
-  AFRICA_OUAGADOUGOU = 'AFRICA_OUAGADOUGOU',
-  /** Porto-Novo */
-  AFRICA_PORTO_NOVO = 'AFRICA_PORTO_NOVO',
-  /** Sao Tome */
-  AFRICA_SAO_TOME = 'AFRICA_SAO_TOME',
-  /** Tripoli */
-  AFRICA_TRIPOLI = 'AFRICA_TRIPOLI',
-  /** Tunis */
-  AFRICA_TUNIS = 'AFRICA_TUNIS',
-  /** Windhoek */
-  AFRICA_WINDHOEK = 'AFRICA_WINDHOEK',
-  /** Adak */
-  AMERICA_ADAK = 'AMERICA_ADAK',
-  /** Anchorage */
-  AMERICA_ANCHORAGE = 'AMERICA_ANCHORAGE',
-  /** Anguilla */
-  AMERICA_ANGUILLA = 'AMERICA_ANGUILLA',
-  /** Antigua */
-  AMERICA_ANTIGUA = 'AMERICA_ANTIGUA',
-  /** Araguaina */
-  AMERICA_ARAGUAINA = 'AMERICA_ARAGUAINA',
-  /** Argentina - Buenos Aires */
-  AMERICA_ARGENTINA_BUENOS_AIRES = 'AMERICA_ARGENTINA_BUENOS_AIRES',
-  /** Argentina - Catamarca */
-  AMERICA_ARGENTINA_CATAMARCA = 'AMERICA_ARGENTINA_CATAMARCA',
-  /** Argentina - Cordoba */
-  AMERICA_ARGENTINA_CORDOBA = 'AMERICA_ARGENTINA_CORDOBA',
-  /** Argentina - Jujuy */
-  AMERICA_ARGENTINA_JUJUY = 'AMERICA_ARGENTINA_JUJUY',
-  /** Argentina - La Rioja */
-  AMERICA_ARGENTINA_LA_RIOJA = 'AMERICA_ARGENTINA_LA_RIOJA',
-  /** Argentina - Mendoza */
-  AMERICA_ARGENTINA_MENDOZA = 'AMERICA_ARGENTINA_MENDOZA',
-  /** Argentina - Rio Gallegos */
-  AMERICA_ARGENTINA_RIO_GALLEGOS = 'AMERICA_ARGENTINA_RIO_GALLEGOS',
-  /** Argentina - Salta */
-  AMERICA_ARGENTINA_SALTA = 'AMERICA_ARGENTINA_SALTA',
-  /** Argentina - San Juan */
-  AMERICA_ARGENTINA_SAN_JUAN = 'AMERICA_ARGENTINA_SAN_JUAN',
-  /** Argentina - San Luis */
-  AMERICA_ARGENTINA_SAN_LUIS = 'AMERICA_ARGENTINA_SAN_LUIS',
-  /** Argentina - Tucuman */
-  AMERICA_ARGENTINA_TUCUMAN = 'AMERICA_ARGENTINA_TUCUMAN',
-  /** Argentina - Ushuaia */
-  AMERICA_ARGENTINA_USHUAIA = 'AMERICA_ARGENTINA_USHUAIA',
-  /** Aruba */
-  AMERICA_ARUBA = 'AMERICA_ARUBA',
-  /** Asuncion */
-  AMERICA_ASUNCION = 'AMERICA_ASUNCION',
-  /** Atikokan */
-  AMERICA_ATIKOKAN = 'AMERICA_ATIKOKAN',
-  /** Bahia */
-  AMERICA_BAHIA = 'AMERICA_BAHIA',
-  /** Bahia Banderas */
-  AMERICA_BAHIA_BANDERAS = 'AMERICA_BAHIA_BANDERAS',
-  /** Barbados */
-  AMERICA_BARBADOS = 'AMERICA_BARBADOS',
-  /** Belem */
-  AMERICA_BELEM = 'AMERICA_BELEM',
-  /** Belize */
-  AMERICA_BELIZE = 'AMERICA_BELIZE',
-  /** Blanc-Sablon */
-  AMERICA_BLANC_SABLON = 'AMERICA_BLANC_SABLON',
-  /** Boa Vista */
-  AMERICA_BOA_VISTA = 'AMERICA_BOA_VISTA',
-  /** Bogota */
-  AMERICA_BOGOTA = 'AMERICA_BOGOTA',
-  /** Boise */
-  AMERICA_BOISE = 'AMERICA_BOISE',
-  /** Cambridge Bay */
-  AMERICA_CAMBRIDGE_BAY = 'AMERICA_CAMBRIDGE_BAY',
-  /** Campo Grande */
-  AMERICA_CAMPO_GRANDE = 'AMERICA_CAMPO_GRANDE',
-  /** Cancun */
-  AMERICA_CANCUN = 'AMERICA_CANCUN',
-  /** Caracas */
-  AMERICA_CARACAS = 'AMERICA_CARACAS',
-  /** Cayenne */
-  AMERICA_CAYENNE = 'AMERICA_CAYENNE',
-  /** Cayman */
-  AMERICA_CAYMAN = 'AMERICA_CAYMAN',
-  /** Chicago */
-  AMERICA_CHICAGO = 'AMERICA_CHICAGO',
-  /** Chihuahua */
-  AMERICA_CHIHUAHUA = 'AMERICA_CHIHUAHUA',
-  /** Costa Rica */
-  AMERICA_COSTA_RICA = 'AMERICA_COSTA_RICA',
-  /** Creston */
-  AMERICA_CRESTON = 'AMERICA_CRESTON',
-  /** Cuiaba */
-  AMERICA_CUIABA = 'AMERICA_CUIABA',
-  /** Curacao */
-  AMERICA_CURACAO = 'AMERICA_CURACAO',
-  /** Danmarkshavn */
-  AMERICA_DANMARKSHAVN = 'AMERICA_DANMARKSHAVN',
-  /** Dawson */
-  AMERICA_DAWSON = 'AMERICA_DAWSON',
-  /** Dawson Creek */
-  AMERICA_DAWSON_CREEK = 'AMERICA_DAWSON_CREEK',
-  /** Denver */
-  AMERICA_DENVER = 'AMERICA_DENVER',
-  /** Detroit */
-  AMERICA_DETROIT = 'AMERICA_DETROIT',
-  /** Dominica */
-  AMERICA_DOMINICA = 'AMERICA_DOMINICA',
-  /** Edmonton */
-  AMERICA_EDMONTON = 'AMERICA_EDMONTON',
-  /** Eirunepe */
-  AMERICA_EIRUNEPE = 'AMERICA_EIRUNEPE',
-  /** El Salvador */
-  AMERICA_EL_SALVADOR = 'AMERICA_EL_SALVADOR',
-  /** Fortaleza */
-  AMERICA_FORTALEZA = 'AMERICA_FORTALEZA',
-  /** Fort Nelson */
-  AMERICA_FORT_NELSON = 'AMERICA_FORT_NELSON',
-  /** Glace Bay */
-  AMERICA_GLACE_BAY = 'AMERICA_GLACE_BAY',
-  /** Godthab */
-  AMERICA_GODTHAB = 'AMERICA_GODTHAB',
-  /** Goose Bay */
-  AMERICA_GOOSE_BAY = 'AMERICA_GOOSE_BAY',
-  /** Grand Turk */
-  AMERICA_GRAND_TURK = 'AMERICA_GRAND_TURK',
-  /** Grenada */
-  AMERICA_GRENADA = 'AMERICA_GRENADA',
-  /** Guadeloupe */
-  AMERICA_GUADELOUPE = 'AMERICA_GUADELOUPE',
-  /** Guatemala */
-  AMERICA_GUATEMALA = 'AMERICA_GUATEMALA',
-  /** Guayaquil */
-  AMERICA_GUAYAQUIL = 'AMERICA_GUAYAQUIL',
-  /** Guyana */
-  AMERICA_GUYANA = 'AMERICA_GUYANA',
-  /** Halifax */
-  AMERICA_HALIFAX = 'AMERICA_HALIFAX',
-  /** Havana */
-  AMERICA_HAVANA = 'AMERICA_HAVANA',
-  /** Hermosillo */
-  AMERICA_HERMOSILLO = 'AMERICA_HERMOSILLO',
-  /** Indiana - Indianapolis */
-  AMERICA_INDIANA_INDIANAPOLIS = 'AMERICA_INDIANA_INDIANAPOLIS',
-  /** Indiana - Knox */
-  AMERICA_INDIANA_KNOX = 'AMERICA_INDIANA_KNOX',
-  /** Indiana - Marengo */
-  AMERICA_INDIANA_MARENGO = 'AMERICA_INDIANA_MARENGO',
-  /** Indiana - Petersburg */
-  AMERICA_INDIANA_PETERSBURG = 'AMERICA_INDIANA_PETERSBURG',
-  /** Indiana - Tell City */
-  AMERICA_INDIANA_TELL_CITY = 'AMERICA_INDIANA_TELL_CITY',
-  /** Indiana - Vevay */
-  AMERICA_INDIANA_VEVAY = 'AMERICA_INDIANA_VEVAY',
-  /** Indiana - Vincennes */
-  AMERICA_INDIANA_VINCENNES = 'AMERICA_INDIANA_VINCENNES',
-  /** Indiana - Winamac */
-  AMERICA_INDIANA_WINAMAC = 'AMERICA_INDIANA_WINAMAC',
-  /** Inuvik */
-  AMERICA_INUVIK = 'AMERICA_INUVIK',
-  /** Iqaluit */
-  AMERICA_IQALUIT = 'AMERICA_IQALUIT',
-  /** Jamaica */
-  AMERICA_JAMAICA = 'AMERICA_JAMAICA',
-  /** Juneau */
-  AMERICA_JUNEAU = 'AMERICA_JUNEAU',
-  /** Kentucky - Louisville */
-  AMERICA_KENTUCKY_LOUISVILLE = 'AMERICA_KENTUCKY_LOUISVILLE',
-  /** Kentucky - Monticello */
-  AMERICA_KENTUCKY_MONTICELLO = 'AMERICA_KENTUCKY_MONTICELLO',
-  /** Kralendijk */
-  AMERICA_KRALENDIJK = 'AMERICA_KRALENDIJK',
-  /** La Paz */
-  AMERICA_LA_PAZ = 'AMERICA_LA_PAZ',
-  /** Lima */
-  AMERICA_LIMA = 'AMERICA_LIMA',
-  /** Los Angeles */
-  AMERICA_LOS_ANGELES = 'AMERICA_LOS_ANGELES',
-  /** Lower Princes */
-  AMERICA_LOWER_PRINCES = 'AMERICA_LOWER_PRINCES',
-  /** Maceio */
-  AMERICA_MACEIO = 'AMERICA_MACEIO',
-  /** Managua */
-  AMERICA_MANAGUA = 'AMERICA_MANAGUA',
-  /** Manaus */
-  AMERICA_MANAUS = 'AMERICA_MANAUS',
-  /** Marigot */
-  AMERICA_MARIGOT = 'AMERICA_MARIGOT',
-  /** Martinique */
-  AMERICA_MARTINIQUE = 'AMERICA_MARTINIQUE',
-  /** Matamoros */
-  AMERICA_MATAMOROS = 'AMERICA_MATAMOROS',
-  /** Mazatlan */
-  AMERICA_MAZATLAN = 'AMERICA_MAZATLAN',
-  /** Menominee */
-  AMERICA_MENOMINEE = 'AMERICA_MENOMINEE',
-  /** Merida */
-  AMERICA_MERIDA = 'AMERICA_MERIDA',
-  /** Metlakatla */
-  AMERICA_METLAKATLA = 'AMERICA_METLAKATLA',
-  /** Mexico City */
-  AMERICA_MEXICO_CITY = 'AMERICA_MEXICO_CITY',
-  /** Miquelon */
-  AMERICA_MIQUELON = 'AMERICA_MIQUELON',
-  /** Moncton */
-  AMERICA_MONCTON = 'AMERICA_MONCTON',
-  /** Monterrey */
-  AMERICA_MONTERREY = 'AMERICA_MONTERREY',
-  /** Montevideo */
-  AMERICA_MONTEVIDEO = 'AMERICA_MONTEVIDEO',
-  /** Montserrat */
-  AMERICA_MONTSERRAT = 'AMERICA_MONTSERRAT',
-  /** Nassau */
-  AMERICA_NASSAU = 'AMERICA_NASSAU',
-  /** New York */
-  AMERICA_NEW_YORK = 'AMERICA_NEW_YORK',
-  /** Nipigon */
-  AMERICA_NIPIGON = 'AMERICA_NIPIGON',
-  /** Nome */
-  AMERICA_NOME = 'AMERICA_NOME',
-  /** Noronha */
-  AMERICA_NORONHA = 'AMERICA_NORONHA',
-  /** North Dakota - Beulah */
-  AMERICA_NORTH_DAKOTA_BEULAH = 'AMERICA_NORTH_DAKOTA_BEULAH',
-  /** North Dakota - Center */
-  AMERICA_NORTH_DAKOTA_CENTER = 'AMERICA_NORTH_DAKOTA_CENTER',
-  /** North Dakota - New Salem */
-  AMERICA_NORTH_DAKOTA_NEW_SALEM = 'AMERICA_NORTH_DAKOTA_NEW_SALEM',
-  /** Ojinaga */
-  AMERICA_OJINAGA = 'AMERICA_OJINAGA',
-  /** Panama */
-  AMERICA_PANAMA = 'AMERICA_PANAMA',
-  /** Pangnirtung */
-  AMERICA_PANGNIRTUNG = 'AMERICA_PANGNIRTUNG',
-  /** Paramaribo */
-  AMERICA_PARAMARIBO = 'AMERICA_PARAMARIBO',
-  /** Phoenix */
-  AMERICA_PHOENIX = 'AMERICA_PHOENIX',
-  /** Porto Velho */
-  AMERICA_PORTO_VELHO = 'AMERICA_PORTO_VELHO',
-  /** Port-au-Prince */
-  AMERICA_PORT_AU_PRINCE = 'AMERICA_PORT_AU_PRINCE',
-  /** Port of Spain */
-  AMERICA_PORT_OF_SPAIN = 'AMERICA_PORT_OF_SPAIN',
-  /** Puerto Rico */
-  AMERICA_PUERTO_RICO = 'AMERICA_PUERTO_RICO',
-  /** Punta Arenas */
-  AMERICA_PUNTA_ARENAS = 'AMERICA_PUNTA_ARENAS',
-  /** Rainy River */
-  AMERICA_RAINY_RIVER = 'AMERICA_RAINY_RIVER',
-  /** Rankin Inlet */
-  AMERICA_RANKIN_INLET = 'AMERICA_RANKIN_INLET',
-  /** Recife */
-  AMERICA_RECIFE = 'AMERICA_RECIFE',
-  /** Regina */
-  AMERICA_REGINA = 'AMERICA_REGINA',
-  /** Resolute */
-  AMERICA_RESOLUTE = 'AMERICA_RESOLUTE',
-  /** Rio Branco */
-  AMERICA_RIO_BRANCO = 'AMERICA_RIO_BRANCO',
-  /** Santarem */
-  AMERICA_SANTAREM = 'AMERICA_SANTAREM',
-  /** Santiago */
-  AMERICA_SANTIAGO = 'AMERICA_SANTIAGO',
-  /** Santo Domingo */
-  AMERICA_SANTO_DOMINGO = 'AMERICA_SANTO_DOMINGO',
-  /** Sao Paulo */
-  AMERICA_SAO_PAULO = 'AMERICA_SAO_PAULO',
-  /** Scoresbysund */
-  AMERICA_SCORESBYSUND = 'AMERICA_SCORESBYSUND',
-  /** Sitka */
-  AMERICA_SITKA = 'AMERICA_SITKA',
-  /** St Barthelemy */
-  AMERICA_ST_BARTHELEMY = 'AMERICA_ST_BARTHELEMY',
-  /** St Johns */
-  AMERICA_ST_JOHNS = 'AMERICA_ST_JOHNS',
-  /** St Kitts */
-  AMERICA_ST_KITTS = 'AMERICA_ST_KITTS',
-  /** St Lucia */
-  AMERICA_ST_LUCIA = 'AMERICA_ST_LUCIA',
-  /** St Thomas */
-  AMERICA_ST_THOMAS = 'AMERICA_ST_THOMAS',
-  /** St Vincent */
-  AMERICA_ST_VINCENT = 'AMERICA_ST_VINCENT',
-  /** Swift Current */
-  AMERICA_SWIFT_CURRENT = 'AMERICA_SWIFT_CURRENT',
-  /** Tegucigalpa */
-  AMERICA_TEGUCIGALPA = 'AMERICA_TEGUCIGALPA',
-  /** Thule */
-  AMERICA_THULE = 'AMERICA_THULE',
-  /** Thunder Bay */
-  AMERICA_THUNDER_BAY = 'AMERICA_THUNDER_BAY',
-  /** Tijuana */
-  AMERICA_TIJUANA = 'AMERICA_TIJUANA',
-  /** Toronto */
-  AMERICA_TORONTO = 'AMERICA_TORONTO',
-  /** Tortola */
-  AMERICA_TORTOLA = 'AMERICA_TORTOLA',
-  /** Vancouver */
-  AMERICA_VANCOUVER = 'AMERICA_VANCOUVER',
-  /** Whitehorse */
-  AMERICA_WHITEHORSE = 'AMERICA_WHITEHORSE',
-  /** Winnipeg */
-  AMERICA_WINNIPEG = 'AMERICA_WINNIPEG',
-  /** Yakutat */
-  AMERICA_YAKUTAT = 'AMERICA_YAKUTAT',
-  /** Yellowknife */
-  AMERICA_YELLOWKNIFE = 'AMERICA_YELLOWKNIFE',
-  /** Casey */
-  ANTARCTICA_CASEY = 'ANTARCTICA_CASEY',
-  /** Davis */
-  ANTARCTICA_DAVIS = 'ANTARCTICA_DAVIS',
-  /** DumontDUrville */
-  ANTARCTICA_DUMONTDURVILLE = 'ANTARCTICA_DUMONTDURVILLE',
-  /** Macquarie */
-  ANTARCTICA_MACQUARIE = 'ANTARCTICA_MACQUARIE',
-  /** Mawson */
-  ANTARCTICA_MAWSON = 'ANTARCTICA_MAWSON',
-  /** McMurdo */
-  ANTARCTICA_MCMURDO = 'ANTARCTICA_MCMURDO',
-  /** Palmer */
-  ANTARCTICA_PALMER = 'ANTARCTICA_PALMER',
-  /** Rothera */
-  ANTARCTICA_ROTHERA = 'ANTARCTICA_ROTHERA',
-  /** Syowa */
-  ANTARCTICA_SYOWA = 'ANTARCTICA_SYOWA',
-  /** Troll */
-  ANTARCTICA_TROLL = 'ANTARCTICA_TROLL',
-  /** Vostok */
-  ANTARCTICA_VOSTOK = 'ANTARCTICA_VOSTOK',
-  /** Longyearbyen */
-  ARCTIC_LONGYEARBYEN = 'ARCTIC_LONGYEARBYEN',
-  /** Aden */
-  ASIA_ADEN = 'ASIA_ADEN',
-  /** Almaty */
-  ASIA_ALMATY = 'ASIA_ALMATY',
-  /** Amman */
-  ASIA_AMMAN = 'ASIA_AMMAN',
-  /** Anadyr */
-  ASIA_ANADYR = 'ASIA_ANADYR',
-  /** Aqtau */
-  ASIA_AQTAU = 'ASIA_AQTAU',
-  /** Aqtobe */
-  ASIA_AQTOBE = 'ASIA_AQTOBE',
-  /** Ashgabat */
-  ASIA_ASHGABAT = 'ASIA_ASHGABAT',
-  /** Atyrau */
-  ASIA_ATYRAU = 'ASIA_ATYRAU',
-  /** Baghdad */
-  ASIA_BAGHDAD = 'ASIA_BAGHDAD',
-  /** Bahrain */
-  ASIA_BAHRAIN = 'ASIA_BAHRAIN',
-  /** Baku */
-  ASIA_BAKU = 'ASIA_BAKU',
-  /** Bangkok */
-  ASIA_BANGKOK = 'ASIA_BANGKOK',
-  /** Barnaul */
-  ASIA_BARNAUL = 'ASIA_BARNAUL',
-  /** Beirut */
-  ASIA_BEIRUT = 'ASIA_BEIRUT',
-  /** Bishkek */
-  ASIA_BISHKEK = 'ASIA_BISHKEK',
-  /** Brunei */
-  ASIA_BRUNEI = 'ASIA_BRUNEI',
-  /** Chita */
-  ASIA_CHITA = 'ASIA_CHITA',
-  /** Choibalsan */
-  ASIA_CHOIBALSAN = 'ASIA_CHOIBALSAN',
-  /** Colombo */
-  ASIA_COLOMBO = 'ASIA_COLOMBO',
-  /** Damascus */
-  ASIA_DAMASCUS = 'ASIA_DAMASCUS',
-  /** Dhaka */
-  ASIA_DHAKA = 'ASIA_DHAKA',
-  /** Dili */
-  ASIA_DILI = 'ASIA_DILI',
-  /** Dubai */
-  ASIA_DUBAI = 'ASIA_DUBAI',
-  /** Dushanbe */
-  ASIA_DUSHANBE = 'ASIA_DUSHANBE',
-  /** Famagusta */
-  ASIA_FAMAGUSTA = 'ASIA_FAMAGUSTA',
-  /** Gaza */
-  ASIA_GAZA = 'ASIA_GAZA',
-  /** Hebron */
-  ASIA_HEBRON = 'ASIA_HEBRON',
-  /** Hong Kong */
-  ASIA_HONG_KONG = 'ASIA_HONG_KONG',
-  /** Hovd */
-  ASIA_HOVD = 'ASIA_HOVD',
-  /** Ho Chi Minh */
-  ASIA_HO_CHI_MINH = 'ASIA_HO_CHI_MINH',
-  /** Irkutsk */
-  ASIA_IRKUTSK = 'ASIA_IRKUTSK',
-  /** Jakarta */
-  ASIA_JAKARTA = 'ASIA_JAKARTA',
-  /** Jayapura */
-  ASIA_JAYAPURA = 'ASIA_JAYAPURA',
-  /** Jerusalem */
-  ASIA_JERUSALEM = 'ASIA_JERUSALEM',
-  /** Kabul */
-  ASIA_KABUL = 'ASIA_KABUL',
-  /** Kamchatka */
-  ASIA_KAMCHATKA = 'ASIA_KAMCHATKA',
-  /** Karachi */
-  ASIA_KARACHI = 'ASIA_KARACHI',
-  /** Kathmandu */
-  ASIA_KATHMANDU = 'ASIA_KATHMANDU',
-  /** Khandyga */
-  ASIA_KHANDYGA = 'ASIA_KHANDYGA',
-  /** Kolkata */
-  ASIA_KOLKATA = 'ASIA_KOLKATA',
-  /** Krasnoyarsk */
-  ASIA_KRASNOYARSK = 'ASIA_KRASNOYARSK',
-  /** Kuala Lumpur */
-  ASIA_KUALA_LUMPUR = 'ASIA_KUALA_LUMPUR',
-  /** Kuching */
-  ASIA_KUCHING = 'ASIA_KUCHING',
-  /** Kuwait */
-  ASIA_KUWAIT = 'ASIA_KUWAIT',
-  /** Macau */
-  ASIA_MACAU = 'ASIA_MACAU',
-  /** Magadan */
-  ASIA_MAGADAN = 'ASIA_MAGADAN',
-  /** Makassar */
-  ASIA_MAKASSAR = 'ASIA_MAKASSAR',
-  /** Manila */
-  ASIA_MANILA = 'ASIA_MANILA',
-  /** Muscat */
-  ASIA_MUSCAT = 'ASIA_MUSCAT',
-  /** Nicosia */
-  ASIA_NICOSIA = 'ASIA_NICOSIA',
-  /** Novokuznetsk */
-  ASIA_NOVOKUZNETSK = 'ASIA_NOVOKUZNETSK',
-  /** Novosibirsk */
-  ASIA_NOVOSIBIRSK = 'ASIA_NOVOSIBIRSK',
-  /** Omsk */
-  ASIA_OMSK = 'ASIA_OMSK',
-  /** Oral */
-  ASIA_ORAL = 'ASIA_ORAL',
-  /** Phnom Penh */
-  ASIA_PHNOM_PENH = 'ASIA_PHNOM_PENH',
-  /** Pontianak */
-  ASIA_PONTIANAK = 'ASIA_PONTIANAK',
-  /** Pyongyang */
-  ASIA_PYONGYANG = 'ASIA_PYONGYANG',
-  /** Qatar */
-  ASIA_QATAR = 'ASIA_QATAR',
-  /** Qostanay */
-  ASIA_QOSTANAY = 'ASIA_QOSTANAY',
-  /** Qyzylorda */
-  ASIA_QYZYLORDA = 'ASIA_QYZYLORDA',
-  /** Riyadh */
-  ASIA_RIYADH = 'ASIA_RIYADH',
-  /** Sakhalin */
-  ASIA_SAKHALIN = 'ASIA_SAKHALIN',
-  /** Samarkand */
-  ASIA_SAMARKAND = 'ASIA_SAMARKAND',
-  /** Seoul */
-  ASIA_SEOUL = 'ASIA_SEOUL',
-  /** Shanghai */
-  ASIA_SHANGHAI = 'ASIA_SHANGHAI',
-  /** Singapore */
-  ASIA_SINGAPORE = 'ASIA_SINGAPORE',
-  /** Srednekolymsk */
-  ASIA_SREDNEKOLYMSK = 'ASIA_SREDNEKOLYMSK',
-  /** Taipei */
-  ASIA_TAIPEI = 'ASIA_TAIPEI',
-  /** Tashkent */
-  ASIA_TASHKENT = 'ASIA_TASHKENT',
-  /** Tbilisi */
-  ASIA_TBILISI = 'ASIA_TBILISI',
-  /** Tehran */
-  ASIA_TEHRAN = 'ASIA_TEHRAN',
-  /** Thimphu */
-  ASIA_THIMPHU = 'ASIA_THIMPHU',
-  /** Tokyo */
-  ASIA_TOKYO = 'ASIA_TOKYO',
-  /** Tomsk */
-  ASIA_TOMSK = 'ASIA_TOMSK',
-  /** Ulaanbaatar */
-  ASIA_ULAANBAATAR = 'ASIA_ULAANBAATAR',
-  /** Urumqi */
-  ASIA_URUMQI = 'ASIA_URUMQI',
-  /** Ust-Nera */
-  ASIA_UST_NERA = 'ASIA_UST_NERA',
-  /** Vientiane */
-  ASIA_VIENTIANE = 'ASIA_VIENTIANE',
-  /** Vladivostok */
-  ASIA_VLADIVOSTOK = 'ASIA_VLADIVOSTOK',
-  /** Yakutsk */
-  ASIA_YAKUTSK = 'ASIA_YAKUTSK',
-  /** Yangon */
-  ASIA_YANGON = 'ASIA_YANGON',
-  /** Yekaterinburg */
-  ASIA_YEKATERINBURG = 'ASIA_YEKATERINBURG',
-  /** Yerevan */
-  ASIA_YEREVAN = 'ASIA_YEREVAN',
-  /** Azores */
-  ATLANTIC_AZORES = 'ATLANTIC_AZORES',
-  /** Bermuda */
-  ATLANTIC_BERMUDA = 'ATLANTIC_BERMUDA',
-  /** Canary */
-  ATLANTIC_CANARY = 'ATLANTIC_CANARY',
-  /** Cape Verde */
-  ATLANTIC_CAPE_VERDE = 'ATLANTIC_CAPE_VERDE',
-  /** Faroe */
-  ATLANTIC_FAROE = 'ATLANTIC_FAROE',
-  /** Madeira */
-  ATLANTIC_MADEIRA = 'ATLANTIC_MADEIRA',
-  /** Reykjavik */
-  ATLANTIC_REYKJAVIK = 'ATLANTIC_REYKJAVIK',
-  /** South Georgia */
-  ATLANTIC_SOUTH_GEORGIA = 'ATLANTIC_SOUTH_GEORGIA',
-  /** Stanley */
-  ATLANTIC_STANLEY = 'ATLANTIC_STANLEY',
-  /** St Helena */
-  ATLANTIC_ST_HELENA = 'ATLANTIC_ST_HELENA',
-  /** Adelaide */
-  AUSTRALIA_ADELAIDE = 'AUSTRALIA_ADELAIDE',
-  /** Brisbane */
-  AUSTRALIA_BRISBANE = 'AUSTRALIA_BRISBANE',
-  /** Broken Hill */
-  AUSTRALIA_BROKEN_HILL = 'AUSTRALIA_BROKEN_HILL',
-  /** Currie */
-  AUSTRALIA_CURRIE = 'AUSTRALIA_CURRIE',
-  /** Darwin */
-  AUSTRALIA_DARWIN = 'AUSTRALIA_DARWIN',
-  /** Eucla */
-  AUSTRALIA_EUCLA = 'AUSTRALIA_EUCLA',
-  /** Hobart */
-  AUSTRALIA_HOBART = 'AUSTRALIA_HOBART',
-  /** Lindeman */
-  AUSTRALIA_LINDEMAN = 'AUSTRALIA_LINDEMAN',
-  /** Lord Howe */
-  AUSTRALIA_LORD_HOWE = 'AUSTRALIA_LORD_HOWE',
-  /** Melbourne */
-  AUSTRALIA_MELBOURNE = 'AUSTRALIA_MELBOURNE',
-  /** Perth */
-  AUSTRALIA_PERTH = 'AUSTRALIA_PERTH',
-  /** Sydney */
-  AUSTRALIA_SYDNEY = 'AUSTRALIA_SYDNEY',
-  /** Amsterdam */
-  EUROPE_AMSTERDAM = 'EUROPE_AMSTERDAM',
-  /** Andorra */
-  EUROPE_ANDORRA = 'EUROPE_ANDORRA',
-  /** Astrakhan */
-  EUROPE_ASTRAKHAN = 'EUROPE_ASTRAKHAN',
-  /** Athens */
-  EUROPE_ATHENS = 'EUROPE_ATHENS',
-  /** Belgrade */
-  EUROPE_BELGRADE = 'EUROPE_BELGRADE',
-  /** Berlin */
-  EUROPE_BERLIN = 'EUROPE_BERLIN',
-  /** Bratislava */
-  EUROPE_BRATISLAVA = 'EUROPE_BRATISLAVA',
-  /** Brussels */
-  EUROPE_BRUSSELS = 'EUROPE_BRUSSELS',
-  /** Bucharest */
-  EUROPE_BUCHAREST = 'EUROPE_BUCHAREST',
-  /** Budapest */
-  EUROPE_BUDAPEST = 'EUROPE_BUDAPEST',
-  /** Busingen */
-  EUROPE_BUSINGEN = 'EUROPE_BUSINGEN',
-  /** Chisinau */
-  EUROPE_CHISINAU = 'EUROPE_CHISINAU',
-  /** Copenhagen */
-  EUROPE_COPENHAGEN = 'EUROPE_COPENHAGEN',
-  /** Dublin */
-  EUROPE_DUBLIN = 'EUROPE_DUBLIN',
-  /** Gibraltar */
-  EUROPE_GIBRALTAR = 'EUROPE_GIBRALTAR',
-  /** Guernsey */
-  EUROPE_GUERNSEY = 'EUROPE_GUERNSEY',
-  /** Helsinki */
-  EUROPE_HELSINKI = 'EUROPE_HELSINKI',
-  /** Isle of Man */
-  EUROPE_ISLE_OF_MAN = 'EUROPE_ISLE_OF_MAN',
-  /** Istanbul */
-  EUROPE_ISTANBUL = 'EUROPE_ISTANBUL',
-  /** Jersey */
-  EUROPE_JERSEY = 'EUROPE_JERSEY',
-  /** Kaliningrad */
-  EUROPE_KALININGRAD = 'EUROPE_KALININGRAD',
-  /** Kiev */
-  EUROPE_KIEV = 'EUROPE_KIEV',
-  /** Kirov */
-  EUROPE_KIROV = 'EUROPE_KIROV',
-  /** Lisbon */
-  EUROPE_LISBON = 'EUROPE_LISBON',
-  /** Ljubljana */
-  EUROPE_LJUBLJANA = 'EUROPE_LJUBLJANA',
-  /** London */
-  EUROPE_LONDON = 'EUROPE_LONDON',
-  /** Luxembourg */
-  EUROPE_LUXEMBOURG = 'EUROPE_LUXEMBOURG',
-  /** Madrid */
-  EUROPE_MADRID = 'EUROPE_MADRID',
-  /** Malta */
-  EUROPE_MALTA = 'EUROPE_MALTA',
-  /** Mariehamn */
-  EUROPE_MARIEHAMN = 'EUROPE_MARIEHAMN',
-  /** Minsk */
-  EUROPE_MINSK = 'EUROPE_MINSK',
-  /** Monaco */
-  EUROPE_MONACO = 'EUROPE_MONACO',
-  /** Moscow */
-  EUROPE_MOSCOW = 'EUROPE_MOSCOW',
-  /** Oslo */
-  EUROPE_OSLO = 'EUROPE_OSLO',
-  /** Paris */
-  EUROPE_PARIS = 'EUROPE_PARIS',
-  /** Podgorica */
-  EUROPE_PODGORICA = 'EUROPE_PODGORICA',
-  /** Prague */
-  EUROPE_PRAGUE = 'EUROPE_PRAGUE',
-  /** Riga */
-  EUROPE_RIGA = 'EUROPE_RIGA',
-  /** Rome */
-  EUROPE_ROME = 'EUROPE_ROME',
-  /** Samara */
-  EUROPE_SAMARA = 'EUROPE_SAMARA',
-  /** San Marino */
-  EUROPE_SAN_MARINO = 'EUROPE_SAN_MARINO',
-  /** Sarajevo */
-  EUROPE_SARAJEVO = 'EUROPE_SARAJEVO',
-  /** Saratov */
-  EUROPE_SARATOV = 'EUROPE_SARATOV',
-  /** Simferopol */
-  EUROPE_SIMFEROPOL = 'EUROPE_SIMFEROPOL',
-  /** Skopje */
-  EUROPE_SKOPJE = 'EUROPE_SKOPJE',
-  /** Sofia */
-  EUROPE_SOFIA = 'EUROPE_SOFIA',
-  /** Stockholm */
-  EUROPE_STOCKHOLM = 'EUROPE_STOCKHOLM',
-  /** Tallinn */
-  EUROPE_TALLINN = 'EUROPE_TALLINN',
-  /** Tirane */
-  EUROPE_TIRANE = 'EUROPE_TIRANE',
-  /** Ulyanovsk */
-  EUROPE_ULYANOVSK = 'EUROPE_ULYANOVSK',
-  /** Uzhgorod */
-  EUROPE_UZHGOROD = 'EUROPE_UZHGOROD',
-  /** Vaduz */
-  EUROPE_VADUZ = 'EUROPE_VADUZ',
-  /** Vatican */
-  EUROPE_VATICAN = 'EUROPE_VATICAN',
-  /** Vienna */
-  EUROPE_VIENNA = 'EUROPE_VIENNA',
-  /** Vilnius */
-  EUROPE_VILNIUS = 'EUROPE_VILNIUS',
-  /** Volgograd */
-  EUROPE_VOLGOGRAD = 'EUROPE_VOLGOGRAD',
-  /** Warsaw */
-  EUROPE_WARSAW = 'EUROPE_WARSAW',
-  /** Zagreb */
-  EUROPE_ZAGREB = 'EUROPE_ZAGREB',
-  /** Zaporozhye */
-  EUROPE_ZAPOROZHYE = 'EUROPE_ZAPOROZHYE',
-  /** Zurich */
-  EUROPE_ZURICH = 'EUROPE_ZURICH',
-  /** Antananarivo */
-  INDIAN_ANTANANARIVO = 'INDIAN_ANTANANARIVO',
-  /** Chagos */
-  INDIAN_CHAGOS = 'INDIAN_CHAGOS',
-  /** Christmas */
-  INDIAN_CHRISTMAS = 'INDIAN_CHRISTMAS',
-  /** Cocos */
-  INDIAN_COCOS = 'INDIAN_COCOS',
-  /** Comoro */
-  INDIAN_COMORO = 'INDIAN_COMORO',
-  /** Kerguelen */
-  INDIAN_KERGUELEN = 'INDIAN_KERGUELEN',
-  /** Mahe */
-  INDIAN_MAHE = 'INDIAN_MAHE',
-  /** Maldives */
-  INDIAN_MALDIVES = 'INDIAN_MALDIVES',
-  /** Mauritius */
-  INDIAN_MAURITIUS = 'INDIAN_MAURITIUS',
-  /** Mayotte */
-  INDIAN_MAYOTTE = 'INDIAN_MAYOTTE',
-  /** Reunion */
-  INDIAN_REUNION = 'INDIAN_REUNION',
-  /** Apia */
-  PACIFIC_APIA = 'PACIFIC_APIA',
-  /** Auckland */
-  PACIFIC_AUCKLAND = 'PACIFIC_AUCKLAND',
-  /** Bougainville */
-  PACIFIC_BOUGAINVILLE = 'PACIFIC_BOUGAINVILLE',
-  /** Chatham */
-  PACIFIC_CHATHAM = 'PACIFIC_CHATHAM',
-  /** Chuuk */
-  PACIFIC_CHUUK = 'PACIFIC_CHUUK',
-  /** Easter */
-  PACIFIC_EASTER = 'PACIFIC_EASTER',
-  /** Efate */
-  PACIFIC_EFATE = 'PACIFIC_EFATE',
-  /** Enderbury */
-  PACIFIC_ENDERBURY = 'PACIFIC_ENDERBURY',
-  /** Fakaofo */
-  PACIFIC_FAKAOFO = 'PACIFIC_FAKAOFO',
-  /** Fiji */
-  PACIFIC_FIJI = 'PACIFIC_FIJI',
-  /** Funafuti */
-  PACIFIC_FUNAFUTI = 'PACIFIC_FUNAFUTI',
-  /** Galapagos */
-  PACIFIC_GALAPAGOS = 'PACIFIC_GALAPAGOS',
-  /** Gambier */
-  PACIFIC_GAMBIER = 'PACIFIC_GAMBIER',
-  /** Guadalcanal */
-  PACIFIC_GUADALCANAL = 'PACIFIC_GUADALCANAL',
-  /** Guam */
-  PACIFIC_GUAM = 'PACIFIC_GUAM',
-  /** Honolulu */
-  PACIFIC_HONOLULU = 'PACIFIC_HONOLULU',
-  /** Kiritimati */
-  PACIFIC_KIRITIMATI = 'PACIFIC_KIRITIMATI',
-  /** Kosrae */
-  PACIFIC_KOSRAE = 'PACIFIC_KOSRAE',
-  /** Kwajalein */
-  PACIFIC_KWAJALEIN = 'PACIFIC_KWAJALEIN',
-  /** Majuro */
-  PACIFIC_MAJURO = 'PACIFIC_MAJURO',
-  /** Marquesas */
-  PACIFIC_MARQUESAS = 'PACIFIC_MARQUESAS',
-  /** Midway */
-  PACIFIC_MIDWAY = 'PACIFIC_MIDWAY',
-  /** Nauru */
-  PACIFIC_NAURU = 'PACIFIC_NAURU',
-  /** Niue */
-  PACIFIC_NIUE = 'PACIFIC_NIUE',
-  /** Norfolk */
-  PACIFIC_NORFOLK = 'PACIFIC_NORFOLK',
-  /** Noumea */
-  PACIFIC_NOUMEA = 'PACIFIC_NOUMEA',
-  /** Pago Pago */
-  PACIFIC_PAGO_PAGO = 'PACIFIC_PAGO_PAGO',
-  /** Palau */
-  PACIFIC_PALAU = 'PACIFIC_PALAU',
-  /** Pitcairn */
-  PACIFIC_PITCAIRN = 'PACIFIC_PITCAIRN',
-  /** Pohnpei */
-  PACIFIC_POHNPEI = 'PACIFIC_POHNPEI',
-  /** Port Moresby */
-  PACIFIC_PORT_MORESBY = 'PACIFIC_PORT_MORESBY',
-  /** Rarotonga */
-  PACIFIC_RAROTONGA = 'PACIFIC_RAROTONGA',
-  /** Saipan */
-  PACIFIC_SAIPAN = 'PACIFIC_SAIPAN',
-  /** Tahiti */
-  PACIFIC_TAHITI = 'PACIFIC_TAHITI',
-  /** Tarawa */
-  PACIFIC_TARAWA = 'PACIFIC_TARAWA',
-  /** Tongatapu */
-  PACIFIC_TONGATAPU = 'PACIFIC_TONGATAPU',
-  /** Wake */
-  PACIFIC_WAKE = 'PACIFIC_WAKE',
-  /** Wallis */
-  PACIFIC_WALLIS = 'PACIFIC_WALLIS',
-  /** UTC offset: UTC+0 */
-  UTC_0 = 'UTC_0',
-  /** UTC offset: UTC+0:30 */
-  UTC_0_30 = 'UTC_0_30',
-  /** UTC offset: UTC+1 */
-  UTC_1 = 'UTC_1',
-  /** UTC offset: UTC+10 */
-  UTC_10 = 'UTC_10',
-  /** UTC offset: UTC+10:30 */
-  UTC_10_30 = 'UTC_10_30',
-  /** UTC offset: UTC+11 */
-  UTC_11 = 'UTC_11',
-  /** UTC offset: UTC+11:30 */
-  UTC_11_30 = 'UTC_11_30',
-  /** UTC offset: UTC+12 */
-  UTC_12 = 'UTC_12',
-  /** UTC offset: UTC+12:45 */
-  UTC_12_45 = 'UTC_12_45',
-  /** UTC offset: UTC+13 */
-  UTC_13 = 'UTC_13',
-  /** UTC offset: UTC+13:45 */
-  UTC_13_45 = 'UTC_13_45',
-  /** UTC offset: UTC+14 */
-  UTC_14 = 'UTC_14',
-  /** UTC offset: UTC+1:30 */
-  UTC_1_30 = 'UTC_1_30',
-  /** UTC offset: UTC+2 */
-  UTC_2 = 'UTC_2',
-  /** UTC offset: UTC+2:30 */
-  UTC_2_30 = 'UTC_2_30',
-  /** UTC offset: UTC+3 */
-  UTC_3 = 'UTC_3',
-  /** UTC offset: UTC+3:30 */
-  UTC_3_30 = 'UTC_3_30',
-  /** UTC offset: UTC+4 */
-  UTC_4 = 'UTC_4',
-  /** UTC offset: UTC+4:30 */
-  UTC_4_30 = 'UTC_4_30',
-  /** UTC offset: UTC+5 */
-  UTC_5 = 'UTC_5',
-  /** UTC offset: UTC+5:30 */
-  UTC_5_30 = 'UTC_5_30',
-  /** UTC offset: UTC+5:45 */
-  UTC_5_45 = 'UTC_5_45',
-  /** UTC offset: UTC+6 */
-  UTC_6 = 'UTC_6',
-  /** UTC offset: UTC+6:30 */
-  UTC_6_30 = 'UTC_6_30',
-  /** UTC offset: UTC+7 */
-  UTC_7 = 'UTC_7',
-  /** UTC offset: UTC+7:30 */
-  UTC_7_30 = 'UTC_7_30',
-  /** UTC offset: UTC+8 */
-  UTC_8 = 'UTC_8',
-  /** UTC offset: UTC+8:30 */
-  UTC_8_30 = 'UTC_8_30',
-  /** UTC offset: UTC+8:45 */
-  UTC_8_45 = 'UTC_8_45',
-  /** UTC offset: UTC+9 */
-  UTC_9 = 'UTC_9',
-  /** UTC offset: UTC+9:30 */
-  UTC_9_30 = 'UTC_9_30',
-}
-
-/** Options for filtering the connection */
-export interface MenuItemsWhereArgs {
-  /** The ID of the object */
-  id?: Maybe<Scalars['Int']>;
-  /** The menu location for the menu being queried */
-  location?: Maybe<MenuLocationEnum>;
-}
-
-export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
   String: true,
   Int: true,
   Boolean: true,
   ID: true,
   OrderEnum: true,
   TermObjectsConnectionOrderbyEnum: true,
+  ContentTypesOfCategoryEnum: true,
   PostObjectsConnectionDateColumnEnum: true,
   RelationEnum: true,
   MimeTypeEnum: true,
   PostObjectsConnectionOrderbyEnum: true,
   PostStatusEnum: true,
-  AvatarRatingEnum: true,
   ContentTypeEnum: true,
+  AvatarRatingEnum: true,
   CommentsConnectionOrderbyEnum: true,
   PostObjectFieldFormatEnum: true,
   MediaItemSizeEnum: true,
   Float: true,
+  ContentTypesOfPostFormatEnum: true,
+  ContentTypesOfTagEnum: true,
   TaxonomyEnum: true,
   CategoryIdType: true,
   ContentNodeIdTypeEnum: true,
@@ -4168,7 +3287,6 @@ export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
   UserRoleEnum: true,
   UsersConnectionSearchColumnEnum: true,
   MediaItemStatusEnum: true,
-  TimezoneEnum: true,
 };
 export const generatedSchema = {
   query: {
@@ -4628,7 +3746,9 @@ export const generatedSchema = {
       __args: { first: 'Int', last: 'Int', after: 'String', before: 'String' },
     },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     link: { __type: 'String' },
     name: { __type: 'String' },
     parent: { __type: 'CategoryToParentCategoryConnectionEdge' },
@@ -4648,7 +3768,7 @@ export const generatedSchema = {
     taxonomy: { __type: 'CategoryToTaxonomyConnectionEdge' },
     termGroupId: { __type: 'Int' },
     termTaxonomyId: { __type: 'Int' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   Node: { __typename: { __type: 'String!' }, id: { __type: 'ID!' } },
   TermNode: {
@@ -4665,13 +3785,22 @@ export const generatedSchema = {
       __args: { first: 'Int', last: 'Int', after: 'String', before: 'String' },
     },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     link: { __type: 'String' },
     name: { __type: 'String' },
     slug: { __type: 'String' },
     termGroupId: { __type: 'Int' },
     termTaxonomyId: { __type: 'Int' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
+  },
+  UniformResourceIdentifiable: {
+    __typename: { __type: 'String!' },
+    id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
+    isTermNode: { __type: 'Boolean!' },
+    uri: { __type: 'String' },
   },
   TermNodeToEnqueuedScriptConnection: {
     __typename: { __type: 'String!' },
@@ -4736,11 +3865,6 @@ export const generatedSchema = {
     __typename: { __type: 'String!' },
     databaseId: { __type: 'Int!' },
   },
-  UniformResourceIdentifiable: {
-    __typename: { __type: 'String!' },
-    id: { __type: 'ID!' },
-    uri: { __type: 'String' },
-  },
   HierarchicalTermNode: {
     __typename: { __type: 'String!' },
     parentDatabaseId: { __type: 'Int' },
@@ -4750,7 +3874,7 @@ export const generatedSchema = {
     __typename: { __type: 'String!' },
     databaseId: { __type: 'Int!' },
     id: { __type: 'ID!' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   CategoryToAncestorsCategoryConnection: {
     __typename: { __type: 'String!' },
@@ -4797,6 +3921,7 @@ export const generatedSchema = {
     node: { __type: 'Category' },
   },
   CategoryToContentNodeConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypesOfCategoryEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -4869,8 +3994,10 @@ export const generatedSchema = {
     },
     guid: { __type: 'String' },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isPreview: { __type: 'Boolean' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     lastEditedBy: { __type: 'ContentNodeToEditLastConnectionEdge' },
     link: { __type: 'String' },
     modified: { __type: 'String' },
@@ -4880,7 +4007,7 @@ export const generatedSchema = {
     slug: { __type: 'String' },
     status: { __type: 'String' },
     template: { __type: 'ContentTemplate' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   ContentNodeToContentTypeConnectionEdge: {
     __typename: { __type: 'String!' },
@@ -4911,9 +4038,11 @@ export const generatedSchema = {
     hasArchive: { __type: 'Boolean' },
     hierarchical: { __type: 'Boolean' },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isFrontPage: { __type: 'Boolean!' },
     isPostsPage: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     label: { __type: 'String' },
     labels: { __type: 'PostTypeLabelDetails' },
     menuIcon: { __type: 'String' },
@@ -4980,6 +4109,7 @@ export const generatedSchema = {
     node: { __type: 'ContentType' },
   },
   ContentTypeToContentNodeConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypeEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -5078,7 +4208,9 @@ export const generatedSchema = {
     extraCapabilities: { __type: '[String]' },
     firstName: { __type: 'String' },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     lastName: { __type: 'String' },
     locale: { __type: 'String' },
     mediaItems: {
@@ -5443,8 +4575,10 @@ export const generatedSchema = {
     fileSize: { __type: 'Int', __args: { size: 'MediaItemSizeEnum' } },
     guid: { __type: 'String' },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isPreview: { __type: 'Boolean' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     lastEditedBy: { __type: 'ContentNodeToEditLastConnectionEdge' },
     link: { __type: 'String' },
     mediaDetails: { __type: 'MediaDetails' },
@@ -5471,7 +4605,7 @@ export const generatedSchema = {
       __type: 'String',
       __args: { format: 'PostObjectFieldFormatEnum' },
     },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   NodeWithTemplate: {
     __typename: { __type: 'String!' },
@@ -5534,6 +4668,7 @@ export const generatedSchema = {
     parentId: { __type: 'ID' },
   },
   HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypeEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -5566,6 +4701,7 @@ export const generatedSchema = {
     node: { __type: 'ContentNode' },
   },
   HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypeEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -5799,12 +4935,14 @@ export const generatedSchema = {
     featuredImageId: { __type: 'ID' },
     guid: { __type: 'String' },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isFrontPage: { __type: 'Boolean!' },
     isPostsPage: { __type: 'Boolean!' },
     isPreview: { __type: 'Boolean' },
     isPrivacyPage: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
     isRevision: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     lastEditedBy: { __type: 'ContentNodeToEditLastConnectionEdge' },
     link: { __type: 'String' },
     menuOrder: { __type: 'Int' },
@@ -5837,7 +4975,7 @@ export const generatedSchema = {
       __type: 'String',
       __args: { format: 'PostObjectFieldFormatEnum' },
     },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   NodeWithContentEditor: {
     __typename: { __type: 'String!' },
@@ -5848,9 +4986,40 @@ export const generatedSchema = {
   },
   NodeWithFeaturedImage: {
     __typename: { __type: 'String!' },
+    contentType: { __type: 'ContentNodeToContentTypeConnectionEdge' },
+    databaseId: { __type: 'Int!' },
+    date: { __type: 'String' },
+    dateGmt: { __type: 'String' },
+    desiredSlug: { __type: 'String' },
+    editingLockedBy: { __type: 'ContentNodeToEditLockConnectionEdge' },
+    enclosure: { __type: 'String' },
+    enqueuedScripts: {
+      __type: 'ContentNodeToEnqueuedScriptConnection',
+      __args: { first: 'Int', last: 'Int', after: 'String', before: 'String' },
+    },
+    enqueuedStylesheets: {
+      __type: 'ContentNodeToEnqueuedStylesheetConnection',
+      __args: { first: 'Int', last: 'Int', after: 'String', before: 'String' },
+    },
     featuredImage: { __type: 'NodeWithFeaturedImageToMediaItemConnectionEdge' },
     featuredImageDatabaseId: { __type: 'Int' },
     featuredImageId: { __type: 'ID' },
+    guid: { __type: 'String' },
+    id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
+    isPreview: { __type: 'Boolean' },
+    isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
+    lastEditedBy: { __type: 'ContentNodeToEditLastConnectionEdge' },
+    link: { __type: 'String' },
+    modified: { __type: 'String' },
+    modifiedGmt: { __type: 'String' },
+    previewRevisionDatabaseId: { __type: 'Int' },
+    previewRevisionId: { __type: 'ID' },
+    slug: { __type: 'String' },
+    status: { __type: 'String' },
+    template: { __type: 'ContentTemplate' },
+    uri: { __type: 'String' },
   },
   NodeWithFeaturedImageToMediaItemConnectionEdge: {
     __typename: { __type: 'String!' },
@@ -6048,10 +5217,12 @@ export const generatedSchema = {
     featuredImageId: { __type: 'ID' },
     guid: { __type: 'String' },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isPreview: { __type: 'Boolean' },
     isRestricted: { __type: 'Boolean' },
     isRevision: { __type: 'Boolean' },
     isSticky: { __type: 'Boolean!' },
+    isTermNode: { __type: 'Boolean!' },
     lastEditedBy: { __type: 'ContentNodeToEditLastConnectionEdge' },
     link: { __type: 'String' },
     modified: { __type: 'String' },
@@ -6111,7 +5282,7 @@ export const generatedSchema = {
       __args: { format: 'PostObjectFieldFormatEnum' },
     },
     toPing: { __type: '[String]' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   NodeWithExcerpt: {
     __typename: { __type: 'String!' },
@@ -6258,7 +5429,9 @@ export const generatedSchema = {
       __args: { first: 'Int', last: 'Int', after: 'String', before: 'String' },
     },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     link: { __type: 'String' },
     name: { __type: 'String' },
     postFormatId: { __type: 'Int' },
@@ -6276,9 +5449,10 @@ export const generatedSchema = {
     taxonomy: { __type: 'PostFormatToTaxonomyConnectionEdge' },
     termGroupId: { __type: 'Int' },
     termTaxonomyId: { __type: 'Int' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   PostFormatToContentNodeConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypesOfPostFormatEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -6461,7 +5635,9 @@ export const generatedSchema = {
       __args: { first: 'Int', last: 'Int', after: 'String', before: 'String' },
     },
     id: { __type: 'ID!' },
+    isContentNode: { __type: 'Boolean!' },
     isRestricted: { __type: 'Boolean' },
+    isTermNode: { __type: 'Boolean!' },
     link: { __type: 'String' },
     name: { __type: 'String' },
     posts: {
@@ -6479,9 +5655,10 @@ export const generatedSchema = {
     taxonomy: { __type: 'TagToTaxonomyConnectionEdge' },
     termGroupId: { __type: 'Int' },
     termTaxonomyId: { __type: 'Int' },
-    uri: { __type: 'String!' },
+    uri: { __type: 'String' },
   },
   TagToContentNodeConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypesOfTagEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -6594,6 +5771,7 @@ export const generatedSchema = {
     node: { __type: 'TermNode' },
   },
   UserToContentRevisionUnionConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypeEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -6894,7 +6072,7 @@ export const generatedSchema = {
     order: { __type: 'Int' },
     parentDatabaseId: { __type: 'Int' },
     parentId: { __type: 'ID' },
-    path: { __type: 'String!' },
+    path: { __type: 'String' },
     target: { __type: 'String' },
     title: { __type: 'String' },
     url: { __type: 'String' },
@@ -7118,6 +6296,7 @@ export const generatedSchema = {
     node: { __type: 'EnqueuedStylesheet' },
   },
   RootQueryToContentRevisionUnionConnectionWhereArgs: {
+    contentTypes: { __type: '[ContentTypeEnum]' },
     dateQuery: { __type: 'DateQueryInput' },
     hasPassword: { __type: 'Boolean' },
     id: { __type: 'Int' },
@@ -7799,19 +6978,13 @@ export const generatedSchema = {
     name: { __type: 'String' },
     url: { __type: 'String' },
   },
-  MenuItemsWhereArgs: {
-    id: { __type: 'Int' },
-    location: { __type: 'MenuLocationEnum' },
-  },
   DefaultTemplate: {
     __typename: { __type: 'String!' },
     templateName: { __type: 'String' },
   },
   [SchemaUnionsKey]: {
     ContentRevisionUnion: ['Post', 'Page'],
-    MenuItemObjectUnion: ['Post', 'Page', 'Category', 'Tag'],
-    PostObjectUnion: ['Post', 'Page', 'MediaItem'],
-    TermObjectUnion: ['Category', 'Tag', 'PostFormat'],
+    MenuItemObjectUnion: ['Post', 'Page', 'Category', 'Tag', 'PostFormat'],
   },
 } as const;
 
@@ -8219,8 +7392,8 @@ export interface RootQueryToCategoryConnectionEdge {
 export interface Category
   extends Omit<Node, '__typename'>,
     Omit<TermNode, '__typename'>,
-    Omit<DatabaseIdentifier, '__typename'>,
     Omit<UniformResourceIdentifiable, '__typename'>,
+    Omit<DatabaseIdentifier, '__typename'>,
     Omit<HierarchicalTermNode, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
   __typename: 'Category' | undefined;
@@ -8231,18 +7404,18 @@ export interface Category
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<CategoryToAncestorsCategoryConnection>;
   /**
@@ -8257,22 +7430,22 @@ export interface Category
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<CategoryToCategoryConnectionWhereArgs>;
   }) => Maybe<CategoryToCategoryConnection>;
   /**
@@ -8282,22 +7455,22 @@ export interface Category
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<CategoryToContentNodeConnectionWhereArgs>;
   }) => Maybe<CategoryToContentNodeConnection>;
   /**
@@ -8305,7 +7478,7 @@ export interface Category
    */
   count?: Maybe<ScalarsEnums['Int']>;
   /**
-   * Identifies the primary key from the database.
+   * The unique resource identifier path
    */
   databaseId: ScalarsEnums['Int'];
   /**
@@ -8319,18 +7492,18 @@ export interface Category
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedScriptConnection>;
   /**
@@ -8340,28 +7513,36 @@ export interface Category
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
   /**
-   * The globally unique ID for the object
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The link to the term
    */
@@ -8389,22 +7570,22 @@ export interface Category
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<CategoryToPostConnectionWhereArgs>;
   }) => Maybe<CategoryToPostConnection>;
   /**
@@ -8426,7 +7607,7 @@ export interface Category
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -8464,18 +7645,18 @@ export interface TermNode {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedScriptConnection>;
   /**
@@ -8485,28 +7666,36 @@ export interface TermNode {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
   /**
-   * Unique identifier for the term
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The link to the term
    */
@@ -8530,7 +7719,30 @@ export interface TermNode {
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
+}
+
+/**
+ * Any node that has a URI
+ */
+export interface UniformResourceIdentifiable {
+  __typename: 'UniformResourceIdentifiable' | undefined;
+  /**
+   * The unique resource identifier path
+   */
+  id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
+  /**
+   * The unique resource identifier path
+   */
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -8591,7 +7803,7 @@ export interface EnqueuedScript
    */
   handle?: Maybe<ScalarsEnums['String']>;
   /**
-   * The globally unique ID for the object
+   * The ID of the enqueued asset
    */
   id: ScalarsEnums['ID'];
   /**
@@ -8720,7 +7932,7 @@ export interface EnqueuedStylesheet
    */
   handle?: Maybe<ScalarsEnums['String']>;
   /**
-   * The globally unique ID for the object
+   * The ID of the enqueued asset
    */
   id: ScalarsEnums['ID'];
   /**
@@ -8742,21 +7954,6 @@ export interface DatabaseIdentifier {
    * The unique identifier stored in the database
    */
   databaseId: ScalarsEnums['Int'];
-}
-
-/**
- * Any node that has a URI
- */
-export interface UniformResourceIdentifiable {
-  __typename: 'UniformResourceIdentifiable' | undefined;
-  /**
-   * The unique resource identifier path
-   */
-  id: ScalarsEnums['ID'];
-  /**
-   * The unique resource identifier path
-   */
-  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -8790,7 +7987,7 @@ export interface MenuItemLinkable {
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -8921,7 +8118,7 @@ export interface ContentNode {
    */
   desiredSlug?: Maybe<ScalarsEnums['String']>;
   /**
-   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn't exist or is greater than 15 seconds
+   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
    */
   editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
   /**
@@ -8935,18 +8132,18 @@ export interface ContentNode {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
   /**
@@ -8956,28 +8153,32 @@ export interface ContentNode {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
   /**
-   * The global unique identifier for this post. This currently matches the value stored in WP_Post->guid and the guid column in the "post_objects" database table.
+   * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
    */
   guid?: Maybe<ScalarsEnums['String']>;
   /**
-   * The globally unique identifier of the node.
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is a node in the preview state
    */
@@ -8986,6 +8187,10 @@ export interface ContentNode {
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The user that most recently edited the node
    */
@@ -9011,7 +8216,7 @@ export interface ContentNode {
    */
   previewRevisionId?: Maybe<ScalarsEnums['ID']>;
   /**
-   * The uri slug for the post. This is equivalent to the WP_Post->post_name field and the post_name column in the database for the "post_objects" table.
+   * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
    */
   slug?: Maybe<ScalarsEnums['String']>;
   /**
@@ -9023,9 +8228,9 @@ export interface ContentNode {
    */
   template?: Maybe<ContentTemplate>;
   /**
-   * URI path for the resource
+   * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -9034,7 +8239,7 @@ export interface ContentNode {
 export interface ContentNodeToContentTypeConnectionEdge {
   __typename: 'ContentNodeToContentTypeConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<ContentType>;
 }
@@ -9057,18 +8262,18 @@ export interface ContentType
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentTypeToTaxonomyConnection>;
   /**
@@ -9078,22 +8283,22 @@ export interface ContentType
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<ContentTypeToContentNodeConnectionWhereArgs>;
   }) => Maybe<ContentTypeToContentNodeConnection>;
   /**
@@ -9129,6 +8334,10 @@ export interface ContentType
    */
   id: ScalarsEnums['ID'];
   /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
    * Whether this page is set to the static front page.
    */
   isFrontPage: ScalarsEnums['Boolean'];
@@ -9140,6 +8349,10 @@ export interface ContentType
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * Display name of the content type.
    */
@@ -9252,18 +8465,18 @@ export interface Taxonomy extends Omit<Node, '__typename'> {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TaxonomyToContentTypeConnection>;
   /**
@@ -9529,7 +8742,7 @@ export interface ContentNodeToEditLockConnectionEdge {
    */
   lockTimestamp?: Maybe<ScalarsEnums['String']>;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<User>;
 }
@@ -9551,14 +8764,14 @@ export interface User
      * The size attribute of the avatar field can be used to fetch avatars of different sizes. The value corresponds to the dimension in pixels to fetch. The default is 96 pixels.
      * @defaultValue `96`
      */
-    size?: Maybe<Scalars['Int']>;
+    size?: Maybe<Scalars['Int']>
     /**
      * Whether to always show the default image, never the Gravatar. Default false
-     */
-    forceDefault?: Maybe<Scalars['Boolean']>;
+     */;
+    forceDefault?: Maybe<Scalars['Boolean']>
     /**
      * The rating level of the avatar.
-     */
+     */;
     rating?: Maybe<AvatarRatingEnum>;
   }) => Maybe<Avatar>;
   /**
@@ -9576,22 +8789,22 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<UserToCommentConnectionWhereArgs>;
   }) => Maybe<UserToCommentConnection>;
   /**
@@ -9613,18 +8826,18 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<UserToEnqueuedScriptConnection>;
   /**
@@ -9634,18 +8847,18 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<UserToEnqueuedStylesheetConnection>;
   /**
@@ -9661,9 +8874,17 @@ export interface User
    */
   id: ScalarsEnums['ID'];
   /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * Last name of the user. This is equivalent to the WP_User-&gt;user_last_name property.
    */
@@ -9679,22 +8900,22 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<UserToMediaItemConnectionWhereArgs>;
   }) => Maybe<UserToMediaItemConnection>;
   /**
@@ -9716,22 +8937,22 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<UserToPageConnectionWhereArgs>;
   }) => Maybe<UserToPageConnection>;
   /**
@@ -9741,22 +8962,22 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<UserToPostConnectionWhereArgs>;
   }) => Maybe<UserToPostConnection>;
   /**
@@ -9770,22 +8991,22 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<UserToContentRevisionUnionConnectionWhereArgs>;
   }) => Maybe<UserToContentRevisionUnionConnection>;
   /**
@@ -9795,18 +9016,18 @@ export interface User
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<UserToUserRoleConnection>;
   /**
@@ -10037,22 +9258,22 @@ export interface Comment
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<CommentToCommentConnectionWhereArgs>;
   }) => Maybe<CommentToCommentConnection>;
   /**
@@ -10067,7 +9288,7 @@ export interface Comment
 export interface CommentToCommenterConnectionEdge {
   __typename: 'CommentToCommenterConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Commenter>;
 }
@@ -10078,7 +9299,7 @@ export interface CommentToCommenterConnectionEdge {
 export interface CommentToContentNodeConnectionEdge {
   __typename: 'CommentToContentNodeConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<ContentNode>;
 }
@@ -10089,7 +9310,7 @@ export interface CommentToContentNodeConnectionEdge {
 export interface CommentToParentCommentConnectionEdge {
   __typename: 'CommentToParentCommentConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Comment>;
 }
@@ -10236,9 +9457,9 @@ export interface UserToMediaItemConnectionEdge {
 export interface MediaItem
   extends Omit<Node, '__typename'>,
     Omit<ContentNode, '__typename'>,
+    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'>,
     Omit<NodeWithTemplate, '__typename'>,
-    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<NodeWithTitle, '__typename'>,
     Omit<NodeWithAuthor, '__typename'>,
     Omit<NodeWithComments, '__typename'>,
@@ -10255,22 +9476,22 @@ export interface MediaItem
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
   }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /**
@@ -10301,22 +9522,22 @@ export interface MediaItem
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
   }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
   /**
@@ -10334,22 +9555,22 @@ export interface MediaItem
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<MediaItemToCommentConnectionWhereArgs>;
   }) => Maybe<MediaItemToCommentConnection>;
   /**
@@ -10357,7 +9578,7 @@ export interface MediaItem
    */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
   /**
-   * The ID of the node in the database.
+   * The unique identifier stored in the database
    */
   databaseId: ScalarsEnums['Int'];
   /**
@@ -10396,18 +9617,18 @@ export interface MediaItem
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
   /**
@@ -10417,18 +9638,18 @@ export interface MediaItem
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
   /**
@@ -10449,6 +9670,10 @@ export interface MediaItem
    */
   id: ScalarsEnums['ID'];
   /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
    * Whether the object is a node in the preview state
    */
   isPreview?: Maybe<ScalarsEnums['Boolean']>;
@@ -10456,6 +9681,10 @@ export interface MediaItem
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The user that most recently edited the node
    */
@@ -10549,7 +9778,7 @@ export interface MediaItem
    */
   status?: Maybe<ScalarsEnums['String']>;
   /**
-   * The template assigned to a node of content
+   * The template assigned to the node
    */
   template?: Maybe<ContentTemplate>;
   /**
@@ -10562,9 +9791,9 @@ export interface MediaItem
     format?: Maybe<PostObjectFieldFormatEnum>;
   }) => Maybe<ScalarsEnums['String']>;
   /**
-   * URI path for the resource
+   * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -10630,7 +9859,7 @@ export interface NodeWithAuthor {
 export interface NodeWithAuthorToUserConnectionEdge {
   __typename: 'NodeWithAuthorToUserConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<User>;
 }
@@ -10662,22 +9891,22 @@ export interface HierarchicalContentNode {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
   }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /**
@@ -10687,22 +9916,22 @@ export interface HierarchicalContentNode {
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
   }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
   /**
@@ -10807,7 +10036,7 @@ export interface HierarchicalContentNodeToParentContentNodeConnectionEdge {
     | 'HierarchicalContentNodeToParentContentNodeConnectionEdge'
     | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<ContentNode>;
 }
@@ -10920,7 +10149,7 @@ export interface ContentNodeToEnqueuedStylesheetConnectionEdge {
 export interface ContentNodeToEditLastConnectionEdge {
   __typename: 'ContentNodeToEditLastConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<User>;
 }
@@ -11082,9 +10311,9 @@ export interface UserToPageConnectionEdge {
 export interface Page
   extends Omit<Node, '__typename'>,
     Omit<ContentNode, '__typename'>,
+    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'>,
     Omit<NodeWithTemplate, '__typename'>,
-    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<NodeWithTitle, '__typename'>,
     Omit<NodeWithContentEditor, '__typename'>,
     Omit<NodeWithAuthor, '__typename'>,
@@ -11102,22 +10331,22 @@ export interface Page
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
   }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
   /**
@@ -11139,22 +10368,22 @@ export interface Page
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
   }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
   /**
@@ -11172,22 +10401,22 @@ export interface Page
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PageToCommentConnectionWhereArgs>;
   }) => Maybe<PageToCommentConnection>;
   /**
@@ -11204,7 +10433,7 @@ export interface Page
    */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
   /**
-   * The ID of the node in the database.
+   * The unique resource identifier path
    */
   databaseId: ScalarsEnums['Int'];
   /**
@@ -11234,18 +10463,18 @@ export interface Page
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
   /**
@@ -11255,18 +10484,18 @@ export interface Page
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
   /**
@@ -11289,6 +10518,10 @@ export interface Page
    * The globally unique identifier of the page object.
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether this page is set to the static front page.
    */
@@ -11313,6 +10546,10 @@ export interface Page
    * True if the node is a revision of another node
    */
   isRevision?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The user that most recently edited the node
    */
@@ -11373,22 +10610,22 @@ export interface Page
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PageToRevisionConnectionWhereArgs>;
   }) => Maybe<PageToRevisionConnection>;
   /**
@@ -11413,9 +10650,9 @@ export interface Page
     format?: Maybe<PostObjectFieldFormatEnum>;
   }) => Maybe<ScalarsEnums['String']>;
   /**
-   * URI path for the resource
+   * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -11440,6 +10677,76 @@ export interface NodeWithContentEditor {
 export interface NodeWithFeaturedImage {
   __typename: 'NodeWithFeaturedImage' | undefined;
   /**
+   * Connection between the ContentNode type and the ContentType type
+   */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /**
+   * The unique identifier stored in the database
+   */
+  databaseId: ScalarsEnums['Int'];
+  /**
+   * Post publishing date.
+   */
+  date?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The publishing date set in GMT.
+   */
+  dateGmt?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The desired slug of the post
+   */
+  desiredSlug?: Maybe<ScalarsEnums['String']>;
+  /**
+   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
+   */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /**
+   * The RSS enclosure for the object
+   */
+  enclosure?: Maybe<ScalarsEnums['String']>;
+  /**
+   * Connection between the ContentNode type and the EnqueuedScript type
+   */
+  enqueuedScripts: (args?: {
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars['Int']>
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */;
+    last?: Maybe<Scalars['Int']>
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */;
+    after?: Maybe<Scalars['String']>
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */;
+    before?: Maybe<Scalars['String']>;
+  }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
+  /**
+   * Connection between the ContentNode type and the EnqueuedStylesheet type
+   */
+  enqueuedStylesheets: (args?: {
+    /**
+     * The number of items to return after the referenced "after" cursor
+     */
+    first?: Maybe<Scalars['Int']>
+    /**
+     * The number of items to return before the referenced "before" cursor
+     */;
+    last?: Maybe<Scalars['Int']>
+    /**
+     * Cursor used along with the "first" argument to reference where in the dataset to get data
+     */;
+    after?: Maybe<Scalars['String']>
+    /**
+     * Cursor used along with the "last" argument to reference where in the dataset to get data
+     */;
+    before?: Maybe<Scalars['String']>;
+  }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  /**
    * Connection between the NodeWithFeaturedImage type and the MediaItem type
    */
   featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
@@ -11451,6 +10758,70 @@ export interface NodeWithFeaturedImage {
    * Globally unique ID of the featured image assigned to the node
    */
   featuredImageId?: Maybe<ScalarsEnums['ID']>;
+  /**
+   * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
+   */
+  guid?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The unique resource identifier path
+   */
+  id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
+   * Whether the object is a node in the preview state
+   */
+  isPreview?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the object is restricted from the current viewer
+   */
+  isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
+  /**
+   * The user that most recently edited the node
+   */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /**
+   * The permalink of the post
+   */
+  link?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
+   */
+  modified?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
+   */
+  modifiedGmt?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The database id of the preview node
+   */
+  previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
+  /**
+   * Whether the object is a node in the preview state
+   */
+  previewRevisionId?: Maybe<ScalarsEnums['ID']>;
+  /**
+   * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
+   */
+  slug?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The current status of the object
+   */
+  status?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The template assigned to a node of content
+   */
+  template?: Maybe<ContentTemplate>;
+  /**
+   * The unique resource identifier path
+   */
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -11459,7 +10830,7 @@ export interface NodeWithFeaturedImage {
 export interface NodeWithFeaturedImageToMediaItemConnectionEdge {
   __typename: 'NodeWithFeaturedImageToMediaItemConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<MediaItem>;
 }
@@ -11485,7 +10856,7 @@ export interface NodeWithRevisions {
 export interface NodeWithRevisionsToContentNodeConnectionEdge {
   __typename: 'NodeWithRevisionsToContentNodeConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<ContentNode>;
 }
@@ -11541,7 +10912,7 @@ export interface PageToCommentConnectionEdge {
 export interface PageToPreviewConnectionEdge {
   __typename: 'PageToPreviewConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Page>;
 }
@@ -11620,9 +10991,9 @@ export interface UserToPostConnectionEdge {
 export interface Post
   extends Omit<Node, '__typename'>,
     Omit<ContentNode, '__typename'>,
+    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'>,
     Omit<NodeWithTemplate, '__typename'>,
-    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<NodeWithTitle, '__typename'>,
     Omit<NodeWithContentEditor, '__typename'>,
     Omit<NodeWithAuthor, '__typename'>,
@@ -11652,22 +11023,22 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostToCategoryConnectionWhereArgs>;
   }) => Maybe<PostToCategoryConnection>;
   /**
@@ -11685,22 +11056,22 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostToCommentConnectionWhereArgs>;
   }) => Maybe<PostToCommentConnection>;
   /**
@@ -11717,7 +11088,7 @@ export interface Post
    */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
   /**
-   * The ID of the node in the database.
+   * The unique resource identifier path
    */
   databaseId: ScalarsEnums['Int'];
   /**
@@ -11747,18 +11118,18 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
   /**
@@ -11768,18 +11139,18 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
   /**
@@ -11812,6 +11183,10 @@ export interface Post
    */
   id: ScalarsEnums['ID'];
   /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
    * Whether the object is a node in the preview state
    */
   isPreview?: Maybe<ScalarsEnums['Boolean']>;
@@ -11827,6 +11202,10 @@ export interface Post
    * Whether this page is sticky
    */
   isSticky: ScalarsEnums['Boolean'];
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The user that most recently edited the node
    */
@@ -11858,22 +11237,22 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostToPostFormatConnectionWhereArgs>;
   }) => Maybe<PostToPostFormatConnection>;
   /**
@@ -11904,22 +11283,22 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostToRevisionConnectionWhereArgs>;
   }) => Maybe<PostToRevisionConnection>;
   /**
@@ -11937,22 +11316,22 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostToTagConnectionWhereArgs>;
   }) => Maybe<PostToTagConnection>;
   /**
@@ -11966,22 +11345,22 @@ export interface Post
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostToTermNodeConnectionWhereArgs>;
   }) => Maybe<PostToTermNodeConnection>;
   /**
@@ -11998,9 +11377,9 @@ export interface Post
    */
   toPing?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
   /**
-   * URI path for the resource
+   * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -12146,8 +11525,9 @@ export interface PostToPostFormatConnectionEdge {
 export interface PostFormat
   extends Omit<Node, '__typename'>,
     Omit<TermNode, '__typename'>,
+    Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'>,
-    Omit<UniformResourceIdentifiable, '__typename'> {
+    Omit<MenuItemLinkable, '__typename'> {
   __typename: 'PostFormat' | undefined;
   /**
    * Connection between the postFormat type and the ContentNode type
@@ -12156,22 +11536,22 @@ export interface PostFormat
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostFormatToContentNodeConnectionWhereArgs>;
   }) => Maybe<PostFormatToContentNodeConnection>;
   /**
@@ -12179,7 +11559,7 @@ export interface PostFormat
    */
   count?: Maybe<ScalarsEnums['Int']>;
   /**
-   * Identifies the primary key from the database.
+   * The unique resource identifier path
    */
   databaseId: ScalarsEnums['Int'];
   /**
@@ -12193,18 +11573,18 @@ export interface PostFormat
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedScriptConnection>;
   /**
@@ -12214,28 +11594,36 @@ export interface PostFormat
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
   /**
-   * The globally unique ID for the object
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The link to the term
    */
@@ -12256,22 +11644,22 @@ export interface PostFormat
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<PostFormatToPostConnectionWhereArgs>;
   }) => Maybe<PostFormatToPostConnection>;
   /**
@@ -12293,7 +11681,7 @@ export interface PostFormat
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -12370,7 +11758,7 @@ export interface PostFormatToPostConnectionEdge {
 export interface PostFormatToTaxonomyConnectionEdge {
   __typename: 'PostFormatToTaxonomyConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Taxonomy>;
 }
@@ -12381,7 +11769,7 @@ export interface PostFormatToTaxonomyConnectionEdge {
 export interface PostToPreviewConnectionEdge {
   __typename: 'PostToPreviewConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Post>;
 }
@@ -12460,8 +11848,8 @@ export interface PostToTagConnectionEdge {
 export interface Tag
   extends Omit<Node, '__typename'>,
     Omit<TermNode, '__typename'>,
-    Omit<DatabaseIdentifier, '__typename'>,
     Omit<UniformResourceIdentifiable, '__typename'>,
+    Omit<DatabaseIdentifier, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
   __typename: 'Tag' | undefined;
   /**
@@ -12471,22 +11859,22 @@ export interface Tag
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<TagToContentNodeConnectionWhereArgs>;
   }) => Maybe<TagToContentNodeConnection>;
   /**
@@ -12494,7 +11882,7 @@ export interface Tag
    */
   count?: Maybe<ScalarsEnums['Int']>;
   /**
-   * Identifies the primary key from the database.
+   * The unique resource identifier path
    */
   databaseId: ScalarsEnums['Int'];
   /**
@@ -12508,18 +11896,18 @@ export interface Tag
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedScriptConnection>;
   /**
@@ -12529,28 +11917,36 @@ export interface Tag
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
+     */;
     before?: Maybe<Scalars['String']>;
   }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
   /**
-   * The globally unique ID for the object
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The link to the term
    */
@@ -12566,22 +11962,22 @@ export interface Tag
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<TagToPostConnectionWhereArgs>;
   }) => Maybe<TagToPostConnection>;
   /**
@@ -12608,7 +12004,7 @@ export interface Tag
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 
 /**
@@ -12685,7 +12081,7 @@ export interface TagToPostConnectionEdge {
 export interface TagToTaxonomyConnectionEdge {
   __typename: 'TagToTaxonomyConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Taxonomy>;
 }
@@ -12825,7 +12221,7 @@ export interface UserRole extends Omit<Node, '__typename'> {
 export interface CategoryToParentCategoryConnectionEdge {
   __typename: 'CategoryToParentCategoryConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Category>;
 }
@@ -12870,7 +12266,7 @@ export interface CategoryToPostConnectionEdge {
 export interface CategoryToTaxonomyConnectionEdge {
   __typename: 'CategoryToTaxonomyConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Taxonomy>;
 }
@@ -13108,22 +12504,22 @@ export interface Menu
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<MenuToMenuItemConnectionWhereArgs>;
   }) => Maybe<MenuToMenuItemConnection>;
   /**
@@ -13184,22 +12580,22 @@ export interface MenuItem
     /**
      * The number of items to return after the referenced "after" cursor
      */
-    first?: Maybe<Scalars['Int']>;
+    first?: Maybe<Scalars['Int']>
     /**
      * The number of items to return before the referenced "before" cursor
-     */
-    last?: Maybe<Scalars['Int']>;
+     */;
+    last?: Maybe<Scalars['Int']>
     /**
      * Cursor used along with the "first" argument to reference where in the dataset to get data
-     */
-    after?: Maybe<Scalars['String']>;
+     */;
+    after?: Maybe<Scalars['String']>
     /**
      * Cursor used along with the "last" argument to reference where in the dataset to get data
-     */
-    before?: Maybe<Scalars['String']>;
+     */;
+    before?: Maybe<Scalars['String']>
     /**
      * Arguments for filtering the connection
-     */
+     */;
     where?: Maybe<MenuItemToMenuItemConnectionWhereArgs>;
   }) => Maybe<MenuItemToMenuItemConnection>;
   /**
@@ -13267,7 +12663,7 @@ export interface MenuItem
   /**
    * Path for the resource. Relative path for internal resources. Absolute path for external resources.
    */
-  path: ScalarsEnums['String'];
+  path?: Maybe<ScalarsEnums['String']>;
   /**
    * Target attribute for the menu item link.
    */
@@ -13322,7 +12718,7 @@ export interface MenuItemToMenuItemConnectionEdge {
 export interface MenuItemToMenuItemLinkableConnectionEdge {
   __typename: 'MenuItemToMenuItemLinkableConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<MenuItemLinkable>;
 }
@@ -13333,7 +12729,7 @@ export interface MenuItemToMenuItemLinkableConnectionEdge {
 export interface MenuItemToMenuConnectionEdge {
   __typename: 'MenuItemToMenuConnectionEdge' | undefined;
   /**
-   * The nodes of the connection, without the edges
+   * The node of the connection, without the edges
    */
   node?: Maybe<Menu>;
 }
@@ -14521,6 +13917,7 @@ export interface SchemaObjectTypes {
   Category: Category;
   Node: Node;
   TermNode: TermNode;
+  UniformResourceIdentifiable: UniformResourceIdentifiable;
   TermNodeToEnqueuedScriptConnection: TermNodeToEnqueuedScriptConnection;
   TermNodeToEnqueuedScriptConnectionEdge: TermNodeToEnqueuedScriptConnectionEdge;
   EnqueuedScript: EnqueuedScript;
@@ -14530,7 +13927,6 @@ export interface SchemaObjectTypes {
   TermNodeToEnqueuedStylesheetConnectionEdge: TermNodeToEnqueuedStylesheetConnectionEdge;
   EnqueuedStylesheet: EnqueuedStylesheet;
   DatabaseIdentifier: DatabaseIdentifier;
-  UniformResourceIdentifiable: UniformResourceIdentifiable;
   HierarchicalTermNode: HierarchicalTermNode;
   MenuItemLinkable: MenuItemLinkable;
   CategoryToAncestorsCategoryConnection: CategoryToAncestorsCategoryConnection;
@@ -14738,6 +14134,7 @@ export type SchemaObjectTypesNames =
   | 'Category'
   | 'Node'
   | 'TermNode'
+  | 'UniformResourceIdentifiable'
   | 'TermNodeToEnqueuedScriptConnection'
   | 'TermNodeToEnqueuedScriptConnectionEdge'
   | 'EnqueuedScript'
@@ -14747,7 +14144,6 @@ export type SchemaObjectTypesNames =
   | 'TermNodeToEnqueuedStylesheetConnectionEdge'
   | 'EnqueuedStylesheet'
   | 'DatabaseIdentifier'
-  | 'UniformResourceIdentifiable'
   | 'HierarchicalTermNode'
   | 'MenuItemLinkable'
   | 'CategoryToAncestorsCategoryConnection'
@@ -14971,22 +14367,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToCategoryConnectionWhereArgs>;
       }) => Maybe<PostToCategoryConnection>;
       children?: undefined;
@@ -15005,22 +14401,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToCommentConnectionWhereArgs>;
       }) => Maybe<PostToCommentConnection>;
       /**
@@ -15037,7 +14433,7 @@ export type ContentRevisionUnion =
        */
       contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
       /**
-       * The ID of the node in the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
       /**
@@ -15067,18 +14463,18 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
       /**
@@ -15088,18 +14484,18 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
       /**
@@ -15131,6 +14527,10 @@ export type ContentRevisionUnion =
        * The globally unique identifier of the post object.
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
       isFrontPage?: undefined;
       isPostsPage?: undefined;
       /**
@@ -15150,6 +14550,10 @@ export type ContentRevisionUnion =
        * Whether this page is sticky
        */
       isSticky: ScalarsEnums['Boolean'];
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
       /**
        * The user that most recently edited the node
        */
@@ -15186,22 +14590,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToPostFormatConnectionWhereArgs>;
       }) => Maybe<PostToPostFormatConnection>;
       /**
@@ -15232,22 +14636,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToRevisionConnectionWhereArgs>;
       }) => Maybe<PostToRevisionConnection>;
       /**
@@ -15265,22 +14669,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToTagConnectionWhereArgs>;
       }) => Maybe<PostToTagConnection>;
       /**
@@ -15294,22 +14698,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToTermNodeConnectionWhereArgs>;
       }) => Maybe<PostToTermNodeConnection>;
       /**
@@ -15326,9 +14730,9 @@ export type ContentRevisionUnion =
        */
       toPing?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
       /**
-       * URI path for the resource
+       * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
       __typename: 'Page' | undefined;
@@ -15339,22 +14743,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
       }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
       /**
@@ -15377,22 +14781,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
       }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
       /**
@@ -15410,22 +14814,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PageToCommentConnectionWhereArgs>;
       }) => Maybe<PageToCommentConnection>;
       /**
@@ -15442,7 +14846,7 @@ export type ContentRevisionUnion =
        */
       contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
       /**
-       * The ID of the node in the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
       /**
@@ -15472,18 +14876,18 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
       /**
@@ -15493,18 +14897,18 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
       excerpt?: undefined;
@@ -15528,6 +14932,10 @@ export type ContentRevisionUnion =
        * The globally unique identifier of the page object.
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
       /**
        * Whether this page is set to the static front page.
        */
@@ -15553,6 +14961,10 @@ export type ContentRevisionUnion =
        */
       isRevision?: Maybe<ScalarsEnums['Boolean']>;
       isSticky?: undefined;
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
       /**
        * The user that most recently edited the node
        */
@@ -15617,22 +15029,22 @@ export type ContentRevisionUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PageToRevisionConnectionWhereArgs>;
       }) => Maybe<PageToRevisionConnection>;
       /**
@@ -15660,9 +15072,9 @@ export type ContentRevisionUnion =
       }) => Maybe<ScalarsEnums['String']>;
       toPing?: undefined;
       /**
-       * URI path for the resource
+       * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     };
 /**
  * Deprecated in favor of MenuItemLinkeable Interface
@@ -15690,22 +15102,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToCategoryConnectionWhereArgs>;
       }) => Maybe<PostToCategoryConnection>;
       categoryId?: undefined;
@@ -15725,22 +15137,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToCommentConnectionWhereArgs>;
       }) => Maybe<PostToCommentConnection>;
       /**
@@ -15759,7 +15171,7 @@ export type MenuItemObjectUnion =
       contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
       count?: undefined;
       /**
-       * The ID of the node in the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
       /**
@@ -15790,18 +15202,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
       /**
@@ -15811,18 +15223,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
       /**
@@ -15854,6 +15266,10 @@ export type MenuItemObjectUnion =
        * The globally unique identifier of the post object.
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
       isFrontPage?: undefined;
       isPostsPage?: undefined;
       /**
@@ -15873,6 +15289,10 @@ export type MenuItemObjectUnion =
        * Whether this page is sticky
        */
       isSticky: ScalarsEnums['Boolean'];
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
       /**
        * The user that most recently edited the node
        */
@@ -15903,6 +15323,7 @@ export type MenuItemObjectUnion =
        * URLs that have been pinged.
        */
       pinged?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
+      postFormatId?: undefined;
       /**
        * Connection between the post type and the postFormat type
        */
@@ -15910,22 +15331,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToPostFormatConnectionWhereArgs>;
       }) => Maybe<PostToPostFormatConnection>;
       /**
@@ -15957,22 +15378,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToRevisionConnectionWhereArgs>;
       }) => Maybe<PostToRevisionConnection>;
       /**
@@ -15991,22 +15412,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToTagConnectionWhereArgs>;
       }) => Maybe<PostToTagConnection>;
       taxonomy?: undefined;
@@ -16023,22 +15444,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostToTermNodeConnectionWhereArgs>;
       }) => Maybe<PostToTermNodeConnection>;
       /**
@@ -16055,9 +15476,9 @@ export type MenuItemObjectUnion =
        */
       toPing?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
       /**
-       * URI path for the resource
+       * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
       __typename: 'Page' | undefined;
@@ -16068,22 +15489,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
       }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
       /**
@@ -16107,22 +15528,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
       }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
       /**
@@ -16140,22 +15561,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PageToCommentConnectionWhereArgs>;
       }) => Maybe<PageToCommentConnection>;
       /**
@@ -16174,7 +15595,7 @@ export type MenuItemObjectUnion =
       contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
       count?: undefined;
       /**
-       * The ID of the node in the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
       /**
@@ -16205,18 +15626,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
       /**
@@ -16226,18 +15647,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
       excerpt?: undefined;
@@ -16261,6 +15682,10 @@ export type MenuItemObjectUnion =
        * The globally unique identifier of the page object.
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
       /**
        * Whether this page is set to the static front page.
        */
@@ -16286,6 +15711,10 @@ export type MenuItemObjectUnion =
        */
       isRevision?: Maybe<ScalarsEnums['Boolean']>;
       isSticky?: undefined;
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
       /**
        * The user that most recently edited the node
        */
@@ -16326,6 +15755,7 @@ export type MenuItemObjectUnion =
       parentId?: Maybe<ScalarsEnums['ID']>;
       pingStatus?: undefined;
       pinged?: undefined;
+      postFormatId?: undefined;
       postFormats?: undefined;
       postId?: undefined;
       posts?: undefined;
@@ -16352,22 +15782,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PageToRevisionConnectionWhereArgs>;
       }) => Maybe<PageToRevisionConnection>;
       /**
@@ -16399,9 +15829,9 @@ export type MenuItemObjectUnion =
       }) => Maybe<ScalarsEnums['String']>;
       toPing?: undefined;
       /**
-       * URI path for the resource
+       * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
       __typename: 'Category' | undefined;
@@ -16412,18 +15842,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<CategoryToAncestorsCategoryConnection>;
       author?: undefined;
@@ -16442,22 +15872,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<CategoryToCategoryConnectionWhereArgs>;
       }) => Maybe<CategoryToCategoryConnection>;
       commentCount?: undefined;
@@ -16471,22 +15901,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<CategoryToContentNodeConnectionWhereArgs>;
       }) => Maybe<CategoryToContentNodeConnection>;
       contentType?: undefined;
@@ -16495,7 +15925,7 @@ export type MenuItemObjectUnion =
        */
       count?: Maybe<ScalarsEnums['Int']>;
       /**
-       * Identifies the primary key from the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
       date?: undefined;
@@ -16514,18 +15944,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<TermNodeToEnqueuedScriptConnection>;
       /**
@@ -16535,18 +15965,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
       excerpt?: undefined;
@@ -16555,9 +15985,13 @@ export type MenuItemObjectUnion =
       featuredImageId?: undefined;
       guid?: undefined;
       /**
-       * The globally unique ID for the object
+       * The unique resource identifier path
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
       isFrontPage?: undefined;
       isPostsPage?: undefined;
       isPreview?: undefined;
@@ -16568,6 +16002,10 @@ export type MenuItemObjectUnion =
       isRestricted?: Maybe<ScalarsEnums['Boolean']>;
       isRevision?: undefined;
       isSticky?: undefined;
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
       lastEditedBy?: undefined;
       /**
        * The link to the term
@@ -16595,6 +16033,7 @@ export type MenuItemObjectUnion =
       parentId?: Maybe<ScalarsEnums['ID']>;
       pingStatus?: undefined;
       pinged?: undefined;
+      postFormatId?: undefined;
       postFormats?: undefined;
       postId?: undefined;
       /**
@@ -16604,22 +16043,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<CategoryToPostConnectionWhereArgs>;
       }) => Maybe<CategoryToPostConnection>;
       preview?: undefined;
@@ -16653,7 +16092,7 @@ export type MenuItemObjectUnion =
       /**
        * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
       __typename: 'Tag' | undefined;
@@ -16675,22 +16114,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<TagToContentNodeConnectionWhereArgs>;
       }) => Maybe<TagToContentNodeConnection>;
       contentType?: undefined;
@@ -16699,7 +16138,7 @@ export type MenuItemObjectUnion =
        */
       count?: Maybe<ScalarsEnums['Int']>;
       /**
-       * Identifies the primary key from the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
       date?: undefined;
@@ -16718,18 +16157,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<TermNodeToEnqueuedScriptConnection>;
       /**
@@ -16739,18 +16178,18 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
       excerpt?: undefined;
@@ -16759,9 +16198,13 @@ export type MenuItemObjectUnion =
       featuredImageId?: undefined;
       guid?: undefined;
       /**
-       * The globally unique ID for the object
+       * The unique resource identifier path
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
       isFrontPage?: undefined;
       isPostsPage?: undefined;
       isPreview?: undefined;
@@ -16772,6 +16215,10 @@ export type MenuItemObjectUnion =
       isRestricted?: Maybe<ScalarsEnums['Boolean']>;
       isRevision?: undefined;
       isSticky?: undefined;
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
       lastEditedBy?: undefined;
       /**
        * The link to the term
@@ -16790,6 +16237,7 @@ export type MenuItemObjectUnion =
       parentId?: undefined;
       pingStatus?: undefined;
       pinged?: undefined;
+      postFormatId?: undefined;
       postFormats?: undefined;
       postId?: undefined;
       /**
@@ -16799,22 +16247,22 @@ export type MenuItemObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<TagToPostConnectionWhereArgs>;
       }) => Maybe<TagToPostConnection>;
       preview?: undefined;
@@ -16852,1470 +16300,21 @@ export type MenuItemObjectUnion =
       /**
        * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
-    };
-/**
- * Union between the post, page and media item types
- */
-export type PostObjectUnion =
-  | {
-      __typename: 'Post' | undefined;
-      altText?: undefined;
-      ancestors?: undefined;
-      /**
-       * Connection between the NodeWithAuthor type and the User type
-       */
-      author?: Maybe<NodeWithAuthorToUserConnectionEdge>;
-      /**
-       * The database identifier of the author of the node
-       */
-      authorDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The globally unique identifier of the author of the node
-       */
-      authorId?: Maybe<ScalarsEnums['ID']>;
-      caption?: undefined;
-      /**
-       * Connection between the post type and the category type
-       */
-      categories: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PostToCategoryConnectionWhereArgs>;
-      }) => Maybe<PostToCategoryConnection>;
-      children?: undefined;
-      /**
-       * The number of comments. Even though WPGraphQL denotes this field as an integer, in WordPress this field should be saved as a numeric string for compatibility.
-       */
-      commentCount?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Whether the comments are open or closed for this particular post.
-       */
-      commentStatus?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the post type and the Comment type
-       */
-      comments: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PostToCommentConnectionWhereArgs>;
-      }) => Maybe<PostToCommentConnection>;
-      /**
-       * The content of the post.
-       */
-      content: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the ContentNode type and the ContentType type
-       */
-      contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
-      /**
-       * The ID of the node in the database.
-       */
-      databaseId: ScalarsEnums['Int'];
-      /**
-       * Post publishing date.
-       */
-      date?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The publishing date set in GMT.
-       */
-      dateGmt?: Maybe<ScalarsEnums['String']>;
-      description?: undefined;
-      /**
-       * The desired slug of the post
-       */
-      desiredSlug?: Maybe<ScalarsEnums['String']>;
-      /**
-       * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
-       */
-      editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
-      /**
-       * The RSS enclosure for the object
-       */
-      enclosure?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the ContentNode type and the EnqueuedScript type
-       */
-      enqueuedScripts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
-      /**
-       * Connection between the ContentNode type and the EnqueuedStylesheet type
-       */
-      enqueuedStylesheets: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
-      /**
-       * The excerpt of the post.
-       */
-      excerpt: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the NodeWithFeaturedImage type and the MediaItem type
-       */
-      featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
-      /**
-       * The database identifier for the featured image node assigned to the content node
-       */
-      featuredImageDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Globally unique ID of the featured image assigned to the node
-       */
-      featuredImageId?: Maybe<ScalarsEnums['ID']>;
-      fileSize?: undefined;
-      /**
-       * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
-       */
-      guid?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The globally unique identifier of the post object.
-       */
-      id: ScalarsEnums['ID'];
-      isFrontPage?: undefined;
-      isPostsPage?: undefined;
-      /**
-       * Whether the object is a node in the preview state
-       */
-      isPreview?: Maybe<ScalarsEnums['Boolean']>;
-      isPrivacyPage?: undefined;
-      /**
-       * Whether the object is restricted from the current viewer
-       */
-      isRestricted?: Maybe<ScalarsEnums['Boolean']>;
-      /**
-       * True if the node is a revision of another node
-       */
-      isRevision?: Maybe<ScalarsEnums['Boolean']>;
-      /**
-       * Whether this page is sticky
-       */
-      isSticky: ScalarsEnums['Boolean'];
-      /**
-       * The user that most recently edited the node
-       */
-      lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
-      /**
-       * The permalink of the post
-       */
-      link?: Maybe<ScalarsEnums['String']>;
-      mediaDetails?: undefined;
-      mediaItemId?: undefined;
-      mediaItemUrl?: undefined;
-      mediaType?: undefined;
-      menuOrder?: undefined;
-      mimeType?: undefined;
-      /**
-       * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
-       */
-      modified?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
-       */
-      modifiedGmt?: Maybe<ScalarsEnums['String']>;
-      pageId?: undefined;
-      parent?: undefined;
-      parentDatabaseId?: undefined;
-      parentId?: undefined;
-      /**
-       * Whether the pings are open or closed for this particular post.
-       */
-      pingStatus?: Maybe<ScalarsEnums['String']>;
-      /**
-       * URLs that have been pinged.
-       */
-      pinged?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
-      /**
-       * Connection between the post type and the postFormat type
-       */
-      postFormats: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PostToPostFormatConnectionWhereArgs>;
-      }) => Maybe<PostToPostFormatConnection>;
-      /**
-       * The id field matches the WP_Post-&gt;ID field.
-       * @deprecated Deprecated in favor of the databaseId field
-       */
-      postId: ScalarsEnums['Int'];
-      /**
-       * Connection between the post type and the post type
-       */
-      preview?: Maybe<PostToPreviewConnectionEdge>;
-      /**
-       * The database id of the preview node
-       */
-      previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Whether the object is a node in the preview state
-       */
-      previewRevisionId?: Maybe<ScalarsEnums['ID']>;
-      /**
-       * If the current node is a revision, this field exposes the node this is a revision of. Returns null if the node is not a revision of another node.
-       */
-      revisionOf?: Maybe<NodeWithRevisionsToContentNodeConnectionEdge>;
-      /**
-       * Connection between the post type and the post type
-       */
-      revisions: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PostToRevisionConnectionWhereArgs>;
-      }) => Maybe<PostToRevisionConnection>;
-      sizes?: undefined;
-      /**
-       * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
-       */
-      slug?: Maybe<ScalarsEnums['String']>;
-      sourceUrl?: undefined;
-      srcSet?: undefined;
-      /**
-       * The current status of the object
-       */
-      status?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the post type and the tag type
-       */
-      tags: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PostToTagConnectionWhereArgs>;
-      }) => Maybe<PostToTagConnection>;
-      /**
-       * The template assigned to a node of content
-       */
-      template?: Maybe<ContentTemplate>;
-      /**
-       * Connection between the post type and the TermNode type
-       */
-      terms: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PostToTermNodeConnectionWhereArgs>;
-      }) => Maybe<PostToTermNodeConnection>;
-      /**
-       * The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
-       */
-      title: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * URLs queued to be pinged.
-       */
-      toPing?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
-      /**
-       * URI path for the resource
-       */
-      uri: ScalarsEnums['String'];
-    }
-  | {
-      __typename: 'Page' | undefined;
-      altText?: undefined;
-      /**
-       * Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
-       */
-      ancestors: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
-      }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
-      /**
-       * Connection between the NodeWithAuthor type and the User type
-       */
-      author?: Maybe<NodeWithAuthorToUserConnectionEdge>;
-      /**
-       * The database identifier of the author of the node
-       */
-      authorDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The globally unique identifier of the author of the node
-       */
-      authorId?: Maybe<ScalarsEnums['ID']>;
-      caption?: undefined;
-      categories?: undefined;
-      /**
-       * Connection between the HierarchicalContentNode type and the ContentNode type
-       */
-      children: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
-      }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
-      /**
-       * The number of comments. Even though WPGraphQL denotes this field as an integer, in WordPress this field should be saved as a numeric string for compatibility.
-       */
-      commentCount?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Whether the comments are open or closed for this particular post.
-       */
-      commentStatus?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the page type and the Comment type
-       */
-      comments: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PageToCommentConnectionWhereArgs>;
-      }) => Maybe<PageToCommentConnection>;
-      /**
-       * The content of the post.
-       */
-      content: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the ContentNode type and the ContentType type
-       */
-      contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
-      /**
-       * The ID of the node in the database.
-       */
-      databaseId: ScalarsEnums['Int'];
-      /**
-       * Post publishing date.
-       */
-      date?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The publishing date set in GMT.
-       */
-      dateGmt?: Maybe<ScalarsEnums['String']>;
-      description?: undefined;
-      /**
-       * The desired slug of the post
-       */
-      desiredSlug?: Maybe<ScalarsEnums['String']>;
-      /**
-       * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
-       */
-      editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
-      /**
-       * The RSS enclosure for the object
-       */
-      enclosure?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the ContentNode type and the EnqueuedScript type
-       */
-      enqueuedScripts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
-      /**
-       * Connection between the ContentNode type and the EnqueuedStylesheet type
-       */
-      enqueuedStylesheets: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
-      excerpt?: undefined;
-      /**
-       * Connection between the NodeWithFeaturedImage type and the MediaItem type
-       */
-      featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
-      /**
-       * The database identifier for the featured image node assigned to the content node
-       */
-      featuredImageDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Globally unique ID of the featured image assigned to the node
-       */
-      featuredImageId?: Maybe<ScalarsEnums['ID']>;
-      fileSize?: undefined;
-      /**
-       * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
-       */
-      guid?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The globally unique identifier of the page object.
-       */
-      id: ScalarsEnums['ID'];
-      /**
-       * Whether this page is set to the static front page.
-       */
-      isFrontPage: ScalarsEnums['Boolean'];
-      /**
-       * Whether this page is set to the blog posts page.
-       */
-      isPostsPage: ScalarsEnums['Boolean'];
-      /**
-       * Whether the object is a node in the preview state
-       */
-      isPreview?: Maybe<ScalarsEnums['Boolean']>;
-      /**
-       * Whether this page is set to the privacy page.
-       */
-      isPrivacyPage: ScalarsEnums['Boolean'];
-      /**
-       * Whether the object is restricted from the current viewer
-       */
-      isRestricted?: Maybe<ScalarsEnums['Boolean']>;
-      /**
-       * True if the node is a revision of another node
-       */
-      isRevision?: Maybe<ScalarsEnums['Boolean']>;
-      isSticky?: undefined;
-      /**
-       * The user that most recently edited the node
-       */
-      lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
-      /**
-       * The permalink of the post
-       */
-      link?: Maybe<ScalarsEnums['String']>;
-      mediaDetails?: undefined;
-      mediaItemId?: undefined;
-      mediaItemUrl?: undefined;
-      mediaType?: undefined;
-      /**
-       * A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types.
-       */
-      menuOrder?: Maybe<ScalarsEnums['Int']>;
-      mimeType?: undefined;
-      /**
-       * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
-       */
-      modified?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
-       */
-      modifiedGmt?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The id field matches the WP_Post-&gt;ID field.
-       * @deprecated Deprecated in favor of the databaseId field
-       */
-      pageId: ScalarsEnums['Int'];
-      /**
-       * The parent of the node. The parent object can be of various types
-       */
-      parent?: Maybe<HierarchicalContentNodeToParentContentNodeConnectionEdge>;
-      /**
-       * Database id of the parent node
-       */
-      parentDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The globally unique identifier of the parent node.
-       */
-      parentId?: Maybe<ScalarsEnums['ID']>;
-      pingStatus?: undefined;
-      pinged?: undefined;
-      postFormats?: undefined;
-      postId?: undefined;
-      /**
-       * Connection between the page type and the page type
-       */
-      preview?: Maybe<PageToPreviewConnectionEdge>;
-      /**
-       * The database id of the preview node
-       */
-      previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Whether the object is a node in the preview state
-       */
-      previewRevisionId?: Maybe<ScalarsEnums['ID']>;
-      /**
-       * If the current node is a revision, this field exposes the node this is a revision of. Returns null if the node is not a revision of another node.
-       */
-      revisionOf?: Maybe<NodeWithRevisionsToContentNodeConnectionEdge>;
-      /**
-       * Connection between the page type and the page type
-       */
-      revisions: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<PageToRevisionConnectionWhereArgs>;
-      }) => Maybe<PageToRevisionConnection>;
-      sizes?: undefined;
-      /**
-       * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
-       */
-      slug?: Maybe<ScalarsEnums['String']>;
-      sourceUrl?: undefined;
-      srcSet?: undefined;
-      /**
-       * The current status of the object
-       */
-      status?: Maybe<ScalarsEnums['String']>;
-      tags?: undefined;
-      /**
-       * The template assigned to a node of content
-       */
-      template?: Maybe<ContentTemplate>;
-      terms?: undefined;
-      /**
-       * The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
-       */
-      title: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      toPing?: undefined;
-      /**
-       * URI path for the resource
-       */
-      uri: ScalarsEnums['String'];
-    }
-  | {
-      __typename: 'MediaItem' | undefined;
-      /**
-       * Alternative text to display when resource is not displayed
-       */
-      altText?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
-       */
-      ancestors: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs>;
-      }) => Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
-      /**
-       * Connection between the NodeWithAuthor type and the User type
-       */
-      author?: Maybe<NodeWithAuthorToUserConnectionEdge>;
-      /**
-       * The database identifier of the author of the node
-       */
-      authorDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The globally unique identifier of the author of the node
-       */
-      authorId?: Maybe<ScalarsEnums['ID']>;
-      /**
-       * The caption for the resource
-       */
-      caption: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      categories?: undefined;
-      /**
-       * Connection between the HierarchicalContentNode type and the ContentNode type
-       */
-      children: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs>;
-      }) => Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
-      /**
-       * The number of comments. Even though WPGraphQL denotes this field as an integer, in WordPress this field should be saved as a numeric string for compatibility.
-       */
-      commentCount?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Whether the comments are open or closed for this particular post.
-       */
-      commentStatus?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the mediaItem type and the Comment type
-       */
-      comments: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<MediaItemToCommentConnectionWhereArgs>;
-      }) => Maybe<MediaItemToCommentConnection>;
-      content?: undefined;
-      /**
-       * Connection between the ContentNode type and the ContentType type
-       */
-      contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
-      /**
-       * The ID of the node in the database.
-       */
-      databaseId: ScalarsEnums['Int'];
-      /**
-       * Post publishing date.
-       */
-      date?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The publishing date set in GMT.
-       */
-      dateGmt?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Description of the image (stored as post_content)
-       */
-      description: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * The desired slug of the post
-       */
-      desiredSlug?: Maybe<ScalarsEnums['String']>;
-      /**
-       * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
-       */
-      editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
-      /**
-       * The RSS enclosure for the object
-       */
-      enclosure?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the ContentNode type and the EnqueuedScript type
-       */
-      enqueuedScripts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<ContentNodeToEnqueuedScriptConnection>;
-      /**
-       * Connection between the ContentNode type and the EnqueuedStylesheet type
-       */
-      enqueuedStylesheets: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<ContentNodeToEnqueuedStylesheetConnection>;
-      excerpt?: undefined;
-      featuredImage?: undefined;
-      featuredImageDatabaseId?: undefined;
-      featuredImageId?: undefined;
-      /**
-       * The filesize in bytes of the resource
-       */
-      fileSize: (args?: {
-        /**
-         * Size of the MediaItem to return
-         */
-        size?: Maybe<MediaItemSizeEnum>;
-      }) => Maybe<ScalarsEnums['Int']>;
-      /**
-       * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
-       */
-      guid?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The globally unique identifier of the attachment object.
-       */
-      id: ScalarsEnums['ID'];
-      isFrontPage?: undefined;
-      isPostsPage?: undefined;
-      /**
-       * Whether the object is a node in the preview state
-       */
-      isPreview?: Maybe<ScalarsEnums['Boolean']>;
-      isPrivacyPage?: undefined;
-      /**
-       * Whether the object is restricted from the current viewer
-       */
-      isRestricted?: Maybe<ScalarsEnums['Boolean']>;
-      isRevision?: undefined;
-      isSticky?: undefined;
-      /**
-       * The user that most recently edited the node
-       */
-      lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
-      /**
-       * The permalink of the post
-       */
-      link?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Details about the mediaItem
-       */
-      mediaDetails?: Maybe<MediaDetails>;
-      /**
-       * The id field matches the WP_Post-&gt;ID field.
-       * @deprecated Deprecated in favor of the databaseId field
-       */
-      mediaItemId: ScalarsEnums['Int'];
-      /**
-       * Url of the mediaItem
-       */
-      mediaItemUrl?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Type of resource
-       */
-      mediaType?: Maybe<ScalarsEnums['String']>;
-      menuOrder?: undefined;
-      /**
-       * The mime type of the mediaItem
-       */
-      mimeType?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
-       */
-      modified?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
-       */
-      modifiedGmt?: Maybe<ScalarsEnums['String']>;
-      pageId?: undefined;
-      /**
-       * The parent of the node. The parent object can be of various types
-       */
-      parent?: Maybe<HierarchicalContentNodeToParentContentNodeConnectionEdge>;
-      /**
-       * Database id of the parent node
-       */
-      parentDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The globally unique identifier of the parent node.
-       */
-      parentId?: Maybe<ScalarsEnums['ID']>;
-      pingStatus?: undefined;
-      pinged?: undefined;
-      postFormats?: undefined;
-      postId?: undefined;
-      preview?: undefined;
-      /**
-       * The database id of the preview node
-       */
-      previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Whether the object is a node in the preview state
-       */
-      previewRevisionId?: Maybe<ScalarsEnums['ID']>;
-      revisionOf?: undefined;
-      revisions?: undefined;
-      /**
-       * The sizes attribute value for an image.
-       */
-      sizes: (args?: {
-        /**
-         * Size of the MediaItem to calculate sizes with
-         */
-        size?: Maybe<MediaItemSizeEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
-       */
-      slug?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Url of the mediaItem
-       */
-      sourceUrl: (args?: {
-        /**
-         * Size of the MediaItem to return
-         */
-        size?: Maybe<MediaItemSizeEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * The srcset attribute specifies the URL of the image to use in different situations. It is a comma separated string of urls and their widths.
-       */
-      srcSet: (args?: {
-        /**
-         * Size of the MediaItem to calculate srcSet with
-         */
-        size?: Maybe<MediaItemSizeEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      /**
-       * The current status of the object
-       */
-      status?: Maybe<ScalarsEnums['String']>;
-      tags?: undefined;
-      /**
-       * The template assigned to a node of content
-       */
-      template?: Maybe<ContentTemplate>;
-      terms?: undefined;
-      /**
-       * The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
-       */
-      title: (args?: {
-        /**
-         * Format of the field output
-         */
-        format?: Maybe<PostObjectFieldFormatEnum>;
-      }) => Maybe<ScalarsEnums['String']>;
-      toPing?: undefined;
-      /**
-       * URI path for the resource
-       */
-      uri: ScalarsEnums['String'];
-    };
-/**
- * Union between the Category, Tag and PostFormatPost types
- */
-export type TermObjectUnion =
-  | {
-      __typename: 'Category' | undefined;
-      /**
-       * The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
-       */
-      ancestors: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<CategoryToAncestorsCategoryConnection>;
-      /**
-       * The id field matches the WP_Post-&gt;ID field.
-       * @deprecated Deprecated in favor of databaseId
-       */
-      categoryId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Connection between the category type and the category type
-       */
-      children: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<CategoryToCategoryConnectionWhereArgs>;
-      }) => Maybe<CategoryToCategoryConnection>;
-      /**
-       * Connection between the category type and the ContentNode type
-       */
-      contentNodes: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<CategoryToContentNodeConnectionWhereArgs>;
-      }) => Maybe<CategoryToContentNodeConnection>;
-      /**
-       * The number of objects connected to the object
-       */
-      count?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Identifies the primary key from the database.
-       */
-      databaseId: ScalarsEnums['Int'];
-      /**
-       * The description of the object
-       */
-      description?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the TermNode type and the EnqueuedScript type
-       */
-      enqueuedScripts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<TermNodeToEnqueuedScriptConnection>;
-      /**
-       * Connection between the TermNode type and the EnqueuedStylesheet type
-       */
-      enqueuedStylesheets: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
-      /**
-       * The globally unique ID for the object
-       */
-      id: ScalarsEnums['ID'];
-      /**
-       * Whether the object is restricted from the current viewer
-       */
-      isRestricted?: Maybe<ScalarsEnums['Boolean']>;
-      /**
-       * The link to the term
-       */
-      link?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The human friendly name of the object.
-       */
-      name?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the category type and the category type
-       */
-      parent?: Maybe<CategoryToParentCategoryConnectionEdge>;
-      /**
-       * Database id of the parent node
-       */
-      parentDatabaseId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The globally unique identifier of the parent node.
-       */
-      parentId?: Maybe<ScalarsEnums['ID']>;
-      postFormatId?: undefined;
-      /**
-       * Connection between the category type and the post type
-       */
-      posts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<CategoryToPostConnectionWhereArgs>;
-      }) => Maybe<CategoryToPostConnection>;
-      /**
-       * An alphanumeric identifier for the object unique to its type.
-       */
-      slug?: Maybe<ScalarsEnums['String']>;
-      tagId?: undefined;
-      /**
-       * Connection between the category type and the Taxonomy type
-       */
-      taxonomy?: Maybe<CategoryToTaxonomyConnectionEdge>;
-      /**
-       * The ID of the term group that this term object belongs to
-       */
-      termGroupId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The taxonomy ID that the object is associated with
-       */
-      termTaxonomyId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The unique resource identifier path
-       */
-      uri: ScalarsEnums['String'];
-    }
-  | {
-      __typename: 'Tag' | undefined;
-      ancestors?: undefined;
-      categoryId?: undefined;
-      children?: undefined;
-      /**
-       * Connection between the tag type and the ContentNode type
-       */
-      contentNodes: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<TagToContentNodeConnectionWhereArgs>;
-      }) => Maybe<TagToContentNodeConnection>;
-      /**
-       * The number of objects connected to the object
-       */
-      count?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Identifies the primary key from the database.
-       */
-      databaseId: ScalarsEnums['Int'];
-      /**
-       * The description of the object
-       */
-      description?: Maybe<ScalarsEnums['String']>;
-      /**
-       * Connection between the TermNode type and the EnqueuedScript type
-       */
-      enqueuedScripts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<TermNodeToEnqueuedScriptConnection>;
-      /**
-       * Connection between the TermNode type and the EnqueuedStylesheet type
-       */
-      enqueuedStylesheets: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-      }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
-      /**
-       * The globally unique ID for the object
-       */
-      id: ScalarsEnums['ID'];
-      /**
-       * Whether the object is restricted from the current viewer
-       */
-      isRestricted?: Maybe<ScalarsEnums['Boolean']>;
-      /**
-       * The link to the term
-       */
-      link?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The human friendly name of the object.
-       */
-      name?: Maybe<ScalarsEnums['String']>;
-      parent?: undefined;
-      parentDatabaseId?: undefined;
-      parentId?: undefined;
-      postFormatId?: undefined;
-      /**
-       * Connection between the tag type and the post type
-       */
-      posts: (args?: {
-        /**
-         * The number of items to return after the referenced "after" cursor
-         */
-        first?: Maybe<Scalars['Int']>;
-        /**
-         * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
-        /**
-         * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
-        /**
-         * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
-        /**
-         * Arguments for filtering the connection
-         */
-        where?: Maybe<TagToPostConnectionWhereArgs>;
-      }) => Maybe<TagToPostConnection>;
-      /**
-       * An alphanumeric identifier for the object unique to its type.
-       */
-      slug?: Maybe<ScalarsEnums['String']>;
-      /**
-       * The id field matches the WP_Post-&gt;ID field.
-       * @deprecated Deprecated in favor of databaseId
-       */
-      tagId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * Connection between the tag type and the Taxonomy type
-       */
-      taxonomy?: Maybe<TagToTaxonomyConnectionEdge>;
-      /**
-       * The ID of the term group that this term object belongs to
-       */
-      termGroupId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The taxonomy ID that the object is associated with
-       */
-      termTaxonomyId?: Maybe<ScalarsEnums['Int']>;
-      /**
-       * The unique resource identifier path
-       */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
       __typename: 'PostFormat' | undefined;
       ancestors?: undefined;
+      author?: undefined;
+      authorDatabaseId?: undefined;
+      authorId?: undefined;
+      categories?: undefined;
       categoryId?: undefined;
       children?: undefined;
+      commentCount?: undefined;
+      commentStatus?: undefined;
+      comments?: undefined;
+      content?: undefined;
       /**
        * Connection between the postFormat type and the ContentNode type
        */
@@ -18323,36 +16322,42 @@ export type TermObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostFormatToContentNodeConnectionWhereArgs>;
       }) => Maybe<PostFormatToContentNodeConnection>;
+      contentType?: undefined;
       /**
        * The number of objects connected to the object
        */
       count?: Maybe<ScalarsEnums['Int']>;
       /**
-       * Identifies the primary key from the database.
+       * The unique resource identifier path
        */
       databaseId: ScalarsEnums['Int'];
+      date?: undefined;
+      dateGmt?: undefined;
       /**
        * The description of the object
        */
       description?: Maybe<ScalarsEnums['String']>;
+      desiredSlug?: undefined;
+      editingLockedBy?: undefined;
+      enclosure?: undefined;
       /**
        * Connection between the TermNode type and the EnqueuedScript type
        */
@@ -18360,18 +16365,18 @@ export type TermObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<TermNodeToEnqueuedScriptConnection>;
       /**
@@ -18381,44 +16386,72 @@ export type TermObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
+         */;
         before?: Maybe<Scalars['String']>;
       }) => Maybe<TermNodeToEnqueuedStylesheetConnection>;
+      excerpt?: undefined;
+      featuredImage?: undefined;
+      featuredImageDatabaseId?: undefined;
+      featuredImageId?: undefined;
+      guid?: undefined;
       /**
-       * The globally unique ID for the object
+       * The unique resource identifier path
        */
       id: ScalarsEnums['ID'];
+      /**
+       * Whether the node is a Content Node
+       */
+      isContentNode: ScalarsEnums['Boolean'];
+      isFrontPage?: undefined;
+      isPostsPage?: undefined;
+      isPreview?: undefined;
+      isPrivacyPage?: undefined;
       /**
        * Whether the object is restricted from the current viewer
        */
       isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+      isRevision?: undefined;
+      isSticky?: undefined;
+      /**
+       * Whether the node is a Term
+       */
+      isTermNode: ScalarsEnums['Boolean'];
+      lastEditedBy?: undefined;
       /**
        * The link to the term
        */
       link?: Maybe<ScalarsEnums['String']>;
+      menuOrder?: undefined;
+      modified?: undefined;
+      modifiedGmt?: undefined;
       /**
        * The human friendly name of the object.
        */
       name?: Maybe<ScalarsEnums['String']>;
+      pageId?: undefined;
       parent?: undefined;
       parentDatabaseId?: undefined;
       parentId?: undefined;
+      pingStatus?: undefined;
+      pinged?: undefined;
       /**
        * The id field matches the WP_Post-&gt;ID field.
        * @deprecated Deprecated in favor of databaseId
        */
       postFormatId?: Maybe<ScalarsEnums['Int']>;
+      postFormats?: undefined;
+      postId?: undefined;
       /**
        * Connection between the postFormat type and the post type
        */
@@ -18426,33 +16459,41 @@ export type TermObjectUnion =
         /**
          * The number of items to return after the referenced "after" cursor
          */
-        first?: Maybe<Scalars['Int']>;
+        first?: Maybe<Scalars['Int']>
         /**
          * The number of items to return before the referenced "before" cursor
-         */
-        last?: Maybe<Scalars['Int']>;
+         */;
+        last?: Maybe<Scalars['Int']>
         /**
          * Cursor used along with the "first" argument to reference where in the dataset to get data
-         */
-        after?: Maybe<Scalars['String']>;
+         */;
+        after?: Maybe<Scalars['String']>
         /**
          * Cursor used along with the "last" argument to reference where in the dataset to get data
-         */
-        before?: Maybe<Scalars['String']>;
+         */;
+        before?: Maybe<Scalars['String']>
         /**
          * Arguments for filtering the connection
-         */
+         */;
         where?: Maybe<PostFormatToPostConnectionWhereArgs>;
       }) => Maybe<PostFormatToPostConnection>;
+      preview?: undefined;
+      previewRevisionDatabaseId?: undefined;
+      previewRevisionId?: undefined;
+      revisionOf?: undefined;
+      revisions?: undefined;
       /**
        * An alphanumeric identifier for the object unique to its type.
        */
       slug?: Maybe<ScalarsEnums['String']>;
+      status?: undefined;
       tagId?: undefined;
+      tags?: undefined;
       /**
        * Connection between the postFormat type and the Taxonomy type
        */
       taxonomy?: Maybe<PostFormatToTaxonomyConnectionEdge>;
+      template?: undefined;
       /**
        * The ID of the term group that this term object belongs to
        */
@@ -18461,10 +16502,13 @@ export type TermObjectUnion =
        * The taxonomy ID that the object is associated with
        */
       termTaxonomyId?: Maybe<ScalarsEnums['Int']>;
+      terms?: undefined;
+      title?: undefined;
+      toPing?: undefined;
       /**
        * The unique resource identifier path
        */
-      uri: ScalarsEnums['String'];
+      uri?: Maybe<ScalarsEnums['String']>;
     };
 
 /**
@@ -18493,13 +16537,21 @@ export interface TermNode {
    */
   description?: Maybe<ScalarsEnums['String']>;
   /**
-   * Unique identifier for the term
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The link to the term
    */
@@ -18523,7 +16575,28 @@ export interface TermNode {
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
+}
+/**
+ * Any node that has a URI
+ */
+export interface UniformResourceIdentifiable {
+  /**
+   * The unique resource identifier path
+   */
+  id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
+  /**
+   * The unique resource identifier path
+   */
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 /**
  * Asset enqueued by the CMS
@@ -18568,19 +16641,6 @@ export interface DatabaseIdentifier {
   databaseId: ScalarsEnums['Int'];
 }
 /**
- * Any node that has a URI
- */
-export interface UniformResourceIdentifiable {
-  /**
-   * The unique resource identifier path
-   */
-  id: ScalarsEnums['ID'];
-  /**
-   * The unique resource identifier path
-   */
-  uri?: Maybe<ScalarsEnums['String']>;
-}
-/**
  * Term node with hierarchical (parent/child) relationships
  */
 export interface HierarchicalTermNode {
@@ -18608,7 +16668,7 @@ export interface MenuItemLinkable {
   /**
    * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 /**
  * Nodes used to manage content
@@ -18635,7 +16695,7 @@ export interface ContentNode {
    */
   desiredSlug?: Maybe<ScalarsEnums['String']>;
   /**
-   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn't exist or is greater than 15 seconds
+   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
    */
   editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
   /**
@@ -18643,13 +16703,17 @@ export interface ContentNode {
    */
   enclosure?: Maybe<ScalarsEnums['String']>;
   /**
-   * The global unique identifier for this post. This currently matches the value stored in WP_Post->guid and the guid column in the "post_objects" database table.
+   * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
    */
   guid?: Maybe<ScalarsEnums['String']>;
   /**
-   * The globally unique identifier of the node.
+   * The unique resource identifier path
    */
   id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
   /**
    * Whether the object is a node in the preview state
    */
@@ -18658,6 +16722,10 @@ export interface ContentNode {
    * Whether the object is restricted from the current viewer
    */
   isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
   /**
    * The user that most recently edited the node
    */
@@ -18683,7 +16751,7 @@ export interface ContentNode {
    */
   previewRevisionId?: Maybe<ScalarsEnums['ID']>;
   /**
-   * The uri slug for the post. This is equivalent to the WP_Post->post_name field and the post_name column in the database for the "post_objects" table.
+   * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
    */
   slug?: Maybe<ScalarsEnums['String']>;
   /**
@@ -18695,9 +16763,9 @@ export interface ContentNode {
    */
   template?: Maybe<ContentTemplate>;
   /**
-   * URI path for the resource
+   * The unique resource identifier path
    */
-  uri: ScalarsEnums['String'];
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 /**
  * The author of a comment
@@ -18806,6 +16874,34 @@ export interface NodeWithContentEditor {}
  */
 export interface NodeWithFeaturedImage {
   /**
+   * Connection between the ContentNode type and the ContentType type
+   */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /**
+   * The unique identifier stored in the database
+   */
+  databaseId: ScalarsEnums['Int'];
+  /**
+   * Post publishing date.
+   */
+  date?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The publishing date set in GMT.
+   */
+  dateGmt?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The desired slug of the post
+   */
+  desiredSlug?: Maybe<ScalarsEnums['String']>;
+  /**
+   * If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds
+   */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /**
+   * The RSS enclosure for the object
+   */
+  enclosure?: Maybe<ScalarsEnums['String']>;
+  /**
    * Connection between the NodeWithFeaturedImage type and the MediaItem type
    */
   featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
@@ -18817,6 +16913,70 @@ export interface NodeWithFeaturedImage {
    * Globally unique ID of the featured image assigned to the node
    */
   featuredImageId?: Maybe<ScalarsEnums['ID']>;
+  /**
+   * The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table.
+   */
+  guid?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The unique resource identifier path
+   */
+  id: ScalarsEnums['ID'];
+  /**
+   * Whether the node is a Content Node
+   */
+  isContentNode: ScalarsEnums['Boolean'];
+  /**
+   * Whether the object is a node in the preview state
+   */
+  isPreview?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the object is restricted from the current viewer
+   */
+  isRestricted?: Maybe<ScalarsEnums['Boolean']>;
+  /**
+   * Whether the node is a Term
+   */
+  isTermNode: ScalarsEnums['Boolean'];
+  /**
+   * The user that most recently edited the node
+   */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /**
+   * The permalink of the post
+   */
+  link?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time.
+   */
+  modified?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT.
+   */
+  modifiedGmt?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The database id of the preview node
+   */
+  previewRevisionDatabaseId?: Maybe<ScalarsEnums['Int']>;
+  /**
+   * Whether the object is a node in the preview state
+   */
+  previewRevisionId?: Maybe<ScalarsEnums['ID']>;
+  /**
+   * The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table.
+   */
+  slug?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The current status of the object
+   */
+  status?: Maybe<ScalarsEnums['String']>;
+  /**
+   * The template assigned to a node of content
+   */
+  template?: Maybe<ContentTemplate>;
+  /**
+   * The unique resource identifier path
+   */
+  uri?: Maybe<ScalarsEnums['String']>;
 }
 /**
  * A node that can have revisions
@@ -18877,6 +17037,7 @@ export interface ScalarsEnums extends MakeNullable<Scalars> {
   TermObjectsConnectionOrderbyEnum:
     | TermObjectsConnectionOrderbyEnum
     | undefined;
+  ContentTypesOfCategoryEnum: ContentTypesOfCategoryEnum | undefined;
   PostObjectsConnectionDateColumnEnum:
     | PostObjectsConnectionDateColumnEnum
     | undefined;
@@ -18886,11 +17047,13 @@ export interface ScalarsEnums extends MakeNullable<Scalars> {
     | PostObjectsConnectionOrderbyEnum
     | undefined;
   PostStatusEnum: PostStatusEnum | undefined;
-  AvatarRatingEnum: AvatarRatingEnum | undefined;
   ContentTypeEnum: ContentTypeEnum | undefined;
+  AvatarRatingEnum: AvatarRatingEnum | undefined;
   CommentsConnectionOrderbyEnum: CommentsConnectionOrderbyEnum | undefined;
   PostObjectFieldFormatEnum: PostObjectFieldFormatEnum | undefined;
   MediaItemSizeEnum: MediaItemSizeEnum | undefined;
+  ContentTypesOfPostFormatEnum: ContentTypesOfPostFormatEnum | undefined;
+  ContentTypesOfTagEnum: ContentTypesOfTagEnum | undefined;
   TaxonomyEnum: TaxonomyEnum | undefined;
   CategoryIdType: CategoryIdType | undefined;
   ContentNodeIdTypeEnum: ContentNodeIdTypeEnum | undefined;
@@ -18910,5 +17073,4 @@ export interface ScalarsEnums extends MakeNullable<Scalars> {
   UserRoleEnum: UserRoleEnum | undefined;
   UsersConnectionSearchColumnEnum: UsersConnectionSearchColumnEnum | undefined;
   MediaItemStatusEnum: MediaItemStatusEnum | undefined;
-  TimezoneEnum: TimezoneEnum | undefined;
 }

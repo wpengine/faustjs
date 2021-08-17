@@ -1,7 +1,3 @@
-require('dotenv').config();
-require('./src/faust.config');
-const { getGqlUrl } = require('@faustjs/core');
-
 /**
  * @type {import("@gqty/cli").GQtyConfig}
  */
@@ -9,10 +5,10 @@ const config = {
   react: false,
   scalarTypes: { DateTime: 'string' },
   introspection: {
-    endpoint: getGqlUrl(),
+    endpoint: 'http://basicwpwithwpgraphql.local/graphql',
     headers: {},
   },
-  destination: './src/client/index.ts',
+  destination: './src/api/client/index.ts',
   subscriptions: false,
   javascriptOutput: false,
 };
