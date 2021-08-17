@@ -8,9 +8,9 @@ import {
 import {
   createReactClient,
   CreateReactClientOptions,
-  ReactClient as GQlessReactClient,
-} from '@gqless/react';
-import { GQlessClient } from 'gqless';
+  ReactClient as GQtyReactClient,
+} from '@gqty/react';
+import { GQtyClient } from 'gqty';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 
@@ -45,8 +45,8 @@ export interface RequiredSchema {
 }
 
 export interface ReactClient<Schema extends RequiredSchema>
-  extends GQlessReactClient<Schema> {
-  client: GQlessClient<Schema>;
+  extends GQtyReactClient<Schema> {
+  client: GQtyClient<Schema>;
   useIsLoading(): boolean;
 }
 
