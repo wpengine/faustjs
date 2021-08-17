@@ -12,7 +12,7 @@
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
     "prepublish": "npm run build",
-    "generate:gqless": "gqless generate",
+    "generate:gqty": "gqty generate",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
@@ -34,13 +34,13 @@
   "license": "MIT",
   "dependencies": {
     "deepmerge": "^4.2.2",
-    "gqless": "^2.0.14",
+    "gqty": "^1.0.3",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
-    "@gqless/cli": "^2.0.16",
+    "@gqty/cli": "^1.0.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@types/express": "^4.17.12",
     "@types/is-number": "^7.0.1",

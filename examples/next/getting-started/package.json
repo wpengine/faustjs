@@ -8,7 +8,7 @@
     "start": "next start",
     "clean": "rimraf .next node_modules",
     "lint": "next lint",
-    "generate": "gqless generate",
+    "generate": "gqty generate",
     "wpe-build": "next build"
   },
   "dependencies": {
@@ -21,7 +21,7 @@
     "sass": "^1.35.1"
   },
   "devDependencies": {
-    "@gqless/cli": "^2.0.16",
+    "@gqty/cli": "^1.0.4",
     "@types/react": "^17.0.11",
     "dotenv": "^10.0.0",
     "eslint": "^7.28.0",

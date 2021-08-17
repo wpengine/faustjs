@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "wpe-build": "next build",
-    "generate": "gqless generate"
+    "generate": "gqty generate"
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +51,6 @@
     ]
   },
   "devDependencies": {
-    "@gqless/cli": "^2.0.16"
+    "@gqty/cli": "^1.0.4"
   }
 }

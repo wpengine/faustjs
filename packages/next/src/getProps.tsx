@@ -66,17 +66,7 @@ export async function getProps<
   client.setAsRoot();
 
   if (!isNil(Page)) {
-    let renderResult = await client.prepareReactRender(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      <RouterContext.Provider value={{ query: { ...context.params } } as any}>
-        <HeadlessContext.Provider value={{ client }}>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Page {...props} />
-        </HeadlessContext.Provider>
-      </RouterContext.Provider>,
-    );
-
-    renderResult = await client.prepareReactRender(
+    const renderResult = await client.prepareReactRender(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       <RouterContext.Provider value={{ query: { ...context.params } } as any}>
         <HeadlessContext.Provider value={{ client }}>
