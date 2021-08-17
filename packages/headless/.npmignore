@@ -1,6 +1,0 @@
-src/**/*
-!src/types/wpgraphql.d.ts
-.eslintrc.js
-.prettierrc.js
-.gitignore
-tsconfig.json
