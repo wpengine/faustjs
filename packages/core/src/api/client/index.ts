@@ -2,11 +2,11 @@ export * from './schema.generated';
 import {
   ClientOptions,
   createClient,
-  GQlessClient,
+  GQtyClient,
   QueryFetcher,
   ScalarsEnumsHash,
-  Schema as GQlessSchema,
-} from 'gqless';
+  Schema as GQtySchema,
+} from 'gqty';
 import type { IncomingMessage } from 'http';
 import fetch from 'isomorphic-fetch';
 import { isString } from 'lodash';
@@ -79,7 +79,7 @@ export interface ClientConfig<
     ClientOptions<ObjectTypesNames, SchemaObjectTypes>,
     'schema' | 'scalarsEnumsHash' | 'queryFetcher'
   > {
-  schema?: Readonly<GQlessSchema>;
+  schema?: Readonly<GQtySchema>;
   scalarsEnumsHash?: ScalarsEnumsHash;
   queryFetcher?: QueryFetcher;
   context?: WithClient<IncomingMessage, Schema>;
@@ -99,7 +99,7 @@ export interface ClientConfig<
 }
 
 export type WithClient<Type, Schema extends GqlClientSchema> = Type & {
-  apiClient?: GQlessClient<Schema>;
+  apiClient?: GQtyClient<Schema>;
 };
 
 /* eslint-disable @typescript-eslint/ban-types */
@@ -114,7 +114,7 @@ export function getClient<
   } = never,
 >(
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
-): GQlessClient<Schema> {
+): GQtyClient<Schema> {
   const {
     context,
     schema,

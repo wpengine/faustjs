@@ -1,7 +1,5 @@
 # WordPress Headless Framework
 
-[![Version](https://img.shields.io/npm/v/@wpengine/headless.svg)](https://npmjs.org/package/@wpengine/headless)
+The [@wpengine/headless](https://www.npmjs.com/package/@wpengine/headless) package is deprecated. Please use [@faustjs/core](https://www.npmjs.com/package/@faustjs/core), [@faustjs/react](https://www.npmjs.com/package/@faustjs/react), and [@faustjs/next](https://www.npmjs.com/package/@faustjs/next) instead.
 
-NOTE: This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like authentication and post previews. Be sure to install the [WordPress plugin](https://github.com/wpengine/headless-framework) that enables the functionality in this package.
-
-[Documentation](https://github.com/wpengine/headless-framework)
+Please see [https://github.com/wpengine/headless-framework](https://github.com/wpengine/headless-framework) for more information.

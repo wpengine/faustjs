@@ -3,7 +3,7 @@ require('./src/faust.config');
 const { getGqlUrl } = require('@faustjs/core');
 
 /**
- * @type {import("@gqless/cli").GQlessConfig}
+ * @type {import("@gqty/cli").GQtyConfig}
  */
 const config = {
   react: false,

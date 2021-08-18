@@ -60,7 +60,7 @@ export default function Page() {
               This headless example project uses{' '}
               <a href="https://nextjs.org/">Next.js</a>,{' '}
               <a href="https://graphql.org/">GraphQL</a>,{' '}
-              <a href="https://gqless.com">GQless</a> and the{' '}
+              <a href="https://gqty.dev">GQty</a> and the{' '}
               <a href="https://github.com/wpengine/headless-framework">
                 WP&nbsp;Engine headless packages
               </a>{' '}

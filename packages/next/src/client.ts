@@ -15,8 +15,8 @@ import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient,
-} from '@gqless/react';
-import type { GQlessClient } from 'gqless';
+} from '@gqty/react';
+import type { GQtyClient } from 'gqty';
 import type { IncomingMessage } from 'http';
 import { isUndefined, trim } from 'lodash';
 import defaults from 'lodash/defaults';
@@ -46,7 +46,7 @@ export interface NextClient<
     };
   } = never,
 > extends ReactClient<Schema> {
-  client: GQlessClient<Schema>;
+  client: GQtyClient<Schema>;
 
   setAsRoot(): void;
 
