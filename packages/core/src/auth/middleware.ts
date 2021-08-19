@@ -66,12 +66,3 @@ export async function authorizeHandler(
 
   return;
 }
-
-export function logoutHandler(req: IncomingMessage, res: ServerResponse): void {
-  storeRefreshToken(undefined, res, { request: req });
-
-  res.statusCode = 200;
-  res.end(JSON.stringify({ success: true }));
-
-  return;
-}
