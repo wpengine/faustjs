@@ -13,7 +13,7 @@ export interface CookieOptions {
 export function cookieKey(): string {
   const { wpUrl } = headlessConfig();
 
-  return `${wpUrl}-at`;
+  return `${wpUrl}-rt`;
 }
 
 export function initializeCookies({
@@ -33,12 +33,12 @@ export function initializeCookies({
 
 /* eslint-disable consistent-return */
 /**
- * Gets an Access Token from the cookie, if it exists
+ * Gets a Refresh Token from the cookie, if it exists
  *
  * @export
  * @returns {(string | undefined)}
  */
-export function getAccessToken(options?: CookieOptions): string | undefined {
+export function getRefreshToken(options?: CookieOptions): string | undefined {
   const cookies = initializeCookies(options);
   const token: string = cookies.get(cookieKey());
 
@@ -50,36 +50,14 @@ export function getAccessToken(options?: CookieOptions): string | undefined {
 }
 /* eslint-enable consistent-return */
 
-/* eslint-disable consistent-return */
 /**
- * Gets an Access Token from the cookie and formats it as a cookie pair
- *
- * @export
- * @returns {(string | undefined)}
- */
-export function getAccessTokenAsCookie(
-  options?: CookieOptions,
-): string | undefined {
-  const COOKIE_KEY = cookieKey();
-  const cookies = initializeCookies(options);
-  const token: string = cookies.get(COOKIE_KEY);
-
-  if (!token) {
-    return;
-  }
-
-  return `${COOKIE_KEY}=${token};`;
-}
-/* eslint-enable consistent-return */
-
-/**
- * Stores an Access Token on the cookie
+ * Stores a Refresh Token on the cookie
  *
  * @export
  * @param {(string | undefined)} token
  * @param {ServerResponse} res
  */
-export function storeAccessToken(
+export function storeRefreshToken(
   token: string | undefined,
   res: ServerResponse,
   options: CookieOptions,
@@ -103,6 +81,6 @@ export function storeAccessToken(
   cookies.set(COOKIE_KEY, encodedToken);
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_KEY}=${encodedToken}; Max-Age=2592000; path=/; SameSite=Strict; Secure;`,
+    `${COOKIE_KEY}=${encodedToken}; Max-Age=2592000; path=/; SameSite=Strict; Secure; HttpOnly;`,
   );
 }

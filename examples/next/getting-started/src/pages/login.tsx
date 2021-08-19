@@ -7,6 +7,10 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const { login, isLoading, data, error } = useLogin();
 
+  console.log('isLoading', isLoading);
+  console.log('data', data);
+  console.log('error', error);
+
   return (
     <form>
       <label>Username</label>
@@ -23,7 +27,7 @@ export default function Login() {
         disabled={isLoading}
         onClick={async (e) => {
           e.preventDefault();
-          await login({ args: { usernameEmail: usernameEmail, password } });
+          await login(usernameEmail, password);
         }}>
         Login
       </button>

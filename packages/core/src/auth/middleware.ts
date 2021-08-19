@@ -1,8 +1,8 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import trim from 'lodash/trim';
-import { getQueryParam, isValidUrl } from '../utils';
-import { authorize, ensureAuthorization } from './authorize';
-import { storeAccessToken } from './cookie';
+import { headlessConfig } from '../config';
+import { getQueryParam } from '../utils';
+import { AuthorizeResponse } from './authorize';
+import { getRefreshToken, storeRefreshToken } from './cookie';
 
 export function redirect(res: ServerResponse, url: string): void {
   res.writeHead(302, {
@@ -21,55 +21,57 @@ export async function authorizeHandler(
   req: IncomingMessage,
   res: ServerResponse,
 ): Promise<void> {
-  try {
-    const url = req.url as string;
-    const code = getQueryParam(url, 'code');
-    const redirectUri = getQueryParam(url, 'redirect_uri');
+  const url = req.url as string;
+  const code = getQueryParam(url, 'code');
+  const currentRefreshToken = getRefreshToken({ request: req });
 
-    const host = req.headers.host ?? '';
-    const cookieOptions = {
-      request: req,
-    };
+  if (!currentRefreshToken && !code) {
+    res.statusCode = 401;
+    res.end(JSON.stringify({ error: 'Unauthorized' }));
 
-    const protocol = /localhost/.test(host) ? 'http:' : 'https:';
-    const fullRedirectUrl = isValidUrl(redirectUri)
-      ? redirectUri
-      : `${protocol}//${host}/${trim(redirectUri, '/')}`;
-
-    /**
-     * If missing code, this is a request that's meant to trigger authorization such as a preview.
-     */
-    if (!code && redirectUri) {
-      const response = ensureAuthorization(fullRedirectUrl, cookieOptions);
-
-      if (typeof response !== 'string' && response?.redirect) {
-        redirect(res, response.redirect);
-
-        return;
-      }
-
-      /**
-       * We already have an access token stored, go ahead and redirect.
-       */
-      redirect(res, fullRedirectUrl);
-      return;
-    }
-
-    if (!code || !redirectUri) {
-      res.statusCode = 401;
-      res.end();
-
-      return;
-    }
-
-    const result = await authorize(code);
-    storeAccessToken(result.access_token, res, {
-      request: req,
-    });
-
-    redirect(res, redirectUri);
-  } catch (e) {
-    res.statusCode = 500;
-    res.end();
+    return;
   }
+
+  const { wpUrl, apiClientSecret } = headlessConfig();
+
+  if (!apiClientSecret) {
+    throw new Error('secret must be defined');
+  }
+
+  const response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-wpe-headless-secret': apiClientSecret,
+    },
+    method: 'POST',
+    body: JSON.stringify({
+      code,
+      refreshToken: currentRefreshToken,
+    }),
+  });
+
+  const result = (await response.json()) as AuthorizeResponse;
+
+  if (!response.ok) {
+    res.statusCode = 401;
+    res.end(JSON.stringify(result));
+
+    return;
+  }
+
+  storeRefreshToken(result.refreshToken, res, { request: req });
+
+  res.statusCode = 200;
+  res.end(JSON.stringify(result));
+
+  return;
+}
+
+export function logoutHandler(req: IncomingMessage, res: ServerResponse): void {
+  storeRefreshToken(undefined, res, { request: req });
+
+  res.statusCode = 200;
+  res.end(JSON.stringify({ success: true }));
+
+  return;
 }

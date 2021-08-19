@@ -90,7 +90,7 @@ export interface HeadlessConfig {
   authType: 'redirect' | 'local';
 
   /**
-   * Set this to the relative URL of your frontend login page.
+   * Set this to the relative URL path of your frontend login page.
    *
    * @example /login
    *
@@ -98,7 +98,7 @@ export interface HeadlessConfig {
    * @type {string}
    * @memberof HeadlessConfig
    */
-  relativeLoginPage: string;
+  loginPagePath: string;
 
   /**
    * Called before every request, use this to apply any headers you might
@@ -119,7 +119,7 @@ export interface HeadlessConfig {
 let wpeConfig: HeadlessConfig = {
   wpUrl: '/',
   authType: 'redirect',
-  relativeLoginPage: '/login',
+  loginPagePath: '/login',
 };
 let configSet = false;
 
@@ -137,7 +137,7 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
     apiUrl: '',
     apiEndpoint: '/api/auth/wpe-headless',
     authType: 'redirect',
-    relativeLoginPage: '/login',
+    loginPagePath: '/login',
   });
 
   Object.keys(cfg).forEach((key) => {

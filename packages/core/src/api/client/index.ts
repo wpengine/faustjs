@@ -14,7 +14,7 @@ import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
 import isObject from 'lodash/isObject';
 import omit from 'lodash/omit';
-import { getAccessTokenNew } from '../../auth';
+import { getAccessToken } from '../../auth';
 import { getGqlUrl } from '../../config/config';
 
 export interface GqlClientSchema {
@@ -34,7 +34,7 @@ function createQueryFetcher(
 ) {
   return async function (query, variables): Promise<any> {
     const url = getGqlUrl();
-    const token = getAccessTokenNew();
+    const token = getAccessToken();
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };

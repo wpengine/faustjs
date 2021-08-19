@@ -1,22 +1,24 @@
 import {
   CategoryIdType,
   ClientConfig,
-  ensureAuthorizationNew,
+  ensureAuthorization,
   fetchToken,
   getClient as getCoreClient,
   headlessConfig,
+  Mutation,
   PageIdType,
   PostIdType,
   WithClient,
 } from '@faustjs/core';
-import { getQueryParam } from '@faustjs/core/utils';
+import { getQueryParam, isValidEmail } from '@faustjs/core/utils';
 import type { RequiredSchema } from '@faustjs/react';
 import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient,
+  UseMutationOptions,
 } from '@gqty/react';
-import type { GQtyClient } from 'gqty';
+import type { GQtyClient, GQtyError } from 'gqty';
 import type { IncomingMessage } from 'http';
 import { isUndefined, trim } from 'lodash';
 import defaults from 'lodash/defaults';
@@ -86,16 +88,31 @@ export interface NextClient<
   useAuth(): {
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
-    authResult: true | { redirect?: string; login?: string };
+    authResult:
+      | true
+      | { redirect?: string | undefined; login?: string | undefined }
+      | undefined;
   };
 
-  useLogin(): {
-    login: (options: {
-      args: { usernameEmail: string; password: string };
-    }) => Promise<void>;
+  useLogin(options?: {
+    useMutationOptions?: UseMutationOptions<{
+      code?: string | null | undefined;
+      error?: string | null | undefined;
+    }>;
+  }): {
+    login: (usernameEmail: string, password: string) => Promise<void>;
     isLoading: boolean;
-    data: any;
-    error: any;
+    data:
+      | {
+          error: any;
+          code?: undefined;
+        }
+      | {
+          code: any;
+          error?: undefined;
+        }
+      | undefined;
+    error: GQtyError | undefined;
   };
 }
 
@@ -184,16 +201,18 @@ export function getClient<
   };
 
   function useAuth() {
-    const { authType, relativeLoginPage } = headlessConfig();
-
+    const { authType, loginPagePath } = headlessConfig();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
       undefined,
     );
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [authResult, setAuthResult] = useState<
-      true | { redirect?: string; login?: string } | undefined
+      | true
+      | { redirect?: string | undefined; login?: string | undefined }
+      | undefined
     >(undefined);
 
+    // Check if a user is authenticated
     useEffect(() => {
       if (typeof window === 'undefined') {
         return;
@@ -201,10 +220,10 @@ export function getClient<
 
       /* eslint-disable @typescript-eslint/no-floating-promises */
       (async () => {
-        const auth = await ensureAuthorizationNew({
+        const auth = await ensureAuthorization({
           redirectUri: window.location.href,
           loginPageUri: `/${trim(
-            relativeLoginPage,
+            loginPagePath,
             '/',
           )}/?redirect_uri=${encodeURIComponent(window.location.href)}`,
         });
@@ -213,7 +232,7 @@ export function getClient<
         setIsAuthenticated(auth === true);
         setIsLoading(false);
       })();
-    }, []);
+    }, [loginPagePath]);
 
     // Redirect the user to the login page if they are not authenticated
     useEffect(() => {
@@ -225,6 +244,7 @@ export function getClient<
         return;
       }
 
+      // The user is not authenticated. Redirect them to the login page.
       setTimeout(() => {
         if (!isObject(authResult)) {
           return;
@@ -243,18 +263,33 @@ export function getClient<
     return { isAuthenticated, isLoading, authResult };
   }
 
-  function useLogin() {
-    const [login, { isLoading, data, error }] = useMutation(
-      (mutation, args: { username: string; password: string }) => {
-        const { usernameEmail, password } = args;
+  function useLogin(options?: {
+    useMutationOptions?: UseMutationOptions<{
+      code?: string | null | undefined;
+      error?: string | null | undefined;
+    }>;
+  }) {
+    const { useMutationOptions } = options || {};
+
+    const [loginMutation, { isLoading, data, error }] = useMutation(
+      (
+        mutation: Mutation,
+        args: {
+          username: string | undefined;
+          email: string | undefined;
+          password: string;
+        },
+      ) => {
+        const { username, email, password } = args;
 
         const { code, error: mutationError } =
           mutation.generateAuthorizationCode({
             input: {
-              username: usernameEmail,
+              username,
+              email,
               password,
             },
-          });
+          }) || {};
 
         if (mutationError) {
           return { error: mutationError };
@@ -262,15 +297,43 @@ export function getClient<
 
         return { code };
       },
+      useMutationOptions,
     );
 
+    /**
+     * Exchange a username/email and password for an authorization code
+     *
+     * @param {string} usernameEmail A WordPress username or email
+     * @param {string} password The password for the username/email
+     *
+     * @returns Promise<void>
+     */
+    async function login(
+      usernameEmail: string,
+      password: string,
+    ): Promise<void> {
+      await loginMutation({
+        args: {
+          username: isValidEmail(usernameEmail) ? undefined : usernameEmail,
+          email: isValidEmail(usernameEmail) ? usernameEmail : undefined,
+          password,
+        },
+      });
+    }
+
+    // If there is a successful login, and a redirect_uri query param present in the
+    // url, then redirect the user to the redirect_uri.
     useEffect(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
       if (!data || !data.code) {
         return;
       }
 
       (async () => {
-        await fetchToken(data.code);
+        await fetchToken(data.code as string | undefined);
 
         const redirectUri = getQueryParam(window.location.href, 'redirect_uri');
 
