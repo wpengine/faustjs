@@ -5,63 +5,6 @@ import { headlessConfig } from '../config';
 import { getQueryParam, removeURLParam } from '../utils';
 import { setAccessToken } from './token';
 
-export interface AuthorizeOptions {
-  code?: string;
-  refreshToken?: string;
-}
-
-export interface AuthorizeResponse {
-  accessToken: string;
-  accessTokenExpiration: number;
-  refreshToken: string;
-  refreshTokenExpiration: number;
-}
-
-/**
- * Exchanges an Authorization Code or Refresh Token and client secret for an Access Token that you can use to make authenticated requests to
- * the WordPress API
- *
- * @async
- * @export
- * @param {object} options
- * @returns {Promise<AuthorizeResponse>}
- */
-export async function authorize(
-  options?: AuthorizeOptions,
-): Promise<AuthorizeResponse> {
-  const { code, refreshToken } = options || {};
-  const { wpUrl, apiClientSecret } = headlessConfig();
-
-  if (!isString(apiClientSecret)) {
-    throw new Error(
-      'You must provide an apiClientSecret value in your Headless config in order to use the authorize middleware',
-    );
-  }
-
-  const response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-wpe-headless-secret': apiClientSecret,
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      code,
-      refreshToken,
-    }),
-  });
-
-  const result = (await response.json()) as AuthorizeResponse;
-
-  if (!response.ok) {
-    throw {
-      error: result,
-      status: response.status,
-    };
-  }
-
-  return result;
-}
-
 export interface EnsureAuthorizationOptions {
   redirectUri?: string;
   loginPageUri?: string;

@@ -1,7 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { headlessConfig } from '../config';
 import { getQueryParam } from '../utils';
-import { AuthorizeResponse } from './authorize';
 import { getRefreshToken, storeRefreshToken } from './cookie';
 
 export function redirect(res: ServerResponse, url: string): void {
@@ -10,6 +9,13 @@ export function redirect(res: ServerResponse, url: string): void {
   });
 
   res.end();
+}
+
+export interface AuthorizeResponse {
+  accessToken: string;
+  accessTokenExpiration: number;
+  refreshToken: string;
+  refreshTokenExpiration: number;
 }
 
 /**

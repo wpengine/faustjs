@@ -128,19 +128,12 @@ function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request )
  * @return bool True if current user can, false if else.
  */
 function wpe_headless_rest_authorize_permission_callback( WP_REST_Request $request ) {
-	$code = trim($request->get_param( 'code' ));
-	$refresh_token = trim($request->get_param( 'refresh_token' ));
+	$secret_key = wpe_headless_get_secret_key();
+	$header_key = $request->get_header( 'x-wpe-headless-secret' );
 
-	if( $refresh_token && ! $code ) {
-		$secret_key = wpe_headless_get_secret_key();
-		$header_key = $request->get_header( 'x-wpe-headless-secret' );
-	
-		if ( $secret_key && $header_key ) {
-			return $secret_key === $header_key;
-		}
-	
-		return false;
-	} else {
-		return true;
+	if ( $secret_key && $header_key ) {
+		return $secret_key === $header_key;
 	}
+
+	return false;
 }
