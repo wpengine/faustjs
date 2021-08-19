@@ -12,5 +12,4 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
 module.exports = headlessConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
-  authType: 'local',
 });

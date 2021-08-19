@@ -5,8 +5,7 @@ import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 
 export default function Page() {
-  const { useQuery, useAuth } = client;
-  const { isLoading, isAuthenticated } = useAuth();
+  const { useQuery } = client;
   const generalSettings = useQuery().generalSettings;
 
   return (
@@ -24,23 +23,17 @@ export default function Page() {
 
       <main className="content content-single">
         <div className="wrap">
-          {isLoading && <div>Loading...</div>}
-
-          {isAuthenticated && (
-            <p>
-              You can still create pages just as you would in{' '}
-              <a
-                href="https://nextjs.org/docs/basic-features/pages"
-                target="_blank"
-                rel="noreferrer">
-                Next.js
-              </a>
-              . Take a look at <code>src/pages/custom-page.tsx</code> for an
-              example.
-            </p>
-          )}
-
-          {!isLoading && !isAuthenticated && <p>Please login</p>}
+          <p>
+            You can still create pages just as you would in{' '}
+            <a
+              href="https://nextjs.org/docs/basic-features/pages"
+              target="_blank"
+              rel="noreferrer">
+              Next.js
+            </a>
+            . Take a look at <code>src/pages/custom-page.tsx</code> for an
+            example.
+          </p>
         </div>
       </main>
 
