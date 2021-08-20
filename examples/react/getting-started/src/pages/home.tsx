@@ -19,7 +19,7 @@ export default function Home() {
             <a href="https://nextjs.org/">Next.js</a>,{' '}
             <a href="https://graphql.org/">GraphQL</a>,{' '}
             <a href="https://gqty.dev">GQty</a>, and the{' '}
-            <a href="https://github.com/wpengine/headless-framework">
+            <a href="https://github.com/wpengine/faustjs">
               WP Engine headless packages
             </a>{' '}
             for WordPress integration. Dive in and edit this template at

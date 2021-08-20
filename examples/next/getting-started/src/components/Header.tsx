@@ -38,10 +38,10 @@ function Header({
               </li>
             ))}
             <li>
-              <Link href="https://github.com/wpengine/headless-framework">
+              <Link href="https://github.com/wpengine/faustjs">
                 <a
                   className="button"
-                  href="https://github.com/wpengine/headless-framework">
+                  href="https://github.com/wpengine/faustjs">
                   GitHub
                 </a>
               </Link>

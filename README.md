@@ -16,7 +16,7 @@
     <img alt="" src="https://img.shields.io/npm/v/@faustjs/core?color=7e5cef&style=for-the-badge">
   </a>
 
-  <a aria-label="License" href="https://github.com/wpengine/headless-framework/blob/canary/LICENSE">
+  <a aria-label="License" href="https://github.com/wpengine/faustjs/blob/canary/LICENSE">
     <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=7e5cef&style=for-the-badge">
   </a>
 </p>
@@ -55,7 +55,7 @@ Visit [https://developers.wpengine.com/docs/faustjs/next/getting-started](https:
 
 To chat with other Faust.js users and the headless community as a whole, you can join the [WP Engine Developers Discord](https://discord.gg/J2khkF9XYK).
 
-Additionally, if you have questions or ideas, please share them on [GitHub Discussions](https://github.com/wpengine/headless-framework/discussions).
+Additionally, if you have questions or ideas, please share them on [GitHub Discussions](https://github.com/wpengine/faustjs/discussions).
 
 ## Contributing
 

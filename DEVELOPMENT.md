@@ -36,7 +36,7 @@ across multiple local sites!
 To begin working with the WPE Headless WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
 
 ```
-ln -s /path/to/headless-framework/plugins/wpe-headless /path/to/wordpress/wp-content/plugins/wpe-headless
+ln -s /path/to/faustjs/plugins/wpe-headless /path/to/wordpress/wp-content/plugins/wpe-headless
 ```
 
 **PHP Code Sniffer**
@@ -62,12 +62,12 @@ composer phpcs:fix
 To run WordPress unit tests, set up the test framework:
 
 ```
-/bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
+/bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
 ```
 
 If you connect to MySQL via a sock connection, you can run the following.
 ```
-/bin/bash /path/to/headless-framework/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
+/bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
 ```
 
 Install the composer packages from within `wpe-headless` directory if you haven't already.
@@ -135,7 +135,7 @@ Developers with full GitHub repository access can create public releases:
 1. Update the `Version` in the file header at `plugins/wpe-headless/wpe-headless.php`.
 2. Update the changelog and 'stable tag' in `plugins/wpe-headless/readme.txt`.
 3. Commit and push your changes for review **(DO NOT MERGE YET)**.
-4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `git tag plugin/wpe-headless/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/headless-framework/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
+4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `git tag plugin/wpe-headless/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/faustjs/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
 5. Merge your changes into the `canary` branch
 
 CircleCI will build and deploy the plugin zip. The latest version will be available here:
