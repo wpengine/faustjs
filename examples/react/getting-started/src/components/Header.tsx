@@ -38,7 +38,7 @@ function Header({
                 ))}
               <li>
                 <a
-                  href="https://github.com/wpengine/headless-framework"
+                  href="https://github.com/wpengine/faustjs"
                   target="_blank"
                   rel="noreferrer"
                   className="button">

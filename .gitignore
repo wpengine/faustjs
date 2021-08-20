@@ -5,3 +5,9 @@ dist
 .DS_Store
 process.yml
 .vscode
+.next
+.env
+.env.*
+!.env.sample
+.docusaurus
+build/

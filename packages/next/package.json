@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/next"
+    "url": "https://github.com/wpengine/faustjs/tree/main/packages/next"
   },
   "keywords": [
     "WordPress",

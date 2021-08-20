@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"moduleResolution": "Node",
-		"target": "ES2017",
+		"target": "ES2019",
 		"removeComments": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,

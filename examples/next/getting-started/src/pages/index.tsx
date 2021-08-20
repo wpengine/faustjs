@@ -36,17 +36,17 @@ export default function Page() {
           buttonText="Developer Docs"
           buttonURL="https://developers.wpengine.com/"
           button2Text="Headless on GitHub"
-          button2URL="https://github.com/wpengine/headless-framework"
+          button2URL="https://github.com/wpengine/faustjs"
           bgImage="/images/headless_hero_background.jpg"
           id={styles.home_hero}>
           <p>
             WP&nbsp;Engine’s Headless WordPress Framework includes this example
             project, the{' '}
-            <a href="https://github.com/wpengine/headless-framework#plugin-features">
+            <a href="https://github.com/wpengine/faustjs#plugin-features">
               headless WordPress plugin
             </a>
             ,{' '}
-            <a href="https://github.com/wpengine/headless-framework">
+            <a href="https://github.com/wpengine/faustjs">
               headless packages
             </a>
             , and <a href="https://developers.wpengine.com/">tutorials</a> to
@@ -61,7 +61,7 @@ export default function Page() {
               <a href="https://nextjs.org/">Next.js</a>,{' '}
               <a href="https://graphql.org/">GraphQL</a>,{' '}
               <a href="https://gqty.dev">GQty</a> and the{' '}
-              <a href="https://github.com/wpengine/headless-framework">
+              <a href="https://github.com/wpengine/faustjs">
                 WP&nbsp;Engine headless packages
               </a>{' '}
               for WordPress integration. Dive in and edit this template at{' '}
@@ -119,11 +119,11 @@ export default function Page() {
         <CTA
           title="Questions or comments?"
           buttonText="Join the discussion on GitHub"
-          buttonURL="https://github.com/wpengine/headless-framework/discussions"
+          buttonURL="https://github.com/wpengine/faustjs/discussions"
           headingLevel="h2">
           <p>
             We welcome feature requests, bug reports and questions in the{' '}
-            <a href="https://github.com/wpengine/headless-framework">
+            <a href="https://github.com/wpengine/faustjs">
               Headless Framework GitHub repository
             </a>
             .

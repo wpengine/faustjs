@@ -69,18 +69,18 @@
 					<?php endif; ?>
 					<section>
 						<h4><?php esc_html_e( 'Create Your Headless App', 'wpe-headless' ); ?></h4>
-						<p><a href="https://github.com/wpengine/headless-framework/#readme" target="_blank" rel="noopener noreferrer">Follow our setup guide</a>.</p>
+						<p><a href="https://github.com/wpengine/faustjs/#readme" target="_blank" rel="noopener noreferrer">Follow our setup guide</a>.</p>
 					</section>
 				</div>
 				<div class="box docs">
 					<h3>Headless Documentation</h3>
 					<section>
 						<ul>
-							<li><a href="https://github.com/wpengine/headless-framework/#headless-wordpress-framework" target="_blank" rel="noopener noreferrer">Getting started</a></li>
-							<li><a href="https://github.com/wpengine/headless-framework/blob/main/packages/next/src/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
-							<li><a href="https://github.com/wpengine/headless-framework/blob/main/docs/previews/README.md" target="_blank" rel="noopener noreferrer">Post previews</a></li>
+							<li><a href="https://github.com/wpengine/faustjs/#headless-wordpress-framework" target="_blank" rel="noopener noreferrer">Getting started</a></li>
+							<li><a href="https://github.com/wpengine/faustjs/blob/main/packages/next/src/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
+							<li><a href="https://github.com/wpengine/faustjs/blob/main/docs/previews/README.md" target="_blank" rel="noopener noreferrer">Post previews</a></li>
 						</ul>
-						<p><a class="button-primary" href="https://github.com/wpengine/headless-framework/" target="_blank" rel="noopener noreferrer">Headless on GitHub</a></p>
+						<p><a class="button-primary" href="https://github.com/wpengine/faustjs/" target="_blank" rel="noopener noreferrer">Headless on GitHub</a></p>
 					</section>
 				</div>
 			</div>
