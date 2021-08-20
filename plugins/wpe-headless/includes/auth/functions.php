@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Redirect related functions.
@@ -39,7 +38,7 @@ function wpe_headless_generate_access_token( $wp_user, $duration ) {
 }
 
 /**
- * Generate an authentication code given a user.
+ * Generate an authorization code given a user.
  *
  * @uses wpe_headless_generate_user_code()
  *
@@ -48,7 +47,7 @@ function wpe_headless_generate_access_token( $wp_user, $duration ) {
  *
  * @return string|bool An encrypted string or false.
  */
-function wpe_headless_generate_authentication_code( $wp_user, $duration ) {
+function wpe_headless_generate_authorization_code( $wp_user, $duration ) {
 	return wpe_headless_generate_user_code( $wp_user, 'ac', $duration );
 }
 
@@ -79,7 +78,7 @@ function wpe_headless_get_user_from_access_token( $token ) {
 }
 
 /**
- * Get a WP_User given an authentication code.
+ * Get a WP_User given an authorization code.
  *
  * @uses wpe_headless_get_user_from_code()
  *
@@ -87,7 +86,7 @@ function wpe_headless_get_user_from_access_token( $token ) {
  *
  * @return WP_User|bool A WP_User object or false.
  */
-function wpe_headless_get_user_from_authentication_code( $code ) {
+function wpe_headless_get_user_from_authorization_code( $code ) {
 	return wpe_headless_get_user_from_code( $code, 'ac' );
 }
 

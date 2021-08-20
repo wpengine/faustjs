@@ -13,7 +13,7 @@ add_action( 'parse_request', 'wpe_headless_handle_generate_endpoint' );
 /**
  * Callback for WordPress 'parse_request' action.
  *
- * Generate an authentication code and redirect to the requested url.
+ * Generate an authorization code and redirect to the requested url.
  *
  * @return void
  */
@@ -36,7 +36,7 @@ function wpe_headless_handle_generate_endpoint() {
 		exit;
 	}
 
-	$auth_code = wpe_headless_generate_authentication_code(
+	$auth_code = wpe_headless_generate_authorization_code(
 		wp_get_current_user(),
 		MINUTE_IN_SECONDS * 1
 	);

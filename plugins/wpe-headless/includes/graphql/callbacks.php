@@ -250,7 +250,7 @@ function wpe_headless_register_generate_ac_mutation() {
 				}
 
 				// Generate an authorization code that expires in 1 minute.
-				$code = wpe_headless_generate_authentication_code( $user, MINUTE_IN_SECONDS * 1 );
+				$code = wpe_headless_generate_authorization_code( $user, MINUTE_IN_SECONDS * 1 );
 
 				return array(
 					'code'  => $code,
