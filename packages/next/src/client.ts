@@ -109,8 +109,7 @@ export interface NextClient<
           code?: undefined;
         }
       | {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          code: any;
+          code: string;
           error?: undefined;
         }
       | undefined;
