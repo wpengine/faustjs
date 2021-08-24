@@ -1,23 +1,25 @@
 import * as config from '../../src/config/config';
-import { cookieKey, getAccessToken } from '../../src/auth/cookie';
+import { cookieKey, getRefreshToken } from '../../src/auth/cookie';
 
 describe('auth/cookie', () => {
   test('cookieKey() returns the key for cookie storage based on the wpUrl', () => {
     const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
-      return { wpUrl: 'test' };
+      return { wpUrl: 'test', authType: 'redirect', loginPagePath: '/login' };
     });
 
-    expect(cookieKey()).toBe('test-at');
+    expect(cookieKey()).toBe('test-rt');
     expect(spy).toBeCalled();
 
     spy.mockRestore();
   });
 
-  test('getAccessToken() returns undefined when there is no access token', () => {
+  test('getRefreshToken() returns undefined when there is no refresh token', () => {
     config.headlessConfig({
       wpUrl: 'test',
+      authType: 'redirect',
+      loginPagePath: '/login',
     });
 
-    expect(getAccessToken()).toBeUndefined();
+    expect(getRefreshToken()).toBeUndefined();
   });
 });

@@ -1,4 +1,9 @@
-import { isBase64, isPreviewPath, isServerSide } from '../../src/utils/assert';
+import {
+  isBase64,
+  isPreviewPath,
+  isServerSide,
+  isValidEmail,
+} from '../../src/utils/assert';
 
 describe('utils/assert', () => {
   test('isServerSide() is false when window is present', () => {
@@ -32,5 +37,16 @@ describe('utils/assert', () => {
   test('isPreviewPath() returns true for preview strings', () => {
     expect(isPreviewPath('/posts/preview/hello-world')).toBe(true);
     expect(isPreviewPath('/preview/hello-world')).toBe(true);
+  });
+
+  test('isValidEmail returns true for valid emails', () => {
+    expect(isValidEmail('name@wpengine.com')).toBe(true);
+    expect(isValidEmail('name@gmail.com')).toBe(true);
+    expect(isValidEmail('first-last@yahoo.com')).toBe(true);
+  });
+
+  test('isValidEmail returns false for invalid emails', () => {
+    expect(isValidEmail('name@wpengine')).toBe(false);
+    expect(isValidEmail('name@wpengine.2q3rom')).toBe(false);
   });
 });
