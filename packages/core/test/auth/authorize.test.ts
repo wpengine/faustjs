@@ -18,15 +18,18 @@ describe('auth/ensureAuthorization', () => {
       apiClientSecret: 'secret',
     });
 
-    const spy = jest
-      .spyOn(authorize, 'fetchToken')
-      .mockImplementation(async () => {
-        return 'test';
-      });
+    fetchMock.get('/api/auth/wpe-headless', {
+      status: 200,
+      body: JSON.stringify({
+        accessToken: 'at',
+        accessTokenExpiration: new Date().getTime() + 300,
+      }),
+    });
 
-    expect(authorize.ensureAuthorization()).resolves.toBe(true);
+    const result = await authorize.ensureAuthorization();
+    expect(result).toBe(true);
 
-    spy.mockRestore();
+    fetchMock.restore();
   });
 
   test('ensureAuthorization() return a redirect key when the token cannot be fetched', async () => {
@@ -41,11 +44,9 @@ describe('auth/ensureAuthorization', () => {
 
     const redirectUri = 'http://localhost:3000';
 
-    const spy = jest
-      .spyOn(authorize, 'fetchToken')
-      .mockImplementation(async () => {
-        return null;
-      });
+    fetchMock.get('/api/auth/wpe-headless', {
+      status: 401,
+    });
 
     expect(
       authorize.ensureAuthorization({ redirectUri }),
@@ -55,7 +56,7 @@ describe('auth/ensureAuthorization', () => {
       )}`,
     });
 
-    spy.mockRestore();
+    fetchMock.restore();
   });
 
   test('ensureAuthorization() returns a login key when the token cannot be fetched', async () => {
@@ -70,11 +71,9 @@ describe('auth/ensureAuthorization', () => {
 
     const loginPageUri = `/${trim(loginPagePath, '/')}`;
 
-    const spy = jest
-      .spyOn(authorize, 'fetchToken')
-      .mockImplementation(async () => {
-        return null;
-      });
+    fetchMock.get('/api/auth/wpe-headless', {
+      status: 401,
+    });
 
     expect(
       authorize.ensureAuthorization({ loginPageUri }),
@@ -82,7 +81,7 @@ describe('auth/ensureAuthorization', () => {
       login: loginPageUri,
     });
 
-    spy.mockRestore();
+    fetchMock.restore();
   });
 });
 
