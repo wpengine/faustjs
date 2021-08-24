@@ -36,7 +36,7 @@ function wpe_headless_rest_determine_current_user( $user_id ) {
 		return $user_id;
 	}
 
-	$wp_user = wpe_headless_get_user_from_access_token( $parts[1], 5 * MONTH_IN_SECONDS );
+	$wp_user = wpe_headless_get_user_from_access_token( $parts[1] );
 	if ( $wp_user ) {
 		$user_id = $wp_user->ID;
 	}
