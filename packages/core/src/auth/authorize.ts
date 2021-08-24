@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch';
-import { isUndefined } from 'lodash';
+import 'isomorphic-fetch';
+import { isNil } from 'lodash';
 import isString from 'lodash/isString';
 import { headlessConfig } from '../config';
 import { getQueryParam, removeURLParam } from '../utils';
@@ -16,7 +16,7 @@ export interface EnsureAuthorizationOptions {
  * an object containing a redirect URI to send the client to for authorization.
  *
  * @export
- * @param {string} redirectUri
+ * @param {string} EnsureAuthorizationOptions
  * @returns {(string | { redirect: string })}
  */
 export async function ensureAuthorization(
@@ -72,7 +72,7 @@ export async function ensureAuthorization(
 export async function fetchToken(code?: string): Promise<string | null> {
   const { apiEndpoint } = headlessConfig();
 
-  if (isUndefined(apiEndpoint)) {
+  if (isNil(apiEndpoint)) {
     throw new Error(
       'You must provide an apiEndpoint value in your Headless config in order to use the fetchToken middleware',
     );
@@ -85,25 +85,31 @@ export async function fetchToken(code?: string): Promise<string | null> {
     url += `?code=${code}`;
   }
 
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-  const result = (await response.json()) as {
-    accessToken: string;
-    accessTokenExpiration: number;
-  };
+    const result = (await response.json()) as {
+      accessToken: string;
+      accessTokenExpiration: number;
+    };
 
-  // If the response is not ok, clear the access token
-  if (!response.ok) {
+    // If the response is not ok, clear the access token
+    if (!response.ok) {
+      setAccessToken(undefined, undefined);
+      return null;
+    }
+
+    setAccessToken(result.accessToken, result.accessTokenExpiration);
+
+    return result.accessToken;
+  } catch (error) {
     setAccessToken(undefined, undefined);
+
     return null;
   }
-
-  setAccessToken(result.accessToken, result.accessTokenExpiration);
-
-  return result.accessToken;
 }

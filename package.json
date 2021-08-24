@@ -36,6 +36,7 @@
     "wpe-build": "cd internal/website && npm i && cd .. && npm run docs:build"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.1",
     "@wordpress/env": "^4.0.0",
     "rimraf": "^3.0.2"
   }

@@ -1,3 +1,5 @@
+import 'isomorphic-fetch';
+import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
 import { headlessConfig } from '../../src';
 import { authorizeHandler, redirect } from '../../src/auth/middleware';
@@ -48,23 +50,29 @@ describe('auth/middleware', () => {
     endSpy.mockRestore();
   });
 
-  // test('authorizeHandler will throw an error if the client secret is not defined', async () => {
-  //   headlessConfig({
-  //     wpUrl: 'http://headless.local',
-  //     authType: 'redirect',
-  //     loginPagePath: '/login',
-  //   });
+  test('authorizeHandler will throw an error if the client secret is not defined', async () => {
+    headlessConfig({
+      wpUrl: 'http://headless.local',
+      authType: 'redirect',
+      loginPagePath: '/login',
+    });
 
-  //   const req: IncomingMessage = {
-  //     headers: {},
-  //   } as any;
+    const req: IncomingMessage = {
+      headers: {},
+    } as any;
 
-  //   const res: ServerResponse = {
-  //     writeHead() {},
-  //     end() {},
-  //   } as any;
+    const res: ServerResponse = {
+      writeHead() {},
+      end() {},
+    } as any;
 
-  // });
+    try {
+      await authorizeHandler(req, res);
+    } catch (e) {
+      expect(e.message).toContain('The apiClientSecret must be specified');
+      console.log(e);
+    }
+  });
 
   test('authorizeHandler will throw a 401 if the request to WordPress authorize endpoint is not ok', async () => {
     headlessConfig({
@@ -86,18 +94,12 @@ describe('auth/middleware', () => {
 
     const endSpy = jest.spyOn(res, 'end');
 
-    const fetchSpy = jest
-      .spyOn(globalThis, 'fetch')
-      .mockImplementation(async () => {
-        return Promise.resolve({
-          ok: false,
-          json: () => {
-            return Promise.resolve({
-              error: 'some error',
-            });
-          },
-        }) as any as Response;
-      });
+    const { wpUrl } = headlessConfig();
+
+    fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+      status: 401,
+      body: JSON.stringify({ error: 'some error' }),
+    });
 
     await authorizeHandler(req, res);
 
@@ -106,7 +108,7 @@ describe('auth/middleware', () => {
     expect(endSpy).toBeCalledWith(JSON.stringify({ error: 'some error' }));
 
     endSpy.mockRestore();
-    fetchSpy.mockRestore();
+    fetchMock.restore();
   });
 
   test('authorizeHandler will store a new refresh token upon a successful request', async () => {
@@ -136,16 +138,12 @@ describe('auth/middleware', () => {
       refreshTokenExpiration: new Date().getTime() + 10000,
     };
 
-    const fetchSpy = jest
-      .spyOn(globalThis, 'fetch')
-      .mockImplementation(async () => {
-        return Promise.resolve({
-          ok: true,
-          json: () => {
-            return Promise.resolve(authorizeResponse);
-          },
-        }) as any as Response;
-      });
+    const { wpUrl } = headlessConfig();
+
+    fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+      status: 200,
+      body: JSON.stringify(authorizeResponse),
+    });
 
     const cookieSpy = jest
       .spyOn(cookie, 'storeRefreshToken')
@@ -162,7 +160,7 @@ describe('auth/middleware', () => {
     });
 
     endSpy.mockRestore();
-    fetchSpy.mockRestore();
+    fetchMock.restore();
     cookieSpy.mockRestore();
   });
 
@@ -197,16 +195,12 @@ describe('auth/middleware', () => {
       refreshTokenExpiration: new Date().getTime() + 10000,
     };
 
-    const fetchSpy = jest
-      .spyOn(globalThis, 'fetch')
-      .mockImplementation(async () => {
-        return Promise.resolve({
-          ok: true,
-          json: () => {
-            return Promise.resolve(authorizeResponse);
-          },
-        }) as any as Response;
-      });
+    const { wpUrl } = headlessConfig();
+
+    fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+      status: 200,
+      body: JSON.stringify(authorizeResponse),
+    });
 
     const cookieSpy = jest
       .spyOn(cookie, 'storeRefreshToken')
@@ -225,7 +219,7 @@ describe('auth/middleware', () => {
     });
 
     endSpy.mockRestore();
-    fetchSpy.mockRestore();
+    fetchMock.restore();
     cookieSpy.mockRestore();
   });
 
@@ -260,16 +254,12 @@ describe('auth/middleware', () => {
       refreshTokenExpiration: new Date().getTime() + 10000,
     };
 
-    const fetchSpy = jest
-      .spyOn(globalThis, 'fetch')
-      .mockImplementation(async () => {
-        return Promise.resolve({
-          ok: true,
-          json: () => {
-            return Promise.resolve(authorizeResponse);
-          },
-        }) as any as Response;
-      });
+    const { wpUrl } = headlessConfig();
+
+    fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+      status: 200,
+      body: authorizeResponse,
+    });
 
     const cookieSpy = jest
       .spyOn(cookie, 'storeRefreshToken')
@@ -288,7 +278,7 @@ describe('auth/middleware', () => {
     });
 
     endSpy.mockRestore();
-    fetchSpy.mockRestore();
+    fetchMock.restore();
     cookieSpy.mockRestore();
   });
 });

@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
 import { headlessConfig } from '../config';
 import { getQueryParam } from '../utils';
@@ -41,7 +42,9 @@ export async function authorizeHandler(
   const { wpUrl, apiClientSecret } = headlessConfig();
 
   if (!apiClientSecret) {
-    throw new Error('secret must be defined');
+    throw new Error(
+      'The apiClientSecret must be specified to use the auth middleware',
+    );
   }
 
   const response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {

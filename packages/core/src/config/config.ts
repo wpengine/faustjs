@@ -87,7 +87,7 @@ export interface HeadlessConfig {
    * @default redirect
    * @memberof HeadlessConfig
    */
-  authType: 'redirect' | 'local';
+  authType?: 'redirect' | 'local';
 
   /**
    * Set this to the relative URL path of your frontend login page.
@@ -98,7 +98,7 @@ export interface HeadlessConfig {
    * @type {string}
    * @memberof HeadlessConfig
    */
-  loginPagePath: string;
+  loginPagePath?: string;
 
   /**
    * Called before every request, use this to apply any headers you might
@@ -118,8 +118,6 @@ export interface HeadlessConfig {
 
 let wpeConfig: HeadlessConfig = {
   wpUrl: '/',
-  authType: 'redirect',
-  loginPagePath: '/login',
 };
 let configSet = false;
 
