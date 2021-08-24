@@ -24,9 +24,7 @@ describe('auth/ensureAuthorization', () => {
         return 'test';
       });
 
-    const authResult = await authorize.ensureAuthorization();
-
-    expect(authResult).toBe(true);
+    expect(authorize.ensureAuthorization()).resolves.toBe(true);
 
     spy.mockRestore();
   });
@@ -43,21 +41,21 @@ describe('auth/ensureAuthorization', () => {
 
     const redirectUri = 'http://localhost:3000';
 
-    const fetchTokenSpy = jest
+    const spy = jest
       .spyOn(authorize, 'fetchToken')
       .mockImplementation(async () => {
         return null;
       });
 
-    const authResult = await authorize.ensureAuthorization({ redirectUri });
-
-    expect(authResult).toEqual({
+    expect(
+      authorize.ensureAuthorization({ redirectUri }),
+    ).resolves.toStrictEqual({
       redirect: `${wpUrl}/generate?redirect_uri=${encodeURIComponent(
         redirectUri,
       )}`,
     });
 
-    fetchTokenSpy.mockRestore();
+    spy.mockRestore();
   });
 
   test('ensureAuthorization() returns a login key when the token cannot be fetched', async () => {
@@ -70,19 +68,21 @@ describe('auth/ensureAuthorization', () => {
 
     const { loginPagePath } = headlessConfig();
 
-    const fetchTokenSpy = jest
+    const loginPageUri = `/${trim(loginPagePath, '/')}`;
+
+    const spy = jest
       .spyOn(authorize, 'fetchToken')
       .mockImplementation(async () => {
         return null;
       });
 
-    const loginPageUri = `/${trim(loginPagePath, '/')}`;
+    expect(
+      authorize.ensureAuthorization({ loginPageUri }),
+    ).resolves.toStrictEqual({
+      login: loginPageUri,
+    });
 
-    const authResult = await authorize.ensureAuthorization({ loginPageUri });
-
-    expect(authResult).toStrictEqual({ login: loginPageUri });
-
-    fetchTokenSpy.mockRestore();
+    spy.mockRestore();
   });
 });
 
