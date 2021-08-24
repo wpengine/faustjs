@@ -104,10 +104,12 @@ export interface NextClient<
     isLoading: boolean;
     data:
       | {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           error: any;
           code?: undefined;
         }
       | {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           code: any;
           error?: undefined;
         }
