@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const writeFileAsync = (path, data) =>
   new Promise((resolve, reject) => {
@@ -14,11 +15,11 @@ const writeFileAsync = (path, data) =>
 (async () => {
   try {
     await writeFileAsync(
-      './dist/mjs/package.json',
+      path.resolve(process.cwd(), './dist/mjs/package.json'),
       '{\n    "type": "module"\n}\n',
     );
     await writeFileAsync(
-      './dist/cjs/package.json',
+      path.resolve(process.cwd(), './dist/cjs/package.json'),
       '{\n    "type": "commonjs"\n}\n',
     );
 
