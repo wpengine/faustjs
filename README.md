@@ -57,7 +57,7 @@ There are two key parts to Faust.js: the NPM packages and the WordPress plugin. 
 
 [📥 Download Latest Version](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
 
-After downloading the zip linked below, we recommend installing by [manually uploading via the WordPress admin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+After downloading the zip linked above, we recommend installing by [manually uploading via the WordPress admin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
 
 ## Community
 
