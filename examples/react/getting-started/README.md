@@ -2,7 +2,7 @@
 
 ## Setup
 
-See the [setup steps](https://github.com/wpengine/headless-framework#quick-start).
+See the [setup steps](https://github.com/wpengine/faustjs#quick-start).
 
 ## Run it
 

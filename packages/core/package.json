@@ -2,13 +2,21 @@
   "name": "@faustjs/core",
   "version": "0.8.0",
   "description": "This module helps you use WordPress as a Headless CMS",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
-    "build": "npm run clean && npm run ts",
+    "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "dev": "npm run ts:watch",
     "dev-lerna": "npm run dev",
     "clean": "rimraf dist",
+    "package": "node ../../scripts/package.js",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
     "prepublish": "npm run build",
@@ -16,11 +24,13 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
-    "ts:watch": "tsc -p . --watch"
+    "ts:cjs": "tsc -p tsconfig-cjs.json",
+    "ts:watch": "tsc -p . --watch",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/headless-framework/tree/main/packages/headless"
+    "url": "https://github.com/wpengine/faustjs/tree/main/packages/headless"
   },
   "keywords": [
     "WordPress",

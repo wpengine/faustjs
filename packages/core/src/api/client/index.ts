@@ -28,7 +28,7 @@ export interface RequestContext {
   init: RequestInit;
 }
 
-function createQueryFetcher(
+export function createQueryFetcher(
   context?: IncomingMessage,
   applyRequestContext?: ClientConfig['applyRequestContext'],
 ) {
