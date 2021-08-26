@@ -4,7 +4,8 @@ import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
 import type { RequestContext } from '../api';
-import { isNil, trim } from 'lodash';
+import isNil from 'lodash/isNil';
+import trim from 'lodash/trim';
 import { isValidUrl } from '../utils';
 
 /* eslint-disable @typescript-eslint/ban-types */
@@ -144,16 +145,16 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
     apiEndpoint: '/api/auth/wpe-headless',
     authType: 'redirect',
     loginPagePath: '/login',
+    disableLogging: false,
   });
 
   Object.keys(cfg).forEach((key) => {
-    const value = cfg[key as keyof HeadlessConfig];
+    const keyValue: keyof HeadlessConfig = key as any;
+    const value = cfg[keyValue];
 
-    if (!isString(value)) {
-      return;
+    if (isString(value)) {
+      (cfg as any)[keyValue] = value.trim();
     }
-
-    cfg[key as keyof HeadlessConfig] = value.trim() as any;
   });
 
   let { wpUrl, blogUrlPrefix, apiUrl, apiEndpoint } = cfg;
