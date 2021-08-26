@@ -1,5 +1,5 @@
 import * as config from '../../src/config/config';
-import { cookieKey, getRefreshToken } from '../../src/auth/cookie';
+import { cookieKey, getRefreshToken } from '../../src/auth/server/cookie';
 
 describe('auth/cookie', () => {
   test('cookieKey() returns the key for cookie storage based on the wpUrl', () => {

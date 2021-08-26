@@ -1,9 +1,8 @@
 import 'isomorphic-fetch';
-import { isNil } from 'lodash';
 import isString from 'lodash/isString';
 import { headlessConfig } from '../config';
 import { getQueryParam, removeURLParam } from '../utils';
-import { setAccessToken } from './token';
+import { fetchAccessToken } from './client/accessToken';
 
 export interface EnsureAuthorizationOptions {
   redirectUri?: string;
@@ -45,7 +44,7 @@ export async function ensureAuthorization(
     unauthorized.login = loginPageUri;
   }
 
-  const token = await fetchToken(code);
+  const token = await fetchAccessToken(code);
 
   if (!token) {
     return unauthorized;
@@ -62,54 +61,3 @@ export async function ensureAuthorization(
   return true;
 }
 /* eslint-enable consistent-return */
-
-/**
- * Fetch an access token from the authorizeHandler middleware
- *
- * @export
- * @param {string} code An authorization code to fetch an access token
- */
-export async function fetchToken(code?: string): Promise<string | null> {
-  const { apiEndpoint } = headlessConfig();
-
-  if (isNil(apiEndpoint)) {
-    throw new Error(
-      'You must provide an apiEndpoint value in your Headless config in order to use the fetchToken middleware',
-    );
-  }
-
-  let url = apiEndpoint;
-
-  // Add the code to the url if it exists
-  if (isString(code) && code.length > 0) {
-    url += `?code=${code}`;
-  }
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const result = (await response.json()) as {
-      accessToken: string;
-      accessTokenExpiration: number;
-    };
-
-    // If the response is not ok, clear the access token
-    if (!response.ok) {
-      setAccessToken(undefined, undefined);
-      return null;
-    }
-
-    setAccessToken(result.accessToken, result.accessTokenExpiration);
-
-    return result.accessToken;
-  } catch (error) {
-    setAccessToken(undefined, undefined);
-
-    return null;
-  }
-}

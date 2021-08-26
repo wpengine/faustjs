@@ -101,6 +101,14 @@ export interface HeadlessConfig {
   loginPagePath?: string;
 
   /**
+   * Set to true if you want to disable internal console.log statements
+   *
+   * @type {string}
+   * @memberof HeadlessConfig
+   */
+  disableLogging?: boolean;
+
+  /**
    * Called before every request, use this to apply any headers you might
    * need to for your requests or adjust the request to suite your needs.
    *

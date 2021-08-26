@@ -2,7 +2,7 @@ import {
   getAccessToken,
   getAccessTokenExpiration,
   setAccessToken,
-} from '../../src/auth/token';
+} from '../../src/auth/client/accessToken';
 import { headlessConfig } from '../../src/config/config';
 
 describe('auth/token', () => {

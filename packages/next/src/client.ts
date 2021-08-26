@@ -2,15 +2,17 @@ import {
   CategoryIdType,
   ClientConfig,
   ensureAuthorization,
-  fetchToken,
+  fetchAccessToken,
   getClient as getCoreClient,
   headlessConfig,
   Mutation,
   PageIdType,
   PostIdType,
   WithClient,
+  getQueryParam,
+  isValidEmail,
 } from '@faustjs/core';
-import { getQueryParam, isValidEmail } from '@faustjs/core';
+
 import type { RequiredSchema } from '@faustjs/react';
 import {
   createReactClient,
@@ -335,7 +337,7 @@ export function getClient<
       }
 
       (async () => {
-        await fetchToken(data.code as string | undefined);
+        await fetchAccessToken(data.code as string | undefined);
 
         const redirectUri = getQueryParam(window.location.href, 'redirect_uri');
 

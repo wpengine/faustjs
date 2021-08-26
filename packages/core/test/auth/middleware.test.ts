@@ -2,8 +2,8 @@ import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
 import { headlessConfig } from '../../src';
-import { authorizeHandler, redirect } from '../../src/auth/middleware';
-import * as cookie from '../../src/auth/cookie';
+import { authorizeHandler, redirect } from '../../src/auth/server/middleware';
+import * as cookie from '../../src/auth/server/cookie';
 
 describe('auth/middleware', () => {
   test('redirect will write a 302', () => {
