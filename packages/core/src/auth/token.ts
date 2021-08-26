@@ -1,3 +1,4 @@
+import { isServerSide } from '../utils';
 import { fetchToken } from './authorize';
 
 export interface AccessToken {
@@ -37,6 +38,10 @@ export function setAccessToken(
   token: string | undefined,
   expiration: number | undefined,
 ): void {
+  if (isServerSide()) {
+    return;
+  }
+
   accessToken = {
     token,
     expiration,
