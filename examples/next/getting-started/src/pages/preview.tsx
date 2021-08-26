@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
-import { PageComponent } from "./[...pageUri]";
-import type { Page, Post } from "@faustjs/core";
-import { PostComponent } from "./posts/[postSlug]";
+import { useRouter } from 'next/router';
+import { PageComponent } from './[...pageUri]';
+import { PostComponent } from './posts/[postSlug]';
 import { client } from 'client';
+import type { Page, Post } from 'client';
 
 export default function Preview() {
   const {
