@@ -10,7 +10,7 @@ import {
   PostIdType,
   WithClient,
 } from '@faustjs/core';
-import { getQueryParam, isValidEmail } from '@faustjs/core/utils';
+import { getQueryParam, isValidEmail } from '@faustjs/core';
 import type { RequiredSchema } from '@faustjs/react';
 import {
   createReactClient,
