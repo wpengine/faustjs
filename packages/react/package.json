@@ -24,7 +24,8 @@
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
     "ts:cjs": "tsc -p tsconfig-cjs.json",
-    "ts:watch": "tsc -p . --watch"
+    "ts:watch": "tsc -p . --watch",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
