@@ -18,6 +18,7 @@
     "clean:examples": "rimraf examples/**/node_modules",
     "lint": "npm run lint --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "lint:fix": "npm run lint:fix --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "dev": "npm run build && npm run dev:next:getting-started",
     "dev:next:getting-started": "rimraf examples/next/getting-started/.next && npm run dev ---workspace=examples/next/getting-started",
     "docs": "npm start --prefix internal/website",
