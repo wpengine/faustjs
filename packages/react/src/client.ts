@@ -47,8 +47,7 @@ export interface RequiredSchema {
 export interface ReactClient<Schema extends RequiredSchema>
   extends GQtyReactClient<Schema> {
   client: GQtyClient<Schema>;
-  auth: Pick<ReactClient<Schema>, 'client' | 'useIsLoading'> &
-    GQtyReactClient<Schema>;
+  auth: Omit<ReactClient<Schema>, 'auth'>;
   useIsLoading(): boolean;
 }
 
