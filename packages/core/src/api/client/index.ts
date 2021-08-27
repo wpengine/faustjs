@@ -32,7 +32,7 @@ export interface RequestContext {
 export function createQueryFetcher(
   context?: IncomingMessage,
   applyRequestContext?: ClientConfig['applyRequestContext'],
-) {
+): QueryFetcher {
   return async function (query, variables): Promise<any> {
     const url = getGqlUrl();
     const token = getAccessToken({
