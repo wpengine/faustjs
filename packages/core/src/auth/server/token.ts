@@ -52,7 +52,7 @@ export class OAuth {
     });
   }
 
-  public async fetch(code: string): Promise<OAuthTokenResponse> {
+  public async fetch(code?: string): Promise<OAuthTokenResponse> {
     const { wpUrl, apiClientSecret } = headlessConfig();
 
     if (!apiClientSecret) {

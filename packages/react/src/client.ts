@@ -47,6 +47,8 @@ export interface RequiredSchema {
 export interface ReactClient<Schema extends RequiredSchema>
   extends GQtyReactClient<Schema> {
   client: GQtyClient<Schema>;
+  auth: Pick<ReactClient<Schema>, 'client' | 'useIsLoading'> &
+    GQtyReactClient<Schema>;
   useIsLoading(): boolean;
 }
 
@@ -63,9 +65,11 @@ export function getClient<
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
   createReactClientOpts?: CreateReactClientOptions,
 ) {
-  const coreClient = getCoreClient<Schema, ObjectTypesNames, ObjectTypes>(
-    clientConfig,
-  );
+  const { authClient, client } = getCoreClient<
+    Schema,
+    ObjectTypesNames,
+    ObjectTypes
+  >(clientConfig);
 
   let reactClientOpts: CreateReactClientOptions = {
     defaults: {
@@ -82,19 +86,26 @@ export function getClient<
     reactClientOpts = merge(reactClientOpts, createReactClientOpts);
   }
 
-  const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
+  const reactClient = createReactClient<Schema>(client, reactClientOpts);
+  const authReactClient = createReactClient<Schema>(
+    authClient,
+    reactClientOpts,
+  );
 
-  const { useQuery } = reactClient;
-
-  const useIsLoading = () => {
-    return useQuery().$state.isLoading;
-  };
-
-  const c: ReactClient<Schema> = {
-    client: coreClient,
+  const fullClient: ReactClient<Schema> = {
+    client,
     ...reactClient,
-    useIsLoading,
+    auth: {
+      client: authClient,
+      ...authReactClient,
+      useIsLoading() {
+        return authReactClient.useQuery().$state.isLoading;
+      },
+    },
+    useIsLoading() {
+      return reactClient.useQuery().$state.isLoading;
+    },
   };
 
-  return c;
+  return fullClient;
 }

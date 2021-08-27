@@ -10,10 +10,10 @@ export interface CookieOptions {
 
 export class Cookies {
   private request: IncomingMessage;
-  private response: ServerResponse;
+  private response?: ServerResponse;
   private cookies: Record<string, string> = {};
 
-  constructor(req: IncomingMessage, res: ServerResponse) {
+  constructor(req: IncomingMessage, res?: ServerResponse) {
     this.request = req;
     this.response = res;
 
@@ -54,7 +54,7 @@ export class Cookies {
 
     this.cookies[key] = cookieValue;
 
-    this.response.setHeader(
+    this.response?.setHeader(
       'Set-Cookie',
       cookie.serialize(key, cookieValue, serializeOptions),
     );
@@ -63,7 +63,7 @@ export class Cookies {
   public removeCookie(key: string): void {
     delete this.cookies[key];
 
-    this.response.setHeader(
+    this.response?.setHeader(
       'Set-Cookie',
       cookie.serialize(key, '', {
         expires: new Date(0),
