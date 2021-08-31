@@ -137,6 +137,11 @@ function wpe_headless_post_preview_link( $link, $post ) {
 			$args['page_id'] = $preview_id;
 		}
 
+		// Add post_type=xx to help identify the type of content being previewed.
+		if ( ! isset( $args['post_type'] ) ) {
+			$args['post_type'] = $post->post_type;
+		}
+
 		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
 		$unleadingslash_path          = ltrim( $path, '/\\' );
 		$link                         = $untrailingslash_frontend_uri . '/' . $unleadingslash_path;
@@ -218,6 +223,6 @@ add_action(
 	'enqueue_block_editor_assets',
 	function() {
 		wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'wp-edit-post' ), '1.0.0', true );
-		wp_localize_script('awp-gutenberg-filters', '_wpe_headless_preview_link', array('_preview_link' => get_preview_post_link()));
+		wp_localize_script( 'awp-gutenberg-filters', '_wpe_headless_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 	}
 );
