@@ -137,11 +137,6 @@ function wpe_headless_post_preview_link( $link, $post ) {
 			$args['page_id'] = $preview_id;
 		}
 
-		// Add post_type=xx to help identify the type of content being previewed.
-		if ( ! isset( $args['post_type'] ) ) {
-			$args['post_type'] = $post->post_type;
-		}
-
 		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
 		$unleadingslash_path          = ltrim( $path, '/\\' );
 		$link                         = $untrailingslash_frontend_uri . '/' . $unleadingslash_path;
