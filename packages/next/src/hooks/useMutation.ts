@@ -1,5 +1,5 @@
 import type { RequiredSchema } from '@faustjs/react';
-import type { NextClient } from '../client';
+import type { NextClientHooks } from '.';
 
 export function create<
   Schema extends RequiredSchema,
@@ -10,8 +10,8 @@ export function create<
     };
   } = never,
 >(
-  useClient: () => NextClient<Schema, ObjectTypesNames, ObjectTypes>,
-): NextClient<Schema, ObjectTypesNames, ObjectTypes>['useMutation'] {
+  useClient: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useClient'],
+): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useMutation'] {
   return (...args) => {
     return useClient().useMutation(...args);
   };

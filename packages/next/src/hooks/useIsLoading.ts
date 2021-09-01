@@ -1,5 +1,5 @@
 import type { RequiredSchema } from '@faustjs/react';
-import type { NextClient } from '../client';
+import type { NextClientHooks } from '.';
 
 export function create<
   Schema extends RequiredSchema,
@@ -10,8 +10,8 @@ export function create<
     };
   } = never,
 >(
-  useQuery: NextClient<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
-): NextClient<Schema, ObjectTypesNames, ObjectTypes>['useIsLoading'] {
+  useQuery: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
+): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useIsLoading'] {
   return () => {
     return useQuery().$state.isLoading;
   };

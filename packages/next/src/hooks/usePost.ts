@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import defaults from 'lodash/defaults';
 import isString from 'lodash/isString';
 import { hasPostId, hasPostSlug, hasPostUri } from '../utils';
-import type { NextClient } from '../client';
+import type { NextClientHooks } from '.';
 
 export function create<
   Schema extends RequiredSchema,
@@ -15,8 +15,8 @@ export function create<
     };
   } = never,
 >(
-  useQuery: NextClient<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
-): NextClient<Schema, ObjectTypesNames, ObjectTypes>['usePost'] {
+  useQuery: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
+): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['usePost'] {
   return (args) => {
     const router = useRouter();
     const { post } = useQuery();

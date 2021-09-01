@@ -9,15 +9,14 @@ import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient,
-  UseMutationOptions,
 } from '@gqty/react';
-import type { GQtyClient, GQtyError } from 'gqty';
+import type { GQtyClient } from 'gqty';
 import type { IncomingMessage } from 'http';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 import React, { useContext } from 'react';
 
-import { createHooks } from './hooks';
+import { createHooks, NextClientHooks } from './hooks';
 
 export interface NextClient<
   Schema extends RequiredSchema,
@@ -27,75 +26,11 @@ export interface NextClient<
       __typename: P | undefined;
     };
   } = never,
-> extends ReactClient<Schema> {
+> extends ReactClient<Schema>,
+    NextClientHooks<Schema, ObjectTypesNames, ObjectTypes> {
   client: GQtyClient<Schema>;
-
   setAsRoot(): void;
-
   context: WithClient<IncomingMessage, Schema> | undefined;
-
-  useQuery: ReactClient<Schema>['useQuery'];
-
-  useClient(): NextClient<Schema, ObjectTypesNames, ObjectTypes>;
-
-  useHydrateCache: ReactClient<Schema>['useHydrateCache'];
-
-  useCategory(
-    args?: Parameters<Schema['query']['category']>[0],
-  ): ReturnType<Schema['query']['category']>;
-
-  usePosts(
-    args?: Parameters<Schema['query']['posts']>[0],
-  ): ReturnType<Schema['query']['posts']>;
-
-  usePost(
-    args?: Parameters<Schema['query']['post']>[0],
-  ): ReturnType<Schema['query']['post']>;
-
-  usePage(
-    args?: Parameters<Schema['query']['page']>[0],
-  ): ReturnType<Schema['query']['page']>;
-
-  usePreview(
-    args: Record<'pageId', string>,
-  ): ReturnType<Schema['query']['page']>;
-  usePreview(
-    args: Record<'postId', string>,
-  ): ReturnType<Schema['query']['post']>;
-
-  useIsLoading(): boolean;
-
-  useAuth(): {
-    isLoading: boolean;
-    isAuthenticated: boolean | undefined;
-    authResult:
-      | true
-      | { redirect?: string | undefined; login?: string | undefined }
-      | undefined;
-  };
-
-  useLogin(options?: {
-    useMutationOptions?: UseMutationOptions<{
-      code?: string | null | undefined;
-      error?: string | null | undefined;
-    }>;
-  }): {
-    login: (usernameEmail: string, password: string) => Promise<void>;
-    isLoading: boolean;
-    data:
-      | {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          error: any;
-          code?: undefined;
-        }
-      | {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          code: any;
-          error?: undefined;
-        }
-      | undefined;
-    error: GQtyError | undefined;
-  };
 }
 
 export interface HeadlessContextType {

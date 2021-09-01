@@ -7,7 +7,7 @@ import {
 import type { RequiredSchema } from '@faustjs/react';
 import { UseMutationOptions } from '@gqty/react';
 import { useEffect } from 'react';
-import type { NextClient } from '../client';
+import type { NextClientHooks } from '.';
 
 export function create<
   Schema extends RequiredSchema,
@@ -18,8 +18,12 @@ export function create<
     };
   } = never,
 >(
-  useMutation: NextClient<Schema, ObjectTypesNames, ObjectTypes>['useMutation'],
-): NextClient<Schema, ObjectTypesNames, ObjectTypes>['useLogin'] {
+  useMutation: NextClientHooks<
+    Schema,
+    ObjectTypesNames,
+    ObjectTypes
+  >['useMutation'],
+): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useLogin'] {
   return (options?: {
     useMutationOptions?: UseMutationOptions<{
       code?: string | null | undefined;

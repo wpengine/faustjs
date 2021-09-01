@@ -1,8 +1,8 @@
 import { PageIdType, PostIdType } from '@faustjs/core';
 import type { RequiredSchema } from '@faustjs/react';
 import isUndefined from 'lodash/isUndefined';
-import type { NextClient } from '../client';
 import { HasObject, hasPageId, hasPostId } from '../utils';
+import type { NextClientHooks } from '.';
 
 export function create<
   Schema extends RequiredSchema,
@@ -13,9 +13,9 @@ export function create<
     };
   } = never,
 >(
-  useAuth: NextClient<Schema, ObjectTypesNames, ObjectTypes>['useAuth'],
-  useQuery: NextClient<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
-): NextClient<Schema, ObjectTypesNames, ObjectTypes>['usePreview'] {
+  useAuth: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useAuth'],
+  useQuery: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
+): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['usePreview'] {
   function usePreview(
     args: Record<'pageId', string>,
   ): ReturnType<Schema['query']['page']>;
