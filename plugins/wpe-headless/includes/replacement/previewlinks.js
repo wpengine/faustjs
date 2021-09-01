@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'button[class~="block-editor-post-preview__button-toggle"]',
       );
 
-      if (!previewButton) {
+      if (!previewButton.length) {
         return;
       }
 
@@ -27,13 +27,19 @@ window.addEventListener('DOMContentLoaded', function () {
         setTimeout(function () {
           const links = document.querySelectorAll('a[target*="wp-preview"]');
 
-          if (!links) {
+          if (!links.length) {
             return;
           }
 
           links.forEach((link) => {
             if (!/\/preview(\/\w|\?)/.test(link.href)) {
-              link.href = previewLink;
+              link.href =
+                link.protocol +
+                '//' +
+                link.host +
+                link.pathname.replace(/\/$/, '') +
+                '/preview' +
+                link.search;
             }
 
             var copy = link.cloneNode(true);

@@ -38,6 +38,11 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'graphql_request_results', 'wpe_headless_url_replacement' ) );
 	}
 
+	public function test_enqueue_preview_scripts_action() {
+		$this->assertSame( 10, has_action( 'load-post-new.php', 'wpe_headless_enqueue_preview_scripts' ) );
+		$this->assertSame( 10, has_action( 'load-post.php', 'wpe_headless_enqueue_preview_scripts' ) );
+	}
+
 	/**
 	 * Tests wpe_headless_content_replacement() returns original value when content replacement is not enabled.
 	 */

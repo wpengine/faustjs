@@ -314,10 +314,10 @@ export function getClient<
       ?.node as ReturnType<Schema['query']['post']> | undefined;
 
     if (hasPageId(args)) {
-      return mostRecentPageRevision || page;
+      return mostRecentPageRevision ?? page;
     }
     if (hasPostId(args)) {
-      return mostRecentPostRevision || post;
+      return mostRecentPostRevision ?? post;
     }
   }
   /* eslint-enable consistent-return */
