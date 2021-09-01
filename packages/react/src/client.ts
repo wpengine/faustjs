@@ -16,6 +16,9 @@ import merge from 'lodash/merge';
 
 export interface Node {
   id?: string | null;
+}
+
+export interface WithRevisions {
   revisions: (arg0: { first: number }) => {
     edges?: { node?: Node }[];
   };
@@ -28,10 +31,16 @@ export interface RequiredQuery {
       categoryName?: string;
     };
   }) => unknown;
-  post: (args: { id: string; idType?: PostIdType }) => Node | null | undefined;
+  post: (args: {
+    id: string;
+    idType?: PostIdType;
+  }) => (Node & WithRevisions) | null | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pages: (args?: any) => unknown;
-  page: (args: { id: string; idType?: PageIdType }) => Node | null | undefined;
+  page: (args: {
+    id: string;
+    idType?: PageIdType;
+  }) => (Node & WithRevisions) | null | undefined;
   category: (args: {
     id: string;
     idType?: CategoryIdType;
