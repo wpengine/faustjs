@@ -25,6 +25,7 @@ import {
 } from './utils';
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
+export const AUTH_CLIENT_CACHE_PROP = '__AUTH_CLIENT_CACHE_PROP';
 
 export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   client: ReturnType<typeof getClient>;
@@ -44,7 +45,10 @@ export interface GetNextStaticPropsConfig<Props = Record<string, unknown>> {
 }
 
 export interface PageProps<Props> {
-  props: Props & { [CLIENT_CACHE_PROP]: string | null };
+  props: Props & {
+    [CLIENT_CACHE_PROP]: string | null;
+    [AUTH_CLIENT_CACHE_PROP]: string | null;
+  };
 }
 
 export interface Is404Config {
@@ -63,25 +67,36 @@ export async function getProps<
   }: GetNextServerSidePropsConfig | GetNextStaticPropsConfig,
 ): Promise<PageProps<Props>> {
   let cacheSnapshot: string | undefined;
+  let authSnapshot: string | undefined;
   client.setAsRoot();
 
   if (!isNil(Page)) {
-    const renderResult = await client.prepareReactRender(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      <RouterContext.Provider value={{ query: { ...context.params } } as any}>
-        <HeadlessContext.Provider value={{ client }}>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Page {...props} />
-        </HeadlessContext.Provider>
-      </RouterContext.Provider>,
+    const authClient = client.auth.client;
+
+    const { cacheSnapshot: coreAuthSnapshot } = await authClient.prepareRender(
+      async () => {
+        const { cacheSnapshot: coreSnapshot } = await client.prepareReactRender(
+          <RouterContext.Provider
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            value={{ query: { ...context.params } } as any}>
+            <HeadlessContext.Provider value={{ client }}>
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <Page {...props} />
+            </HeadlessContext.Provider>
+          </RouterContext.Provider>,
+        );
+
+        cacheSnapshot = coreSnapshot;
+      },
     );
 
-    cacheSnapshot = renderResult.cacheSnapshot;
+    authSnapshot = coreAuthSnapshot;
   }
 
   return {
     props: {
       [CLIENT_CACHE_PROP]: cacheSnapshot ?? null,
+      [AUTH_CLIENT_CACHE_PROP]: authSnapshot ?? null,
       ...props,
     },
   } as PageProps<Props>;
