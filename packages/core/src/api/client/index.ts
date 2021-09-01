@@ -131,26 +131,22 @@ export interface ClientConfig<
   ): Promise<RequestContext> | RequestContext;
 }
 
-export type WithClient<Type, Schema extends GqlClientSchema> = Type & {
-  apiClient?: GQtyClient<Schema>;
-  apiAuthClient?: GQtyClient<Schema>;
-};
-
-export interface ApiClients<Schema extends GqlClientSchema> {
-  client: GQtyClient<Schema>;
-  authClient: GQtyClient<Schema>;
+export interface ApiClient<Schema extends GqlClientSchema>
+  extends GQtyClient<Schema> {
+  auth: GQtyClient<Schema>;
 }
 
-export function contextHasClient(
+export type WithClient<Type, Schema extends GqlClientSchema> = Type & {
+  apiClient?: ApiClient<Schema>;
+};
+
+export function contextHasClient<Schema extends GqlClientSchema>(
   context?: IncomingMessage,
-): context is WithClient<IncomingMessage, any> &
-  Required<
-    Pick<WithClient<IncomingMessage, any>, 'apiClient' | 'apiAuthClient'>
-  > {
+): context is WithClient<IncomingMessage, Schema> &
+  Required<Pick<WithClient<IncomingMessage, Schema>, 'apiClient'>> {
   return (
     isObject(context) &&
-    isObject((context as WithClient<IncomingMessage, any>).apiClient) &&
-    isObject((context as WithClient<IncomingMessage, any>).apiAuthClient)
+    isObject((context as WithClient<IncomingMessage, Schema>).apiClient)
   );
 }
 
@@ -166,7 +162,7 @@ export function getClient<
   } = never,
 >(
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
-): ApiClients<Schema> {
+): ApiClient<Schema> {
   const {
     context,
     schema,
@@ -176,11 +172,8 @@ export function getClient<
     applyRequestContext,
   } = clientConfig;
 
-  if (contextHasClient(context)) {
-    return {
-      client: context.apiClient,
-      authClient: context.apiAuthClient,
-    };
+  if (contextHasClient<Schema>(context)) {
+    return context.apiClient;
   }
 
   if (isNil(schema) || isNil(scalarsEnumsHash)) {
@@ -189,30 +182,30 @@ export function getClient<
     );
   }
 
-  const apiClient = createClient<Schema, ObjectTypesNames, ObjectTypes>({
-    schema,
-    scalarsEnumsHash,
-    queryFetcher: configQueryFetcher ?? createQueryFetcher(applyRequestContext),
-    ...omit(clientConfig, 'context', 'applyRequestContext'),
-  });
-
-  const apiAuthClient = createClient<Schema, ObjectTypesNames, ObjectTypes>({
-    schema,
-    scalarsEnumsHash,
-    queryFetcher:
-      configAuthQueryFetcher ??
-      createAuthQueryFetcher(context, applyRequestContext),
-    ...omit(clientConfig, 'context', 'applyRequestContext'),
-  });
+  const apiClient = {
+    ...createClient<Schema, ObjectTypesNames, ObjectTypes>({
+      schema,
+      scalarsEnumsHash,
+      queryFetcher:
+        configQueryFetcher ?? createQueryFetcher(applyRequestContext),
+      ...omit(clientConfig, 'context', 'applyRequestContext'),
+    }),
+    auth: {
+      ...createClient<Schema, ObjectTypesNames, ObjectTypes>({
+        schema,
+        scalarsEnumsHash,
+        queryFetcher:
+          configAuthQueryFetcher ??
+          createAuthQueryFetcher(context, applyRequestContext),
+        ...omit(clientConfig, 'context', 'applyRequestContext'),
+      })
+    }
+  };
 
   if (isObject(clientConfig.context)) {
     clientConfig.context.apiClient = apiClient;
-    clientConfig.context.apiAuthClient = apiAuthClient;
   }
 
-  return {
-    client: apiClient,
-    authClient: apiAuthClient,
-  };
+  return apiClient;
 }
 /* eslint-enable @typescript-eslint/ban-types */

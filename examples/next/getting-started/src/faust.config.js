@@ -1,4 +1,4 @@
-const { headlessConfig } = require('@faustjs/core');
+import { headlessConfig } from '@faustjs/core';
 
 if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   console.error(
@@ -9,7 +9,7 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
 /**
  * @type {import("@faustjs/core").HeadlessConfig}
  */
-module.exports = headlessConfig({
+export default headlessConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
 });

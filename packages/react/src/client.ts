@@ -18,6 +18,12 @@ export interface Node {
   id?: string | null;
 }
 
+export interface WithRevisions {
+  revisions: (arg0: { first: number }) => {
+    edges?: { node?: Node }[];
+  };
+}
+
 export interface RequiredQuery {
   posts: (args?: {
     where?: {
@@ -25,10 +31,16 @@ export interface RequiredQuery {
       categoryName?: string;
     };
   }) => unknown;
-  post: (args: { id: string; idType?: PostIdType }) => Node | null | undefined;
+  post: (args: {
+    id: string;
+    idType?: PostIdType;
+  }) => (Node & WithRevisions) | null | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pages: (args?: any) => unknown;
-  page: (args: { id: string; idType?: PageIdType }) => Node | null | undefined;
+  page: (args: {
+    id: string;
+    idType?: PageIdType;
+  }) => (Node & WithRevisions) | null | undefined;
   category: (args: {
     id: string;
     idType?: CategoryIdType;
@@ -64,7 +76,7 @@ export function getClient<
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
   createReactClientOpts?: CreateReactClientOptions,
 ) {
-  const { authClient, client } = getCoreClient<
+  const client = getCoreClient<
     Schema,
     ObjectTypesNames,
     ObjectTypes
@@ -87,7 +99,7 @@ export function getClient<
 
   const reactClient = createReactClient<Schema>(client, reactClientOpts);
   const authReactClient = createReactClient<Schema>(
-    authClient,
+    client.auth,
     reactClientOpts,
   );
 
@@ -95,7 +107,7 @@ export function getClient<
     client,
     ...reactClient,
     auth: {
-      client: authClient,
+      client: client.auth,
       ...authReactClient,
       useIsLoading() {
         return authReactClient.useQuery().$state.isLoading;

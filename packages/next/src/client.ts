@@ -463,28 +463,33 @@ export function getClient<
   ): ReturnType<Schema['query']['page'] | Schema['query']['post']> | undefined {
     const client = useClient();
     const { isAuthenticated } = useAuth();
-
-    const { post, page } = client.useQuery();
+    const { post: postQuery, page: pageQuery } = client.useQuery();
 
     if (isUndefined(isAuthenticated) || isAuthenticated !== true) {
       return;
     }
 
-    const pagePreview = page({
+    const page = pageQuery({
       id: (args?.pageId as string) ?? '',
       idType: PageIdType.DATABASE_ID,
     }) as ReturnType<Schema['query']['page']>;
 
-    const postPreview = post({
+    const mostRecentPageRevision = page?.revisions({ first: 1 })?.edges?.[0]
+      ?.node as ReturnType<Schema['query']['page']> | undefined;
+
+    const post = postQuery({
       id: (args?.postId as string) ?? '',
       idType: PostIdType.DATABASE_ID,
     }) as ReturnType<Schema['query']['post']>;
 
+    const mostRecentPostRevision = post?.revisions({ first: 1 })?.edges?.[0]
+      ?.node as ReturnType<Schema['query']['post']> | undefined;
+
     if (hasPageId(args)) {
-      return pagePreview;
+      return mostRecentPageRevision ?? page;
     }
     if (hasPostId(args)) {
-      return postPreview;
+      return mostRecentPostRevision ?? post;
     }
   }
   /* eslint-enable consistent-return */
