@@ -5,12 +5,17 @@ import {
   mockedStaticPropsContext,
 } from '../jest.setup';
 import { getNextStaticProps, getNextServerSideProps } from '../src';
-import { CLIENT_CACHE_PROP } from '../src/getProps';
+import { AUTH_CLIENT_CACHE_PROP, CLIENT_CACHE_PROP } from '../src/getProps';
 
 describe('getNextStaticProps', () => {
   let client = {
     setAsRoot: () => {},
     prepareReactRender: () => {},
+    auth: {
+      client: {
+        prepareRender: async (render: any): Promise<any> => {},
+      },
+    },
   };
   const setAsRootSpy = jest
     .spyOn(client, 'setAsRoot')
@@ -20,6 +25,15 @@ describe('getNextStaticProps', () => {
     .mockImplementation(() => {
       return {
         cacheSnapshot: 'cache',
+      };
+    });
+  const prepareRenderSpy = jest
+    .spyOn(client.auth.client, 'prepareRender')
+    .mockImplementation(async (render: () => Promise<void> | void) => {
+      await render();
+
+      return {
+        cacheSnapshot: 'auth-cache',
       };
     });
 
@@ -44,6 +58,7 @@ describe('getNextStaticProps', () => {
     expect(staticProps).toStrictEqual(expectedProps);
     expect(setAsRootSpy).toBeCalledTimes(0);
     expect(prepareReactRenderSpy).toBeCalledTimes(0);
+    expect(prepareRenderSpy).toBeCalledTimes(0);
   });
 
   test('getNextStaticProps with redirect should return the redirect object', async () => {
@@ -63,6 +78,7 @@ describe('getNextStaticProps', () => {
     expect(staticProps).toStrictEqual({ redirect });
     expect(setAsRootSpy).toBeCalledTimes(0);
     expect(prepareReactRenderSpy).toBeCalledTimes(0);
+    expect(prepareRenderSpy).toBeCalledTimes(0);
   });
 
   test('getNextStaticProps without page should not call prepareReactRender', async () => {
@@ -74,6 +90,7 @@ describe('getNextStaticProps', () => {
     });
 
     expect(prepareReactRenderSpy).toBeCalledTimes(0);
+    expect(prepareRenderSpy).toBeCalledTimes(0);
   });
 
   test('getNextStaticProps should return props with cache', async () => {
@@ -91,6 +108,7 @@ describe('getNextStaticProps', () => {
     const expectedProps = {
       props: {
         [CLIENT_CACHE_PROP]: 'cache',
+        [AUTH_CLIENT_CACHE_PROP]: 'auth-cache',
         title: 'Hello World',
       },
       revalidate: 1,
@@ -112,6 +130,7 @@ describe('getNextStaticProps', () => {
     const expectedProps = {
       props: {
         [CLIENT_CACHE_PROP]: 'cache',
+        [AUTH_CLIENT_CACHE_PROP]: 'auth-cache',
       },
       revalidate: 30,
     };
@@ -124,6 +143,11 @@ describe('getNextServerSideProps', () => {
   let client = {
     setAsRoot: () => {},
     prepareReactRender: () => {},
+    auth: {
+      client: {
+        prepareRender: async (render: any): Promise<any> => {},
+      },
+    },
   };
   const setAsRootSpy = jest
     .spyOn(client, 'setAsRoot')
@@ -133,6 +157,15 @@ describe('getNextServerSideProps', () => {
     .mockImplementation(() => {
       return {
         cacheSnapshot: 'cache',
+      };
+    });
+  const prepareRenderSpy = jest
+    .spyOn(client.auth.client, 'prepareRender')
+    .mockImplementation(async (render: () => Promise<void> | void) => {
+      await render();
+
+      return {
+        cacheSnapshot: 'auth-cache',
       };
     });
 
@@ -157,6 +190,7 @@ describe('getNextServerSideProps', () => {
     expect(staticProps).toStrictEqual(expectedProps);
     expect(setAsRootSpy).toBeCalledTimes(0);
     expect(prepareReactRenderSpy).toBeCalledTimes(0);
+    expect(prepareRenderSpy).toBeCalledTimes(0);
   });
 
   test('getNextServerSideProps with redirect should return the redirect object', async () => {
@@ -176,6 +210,7 @@ describe('getNextServerSideProps', () => {
     expect(staticProps).toStrictEqual({ redirect });
     expect(setAsRootSpy).toBeCalledTimes(0);
     expect(prepareReactRenderSpy).toBeCalledTimes(0);
+    expect(prepareRenderSpy).toBeCalledTimes(0);
   });
 
   test('getNextServerSideProps without page should not call prepareReactRender', async () => {
@@ -204,6 +239,7 @@ describe('getNextServerSideProps', () => {
     const expectedProps = {
       props: {
         [CLIENT_CACHE_PROP]: 'cache',
+        [AUTH_CLIENT_CACHE_PROP]: 'auth-cache',
         title: 'Hello World',
       },
     };
