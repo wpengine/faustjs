@@ -297,23 +297,27 @@ export function getClient<
       }
     }, [client]);
 
-    const { post, page } = client.useQuery();
-
-    const pagePreview = page({
+    const page = client.useQuery().page({
       id: (args?.pageId as string) ?? '',
       idType: PageIdType.DATABASE_ID,
     }) as ReturnType<Schema['query']['page']>;
 
-    const postPreview = post({
+    const mostRecentPageRevision = page?.revisions({ first: 1 })?.edges?.[0]
+      ?.node as ReturnType<Schema['query']['page']> | undefined;
+
+    const post = client.useQuery().post({
       id: (args?.postId as string) ?? '',
       idType: PostIdType.DATABASE_ID,
     }) as ReturnType<Schema['query']['post']>;
 
+    const mostRecentPostRevision = post?.revisions({ first: 1 })?.edges?.[0]
+      ?.node as ReturnType<Schema['query']['post']> | undefined;
+
     if (hasPageId(args)) {
-      return pagePreview;
+      return mostRecentPageRevision ?? page;
     }
     if (hasPostId(args)) {
-      return postPreview;
+      return mostRecentPostRevision ?? post;
     }
   }
   /* eslint-enable consistent-return */
