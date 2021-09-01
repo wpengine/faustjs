@@ -76,11 +76,9 @@ export function getClient<
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
   createReactClientOpts?: CreateReactClientOptions,
 ) {
-  const client = getCoreClient<
-    Schema,
-    ObjectTypesNames,
-    ObjectTypes
-  >(clientConfig);
+  const client = getCoreClient<Schema, ObjectTypesNames, ObjectTypes>(
+    clientConfig,
+  );
 
   let reactClientOpts: CreateReactClientOptions = {
     defaults: {

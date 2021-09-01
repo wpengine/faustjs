@@ -198,8 +198,8 @@ export function getClient<
           configAuthQueryFetcher ??
           createAuthQueryFetcher(context, applyRequestContext),
         ...omit(clientConfig, 'context', 'applyRequestContext'),
-      })
-    }
+      }),
+    },
   };
 
   if (isObject(clientConfig.context)) {
