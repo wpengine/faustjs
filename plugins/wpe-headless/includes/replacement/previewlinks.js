@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', function () {
         'button[class~="block-editor-post-preview__button-toggle"]',
       );
 
-      if (!previewButton) {
+      if (!previewButton.length) {
         return;
       }
 
@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', function () {
             'a[target*="wp-preview"]',
           );
 
-		  if (!links) {
+		  if (!links.length) {
 			  return;
 		  }
 
