@@ -16,6 +16,9 @@ import merge from 'lodash/merge';
 
 export interface Node {
   id?: string | null;
+  revisions: (arg0: { first: number }) => {
+    edges?: { node?: Node }[];
+  };
 }
 
 export interface RequiredQuery {
