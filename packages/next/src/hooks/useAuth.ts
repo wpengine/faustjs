@@ -4,7 +4,7 @@ import type { RequiredSchema } from '@faustjs/react';
 import isObject from 'lodash/isObject';
 import isUndefined from 'lodash/isUndefined';
 import trim from 'lodash/trim';
-import type { NextClientHooks } from '.';
+import type { NextClient } from '../client';
 
 export function create<
   Schema extends RequiredSchema,
@@ -14,7 +14,7 @@ export function create<
       __typename: P | undefined;
     };
   } = never,
->(): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useAuth'] {
+>(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['useAuth'] {
   return () => {
     const { authType, loginPagePath } = headlessConfig();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(

@@ -27,8 +27,15 @@ export interface NextClient<
     };
   } = never,
 > extends ReactClient<Schema>,
-    NextClientHooks<Schema, ObjectTypesNames, ObjectTypes> {
+    Omit<NextClientHooks<Schema>, 'useClient'> {
   client: GQtyClient<Schema>;
+  auth: Omit<
+    NextClient<Schema, ObjectTypesNames, ObjectTypes>,
+    'auth' | 'setAsRoot' | 'context' | 'useClient'
+  > & {
+    useClient: () => NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth'];
+  };
+  useClient: () => NextClient<Schema, ObjectTypesNames, ObjectTypes>;
   setAsRoot(): void;
   context: WithClient<IncomingMessage, Schema> | undefined;
 }
@@ -74,6 +81,10 @@ export function getClient<
   }
 
   const reactClient = createReactClient<Schema>(coreClient, reactClientOpts);
+  const authReactClient = createReactClient<Schema>(
+    coreClient.auth,
+    reactClientOpts,
+  );
   const haveServerContext = isObject(clientConfig.context?.apiClient);
   let nextClient: NextClient<Schema, ObjectTypesNames, ObjectTypes>;
 
@@ -88,11 +99,29 @@ export function getClient<
     return client;
   }
 
+  function useAuthClient() {
+    let client: typeof nextClient | undefined = useContext(HeadlessContext)
+      ?.client as typeof nextClient;
+
+    if (haveServerContext || !isObject(client)) {
+      client = nextClient;
+    }
+
+    return client.auth;
+  }
+
   const hooks = createHooks(useClient);
+  const authHooks = createHooks(useAuthClient);
 
   nextClient = {
     client: coreClient,
     ...reactClient,
+    auth: {
+      client: coreClient.auth,
+      ...authReactClient,
+      ...authHooks,
+      useClient: useAuthClient,
+    },
     setAsRoot() {
       nextClient.useQuery = reactClient.useQuery;
       nextClient.useLazyQuery = reactClient.useLazyQuery;
@@ -101,9 +130,18 @@ export function getClient<
       nextClient.useMutation = reactClient.useMutation;
       nextClient.useSubscription = reactClient.useSubscription;
       nextClient.useClient = () => nextClient;
+
+      nextClient.auth.useQuery = authReactClient.useQuery;
+      nextClient.auth.useLazyQuery = authReactClient.useLazyQuery;
+      nextClient.auth.useTransactionQuery = authReactClient.useTransactionQuery;
+      nextClient.auth.usePaginatedQuery = authReactClient.usePaginatedQuery;
+      nextClient.auth.useMutation = authReactClient.useMutation;
+      nextClient.auth.useSubscription = authReactClient.useSubscription;
+      nextClient.auth.useClient = () => nextClient.auth;
     },
     context: clientConfig.context,
     ...hooks,
+    useClient,
   };
 
   return nextClient;

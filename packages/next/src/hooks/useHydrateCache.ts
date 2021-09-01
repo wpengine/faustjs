@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import isFunction from 'lodash/isFunction';
-import type { NextClientHooks } from '.';
+import type { NextClientHooks, UseClient } from '.';
 
 export function create<
   Schema extends RequiredSchema,
@@ -14,8 +14,8 @@ export function create<
     };
   } = never,
 >(
-  useClient: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useClient'],
-): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useHydrateCache'] {
+  useClient: UseClient<Schema, ObjectTypesNames, ObjectTypes>,
+): NextClientHooks<Schema>['useHydrateCache'] {
   return ({ cacheSnapshot, shouldRefetch }) => {
     const snapshotCache = useRef('');
     const { client } = useClient();

@@ -6,17 +6,9 @@ import isString from 'lodash/isString';
 import { hasPostId, hasPostSlug, hasPostUri } from '../utils';
 import type { NextClientHooks } from '.';
 
-export function create<
-  Schema extends RequiredSchema,
-  ObjectTypesNames extends string = never,
-  ObjectTypes extends {
-    [P in ObjectTypesNames]: {
-      __typename: P | undefined;
-    };
-  } = never,
->(
-  useQuery: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
-): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['usePost'] {
+export function create<Schema extends RequiredSchema>(
+  useQuery: NextClientHooks<Schema>['useQuery'],
+): NextClientHooks<Schema>['usePost'] {
   return (args) => {
     const router = useRouter();
     const { post } = useQuery();

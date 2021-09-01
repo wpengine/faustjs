@@ -1,4 +1,6 @@
 import type { RequiredSchema } from '@faustjs/react';
+import { ReactClient, UseMutationOptions } from '@gqty/react';
+import type { GQtyError } from 'gqty';
 import type { NextClient } from '../client';
 
 import { create as createAuthHook } from './useAuth';
@@ -16,10 +18,8 @@ import { create as createPageHook } from './usePage';
 import { create as createPreviewHook } from './usePreview';
 import { create as createIsLoadingHook } from './useIsLoading';
 import { create as createLoginHook } from './useLogin';
-import { ReactClient, UseMutationOptions } from '@gqty/react';
-import { GQtyError } from 'gqty';
 
-export interface NextClientHooks<
+export type UseClient<
   Schema extends RequiredSchema,
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
@@ -27,7 +27,12 @@ export interface NextClientHooks<
       __typename: P | undefined;
     };
   } = never,
-> extends Pick<
+> =
+  | NextClient<Schema, ObjectTypesNames, ObjectTypes>['useClient']
+  | NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useClient'];
+
+export interface NextClientHooks<Schema extends RequiredSchema>
+  extends Pick<
     ReactClient<Schema>,
     | 'useLazyQuery'
     | 'useMutation'
@@ -38,8 +43,6 @@ export interface NextClientHooks<
     | 'useHydrateCache'
   > {
   useQuery: ReactClient<Schema>['useQuery'];
-
-  useClient(): NextClient<Schema, ObjectTypesNames, ObjectTypes>;
 
   useHydrateCache: ReactClient<Schema>['useHydrateCache'];
 
@@ -110,14 +113,13 @@ export function createHooks<
     };
   } = never,
 >(
-  useClient: () => NextClient<Schema, ObjectTypesNames, ObjectTypes>,
-): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes> {
+  useClient: UseClient<Schema, ObjectTypesNames, ObjectTypes>,
+): NextClientHooks<Schema> {
   const useQuery = createQueryHook(useClient);
   const useAuth = createAuthHook();
   const useMutation = createMutationHook(useClient);
 
   return {
-    useClient,
     useQuery,
     useAuth,
     useLazyQuery: createLazyQueryHook(useClient),

@@ -9,21 +9,9 @@ import { UseMutationOptions } from '@gqty/react';
 import { useEffect } from 'react';
 import type { NextClientHooks } from '.';
 
-export function create<
-  Schema extends RequiredSchema,
-  ObjectTypesNames extends string = never,
-  ObjectTypes extends {
-    [P in ObjectTypesNames]: {
-      __typename: P | undefined;
-    };
-  } = never,
->(
-  useMutation: NextClientHooks<
-    Schema,
-    ObjectTypesNames,
-    ObjectTypes
-  >['useMutation'],
-): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useLogin'] {
+export function create<Schema extends RequiredSchema>(
+  useMutation: NextClientHooks<Schema>['useMutation'],
+): NextClientHooks<Schema>['useLogin'] {
   return (options?: {
     useMutationOptions?: UseMutationOptions<{
       code?: string | null | undefined;

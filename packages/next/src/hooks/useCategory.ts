@@ -6,17 +6,9 @@ import defaults from 'lodash/defaults';
 import { hasCategoryId, hasCategorySlug } from '../utils';
 import type { NextClientHooks } from '.';
 
-export function create<
-  Schema extends RequiredSchema,
-  ObjectTypesNames extends string = never,
-  ObjectTypes extends {
-    [P in ObjectTypesNames]: {
-      __typename: P | undefined;
-    };
-  } = never,
->(
-  useQuery: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
-): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useCategory'] {
+export function create<Schema extends RequiredSchema>(
+  useQuery: NextClientHooks<Schema>['useQuery'],
+): NextClientHooks<Schema>['useCategory'] {
   return (args) => {
     const { query } = useRouter();
     const { category } = useQuery();

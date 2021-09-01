@@ -4,18 +4,10 @@ import isUndefined from 'lodash/isUndefined';
 import { HasObject, hasPageId, hasPostId } from '../utils';
 import type { NextClientHooks } from '.';
 
-export function create<
-  Schema extends RequiredSchema,
-  ObjectTypesNames extends string = never,
-  ObjectTypes extends {
-    [P in ObjectTypesNames]: {
-      __typename: P | undefined;
-    };
-  } = never,
->(
-  useAuth: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useAuth'],
-  useQuery: NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['useQuery'],
-): NextClientHooks<Schema, ObjectTypesNames, ObjectTypes>['usePreview'] {
+export function create<Schema extends RequiredSchema>(
+  useAuth: NextClientHooks<Schema>['useAuth'],
+  useQuery: NextClientHooks<Schema>['useQuery'],
+): NextClientHooks<Schema>['usePreview'] {
   function usePreview(
     args: Record<'pageId', string>,
   ): ReturnType<Schema['query']['page']>;
