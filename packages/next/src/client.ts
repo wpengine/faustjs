@@ -16,7 +16,12 @@ import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 import React, { useContext } from 'react';
 
-import { createHooks, NextClientHooks } from './hooks';
+import {
+  createAuthHooks,
+  createHooks,
+  NextClientHooks,
+  NextClientHooksWithAuth,
+} from './hooks';
 
 export interface NextClient<
   Schema extends RequiredSchema,
@@ -29,13 +34,18 @@ export interface NextClient<
 > extends ReactClient<Schema>,
     Omit<NextClientHooks<Schema>, 'useClient'> {
   client: GQtyClient<Schema>;
-  auth: Omit<
-    NextClient<Schema, ObjectTypesNames, ObjectTypes>,
-    'auth' | 'setAsRoot' | 'context' | 'useClient'
-  > & {
-    useClient: () => NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth'];
-  };
+  auth: ReactClient<Schema> &
+    NextClientHooksWithAuth<Schema> & {
+      client: GQtyClient<Schema>;
+      useClient: () => NextClient<
+        Schema,
+        ObjectTypesNames,
+        ObjectTypes
+      >['auth'];
+      useIsLoading(): boolean;
+    };
   useClient: () => NextClient<Schema, ObjectTypesNames, ObjectTypes>;
+  useIsLoading(): boolean;
   setAsRoot(): void;
   context: WithClient<IncomingMessage, Schema> | undefined;
 }
@@ -111,7 +121,32 @@ export function getClient<
   }
 
   const hooks = createHooks(useClient);
-  const authHooks = createHooks(useAuthClient);
+  const authHooks = createAuthHooks(useAuthClient);
+
+  function useIsLoading() {
+    const { isLoading } = nextClient.useQuery().$state;
+    const isAuthLoading = nextClient.auth.useQuery().$state.isLoading;
+
+    return isLoading || isAuthLoading;
+  }
+
+  function setAsRoot() {
+    nextClient.useQuery = reactClient.useQuery;
+    nextClient.useLazyQuery = reactClient.useLazyQuery;
+    nextClient.useTransactionQuery = reactClient.useTransactionQuery;
+    nextClient.usePaginatedQuery = reactClient.usePaginatedQuery;
+    nextClient.useMutation = reactClient.useMutation;
+    nextClient.useSubscription = reactClient.useSubscription;
+    nextClient.useClient = () => nextClient;
+
+    nextClient.auth.useQuery = authReactClient.useQuery;
+    nextClient.auth.useLazyQuery = authReactClient.useLazyQuery;
+    nextClient.auth.useTransactionQuery = authReactClient.useTransactionQuery;
+    nextClient.auth.usePaginatedQuery = authReactClient.usePaginatedQuery;
+    nextClient.auth.useMutation = authReactClient.useMutation;
+    nextClient.auth.useSubscription = authReactClient.useSubscription;
+    nextClient.auth.useClient = () => nextClient.auth;
+  }
 
   nextClient = {
     client: coreClient,
@@ -121,27 +156,13 @@ export function getClient<
       ...authReactClient,
       ...authHooks,
       useClient: useAuthClient,
+      useIsLoading,
     },
-    setAsRoot() {
-      nextClient.useQuery = reactClient.useQuery;
-      nextClient.useLazyQuery = reactClient.useLazyQuery;
-      nextClient.useTransactionQuery = reactClient.useTransactionQuery;
-      nextClient.usePaginatedQuery = reactClient.usePaginatedQuery;
-      nextClient.useMutation = reactClient.useMutation;
-      nextClient.useSubscription = reactClient.useSubscription;
-      nextClient.useClient = () => nextClient;
-
-      nextClient.auth.useQuery = authReactClient.useQuery;
-      nextClient.auth.useLazyQuery = authReactClient.useLazyQuery;
-      nextClient.auth.useTransactionQuery = authReactClient.useTransactionQuery;
-      nextClient.auth.usePaginatedQuery = authReactClient.usePaginatedQuery;
-      nextClient.auth.useMutation = authReactClient.useMutation;
-      nextClient.auth.useSubscription = authReactClient.useSubscription;
-      nextClient.auth.useClient = () => nextClient.auth;
-    },
+    setAsRoot,
     context: clientConfig.context,
     ...hooks,
     useClient,
+    useIsLoading,
   };
 
   return nextClient;

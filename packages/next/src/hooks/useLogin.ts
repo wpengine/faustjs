@@ -7,11 +7,11 @@ import {
 import type { RequiredSchema } from '@faustjs/react';
 import { UseMutationOptions } from '@gqty/react';
 import { useEffect } from 'react';
-import type { NextClientHooks } from '.';
+import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
 export function create<Schema extends RequiredSchema>(
   useMutation: NextClientHooks<Schema>['useMutation'],
-): NextClientHooks<Schema>['useLogin'] {
+): NextClientHooksWithAuth<Schema>['useLogin'] {
   return (options?: {
     useMutationOptions?: UseMutationOptions<{
       code?: string | null | undefined;

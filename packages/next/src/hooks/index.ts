@@ -15,8 +15,7 @@ import { create as createCategoryHook } from './useCategory';
 import { create as createPostsHook } from './usePosts';
 import { create as createPostHook } from './usePost';
 import { create as createPageHook } from './usePage';
-import { create as createPreviewHook } from './usePreview';
-import { create as createIsLoadingHook } from './useIsLoading';
+import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
 import { create as createLoginHook } from './useLogin';
 
 export type UseClient<
@@ -31,45 +30,8 @@ export type UseClient<
   | NextClient<Schema, ObjectTypesNames, ObjectTypes>['useClient']
   | NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useClient'];
 
-export interface NextClientHooks<Schema extends RequiredSchema>
-  extends Pick<
-    ReactClient<Schema>,
-    | 'useLazyQuery'
-    | 'useMutation'
-    | 'usePaginatedQuery'
-    | 'useQuery'
-    | 'useSubscription'
-    | 'useTransactionQuery'
-    | 'useHydrateCache'
-  > {
-  useQuery: ReactClient<Schema>['useQuery'];
-
-  useHydrateCache: ReactClient<Schema>['useHydrateCache'];
-
-  useCategory(
-    args?: Parameters<Schema['query']['category']>[0],
-  ): ReturnType<Schema['query']['category']>;
-
-  usePosts(
-    args?: Parameters<Schema['query']['posts']>[0],
-  ): ReturnType<Schema['query']['posts']>;
-
-  usePost(
-    args?: Parameters<Schema['query']['post']>[0],
-  ): ReturnType<Schema['query']['post']>;
-
-  usePage(
-    args?: Parameters<Schema['query']['page']>[0],
-  ): ReturnType<Schema['query']['page']>;
-
-  usePreview(
-    args: Record<'pageId', string>,
-  ): ReturnType<Schema['query']['page']>;
-  usePreview(
-    args: Record<'postId', string>,
-  ): ReturnType<Schema['query']['post']>;
-
-  useIsLoading(): boolean;
+interface WithAuthHooks<Schema extends RequiredSchema> {
+  usePreview(): UsePreviewResponse<Schema>;
 
   useAuth(): {
     isLoading: boolean;
@@ -104,6 +66,41 @@ export interface NextClientHooks<Schema extends RequiredSchema>
   };
 }
 
+export interface NextClientHooks<Schema extends RequiredSchema>
+  extends Pick<
+    ReactClient<Schema>,
+    | 'useLazyQuery'
+    | 'useMutation'
+    | 'usePaginatedQuery'
+    | 'useQuery'
+    | 'useSubscription'
+    | 'useTransactionQuery'
+    | 'useHydrateCache'
+  > {
+  useQuery: ReactClient<Schema>['useQuery'];
+
+  useHydrateCache: ReactClient<Schema>['useHydrateCache'];
+
+  useCategory(
+    args?: Parameters<Schema['query']['category']>[0],
+  ): ReturnType<Schema['query']['category']>;
+
+  usePosts(
+    args?: Parameters<Schema['query']['posts']>[0],
+  ): ReturnType<Schema['query']['posts']>;
+
+  usePost(
+    args?: Parameters<Schema['query']['post']>[0],
+  ): ReturnType<Schema['query']['post']>;
+
+  usePage(
+    args?: Parameters<Schema['query']['page']>[0],
+  ): ReturnType<Schema['query']['page']>;
+}
+
+export type NextClientHooksWithAuth<Schema extends RequiredSchema> =
+  NextClientHooks<Schema> & WithAuthHooks<Schema>;
+
 export function createHooks<
   Schema extends RequiredSchema,
   ObjectTypesNames extends string = never,
@@ -115,6 +112,35 @@ export function createHooks<
 >(
   useClient: UseClient<Schema, ObjectTypesNames, ObjectTypes>,
 ): NextClientHooks<Schema> {
+  const useQuery = createQueryHook(useClient);
+  const useMutation = createMutationHook(useClient);
+
+  return {
+    useQuery,
+    useLazyQuery: createLazyQueryHook(useClient),
+    useMutation,
+    usePaginatedQuery: createPaginatedQueryHook(useClient),
+    useSubscription: createSubscriptionHook(useClient),
+    useTransactionQuery: createTransactionQueryHook(useClient),
+    useHydrateCache: createHydrateCacheHook(useClient),
+    useCategory: createCategoryHook(useQuery),
+    usePosts: createPostsHook(useQuery),
+    usePost: createPostHook(useQuery),
+    usePage: createPageHook(useQuery),
+  };
+}
+
+export function createAuthHooks<
+  Schema extends RequiredSchema,
+  ObjectTypesNames extends string = never,
+  ObjectTypes extends {
+    [P in ObjectTypesNames]: {
+      __typename: P | undefined;
+    };
+  } = never,
+>(
+  useClient: UseClient<Schema, ObjectTypesNames, ObjectTypes>,
+): NextClientHooksWithAuth<Schema> {
   const useQuery = createQueryHook(useClient);
   const useAuth = createAuthHook();
   const useMutation = createMutationHook(useClient);
@@ -133,7 +159,6 @@ export function createHooks<
     usePost: createPostHook(useQuery),
     usePage: createPageHook(useQuery),
     usePreview: createPreviewHook(useAuth, useQuery),
-    useIsLoading: createIsLoadingHook(useQuery),
     useLogin: createLoginHook(useMutation),
   };
 }

@@ -188,7 +188,14 @@ export function getClient<
       scalarsEnumsHash,
       queryFetcher:
         configQueryFetcher ?? createQueryFetcher(applyRequestContext),
-      ...omit(clientConfig, 'context', 'applyRequestContext'),
+      ...omit(
+        clientConfig,
+        'context',
+        'applyRequestContext',
+        'authQueryFetcher',
+        'schema',
+        'scalarsEnumsHash',
+      ),
     }),
     auth: {
       ...createClient<Schema, ObjectTypesNames, ObjectTypes>({
@@ -197,7 +204,14 @@ export function getClient<
         queryFetcher:
           configAuthQueryFetcher ??
           createAuthQueryFetcher(context, applyRequestContext),
-        ...omit(clientConfig, 'context', 'applyRequestContext'),
+        ...omit(
+          clientConfig,
+          'context',
+          'applyRequestContext',
+          'authQueryFetcher',
+          'schema',
+          'scalarsEnumsHash',
+        ),
       }),
     },
   };

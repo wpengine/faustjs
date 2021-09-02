@@ -14,7 +14,7 @@ export function create<
       __typename: P | undefined;
     };
   } = never,
->(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['useAuth'] {
+>(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth'] {
   return () => {
     const { authType, loginPagePath } = headlessConfig();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(

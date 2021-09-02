@@ -1,28 +1,22 @@
-import { useRouter } from 'next/router';
 import { PageComponent } from './[...pageUri]';
 import { PostComponent } from './posts/[postSlug]';
 import { client } from 'client';
-import type { Page, Post } from 'client';
 
 export default function Preview() {
-  const {
-    query: { p, page_id },
-  } = useRouter();
-  const { usePreview } = client;
-  const isPage = !!page_id;
+  const { usePreview } = client.auth;
+  const result = usePreview();
 
-  const postOrPage: unknown = usePreview({
-    pageId: isPage ? (p as string) : undefined,
-    postId: !isPage ? (p as string) : undefined,
-  } as any);
+  if (client.useIsLoading()) {
+    return <p>loading...</p>;
+  }
 
-  if (postOrPage === null) {
+  if (!result) {
     return <>Not Found</>;
   }
 
-  if (isPage) {
-    return <PageComponent page={postOrPage as Page} />;
+  if (result.type === 'page') {
+    return <PageComponent page={result.page} />;
   }
 
-  return <PostComponent post={postOrPage as Post} />;
+  return <PostComponent post={result.post} />;
 }
