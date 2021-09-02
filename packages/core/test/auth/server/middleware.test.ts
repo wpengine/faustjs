@@ -71,7 +71,7 @@ describe('auth/middleware', () => {
     try {
       await authorizeHandler(req, res);
     } catch (e) {
-      expect(e.message).toContain('The apiClientSecret must be specified');
+      expect((e as Error).message).toContain('The apiClientSecret must be specified');
       console.log(e);
     }
   });
