@@ -27,7 +27,7 @@ export async function createRedirects(
       },
     ],
     destination: `/${trim(previewDestination, '/')}`,
-    permanent: true,
+    permanent: false,
   });
 
   return redirects;

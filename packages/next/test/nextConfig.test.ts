@@ -35,7 +35,7 @@ describe('nextConfig', () => {
           },
         ],
         destination: '/preview',
-        permanent: true,
+        permanent: false,
       },
       { source: '/about', destination: '/', permanent: true },
     ];
@@ -72,7 +72,7 @@ describe('nextConfig', () => {
           },
         ],
         destination: '/preview-new',
-        permanent: true,
+        permanent: false,
       },
       { source: '/about', destination: '/', permanent: true },
     ];
