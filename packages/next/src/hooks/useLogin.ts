@@ -81,8 +81,18 @@ export function create<Schema extends RequiredSchema>(
         return;
       }
 
+      let mounted = true;
+
       void (async () => {
+        if (!mounted) {
+          return;
+        }
+
         await fetchAccessToken(data.code as string | undefined);
+
+        if (!mounted) {
+          return;
+        }
 
         const redirectUri = getQueryParam(window.location.href, 'redirect_uri');
 
@@ -90,6 +100,10 @@ export function create<Schema extends RequiredSchema>(
           window.location.replace(redirectUri);
         }
       })();
+
+      return () => {
+        mounted = false;
+      };
     }, [data]);
 
     return { login, isLoading, data, error };

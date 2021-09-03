@@ -6,16 +6,20 @@ export default function Preview() {
   const { usePreview } = client.auth;
   const result = usePreview();
 
-  if (client.useIsLoading()) {
+  if (client.useIsLoading() || !result) {
     return <p>loading...</p>;
   }
 
-  if (!result) {
-    return <>Not Found</>;
+  if (result.type === 'page') {
+    if (!result.page) {
+      return <>Not Found</>;
+    }
+
+    return <PageComponent page={result.page} />;
   }
 
-  if (result.type === 'page') {
-    return <PageComponent page={result.page} />;
+  if (!result.post) {
+    return <>Not Found</>;
   }
 
   return <PostComponent post={result.post} />;

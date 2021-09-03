@@ -17,24 +17,29 @@ export function create<
 >(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth'] {
   return () => {
     const { authType, loginPagePath } = headlessConfig();
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
-      undefined,
-    );
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [authResult, setAuthResult] = useState<
-      | true
-      | { redirect?: string | undefined; login?: string | undefined }
-      | undefined
-    >(undefined);
+    const [{ isAuthenticated, isLoading, authResult }, setState] = useState<
+      ReturnType<
+        NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth']
+      >
+    >({
+      isAuthenticated: undefined,
+      isLoading: true,
+      authResult: undefined,
+    });
 
     // Check if a user is authenticated
     useEffect(() => {
       if (typeof window === 'undefined') {
         return;
       }
+      let mounted = true;
 
       /* eslint-disable @typescript-eslint/no-floating-promises */
       (async () => {
+        if (!mounted) {
+          return;
+        }
+
         const auth = await ensureAuthorization({
           redirectUri: window.location.href,
           loginPageUri: `/${trim(
@@ -43,10 +48,20 @@ export function create<
           )}/?redirect_uri=${encodeURIComponent(window.location.href)}`,
         });
 
-        setAuthResult(auth);
-        setIsAuthenticated(auth === true);
-        setIsLoading(false);
+        if (!mounted) {
+          return;
+        }
+
+        setState({
+          authResult: auth,
+          isAuthenticated: auth === true,
+          isLoading: false,
+        });
       })();
+
+      return () => {
+        mounted = false;
+      };
     }, [loginPagePath]);
 
     // Redirect the user to the login page if they are not authenticated
@@ -60,7 +75,7 @@ export function create<
       }
 
       // The user is not authenticated. Redirect them to the login page.
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         if (!isObject(authResult)) {
           return;
         }
@@ -73,6 +88,10 @@ export function create<
           window.location.replace(authResult.redirect);
         }
       }, 200);
+
+      return () => {
+        clearTimeout(timeout);
+      };
     }, [isAuthenticated, authResult, authType]);
 
     return { isAuthenticated, isLoading, authResult };
