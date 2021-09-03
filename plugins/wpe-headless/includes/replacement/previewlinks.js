@@ -9,6 +9,10 @@ window.addEventListener('DOMContentLoaded', function () {
       ? window._wpe_headless_preview_link._preview_link
       : undefined;
 
+    /**
+     * Check to make sure there is a preview link before continuing, as there may not be a preview link
+     * for every instance the block editor is enqueued (e.g. the /wp-admin/widgets.php page)
+     */
     if (!previewLink) {
       return;
     }
@@ -32,15 +36,7 @@ window.addEventListener('DOMContentLoaded', function () {
           }
 
           links.forEach((link) => {
-            if (!/\/preview(\/\w|\?)/.test(link.href)) {
-              link.href =
-                link.protocol +
-                '//' +
-                link.host +
-                link.pathname.replace(/\/$/, '') +
-                '/preview' +
-                link.search;
-            }
+            link.href = previewLink;
 
             var copy = link.cloneNode(true);
             copy.addEventListener('click', function (ev) {
