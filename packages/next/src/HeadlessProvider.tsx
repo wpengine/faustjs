@@ -16,11 +16,16 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   pageProps: PageProps<Props>['props'];
   client: ReturnType<typeof getClient>;
 }>): JSX.Element {
-  client.setAsRoot();
+  const rootClient = client.useClient();
+
+  if (rootClient === client) {
+    client.setAsRoot();
+  }
+
   const {
     useHydrateCache,
     auth: { useHydrateCache: useAuthHydrateCache },
-  } = client;
+  } = rootClient;
   const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
   const authSnapshot = pageProps[AUTH_CLIENT_CACHE_PROP];
 
@@ -35,7 +40,7 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   return (
     <HeadlessContext.Provider
       value={{
-        client,
+        client: rootClient,
       }}>
       {children}
     </HeadlessContext.Provider>
