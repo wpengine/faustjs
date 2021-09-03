@@ -132,9 +132,14 @@ function wpe_headless_post_preview_link( $link, $post ) {
 			$args['p'] = $preview_id;
 		}
 
+		// Add page_id=xx if it's missing, which is the case for published pages.
+		if ( ! isset( $args['page_id'] ) && 'page' === $post->post_type ) {
+			$args['page_id'] = $preview_id;
+		}
+
 		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
 		$unleadingslash_path          = ltrim( $path, '/\\' );
-		$link                         = $untrailingslash_frontend_uri . '/preview/' . $unleadingslash_path;
+		$link                         = $untrailingslash_frontend_uri . '/' . $unleadingslash_path;
 
 		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
@@ -204,8 +209,7 @@ function wpe_headless_term_link( $term_link ) {
 }
 
 
-add_action( 'load-post-new.php', 'wpe_headless_enqueue_preview_scripts' );
-add_action( 'load-post.php', 'wpe_headless_enqueue_preview_scripts' );
+add_action( 'enqueue_block_editor_assets', 'wpe_headless_enqueue_preview_scripts' );
 /**
  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link.
  *
@@ -213,4 +217,5 @@ add_action( 'load-post.php', 'wpe_headless_enqueue_preview_scripts' );
  */
 function wpe_headless_enqueue_preview_scripts() {
 	wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
+	wp_localize_script( 'awp-gutenberg-filters', '_wpe_headless_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 }
