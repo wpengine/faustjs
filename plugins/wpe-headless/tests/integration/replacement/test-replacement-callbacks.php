@@ -39,8 +39,7 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_enqueue_preview_scripts_action() {
-		$this->assertSame( 10, has_action( 'load-post-new.php', 'wpe_headless_enqueue_preview_scripts' ) );
-		$this->assertSame( 10, has_action( 'load-post.php', 'wpe_headless_enqueue_preview_scripts' ) );
+		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'wpe_headless_enqueue_preview_scripts' ) );
 	}
 
 	/**
@@ -135,7 +134,7 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
 		wpe_headless_update_setting( 'enable_rewrites', true );
 		// @todo this feels like a hack
-		$this->assertSame( 'http://moo/preview/?p=' . $this->post_id . '&preview=true', get_preview_post_link( $this->post_id ) );
+		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true', get_preview_post_link( $this->post_id ) );
 	}
 
 	/**
