@@ -22,7 +22,7 @@ function wpe_headless_deny_public_access( $query ) {
 		return;
 	}
 
-	$redirect_base = wpe_headless_get_setting( 'frontend_uri' );
+	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
 
 	if (
 		defined( 'DOING_CRON' ) ||
@@ -32,14 +32,20 @@ function wpe_headless_deny_public_access( $query ) {
 		( function_exists( 'is_graphql_http_request' ) && is_graphql_http_request() ) || // From https://wordpress.org/plugins/wp-graphql/.
 		! empty( $query->query_vars['rest_oauth1'] ) || // From https://oauth1.wp-api.org/.
 		! property_exists( $query, 'request' ) ||
-		! $redirect_base
+		! $frontend_uri
 	) {
 		return;
 	}
+
+	$frontend_uri = trailingslashit( $frontend_uri );
+
+	// Get the request uri with query params.
+	$request_uri = home_url( add_query_arg( null, null ) );
+
 	$response_code = 302;
-	$redirect_url  = trailingslashit( $redirect_base ) . $query->request;
+	$redirect_url  = str_replace( trailingslashit( get_home_url() ), $frontend_uri, $request_uri );
 
 	header( 'X-Redirect-By: WP Engine Headless plugin' ); // For support teams. See https://developer.yoast.com/blog/x-redirect-by-header/.
-	header( 'Location: ' . $redirect_url, true, $response_code );
+	header( 'Location: ' . esc_url_raw( $redirect_url ), true, $response_code );
 	exit;
 }
