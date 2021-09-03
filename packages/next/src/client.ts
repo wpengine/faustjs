@@ -124,7 +124,7 @@ export function getClient<
   const authHooks = createAuthHooks(useAuthClient);
 
   function useIsLoading() {
-    const isLoading = nextClient.useQuery().$state.isLoading;
+    const { isLoading } = nextClient.useQuery().$state;
     const isAuthLoading = nextClient.auth.useQuery().$state.isLoading;
 
     return isLoading || isAuthLoading;

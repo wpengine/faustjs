@@ -4,6 +4,7 @@ import type { RequiredSchema } from '@faustjs/react';
 import isObject from 'lodash/isObject';
 import isUndefined from 'lodash/isUndefined';
 import trim from 'lodash/trim';
+import noop from 'lodash/noop';
 import type { NextClient } from '../client';
 
 export function create<
@@ -30,7 +31,7 @@ export function create<
     // Check if a user is authenticated
     useEffect(() => {
       if (typeof window === 'undefined') {
-        return;
+        return noop;
       }
       let mounted = true;
 
@@ -67,11 +68,11 @@ export function create<
     // Redirect the user to the login page if they are not authenticated
     useEffect(() => {
       if (typeof window === 'undefined') {
-        return;
+        return noop;
       }
 
       if (isUndefined(isAuthenticated) || isAuthenticated === true) {
-        return;
+        return noop;
       }
 
       // The user is not authenticated. Redirect them to the login page.

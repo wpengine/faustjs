@@ -6,6 +6,7 @@ import {
 } from '@faustjs/core';
 import type { RequiredSchema } from '@faustjs/react';
 import { UseMutationOptions } from '@gqty/react';
+import noop from 'lodash/noop';
 import { useEffect } from 'react';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
@@ -74,11 +75,11 @@ export function create<Schema extends RequiredSchema>(
     // url, then redirect the user to the redirect_uri.
     useEffect(() => {
       if (typeof window === 'undefined') {
-        return;
+        return noop;
       }
 
       if (!data || !data.code) {
-        return;
+        return noop;
       }
 
       let mounted = true;
