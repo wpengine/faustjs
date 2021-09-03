@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     /**
      * Check to make sure there is a preview link before continuing, as there may not be a preview link
-     * for every instance the block editor is enqueued (e.g. the /wp-admin/widgets.php page)
+     * for every instance the block editor is enqueued (e.g. /wp-admin/widgets.php)
      */
     if (!previewLink) {
       return;
