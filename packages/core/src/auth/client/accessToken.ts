@@ -102,10 +102,10 @@ export async function fetchAccessToken(code?: string): Promise<string | null> {
 }
 
 /**
- * The interval in which the access token is check if a new one
+ * The interval (in ms) in which the access token is check if a new one
  * needs to be fetched
  */
-export const ACCESS_TOKEN_EXP_CHECK_INTERVAL = 15000;
+export const ACCESS_TOKEN_EXP_CHECK_INTERVAL_MS = 15000;
 
 /**
  * The difference in seconds between the current time and the expiration
@@ -130,4 +130,4 @@ setInterval(() => {
   }
 
   void fetchAccessToken();
-}, ACCESS_TOKEN_EXP_CHECK_INTERVAL);
+}, ACCESS_TOKEN_EXP_CHECK_INTERVAL_MS);
