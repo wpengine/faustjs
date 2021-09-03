@@ -18,7 +18,7 @@ export async function createRedirects(
   }
 
   redirects.unshift({
-    source: '/((?!preview$).*)',
+    source: `/((?!${trim(previewDestination, '/')}$).*)`,
     has: [
       {
         type: 'query',

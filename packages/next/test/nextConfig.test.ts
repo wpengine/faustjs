@@ -63,7 +63,7 @@ describe('nextConfig', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview$).*)',
+        source: '/((?!preview-new$).*)',
         has: [
           {
             type: 'query',
