@@ -51,3 +51,16 @@ export function isValidUrl(url: string): boolean {
     return false;
   }
 }
+
+export const emailRegex =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+/**
+ * Returns whether or not a string is a valid email address
+ *
+ * @export
+ * @returns
+ */
+export function isValidEmail(email: string): boolean {
+  return emailRegex.test(String(email).toLowerCase());
+}

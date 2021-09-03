@@ -7,15 +7,14 @@ import {
   ScalarsEnumsHash,
   Schema as GQtySchema,
 } from 'gqty';
+import type { IncomingMessage } from 'http';
 import fetch from 'isomorphic-fetch';
-import isString from 'lodash/isString';
-import isObject from 'lodash/isObject';
-import { getAccessToken } from '../../auth';
-
 import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
+import isObject from 'lodash/isObject';
 import omit from 'lodash/omit';
-import type { IncomingMessage } from 'http';
+import { Cookies, getAccessToken } from '../../auth';
+import { OAuth } from '../../auth/server/token';
 import { getGqlUrl } from '../../config/config';
 
 export interface GqlClientSchema {
@@ -30,21 +29,13 @@ export interface RequestContext {
 }
 
 export function createQueryFetcher(
-  context?: IncomingMessage,
   applyRequestContext?: ClientConfig['applyRequestContext'],
 ): QueryFetcher {
   return async function (query, variables): Promise<any> {
     const url = getGqlUrl();
-    const token = getAccessToken({
-      request: context,
-    });
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };
-
-    if (isString(token)) {
-      headers.Authorization = `Bearer ${token}`;
-    }
 
     const init: RequestInit = {
       method: 'POST',
@@ -70,6 +61,44 @@ export function createQueryFetcher(
   } as QueryFetcher;
 }
 
+export function createAuthQueryFetcher(
+  context?: IncomingMessage,
+  applyRequestContext?: ClientConfig['applyRequestContext'],
+): QueryFetcher {
+  const applyRequestContextFn: ClientConfig['applyRequestContext'] = async (
+    url,
+    init,
+  ) => {
+    let token: string | undefined;
+
+    if (!isNil(context)) {
+      const oauth = new OAuth(new Cookies(context));
+      const oauthTokens = await oauth.fetch();
+
+      if (oauth.isOAuthTokens(oauthTokens)) {
+        token = oauthTokens.accessToken;
+      }
+    } else {
+      token = getAccessToken();
+    }
+
+    init.headers = Object.assign(
+      { Authorization: `Bearer ${token as string}` },
+      init.headers,
+    );
+
+    let requestContext = { url, init };
+
+    if (isFunction(applyRequestContext)) {
+      requestContext = await applyRequestContext(url, init);
+    }
+
+    return requestContext;
+  };
+
+  return createQueryFetcher(applyRequestContextFn);
+}
+
 export interface ClientConfig<
   Schema extends GqlClientSchema = never,
   ObjectTypesNames extends string = never,
@@ -85,6 +114,7 @@ export interface ClientConfig<
   schema?: Readonly<GQtySchema>;
   scalarsEnumsHash?: ScalarsEnumsHash;
   queryFetcher?: QueryFetcher;
+  authQueryFetcher?: QueryFetcher;
   context?: WithClient<IncomingMessage, Schema>;
   /**
    * Called before every request, use this to apply any headers you might
@@ -101,9 +131,24 @@ export interface ClientConfig<
   ): Promise<RequestContext> | RequestContext;
 }
 
+export interface ApiClient<Schema extends GqlClientSchema>
+  extends GQtyClient<Schema> {
+  auth: GQtyClient<Schema>;
+}
+
 export type WithClient<Type, Schema extends GqlClientSchema> = Type & {
-  apiClient?: GQtyClient<Schema>;
+  apiClient?: ApiClient<Schema>;
 };
+
+export function contextHasClient<Schema extends GqlClientSchema>(
+  context?: IncomingMessage,
+): context is WithClient<IncomingMessage, Schema> &
+  Required<Pick<WithClient<IncomingMessage, Schema>, 'apiClient'>> {
+  return (
+    isObject(context) &&
+    isObject((context as WithClient<IncomingMessage, Schema>).apiClient)
+  );
+}
 
 /* eslint-disable @typescript-eslint/ban-types */
 
@@ -117,16 +162,17 @@ export function getClient<
   } = never,
 >(
   clientConfig: ClientConfig<Schema, ObjectTypesNames, ObjectTypes>,
-): GQtyClient<Schema> {
+): ApiClient<Schema> {
   const {
     context,
     schema,
     scalarsEnumsHash,
     queryFetcher: configQueryFetcher,
+    authQueryFetcher: configAuthQueryFetcher,
     applyRequestContext,
   } = clientConfig;
 
-  if (isObject(context) && isObject(context.apiClient)) {
+  if (contextHasClient<Schema>(context)) {
     return context.apiClient;
   }
 
@@ -136,13 +182,39 @@ export function getClient<
     );
   }
 
-  const apiClient = createClient<Schema, ObjectTypesNames, ObjectTypes>({
-    schema,
-    scalarsEnumsHash,
-    queryFetcher:
-      configQueryFetcher ?? createQueryFetcher(context, applyRequestContext),
-    ...omit(clientConfig, 'context', 'applyRequestContext'),
-  });
+  const apiClient = {
+    ...createClient<Schema, ObjectTypesNames, ObjectTypes>({
+      schema,
+      scalarsEnumsHash,
+      queryFetcher:
+        configQueryFetcher ?? createQueryFetcher(applyRequestContext),
+      ...omit(
+        clientConfig,
+        'context',
+        'applyRequestContext',
+        'authQueryFetcher',
+        'schema',
+        'scalarsEnumsHash',
+      ),
+    }),
+    auth: {
+      ...createClient<Schema, ObjectTypesNames, ObjectTypes>({
+        schema,
+        scalarsEnumsHash,
+        queryFetcher:
+          configAuthQueryFetcher ??
+          createAuthQueryFetcher(context, applyRequestContext),
+        ...omit(
+          clientConfig,
+          'context',
+          'applyRequestContext',
+          'authQueryFetcher',
+          'schema',
+          'scalarsEnumsHash',
+        ),
+      }),
+    },
+  };
 
   if (isObject(clientConfig.context)) {
     clientConfig.context.apiClient = apiClient;

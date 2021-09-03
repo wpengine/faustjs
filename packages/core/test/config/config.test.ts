@@ -136,8 +136,6 @@ describe('getGqlUrl', () => {
       gqlUrl: '/custom-graphql-endpoint',
     });
 
-    console.log(headlessConfig());
-
     expect(getGqlUrl()).toBe('http://test.local/custom-graphql-endpoint');
   });
 });

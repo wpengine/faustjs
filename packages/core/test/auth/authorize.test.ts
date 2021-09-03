@@ -1,98 +1,86 @@
-import * as config from '../../src/config/config';
-import * as cookies from '../../src/auth/cookie';
-import { authorize, ensureAuthorization } from '../../src/auth/authorize';
+import 'isomorphic-fetch';
+import fetchMock from 'fetch-mock';
+import { trim } from 'lodash';
+import {
+  getAccessToken,
+  getAccessTokenExpiration,
+  headlessConfig,
+  setAccessToken,
+} from '../../src';
+import * as authorize from '../../src/auth/authorize';
 
-describe('auth/authorize', () => {
-  test('authorize() throws an error when there is no API secret', async () => {
-    const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
-      return { wpUrl: 'test' };
+describe('auth/ensureAuthorization', () => {
+  test('ensureAuthorization() returns true when an access token is successfully fetched', async () => {
+    headlessConfig({
+      wpUrl: 'test',
+      authType: 'redirect',
+      loginPagePath: '/login',
+      apiClientSecret: 'secret',
     });
 
-    await expect(authorize('test')).rejects.toThrowError();
-    expect(spy).toBeCalled();
+    fetchMock.get('/api/auth/wpe-headless', {
+      status: 200,
+      body: JSON.stringify({
+        accessToken: 'at',
+        accessTokenExpiration: new Date().getTime() + 300,
+      }),
+    });
 
-    spy.mockRestore();
+    const result = await authorize.ensureAuthorization();
+    expect(result).toBe(true);
+
+    fetchMock.restore();
   });
 
-  test('ensureAuthorization() throws an error if there is no configured API endpoint', () => {
-    const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
-      return {
-        wpUrl: 'https://developers.wpengine.com',
-      };
+  test('ensureAuthorization() return a redirect key when the token cannot be fetched', async () => {
+    headlessConfig({
+      wpUrl: 'http://test.local',
+      authType: 'redirect',
+      loginPagePath: '/login',
+      apiClientSecret: 'secret',
     });
 
-    expect(() => ensureAuthorization('/test')).toThrowError();
-    expect(spy).toBeCalled();
+    const { wpUrl } = headlessConfig();
 
-    spy.mockRestore();
-  });
+    const redirectUri = 'http://localhost:3000';
 
-  test('ensureAuthorization() returns an access token when it exists', () => {
-    const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
-      return {
-        wpUrl: 'https://developers.wpengine.com',
-        apiUrl: 'https://developers.wpengine.com',
-        apiEndpoint: '/auth',
-      };
+    fetchMock.get('/api/auth/wpe-headless', {
+      status: 401,
     });
-    const accessTokenSpy = jest
-      .spyOn(cookies, 'getAccessToken')
-      .mockImplementation(() => {
-        return 'test';
-      });
 
-    expect(ensureAuthorization('/test')).toBe('test');
-    expect(accessTokenSpy).toBeCalledWith(undefined);
-    expect(spy).toBeCalled();
-
-    spy.mockRestore();
-    accessTokenSpy.mockRestore();
-  });
-
-  test('ensureAuthorization() throws an error if it cannot parse the redirect URI and it needs to redirect', () => {
-    const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
-      return {
-        wpUrl: 'https://developers.wpengine.com',
-        apiEndpoint: '/auth',
-      };
-    });
-    const accessTokenSpy = jest
-      .spyOn(cookies, 'getAccessToken')
-      .mockImplementation(() => {
-        return undefined;
-      });
-
-    expect(() => ensureAuthorization('')).toThrowError();
-    expect(accessTokenSpy).toBeCalledWith(undefined);
-
-    spy.mockRestore();
-    accessTokenSpy.mockRestore();
-  });
-
-  test('ensureAuthorization() to return an object that can redirect to generate an auth code when necessary', () => {
-    const spy = jest.spyOn(config, 'headlessConfig').mockImplementation(() => {
-      return {
-        wpUrl: 'https://developers.wpengine.com',
-        apiUrl: 'https://developers.wpengine.com',
-        apiEndpoint: '/auth',
-      };
-    });
-    const accessTokenSpy = jest
-      .spyOn(cookies, 'getAccessToken')
-      .mockImplementation(() => {
-        return undefined;
-      });
-
-    expect(ensureAuthorization('https://developers.wpengine.com')).toEqual({
-      redirect: `https://developers.wpengine.com/generate?redirect_uri=${encodeURIComponent(
-        `https://developers.wpengine.com/auth?redirect_uri=${encodeURIComponent(
-          'https://developers.wpengine.com',
-        )}`,
+    expect(
+      authorize.ensureAuthorization({ redirectUri }),
+    ).resolves.toStrictEqual({
+      redirect: `${wpUrl}/generate?redirect_uri=${encodeURIComponent(
+        redirectUri,
       )}`,
     });
-    expect(accessTokenSpy).toBeCalledWith(undefined);
 
-    spy.mockRestore();
-    accessTokenSpy.mockRestore();
+    fetchMock.restore();
+  });
+
+  test('ensureAuthorization() returns a login key when the token cannot be fetched', async () => {
+    headlessConfig({
+      wpUrl: 'http://test.local',
+      authType: 'redirect',
+      loginPagePath: '/login',
+      apiClientSecret: 'secret',
+    });
+
+    const { loginPagePath } = headlessConfig();
+
+    const loginPageUri = `/${trim(loginPagePath, '/')}`;
+
+    fetchMock.get('/api/auth/wpe-headless', {
+      status: 401,
+    });
+
+    expect(
+      authorize.ensureAuthorization({ loginPageUri }),
+    ).resolves.toStrictEqual({
+      login: loginPageUri,
+    });
+
+    fetchMock.restore();
   });
 });

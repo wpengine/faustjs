@@ -1,53 +1,12 @@
-import { headlessConfig } from '../config';
+import 'isomorphic-fetch';
 import isString from 'lodash/isString';
-import { isServerSide, parseUrl } from '../utils';
-import { CookieOptions, getAccessToken } from './cookie';
-import fetch from 'isomorphic-fetch';
-import isEmpty from 'lodash/isEmpty';
-import trimEnd from 'lodash/trimEnd';
+import { headlessConfig } from '../config';
+import { getQueryParam, removeURLParam } from '../utils';
+import { fetchAccessToken } from './client/accessToken';
 
-/**
- * Exchanges an Authorization Code for an Access Token that you can use to make authenticated requests to
- * the WordPress API
- *
- * @async
- * @export
- * @param {string} code
- * @returns {Promise<{ access_token?: string; }>}
- */
-export async function authorize(
-  code: string,
-): Promise<{ access_token?: string }> {
-  const { wpUrl, apiClientSecret } = headlessConfig();
-
-  if (!isString(apiClientSecret)) {
-    throw new Error(
-      'You must provide an apiClientSecret value in your Headless config in order to use the authorize middleware',
-    );
-  }
-
-  const response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-wpe-headless-secret': apiClientSecret,
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      code,
-    }),
-  });
-
-  const result = (await response.json()) as { access_token?: string };
-
-  if (!response.ok) {
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw {
-      error: result,
-      status: response.status,
-    };
-  }
-
-  return result;
+export interface EnsureAuthorizationOptions {
+  redirectUri?: string;
+  loginPageUri?: string;
 }
 
 /* eslint-disable consistent-return */
@@ -56,47 +15,49 @@ export async function authorize(
  * an object containing a redirect URI to send the client to for authorization.
  *
  * @export
- * @param {string} redirectUri
+ * @param {string} EnsureAuthorizationOptions
  * @returns {(string | { redirect: string })}
  */
-export function ensureAuthorization(
-  redirectUri: string,
-  options?: CookieOptions,
-): string | { redirect: string } | undefined {
-  const { wpUrl, apiEndpoint } = headlessConfig();
-  let { apiUrl } = headlessConfig();
-  const accessToken = getAccessToken(options);
+export async function ensureAuthorization(
+  options?: EnsureAuthorizationOptions,
+): Promise<
+  true | { redirect?: string | undefined; login?: string | undefined }
+> {
+  const { wpUrl } = headlessConfig();
+  const { redirectUri, loginPageUri } = options || {};
 
-  if (!!accessToken && accessToken.length > 0) {
-    return accessToken;
+  // Get the authorization code from the URL if it exists
+  const code: string | undefined =
+    typeof window !== 'undefined'
+      ? getQueryParam(window.location.href, 'code')
+      : undefined;
+
+  const unauthorized: { redirect?: string; login?: string } = {};
+
+  if (isString(redirectUri)) {
+    unauthorized.redirect = `${wpUrl}/generate?redirect_uri=${encodeURIComponent(
+      redirectUri,
+    )}`;
   }
 
-  if (!isString(apiUrl) || isEmpty(apiUrl)) {
-    if (!isServerSide()) {
-      apiUrl = trimEnd(window.location.origin, '/');
-    } else {
-      throw new Error(
-        'You must provide an apiUrl value in your Headless config in order to use the authorize middleware',
-      );
-    }
+  if (isString(loginPageUri)) {
+    unauthorized.login = loginPageUri;
   }
 
-  if (!isString(apiEndpoint)) {
-    throw new Error(
-      'You must provide an apiEndpoint value in your Headless config in order to use the authorize middleware',
+  const token = await fetchAccessToken(code);
+
+  if (!token) {
+    return unauthorized;
+  }
+
+  if (code) {
+    window.history.replaceState(
+      {},
+      document.title,
+      removeURLParam(window.location.href, 'code'),
     );
   }
 
-  const parsedUrl = parseUrl(redirectUri);
-
-  if (!parsedUrl) {
-    throw new Error('Invalid redirectUri for authorization');
-  }
-
-  return {
-    redirect: `${wpUrl}/generate?redirect_uri=${encodeURIComponent(
-      `${apiUrl}${apiEndpoint}?redirect_uri=${encodeURIComponent(redirectUri)}`,
-    )}`,
-  };
+  return true;
 }
 /* eslint-enable consistent-return */

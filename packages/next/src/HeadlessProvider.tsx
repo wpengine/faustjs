@@ -1,7 +1,11 @@
 import isNil from 'lodash/isNil';
 import React from 'react';
 import type { getClient } from './client';
-import { CLIENT_CACHE_PROP, PageProps } from './getProps';
+import {
+  AUTH_CLIENT_CACHE_PROP,
+  CLIENT_CACHE_PROP,
+  PageProps,
+} from './getProps';
 import { HeadlessContext } from './client';
 
 export function HeadlessProvider<Props = Record<string, unknown>>({
@@ -12,18 +16,31 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
   pageProps: PageProps<Props>['props'];
   client: ReturnType<typeof getClient>;
 }>): JSX.Element {
-  client.setAsRoot();
-  const { useHydrateCache } = client;
+  const rootClient = client.useClient();
+
+  if (rootClient === client) {
+    client.setAsRoot();
+  }
+
+  const {
+    useHydrateCache,
+    auth: { useHydrateCache: useAuthHydrateCache },
+  } = rootClient;
   const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
+  const authSnapshot = pageProps[AUTH_CLIENT_CACHE_PROP];
 
   useHydrateCache({
     cacheSnapshot: isNil(cacheSnapshot) ? undefined : cacheSnapshot,
   });
 
+  useAuthHydrateCache({
+    cacheSnapshot: isNil(authSnapshot) ? undefined : authSnapshot,
+  });
+
   return (
     <HeadlessContext.Provider
       value={{
-        client,
+        client: rootClient,
       }}>
       {children}
     </HeadlessContext.Provider>

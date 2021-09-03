@@ -36,7 +36,7 @@ function wpe_headless_rest_determine_current_user( $user_id ) {
 		return $user_id;
 	}
 
-	$wp_user = wpe_headless_get_user_from_access_token( $parts[1], 5 * MONTH_IN_SECONDS );
+	$wp_user = wpe_headless_get_user_from_access_token( $parts[1] );
 	if ( $wp_user ) {
 		$user_id = $wp_user->ID;
 	}
@@ -74,7 +74,7 @@ function wpe_headless_register_rest_routes() {
  *
  * Handle POST /wpac/v1/authorize response.
  *
- * Use the 'code' (authentication code) parameter to generate a new access token.
+ * Use the 'code' (authorization code) parameter to generate a new access token.
  *
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
@@ -84,22 +84,35 @@ function wpe_headless_register_rest_routes() {
  * @return mixed A WP_REST_Response, array, or WP_Error.
  */
 function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request ) {
-	$code = trim( $request->get_param( 'code' ) );
-	if ( ! $code ) {
-		return new WP_Error( 'authentication_code_required', __( 'Authentication code required', 'wpe-headless' ), array( 'status' => 400 ) );
+	$code          = trim( $request->get_param( 'code' ) );
+	$refresh_token = trim( $request->get_param( 'refreshToken' ) );
+
+	if ( ! $code && ! $refresh_token ) {
+		return new WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
 	}
 
-	$wp_user = wpe_headless_get_user_from_authentication_code( $code, MINUTE_IN_SECONDS );
-	if ( ! $wp_user ) {
-		return new WP_Error( 'invalid_authentication_code', __( 'Invalid authentication code', 'wpe-headless' ), array( 'status' => 400 ) );
+	if ( $refresh_token ) {
+		$user = wpe_headless_get_user_from_refresh_token( $refresh_token );
+	} else {
+		$user = wpe_headless_get_user_from_authorization_code( $code );
 	}
 
-	$access_token = wpe_headless_generate_access_token( $wp_user );
-	if ( ! $access_token ) {
-		return new WP_Error( 'access_token_error', __( 'Access token error', 'wpe-headless' ) );
+	if ( ! $user ) {
+		return new WP_Error( 'invalid_request', 'Invalid authorization code or refresh token.' );
 	}
 
-	return compact( 'access_token' );
+	$refresh_token_expiration = WEEK_IN_SECONDS * 2;
+	$access_token_expiration  = MINUTE_IN_SECONDS * 5;
+
+	$access_token  = wpe_headless_generate_access_token( $user, $access_token_expiration );
+	$refresh_token = wpe_headless_generate_refresh_token( $user, $refresh_token_expiration );
+
+	return array(
+		'accessToken'            => $access_token,
+		'accessTokenExpiration'  => ( time() + $access_token_expiration ),
+		'refreshToken'           => $refresh_token,
+		'refreshTokenExpiration' => ( time() + $refresh_token_expiration ),
+	);
 }
 
 /**
