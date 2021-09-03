@@ -34,12 +34,12 @@ export async function createRedirects(
 }
 
 export function withFaust(
-  config: NextConfig,
+  config?: NextConfig,
   withFaustConfig?: WithFaustConfig,
 ): NextConfig {
   const { previewDestination } = withFaustConfig || {};
 
-  const nextConfig = config;
+  const nextConfig = config ?? {};
 
   const existingRedirects = nextConfig.redirects;
   nextConfig.redirects = () =>
