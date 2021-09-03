@@ -1,26 +1,49 @@
-import merge from 'lodash/merge';
+import { trim } from 'lodash';
+import isFunction from 'lodash/isFunction';
 import { NextConfig } from 'next';
+import { Redirect } from 'next/dist/lib/load-custom-routes';
 
-export const defaultFaustNextConfig: NextConfig = {
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async redirects() {
-    return [
+export interface WithFaustConfig {
+  previewDestination?: string;
+}
+
+export async function createRedirects(
+  redirectFn?: NextConfig['redirects'],
+  previewDestination = '/preview',
+): Promise<Redirect[]> {
+  let redirects: Redirect[] = [];
+
+  if (isFunction(redirectFn)) {
+    redirects = await redirectFn();
+  }
+
+  redirects.unshift({
+    source: '/((?!preview$).*)',
+    has: [
       {
-        source: '/((?!preview$).*)',
-        has: [
-          {
-            type: 'query',
-            key: 'preview',
-            value: 'true',
-          },
-        ],
-        destination: '/preview',
-        permanent: false,
+        type: 'query',
+        key: 'preview',
+        value: 'true',
       },
-    ];
-  },
-};
+    ],
+    destination: `/${trim(previewDestination, '/')}`,
+    permanent: true,
+  });
 
-export function withFaust(config: NextConfig): NextConfig {
-  return merge(defaultFaustNextConfig, config);
+  return redirects;
+}
+
+export function withFaust(
+  config: NextConfig,
+  withFaustConfig?: WithFaustConfig,
+): NextConfig {
+  const { previewDestination } = withFaustConfig || {};
+
+  const nextConfig = config;
+
+  const existingRedirects = nextConfig.redirects;
+  nextConfig.redirects = () =>
+    createRedirects(existingRedirects, previewDestination);
+
+  return nextConfig;
 }
