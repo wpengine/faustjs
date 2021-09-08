@@ -25,6 +25,7 @@ Transform your WordPress site to a powerful Headless API.
 
 = 0.6.0 =
 - [Breaking Change] Added support for access/refresh token based auth flow in the authorize endpoint. 
+- Added `page_id` query param to preview pages when the content type is `page`
 
 = 0.5.8 =
 
