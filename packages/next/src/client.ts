@@ -12,6 +12,7 @@ import {
 } from '@gqty/react';
 import type { GQtyClient } from 'gqty';
 import type { IncomingMessage } from 'http';
+import noop from 'lodash/noop';
 import isObject from 'lodash/isObject';
 import merge from 'lodash/merge';
 import React, { useContext } from 'react';
@@ -137,7 +138,11 @@ export function getClient<
     nextClient.usePaginatedQuery = reactClient.usePaginatedQuery;
     nextClient.useMutation = reactClient.useMutation;
     nextClient.useSubscription = reactClient.useSubscription;
-    nextClient.useClient = () => nextClient;
+    nextClient.useClient = () => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useContext(HeadlessContext);
+      return nextClient;
+    };
 
     nextClient.auth.useQuery = authReactClient.useQuery;
     nextClient.auth.useLazyQuery = authReactClient.useLazyQuery;
@@ -145,7 +150,13 @@ export function getClient<
     nextClient.auth.usePaginatedQuery = authReactClient.usePaginatedQuery;
     nextClient.auth.useMutation = authReactClient.useMutation;
     nextClient.auth.useSubscription = authReactClient.useSubscription;
-    nextClient.auth.useClient = () => nextClient.auth;
+    nextClient.auth.useClient = () => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useContext(HeadlessContext);
+      return nextClient.auth;
+    };
+
+    nextClient.setAsRoot = noop;
   }
 
   nextClient = {
