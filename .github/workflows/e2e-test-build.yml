@@ -7,17 +7,21 @@ jobs:
       run:
         working-directory: ./
     steps:
+    - name: checkout
+      uses: actions/checkout@v2
     - name: setup node
       uses: actions/setup-node@v2
       with:
         node-version: '16'
-    - name: Set environment variables
+    - name: extract pr branch name
+      uses: nelonoel/branch-name@v1.0.1
+    - name: echo current pr branch name
       run: |
-        echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        echo ${BRANCH_NAME}
     - name: npx create next app
       run: |
         npx create-next-app \
-          -e https://github.com/wpengine/faustjs/tree/${GIT_BRANCH} \
+          -e https://github.com/wpengine/faustjs/tree/${BRANCH_NAME} \
           --example-path examples/next/getting-started \
           --use-npm \
           testing-app
