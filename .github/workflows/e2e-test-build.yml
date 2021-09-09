@@ -11,15 +11,13 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
-    - name: extract pr branch name
-      uses: nelonoel/branch-name@v1.0.1
-    - name: echo current pr branch name
+    - name: Set environment variables
       run: |
-        echo ${BRANCH_NAME}
+        echo "GIT_BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
     - name: npx create next app
       run: |
         npx create-next-app \
-          -e https://github.com/wpengine/faustjs/tree/${BRANCH_NAME} \
+          -e https://github.com/wpengine/faustjs/tree/${GIT_BRANCH} \
           --example-path examples/next/getting-started \
           --use-npm \
           testing-app
