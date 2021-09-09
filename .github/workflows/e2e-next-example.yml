@@ -25,10 +25,14 @@ jobs:
           --example-path examples/next/getting-started \
           --use-npm \
           testing-app
-    # - name: Generate
-    #   working-directory: testing-app
-    #   run: |
-    #     npm run generate
+    - name: copy env
+      working-directory: testing-app
+      run: |
+        cp .env.sample .env
+    - name: Generate
+      working-directory: testing-app
+      run: |
+        npm run generate
     - name: Build
       working-directory: testing-app
       run: |
