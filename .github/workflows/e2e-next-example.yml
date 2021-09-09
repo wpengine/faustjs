@@ -1,7 +1,7 @@
-name: E2E Test - Build
+name: E2E Test - Next Getting Started Example
 on: pull_request
 jobs:
-  e2e-test-generate-and-build:
+  e2e-test-next-getting-started-example:
     runs-on: ubuntu-latest
     env:
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
