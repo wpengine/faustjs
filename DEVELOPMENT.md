@@ -15,13 +15,14 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
 ### NPM Packages
 
-When working on the npm packages in this repository, use our Lerna setup from the project root:
+NPM packages are managed from the project root using [Workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces). To get started, run:
 
-1. Ensure that `.env.local` exists and is correctly configured in `examples/getting-started` and `examples/preview`.
-2. `npm run bootstrap`
-3. `npm run dev`
+1. `npm install`
+2. `npm run dev`
 
-When switching git branch, run `npm run clean` from the root and then re-run `npm run bootstrap`.
+The local copy of each package is automatically symlinked in `node_modules` when running `npm install` from the project root. Likewise, each package is automatically built when running `npm run dev`.
+
+When switching git branch, run `npm run clean` from the root and then re-run `npm run dev`.
 
 ### Plugins
 
