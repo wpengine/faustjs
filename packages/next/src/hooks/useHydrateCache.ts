@@ -10,7 +10,7 @@ export function create<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never,
 >(
