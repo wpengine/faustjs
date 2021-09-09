@@ -3,6 +3,8 @@ on: pull_request
 jobs:
   e2e-test-generate-and-build:
     runs-on: ubuntu-latest
+    env:
+      PR_BRANCH: ${{github.event.pull_request.base.ref}}
     defaults:
       run:
         working-directory: ./
@@ -15,11 +17,11 @@ jobs:
         node-version: '16'
     - name: echo current pr branch name
       run: |
-        echo ${github.event.pull_request.base.ref}
+        echo $PR_BRANCH
     - name: npx create next app
       run: |
         npx create-next-app \
-          -e https://github.com/wpengine/faustjs/tree/${{github.event.pull_request.base.ref}} \
+          -e https://github.com/wpengine/faustjs/tree/${PR_BRANCH} \
           --example-path examples/next/getting-started \
           --use-npm \
           testing-app
