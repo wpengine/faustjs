@@ -25,6 +25,13 @@ jobs:
           --example-path examples/next/getting-started \
           --use-npm \
           testing-app
+    - name: link faust packages
+      working-directory: ./
+      run: |
+        npm install
+        npm run build
+        ln -s packages/core testing-app/node_modules/@faustjs/core
+        ln -s packages/next testing-app/node_modules/@faustjs/next
     - name: copy env
       working-directory: testing-app
       run: |
