@@ -29,7 +29,7 @@ export interface NextClient<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never,
 > extends ReactClient<Schema>,
@@ -65,7 +65,7 @@ export function getClient<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never,
 >(
