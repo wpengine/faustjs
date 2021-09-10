@@ -5,7 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
-      APP_DIR: e2e-app
     defaults:
       run:
         working-directory: ./
@@ -28,7 +27,7 @@ jobs:
           -e https://github.com/wpengine/faustjs/tree/${PR_BRANCH} \
           --example-path examples/next/getting-started \
           --use-npm \
-          ${APP_DIR}
+          e2e-app
     - name: install and build packages
       working-directory: ./
       run: |
@@ -41,20 +40,20 @@ jobs:
     # writing this they do not function as expected on GH actions
     - name: replace downloaded registry faust packages with local build
       run: |
-        rm -rf ${APP_DIR}/node_modules/@faustjs/core
-        rm -rf ${APP_DIR}/node_modules/@faustjs/next
-        cp -r packages/core ${APP_DIR}/node_modules/@faustjs/core
-        cp -r packages/next ${APP_DIR}/node_modules/@faustjs/next
+        rm -rf e2e-app/node_modules/@faustjs/core
+        rm -rf e2e-app/node_modules/@faustjs/next
+        cp -r packages/core e2e-app/node_modules/@faustjs/core
+        cp -r packages/next e2e-app/node_modules/@faustjs/next
     - name: copy env
-      working-directory: $APP_DIR
+      working-directory: e2e-app
       run: |
         cp .env.sample .env
     # Generate the schema to ensure no type collisions
     - name: Generate Schema
-      working-directory: $APP_DIR
+      working-directory: e2e-app
       run: |
         npm run generate
     - name: Build
-      working-directory: $APP_DIR
+      working-directory: e2e-app
       run: |
         npm run build
