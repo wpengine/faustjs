@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import {
