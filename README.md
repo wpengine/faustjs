@@ -69,7 +69,7 @@ Additionally, if you have questions or ideas, please share them on [GitHub Discu
 
 There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
-- [Discuss open issues](/issues) to help define the future of the project.
-- [Submit bugs](/issues) and help us verify fixes as they are checked in.
-- Review and discuss the [source code changes](pulls).
+- [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
+- [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
+- Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
 - [Contribute bug fixes](/CONTRIBUTING.md)
