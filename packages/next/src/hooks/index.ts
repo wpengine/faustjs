@@ -23,7 +23,7 @@ export type UseClient<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never,
 > =
@@ -106,7 +106,7 @@ export function createHooks<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never,
 >(
@@ -135,7 +135,7 @@ export function createAuthHooks<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never,
 >(
