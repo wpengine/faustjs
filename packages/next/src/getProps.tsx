@@ -78,8 +78,7 @@ export async function getProps<
         const { cacheSnapshot: coreSnapshot } = await client.prepareReactRender(
           <RouterContext.Provider
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            value={{ query: { ...context.params } } as any}
-          >
+            value={{ query: { ...context.params } } as any}>
             <HeadlessContext.Provider value={{ client }}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Page {...props} />

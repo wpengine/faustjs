@@ -37,8 +37,7 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
     <HeadlessContext.Provider
       value={{
         client,
-      }}
-    >
+      }}>
       {children}
     </HeadlessContext.Provider>
   );
