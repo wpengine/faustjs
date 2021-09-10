@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
+      APP_DIR: e2e-app
     defaults:
       run:
         working-directory: ./
@@ -15,32 +16,45 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '16'
+    # Get the PR branch so we can pull the correct Next.js example path
     - name: echo current pr branch name
       run: |
         echo $PR_BRANCH
+    # Install the Faust.js Next getting started example via npx create next app
+    # and use the PR branch to pull the correct example URL
     - name: npx create next app
       run: |
         npx create-next-app \
           -e https://github.com/wpengine/faustjs/tree/${PR_BRANCH} \
           --example-path examples/next/getting-started \
           --use-npm \
-          testing-app
-    - name: link faust packages
+          ${APP_DIR}
+    - name: install and build packages
       working-directory: ./
       run: |
         npm install
         npm run build
-        ln -s packages/core testing-app/node_modules/@faustjs/core
-        ln -s packages/next testing-app/node_modules/@faustjs/next
+    # To ensure PR changes are tested accurately, we replace the 
+    # faust node_modules downloaded from NPM with the faust packages
+    # built in the previous step
+    # TODO: It would be nice to use symlink or npm link here, but upon
+    # writing this they do not function as expected on GH actions
+    - name: replace downloaded registry faust packages with local build
+      run: |
+        rm -rf ${APP_DIR}/node_modules/@faustjs/core
+        rm -rf ${APP_DIR}/node_modules/@faustjs/next
+        cp -r packages/core ${APP_DIR}/node_modules/@faustjs/core
+        cp -r packages/next ${APP_DIR}/node_modules/@faustjs/next
     - name: copy env
-      working-directory: testing-app
+      working-directory: ${APP_DIR}
       run: |
         cp .env.sample .env
-    - name: Generate
-      working-directory: testing-app
+    # Generate the schema to ensure no type collisions
+    - name: Generate Schema
+      working-directory: ${APP_DIR}
       run: |
         npm run generate
     - name: Build
-      working-directory: testing-app
+      working-directory: ${APP_DIR}
       run: |
         npm run build
