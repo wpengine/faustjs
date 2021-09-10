@@ -7066,7 +7066,7 @@ export const generatedSchema = {
 } as const;
 
 export interface Query {
-  __typename: 'Query' | undefined;
+  __typename?: 'Query';
   allSettings?: Maybe<Settings>;
   categories: (args?: {
     first?: Maybe<Scalars['Int']>;
@@ -7289,7 +7289,7 @@ export interface Query {
 }
 
 export interface Mutation {
-  __typename: 'Mutation' | undefined;
+  __typename?: 'Mutation';
   createCategory: (args: {
     input: CreateCategoryInput;
   }) => Maybe<CreateCategoryPayload>;
@@ -7362,14 +7362,14 @@ export interface Mutation {
 }
 
 export interface Subscription {
-  __typename: 'Subscription' | undefined;
+  __typename?: 'Subscription';
 }
 
 /**
  * All of the registered settings
  */
 export interface Settings {
-  __typename: 'Settings' | undefined;
+  __typename?: 'Settings';
   /**
    * Settings of the the string Settings Group
    */
@@ -7436,7 +7436,7 @@ export interface Settings {
  * Connection between the RootQuery type and the category type
  */
 export interface RootQueryToCategoryConnection {
-  __typename: 'RootQueryToCategoryConnection' | undefined;
+  __typename?: 'RootQueryToCategoryConnection';
   /**
    * Edges for the RootQueryToCategoryConnection connection
    */
@@ -7455,7 +7455,7 @@ export interface RootQueryToCategoryConnection {
  * An edge in a connection
  */
 export interface RootQueryToCategoryConnectionEdge {
-  __typename: 'RootQueryToCategoryConnectionEdge' | undefined;
+  __typename?: 'RootQueryToCategoryConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -7476,7 +7476,7 @@ export interface Category
     Omit<DatabaseIdentifier, '__typename'>,
     Omit<HierarchicalTermNode, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
-  __typename: 'Category' | undefined;
+  __typename?: 'Category';
   /**
    * The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
    */
@@ -7696,7 +7696,7 @@ export interface Category
  * An object with an ID
  */
 export interface Node {
-  __typename: 'Node' | undefined;
+  __typename?: 'Node';
   /**
    * The globally unique ID for the object
    */
@@ -7707,7 +7707,7 @@ export interface Node {
  * Terms are nodes within a Taxonomy, used to group and relate other nodes.
  */
 export interface TermNode {
-  __typename: 'TermNode' | undefined;
+  __typename?: 'TermNode';
   conditionalTags?: Maybe<ConditionalTags>;
   /**
    * The number of objects connected to the object
@@ -7810,7 +7810,7 @@ export interface TermNode {
  * Any node that has a URI
  */
 export interface UniformResourceIdentifiable {
-  __typename: 'UniformResourceIdentifiable' | undefined;
+  __typename?: 'UniformResourceIdentifiable';
   conditionalTags?: Maybe<ConditionalTags>;
   /**
    * The unique resource identifier path
@@ -7835,7 +7835,7 @@ export interface UniformResourceIdentifiable {
  * GraphQL representation of WordPress Conditional Tags.
  */
 export interface ConditionalTags {
-  __typename: 'ConditionalTags' | undefined;
+  __typename?: 'ConditionalTags';
   /**
    * Determines whether the query is for an existing archive page.
    */
@@ -7930,7 +7930,7 @@ export interface ConditionalTags {
  * Connection between the TermNode type and the EnqueuedScript type
  */
 export interface TermNodeToEnqueuedScriptConnection {
-  __typename: 'TermNodeToEnqueuedScriptConnection' | undefined;
+  __typename?: 'TermNodeToEnqueuedScriptConnection';
   /**
    * Edges for the TermNodeToEnqueuedScriptConnection connection
    */
@@ -7949,7 +7949,7 @@ export interface TermNodeToEnqueuedScriptConnection {
  * An edge in a connection
  */
 export interface TermNodeToEnqueuedScriptConnectionEdge {
-  __typename: 'TermNodeToEnqueuedScriptConnectionEdge' | undefined;
+  __typename?: 'TermNodeToEnqueuedScriptConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -7966,7 +7966,7 @@ export interface TermNodeToEnqueuedScriptConnectionEdge {
 export interface EnqueuedScript
   extends Omit<Node, '__typename'>,
     Omit<EnqueuedAsset, '__typename'> {
-  __typename: 'EnqueuedScript' | undefined;
+  __typename?: 'EnqueuedScript';
   /**
    * @todo
    */
@@ -8001,7 +8001,7 @@ export interface EnqueuedScript
  * Asset enqueued by the CMS
  */
 export interface EnqueuedAsset {
-  __typename: 'EnqueuedAsset' | undefined;
+  __typename?: 'EnqueuedAsset';
   /**
    * @todo
    */
@@ -8036,7 +8036,7 @@ export interface EnqueuedAsset {
  * Information about pagination in a connection.
  */
 export interface WPPageInfo {
-  __typename: 'WPPageInfo' | undefined;
+  __typename?: 'WPPageInfo';
   /**
    * When paginating forwards, the cursor to continue.
    */
@@ -8059,7 +8059,7 @@ export interface WPPageInfo {
  * Connection between the TermNode type and the EnqueuedStylesheet type
  */
 export interface TermNodeToEnqueuedStylesheetConnection {
-  __typename: 'TermNodeToEnqueuedStylesheetConnection' | undefined;
+  __typename?: 'TermNodeToEnqueuedStylesheetConnection';
   /**
    * Edges for the TermNodeToEnqueuedStylesheetConnection connection
    */
@@ -8078,7 +8078,7 @@ export interface TermNodeToEnqueuedStylesheetConnection {
  * An edge in a connection
  */
 export interface TermNodeToEnqueuedStylesheetConnectionEdge {
-  __typename: 'TermNodeToEnqueuedStylesheetConnectionEdge' | undefined;
+  __typename?: 'TermNodeToEnqueuedStylesheetConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8095,7 +8095,7 @@ export interface TermNodeToEnqueuedStylesheetConnectionEdge {
 export interface EnqueuedStylesheet
   extends Omit<Node, '__typename'>,
     Omit<EnqueuedAsset, '__typename'> {
-  __typename: 'EnqueuedStylesheet' | undefined;
+  __typename?: 'EnqueuedStylesheet';
   /**
    * @todo
    */
@@ -8130,7 +8130,7 @@ export interface EnqueuedStylesheet
  * Object that can be identified with a Database ID
  */
 export interface DatabaseIdentifier {
-  __typename: 'DatabaseIdentifier' | undefined;
+  __typename?: 'DatabaseIdentifier';
   /**
    * The unique identifier stored in the database
    */
@@ -8141,7 +8141,7 @@ export interface DatabaseIdentifier {
  * Term node with hierarchical (parent/child) relationships
  */
 export interface HierarchicalTermNode {
-  __typename: 'HierarchicalTermNode' | undefined;
+  __typename?: 'HierarchicalTermNode';
   /**
    * Database id of the parent node
    */
@@ -8156,7 +8156,7 @@ export interface HierarchicalTermNode {
  * Nodes that can be linked to as Menu Items
  */
 export interface MenuItemLinkable {
-  __typename: 'MenuItemLinkable' | undefined;
+  __typename?: 'MenuItemLinkable';
   /**
    * The unique resource identifier path
    */
@@ -8175,7 +8175,7 @@ export interface MenuItemLinkable {
  * Connection between the category type and the category type
  */
 export interface CategoryToAncestorsCategoryConnection {
-  __typename: 'CategoryToAncestorsCategoryConnection' | undefined;
+  __typename?: 'CategoryToAncestorsCategoryConnection';
   /**
    * Edges for the CategoryToAncestorsCategoryConnection connection
    */
@@ -8194,7 +8194,7 @@ export interface CategoryToAncestorsCategoryConnection {
  * An edge in a connection
  */
 export interface CategoryToAncestorsCategoryConnectionEdge {
-  __typename: 'CategoryToAncestorsCategoryConnectionEdge' | undefined;
+  __typename?: 'CategoryToAncestorsCategoryConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8209,7 +8209,7 @@ export interface CategoryToAncestorsCategoryConnectionEdge {
  * Connection between the category type and the category type
  */
 export interface CategoryToCategoryConnection {
-  __typename: 'CategoryToCategoryConnection' | undefined;
+  __typename?: 'CategoryToCategoryConnection';
   /**
    * Edges for the CategoryToCategoryConnection connection
    */
@@ -8228,7 +8228,7 @@ export interface CategoryToCategoryConnection {
  * An edge in a connection
  */
 export interface CategoryToCategoryConnectionEdge {
-  __typename: 'CategoryToCategoryConnectionEdge' | undefined;
+  __typename?: 'CategoryToCategoryConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8243,7 +8243,7 @@ export interface CategoryToCategoryConnectionEdge {
  * Connection between the category type and the ContentNode type
  */
 export interface CategoryToContentNodeConnection {
-  __typename: 'CategoryToContentNodeConnection' | undefined;
+  __typename?: 'CategoryToContentNodeConnection';
   /**
    * Edges for the CategoryToContentNodeConnection connection
    */
@@ -8262,7 +8262,7 @@ export interface CategoryToContentNodeConnection {
  * An edge in a connection
  */
 export interface CategoryToContentNodeConnectionEdge {
-  __typename: 'CategoryToContentNodeConnectionEdge' | undefined;
+  __typename?: 'CategoryToContentNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8277,7 +8277,7 @@ export interface CategoryToContentNodeConnectionEdge {
  * Nodes used to manage content
  */
 export interface ContentNode {
-  __typename: 'ContentNode' | undefined;
+  __typename?: 'ContentNode';
   conditionalTags?: Maybe<ConditionalTags>;
   /**
    * Connection between the ContentNode type and the ContentType type
@@ -8420,7 +8420,7 @@ export interface ContentNode {
  * Connection between the ContentNode type and the ContentType type
  */
 export interface ContentNodeToContentTypeConnectionEdge {
-  __typename: 'ContentNodeToContentTypeConnectionEdge' | undefined;
+  __typename?: 'ContentNodeToContentTypeConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -8433,7 +8433,7 @@ export interface ContentNodeToContentTypeConnectionEdge {
 export interface ContentType
   extends Omit<Node, '__typename'>,
     Omit<UniformResourceIdentifiable, '__typename'> {
-  __typename: 'ContentType' | undefined;
+  __typename?: 'ContentType';
   /**
    * Whether this content type should can be exported.
    */
@@ -8608,7 +8608,7 @@ export interface ContentType
  * Connection between the ContentType type and the Taxonomy type
  */
 export interface ContentTypeToTaxonomyConnection {
-  __typename: 'ContentTypeToTaxonomyConnection' | undefined;
+  __typename?: 'ContentTypeToTaxonomyConnection';
   /**
    * Edges for the ContentTypeToTaxonomyConnection connection
    */
@@ -8627,7 +8627,7 @@ export interface ContentTypeToTaxonomyConnection {
  * An edge in a connection
  */
 export interface ContentTypeToTaxonomyConnectionEdge {
-  __typename: 'ContentTypeToTaxonomyConnectionEdge' | undefined;
+  __typename?: 'ContentTypeToTaxonomyConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8642,7 +8642,7 @@ export interface ContentTypeToTaxonomyConnectionEdge {
  * A taxonomy object
  */
 export interface Taxonomy extends Omit<Node, '__typename'> {
-  __typename: 'Taxonomy' | undefined;
+  __typename?: 'Taxonomy';
   /**
    * List of Content Types associated with the Taxonomy
    */
@@ -8746,7 +8746,7 @@ export interface Taxonomy extends Omit<Node, '__typename'> {
  * Connection between the Taxonomy type and the ContentType type
  */
 export interface TaxonomyToContentTypeConnection {
-  __typename: 'TaxonomyToContentTypeConnection' | undefined;
+  __typename?: 'TaxonomyToContentTypeConnection';
   /**
    * Edges for the TaxonomyToContentTypeConnection connection
    */
@@ -8765,7 +8765,7 @@ export interface TaxonomyToContentTypeConnection {
  * An edge in a connection
  */
 export interface TaxonomyToContentTypeConnectionEdge {
-  __typename: 'TaxonomyToContentTypeConnectionEdge' | undefined;
+  __typename?: 'TaxonomyToContentTypeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8780,7 +8780,7 @@ export interface TaxonomyToContentTypeConnectionEdge {
  * Connection between the ContentType type and the ContentNode type
  */
 export interface ContentTypeToContentNodeConnection {
-  __typename: 'ContentTypeToContentNodeConnection' | undefined;
+  __typename?: 'ContentTypeToContentNodeConnection';
   /**
    * Edges for the ContentTypeToContentNodeConnection connection
    */
@@ -8799,7 +8799,7 @@ export interface ContentTypeToContentNodeConnection {
  * An edge in a connection
  */
 export interface ContentTypeToContentNodeConnectionEdge {
-  __typename: 'ContentTypeToContentNodeConnectionEdge' | undefined;
+  __typename?: 'ContentTypeToContentNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -8814,7 +8814,7 @@ export interface ContentTypeToContentNodeConnectionEdge {
  * Details for labels of the PostType
  */
 export interface PostTypeLabelDetails {
-  __typename: 'PostTypeLabelDetails' | undefined;
+  __typename?: 'PostTypeLabelDetails';
   /**
    * Default is ‘Add New’ for both hierarchical and non-hierarchical types.
    */
@@ -8921,7 +8921,7 @@ export interface PostTypeLabelDetails {
  * Connection between the ContentNode type and the User type
  */
 export interface ContentNodeToEditLockConnectionEdge {
-  __typename: 'ContentNodeToEditLockConnectionEdge' | undefined;
+  __typename?: 'ContentNodeToEditLockConnectionEdge';
   /**
    * The timestamp for when the node was last edited
    */
@@ -8940,7 +8940,7 @@ export interface User
     Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<Commenter, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'> {
-  __typename: 'User' | undefined;
+  __typename?: 'User';
   /**
    * Avatar object for user. The avatar object can be retrieved in different sizes by specifying the size argument.
    */
@@ -9244,7 +9244,7 @@ export interface User
  * The author of a comment
  */
 export interface Commenter {
-  __typename: 'Commenter' | undefined;
+  __typename?: 'Commenter';
   /**
    * Identifies the primary key from the database.
    */
@@ -9275,7 +9275,7 @@ export interface Commenter {
  * Avatars are profile images for users. WordPress by default uses the Gravatar service to host and fetch avatars from.
  */
 export interface Avatar {
-  __typename: 'Avatar' | undefined;
+  __typename?: 'Avatar';
   /**
    * URL for the default image or a default type. Accepts &#039;404&#039; (return a 404 instead of a default image), &#039;retro&#039; (8bit), &#039;monsterid&#039; (monster), &#039;wavatar&#039; (cartoon face), &#039;indenticon&#039; (the &#039;quilt&#039;), &#039;mystery&#039;, &#039;mm&#039;, or &#039;mysteryman&#039; (The Oyster Man), &#039;blank&#039; (transparent GIF), or &#039;gravatar_default&#039; (the Gravatar logo).
    */
@@ -9326,7 +9326,7 @@ export interface Avatar {
  * Connection between the User type and the Comment type
  */
 export interface UserToCommentConnection {
-  __typename: 'UserToCommentConnection' | undefined;
+  __typename?: 'UserToCommentConnection';
   /**
    * Edges for the UserToCommentConnection connection
    */
@@ -9345,7 +9345,7 @@ export interface UserToCommentConnection {
  * An edge in a connection
  */
 export interface UserToCommentConnectionEdge {
-  __typename: 'UserToCommentConnectionEdge' | undefined;
+  __typename?: 'UserToCommentConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -9362,7 +9362,7 @@ export interface UserToCommentConnectionEdge {
 export interface Comment
   extends Omit<Node, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'> {
-  __typename: 'Comment' | undefined;
+  __typename?: 'Comment';
   /**
    * User agent used to post the comment. This field is equivalent to WP_Comment-&gt;comment_agent and the value matching the &quot;comment_agent&quot; column in SQL.
    */
@@ -9473,7 +9473,7 @@ export interface Comment
  * Connection between the Comment type and the Commenter type
  */
 export interface CommentToCommenterConnectionEdge {
-  __typename: 'CommentToCommenterConnectionEdge' | undefined;
+  __typename?: 'CommentToCommenterConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -9484,7 +9484,7 @@ export interface CommentToCommenterConnectionEdge {
  * Connection between the Comment type and the ContentNode type
  */
 export interface CommentToContentNodeConnectionEdge {
-  __typename: 'CommentToContentNodeConnectionEdge' | undefined;
+  __typename?: 'CommentToContentNodeConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -9495,7 +9495,7 @@ export interface CommentToContentNodeConnectionEdge {
  * Connection between the Comment type and the Comment type
  */
 export interface CommentToParentCommentConnectionEdge {
-  __typename: 'CommentToParentCommentConnectionEdge' | undefined;
+  __typename?: 'CommentToParentCommentConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -9506,7 +9506,7 @@ export interface CommentToParentCommentConnectionEdge {
  * Connection between the Comment type and the Comment type
  */
 export interface CommentToCommentConnection {
-  __typename: 'CommentToCommentConnection' | undefined;
+  __typename?: 'CommentToCommentConnection';
   /**
    * Edges for the CommentToCommentConnection connection
    */
@@ -9525,7 +9525,7 @@ export interface CommentToCommentConnection {
  * An edge in a connection
  */
 export interface CommentToCommentConnectionEdge {
-  __typename: 'CommentToCommentConnectionEdge' | undefined;
+  __typename?: 'CommentToCommentConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -9540,7 +9540,7 @@ export interface CommentToCommentConnectionEdge {
  * Connection between the User type and the EnqueuedScript type
  */
 export interface UserToEnqueuedScriptConnection {
-  __typename: 'UserToEnqueuedScriptConnection' | undefined;
+  __typename?: 'UserToEnqueuedScriptConnection';
   /**
    * Edges for the UserToEnqueuedScriptConnection connection
    */
@@ -9559,7 +9559,7 @@ export interface UserToEnqueuedScriptConnection {
  * An edge in a connection
  */
 export interface UserToEnqueuedScriptConnectionEdge {
-  __typename: 'UserToEnqueuedScriptConnectionEdge' | undefined;
+  __typename?: 'UserToEnqueuedScriptConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -9574,7 +9574,7 @@ export interface UserToEnqueuedScriptConnectionEdge {
  * Connection between the User type and the EnqueuedStylesheet type
  */
 export interface UserToEnqueuedStylesheetConnection {
-  __typename: 'UserToEnqueuedStylesheetConnection' | undefined;
+  __typename?: 'UserToEnqueuedStylesheetConnection';
   /**
    * Edges for the UserToEnqueuedStylesheetConnection connection
    */
@@ -9593,7 +9593,7 @@ export interface UserToEnqueuedStylesheetConnection {
  * An edge in a connection
  */
 export interface UserToEnqueuedStylesheetConnectionEdge {
-  __typename: 'UserToEnqueuedStylesheetConnectionEdge' | undefined;
+  __typename?: 'UserToEnqueuedStylesheetConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -9608,7 +9608,7 @@ export interface UserToEnqueuedStylesheetConnectionEdge {
  * Connection between the User type and the mediaItem type
  */
 export interface UserToMediaItemConnection {
-  __typename: 'UserToMediaItemConnection' | undefined;
+  __typename?: 'UserToMediaItemConnection';
   /**
    * Edges for the UserToMediaItemConnection connection
    */
@@ -9627,7 +9627,7 @@ export interface UserToMediaItemConnection {
  * An edge in a connection
  */
 export interface UserToMediaItemConnectionEdge {
-  __typename: 'UserToMediaItemConnectionEdge' | undefined;
+  __typename?: 'UserToMediaItemConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -9651,7 +9651,7 @@ export interface MediaItem
     Omit<NodeWithAuthor, '__typename'>,
     Omit<NodeWithComments, '__typename'>,
     Omit<HierarchicalContentNode, '__typename'> {
-  __typename: 'MediaItem' | undefined;
+  __typename?: 'MediaItem';
   /**
    * Alternative text to display when resource is not displayed
    */
@@ -9989,7 +9989,7 @@ export interface MediaItem
  * A node that can have a template associated with it
  */
 export interface NodeWithTemplate {
-  __typename: 'NodeWithTemplate' | undefined;
+  __typename?: 'NodeWithTemplate';
   /**
    * The template assigned to the node
    */
@@ -10000,7 +10000,7 @@ export interface NodeWithTemplate {
  * The template assigned to a node of content
  */
 export interface ContentTemplate {
-  __typename: 'ContentTemplate' | undefined;
+  __typename?: 'ContentTemplate';
   /**
    * The name of the template
    */
@@ -10011,7 +10011,7 @@ export interface ContentTemplate {
  * A node that NodeWith a title
  */
 export interface NodeWithTitle {
-  __typename: 'NodeWithTitle' | undefined;
+  __typename?: 'NodeWithTitle';
   /**
    * The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
    */
@@ -10027,7 +10027,7 @@ export interface NodeWithTitle {
  * A node that can have an author assigned to it
  */
 export interface NodeWithAuthor {
-  __typename: 'NodeWithAuthor' | undefined;
+  __typename?: 'NodeWithAuthor';
   /**
    * Connection between the NodeWithAuthor type and the User type
    */
@@ -10046,7 +10046,7 @@ export interface NodeWithAuthor {
  * Connection between the NodeWithAuthor type and the User type
  */
 export interface NodeWithAuthorToUserConnectionEdge {
-  __typename: 'NodeWithAuthorToUserConnectionEdge' | undefined;
+  __typename?: 'NodeWithAuthorToUserConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -10057,7 +10057,7 @@ export interface NodeWithAuthorToUserConnectionEdge {
  * A node that can have comments associated with it
  */
 export interface NodeWithComments {
-  __typename: 'NodeWithComments' | undefined;
+  __typename?: 'NodeWithComments';
   /**
    * The number of comments. Even though WPGraphQL denotes this field as an integer, in WordPress this field should be saved as a numeric string for compatibility.
    */
@@ -10072,7 +10072,7 @@ export interface NodeWithComments {
  * Content node with hierarchical (parent/child) relationships
  */
 export interface HierarchicalContentNode {
-  __typename: 'HierarchicalContentNode' | undefined;
+  __typename?: 'HierarchicalContentNode';
   /**
    * Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
    */
@@ -10141,9 +10141,7 @@ export interface HierarchicalContentNode {
  * Connection between the HierarchicalContentNode type and the ContentNode type
  */
 export interface HierarchicalContentNodeToContentNodeAncestorsConnection {
-  __typename:
-    | 'HierarchicalContentNodeToContentNodeAncestorsConnection'
-    | undefined;
+  __typename?: 'HierarchicalContentNodeToContentNodeAncestorsConnection';
   /**
    * Edges for the HierarchicalContentNodeToContentNodeAncestorsConnection connection
    */
@@ -10164,9 +10162,7 @@ export interface HierarchicalContentNodeToContentNodeAncestorsConnection {
  * An edge in a connection
  */
 export interface HierarchicalContentNodeToContentNodeAncestorsConnectionEdge {
-  __typename:
-    | 'HierarchicalContentNodeToContentNodeAncestorsConnectionEdge'
-    | undefined;
+  __typename?: 'HierarchicalContentNodeToContentNodeAncestorsConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -10181,9 +10177,7 @@ export interface HierarchicalContentNodeToContentNodeAncestorsConnectionEdge {
  * Connection between the HierarchicalContentNode type and the ContentNode type
  */
 export interface HierarchicalContentNodeToContentNodeChildrenConnection {
-  __typename:
-    | 'HierarchicalContentNodeToContentNodeChildrenConnection'
-    | undefined;
+  __typename?: 'HierarchicalContentNodeToContentNodeChildrenConnection';
   /**
    * Edges for the HierarchicalContentNodeToContentNodeChildrenConnection connection
    */
@@ -10204,9 +10198,7 @@ export interface HierarchicalContentNodeToContentNodeChildrenConnection {
  * An edge in a connection
  */
 export interface HierarchicalContentNodeToContentNodeChildrenConnectionEdge {
-  __typename:
-    | 'HierarchicalContentNodeToContentNodeChildrenConnectionEdge'
-    | undefined;
+  __typename?: 'HierarchicalContentNodeToContentNodeChildrenConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -10221,9 +10213,7 @@ export interface HierarchicalContentNodeToContentNodeChildrenConnectionEdge {
  * Connection between the HierarchicalContentNode type and the ContentNode type
  */
 export interface HierarchicalContentNodeToParentContentNodeConnectionEdge {
-  __typename:
-    | 'HierarchicalContentNodeToParentContentNodeConnectionEdge'
-    | undefined;
+  __typename?: 'HierarchicalContentNodeToParentContentNodeConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -10234,7 +10224,7 @@ export interface HierarchicalContentNodeToParentContentNodeConnectionEdge {
  * Connection between the mediaItem type and the Comment type
  */
 export interface MediaItemToCommentConnection {
-  __typename: 'MediaItemToCommentConnection' | undefined;
+  __typename?: 'MediaItemToCommentConnection';
   /**
    * Edges for the MediaItemToCommentConnection connection
    */
@@ -10253,7 +10243,7 @@ export interface MediaItemToCommentConnection {
  * An edge in a connection
  */
 export interface MediaItemToCommentConnectionEdge {
-  __typename: 'MediaItemToCommentConnectionEdge' | undefined;
+  __typename?: 'MediaItemToCommentConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -10268,7 +10258,7 @@ export interface MediaItemToCommentConnectionEdge {
  * Connection between the ContentNode type and the EnqueuedScript type
  */
 export interface ContentNodeToEnqueuedScriptConnection {
-  __typename: 'ContentNodeToEnqueuedScriptConnection' | undefined;
+  __typename?: 'ContentNodeToEnqueuedScriptConnection';
   /**
    * Edges for the ContentNodeToEnqueuedScriptConnection connection
    */
@@ -10287,7 +10277,7 @@ export interface ContentNodeToEnqueuedScriptConnection {
  * An edge in a connection
  */
 export interface ContentNodeToEnqueuedScriptConnectionEdge {
-  __typename: 'ContentNodeToEnqueuedScriptConnectionEdge' | undefined;
+  __typename?: 'ContentNodeToEnqueuedScriptConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -10302,7 +10292,7 @@ export interface ContentNodeToEnqueuedScriptConnectionEdge {
  * Connection between the ContentNode type and the EnqueuedStylesheet type
  */
 export interface ContentNodeToEnqueuedStylesheetConnection {
-  __typename: 'ContentNodeToEnqueuedStylesheetConnection' | undefined;
+  __typename?: 'ContentNodeToEnqueuedStylesheetConnection';
   /**
    * Edges for the ContentNodeToEnqueuedStylesheetConnection connection
    */
@@ -10321,7 +10311,7 @@ export interface ContentNodeToEnqueuedStylesheetConnection {
  * An edge in a connection
  */
 export interface ContentNodeToEnqueuedStylesheetConnectionEdge {
-  __typename: 'ContentNodeToEnqueuedStylesheetConnectionEdge' | undefined;
+  __typename?: 'ContentNodeToEnqueuedStylesheetConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -10336,7 +10326,7 @@ export interface ContentNodeToEnqueuedStylesheetConnectionEdge {
  * Connection between the ContentNode type and the User type
  */
 export interface ContentNodeToEditLastConnectionEdge {
-  __typename: 'ContentNodeToEditLastConnectionEdge' | undefined;
+  __typename?: 'ContentNodeToEditLastConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -10347,7 +10337,7 @@ export interface ContentNodeToEditLastConnectionEdge {
  * File details for a Media Item
  */
 export interface MediaDetails {
-  __typename: 'MediaDetails' | undefined;
+  __typename?: 'MediaDetails';
   /**
    * The filename of the mediaItem
    */
@@ -10374,7 +10364,7 @@ export interface MediaDetails {
  * Meta connected to a MediaItem
  */
 export interface MediaItemMeta {
-  __typename: 'MediaItemMeta' | undefined;
+  __typename?: 'MediaItemMeta';
   /**
    * Aperture measurement of the media item.
    */
@@ -10429,7 +10419,7 @@ export interface MediaItemMeta {
  * Details of an available size for a media item
  */
 export interface MediaSize {
-  __typename: 'MediaSize' | undefined;
+  __typename?: 'MediaSize';
   /**
    * The filename of the referenced size
    */
@@ -10464,7 +10454,7 @@ export interface MediaSize {
  * Connection between the User type and the page type
  */
 export interface UserToPageConnection {
-  __typename: 'UserToPageConnection' | undefined;
+  __typename?: 'UserToPageConnection';
   /**
    * Edges for the UserToPageConnection connection
    */
@@ -10483,7 +10473,7 @@ export interface UserToPageConnection {
  * An edge in a connection
  */
 export interface UserToPageConnectionEdge {
-  __typename: 'UserToPageConnectionEdge' | undefined;
+  __typename?: 'UserToPageConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -10512,7 +10502,7 @@ export interface Page
     Omit<NodeWithPageAttributes, '__typename'>,
     Omit<HierarchicalContentNode, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
-  __typename: 'Page' | undefined;
+  __typename?: 'Page';
   /**
    * Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
    */
@@ -10850,7 +10840,7 @@ export interface Page
  * A node that supports the content editor
  */
 export interface NodeWithContentEditor {
-  __typename: 'NodeWithContentEditor' | undefined;
+  __typename?: 'NodeWithContentEditor';
   /**
    * The content of the post.
    */
@@ -10866,7 +10856,7 @@ export interface NodeWithContentEditor {
  * A node that can have a featured image set
  */
 export interface NodeWithFeaturedImage {
-  __typename: 'NodeWithFeaturedImage' | undefined;
+  __typename?: 'NodeWithFeaturedImage';
   conditionalTags?: Maybe<ConditionalTags>;
   /**
    * Connection between the ContentNode type and the ContentType type
@@ -11021,7 +11011,7 @@ export interface NodeWithFeaturedImage {
  * Connection between the NodeWithFeaturedImage type and the MediaItem type
  */
 export interface NodeWithFeaturedImageToMediaItemConnectionEdge {
-  __typename: 'NodeWithFeaturedImageToMediaItemConnectionEdge' | undefined;
+  __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -11032,7 +11022,7 @@ export interface NodeWithFeaturedImageToMediaItemConnectionEdge {
  * A node that can have revisions
  */
 export interface NodeWithRevisions {
-  __typename: 'NodeWithRevisions' | undefined;
+  __typename?: 'NodeWithRevisions';
   /**
    * True if the node is a revision of another node
    */
@@ -11047,7 +11037,7 @@ export interface NodeWithRevisions {
  * Connection between the NodeWithRevisions type and the ContentNode type
  */
 export interface NodeWithRevisionsToContentNodeConnectionEdge {
-  __typename: 'NodeWithRevisionsToContentNodeConnectionEdge' | undefined;
+  __typename?: 'NodeWithRevisionsToContentNodeConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -11058,7 +11048,7 @@ export interface NodeWithRevisionsToContentNodeConnectionEdge {
  * A node that can have page attributes
  */
 export interface NodeWithPageAttributes {
-  __typename: 'NodeWithPageAttributes' | undefined;
+  __typename?: 'NodeWithPageAttributes';
   /**
    * A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types.
    */
@@ -11069,7 +11059,7 @@ export interface NodeWithPageAttributes {
  * Connection between the page type and the Comment type
  */
 export interface PageToCommentConnection {
-  __typename: 'PageToCommentConnection' | undefined;
+  __typename?: 'PageToCommentConnection';
   /**
    * Edges for the PageToCommentConnection connection
    */
@@ -11088,7 +11078,7 @@ export interface PageToCommentConnection {
  * An edge in a connection
  */
 export interface PageToCommentConnectionEdge {
-  __typename: 'PageToCommentConnectionEdge' | undefined;
+  __typename?: 'PageToCommentConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11103,7 +11093,7 @@ export interface PageToCommentConnectionEdge {
  * Connection between the page type and the page type
  */
 export interface PageToPreviewConnectionEdge {
-  __typename: 'PageToPreviewConnectionEdge' | undefined;
+  __typename?: 'PageToPreviewConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -11114,7 +11104,7 @@ export interface PageToPreviewConnectionEdge {
  * Connection between the page type and the page type
  */
 export interface PageToRevisionConnection {
-  __typename: 'PageToRevisionConnection' | undefined;
+  __typename?: 'PageToRevisionConnection';
   /**
    * Edges for the pageToRevisionConnection connection
    */
@@ -11133,7 +11123,7 @@ export interface PageToRevisionConnection {
  * An edge in a connection
  */
 export interface PageToRevisionConnectionEdge {
-  __typename: 'PageToRevisionConnectionEdge' | undefined;
+  __typename?: 'PageToRevisionConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11148,7 +11138,7 @@ export interface PageToRevisionConnectionEdge {
  * Connection between the User type and the post type
  */
 export interface UserToPostConnection {
-  __typename: 'UserToPostConnection' | undefined;
+  __typename?: 'UserToPostConnection';
   /**
    * Edges for the UserToPostConnection connection
    */
@@ -11167,7 +11157,7 @@ export interface UserToPostConnection {
  * An edge in a connection
  */
 export interface UserToPostConnectionEdge {
-  __typename: 'UserToPostConnectionEdge' | undefined;
+  __typename?: 'UserToPostConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11196,7 +11186,7 @@ export interface Post
     Omit<NodeWithTrackbacks, '__typename'>,
     Omit<NodeWithRevisions, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
-  __typename: 'Post' | undefined;
+  __typename?: 'Post';
   /**
    * Connection between the NodeWithAuthor type and the User type
    */
@@ -11581,7 +11571,7 @@ export interface Post
  * A node that can have an excerpt
  */
 export interface NodeWithExcerpt {
-  __typename: 'NodeWithExcerpt' | undefined;
+  __typename?: 'NodeWithExcerpt';
   /**
    * The excerpt of the post.
    */
@@ -11597,7 +11587,7 @@ export interface NodeWithExcerpt {
  * A node that can have trackbacks and pingbacks
  */
 export interface NodeWithTrackbacks {
-  __typename: 'NodeWithTrackbacks' | undefined;
+  __typename?: 'NodeWithTrackbacks';
   /**
    * Whether the pings are open or closed for this particular post.
    */
@@ -11616,7 +11606,7 @@ export interface NodeWithTrackbacks {
  * Connection between the post type and the category type
  */
 export interface PostToCategoryConnection {
-  __typename: 'PostToCategoryConnection' | undefined;
+  __typename?: 'PostToCategoryConnection';
   /**
    * Edges for the PostToCategoryConnection connection
    */
@@ -11635,7 +11625,7 @@ export interface PostToCategoryConnection {
  * An edge in a connection
  */
 export interface PostToCategoryConnectionEdge {
-  __typename: 'PostToCategoryConnectionEdge' | undefined;
+  __typename?: 'PostToCategoryConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11650,7 +11640,7 @@ export interface PostToCategoryConnectionEdge {
  * Connection between the post type and the Comment type
  */
 export interface PostToCommentConnection {
-  __typename: 'PostToCommentConnection' | undefined;
+  __typename?: 'PostToCommentConnection';
   /**
    * Edges for the PostToCommentConnection connection
    */
@@ -11669,7 +11659,7 @@ export interface PostToCommentConnection {
  * An edge in a connection
  */
 export interface PostToCommentConnectionEdge {
-  __typename: 'PostToCommentConnectionEdge' | undefined;
+  __typename?: 'PostToCommentConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11684,7 +11674,7 @@ export interface PostToCommentConnectionEdge {
  * Connection between the post type and the postFormat type
  */
 export interface PostToPostFormatConnection {
-  __typename: 'PostToPostFormatConnection' | undefined;
+  __typename?: 'PostToPostFormatConnection';
   /**
    * Edges for the PostToPostFormatConnection connection
    */
@@ -11703,7 +11693,7 @@ export interface PostToPostFormatConnection {
  * An edge in a connection
  */
 export interface PostToPostFormatConnectionEdge {
-  __typename: 'PostToPostFormatConnectionEdge' | undefined;
+  __typename?: 'PostToPostFormatConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11723,7 +11713,7 @@ export interface PostFormat
     Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
-  __typename: 'PostFormat' | undefined;
+  __typename?: 'PostFormat';
   conditionalTags?: Maybe<ConditionalTags>;
   /**
    * Connection between the postFormat type and the ContentNode type
@@ -11885,7 +11875,7 @@ export interface PostFormat
  * Connection between the postFormat type and the ContentNode type
  */
 export interface PostFormatToContentNodeConnection {
-  __typename: 'PostFormatToContentNodeConnection' | undefined;
+  __typename?: 'PostFormatToContentNodeConnection';
   /**
    * Edges for the PostFormatToContentNodeConnection connection
    */
@@ -11904,7 +11894,7 @@ export interface PostFormatToContentNodeConnection {
  * An edge in a connection
  */
 export interface PostFormatToContentNodeConnectionEdge {
-  __typename: 'PostFormatToContentNodeConnectionEdge' | undefined;
+  __typename?: 'PostFormatToContentNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11919,7 +11909,7 @@ export interface PostFormatToContentNodeConnectionEdge {
  * Connection between the postFormat type and the post type
  */
 export interface PostFormatToPostConnection {
-  __typename: 'PostFormatToPostConnection' | undefined;
+  __typename?: 'PostFormatToPostConnection';
   /**
    * Edges for the PostFormatToPostConnection connection
    */
@@ -11938,7 +11928,7 @@ export interface PostFormatToPostConnection {
  * An edge in a connection
  */
 export interface PostFormatToPostConnectionEdge {
-  __typename: 'PostFormatToPostConnectionEdge' | undefined;
+  __typename?: 'PostFormatToPostConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -11953,7 +11943,7 @@ export interface PostFormatToPostConnectionEdge {
  * Connection between the postFormat type and the Taxonomy type
  */
 export interface PostFormatToTaxonomyConnectionEdge {
-  __typename: 'PostFormatToTaxonomyConnectionEdge' | undefined;
+  __typename?: 'PostFormatToTaxonomyConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -11964,7 +11954,7 @@ export interface PostFormatToTaxonomyConnectionEdge {
  * Connection between the post type and the post type
  */
 export interface PostToPreviewConnectionEdge {
-  __typename: 'PostToPreviewConnectionEdge' | undefined;
+  __typename?: 'PostToPreviewConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -11975,7 +11965,7 @@ export interface PostToPreviewConnectionEdge {
  * Connection between the post type and the post type
  */
 export interface PostToRevisionConnection {
-  __typename: 'PostToRevisionConnection' | undefined;
+  __typename?: 'PostToRevisionConnection';
   /**
    * Edges for the postToRevisionConnection connection
    */
@@ -11994,7 +11984,7 @@ export interface PostToRevisionConnection {
  * An edge in a connection
  */
 export interface PostToRevisionConnectionEdge {
-  __typename: 'PostToRevisionConnectionEdge' | undefined;
+  __typename?: 'PostToRevisionConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12009,7 +11999,7 @@ export interface PostToRevisionConnectionEdge {
  * Connection between the post type and the tag type
  */
 export interface PostToTagConnection {
-  __typename: 'PostToTagConnection' | undefined;
+  __typename?: 'PostToTagConnection';
   /**
    * Edges for the PostToTagConnection connection
    */
@@ -12028,7 +12018,7 @@ export interface PostToTagConnection {
  * An edge in a connection
  */
 export interface PostToTagConnectionEdge {
-  __typename: 'PostToTagConnectionEdge' | undefined;
+  __typename?: 'PostToTagConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12048,7 +12038,7 @@ export interface Tag
     Omit<UniformResourceIdentifiable, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'>,
     Omit<MenuItemLinkable, '__typename'> {
-  __typename: 'Tag' | undefined;
+  __typename?: 'Tag';
   conditionalTags?: Maybe<ConditionalTags>;
   /**
    * Connection between the tag type and the ContentNode type
@@ -12210,7 +12200,7 @@ export interface Tag
  * Connection between the tag type and the ContentNode type
  */
 export interface TagToContentNodeConnection {
-  __typename: 'TagToContentNodeConnection' | undefined;
+  __typename?: 'TagToContentNodeConnection';
   /**
    * Edges for the TagToContentNodeConnection connection
    */
@@ -12229,7 +12219,7 @@ export interface TagToContentNodeConnection {
  * An edge in a connection
  */
 export interface TagToContentNodeConnectionEdge {
-  __typename: 'TagToContentNodeConnectionEdge' | undefined;
+  __typename?: 'TagToContentNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12244,7 +12234,7 @@ export interface TagToContentNodeConnectionEdge {
  * Connection between the tag type and the post type
  */
 export interface TagToPostConnection {
-  __typename: 'TagToPostConnection' | undefined;
+  __typename?: 'TagToPostConnection';
   /**
    * Edges for the TagToPostConnection connection
    */
@@ -12263,7 +12253,7 @@ export interface TagToPostConnection {
  * An edge in a connection
  */
 export interface TagToPostConnectionEdge {
-  __typename: 'TagToPostConnectionEdge' | undefined;
+  __typename?: 'TagToPostConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12278,7 +12268,7 @@ export interface TagToPostConnectionEdge {
  * Connection between the tag type and the Taxonomy type
  */
 export interface TagToTaxonomyConnectionEdge {
-  __typename: 'TagToTaxonomyConnectionEdge' | undefined;
+  __typename?: 'TagToTaxonomyConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -12289,7 +12279,7 @@ export interface TagToTaxonomyConnectionEdge {
  * Connection between the post type and the TermNode type
  */
 export interface PostToTermNodeConnection {
-  __typename: 'PostToTermNodeConnection' | undefined;
+  __typename?: 'PostToTermNodeConnection';
   /**
    * Edges for the PostToTermNodeConnection connection
    */
@@ -12308,7 +12298,7 @@ export interface PostToTermNodeConnection {
  * An edge in a connection
  */
 export interface PostToTermNodeConnectionEdge {
-  __typename: 'PostToTermNodeConnectionEdge' | undefined;
+  __typename?: 'PostToTermNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12323,7 +12313,7 @@ export interface PostToTermNodeConnectionEdge {
  * Connection between the User type and the ContentRevisionUnion type
  */
 export interface UserToContentRevisionUnionConnection {
-  __typename: 'UserToContentRevisionUnionConnection' | undefined;
+  __typename?: 'UserToContentRevisionUnionConnection';
   /**
    * Edges for the UserToContentRevisionUnionConnection connection
    */
@@ -12342,7 +12332,7 @@ export interface UserToContentRevisionUnionConnection {
  * An edge in a connection
  */
 export interface UserToContentRevisionUnionConnectionEdge {
-  __typename: 'UserToContentRevisionUnionConnectionEdge' | undefined;
+  __typename?: 'UserToContentRevisionUnionConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12357,7 +12347,7 @@ export interface UserToContentRevisionUnionConnectionEdge {
  * Connection between the User type and the UserRole type
  */
 export interface UserToUserRoleConnection {
-  __typename: 'UserToUserRoleConnection' | undefined;
+  __typename?: 'UserToUserRoleConnection';
   /**
    * Edges for the UserToUserRoleConnection connection
    */
@@ -12376,7 +12366,7 @@ export interface UserToUserRoleConnection {
  * An edge in a connection
  */
 export interface UserToUserRoleConnectionEdge {
-  __typename: 'UserToUserRoleConnectionEdge' | undefined;
+  __typename?: 'UserToUserRoleConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12391,7 +12381,7 @@ export interface UserToUserRoleConnectionEdge {
  * A user role object
  */
 export interface UserRole extends Omit<Node, '__typename'> {
-  __typename: 'UserRole' | undefined;
+  __typename?: 'UserRole';
   /**
    * The capabilities that belong to this role
    */
@@ -12418,7 +12408,7 @@ export interface UserRole extends Omit<Node, '__typename'> {
  * Connection between the category type and the category type
  */
 export interface CategoryToParentCategoryConnectionEdge {
-  __typename: 'CategoryToParentCategoryConnectionEdge' | undefined;
+  __typename?: 'CategoryToParentCategoryConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -12429,7 +12419,7 @@ export interface CategoryToParentCategoryConnectionEdge {
  * Connection between the category type and the post type
  */
 export interface CategoryToPostConnection {
-  __typename: 'CategoryToPostConnection' | undefined;
+  __typename?: 'CategoryToPostConnection';
   /**
    * Edges for the CategoryToPostConnection connection
    */
@@ -12448,7 +12438,7 @@ export interface CategoryToPostConnection {
  * An edge in a connection
  */
 export interface CategoryToPostConnectionEdge {
-  __typename: 'CategoryToPostConnectionEdge' | undefined;
+  __typename?: 'CategoryToPostConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12463,7 +12453,7 @@ export interface CategoryToPostConnectionEdge {
  * Connection between the category type and the Taxonomy type
  */
 export interface CategoryToTaxonomyConnectionEdge {
-  __typename: 'CategoryToTaxonomyConnectionEdge' | undefined;
+  __typename?: 'CategoryToTaxonomyConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -12474,7 +12464,7 @@ export interface CategoryToTaxonomyConnectionEdge {
  * Connection between the RootQuery type and the Comment type
  */
 export interface RootQueryToCommentConnection {
-  __typename: 'RootQueryToCommentConnection' | undefined;
+  __typename?: 'RootQueryToCommentConnection';
   /**
    * Edges for the RootQueryToCommentConnection connection
    */
@@ -12493,7 +12483,7 @@ export interface RootQueryToCommentConnection {
  * An edge in a connection
  */
 export interface RootQueryToCommentConnectionEdge {
-  __typename: 'RootQueryToCommentConnectionEdge' | undefined;
+  __typename?: 'RootQueryToCommentConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12508,7 +12498,7 @@ export interface RootQueryToCommentConnectionEdge {
  * Connection between the RootQuery type and the ContentNode type
  */
 export interface RootQueryToContentNodeConnection {
-  __typename: 'RootQueryToContentNodeConnection' | undefined;
+  __typename?: 'RootQueryToContentNodeConnection';
   /**
    * Edges for the RootQueryToContentNodeConnection connection
    */
@@ -12527,7 +12517,7 @@ export interface RootQueryToContentNodeConnection {
  * An edge in a connection
  */
 export interface RootQueryToContentNodeConnectionEdge {
-  __typename: 'RootQueryToContentNodeConnectionEdge' | undefined;
+  __typename?: 'RootQueryToContentNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12542,7 +12532,7 @@ export interface RootQueryToContentNodeConnectionEdge {
  * Connection between the RootQuery type and the ContentType type
  */
 export interface RootQueryToContentTypeConnection {
-  __typename: 'RootQueryToContentTypeConnection' | undefined;
+  __typename?: 'RootQueryToContentTypeConnection';
   /**
    * Edges for the RootQueryToContentTypeConnection connection
    */
@@ -12561,7 +12551,7 @@ export interface RootQueryToContentTypeConnection {
  * An edge in a connection
  */
 export interface RootQueryToContentTypeConnectionEdge {
-  __typename: 'RootQueryToContentTypeConnectionEdge' | undefined;
+  __typename?: 'RootQueryToContentTypeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12576,7 +12566,7 @@ export interface RootQueryToContentTypeConnectionEdge {
  * The discussion setting type
  */
 export interface DiscussionSettings {
-  __typename: 'DiscussionSettings' | undefined;
+  __typename?: 'DiscussionSettings';
   /**
    * Allow people to submit comments on new posts.
    */
@@ -12591,7 +12581,7 @@ export interface DiscussionSettings {
  * The general setting type
  */
 export interface GeneralSettings {
-  __typename: 'GeneralSettings' | undefined;
+  __typename?: 'GeneralSettings';
   /**
    * A date format for all date strings.
    */
@@ -12634,7 +12624,7 @@ export interface GeneralSettings {
  * Connection between the RootQuery type and the mediaItem type
  */
 export interface RootQueryToMediaItemConnection {
-  __typename: 'RootQueryToMediaItemConnection' | undefined;
+  __typename?: 'RootQueryToMediaItemConnection';
   /**
    * Edges for the RootQueryToMediaItemConnection connection
    */
@@ -12653,7 +12643,7 @@ export interface RootQueryToMediaItemConnection {
  * An edge in a connection
  */
 export interface RootQueryToMediaItemConnectionEdge {
-  __typename: 'RootQueryToMediaItemConnectionEdge' | undefined;
+  __typename?: 'RootQueryToMediaItemConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12670,7 +12660,7 @@ export interface RootQueryToMediaItemConnectionEdge {
 export interface Menu
   extends Omit<Node, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'> {
-  __typename: 'Menu' | undefined;
+  __typename?: 'Menu';
   /**
    * The number of items in the menu
    */
@@ -12735,7 +12725,7 @@ export interface Menu
  * Connection between the Menu type and the MenuItem type
  */
 export interface MenuToMenuItemConnection {
-  __typename: 'MenuToMenuItemConnection' | undefined;
+  __typename?: 'MenuToMenuItemConnection';
   /**
    * Edges for the MenuToMenuItemConnection connection
    */
@@ -12754,7 +12744,7 @@ export interface MenuToMenuItemConnection {
  * An edge in a connection
  */
 export interface MenuToMenuItemConnectionEdge {
-  __typename: 'MenuToMenuItemConnectionEdge' | undefined;
+  __typename?: 'MenuToMenuItemConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12771,7 +12761,7 @@ export interface MenuToMenuItemConnectionEdge {
 export interface MenuItem
   extends Omit<Node, '__typename'>,
     Omit<DatabaseIdentifier, '__typename'> {
-  __typename: 'MenuItem' | undefined;
+  __typename?: 'MenuItem';
   /**
    * Connection between the MenuItem type and the MenuItem type
    */
@@ -12881,7 +12871,7 @@ export interface MenuItem
  * Connection between the MenuItem type and the MenuItem type
  */
 export interface MenuItemToMenuItemConnection {
-  __typename: 'MenuItemToMenuItemConnection' | undefined;
+  __typename?: 'MenuItemToMenuItemConnection';
   /**
    * Edges for the MenuItemToMenuItemConnection connection
    */
@@ -12900,7 +12890,7 @@ export interface MenuItemToMenuItemConnection {
  * An edge in a connection
  */
 export interface MenuItemToMenuItemConnectionEdge {
-  __typename: 'MenuItemToMenuItemConnectionEdge' | undefined;
+  __typename?: 'MenuItemToMenuItemConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12915,7 +12905,7 @@ export interface MenuItemToMenuItemConnectionEdge {
  * Connection between the MenuItem type and the MenuItemLinkable type
  */
 export interface MenuItemToMenuItemLinkableConnectionEdge {
-  __typename: 'MenuItemToMenuItemLinkableConnectionEdge' | undefined;
+  __typename?: 'MenuItemToMenuItemLinkableConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -12926,7 +12916,7 @@ export interface MenuItemToMenuItemLinkableConnectionEdge {
  * Connection between the MenuItem type and the Menu type
  */
 export interface MenuItemToMenuConnectionEdge {
-  __typename: 'MenuItemToMenuConnectionEdge' | undefined;
+  __typename?: 'MenuItemToMenuConnectionEdge';
   /**
    * The node of the connection, without the edges
    */
@@ -12937,7 +12927,7 @@ export interface MenuItemToMenuConnectionEdge {
  * Connection between the RootQuery type and the MenuItem type
  */
 export interface RootQueryToMenuItemConnection {
-  __typename: 'RootQueryToMenuItemConnection' | undefined;
+  __typename?: 'RootQueryToMenuItemConnection';
   /**
    * Edges for the RootQueryToMenuItemConnection connection
    */
@@ -12956,7 +12946,7 @@ export interface RootQueryToMenuItemConnection {
  * An edge in a connection
  */
 export interface RootQueryToMenuItemConnectionEdge {
-  __typename: 'RootQueryToMenuItemConnectionEdge' | undefined;
+  __typename?: 'RootQueryToMenuItemConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -12971,7 +12961,7 @@ export interface RootQueryToMenuItemConnectionEdge {
  * Connection between the RootQuery type and the Menu type
  */
 export interface RootQueryToMenuConnection {
-  __typename: 'RootQueryToMenuConnection' | undefined;
+  __typename?: 'RootQueryToMenuConnection';
   /**
    * Edges for the RootQueryToMenuConnection connection
    */
@@ -12990,7 +12980,7 @@ export interface RootQueryToMenuConnection {
  * An edge in a connection
  */
 export interface RootQueryToMenuConnectionEdge {
-  __typename: 'RootQueryToMenuConnectionEdge' | undefined;
+  __typename?: 'RootQueryToMenuConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13005,7 +12995,7 @@ export interface RootQueryToMenuConnectionEdge {
  * Connection between the RootQuery type and the page type
  */
 export interface RootQueryToPageConnection {
-  __typename: 'RootQueryToPageConnection' | undefined;
+  __typename?: 'RootQueryToPageConnection';
   /**
    * Edges for the RootQueryToPageConnection connection
    */
@@ -13024,7 +13014,7 @@ export interface RootQueryToPageConnection {
  * An edge in a connection
  */
 export interface RootQueryToPageConnectionEdge {
-  __typename: 'RootQueryToPageConnectionEdge' | undefined;
+  __typename?: 'RootQueryToPageConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13039,7 +13029,7 @@ export interface RootQueryToPageConnectionEdge {
  * An plugin object
  */
 export interface Plugin extends Omit<Node, '__typename'> {
-  __typename: 'Plugin' | undefined;
+  __typename?: 'Plugin';
   /**
    * Name of the plugin author(s), may also be a company name.
    */
@@ -13082,7 +13072,7 @@ export interface Plugin extends Omit<Node, '__typename'> {
  * Connection between the RootQuery type and the Plugin type
  */
 export interface RootQueryToPluginConnection {
-  __typename: 'RootQueryToPluginConnection' | undefined;
+  __typename?: 'RootQueryToPluginConnection';
   /**
    * Edges for the RootQueryToPluginConnection connection
    */
@@ -13101,7 +13091,7 @@ export interface RootQueryToPluginConnection {
  * An edge in a connection
  */
 export interface RootQueryToPluginConnectionEdge {
-  __typename: 'RootQueryToPluginConnectionEdge' | undefined;
+  __typename?: 'RootQueryToPluginConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13116,7 +13106,7 @@ export interface RootQueryToPluginConnectionEdge {
  * Connection between the RootQuery type and the postFormat type
  */
 export interface RootQueryToPostFormatConnection {
-  __typename: 'RootQueryToPostFormatConnection' | undefined;
+  __typename?: 'RootQueryToPostFormatConnection';
   /**
    * Edges for the RootQueryToPostFormatConnection connection
    */
@@ -13135,7 +13125,7 @@ export interface RootQueryToPostFormatConnection {
  * An edge in a connection
  */
 export interface RootQueryToPostFormatConnectionEdge {
-  __typename: 'RootQueryToPostFormatConnectionEdge' | undefined;
+  __typename?: 'RootQueryToPostFormatConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13150,7 +13140,7 @@ export interface RootQueryToPostFormatConnectionEdge {
  * Connection between the RootQuery type and the post type
  */
 export interface RootQueryToPostConnection {
-  __typename: 'RootQueryToPostConnection' | undefined;
+  __typename?: 'RootQueryToPostConnection';
   /**
    * Edges for the RootQueryToPostConnection connection
    */
@@ -13169,7 +13159,7 @@ export interface RootQueryToPostConnection {
  * An edge in a connection
  */
 export interface RootQueryToPostConnectionEdge {
-  __typename: 'RootQueryToPostConnectionEdge' | undefined;
+  __typename?: 'RootQueryToPostConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13184,7 +13174,7 @@ export interface RootQueryToPostConnectionEdge {
  * The reading setting type
  */
 export interface ReadingSettings {
-  __typename: 'ReadingSettings' | undefined;
+  __typename?: 'ReadingSettings';
   /**
    * Blog pages show at most.
    */
@@ -13195,7 +13185,7 @@ export interface ReadingSettings {
  * Connection between the RootQuery type and the EnqueuedScript type
  */
 export interface RootQueryToEnqueuedScriptConnection {
-  __typename: 'RootQueryToEnqueuedScriptConnection' | undefined;
+  __typename?: 'RootQueryToEnqueuedScriptConnection';
   /**
    * Edges for the RootQueryToEnqueuedScriptConnection connection
    */
@@ -13214,7 +13204,7 @@ export interface RootQueryToEnqueuedScriptConnection {
  * An edge in a connection
  */
 export interface RootQueryToEnqueuedScriptConnectionEdge {
-  __typename: 'RootQueryToEnqueuedScriptConnectionEdge' | undefined;
+  __typename?: 'RootQueryToEnqueuedScriptConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13229,7 +13219,7 @@ export interface RootQueryToEnqueuedScriptConnectionEdge {
  * Connection between the RootQuery type and the EnqueuedStylesheet type
  */
 export interface RootQueryToEnqueuedStylesheetConnection {
-  __typename: 'RootQueryToEnqueuedStylesheetConnection' | undefined;
+  __typename?: 'RootQueryToEnqueuedStylesheetConnection';
   /**
    * Edges for the RootQueryToEnqueuedStylesheetConnection connection
    */
@@ -13248,7 +13238,7 @@ export interface RootQueryToEnqueuedStylesheetConnection {
  * An edge in a connection
  */
 export interface RootQueryToEnqueuedStylesheetConnectionEdge {
-  __typename: 'RootQueryToEnqueuedStylesheetConnectionEdge' | undefined;
+  __typename?: 'RootQueryToEnqueuedStylesheetConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13263,7 +13253,7 @@ export interface RootQueryToEnqueuedStylesheetConnectionEdge {
  * Connection between the RootQuery type and the ContentRevisionUnion type
  */
 export interface RootQueryToContentRevisionUnionConnection {
-  __typename: 'RootQueryToContentRevisionUnionConnection' | undefined;
+  __typename?: 'RootQueryToContentRevisionUnionConnection';
   /**
    * Edges for the RootQueryToContentRevisionUnionConnection connection
    */
@@ -13282,7 +13272,7 @@ export interface RootQueryToContentRevisionUnionConnection {
  * An edge in a connection
  */
 export interface RootQueryToContentRevisionUnionConnectionEdge {
-  __typename: 'RootQueryToContentRevisionUnionConnectionEdge' | undefined;
+  __typename?: 'RootQueryToContentRevisionUnionConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13297,7 +13287,7 @@ export interface RootQueryToContentRevisionUnionConnectionEdge {
  * Connection between the RootQuery type and the tag type
  */
 export interface RootQueryToTagConnection {
-  __typename: 'RootQueryToTagConnection' | undefined;
+  __typename?: 'RootQueryToTagConnection';
   /**
    * Edges for the RootQueryToTagConnection connection
    */
@@ -13316,7 +13306,7 @@ export interface RootQueryToTagConnection {
  * An edge in a connection
  */
 export interface RootQueryToTagConnectionEdge {
-  __typename: 'RootQueryToTagConnectionEdge' | undefined;
+  __typename?: 'RootQueryToTagConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13331,7 +13321,7 @@ export interface RootQueryToTagConnectionEdge {
  * Connection between the RootQuery type and the Taxonomy type
  */
 export interface RootQueryToTaxonomyConnection {
-  __typename: 'RootQueryToTaxonomyConnection' | undefined;
+  __typename?: 'RootQueryToTaxonomyConnection';
   /**
    * Edges for the RootQueryToTaxonomyConnection connection
    */
@@ -13350,7 +13340,7 @@ export interface RootQueryToTaxonomyConnection {
  * An edge in a connection
  */
 export interface RootQueryToTaxonomyConnectionEdge {
-  __typename: 'RootQueryToTaxonomyConnectionEdge' | undefined;
+  __typename?: 'RootQueryToTaxonomyConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13365,7 +13355,7 @@ export interface RootQueryToTaxonomyConnectionEdge {
  * Connection between the RootQuery type and the TermNode type
  */
 export interface RootQueryToTermNodeConnection {
-  __typename: 'RootQueryToTermNodeConnection' | undefined;
+  __typename?: 'RootQueryToTermNodeConnection';
   /**
    * Edges for the RootQueryToTermNodeConnection connection
    */
@@ -13384,7 +13374,7 @@ export interface RootQueryToTermNodeConnection {
  * An edge in a connection
  */
 export interface RootQueryToTermNodeConnectionEdge {
-  __typename: 'RootQueryToTermNodeConnectionEdge' | undefined;
+  __typename?: 'RootQueryToTermNodeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13399,7 +13389,7 @@ export interface RootQueryToTermNodeConnectionEdge {
  * A theme object
  */
 export interface Theme extends Omit<Node, '__typename'> {
-  __typename: 'Theme' | undefined;
+  __typename?: 'Theme';
   /**
    * Name of the theme author(s), could also be a company name. This field is equivalent to WP_Theme-&gt;get( &quot;Author&quot; ).
    */
@@ -13450,7 +13440,7 @@ export interface Theme extends Omit<Node, '__typename'> {
  * Connection between the RootQuery type and the Theme type
  */
 export interface RootQueryToThemeConnection {
-  __typename: 'RootQueryToThemeConnection' | undefined;
+  __typename?: 'RootQueryToThemeConnection';
   /**
    * Edges for the RootQueryToThemeConnection connection
    */
@@ -13469,7 +13459,7 @@ export interface RootQueryToThemeConnection {
  * An edge in a connection
  */
 export interface RootQueryToThemeConnectionEdge {
-  __typename: 'RootQueryToThemeConnectionEdge' | undefined;
+  __typename?: 'RootQueryToThemeConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13484,7 +13474,7 @@ export interface RootQueryToThemeConnectionEdge {
  * Connection between the RootQuery type and the UserRole type
  */
 export interface RootQueryToUserRoleConnection {
-  __typename: 'RootQueryToUserRoleConnection' | undefined;
+  __typename?: 'RootQueryToUserRoleConnection';
   /**
    * Edges for the RootQueryToUserRoleConnection connection
    */
@@ -13503,7 +13493,7 @@ export interface RootQueryToUserRoleConnection {
  * An edge in a connection
  */
 export interface RootQueryToUserRoleConnectionEdge {
-  __typename: 'RootQueryToUserRoleConnectionEdge' | undefined;
+  __typename?: 'RootQueryToUserRoleConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13518,7 +13508,7 @@ export interface RootQueryToUserRoleConnectionEdge {
  * Connection between the RootQuery type and the User type
  */
 export interface RootQueryToUserConnection {
-  __typename: 'RootQueryToUserConnection' | undefined;
+  __typename?: 'RootQueryToUserConnection';
   /**
    * Edges for the RootQueryToUserConnection connection
    */
@@ -13537,7 +13527,7 @@ export interface RootQueryToUserConnection {
  * An edge in a connection
  */
 export interface RootQueryToUserConnectionEdge {
-  __typename: 'RootQueryToUserConnectionEdge' | undefined;
+  __typename?: 'RootQueryToUserConnectionEdge';
   /**
    * A cursor for use in pagination
    */
@@ -13552,7 +13542,7 @@ export interface RootQueryToUserConnectionEdge {
  * The writing setting type
  */
 export interface WritingSettings {
-  __typename: 'WritingSettings' | undefined;
+  __typename?: 'WritingSettings';
   /**
    * Default post category.
    */
@@ -13571,7 +13561,7 @@ export interface WritingSettings {
  * The payload for the createCategory mutation
  */
 export interface CreateCategoryPayload {
-  __typename: 'CreateCategoryPayload' | undefined;
+  __typename?: 'CreateCategoryPayload';
   /**
    * The created category
    */
@@ -13586,7 +13576,7 @@ export interface CreateCategoryPayload {
  * The payload for the createComment mutation
  */
 export interface CreateCommentPayload {
-  __typename: 'CreateCommentPayload' | undefined;
+  __typename?: 'CreateCommentPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13605,7 +13595,7 @@ export interface CreateCommentPayload {
  * The payload for the createMediaItem mutation
  */
 export interface CreateMediaItemPayload {
-  __typename: 'CreateMediaItemPayload' | undefined;
+  __typename?: 'CreateMediaItemPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13620,7 +13610,7 @@ export interface CreateMediaItemPayload {
  * The payload for the createPage mutation
  */
 export interface CreatePagePayload {
-  __typename: 'CreatePagePayload' | undefined;
+  __typename?: 'CreatePagePayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13635,7 +13625,7 @@ export interface CreatePagePayload {
  * The payload for the createPost mutation
  */
 export interface CreatePostPayload {
-  __typename: 'CreatePostPayload' | undefined;
+  __typename?: 'CreatePostPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13650,7 +13640,7 @@ export interface CreatePostPayload {
  * The payload for the createPostFormat mutation
  */
 export interface CreatePostFormatPayload {
-  __typename: 'CreatePostFormatPayload' | undefined;
+  __typename?: 'CreatePostFormatPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13665,7 +13655,7 @@ export interface CreatePostFormatPayload {
  * The payload for the createTag mutation
  */
 export interface CreateTagPayload {
-  __typename: 'CreateTagPayload' | undefined;
+  __typename?: 'CreateTagPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13680,7 +13670,7 @@ export interface CreateTagPayload {
  * The payload for the createUser mutation
  */
 export interface CreateUserPayload {
-  __typename: 'CreateUserPayload' | undefined;
+  __typename?: 'CreateUserPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13695,7 +13685,7 @@ export interface CreateUserPayload {
  * The payload for the deleteCategory mutation
  */
 export interface DeleteCategoryPayload {
-  __typename: 'DeleteCategoryPayload' | undefined;
+  __typename?: 'DeleteCategoryPayload';
   /**
    * The deteted term object
    */
@@ -13714,7 +13704,7 @@ export interface DeleteCategoryPayload {
  * The payload for the deleteComment mutation
  */
 export interface DeleteCommentPayload {
-  __typename: 'DeleteCommentPayload' | undefined;
+  __typename?: 'DeleteCommentPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13733,7 +13723,7 @@ export interface DeleteCommentPayload {
  * The payload for the deleteMediaItem mutation
  */
 export interface DeleteMediaItemPayload {
-  __typename: 'DeleteMediaItemPayload' | undefined;
+  __typename?: 'DeleteMediaItemPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13752,7 +13742,7 @@ export interface DeleteMediaItemPayload {
  * The payload for the deletePage mutation
  */
 export interface DeletePagePayload {
-  __typename: 'DeletePagePayload' | undefined;
+  __typename?: 'DeletePagePayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13771,7 +13761,7 @@ export interface DeletePagePayload {
  * The payload for the deletePost mutation
  */
 export interface DeletePostPayload {
-  __typename: 'DeletePostPayload' | undefined;
+  __typename?: 'DeletePostPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13790,7 +13780,7 @@ export interface DeletePostPayload {
  * The payload for the deletePostFormat mutation
  */
 export interface DeletePostFormatPayload {
-  __typename: 'DeletePostFormatPayload' | undefined;
+  __typename?: 'DeletePostFormatPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13809,7 +13799,7 @@ export interface DeletePostFormatPayload {
  * The payload for the deleteTag mutation
  */
 export interface DeleteTagPayload {
-  __typename: 'DeleteTagPayload' | undefined;
+  __typename?: 'DeleteTagPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13828,7 +13818,7 @@ export interface DeleteTagPayload {
  * The payload for the deleteUser mutation
  */
 export interface DeleteUserPayload {
-  __typename: 'DeleteUserPayload' | undefined;
+  __typename?: 'DeleteUserPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13847,7 +13837,7 @@ export interface DeleteUserPayload {
  * The payload for the generateAuthorizationCode mutation
  */
 export interface GenerateAuthorizationCodePayload {
-  __typename: 'GenerateAuthorizationCodePayload' | undefined;
+  __typename?: 'GenerateAuthorizationCodePayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13866,7 +13856,7 @@ export interface GenerateAuthorizationCodePayload {
  * The payload for the registerUser mutation
  */
 export interface RegisterUserPayload {
-  __typename: 'RegisterUserPayload' | undefined;
+  __typename?: 'RegisterUserPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13881,7 +13871,7 @@ export interface RegisterUserPayload {
  * The payload for the resetUserPassword mutation
  */
 export interface ResetUserPasswordPayload {
-  __typename: 'ResetUserPasswordPayload' | undefined;
+  __typename?: 'ResetUserPasswordPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13896,7 +13886,7 @@ export interface ResetUserPasswordPayload {
  * The payload for the restoreComment mutation
  */
 export interface RestoreCommentPayload {
-  __typename: 'RestoreCommentPayload' | undefined;
+  __typename?: 'RestoreCommentPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13915,7 +13905,7 @@ export interface RestoreCommentPayload {
  * The payload for the sendPasswordResetEmail mutation
  */
 export interface SendPasswordResetEmailPayload {
-  __typename: 'SendPasswordResetEmailPayload' | undefined;
+  __typename?: 'SendPasswordResetEmailPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13930,7 +13920,7 @@ export interface SendPasswordResetEmailPayload {
  * The payload for the UpdateCategory mutation
  */
 export interface UpdateCategoryPayload {
-  __typename: 'UpdateCategoryPayload' | undefined;
+  __typename?: 'UpdateCategoryPayload';
   /**
    * The created category
    */
@@ -13945,7 +13935,7 @@ export interface UpdateCategoryPayload {
  * The payload for the updateComment mutation
  */
 export interface UpdateCommentPayload {
-  __typename: 'UpdateCommentPayload' | undefined;
+  __typename?: 'UpdateCommentPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13964,7 +13954,7 @@ export interface UpdateCommentPayload {
  * The payload for the updateMediaItem mutation
  */
 export interface UpdateMediaItemPayload {
-  __typename: 'UpdateMediaItemPayload' | undefined;
+  __typename?: 'UpdateMediaItemPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13979,7 +13969,7 @@ export interface UpdateMediaItemPayload {
  * The payload for the updatePage mutation
  */
 export interface UpdatePagePayload {
-  __typename: 'UpdatePagePayload' | undefined;
+  __typename?: 'UpdatePagePayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -13994,7 +13984,7 @@ export interface UpdatePagePayload {
  * The payload for the updatePost mutation
  */
 export interface UpdatePostPayload {
-  __typename: 'UpdatePostPayload' | undefined;
+  __typename?: 'UpdatePostPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -14009,7 +13999,7 @@ export interface UpdatePostPayload {
  * The payload for the UpdatePostFormat mutation
  */
 export interface UpdatePostFormatPayload {
-  __typename: 'UpdatePostFormatPayload' | undefined;
+  __typename?: 'UpdatePostFormatPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -14024,7 +14014,7 @@ export interface UpdatePostFormatPayload {
  * The payload for the updateSettings mutation
  */
 export interface UpdateSettingsPayload {
-  __typename: 'UpdateSettingsPayload' | undefined;
+  __typename?: 'UpdateSettingsPayload';
   /**
    * Update all settings.
    */
@@ -14055,7 +14045,7 @@ export interface UpdateSettingsPayload {
  * The payload for the UpdateTag mutation
  */
 export interface UpdateTagPayload {
-  __typename: 'UpdateTagPayload' | undefined;
+  __typename?: 'UpdateTagPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -14070,7 +14060,7 @@ export interface UpdateTagPayload {
  * The payload for the updateUser mutation
  */
 export interface UpdateUserPayload {
-  __typename: 'UpdateUserPayload' | undefined;
+  __typename?: 'UpdateUserPayload';
   /**
    * If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions.
    */
@@ -14087,7 +14077,7 @@ export interface UpdateUserPayload {
 export interface CommentAuthor
   extends Omit<Node, '__typename'>,
     Omit<Commenter, '__typename'> {
-  __typename: 'CommentAuthor' | undefined;
+  __typename?: 'CommentAuthor';
   /**
    * Identifies the primary key from the database.
    */
@@ -14118,7 +14108,7 @@ export interface CommentAuthor
  * The template assigned to the node
  */
 export interface DefaultTemplate extends Omit<ContentTemplate, '__typename'> {
-  __typename: 'DefaultTemplate' | undefined;
+  __typename?: 'DefaultTemplate';
   /**
    * The name of the template
    */
@@ -14568,7 +14558,7 @@ export type SchemaObjectTypesNames =
  */
 export type ContentRevisionUnion =
   | {
-      __typename: 'Post' | undefined;
+      __typename?: 'Post';
       ancestors?: undefined;
       /**
        * Connection between the NodeWithAuthor type and the User type
@@ -14959,7 +14949,7 @@ export type ContentRevisionUnion =
       uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
-      __typename: 'Page' | undefined;
+      __typename?: 'Page';
       /**
        * Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
        */
@@ -15307,7 +15297,7 @@ export type ContentRevisionUnion =
  */
 export type MenuItemObjectUnion =
   | {
-      __typename: 'Post' | undefined;
+      __typename?: 'Post';
       ancestors?: undefined;
       /**
        * Connection between the NodeWithAuthor type and the User type
@@ -15709,7 +15699,7 @@ export type MenuItemObjectUnion =
       uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
-      __typename: 'Page' | undefined;
+      __typename?: 'Page';
       /**
        * Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
        */
@@ -16064,7 +16054,7 @@ export type MenuItemObjectUnion =
       uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
-      __typename: 'Category' | undefined;
+      __typename?: 'Category';
       /**
        * The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root).
        */
@@ -16327,7 +16317,7 @@ export type MenuItemObjectUnion =
       uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
-      __typename: 'Tag' | undefined;
+      __typename?: 'Tag';
       ancestors?: undefined;
       author?: undefined;
       authorDatabaseId?: undefined;
@@ -16537,7 +16527,7 @@ export type MenuItemObjectUnion =
       uri?: Maybe<ScalarsEnums['String']>;
     }
   | {
-      __typename: 'PostFormat' | undefined;
+      __typename?: 'PostFormat';
       ancestors?: undefined;
       author?: undefined;
       authorDatabaseId?: undefined;
