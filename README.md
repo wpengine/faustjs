@@ -51,6 +51,14 @@ As we work towards our first release, we will be introducing support for other f
 
 Visit [https://developers.wpengine.com/docs/faustjs/next/getting-started](https://developers.wpengine.com/docs/faustjs/next/getting-started) to view the full documentation.
 
+## WordPress Plugin
+
+There are two key parts to Faust.js: the NPM packages and the WordPress plugin. To take full advantage of headless, you will need to install the plugin in addition to the npm packages.
+
+[📥 Download Latest Version](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+
+After downloading the zip linked above, we recommend installing by [manually uploading via the WordPress admin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+
 ## Community
 
 To chat with other Faust.js users and the headless community as a whole, you can join the [WP Engine Developers Discord](https://discord.gg/J2khkF9XYK).
@@ -61,7 +69,7 @@ Additionally, if you have questions or ideas, please share them on [GitHub Discu
 
 There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
-- [Discuss open issues](/issues) to help define the future of the project.
-- [Submit bugs](/issues) and help us verify fixes as they are checked in.
-- Review and discuss the [source code changes](pulls).
+- [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
+- [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
+- Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
 - [Contribute bug fixes](/CONTRIBUTING.md)

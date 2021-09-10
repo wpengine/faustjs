@@ -1,28 +1,26 @@
-import { useRouter } from "next/router";
-import { PageComponent } from "./[...pageUri]";
-import type { Page, Post } from "@faustjs/core";
-import { PostComponent } from "./posts/[postSlug]";
+import { PageComponent } from './[...pageUri]';
+import { PostComponent } from './posts/[postSlug]';
 import { client } from 'client';
 
 export default function Preview() {
-  const {
-    query: { p, page_id },
-  } = useRouter();
-  const { usePreview } = client;
-  const isPage = !!page_id;
+  const { usePreview } = client.auth;
+  const result = usePreview();
 
-  const postOrPage: unknown = usePreview({
-    pageId: isPage ? (p as string) : undefined,
-    postId: !isPage ? (p as string) : undefined,
-  } as any);
+  if (client.useIsLoading() || !result) {
+    return <p>loading...</p>;
+  }
 
-  if (postOrPage === null) {
+  if (result.type === 'page') {
+    if (!result.page) {
+      return <>Not Found</>;
+    }
+
+    return <PageComponent page={result.page} />;
+  }
+
+  if (!result.post) {
     return <>Not Found</>;
   }
 
-  if (isPage) {
-    return <PageComponent page={postOrPage as Page} />;
-  }
-
-  return <PostComponent post={postOrPage as Post} />;
+  return <PostComponent post={result.post} />;
 }

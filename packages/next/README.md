@@ -23,5 +23,4 @@
 
 NOTE: This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like authentication and post previews. Be sure to install the [WordPress plugin](https://github.com/wpengine/faustjs) that enables the functionality in this package.
 
-
 [View Faust.js Documentation](https://github.com/wpengine/faustjs)

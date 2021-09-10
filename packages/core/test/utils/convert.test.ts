@@ -6,6 +6,7 @@ import {
   getUrlPath,
   resolvePrefixedUrlPath,
   getCookiesFromContext,
+  removeURLParam,
 } from '../../src/utils/convert';
 
 describe('utils/convert', () => {
@@ -138,5 +139,18 @@ describe('utils/convert', () => {
         cookie: 'test=true',
       }),
     ).toBe('test=true');
+  });
+
+  test('removeURLParam() removes the code parameter from a URL', () => {
+    expect(
+      removeURLParam('http://localhost:3000/posts?code=testing', 'code'),
+    ).toBe('http://localhost:3000/posts');
+
+    expect(
+      removeURLParam(
+        'http://localhost:3000/posts?code=testing&preview=1',
+        'code',
+      ),
+    ).toBe('http://localhost:3000/posts?preview=1');
   });
 });

@@ -4,7 +4,8 @@ import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
 import type { RequestContext } from '../api';
-import { isNil, trim } from 'lodash';
+import isNil from 'lodash/isNil';
+import trim from 'lodash/trim';
 import { isValidUrl } from '../utils';
 
 /* eslint-disable @typescript-eslint/ban-types */
@@ -79,6 +80,36 @@ export interface HeadlessConfig {
   apiClientSecret?: string;
 
   /**
+   * Set this to the type of authentication you wan to use.
+   *
+   * Redirect authentication redirects users to the WordPress login page to authenticate,
+   * where local assumes that you have setup a login page on your frontend site.
+   *
+   * @default redirect
+   * @memberof HeadlessConfig
+   */
+  authType?: 'redirect' | 'local';
+
+  /**
+   * Set this to the relative URL path of your frontend login page.
+   *
+   * @example /login
+   *
+   * @default /login
+   * @type {string}
+   * @memberof HeadlessConfig
+   */
+  loginPagePath?: string;
+
+  /**
+   * Set to true if you want to disable internal console.log statements
+   *
+   * @type {string}
+   * @memberof HeadlessConfig
+   */
+  disableLogging?: boolean;
+
+  /**
    * Called before every request, use this to apply any headers you might
    * need to for your requests or adjust the request to suite your needs.
    *
@@ -112,16 +143,18 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
     blogUrlPrefix: '',
     apiUrl: '',
     apiEndpoint: '/api/auth/wpe-headless',
+    authType: 'redirect',
+    loginPagePath: '/login',
+    disableLogging: false,
   });
 
   Object.keys(cfg).forEach((key) => {
-    const value = cfg[key as keyof HeadlessConfig];
+    const keyValue: keyof HeadlessConfig = key as any;
+    const value = cfg[keyValue];
 
-    if (!isString(value)) {
-      return;
+    if (isString(value)) {
+      (cfg as any)[keyValue] = value.trim();
     }
-
-    cfg[key as keyof HeadlessConfig] = value.trim() as any;
   });
 
   let { wpUrl, blogUrlPrefix, apiUrl, apiEndpoint } = cfg;
