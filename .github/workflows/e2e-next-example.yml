@@ -46,15 +46,15 @@ jobs:
         cp -r packages/core ${APP_DIR}/node_modules/@faustjs/core
         cp -r packages/next ${APP_DIR}/node_modules/@faustjs/next
     - name: copy env
-      working-directory: ${APP_DIR}
+      working-directory: $APP_DIR
       run: |
         cp .env.sample .env
     # Generate the schema to ensure no type collisions
     - name: Generate Schema
-      working-directory: ${APP_DIR}
+      working-directory: $APP_DIR
       run: |
         npm run generate
     - name: Build
-      working-directory: ${APP_DIR}
+      working-directory: $APP_DIR
       run: |
         npm run build
