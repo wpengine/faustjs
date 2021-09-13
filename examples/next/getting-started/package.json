@@ -12,8 +12,8 @@
     "wpe-build": "next build"
   },
   "dependencies": {
-    "@faustjs/core": "^0.10.0",
-    "@faustjs/next": "^0.10.0",
+    "@faustjs/core": "^0.10.1",
+    "@faustjs/next": "^0.10.1",
     "next": "^11.1.2",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",

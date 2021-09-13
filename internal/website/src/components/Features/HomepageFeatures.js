@@ -74,7 +74,7 @@ function Feature({ title, description, link }) {
       </div>
       <div className="card__footer">
         <p className={clsx('text--info', styles.featuresLink)}>
-          Documentation 🠖
+          Documentation →
         </p>
       </div>
     </Link>
