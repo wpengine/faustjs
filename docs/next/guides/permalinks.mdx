@@ -1,0 +1,38 @@
+---
+slug: /next/guides/permalinks
+title: Permalinks
+description: TBD
+---
+
+Permalinks are the "pretty URLs" of your individual blog post or page on your WordPress site. Permalinks can be modified by going to WP Admin -> Settings -> Permalinks. From there, you can modify the options to change the permalink structure to your liking.
+
+<img
+  src="/docs/img/permalinks.png"
+  alt="WordPress Admin Settings Page for Permalinks"
+/>
+
+Faust.js does not make any opinions about the structure of your permalinks. Instead, your permalinks should map to the layout of your Next.js `pages`.
+
+For example, your permalink structure might look like this in WordPress:
+
+```
+/posts/%postname%/
+```
+
+Therefore, your Next.js pages structure should look like this:
+
+```
+my-app/
+  pages/
+    _app.tsx
+    index.tsx
+    posts/
+      [postSlug].tsx
+  next-env.d.ts
+  package-lock.json
+  package.json
+  README.md
+  tsconfig.json
+```
+
+Notice the `posts` directory and the accompanying `[postSlug].tsx` file.
