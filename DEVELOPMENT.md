@@ -146,9 +146,11 @@ CircleCI will build and deploy the plugin zip. The latest version will be availa
 ### Release the @faustjs packages
 
 1. From the monorepo root directory, run either `npm run patch` or `npm run minor`. This will increment all the packages' versions, keeping them in lockstep.
-2. Update the changelogs of the applicable packages.
-3. Commit and push your changes for review.
-4. Once reviewed and merged into `canary`, our GitHub Actions workflow will publish the packages to NPM.
+2. Remove `node_modules` and `package-lock.json` from the root directory.
+3. Run `npm i && npm test` to verify that the packages are working.
+4. Update the changelogs of the applicable packages.
+5. Commit and push your changes for review.
+6. Once reviewed and merged into `canary`, our GitHub Actions workflow will publish the packages to NPM.
 
 Once deployed, the updated packages will be visible here:
 
