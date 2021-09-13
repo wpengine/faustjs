@@ -9,16 +9,12 @@ import HomepageFeatures from '../components/Features/HomepageFeatures';
 import HomepageGetStarted from '../components/GetStarted/HomepageGetStarted';
 
 function HomepageHeader() {
+  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <div className="container">
-        <h1 className="hero__title">The Headless WordPress Framework</h1>
-        <p className="hero__subtitle">
-          Faust.js focuses on delivering the best developer experience and
-          features you need when building Headless WordPress websites with
-          support for: static site generation, server-side rendering,
-          TypeScript, data-fetching, post and page previews, and more.
-        </p>
+        <h1 className="hero__title">{siteConfig.tagline}</h1>
+        <p className="hero__subtitle">{siteConfig.customFields.description}</p>
         <div className={styles.buttons}>
           <Link
             className="button button--info button--lg"
