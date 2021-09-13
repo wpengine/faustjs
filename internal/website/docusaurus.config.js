@@ -3,19 +3,19 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'The Headless WordPress Framework',
-  tagline: 'Faust.js focuses on delivering the best developer experience and features you need when building Headless WordPress websites with support for: static site generation, server-side rendering, TypeScript, data-fetching, post and page previews, and more.',
+  title: 'Faust.js',
+  tagline: 'The Headless WordPress Framework',
   customFields: {
     description:
       'Faust.js is the Headless WordPress Framework. Faust.js provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites React/Next.js/etc.',
   },
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://faustjs.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
-  projectName: 'headless-framework', // Usually your repo name.
+  projectName: 'faustjs', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'Faust.js™',
@@ -74,7 +74,7 @@ module.exports = {
           title: 'WP Engine',
           items: [
             {
-              label: "Developers",
+              label: 'Developers',
               to: 'https://developers.wpengine.com/',
             },
             {
