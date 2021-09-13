@@ -10,7 +10,8 @@
       "packages/core",
       "packages/react",
       "packages/next",
-      "examples/next/getting-started"
+      "examples/next/getting-started",
+      "examples/react/getting-started"
     ]
   },
   "scripts": {
