@@ -20,12 +20,12 @@ export interface Node {
 }
 
 export interface WithRevisions {
-  revisions: (arg0: {
-      first?: number;
-  }) => Maybe<{
-      edges?: Maybe<Maybe<{
-          node?: Maybe<Node>;
-      }>[]>;
+  revisions: (arg0: { first?: number }) => Maybe<{
+    edges?: Maybe<
+      Maybe<{
+        node?: Maybe<Node>;
+      }>[]
+    >;
   }>;
 }
 
