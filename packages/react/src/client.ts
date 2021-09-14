@@ -2,6 +2,7 @@ import {
   CategoryIdType,
   ClientConfig,
   getClient as getCoreClient,
+  Maybe,
   PageIdType,
   PostIdType,
 } from '@faustjs/core';
@@ -19,9 +20,13 @@ export interface Node {
 }
 
 export interface WithRevisions {
-  revisions: (arg0: { first: number }) => {
-    edges?: { node?: Node }[];
-  };
+  revisions: (arg0: { first?: number }) => Maybe<{
+    edges?: Maybe<
+      Maybe<{
+        node?: Maybe<Node>;
+      }>[]
+    >;
+  }>;
 }
 
 export interface RequiredQuery {
