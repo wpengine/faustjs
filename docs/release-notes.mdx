@@ -1,0 +1,159 @@
+---
+slug: /release-notes
+title: Release Notes for Faust.js
+description: A central place for Faust.js release notes
+---
+
+## Faust.js 0.10.2
+
+### Fixes
+
+- Fixed the `WithRevisions` interface to use proper `Maybe<>` type checks ([#452](https://github.com/wpengine/faustjs/pull/452/files))
+
+## Faust.js 0.10.1
+
+### Fixes
+
+- Fixed an issue where the `ObjectTypeNames` client interface was incompatible with `@faustjs/core` ([#445](https://github.com/wpengine/faustjs/pull/445))
+
+### Chore & Maintenance
+
+- Updated `@faustjs` package dependencies to their latest versions ([#440](https://github.com/wpengine/faustjs/pull/440))
+
+## Faust.js 0.10.0
+
+Release `0.10.0` of the NPM packages include **BREAKING CHANGES**. Existing users of Faust.js will need to make the following changes:
+
+### Step 1 - Update the WPE Headless Plugin
+
+Ensure that you are on version `0.6.0` or later of the WPE Headless Plugin.
+
+### Step 2 - Update `preview.tsx` file
+
+If you started from the `next/getting-started` example, replace the contents of `src/pages/preview.tsx` with the following:
+
+```tsx
+import { PageComponent } from './[...pageUri]';
+import { PostComponent } from './posts/[postSlug]';
+import { client } from 'client';
+
+export default function Preview() {
+  const { usePreview } = client.auth;
+  const result = usePreview();
+
+  if (client.useIsLoading() || !result) {
+    return <p>loading...</p>;
+  }
+
+  if (result.type === 'page') {
+    if (!result.page) {
+      return <>Not Found</>;
+    }
+
+    return <PageComponent page={result.page} />;
+  }
+
+  if (!result.post) {
+    return <>Not Found</>;
+  }
+
+  return <PostComponent post={result.post} />;
+}
+```
+
+### Step 3 - Create `next.config.js` file
+
+In the root of your project, alongside `package.json`, create a `next.config.js` file with the following contents:
+
+```js
+const { withFaust } = require('@faustjs/next');
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+module.exports = withFaust();
+```
+
+If you already have an existing `next.config.js` file, you can place it within the first argument of the `withFaust` function, like so:
+
+```js
+const { withFaust } = require('@faustjs/next');
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+module.exports = withFaust({
+  // Your Next.js config here
+});
+```
+
+### Step 4 - Update `gqty.config.js` file
+
+In the root of your project, alongside `package.json`, replace the `gqty.config.js` file with the following:
+
+```js
+require('dotenv').config();
+
+/**
+ * @type {import("@gqty/cli").GQtyConfig}
+ */
+const config = {
+  react: false,
+  scalarTypes: { DateTime: 'string' },
+  introspection: {
+    endpoint: `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`,
+    headers: {},
+  },
+  destination: './src/client/index.ts',
+  subscriptions: false,
+  javascriptOutput: false,
+};
+
+console.log(`Using "${config.introspection.endpoint}" to generate schema...`);
+
+module.exports = config;
+```
+
+## Faust.js 0.9.0
+
+Release `0.9.0` of the NPM packages include **BREAKING CHANGES**. Existing users of Faust.js will need to update their [`faust.config.js`](https://github.com/wpengine/faustjs/blob/canary/examples/next/getting-started/src/faust.config.js) file to use ESM syntax, opposed to CJS syntax.
+
+For example, users will need to replace their current `faust.config.js` file:
+
+```tsx
+const { headlessConfig } = require('@faustjs/core');
+
+if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+  console.error(
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?',
+  );
+}
+
+/**
+ * @type {import("@faustjs/core").HeadlessConfig}
+ */
+module.exports = headlessConfig({
+  wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+});
+```
+
+With the following code:
+
+```tsx
+import { headlessConfig } from '@faustjs/core';
+
+if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+  console.error(
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?',
+  );
+}
+
+/**
+ * @type {import("@faustjs/core").HeadlessConfig}
+ */
+export default headlessConfig({
+  wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+});
+```
