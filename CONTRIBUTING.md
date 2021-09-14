@@ -37,7 +37,7 @@ In general, things we find useful when reviewing suggestions are:
 
 0. [A bug or feature you want to work on](https://github.com/wpengine/faustjs/labels/help%20wanted)!
 1. [A GitHub account](https://github.com/join).
-2. A working copy of the code. See [DEVELOPMENT](/docs/DEVELOPMENT.md)
+2. A working copy of the code. See [DEVELOPMENT.md](/DEVELOPMENT.md).
 
 ## Housekeeping
 

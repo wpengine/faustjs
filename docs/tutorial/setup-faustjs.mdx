@@ -64,18 +64,18 @@ npm install --save-dev @gqty/cli dotenv
 Create a `faust.config.js` file in the root of your project:
 
 ```js title=faust.config.js
-const { headlessConfig } = require("@faustjs/core");
+import { headlessConfig } from '@faustjs/core';
 
 if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   console.error(
-    "You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?"
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?',
   );
 }
 
 /**
  * @type {import("@faustjs/core").HeadlessConfig}
  */
-module.exports = headlessConfig({
+export default headlessConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
 });
@@ -105,21 +105,21 @@ Replace the `NEXT_PUBLIC_WORDPRESS_URL` value with the URL of your WordPress sit
 We use [GQty](https://gqty.dev) as our GraphQL client. To configure GQty, we need to create a `gqty.config.js` file in the root of our project.
 
 ```js title=gqty.config.js
-require("dotenv").config();
-require("./faust.config");
-const { getGqlUrl } = require("@faustjs/core");
+require('dotenv').config();
+require('./faust.config');
+const { getGqlUrl } = require('@faustjs/core');
 
 /**
  * @type {import("@gqty/cli").GQtyConfig}
  */
 const config = {
   react: false,
-  scalarTypes: { DateTime: "string" },
+  scalarTypes: { DateTime: 'string' },
   introspection: {
     endpoint: getGqlUrl(),
     headers: {},
   },
-  destination: "./client/index.ts",
+  destination: './client/index.ts',
   subscriptions: false,
   javascriptOutput: false,
 };
@@ -133,15 +133,15 @@ Now, we want to create the GQty client that is used to query data. Create a `cli
 /**
  * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
-import type { IncomingMessage } from "http";
-import { getClient } from "@faustjs/next";
+import type { IncomingMessage } from 'http';
+import { getClient } from '@faustjs/next';
 import {
   generatedSchema,
   scalarsEnumsHash,
   GeneratedSchema,
   SchemaObjectTypes,
   SchemaObjectTypesNames,
-} from "./schema.generated";
+} from './schema.generated';
 
 export const client = getClient<
   GeneratedSchema,
@@ -160,7 +160,7 @@ export function serverClient(req: IncomingMessage) {
   });
 }
 
-export * from "./schema.generated";
+export * from './schema.generated';
 ```
 
 Next, add the following `generate` script to your `package.json`:
@@ -218,12 +218,12 @@ The `<HeadlessProvider>` is a [Higher-Order Component](https://reactjs.org/docs/
 Replace the existing `pages/_app.tsx` file contents with the following:
 
 ```tsx title=pages/_app.tsx
-import "../faust.config";
-import "../styles/globals.css";
+import '../faust.config';
+import '../styles/globals.css';
 
-import type { AppProps /*, AppContext */ } from "next/app";
-import { HeadlessProvider } from "@faustjs/next";
-import { client } from "../client";
+import type { AppProps /*, AppContext */ } from 'next/app';
+import { HeadlessProvider } from '@faustjs/next';
+import { client } from '../client';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
