@@ -14,43 +14,34 @@ Your headless secret is a value that is used to authenticate requests to WordPre
 
 Your headless secret can be found in WP Admin -> Settings -> Headless. Copy this value.
 
-<img src="/docs/img/headless-admin-secret.png" alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field" />
+<img
+  src="/docs/img/headless-admin-secret.png"
+  alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field"
+/>
 
 ### Add your Headless Secret to your `.env` File
 
-Add the `WP_HEADLESS_SECRET` key to your `.env` file with the headless secret as the value. Your `.env` file should already have a value for either `NEXT_PUBLIC_WORDPRESS_URL` or `WORDPRESS_URL`. The file should look something like this:
+Add the `WP_HEADLESS_SECRET` key to your `.env` file with the headless secret as the value. Your `.env` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
 
 ```bash title=.env {13}
-# Either WORDPRESS_URL or NEXT_PUBLIC_WORDPRESS_URL need to be populated. Not both!
-#
-# (Recommended) Setting WORDPRESS_URL instead of NEXT_PUBLIC_WORDPRESS_URL will limit requests to the WordPress backend
-# to only come from the Node.js server.
-#
-# Setting NEXT_PUBLIC_WORDPRESS_URL instead of WORDPRESS_URL will allow requests to come from the client-side which may
-# reduce site performance and put extra load on the WordPress backend.
-
+# Your WordPress site URL
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
-# WORDPRESS_URL=http://localhost:8080
 
 # Plugin secret found in WordPress Settings->Headless
-WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
+WP_HEADLESS_SECRET=xxxx
 ```
 
-### Ensure your Headless Secret is Passed to `headlessConfig`
+### Ensure you've created your `faust.config.js` file and are importing it in your `_app.tsx`
 
-Typically, your Next.js app will have `headlessConfig` set in the `_app.tsx` file. The headless secret is passed via the `apiClientSecret` key. Make sure it is being set:
+Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/canary/examples/next/getting-started) Faust.js example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/canary/examples/next/getting-started/src/faust.config.js) file will live in the `src` directory.
 
+You'll need to import it at the top of your `_app.tsx` file to ensure the `headlessConfig` is called, and your Faust.js app is initialized properly.
 
-```tsx title=_app.tsx {8}
-import { headlessConfig } from '@faustjs/core';
+```tsx title=_app.tsx {1}
+import 'faust.config';
 import { HeadlessProvider } from '@faustjs/next';
 import { client } from 'client';
 import type { AppProps } from 'next/app';
-
-headlessConfig({
-  wpUrl: process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
-});
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -68,6 +59,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 Next, you will need to create the `authorizeHandler`. This authenticates requests from WordPress. Create a page at `/src/pages/api/auth/wpe-headless.ts` with the following:
 
 ```ts
+import 'faust.config';
 import { authorizeHandler } from '@faustjs/core';
 
 export default authorizeHandler;
@@ -78,77 +70,64 @@ export default authorizeHandler;
 With your headless secret set and the `authorizeHandler` ready to handle requests, you can now create a Next.js [page](https://nextjs.org/docs/basic-features/pages) for previews. Create a file at `/src/pages/preview.tsx` with the following:
 
 ```tsx title=src/pages/preview.tsx
-import { useRouter } from 'next/router';
 import { PageComponent } from './[...pageUri]';
-import type { Page, Post } from '@faustjs/core';
 import { PostComponent } from './posts/[postSlug]';
 import { client } from 'client';
 
 export default function Preview() {
-  const { query } = useRouter();
-  const { usePreview } = client;
+  const { usePreview } = client.auth;
+  const result = usePreview();
 
-  // Use the "p" and "page_id" queries to determine if the preview is a post or page
-  const { p, page_id } = query;
-  const isPage = !!page_id;
+  if (client.useIsLoading() || !result) {
+    return <p>loading...</p>;
+  }
 
-  // Get the post or page from the usePreview hook.
-  const postOrPage: unknown = usePreview({
-    pageId: isPage ? (p as string) : undefined,
-    postId: !isPage ? (p as string) : undefined,
-  } as any);
+  if (result.type === 'page') {
+    if (!result.page) {
+      return <>Not Found</>;
+    }
 
-  if (postOrPage === null) {
+    return <PageComponent page={result.page} />;
+  }
+
+  if (!result.post) {
     return <>Not Found</>;
   }
 
-  /**
-   * Below we return a <PageComponent /> or <PostComponent /> based
-   * on the preview type. We do this to maintain a consistent experience throughout
-   * previews and actual page/post renders.
-   */
-
-  // If the preview is for a page, return a "page" component
-  if (isPage) {
-    return <PageComponent page={postOrPage as Page} />;
-  }
-
-  // Otherwise, return the "post" component
-  return <PostComponent post={postOrPage as Post} />;
+  return <PostComponent post={result.post} />;
 }
 ```
 
 Let's break down what is going on here:
 
-First we are getting the `p` and `page_id` values from the Next.js Router `query`:
-
-```tsx {2}
-const { query } = useRouter();
-const { p, page_id } = query;
-const isPage = !!page_id;
-```
-
-We then use these values in our `usePreview` hook to fetch the correct post or page:
+First, we are getting the `usePreview` hook from the `auth` property of the `client`:
 
 ```tsx
-const postOrPage: unknown = usePreview({
-    pageId: isPage ? (p as string) : undefined,
-    postId: !isPage ? (p as string) : undefined,
-} as any);
+const { usePreview } = client.auth;
 ```
 
-Finally, based on whether `isPage` is `true`, we will return a `<PageComponent />` or `<PostComponent />` respectively.
+We can then get the result of the `usePreview` hook:
 
 ```tsx
-if (postOrPage === null) {
+const result = usePreview();
+```
+
+From there, we can make a determination if the result is a page or post, and render the appropriate component:
+
+```tsx
+if (result.type === 'page') {
+  if (!result.page) {
     return <>Not Found</>;
+  }
+
+  return <PageComponent page={result.page} />;
 }
 
-if (isPage) {
-    return <PageComponent page={postOrPage as Page} />;
+if (!result.post) {
+  return <>Not Found</>;
 }
 
-return <PostComponent post={postOrPage as Post} />;
+return <PostComponent post={result.post} />;
 ```
 
 We abstract the page and post layouts into components to be reusable so there is no divergence between preview pages/posts and actual pages/posts.
@@ -159,10 +138,16 @@ Start by logging into your WordPress Admin. For this example, we'll create a new
 
 So far, I've added a title and a simple line of text for the content. To view this post as a preview on your frontend, click the **Preview** link (1). From there, click, **Preview in new tab** (2):
 
-<img src="/docs/img/post-preview.png" alt="WordPress post page using the Gutenberg editor with a red arrow to the preview and preview in new tab dropdowns" />
+<img
+  src="/docs/img/post-preview.png"
+  alt="WordPress post page using the Gutenberg editor with a red arrow to the preview and preview in new tab dropdowns"
+/>
 
 Notice the **Publish** button is also visible. This means the post has not been published yet and can not be viewed on the frontend without being authenticated.
 
 Clicking on **Preview in new tab** should take you to your post preview page with the current preview content:
 
-<img src="/docs/img/post-preview-frontend.png" alt="Post preview on the frontend in Next.js" />
+<img
+  src="/docs/img/post-preview-frontend.png"
+  alt="Post preview on the frontend in Next.js"
+/>
