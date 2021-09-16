@@ -116,8 +116,11 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		$args              = wp_parse_args( $parsed_link_query );
 		$frontend_uri_path = wp_parse_url( $frontend_uri, PHP_URL_PATH );
 		$parsed_link_path  = wp_parse_url( $link, PHP_URL_PATH );
-		$link_path         = str_replace( $frontend_uri_path, '', $parsed_link_path );
-		$path              = trailingslashit( $link_path );
+		$link_path = $parsed_link_path;
+		if ( $frontend_uri_path !== '/') {
+			$link_path = str_replace( $frontend_uri_path, '', $parsed_link_path );
+		}
+		$path = trailingslashit( $link_path );
 
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
