@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://developers.wpengine.com/docs/faustjs/next/getting-started">
+  <a href="https://faustjs.org">
     <h1 align="center">Faust.js</h1>
   </a>
 </p>
@@ -43,13 +43,13 @@ Faust.js is a framework for building front-end applications for headless WordPre
 
 Faust.js aims to be framework agnostic, so it can be used with any front-end framework. Visit one of the guides below for a starting point:
 
-- [Getting started with Next.js](https://developers.wpengine.com/docs/faustjs/next/getting-started)
+- [Getting started with Next.js](https://faustjs.org/docs/next/getting-started)
 
 As we work towards our first release, we will be introducing support for other frameworks.
 
 ## Documentation
 
-Visit [https://developers.wpengine.com/docs/faustjs/next/getting-started](https://developers.wpengine.com/docs/faustjs/next/getting-started) to view the full documentation.
+Visit [https://faustjs.org/docs/next/getting-started](https://faustjs.org/docs/next/getting-started) to view the full documentation.
 
 ## WordPress Plugin
 

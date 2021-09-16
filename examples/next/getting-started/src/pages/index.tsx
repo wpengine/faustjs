@@ -34,7 +34,7 @@ export default function Page() {
         <Hero
           title="Get Started with Headless"
           buttonText="Developer Docs"
-          buttonURL="https://developers.wpengine.com/"
+          buttonURL="https://faustjs.org"
           button2Text="Headless on GitHub"
           button2URL="https://github.com/wpengine/faustjs"
           bgImage="/images/headless_hero_background.jpg"
@@ -42,15 +42,16 @@ export default function Page() {
           <p>
             WP&nbsp;Engine’s Headless WordPress Framework includes this example
             project, the{' '}
-            <a href="https://github.com/wpengine/faustjs#plugin-features">
+            <a href="https://github.com/wpengine/faustjs#wordpress-plugin">
               headless WordPress plugin
             </a>
             ,{' '}
-            <a href="https://github.com/wpengine/faustjs">
-              headless packages
-            </a>
-            , and <a href="https://developers.wpengine.com/">tutorials</a> to
-            make building headless WordPress sites fast and fun.
+            <a href="https://github.com/wpengine/faustjs">headless packages</a>,
+            and{' '}
+            <a href="https://faustjs.org/docs/tutorial/dev-env-setup">
+              tutorials
+            </a>{' '}
+            to make building headless WordPress sites fast and fun.
           </p>
         </Hero>
         <section className={styles.explore}>
