@@ -82,6 +82,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Authentication',
+              id: 'next/guides/auth',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },

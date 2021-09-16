@@ -1,0 +1,43 @@
+---
+slug: /next/guides/auth
+title: Authentication
+description: tbd
+---
+
+Authentication can be a cumbersome process when building headless WordPress sites. Thankfully, Faust.js takes care of all your authentication needs in your Next.js application.
+
+## How It Works
+
+Authentication in Faust.js can be boiled down to 5 main steps:
+
+1. User initiates request to authenticated data
+2. Faust.js facilitates the request for an authorization code from the WPE Headless plugin. This is a short lived token that is used to request a refresh and access token
+3. Faust.js facilitates the request for a refresh and access token from the WPE Headless plugin using the authorization code
+4. Faust.js stores the refresh token in a secure, http only, same site cookie. This token is used to request a new access token when the current one expires
+5. Faust.js stores the access token in memory, to be used in subsequent authenticated requests
+
+## Strategies
+
+There are two authentication strategies available in Faust.js: `redirect` and `local`
+
+### Redirect Based Authentication
+
+<a href="/docs/img/auth-redirect-flow.png" target="_blank">
+  <img
+    src="/docs/img/auth-redirect-flow.png"
+    alt="Diagram of the redirect based authentication flow"
+  />
+</a>
+
+Redirect based authentication is the default strategy in Faust.js. This strategy involves the user being redirected to WordPress to authenticate. Once the user has authenticated, the user is redirected back to the application.
+
+### Local Based Authentication
+
+<a href="/docs/img/auth-local-flow.png" target="_blank">
+  <img
+    src="/docs/img/auth-local-flow.png"
+    alt="Diagram of the local based authentication flow"
+  />
+</a>
+
+## Hooks
