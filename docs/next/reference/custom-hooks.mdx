@@ -23,8 +23,8 @@ Using the above names, Faust.js is able to apply the following logic to determin
 The following is an example of how to use the `usePost` hook with a `postSlug`:
 
 ```tsx title=/src/pages/posts/[postSlug].tsx {5,6}
-import { getNextStaticProps } from "@faustjs/next";
-import { client } from "client";
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
 
 export default function Page() {
   const { usePost } = client;
@@ -42,14 +42,14 @@ export default function Page() {
 The above code will also work with `postId` and `postUri` depending upon what URL scheme you want to use. You may also want to fetch a specific post. Doing that might look similar to the following:
 
 ```tsx {6-10}
-import { getNextStaticProps } from "@faustjs/next";
-import { GetStaticPropsContext } from "next";
-import { client, PostIdType } from "client";
+import { getNextStaticProps } from '@faustjs/next';
+import { GetStaticPropsContext } from 'next';
+import { client, PostIdType } from 'client';
 
 export default function Page() {
   const { usePost } = client;
   const post = usePost({
-    id: "hello-world",
+    id: 'hello-world',
     idType: PostIdType.SLUG,
   });
 
@@ -73,8 +73,8 @@ The `usePosts` hook provides the standard interface for getting a list of posts 
 The following is an example of how to use the `usePosts` hook with no URL params:
 
 ```tsx title=src/pages/index.tsx {6-8,14-16}
-import { getNextStaticProps } from "@faustjs/next";
-import { client } from "client";
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
 
 export default function Home() {
   const { usePosts } = client;
@@ -98,8 +98,8 @@ export default function Home() {
 The code above will get the first 6 posts from the Headless WordPress API. If you want to create a page that would pull posts associated with a specific category you can use the following code:
 
 ```tsx title=src/pages/category/[categorySlug].tsx {6-8,14-16}
-import { getNextStaticProps } from "@faustjs/next";
-import { client } from "client";
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
 
 export default function Home() {
   const { usePosts } = client;
@@ -139,8 +139,8 @@ Using the above names, Faust.js is able to apply the following logic to determin
 The following is an example of how to use the `usePage` hook with a `pageUri`:
 
 ```tsx title=/src/pages/[...pageUri].tsx {5,6}
-import { getNextStaticProps } from "@faustjs/next";
-import { client } from "client";
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
 
 export default function Page() {
   const { usePage } = client;
@@ -158,14 +158,14 @@ export default function Page() {
 The above code will also work with `pageId` and `pageUri` depending upon what URL scheme you want to use. You may also want to fetch a specific page. Doing that might look similar to the following:
 
 ```tsx {6-10}
-import { getNextStaticProps } from "@faustjs/next";
-import { GetStaticPropsContext } from "next";
-import { client, PageIdType } from "client";
+import { getNextStaticProps } from '@faustjs/next';
+import { GetStaticPropsContext } from 'next';
+import { client, PageIdType } from 'client';
 
 export default function Page() {
   const { usePost } = client;
   const page = usePage({
-    id: "hello-world",
+    id: 'hello-world',
     idType: PageIdType.SLUG,
   });
 
@@ -185,35 +185,136 @@ The `usePreview` hook provides an abstraction around getting a preview `page` or
 The following example shows how to use the `usePreview` hook to render either a `post` or `page` from WordPress:
 
 ```tsx title=src/pages/preview.tsx {14-17}
-import { useRouter } from "next/router";
-import { PageComponent } from "./[...pageUri]";
-import type { Page, Post } from "@faustjs/core";
-import { PostComponent } from "./posts/[postSlug]";
-import { client } from "client";
+import { PageComponent } from './[...pageUri]';
+import { PostComponent } from './posts/[postSlug]';
+import { client } from 'client';
 
 export default function Preview() {
-  const {
-    query: { p, page_id },
-  } = useRouter();
-  const { usePreview } = client;
-  const isPage = !!page_id;
+  const { usePreview } = client.auth;
+  const result = usePreview();
 
-  const postOrPage: unknown = usePreview({
-    pageId: isPage ? (p as string) : undefined,
-    postId: !isPage ? (p as string) : undefined,
-  } as any);
+  if (client.useIsLoading() || !result) {
+    return <p>loading...</p>;
+  }
 
-  if (postOrPage === null) {
+  if (result.type === 'page') {
+    if (!result.page) {
+      return <>Not Found</>;
+    }
+
+    return <PageComponent page={result.page} />;
+  }
+
+  if (!result.post) {
     return <>Not Found</>;
   }
 
-  if (isPage) {
-    return <PageComponent page={postOrPage as Page} />;
-  }
-
-  return <PostComponent post={postOrPage as Post} />;
+  return <PostComponent post={result.post} />;
 }
 ```
+
+### `useAuth`
+
+The `useAuth` hook provides a way to guarantee a page's content is only rendered if the user is authenticated. If the user is not authenticated, the page will redirect to the WordPress backend if the `authType` is `redirect`, and to the `loginPagePath` if `authType` is `local`.
+
+The following example shows how to use the `useAuth` hook to render a page only if the user is authenticated:
+
+```tsx title=src/pages/gated-content.tsx {5}
+import { client } from 'client';
+
+export default function Gated() {
+  const { useAuth } = client.auth;
+  const { isLoading, isAuthenticated } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>You are not authenticated!</div>;
+  }
+
+  return <div>Authenticated content</div>;
+}
+```
+
+`useAuth` exports an object with the following properties:
+
+- `isLoading`: A boolean that indicates whether the `useAuth` function is currently checking if a user is authenticated.
+- `isAuthenticated`: A boolean that indicates whether the user is authenticated.
+
+### `useLogin`
+
+The `useLogin` hook provides an abstraction around obtaining an authorization code and fetching refresh/access tokens from WordPress, thus logging in a user to your Headless frontend.
+
+The following example shows how to use the `useLogin` hook to login a user:
+
+```tsx title=pages/login.tsx {9,18}
+import { client } from 'client';
+import { useState } from 'react';
+
+export default function Login() {
+  const { useLogin } = client.auth;
+  const [usernameEmail, setUserNameEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { login, isLoading, data, error } = useLogin();
+
+  const errorMessage = data?.error || error?.message;
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        login(usernameEmail, password);
+      }}>
+      <div>
+        <div>
+          <label htmlFor="usernameEmail">Username or Email</label>
+        </div>
+        <div>
+          <input
+            type="text"
+            value={usernameEmail}
+            onChange={(e) => setUserNameEmail(e.target.value)}
+            id="usernameEmail"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password">Password</label>
+        </div>
+        <div>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+          />
+        </div>
+
+        <div>
+          <button type="submit">Login</button>
+        </div>
+      </div>
+
+      {errorMessage ? <p>Error: {errorMessage}</p> : null}
+    </form>
+  );
+}
+```
+
+`useLogin` exports an object with the following properties:
+
+- `login`: A function that initiates a request to obtain an authorization code via a GraphQL mutation by the provided `usernameEmail` and `password` arguments. Note that the `usernameEmail` argument is a string that can be either a username or an email address.
+- `isLoading`: A boolean that indicates whether the `login` function is currently fetching an authorization code.
+- `data`: An object that contains the response data from the `login` function.
+- `error`: An object that contains the error data from the `login` function.
+
+When an authorization code is successfully fetched, `useLogin` will facilitate the request to the WPE Headless authorize endpoint to obtain the refresh/access tokens. From there, the tokens are stored properly, and the user is logged in.
+
+Additionally, if the login page URL contains a `redirect_uri` query parameter, the user will be redirected to the `redirect_uri` URL after the login is successful.
 
 ### Custom Queries and Mutations
 
