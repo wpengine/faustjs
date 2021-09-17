@@ -35,7 +35,7 @@ In general, things we find useful when reviewing suggestions are:
 
 ## What You'll Need
 
-0. [A bug or feature you want to work on](https://github.com/wpengine/faustjs/labels/help%20wanted)!
+0. [A bug or feature you want to work on](https://github.com/wpengine/faustjs/labels/help%20wanted)! If you have found a new bug or want to propose a feature, please [create an issue](https://github.com/wpengine/faustjs/issues/new/choose) before starting a pull request.
 1. [A GitHub account](https://github.com/join).
 2. A working copy of the code. See [DEVELOPMENT.md](/DEVELOPMENT.md).
 
