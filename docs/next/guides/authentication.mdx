@@ -175,14 +175,23 @@ Requests using the above methodology will be un-authenticated.
 
 To make authenticated requests, use the `auth` property exported from the `client`. This is essentially a replica of the `client`, except every request gets called with an access token:
 
-```tsx {1,4}
+```tsx {1,4,5}
 import { client } from 'client';
 
 export default function Page() {
   const { useMutation, usePreview, useAuth } = client.auth;
+  const { isLoading, isAuthenticated } = useAuth();
 
-  return(
-    ...
-  )
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>You are not authenticated!</div>;
+  }
+
+  return <div>Authenticated content</div>;
 }
 ```
+
+**Note:** The `useAuth` hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` prior to making authenticated requests, as doing so too early will result in a request without a valid access token.
