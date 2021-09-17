@@ -83,7 +83,7 @@ module.exports = {
             {
               type: 'doc',
               label: 'Authentication',
-              id: 'next/guides/auth',
+              id: 'next/guides/authentication',
             },
             {
               type: 'doc',
