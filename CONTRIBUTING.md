@@ -44,6 +44,7 @@ In general, things we find useful when reviewing suggestions are:
 Your pull request should:
 
 * Include a description of what your change intends to do
+* Reference any open issues that the PR addresses
 * Be based on reasonably recent commit in the **canary** branch
 * Include adequate tests
     * At least one test should fail in the absence of your non-test code changes. If your PR does not match this criteria, please specify why
