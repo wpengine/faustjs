@@ -13,7 +13,7 @@ Authentication can be a cumbersome process when building headless WordPress site
 1. User initiates request to authenticated data
 2. Faust.js facilitates the request for an authorization code from the WPE Headless plugin. This is a short lived token that is used to request a refresh and access token
 3. Faust.js facilitates the request for a refresh and access token from the WPE Headless plugin using the authorization code
-4. Faust.js stores the refresh token in a secure, http only, same site cookie. The refresh token is used to request a new access token when the current one expires
+4. Faust.js stores the refresh token in a secure, http only cookie. The refresh token is used to request a new access token when the current one expires
 5. Faust.js stores the access token in memory to be used in subsequent authenticated requests
 
 ## Strategies
@@ -44,7 +44,7 @@ Since Redirect based authentication is the default authentication method, there 
   />
 </a>
 
-Local Based Authentication is the second strategy available in Faust.js. This strategy involves the user initiating a login request from the Next.js application via the `useLogin` hook (GraphQL Mutation). Upon successful login, the GraphQL mutation returns an authorization code that is then used to request a refresh and access token, thus completing the login process.
+Local Based Authentication is the second strategy available in Faust.js. This strategy involves the user initiating a login request from the Next.js application via the `useLogin` hook. Upon successful login, `useLogin` returns an authorization code that is then used to request a refresh and access token, thus completing the login process.
 
 This strategy is great for use cases where you want to support a more "white label" login/register experience. This strategy routes un-authenticated requests to your specified Next.js login page. In addition, users who wish to login/register will not have to interact with WordPress or the WordPress backend at all, giving you the flexibility to implement and fine tune your user flow.
 
@@ -70,7 +70,7 @@ export default headlessConfig({
 });
 ```
 
-We define the `authType` to `local` to indicate to the Faust.js config that we want to use the `local` strategy for authentication. We also define the `loginPagePath` to `/login` to indicate the route of the Next.js login page. This means un-authenticated requests would be redirected to the `/login` route in your Next.js application.
+We define the `authType` to `local` to indicate to the Faust.js config that we want to use the `local` strategy for authentication. We also define the `loginPagePath` to `/login` to indicate the route of the Next.js login page. This means un-authenticated requests will be redirected to the `/login` route in your Next.js application.
 
 In your `login.tsx` page, you could take advantage of the `useLogin` hook to initiate a login request to the WordPress backend:
 
@@ -137,9 +137,9 @@ The `useLogin` hook exports an object with the following properties:
 - `data`: the response data from the login request.
 - `error`: the error from the login request.
 
-For a more detailed explanation of the `useLogin` hook, see [useLogin](/docs/next/reference/custom-hooks#useLogin) .
+For a more detailed explanation of the `useLogin` hook, see the [`useLogin` hook docs](/docs/next/reference/custom-hooks#uselogin) .
 
-Upon a successful login, a refresh token will be stored in a cookie, as well as the access token in memory to use for subsequent authenticated requests. A login request can be confirmed it succeeded by checking for the `code` property in the `data` object.
+Upon a successful login, a refresh token will be stored in a secure, http only cookie, as well as the access token in memory to use for subsequent authenticated requests. A login request can be confirmed it succeeded by checking for the `code` property in the `data` object.
 
 Additionally, if the login page URL contains a `redirect_uri` query parameter, the user will be redirected to the specified URL upon successful login.
 
