@@ -180,7 +180,7 @@ export default function Page() {
 
 ### `usePreview`
 
-The `usePreview` hook provides an abstraction around getting a preview `page` or `post` from your Headless WordPress API. WordPress generally uses query parameters for `post` and `page` preview URLs. It also uses the `ID` of the `post` or `page`, so you need to call the Headless WordPress API in a specific way to get the data you need. You also can't use the Next.js URL params scheme with dynamic file names to read query params. Instead you have to pull the query params off the Next.js router and pass them into `usePreview`. `usePreview` expects you to pass in either `pageId` or `postId` depending upon what type of content you are fetching. If you pass in `pageId` then `usePreview` will look for a `page` by `ID`. If you pass in `postId` then `usePreview` will look for a `post` by `ID`.
+The `usePreview` hook provides an abstraction around getting a preview `page` or `post` from the Headless WordPress API. When calling the `usePreview` hook on an appropriate preview page, the hook will determine if the preview is a `page` or `post` and will make a request to retrieve the proper preview content.
 
 The following example shows how to use the `usePreview` hook to render either a `post` or `page` from WordPress:
 
