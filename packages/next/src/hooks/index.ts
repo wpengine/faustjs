@@ -30,9 +30,26 @@ export type UseClient<
   | NextClient<Schema, ObjectTypesNames, ObjectTypes>['useClient']
   | NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useClient'];
 
+export interface UseLoginOptions {
+  useMutationOptions?: UseMutationOptions<{
+    code?: string | null | undefined;
+    error?: string | null | undefined;
+  }>;
+}
+
 interface WithAuthHooks<Schema extends RequiredSchema> {
+  /**
+   * Faust.js hook to get preview data for a page or post.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#usepreview
+   */
   usePreview(): UsePreviewResponse<Schema>;
 
+  /**
+   * Faust.js hook to ensure a user is authenticated.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#useauth
+   */
   useAuth(): {
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
@@ -42,12 +59,13 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
       | undefined;
   };
 
-  useLogin(options?: {
-    useMutationOptions?: UseMutationOptions<{
-      code?: string | null | undefined;
-      error?: string | null | undefined;
-    }>;
-  }): {
+  /**
+   * Faust.js hook to facilitate a login request.
+   *
+   * @param {UseLoginOptions} [options]
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#uselogin
+   */
+  useLogin(options?: UseLoginOptions): {
     login: (usernameEmail: string, password: string) => Promise<void>;
     isLoading: boolean;
     data:
@@ -77,22 +95,45 @@ export interface NextClientHooks<Schema extends RequiredSchema>
     | 'useTransactionQuery'
     | 'useHydrateCache'
   > {
+  /**
+   * GQty hook to make any query request to the Headless Wordpress API.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#custom-queries-and-mutations
+   */
   useQuery: ReactClient<Schema>['useQuery'];
 
   useHydrateCache: ReactClient<Schema>['useHydrateCache'];
 
+  /**
+   * Faust.js hook to get a category.
+   */
   useCategory(
     args?: Parameters<Schema['query']['category']>[0],
   ): ReturnType<Schema['query']['category']>;
 
+  /**
+   * Faust.js hook to get a list of posts.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#useposts
+   */
   usePosts(
     args?: Parameters<Schema['query']['posts']>[0],
   ): ReturnType<Schema['query']['posts']>;
 
+  /**
+   * Faust.js hook to get a single post.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#usepost
+   */
   usePost(
     args?: Parameters<Schema['query']['post']>[0],
   ): ReturnType<Schema['query']['post']>;
 
+  /**
+   * Faust.js hook to get a single page.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#usepage
+   */
   usePage(
     args?: Parameters<Schema['query']['page']>[0],
   ): ReturnType<Schema['query']['page']>;
