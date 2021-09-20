@@ -31,7 +31,7 @@ module.exports = {
           label: 'Docs',
         },
         {
-          href: 'https://github.com/wpengine/faustjs',
+          href: 'https://github.com/wpengine/faustjs?ref=faustjs',
           label: 'GitHub',
           position: 'right',
         },
@@ -58,15 +58,15 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/wpengine/faustjs',
+              href: 'https://github.com/wpengine/faustjs?ref=faustjs',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/wpedecode',
+              href: 'https://twitter.com/wpedecode?ref=faustjs',
             },
             {
               label: 'YouTube',
-              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g',
+              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
             },
           ],
         },
@@ -75,15 +75,15 @@ module.exports = {
           items: [
             {
               label: 'Developers',
-              to: 'https://developers.wpengine.com/',
+              to: 'https://developers.wpengine.com/?ref=faustjs',
             },
             {
               label: "We're Hiring!",
-              to: 'https://wpengine.careers/',
+              to: 'https://wpengine.careers/?ref=faustjs',
             },
             {
               label: 'Headless WordPress Hosting',
-              href: 'https://wpengine.com/atlas',
+              href: 'https://wpengine.com/atlas?ref=faustjs',
             },
           ],
         },
