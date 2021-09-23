@@ -33,6 +33,13 @@ export async function createRedirects(
   return redirects;
 }
 
+/**
+ * A helper function to merge Faust.js related Next.js config with a user defined Next.js config.
+ *
+ * @param {NextConfig} config
+ * @param {withFaustConfig} withFaustConfig
+ * @returns {NextConfig}
+ */
 export function withFaust(
   config?: NextConfig,
   withFaustConfig?: WithFaustConfig,

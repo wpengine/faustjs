@@ -8,6 +8,11 @@ import {
 } from './getProps';
 import { HeadlessContext } from './client';
 
+/**
+ * The HeadlessProvider is a React component required to properly facilitate SSR and SSG for Faust.js.
+ *
+ * @see https://faustjs.org/docs/next/guides/ssr-ssg#rehydration-using-headlessprovider-
+ */
 export function HeadlessProvider<Props = Record<string, unknown>>({
   children,
   pageProps,

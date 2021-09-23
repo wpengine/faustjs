@@ -23,6 +23,11 @@ export interface AuthorizeResponse {
  * A Node handler for processing incoming requests to exchange an Authorization Code
  * for an Access Token using the WordPress API. Once the code is exchanged, this
  * handler stores the Access Token on the cookie and redirects to the frontend.
+ *
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ *
+ * @see https://faustjs.org/docs/next/guides/auth
  */
 export async function authorizeHandler(
   req: IncomingMessage,

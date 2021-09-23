@@ -200,6 +200,13 @@ export async function is404<
   return !entityExists;
 }
 
+/**
+ * This helper function lets you server side render your page with WordPress data
+ *
+ * @param {GetServerSidePropsContext} context
+ * @param {GetNextServerSidePropsConfig} config
+ * @see https://faustjs.org/docs/next/guides/ssr-ssg#ssr-using-getnextserversideprops
+ */
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
   config: GetNextServerSidePropsConfig,
@@ -221,6 +228,13 @@ export async function getNextServerSideProps<Props>(
   return getProps(context, config);
 }
 
+/**
+ * This helper function lets you build a static site with your WordPress data
+ *
+ * @param {GetStaticPropsContext} context
+ * @param {GetNextStaticPropsConfig} config
+ * @see https://faustjs.org/docs/next/guides/ssr-ssg#ssg-using-getnextstaticprops
+ */
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   config: GetNextStaticPropsConfig,
