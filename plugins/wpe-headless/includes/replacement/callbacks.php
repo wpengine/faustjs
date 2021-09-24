@@ -114,14 +114,6 @@ function wpe_headless_post_preview_link( $link, $post ) {
 
 		$parsed_link_query = wp_parse_url( $link, PHP_URL_QUERY );
 		$args              = wp_parse_args( $parsed_link_query );
-		$frontend_uri_path = wp_parse_url( $frontend_uri, PHP_URL_PATH );
-		$parsed_link_path  = wp_parse_url( $link, PHP_URL_PATH );
-		$link_path = $parsed_link_path;
-		if ( $frontend_uri_path !== '/') {
-			$link_path = str_replace( $frontend_uri_path, '', $parsed_link_path );
-		}
-		$path = trailingslashit( $link_path );
-
 		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
 		// Remove ?p=xx&preview=true from link temporarily.
@@ -139,10 +131,6 @@ function wpe_headless_post_preview_link( $link, $post ) {
 		if ( ! isset( $args['page_id'] ) && 'page' === $post->post_type ) {
 			$args['page_id'] = $preview_id;
 		}
-
-		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
-		$unleadingslash_path          = ltrim( $path, '/\\' );
-		$link                         = $untrailingslash_frontend_uri . '/' . $unleadingslash_path;
 
 		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
