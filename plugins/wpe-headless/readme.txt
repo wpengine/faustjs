@@ -4,7 +4,7 @@ Tags:
 Requires at least: 5.3
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Author: WP Engine
@@ -22,6 +22,10 @@ Transform your WordPress site to a powerful Headless API.
 == Screenshots ==
 
 == Changelog ==
+
+= 0.6.1 =
+
+- Fixed the headless options page sidebar links to new Faust.js documentation site.
 
 = 0.6.0 =
 - [Breaking Change] Added support for access/refresh token based auth flow in the authorize endpoint. 
