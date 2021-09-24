@@ -48,7 +48,7 @@
 			</div>
 			<div class="sidebar">
 				<div class="box get-started primary">
-					<h3><?php esc_html_e( 'Get Started With Headless', 'wpe-headless' ); ?></h3>
+					<h3><?php esc_html_e( 'Get Started With Faust.js', 'wpe-headless' ); ?></h3>
 					<section>
 						<h4><?php esc_html_e( 'Install WPGraphQL', 'wpe-headless' ); ?></h4>
 						<p><a href="https://www.wpgraphql.com/docs/quick-start/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn about the plugin', 'wpe-headless' ); ?></a>.</p>
@@ -69,18 +69,20 @@
 					<?php endif; ?>
 					<section>
 						<h4><?php esc_html_e( 'Create Your Headless App', 'wpe-headless' ); ?></h4>
-						<p><a href="https://github.com/wpengine/faustjs/#readme" target="_blank" rel="noopener noreferrer">Follow our setup guide</a>.</p>
+						<p><a href="https://faustjs.org/docs/next/getting-started" target="_blank" rel="noopener noreferrer">Follow our quick start guide</a>.</p>
 					</section>
 				</div>
 				<div class="box docs">
-					<h3>Headless Documentation</h3>
+					<h3>Faust.js Documentation</h3>
 					<section>
 						<ul>
-							<li><a href="https://github.com/wpengine/faustjs/#headless-wordpress-framework" target="_blank" rel="noopener noreferrer">Getting started</a></li>
-							<li><a href="https://github.com/wpengine/faustjs/blob/main/packages/next/src/HeadlessProvider.tsx" target="_blank" rel="noopener noreferrer">HeadlessProvider component</a></li>
-							<li><a href="https://github.com/wpengine/faustjs/blob/main/docs/previews/README.md" target="_blank" rel="noopener noreferrer">Post previews</a></li>
+							<li><a href="https://faustjs.org/docs/tutorial/dev-env-setup" target="_blank" rel="noopener noreferrer">In-depth Tutorial</a></li>
+							<li><a href="https://faustjs.org/docs/next/getting-started" target="_blank" rel="noopener noreferrer">Quick Start</a></li>
+							<li><a href="https://faustjs.org/docs/next/guides/fetching-data" target="_blank" rel="noopener noreferrer">Fetching Data</a></li>
+							<li><a href="https://faustjs.org/docs/next/guides/post-page-previews" target="_blank" rel="noopener noreferrer">Previews</a></li>
+							<li><a href="https://faustjs.org/docs/next/guides/auth" target="_blank" rel="noopener noreferrer">Authentication</a></li>
 						</ul>
-						<p><a class="button-primary" href="https://github.com/wpengine/faustjs/" target="_blank" rel="noopener noreferrer">Headless on GitHub</a></p>
+						<p><a class="button-primary" href="https://github.com/wpengine/faustjs/" target="_blank" rel="noopener noreferrer">Faust.js on GitHub</a></p>
 					</section>
 				</div>
 			</div>
