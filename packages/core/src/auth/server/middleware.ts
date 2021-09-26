@@ -61,6 +61,9 @@ export async function authorizeHandler(
         res.statusCode = result.response.status;
       } else {
         res.statusCode = 401;
+
+        // If the response to the token endpoint is unauthorized, remove the existing refresh token.
+        oauth.setRefreshToken(undefined);
       }
 
       res.end(JSON.stringify(result.result));
