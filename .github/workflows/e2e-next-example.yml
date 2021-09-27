@@ -47,7 +47,7 @@ jobs:
     - name: copy env
       working-directory: e2e-app
       run: |
-        cp .env.sample .env
+        cp .env.local.sample .env.local
     # Generate the schema to ensure no type collisions
     - name: Generate Schema
       working-directory: e2e-app

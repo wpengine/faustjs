@@ -19,11 +19,11 @@ Your headless secret can be found in WP Admin -> Settings -> Headless. Copy this
   alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field"
 />
 
-### Add your Headless Secret to your `.env` File
+### Add your Headless Secret to your `.env.local` File
 
-Add the `WP_HEADLESS_SECRET` key to your `.env` file with the headless secret as the value. Your `.env` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
+Add the `WP_HEADLESS_SECRET` key to your `.env.local` file with the headless secret as the value. Your `.env.local` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
 
-```bash title=.env {13}
+```bash title=.env.local {13}
 # Your WordPress site URL
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 
