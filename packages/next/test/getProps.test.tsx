@@ -4,7 +4,11 @@ import {
   mockedServerSidePropsContext,
   mockedStaticPropsContext,
 } from '../jest.setup';
-import { getNextStaticProps, getNextServerSideProps } from '../src';
+import {
+  getNextStaticProps,
+  getNextServerSideProps,
+  headlessConfig,
+} from '../src';
 import { AUTH_CLIENT_CACHE_PROP, CLIENT_CACHE_PROP } from '../src/getProps';
 
 describe('getNextStaticProps', () => {
@@ -103,6 +107,7 @@ describe('getNextStaticProps', () => {
       props: {
         title: 'Hello World',
       },
+      revalidate: 1,
     });
 
     const expectedProps = {
@@ -133,6 +138,61 @@ describe('getNextStaticProps', () => {
         [AUTH_CLIENT_CACHE_PROP]: 'auth-cache',
       },
       revalidate: 30,
+    };
+
+    expect(staticProps).toStrictEqual(expectedProps);
+  });
+
+  test('getNextStaticProps should respect global revalidation', async () => {
+    const context = mockedStaticPropsContext;
+
+    headlessConfig({
+      wpUrl: 'http://local.local',
+      next: {
+        revalidate: 60,
+      },
+    });
+
+    const staticProps = await getNextStaticProps(context, {
+      // @ts-ignore
+      client,
+      Page: MockPage,
+    });
+
+    const expectedProps = {
+      props: {
+        [CLIENT_CACHE_PROP]: 'cache',
+        [AUTH_CLIENT_CACHE_PROP]: 'auth-cache',
+      },
+      revalidate: 60,
+    };
+
+    expect(staticProps).toStrictEqual(expectedProps);
+  });
+
+  test('getNextStaticProps should overwrite global revalidation when specified locally', async () => {
+    const context = mockedStaticPropsContext;
+
+    const staticProps = await getNextStaticProps(context, {
+      // @ts-ignore
+      client,
+      Page: MockPage,
+      revalidate: false,
+    });
+
+    headlessConfig({
+      wpUrl: 'http://local.local',
+      next: {
+        revalidate: 60,
+      },
+    });
+
+    const expectedProps = {
+      props: {
+        [CLIENT_CACHE_PROP]: 'cache',
+        [AUTH_CLIENT_CACHE_PROP]: 'auth-cache',
+      },
+      revalidate: false,
     };
 
     expect(staticProps).toStrictEqual(expectedProps);

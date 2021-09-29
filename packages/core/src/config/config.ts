@@ -15,7 +15,7 @@ import { isValidUrl } from '../utils';
  * @export
  * @interface HeadlessConfig
  */
-export interface HeadlessConfig {
+export interface HeadlessConfig extends Record<string, unknown> {
   /**
    * Set this value to the base URL of your WordPress site. This will be used in order to
    * make queries to your WordPress site.

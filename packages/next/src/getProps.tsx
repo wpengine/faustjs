@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core';
-import { isBoolean, isNumber, isObject } from 'lodash';
+import { isBoolean, isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
   GetServerSidePropsContext,
@@ -12,6 +12,7 @@ import {
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
+import { headlessConfig, NextConfig } from './config';
 import { getClient, HeadlessContext } from './client';
 
 import {
@@ -240,6 +241,13 @@ export async function getNextStaticProps<Props>(
   config: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
   const { notFound, redirect, revalidate } = config;
+  let nextConfig: NextConfig | undefined;
+
+  try {
+    nextConfig = headlessConfig();
+  } catch (e) {
+    // ignore
+  }
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -260,7 +268,9 @@ export async function getNextStaticProps<Props>(
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {
-    pageProps.revalidate = isNumber(revalidate) ? revalidate : 1;
+    pageProps.revalidate = !isNil(revalidate)
+      ? revalidate
+      : nextConfig?.next?.revalidate ?? 900; // 15 minutes
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
