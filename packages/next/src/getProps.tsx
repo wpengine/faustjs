@@ -241,13 +241,7 @@ export async function getNextStaticProps<Props>(
   config: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
   const { notFound, redirect, revalidate } = config;
-  let nextConfig: NextConfig | undefined;
-
-  try {
-    nextConfig = headlessConfig();
-  } catch (e) {
-    // ignore
-  }
+  const nextConfig: NextConfig | undefined = headlessConfig();
 
   if (isBoolean(notFound) && notFound === true) {
     return {

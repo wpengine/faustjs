@@ -45,6 +45,10 @@ describe('getNextStaticProps', () => {
     return <p>My Page</p>;
   };
 
+  beforeEach(() => {
+    headlessConfig({ wpUrl: 'http://local.local' });
+  });
+
   test('getNextStaticProps with notFound should return notFound', async () => {
     const context = mockedStaticPropsContext;
 
