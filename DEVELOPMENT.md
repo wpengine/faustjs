@@ -2,10 +2,10 @@
 
 There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
-* [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
-* [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
-* Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
-* [Contribute bug fixes](/CONTRIBUTING.md)
+- [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
+- [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
+- Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
+- [Contribute bug fixes](/CONTRIBUTING.md)
 
 ## Project Structure
 
@@ -28,8 +28,7 @@ When switching git branch, run `npm run clean` from the root and then re-run `np
 
 As this is a monorepo, you will not be able to check out this repository into `wp-content/themes` or `wp-content/plugins`.
 
-Instead, you can create symlinks to the themes/plugins in this repository. Best of all, this will also sync your work
-across multiple local sites!
+Instead, you can create symlinks to the themes/plugins in this repository. Best of all, this will also sync your work across multiple local sites!
 
 #### WPE Headless Plugin
 
@@ -44,11 +43,13 @@ ln -s /path/to/faustjs/plugins/wpe-headless /path/to/wordpress/wp-content/plugin
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
 Install the composer packages from within `wpe-headless` directory if you haven't already.
+
 ```
 composer install
 ```
 
 Run the syntax check.
+
 ```
 composer phpcs
 ```
@@ -67,11 +68,13 @@ To run WordPress unit tests, set up the test framework:
 ```
 
 If you connect to MySQL via a sock connection, you can run the following.
+
 ```
 /bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
 ```
 
 Install the composer packages from within `wpe-headless` directory if you haven't already.
+
 ```
 composer install
 ```
@@ -95,33 +98,36 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 ### 1. Environment Setup
 
 1. Install [Composer](https://getcomposer.org/).
-    - Within the `plugins/wpe-headless` directory, run `composer install`.
+   - Within the `plugins/wpe-headless` directory, run `composer install`.
 1. Install [Google Chrome](https://www.google.com/chrome/).
 1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
-    - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
-    - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
-      `mv chromedriver /usr/local/bin`
-    - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
-    - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
+   - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
+   - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
+     `mv chromedriver /usr/local/bin`
+   - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
+   - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 
 ### 2. Headless Site Setup
+
 1. From within the headless site `examples/getting-started` copy `.env.test.sample` to `.env.test`.
-    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file; else, you can adjust the environment variables as needed.
+   - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file; else, you can adjust the environment variables as needed.
 
 ### 3. WPE Headless Setup
+
 1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
 1. Prepare a test WordPress site.
-    - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
-      1. Install [Docker](https://www.docker.com/get-started).
-      1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
-      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+   - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
+     1. Install [Docker](https://www.docker.com/get-started).
+     1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+     1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
+     1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
-    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
-    - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
+   - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
+   - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
 ### Browser testing documentation
+
 - [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
   - Base framework for browser testing in php.
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
@@ -154,6 +160,6 @@ CircleCI will build and deploy the plugin zip. The latest version will be availa
 
 Once deployed, the updated packages will be visible here:
 
-* https://www.npmjs.com/package/@faustjs/core
-* https://www.npmjs.com/package/@faustjs/react
-* https://www.npmjs.com/package/@faustjs/next
+- https://www.npmjs.com/package/@faustjs/core
+- https://www.npmjs.com/package/@faustjs/react
+- https://www.npmjs.com/package/@faustjs/next
