@@ -31,14 +31,14 @@
     "docs:install": "cd internal/website && npm i && cd ..",
     "docs:start": "npm start --prefix internal/website",
     "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
-    "minor": "npm version minor --git-tag-version=false --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next && node scripts/version",
-    "patch": "npm version patch --git-tag-version=false --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next && node scripts/version",
     "start": "npm run serve:prod --prefix internal/website",
     "wp-env": "wp-env",
     "wp:start": "wp-env start",
     "wp:stop": "wp-env stop",
     "wp:destroy": "wp-env destroy",
-    "wpe-build": "cd internal/website && npm i && cd .. && npm run docs:build"
+    "wpe-build": "cd internal/website && npm i && cd .. && npm run docs:build",
+    "changeset": "changeset",
+    "version": "changeset version"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
