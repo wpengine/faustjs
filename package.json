@@ -45,6 +45,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@wordpress/env": "^4.0.0",
+    "gqty": "^2.0.2",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
