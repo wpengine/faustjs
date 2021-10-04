@@ -97,8 +97,8 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 
 ### 1. Environment Setup
 
+1. Install [Docker](https://www.docker.com/get-started).
 1. Install [Composer](https://getcomposer.org/).
-   - Within the `plugins/wpe-headless` directory, run `composer install`.
 1. Install [Google Chrome](https://www.google.com/chrome/).
 1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
    - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
@@ -107,23 +107,28 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
    - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
    - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 
-### 2. Headless Site Setup
+### 2. Front-end Setup
 
-1. From within the headless site `examples/getting-started` copy `.env.test.sample` to `.env.test`.
-   - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file; else, you can adjust the environment variables as needed.
+1. Create the following `.env.test.local` in `examples/next/getting-started`.
+```
+# Your WordPress site URL
+NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 
-### 3. WPE Headless Setup
+# Plugin secret found in WordPress Settings->Headless
+WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
+```
+1. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
 
+### 3. WordPress Plugin Setup
+
+1. Leave the node server running and open a new shell.
 1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
+1. Run `composer install` if you haven't already.
 1. Prepare a test WordPress site.
-   - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
-     1. Install [Docker](https://www.docker.com/get-started).
-     1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-     1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
-     1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+    1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
+    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
-   - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
-   - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
 ### Browser testing documentation
