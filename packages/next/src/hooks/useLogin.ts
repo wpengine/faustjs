@@ -10,15 +10,17 @@ import noop from 'lodash/noop';
 import { useEffect } from 'react';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
+export interface UseLoginOptions {
+  useMutationOptions?: UseMutationOptions<{
+    code?: string | null | undefined;
+    error?: string | null | undefined;
+  }>;
+}
+
 export function create<Schema extends RequiredSchema>(
   useMutation: NextClientHooks<Schema>['useMutation'],
 ): NextClientHooksWithAuth<Schema>['useLogin'] {
-  return (options?: {
-    useMutationOptions?: UseMutationOptions<{
-      code?: string | null | undefined;
-      error?: string | null | undefined;
-    }>;
-  }) => {
+  return (options?: UseLoginOptions) => {
     const { useMutationOptions } = options || {};
 
     const [loginMutation, { isLoading, data, error }] = useMutation(

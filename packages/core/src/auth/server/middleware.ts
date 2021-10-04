@@ -40,6 +40,7 @@ export async function authorizeHandler(
 
   if (!refreshToken && !code) {
     res.statusCode = 401;
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Unauthorized' }));
 
     return;
@@ -66,12 +67,39 @@ export async function authorizeHandler(
         oauth.setRefreshToken(undefined);
       }
 
+      res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(result.result));
     }
   } catch (e) {
     log(e);
 
     res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Internal Server Error' }));
   }
+}
+
+/**
+ * A Node handler for processing incoming requests to logout an authenticated user.
+ * This handler clears the refresh token from the cookie and returns a response.
+ *
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ *
+ * @see https://faustjs.org/docs/next/guides/auth
+ */
+export function logoutHandler(req: IncomingMessage, res: ServerResponse): void {
+  // Only allow POST requests, as browsers may pre-fetch GET requests.
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    res.end();
+
+    return;
+  }
+
+  const oauth = new OAuth(new Cookies(req, res));
+  oauth.setRefreshToken(undefined);
+
+  res.statusCode = 205;
+  res.end();
 }

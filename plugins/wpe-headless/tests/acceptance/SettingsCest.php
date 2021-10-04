@@ -22,11 +22,11 @@ class SettingsCest
         $I->amOnPluginsPage();
 
         // Deactivate plugin and remove settings.
-        $I->deactivatePlugin('wpengine-headless');
+        $I->deactivatePlugin('wp-engine-headless');
         $I->dontHaveOptionInDatabase('wpe_headless');
 
         // Reactivate plugin triggering default settings.
-        $I->activatePlugin('wpengine-headless');
+        $I->activatePlugin('wp-engine-headless');
 
         $settings = $I->grabOptionFromDatabase('wpe_headless');
 
