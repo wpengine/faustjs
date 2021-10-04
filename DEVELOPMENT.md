@@ -117,9 +117,9 @@ NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 # Plugin secret found in WordPress Settings->Headless
 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
 ```
-1. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
+2. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
 
-### 3. WordPress Plugin Setup
+### 3. WordPress Setup
 
 1. Leave the node server running and open a new shell.
 1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
