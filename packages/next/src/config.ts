@@ -1,31 +1,17 @@
-import { headlessConfig as coreConfig, HeadlessConfig } from '@faustjs/core';
-import { isNil } from 'lodash';
 import defaults from 'lodash/defaults';
 
-export interface NextConfigProperties {
+export interface Config {
   revalidate: number | boolean;
 }
 
-export interface NextConfig extends HeadlessConfig {
-  next: NextConfigProperties;
-}
+let nextConfig: Config = {
+  revalidate: 900,
+};
 
-export interface OptionalNextConfig extends HeadlessConfig {
-  next?: Partial<NextConfigProperties>;
-}
-
-export function headlessConfig(config?: OptionalNextConfig): NextConfig {
-  let coreCfg: NextConfig | undefined;
-
-  if (isNil(config)) {
-    coreCfg = coreConfig(config) as NextConfig;
-  }
-
-  const nextConfig = defaults({}, config, coreCfg, {
-    next: defaults({}, config?.next, coreCfg?.next, {
-      revalidate: 900, // 15 minutes,
-    }),
+export function config(cfg?: Partial<Config>): Config {
+  nextConfig = defaults({}, cfg, nextConfig, {
+    revalidate: 900,
   });
 
-  return coreConfig(nextConfig) as NextConfig;
+  return nextConfig;
 }

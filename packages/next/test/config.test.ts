@@ -1,25 +1,20 @@
-import { headlessConfig } from '../src';
+import { config } from '../src';
 
 describe('config', () => {
-  test('headlessConfig() should throw an error if no config is set', () => {
-    expect(() => headlessConfig()).toThrowError();
+  test('config() should setup a default next config', () => {
+    const cfg = config();
+    expect(cfg).toBeDefined();
   });
 
-  test('headlessConfig() should setup a default next config', () => {
-    const config = headlessConfig({ wpUrl: 'http://local.local' });
-    expect(config.next).toBeDefined();
+  test('config() default revalidate should be 900 seconds', () => {
+    const cfg = config();
+    expect(cfg.revalidate).toBe(900);
   });
 
-  test('headlessConfig() default revalidate should be 900 seconds', () => {
-    const config = headlessConfig({ wpUrl: 'http://local.local' });
-    expect(config.next.revalidate).toBe(900);
-  });
-
-  test('headlessConfig() should allow setting revalidate', () => {
-    const config = headlessConfig({
-      wpUrl: 'http://local.local',
-      next: { revalidate: 30 },
-    });
-    expect(config.next.revalidate).toBe(30);
+  test('config() should allow setting revalidate', () => {
+    const cfg = config({ revalidate: 30 });
+    expect(cfg.revalidate).toBe(30);
+    expect(config().revalidate).toBe(30);
+    expect(config({ revalidate: 10 }).revalidate).toBe(10);
   });
 });

@@ -12,7 +12,7 @@ import {
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
-import { headlessConfig, NextConfig } from './config';
+import { config } from './config';
 import { getClient, HeadlessContext } from './client';
 
 import {
@@ -233,15 +233,15 @@ export async function getNextServerSideProps<Props>(
  * This helper function lets you build a static site with your WordPress data
  *
  * @param {GetStaticPropsContext} context
- * @param {GetNextStaticPropsConfig} config
+ * @param {GetNextStaticPropsConfig} cfg
  * @see https://faustjs.org/docs/next/guides/ssr-ssg#ssg-using-getnextstaticprops
  */
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
-  config: GetNextStaticPropsConfig,
+  cfg: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
-  const { notFound, redirect, revalidate } = config;
-  const nextConfig: NextConfig | undefined = headlessConfig();
+  const { notFound, redirect, revalidate } = cfg;
+  const nextConfig = config();
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -257,14 +257,14 @@ export async function getNextStaticProps<Props>(
 
   const pageProps: GetStaticPropsResult<Props> = await getProps(
     context,
-    config,
+    cfg,
   );
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {
     pageProps.revalidate = !isNil(revalidate)
       ? revalidate
-      : nextConfig?.next?.revalidate ?? 900; // 15 minutes
+      : nextConfig.revalidate;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 

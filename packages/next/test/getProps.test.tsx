@@ -4,11 +4,7 @@ import {
   mockedServerSidePropsContext,
   mockedStaticPropsContext,
 } from '../jest.setup';
-import {
-  getNextStaticProps,
-  getNextServerSideProps,
-  headlessConfig,
-} from '../src';
+import { getNextStaticProps, getNextServerSideProps, config } from '../src';
 import { AUTH_CLIENT_CACHE_PROP, CLIENT_CACHE_PROP } from '../src/getProps';
 
 describe('getNextStaticProps', () => {
@@ -44,10 +40,6 @@ describe('getNextStaticProps', () => {
   const MockPage = () => {
     return <p>My Page</p>;
   };
-
-  beforeEach(() => {
-    headlessConfig({ wpUrl: 'http://local.local' });
-  });
 
   test('getNextStaticProps with notFound should return notFound', async () => {
     const context = mockedStaticPropsContext;
@@ -150,11 +142,8 @@ describe('getNextStaticProps', () => {
   test('getNextStaticProps should respect global revalidation', async () => {
     const context = mockedStaticPropsContext;
 
-    headlessConfig({
-      wpUrl: 'http://local.local',
-      next: {
-        revalidate: 60,
-      },
+    config({
+      revalidate: 60,
     });
 
     const staticProps = await getNextStaticProps(context, {
@@ -184,11 +173,8 @@ describe('getNextStaticProps', () => {
       revalidate: false,
     });
 
-    headlessConfig({
-      wpUrl: 'http://local.local',
-      next: {
-        revalidate: 60,
-      },
+    config({
+      revalidate: 60,
     });
 
     const expectedProps = {
