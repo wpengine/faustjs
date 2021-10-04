@@ -1,4 +1,4 @@
-import { ensureAuthorization, headlessConfig } from '@faustjs/core';
+import { ensureAuthorization, config } from '@faustjs/core';
 import type { RequiredSchema } from '@faustjs/react';
 import defaults from 'lodash/defaults';
 import isObject from 'lodash/isObject';
@@ -34,7 +34,7 @@ export function create<
     });
 
     const { shouldRedirect } = options;
-    const { authType, loginPagePath } = headlessConfig();
+    const { authType, loginPagePath } = config();
     const [{ isAuthenticated, isLoading, authResult }, setState] = useState<
       ReturnType<
         NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth']

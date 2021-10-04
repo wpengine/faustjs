@@ -205,14 +205,14 @@ export async function is404<
  * This helper function lets you server side render your page with WordPress data
  *
  * @param {GetServerSidePropsContext} context
- * @param {GetNextServerSidePropsConfig} config
+ * @param {GetNextServerSidePropsConfig} cfg
  * @see https://faustjs.org/docs/next/guides/ssr-ssg#ssr-using-getnextserversideprops
  */
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
-  config: GetNextServerSidePropsConfig,
+  cfg: GetNextServerSidePropsConfig,
 ): Promise<GetServerSidePropsResult<Props>> {
-  const { notFound, redirect } = config;
+  const { notFound, redirect } = cfg;
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -226,7 +226,7 @@ export async function getNextServerSideProps<Props>(
     };
   }
 
-  return getProps(context, config);
+  return getProps(context, cfg);
 }
 
 /**
@@ -255,10 +255,7 @@ export async function getNextStaticProps<Props>(
     };
   }
 
-  const pageProps: GetStaticPropsResult<Props> = await getProps(
-    context,
-    cfg,
-  );
+  const pageProps: GetStaticPropsResult<Props> = await getProps(context, cfg);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {

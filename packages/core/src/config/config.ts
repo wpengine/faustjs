@@ -182,7 +182,7 @@ export function normalizeConfig(config: Config): Config {
 export function config(cfg?: Config): Config {
   if (!configSet && !isObject(cfg)) {
     throw new Error(
-      'You must set your headless configuration at the highest level in your application. `headlessConfig` was called prior to setting the configuration.',
+      'You must set your faustjs configuration at the highest level in your application. `config` was called with no arguments prior to setting the configuration.',
     );
   }
 

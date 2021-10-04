@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
-import { headlessConfig } from '../../../src';
+import { config } from '../../../src';
 import {
   authorizeHandler,
   redirect,
@@ -26,7 +26,7 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will send a 401 when there is no code or refresh token', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -55,7 +55,7 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will throw an error if the client secret is not defined', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -82,7 +82,7 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will throw a 401 if the request to WordPress authorize endpoint is not ok', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -102,7 +102,7 @@ describe('auth/middleware', () => {
 
     const endSpy = jest.spyOn(res, 'end');
 
-    const { wpUrl } = headlessConfig();
+    const { wpUrl } = config();
 
     fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
       status: 401,

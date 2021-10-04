@@ -1,4 +1,4 @@
-import { headlessConfig } from '../../config';
+import { config } from '../../config';
 import { isServerSide } from '../../utils';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
@@ -57,7 +57,7 @@ export function setAccessToken(
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
-  const { apiEndpoint } = headlessConfig();
+  const { apiEndpoint } = config();
 
   if (isNil(apiEndpoint)) {
     throw new Error(
