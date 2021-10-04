@@ -7,6 +7,17 @@ import trim from 'lodash/trim';
 import noop from 'lodash/noop';
 import type { NextClient } from '../client';
 
+export interface UseAuthOptions {
+  /**
+   * Specify if the useAuth hook should facilitate the redirect to the appropriate url.
+   *
+   * @default true
+   * @type {boolean}
+   * @memberof UseAuthOptions
+   */
+  shouldRedirect?: boolean;
+}
+
 export function create<
   Schema extends RequiredSchema,
   ObjectTypesNames extends string = never,
@@ -16,7 +27,8 @@ export function create<
     };
   } = never,
 >(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth'] {
-  return () => {
+  return (useAuthOptions?: UseAuthOptions) => {
+    const { shouldRedirect = true } = useAuthOptions || {};
     const { authType, loginPagePath } = headlessConfig();
     const [{ isAuthenticated, isLoading, authResult }, setState] = useState<
       ReturnType<
@@ -67,6 +79,11 @@ export function create<
 
     // Redirect the user to the login page if they are not authenticated
     useEffect(() => {
+      // Do not redirect if specified in UseAuthOptions.
+      if (!shouldRedirect) {
+        return noop;
+      }
+
       if (typeof window === 'undefined') {
         return noop;
       }
@@ -93,7 +110,7 @@ export function create<
       return () => {
         clearTimeout(timeout);
       };
-    }, [isAuthenticated, authResult, authType]);
+    }, [shouldRedirect, isAuthenticated, authResult, authType]);
 
     return { isAuthenticated, isLoading, authResult };
   };
