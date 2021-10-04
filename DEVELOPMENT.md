@@ -109,7 +109,7 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 
 ### 2. Front-end Setup
 
-1. Create the following `.env.test.local` in `examples/next/getting-started`.
+1. Create the following `.env.test` in `examples/next/getting-started`.
 ```
 # Your WordPress site URL
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
