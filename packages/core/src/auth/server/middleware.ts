@@ -40,6 +40,7 @@ export async function authorizeHandler(
 
   if (!refreshToken && !code) {
     res.statusCode = 401;
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Unauthorized' }));
 
     return;
@@ -66,12 +67,14 @@ export async function authorizeHandler(
         oauth.setRefreshToken(undefined);
       }
 
+      res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(result.result));
     }
   } catch (e) {
     log(e);
 
     res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Internal Server Error' }));
   }
 }

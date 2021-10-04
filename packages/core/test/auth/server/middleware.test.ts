@@ -10,6 +10,7 @@ import {
 describe('auth/middleware', () => {
   test('redirect will write a 302', () => {
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
@@ -37,6 +38,7 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
@@ -64,6 +66,7 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
@@ -71,7 +74,9 @@ describe('auth/middleware', () => {
     try {
       await authorizeHandler(req, res);
     } catch (e) {
-      expect((e as Error).message).toContain('The apiClientSecret must be specified');
+      expect((e as Error).message).toContain(
+        'The apiClientSecret must be specified',
+      );
       console.log(e);
     }
   });
@@ -90,6 +95,7 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
