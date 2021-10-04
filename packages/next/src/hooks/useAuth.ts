@@ -1,10 +1,11 @@
 import { ensureAuthorization, headlessConfig } from '@faustjs/core';
-import { useEffect, useState } from 'react';
 import type { RequiredSchema } from '@faustjs/react';
+import defaults from 'lodash/defaults';
 import isObject from 'lodash/isObject';
 import isUndefined from 'lodash/isUndefined';
-import trim from 'lodash/trim';
 import noop from 'lodash/noop';
+import trim from 'lodash/trim';
+import { useEffect, useState } from 'react';
 import type { NextClient } from '../client';
 
 export interface UseAuthOptions {
@@ -28,7 +29,11 @@ export function create<
   } = never,
 >(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth'] {
   return (useAuthOptions?: UseAuthOptions) => {
-    const { shouldRedirect = true } = useAuthOptions || {};
+    const options = defaults({}, useAuthOptions, {
+      shouldRedirect: true,
+    });
+
+    const { shouldRedirect } = options;
     const { authType, loginPagePath } = headlessConfig();
     const [{ isAuthenticated, isLoading, authResult }, setState] = useState<
       ReturnType<
