@@ -21,6 +21,10 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Remove package-lock.json
+        run: |
+          rm package-lock.json
+
       - name: Install Dependencies
         run: npm install
 
