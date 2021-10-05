@@ -64,26 +64,26 @@ npm install --save-dev @gqty/cli dotenv
 Create a `faust.config.js` file in the root of your project:
 
 ```js title=faust.config.js
-import { headlessConfig } from '@faustjs/core';
+import { config as coreConfig } from '@faustjs/core';
 
 if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   console.error(
-    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?',
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
   );
 }
 
 /**
- * @type {import("@faustjs/core").HeadlessConfig}
+ * @type {import("@faustjs/core").Config}
  */
-export default headlessConfig({
+export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
 });
 ```
 
-### Create `.env`
+### Create `.env.local`
 
-You'll also need a `.env` file to hold your environment variables:
+You'll also need a `.env.local` file to hold your environment variables:
 
 ```bash
 # Your WordPress site URL
@@ -249,7 +249,7 @@ my-app/
     _app.tsx
     index.tsx
     posts.tsx
-  .env
+  .env.local
   faust.config.js
   gqty.config.js
   next-env.d.ts

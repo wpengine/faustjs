@@ -1,11 +1,23 @@
-import { ensureAuthorization, headlessConfig } from '@faustjs/core';
-import { useEffect, useState } from 'react';
+import { ensureAuthorization, config } from '@faustjs/core';
 import type { RequiredSchema } from '@faustjs/react';
+import defaults from 'lodash/defaults';
 import isObject from 'lodash/isObject';
 import isUndefined from 'lodash/isUndefined';
-import trim from 'lodash/trim';
 import noop from 'lodash/noop';
+import trim from 'lodash/trim';
+import { useEffect, useState } from 'react';
 import type { NextClient } from '../client';
+
+export interface UseAuthOptions {
+  /**
+   * Specify if the useAuth hook should facilitate the redirect to the appropriate url.
+   *
+   * @default true
+   * @type {boolean}
+   * @memberof UseAuthOptions
+   */
+  shouldRedirect?: boolean;
+}
 
 export function create<
   Schema extends RequiredSchema,
@@ -16,8 +28,13 @@ export function create<
     };
   } = never,
 >(): NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth'] {
-  return () => {
-    const { authType, loginPagePath } = headlessConfig();
+  return (useAuthOptions?: UseAuthOptions) => {
+    const options = defaults({}, useAuthOptions, {
+      shouldRedirect: true,
+    });
+
+    const { shouldRedirect } = options;
+    const { authType, loginPagePath } = config();
     const [{ isAuthenticated, isLoading, authResult }, setState] = useState<
       ReturnType<
         NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useAuth']
@@ -67,6 +84,11 @@ export function create<
 
     // Redirect the user to the login page if they are not authenticated
     useEffect(() => {
+      // Do not redirect if specified in UseAuthOptions.
+      if (!shouldRedirect) {
+        return noop;
+      }
+
       if (typeof window === 'undefined') {
         return noop;
       }
@@ -93,7 +115,7 @@ export function create<
       return () => {
         clearTimeout(timeout);
       };
-    }, [isAuthenticated, authResult, authType]);
+    }, [shouldRedirect, isAuthenticated, authResult, authType]);
 
     return { isAuthenticated, isLoading, authResult };
   };

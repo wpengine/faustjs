@@ -1,16 +1,64 @@
-# Changelog
+# @faustjs/react
 
-All notable changes to this project will be documented in this file.
+## 0.12.0
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### Minor Changes
 
-## [Unreleased]
+- 8243e9f: `headlessConfig` from `@faustjs/core` is now just `config`, and `@faustjs/next` has its own `config` with a global revalidate option.
 
-## [0.6.5] - 2021-05-25
+  Your `faust.config.js` needs to change to look like this:
 
-Version bumped to remain in lockstep with `@faustjs/core` and `@faustjs/next`. No changes.
+  ```ts
+  import { config as coreConfig } from '@faustjs/core';
 
-## [0.6.4] - 2021-05-18
+  if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+    console.error(
+      'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
+    );
+  }
 
-Initial release of `@faustjs/react`
+  /**
+   * @type {import("@faustjs/core").Config}
+   */
+  export default coreConfig({
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  });
+  ```
+
+  Or, to configure the global `revalidate` option in `@faustjs/next`:
+
+  ```ts
+  import { config as coreConfig } from '@faustjs/core';
+  import { config as nextConfig } from '@faustjs/next';
+
+  if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+    console.error(
+      'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
+    );
+  }
+
+  nextConfig({
+    revalidate: 60, // 1 minute
+  });
+
+  /**
+   * @type {import("@faustjs/core").Config}
+   */
+  export default coreConfig({
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  });
+  ```
+
+  > **NOTE**: `@faustjs/next` defaults to `revalidate: 900` (15 minutes).
+
+### Patch Changes
+
+- c4b205a: Implemented `changesets` 🦋
+- Updated dependencies [4ded997]
+- Updated dependencies [8243e9f]
+- Updated dependencies [f0f2706]
+- Updated dependencies [c4b205a]
+- Updated dependencies [5c7f662]
+  - @faustjs/core@0.12.0

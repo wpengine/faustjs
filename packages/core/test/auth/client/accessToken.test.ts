@@ -10,11 +10,11 @@ import {
   getAccessTokenExpiration,
   setAccessToken,
 } from '../../../src/auth/client/accessToken';
-import { headlessConfig } from '../../../src/config/config';
+import { config } from '../../../src/config/config';
 
 describe('auth/client/accessToken', () => {
   test('getAccessToken() returns undefined when there is no access token', () => {
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -24,7 +24,7 @@ describe('auth/client/accessToken', () => {
   });
 
   test('getAccessTokenExpiration() returns undefined when there is no expiration', () => {
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -44,15 +44,15 @@ describe('auth/client/accessToken', () => {
   test('fetchAccessToken() should clear the current access token/expiration upon failure', async () => {
     setAccessToken('test', new Date().getTime() + 1000);
 
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
-      apiEndpoint: '/auth',
+      apiBasePath: '/testing',
     });
 
-    fetchMock.get('/auth', {
+    fetchMock.get('/testing/auth/token', {
       status: 401,
       ok: false,
       json: { error: 'Unauthorized' },
@@ -68,7 +68,7 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should set the token/expiration upon success', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -77,7 +77,7 @@ describe('auth/client/accessToken', () => {
 
     const exp = new Date().getTime() + 1000;
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 200,
       body: JSON.stringify({
         accessToken: 'test',
@@ -96,21 +96,21 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should append the code query param to the fetch URL if provided', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
     });
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
       body: JSON.stringify({
         error: 'Unauthorized',
       }),
     });
 
-    fetchMock.get('/api/auth/wpe-headless?code=valid-code', {
+    fetchMock.get('/api/faust/auth/token?code=valid-code', {
       status: 200,
       body: JSON.stringify({
         accessToken: 'test',

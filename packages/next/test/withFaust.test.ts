@@ -1,6 +1,6 @@
 import { createRedirects, withFaust } from '../src';
 
-describe('nextConfig', () => {
+describe('withFaust', () => {
   test('withFaust merges default config with user specified config', async () => {
     const config = withFaust({ eslint: { ignoreDuringBuilds: true } });
     const expectedRedirects = await createRedirects();

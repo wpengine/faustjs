@@ -33,7 +33,7 @@ Redirect based authentication is the default strategy in Faust.js. This strategy
 
 This strategy is great for use cases where your authenticated users are admins/editors/etc. and do not necessarily need a "white label" login/register experience. Typically, you would use the redirect strategy if your primary reason for authentication is previews.
 
-Since Redirect based authentication is the default authentication method, there is no configuration needed on your end to use it. It comes out of the box, and you'll see it in action when using previews or the `useAuth` hook.
+Since Redirect based authentication is the default authentication method, there is no configuration needed on your end to use it. It comes out of the box, and you'll see it in action when using previews or the [`useAuth`](/docs/next/reference/custom-hooks#useauth) hook.
 
 ### Local Based Authentication
 
@@ -51,18 +51,18 @@ This strategy is great for use cases where you want to support a more "white lab
 To use this strategy, you'll need to configure your `faust.config.js` file to use the `local` authentication strategy, in addition to the route of your Next.js login page. Take the following `faust.config.js` file for example:
 
 ```tsx title=faust.config.js {15,16}
-import { headlessConfig } from '@faustjs/core';
+import { config as coreConfig } from '@faustjs/core';
 
 if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   console.error(
-    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env file?',
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
   );
 }
 
 /**
- * @type {import("@faustjs/core").HeadlessConfig}
+ * @type {import("@faustjs/core").Config}
  */
-export default headlessConfig({
+export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
   authType: 'local',
@@ -194,4 +194,4 @@ export default function Page() {
 }
 ```
 
-**Note:** The `useAuth` hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` prior to making authenticated requests, as doing so too early will result in a request without a valid access token.
+**Note:** The [`useAuth`](/docs/next/reference/custom-hooks#useauth) hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` prior to making authenticated requests, as doing so too early will result in a request without a valid access token.

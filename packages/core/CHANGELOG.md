@@ -1,16 +1,79 @@
-# Changelog
+# @faustjs/core
 
-All notable changes to this project will be documented in this file.
+## 0.12.0
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### Minor Changes
 
-## [Unreleased]
+- 4ded997: Implement `logoutHandler` middleware
+- 8243e9f: `headlessConfig` from `@faustjs/core` is now just `config`, and `@faustjs/next` has its own `config` with a global revalidate option.
 
-## [0.6.5] - 2021-05-25
+  Your `faust.config.js` needs to change to look like this:
 
-Version bumped to remain in lockstep with `@faustjs/react` and `@faustjs/next`. No changes.
+  ```ts
+  import { config as coreConfig } from '@faustjs/core';
 
-## [0.6.4] - 2021-05-18
+  if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+    console.error(
+      'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
+    );
+  }
 
-Initial release of `@faustjs/core`
+  /**
+   * @type {import("@faustjs/core").Config}
+   */
+  export default coreConfig({
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  });
+  ```
+
+  Or, to configure the global `revalidate` option in `@faustjs/next`:
+
+  ```ts
+  import { config as coreConfig } from '@faustjs/core';
+  import { config as nextConfig } from '@faustjs/next';
+
+  if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+    console.error(
+      'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
+    );
+  }
+
+  nextConfig({
+    revalidate: 60, // 1 minute
+  });
+
+  /**
+   * @type {import("@faustjs/core").Config}
+   */
+  export default coreConfig({
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  });
+  ```
+
+  > **NOTE**: `@faustjs/next` defaults to `revalidate: 900` (15 minutes).
+
+- f0f2706: Introduced the `apiRouter` that will handle all of the Faust.js related endpoints for you.
+
+  ## Breaking Changes
+
+  With the introduction of `apiRouter` we have introduced a breaking change. You will need to remove your `pages/api/auth/wpe-headless.ts` file, and create a new file, `pages/api/faust/[[...route]].ts` with the following content:
+
+  ```ts
+  import 'faust.config';
+  import { apiRouter } from '@faustjs/core/api';
+
+  export default apiRouter;
+  ```
+
+  **Note**: The `[[...route]]` naming convention is a [Next.js convention for a catch-all route.](https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes)
+
+  ### Config changes
+
+  The `apiEndpoint` and `apiUrl` config options have been removed in exchange for the `apiBasePath` option. This option specifies the base path for all of the Faust.js endpoints. The `blogUrlPrefix` is no longer necessary and has been removed from the config interface.
+
+### Patch Changes
+
+- c4b205a: Implemented `changesets` 🦋
+- 5c7f662: Added the appropriate `Content-Type` response header to the `authorizeHandler` middleware

@@ -8,6 +8,6 @@ process.yml
 .next
 .env
 .env.*
-!.env.sample
+!.env.local.sample
 .docusaurus
 build/
