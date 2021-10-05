@@ -46,9 +46,6 @@ export async function apiRouter(
       return logoutHandler(req, res);
     default:
       res.statusCode = 404;
-      res.setHeader('Content-Type', 'application/json');
-      res.end(
-        JSON.stringify({ error: `No Faust.js API route found at ${route}` }),
-      );
+      res.end();
   }
 }
