@@ -120,7 +120,6 @@ let configSet = false;
  */
 export function normalizeConfig(config: Config): Config {
   const cfg = defaults({}, config, {
-    blogUrlPrefix: '',
     apiBasePath: '/api/faust',
     authType: 'redirect',
     loginPagePath: '/login',
@@ -136,15 +135,13 @@ export function normalizeConfig(config: Config): Config {
     }
   });
 
-  let { wpUrl, blogUrlPrefix, apiBasePath } = cfg;
+  let { wpUrl, apiBasePath } = cfg;
 
   wpUrl = trimEnd(wpUrl, '/');
-  blogUrlPrefix = trimEnd(blogUrlPrefix, '/');
   apiBasePath = `/${trim(apiBasePath, '/')}`;
 
   return extend(cfg, {
     wpUrl,
-    blogUrlPrefix,
     apiBasePath,
   });
 }
