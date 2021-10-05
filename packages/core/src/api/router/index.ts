@@ -10,7 +10,21 @@ import {
 export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
 export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';
 
-export async function faustApiRouter(
+/**
+ * A node handler for processing all incoming Faust.js API requests.
+ *
+ * @example ```ts
+ * // filename: pages/api/faust/[[...route]].ts
+ * import 'faust.config';
+ * import { apiRouter } from '@faustjs/core';
+ *
+ * export default apiRouter;
+ * ```
+ *
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ */
+export async function apiRouter(
   req: IncomingMessage,
   res: ServerResponse,
 ): Promise<void> {

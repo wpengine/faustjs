@@ -1,4 +1,4 @@
 import 'faust.config';
-import { faustApiRouter } from '@faustjs/core';
+import { apiRouter } from '@faustjs/core';
 
-export default faustApiRouter;
+export default apiRouter;
