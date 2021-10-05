@@ -1,7 +1,7 @@
-import { headlessConfig } from '../config';
+import { config } from '../config';
 
 export const log: typeof console.log = (...args) => {
-  if (headlessConfig().disableLogging) {
+  if (config().disableLogging) {
     return;
   }
 

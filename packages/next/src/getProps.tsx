@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core';
-import { isBoolean, isNumber, isObject } from 'lodash';
+import { isBoolean, isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
   GetServerSidePropsContext,
@@ -12,6 +12,7 @@ import {
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
+import { config } from './config';
 import { getClient, HeadlessContext } from './client';
 
 import {
@@ -204,14 +205,14 @@ export async function is404<
  * This helper function lets you server side render your page with WordPress data
  *
  * @param {GetServerSidePropsContext} context
- * @param {GetNextServerSidePropsConfig} config
+ * @param {GetNextServerSidePropsConfig} cfg
  * @see https://faustjs.org/docs/next/guides/ssr-ssg#ssr-using-getnextserversideprops
  */
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
-  config: GetNextServerSidePropsConfig,
+  cfg: GetNextServerSidePropsConfig,
 ): Promise<GetServerSidePropsResult<Props>> {
-  const { notFound, redirect } = config;
+  const { notFound, redirect } = cfg;
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -225,21 +226,22 @@ export async function getNextServerSideProps<Props>(
     };
   }
 
-  return getProps(context, config);
+  return getProps(context, cfg);
 }
 
 /**
  * This helper function lets you build a static site with your WordPress data
  *
  * @param {GetStaticPropsContext} context
- * @param {GetNextStaticPropsConfig} config
+ * @param {GetNextStaticPropsConfig} cfg
  * @see https://faustjs.org/docs/next/guides/ssr-ssg#ssg-using-getnextstaticprops
  */
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
-  config: GetNextStaticPropsConfig,
+  cfg: GetNextStaticPropsConfig,
 ): Promise<GetStaticPropsResult<Props>> {
-  const { notFound, redirect, revalidate } = config;
+  const { notFound, redirect, revalidate } = cfg;
+  const nextConfig = config();
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -253,14 +255,13 @@ export async function getNextStaticProps<Props>(
     };
   }
 
-  const pageProps: GetStaticPropsResult<Props> = await getProps(
-    context,
-    config,
-  );
+  const pageProps: GetStaticPropsResult<Props> = await getProps(context, cfg);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   if (isObject(pageProps.props)) {
-    pageProps.revalidate = isNumber(revalidate) ? revalidate : 1;
+    pageProps.revalidate = !isNil(revalidate)
+      ? revalidate
+      : nextConfig.revalidate;
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 

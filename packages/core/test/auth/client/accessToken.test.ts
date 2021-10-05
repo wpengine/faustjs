@@ -10,11 +10,11 @@ import {
   getAccessTokenExpiration,
   setAccessToken,
 } from '../../../src/auth/client/accessToken';
-import { headlessConfig } from '../../../src/config/config';
+import { config } from '../../../src/config/config';
 
 describe('auth/client/accessToken', () => {
   test('getAccessToken() returns undefined when there is no access token', () => {
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -24,7 +24,7 @@ describe('auth/client/accessToken', () => {
   });
 
   test('getAccessTokenExpiration() returns undefined when there is no expiration', () => {
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -44,7 +44,7 @@ describe('auth/client/accessToken', () => {
   test('fetchAccessToken() should clear the current access token/expiration upon failure', async () => {
     setAccessToken('test', new Date().getTime() + 1000);
 
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -68,7 +68,7 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should set the token/expiration upon success', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -96,7 +96,7 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should append the code query param to the fetch URL if provided', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',

@@ -1,4 +1,4 @@
-import { headlessConfig, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config';
+import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config';
 import { isServerSide } from '../../utils';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
@@ -57,7 +57,7 @@ export function setAccessToken(
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
-  const { apiBasePath } = headlessConfig();
+  const { apiBasePath } = config();
 
   if (isNil(apiBasePath)) {
     throw new Error(

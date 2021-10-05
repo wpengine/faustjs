@@ -2,16 +2,13 @@ import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { trim } from 'lodash';
 import {
-  getAccessToken,
-  getAccessTokenExpiration,
-  headlessConfig,
-  setAccessToken,
+  config,
 } from '../../src';
 import * as authorize from '../../src/auth/authorize';
 
 describe('auth/ensureAuthorization', () => {
   test('ensureAuthorization() returns true when an access token is successfully fetched', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -33,14 +30,14 @@ describe('auth/ensureAuthorization', () => {
   });
 
   test('ensureAuthorization() return a redirect key when the token cannot be fetched', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
     });
 
-    const { wpUrl } = headlessConfig();
+    const { wpUrl } = config();
 
     const redirectUri = 'http://localhost:3000';
 
@@ -60,14 +57,14 @@ describe('auth/ensureAuthorization', () => {
   });
 
   test('ensureAuthorization() returns a login key when the token cannot be fetched', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
     });
 
-    const { loginPagePath } = headlessConfig();
+    const { loginPagePath } = config();
 
     const loginPageUri = `/${trim(loginPagePath, '/')}`;
 

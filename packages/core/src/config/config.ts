@@ -13,18 +13,18 @@ export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
- * The configuration for your headless site
+ * The configuration for your faustjs site
  *
  * @export
- * @interface HeadlessConfig
+ * @interface Config
  */
-export interface HeadlessConfig {
+export interface Config extends Record<string, unknown> {
   /**
    * Set this value to the base URL of your WordPress site. This will be used in order to
    * make queries to your WordPress site.
    *
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   wpUrl: string;
 
@@ -36,7 +36,7 @@ export interface HeadlessConfig {
    *
    * @default wpUrl + /graphql
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   gqlUrl?: string;
 
@@ -52,19 +52,6 @@ export interface HeadlessConfig {
   apiBasePath?: string;
 
   /**
-   * Set this value to the URL of your api that you want to use for this application.
-   *
-   * @example api.mysite.com
-   *
-   * @default wpUrl
-   * @type {string}
-   * @memberof HeadlessConfig
-   *
-   * @deprecated use apiBasePath instead
-   */
-  apiUrl?: string;
-
-  /**
    * This is a prefix URL path that we will use as the base URL for your WordPress posts.
    * By default we will assume that your site is configured with no blog-specific URL.
    *
@@ -72,28 +59,15 @@ export interface HeadlessConfig {
    *
    * @default ''
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   blogUrlPrefix?: string;
-
-  /**
-   * Set this value to be the path to your API endpoint that you want to use for this application
-   *
-   * @example /api/auth/wordpress
-   *
-   * @default /api/auth/wpe-headless
-   * @type {string}
-   * @memberof HeadlessConfig
-   *
-   * @deprecated use apiBasePath instead
-   */
-  apiEndpoint?: string;
 
   /**
    * Set this to the secret provided by the Headless WordPress plugin to be used for authentication
    *
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   apiClientSecret?: string;
 
@@ -104,7 +78,7 @@ export interface HeadlessConfig {
    * where local assumes that you have setup a login page on your frontend site.
    *
    * @default redirect
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   authType?: 'redirect' | 'local';
 
@@ -115,7 +89,7 @@ export interface HeadlessConfig {
    *
    * @default /login
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   loginPagePath?: string;
 
@@ -123,7 +97,7 @@ export interface HeadlessConfig {
    * Set to true if you want to disable internal console.log statements
    *
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   disableLogging?: boolean;
 
@@ -134,7 +108,7 @@ export interface HeadlessConfig {
    * @param {string} url
    * @param {RequestInit} init
    * @returns {RequestContext}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   applyRequestContext?(
     url: string,
@@ -143,20 +117,20 @@ export interface HeadlessConfig {
 }
 /* eslint-enable @typescript-eslint/ban-types */
 
-let wpeConfig: HeadlessConfig = {
+let faustConfig: Config = {
   wpUrl: '/',
 };
 let configSet = false;
 
 /**
- * Takes a HeadlessConfig and ensures the properties that need to be normalized
+ * Takes a Config and ensures the properties that need to be normalized
  * (e.g. URL slashes trimmed, etc) are handled.
  *
  * @export
- * @param {HeadlessConfig} config
- * @returns {HeadlessConfig}
+ * @param {Config} config
+ * @returns {Config}
  */
-export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
+export function normalizeConfig(config: Config): Config {
   const cfg = defaults({}, config, {
     blogUrlPrefix: '',
     apiBasePath: '/api/faust',
@@ -166,7 +140,7 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
   });
 
   Object.keys(cfg).forEach((key) => {
-    const keyValue: keyof HeadlessConfig = key as any;
+    const keyValue: keyof Config = key as any;
     const value = cfg[keyValue];
 
     if (isString(value)) {
@@ -188,27 +162,27 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
 }
 
 /**
- * A setter/getter for the HeadlessConfig
+ * A setter/getter for the Config
  *
  * @export
- * @param {HeadlessConfig} [config]
- * @returns {HeadlessConfig}
+ * @param {Config} [cfg]
+ * @returns {Config}
  */
-export function headlessConfig(config?: HeadlessConfig): HeadlessConfig {
-  if (!configSet && !isObject(config)) {
+export function config(cfg?: Config): Config {
+  if (!configSet && !isObject(cfg)) {
     throw new Error(
-      'You must set your headless configuration at the highest level in your application. `headlessConfig` was called prior to setting the configuration.',
+      'You must set your faustjs configuration at the highest level in your application. `config` was called with no arguments prior to setting the configuration.',
     );
   }
 
-  if (!isObject(config)) {
-    return wpeConfig;
+  if (!isObject(cfg)) {
+    return faustConfig;
   }
 
   configSet = true;
-  wpeConfig = normalizeConfig(config);
+  faustConfig = normalizeConfig(cfg);
 
-  return wpeConfig;
+  return faustConfig;
 }
 
 /**
@@ -218,7 +192,7 @@ export function headlessConfig(config?: HeadlessConfig): HeadlessConfig {
  * @returns
  */
 export function getGqlUrl(): string {
-  const { wpUrl, gqlUrl } = headlessConfig();
+  const { wpUrl, gqlUrl } = config();
 
   if (isNil(gqlUrl) || !isString(gqlUrl)) {
     return `${wpUrl}/graphql`;
