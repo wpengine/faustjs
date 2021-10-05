@@ -54,15 +54,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 }
 ```
 
-## Create the Authorize Handler
+## Create the Faust.js API Router
 
-Next, you will need to create the `authorizeHandler`. This authenticates requests from WordPress. Create a page at `/src/pages/api/auth/wpe-headless.ts` with the following:
+Next, you will need to create the `apiRouter`. This sets up the Faust.js API endpoints needed to authenticate requests from WordPress. Create a page at `/src/pages/api/faust/[[...route]].ts` with the following:
 
 ```ts
 import 'faust.config';
-import { authorizeHandler } from '@faustjs/core';
+import { apiRouter } from '@faustjs/core';
 
-export default authorizeHandler;
+export default apiRouter;
 ```
 
 ## Create your Preview Page
