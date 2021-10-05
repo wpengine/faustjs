@@ -4,6 +4,51 @@ title: Release Notes for Faust.js
 description: A central place for Faust.js release notes
 ---
 
+## Faust.js 0.12.0
+
+For a full list of features/changes, visit the releases on GitHub:
+
+- [@faustjs/core@0.12.0](https://github.com/wpengine/faustjs/releases/tag/%40faustjs%2Fcore%400.12.0)
+- [@faustjs/next@0.12.0](https://github.com/wpengine/faustjs/releases/tag/%40faustjs%2Fnext%400.12.0)
+- [@faustjs/react@0.12.0](https://github.com/wpengine/faustjs/releases/tag/%40faustjs%2Freact%400.12.0)
+
+### Breaking Changes
+
+First, you will need to create a new file at your [Next.js pages directory](https://nextjs.org/docs/basic-features/pages), `src/pages/api/faust/[[...route]].ts` with the following content:
+
+```ts title="src/pages/api/faust/[[...route]].ts"
+import 'faust.config';
+import { apiRouter } from '@faustjs/core';
+
+export default apiRouter;
+```
+
+Then, you will want to delete the `src/pages/api/auth/wpe-headless.ts` file if it exists.
+
+Finally, replace your current `src/faust.config.js` file with the following:
+
+```js title="src/faust.config.js" {1,12}
+import { config as coreConfig } from '@faustjs/core';
+
+if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+  console.error(
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
+  );
+}
+
+/**
+ * @type {import("@faustjs/core").Config}
+ */
+export default coreConfig({
+  wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+});
+```
+
+**Notice**: `headlessConfig` has been renamed to just `config`
+
+[Take a look at the Getting Started example for a closer look at these breaking changes.](https://github.com/wpengine/faustjs/tree/canary/examples/next/getting-started)
+
 ## Faust.js 0.11.0
 
 ### Features
