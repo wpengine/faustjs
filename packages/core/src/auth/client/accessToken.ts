@@ -2,6 +2,7 @@ import { headlessConfig } from '../../config';
 import { isServerSide } from '../../utils';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
+import { TOKEN_ENDPOINT_PARTIAL_PATH } from '../..';
 
 export interface AccessToken {
   token: string | undefined;
@@ -57,15 +58,15 @@ export function setAccessToken(
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
-  const { apiEndpoint } = headlessConfig();
+  const { apiBasePath } = headlessConfig();
 
-  if (isNil(apiEndpoint)) {
+  if (isNil(apiBasePath)) {
     throw new Error(
-      'You must provide an apiEndpoint value in your Headless config in order to use the fetchToken middleware',
+      'You must provide an apiBasePath value in your Headless config in order to use the fetchToken middleware',
     );
   }
 
-  let url = apiEndpoint;
+  let url = `${apiBasePath}/${TOKEN_ENDPOINT_PARTIAL_PATH}`;
 
   // Add the code to the url if it exists
   if (isString(code) && code.length > 0) {

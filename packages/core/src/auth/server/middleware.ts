@@ -88,7 +88,11 @@ export async function authorizeHandler(
  *
  * @see https://faustjs.org/docs/next/guides/auth
  */
-export function logoutHandler(req: IncomingMessage, res: ServerResponse): void {
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function logoutHandler(
+  req: IncomingMessage,
+  res: ServerResponse,
+): Promise<void> {
   // Only allow POST requests, as browsers may pre-fetch GET requests.
   if (req.method !== 'POST') {
     res.statusCode = 405;

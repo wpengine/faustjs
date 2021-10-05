@@ -38,6 +38,17 @@ export interface HeadlessConfig {
   gqlUrl?: string;
 
   /**
+   * Set this value to the relative base path of your API endpoints for this application.
+   *
+   * @example /api/faust
+   *
+   * @default /api/faust
+   * @type {string}
+   * @memberof HeadlessConfig
+   */
+  apiBasePath?: string;
+
+  /**
    * Set this value to the URL of your api that you want to use for this application.
    *
    * @example api.mysite.com
@@ -45,6 +56,8 @@ export interface HeadlessConfig {
    * @default wpUrl
    * @type {string}
    * @memberof HeadlessConfig
+   *
+   * @deprecated use apiBasePath instead
    */
   apiUrl?: string;
 
@@ -68,6 +81,8 @@ export interface HeadlessConfig {
    * @default /api/auth/wpe-headless
    * @type {string}
    * @memberof HeadlessConfig
+   *
+   * @deprecated use apiBasePath instead
    */
   apiEndpoint?: string;
 
@@ -141,8 +156,7 @@ let configSet = false;
 export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
   const cfg = defaults({}, config, {
     blogUrlPrefix: '',
-    apiUrl: '',
-    apiEndpoint: '/api/auth/wpe-headless',
+    apiBasePath: '/api/faust',
     authType: 'redirect',
     loginPagePath: '/login',
     disableLogging: false,
@@ -157,18 +171,16 @@ export function normalizeConfig(config: HeadlessConfig): HeadlessConfig {
     }
   });
 
-  let { wpUrl, blogUrlPrefix, apiUrl, apiEndpoint } = cfg;
+  let { wpUrl, blogUrlPrefix, apiBasePath } = cfg;
 
   wpUrl = trimEnd(wpUrl, '/');
   blogUrlPrefix = trimEnd(blogUrlPrefix, '/');
-  apiUrl = trimEnd(apiUrl, '/');
-  apiEndpoint = trimEnd(apiEndpoint, '/');
+  apiBasePath = `/${trim(apiBasePath, '/')}`;
 
   return extend(cfg, {
     wpUrl,
     blogUrlPrefix,
-    apiUrl,
-    apiEndpoint,
+    apiBasePath,
   });
 }
 

@@ -18,7 +18,7 @@ describe('auth/ensureAuthorization', () => {
       apiClientSecret: 'secret',
     });
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 200,
       body: JSON.stringify({
         accessToken: 'at',
@@ -44,7 +44,7 @@ describe('auth/ensureAuthorization', () => {
 
     const redirectUri = 'http://localhost:3000';
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
     });
 
@@ -71,7 +71,7 @@ describe('auth/ensureAuthorization', () => {
 
     const loginPageUri = `/${trim(loginPagePath, '/')}`;
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
     });
 

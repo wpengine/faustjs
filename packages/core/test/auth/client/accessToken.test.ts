@@ -49,10 +49,10 @@ describe('auth/client/accessToken', () => {
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
-      apiEndpoint: '/auth',
+      apiBasePath: '/testing',
     });
 
-    fetchMock.get('/auth', {
+    fetchMock.get('/testing/auth/token', {
       status: 401,
       ok: false,
       json: { error: 'Unauthorized' },
@@ -77,7 +77,7 @@ describe('auth/client/accessToken', () => {
 
     const exp = new Date().getTime() + 1000;
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 200,
       body: JSON.stringify({
         accessToken: 'test',
@@ -103,14 +103,14 @@ describe('auth/client/accessToken', () => {
       apiClientSecret: 'secret',
     });
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
       body: JSON.stringify({
         error: 'Unauthorized',
       }),
     });
 
-    fetchMock.get('/api/auth/wpe-headless?code=valid-code', {
+    fetchMock.get('/api/faust/auth/token?code=valid-code', {
       status: 200,
       body: JSON.stringify({
         accessToken: 'test',
