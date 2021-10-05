@@ -1,9 +1,9 @@
 import type { RequiredSchema } from '@faustjs/react';
-import { ReactClient, UseMutationOptions } from '@gqty/react';
+import { ReactClient } from '@gqty/react';
 import type { GQtyError } from 'gqty';
 import type { NextClient } from '../client';
 
-import { create as createAuthHook } from './useAuth';
+import { create as createAuthHook, UseAuthOptions } from './useAuth';
 import { create as createLazyQueryHook } from './useLazyQuery';
 import { create as createMutationHook } from './useMutation';
 import { create as createPaginatedQueryHook } from './usePaginatedQuery';
@@ -16,7 +16,7 @@ import { create as createPostsHook } from './usePosts';
 import { create as createPostHook } from './usePost';
 import { create as createPageHook } from './usePage';
 import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
-import { create as createLoginHook } from './useLogin';
+import { create as createLoginHook, UseLoginOptions } from './useLogin';
 
 export type UseClient<
   Schema extends RequiredSchema,
@@ -29,13 +29,6 @@ export type UseClient<
 > =
   | NextClient<Schema, ObjectTypesNames, ObjectTypes>['useClient']
   | NextClient<Schema, ObjectTypesNames, ObjectTypes>['auth']['useClient'];
-
-export interface UseLoginOptions {
-  useMutationOptions?: UseMutationOptions<{
-    code?: string | null | undefined;
-    error?: string | null | undefined;
-  }>;
-}
 
 interface WithAuthHooks<Schema extends RequiredSchema> {
   /**
@@ -50,7 +43,7 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
    *
    * @see https://faustjs.org/docs/next/reference/custom-hooks#useauth
    */
-  useAuth(): {
+  useAuth(options?: UseAuthOptions): {
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
     authResult:

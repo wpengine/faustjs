@@ -9,6 +9,7 @@ class PostPreviewCest
     {
         $post_title = 'Post Preview Post';
         $post_name = 'post-preview-post';
+		$post_content = 'Unpublished preview post content.';
         $front_end_url = 'http://localhost:3000';
 
         $I->haveWpeHeadlessSetting('frontend_uri', $front_end_url);
@@ -16,6 +17,7 @@ class PostPreviewCest
         $post_id = $I->havePostInDatabase([
             'post_type' => 'post',
             'post_title' => $post_title,
+			'post_content' => $post_content,
             'post_name' => $post_name,
         ]);
 
@@ -28,7 +30,10 @@ class PostPreviewCest
             "${front_end_url}/${post_name}/?preview=true",
         );
 
-        $I->amOnHeadlessSite("${post_name}/?preview=true");
-        $I->see('Post Preview Post', 'main.content-single h1');
+		$I->click('Preview in new tab');
+		$I->switchToNextTab();
+		$I->wait(2); // Wait for authentication
+        $I->see($post_title, 'section h1');
+		$I->see($post_content, 'main.content-single .wrap p');
     }
 }

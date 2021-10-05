@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import { Cookies } from './cookie';
-import { headlessConfig } from '../../config';
+import { config } from '../../config';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
 import isNumber from 'lodash/isNumber';
@@ -22,7 +22,7 @@ export class OAuth {
 
   constructor(cookies: Cookies) {
     this.cookies = cookies;
-    this.tokenKey = `${headlessConfig().wpUrl}-rt`;
+    this.tokenKey = `${config().wpUrl}-rt`;
   }
 
   public getRefreshToken(): string | undefined {
@@ -53,7 +53,7 @@ export class OAuth {
   }
 
   public async fetch(code?: string): Promise<OAuthTokenResponse> {
-    const { wpUrl, apiClientSecret } = headlessConfig();
+    const { wpUrl, apiClientSecret } = config();
 
     if (!apiClientSecret) {
       throw new Error(

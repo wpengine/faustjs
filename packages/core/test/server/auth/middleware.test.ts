@@ -1,15 +1,16 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
-import { headlessConfig } from '../../../src';
+import { config } from '../../../src';
 import {
   authorizeHandler,
   redirect,
-} from '../../../src/auth/server/middleware';
+} from '../../../src/server/auth/middleware';
 
 describe('auth/middleware', () => {
   test('redirect will write a 302', () => {
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
@@ -25,7 +26,7 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will send a 401 when there is no code or refresh token', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -37,6 +38,7 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
@@ -53,7 +55,7 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will throw an error if the client secret is not defined', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://headless.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -64,6 +66,7 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
@@ -71,13 +74,15 @@ describe('auth/middleware', () => {
     try {
       await authorizeHandler(req, res);
     } catch (e) {
-      expect((e as Error).message).toContain('The apiClientSecret must be specified');
+      expect((e as Error).message).toContain(
+        'The apiClientSecret must be specified',
+      );
       console.log(e);
     }
   });
 
   test('authorizeHandler will throw a 401 if the request to WordPress authorize endpoint is not ok', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       authType: 'redirect',
       loginPagePath: '/login',
@@ -90,13 +95,14 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
+      setHeader() {},
       writeHead() {},
       end() {},
     } as any;
 
     const endSpy = jest.spyOn(res, 'end');
 
-    const { wpUrl } = headlessConfig();
+    const { wpUrl } = config();
 
     fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
       status: 401,

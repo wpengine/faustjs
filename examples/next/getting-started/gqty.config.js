@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv-flow').config();
 
 /**
  * @type {import("@gqty/cli").GQtyConfig}
