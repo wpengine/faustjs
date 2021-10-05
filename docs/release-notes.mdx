@@ -14,7 +14,7 @@ For a full list of features/changes, visit the releases on GitHub:
 
 ### Breaking Changes
 
-First, you will need to create a new file at `pages/api/faust/[[...route]].ts` with the following content:
+First, you will need to create a new file at your [Next.js pages directory](https://nextjs.org/docs/basic-features/pages), `src/pages/api/faust/[[...route]].ts` with the following content:
 
 ```ts
 import 'faust.config';
@@ -23,9 +23,9 @@ import { apiRouter } from '@faustjs/core';
 export default apiRouter;
 ```
 
-Then, you will need to delete the `pages/api/auth/wpe-headless.ts` file if it exists.
+Then, you will want to delete the `src/pages/api/auth/wpe-headless.ts` file if it exists.
 
-Finally, replace your current `faust.config.js` file with the following:
+Finally, replace your current `src/faust.config.js` file with the following:
 
 ```js
 import { config as coreConfig } from '@faustjs/core';
@@ -44,6 +44,8 @@ export default coreConfig({
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
 });
 ```
+
+[Take a look at the Getting Started example for a closer look at these changes.](https://github.com/wpengine/faustjs/tree/canary/examples/next/getting-started)
 
 ## Faust.js 0.11.0
 
