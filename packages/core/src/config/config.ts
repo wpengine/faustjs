@@ -3,10 +3,13 @@ import defaults from 'lodash/defaults';
 import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
-import type { RequestContext } from '../api';
+import type { RequestContext } from '../gqty';
 import isNil from 'lodash/isNil';
 import trim from 'lodash/trim';
 import { isValidUrl } from '../utils';
+
+export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
+export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';
 
 /* eslint-disable @typescript-eslint/ban-types */
 /**
@@ -38,38 +41,15 @@ export interface Config extends Record<string, unknown> {
   gqlUrl?: string;
 
   /**
-   * Set this value to the URL of your api that you want to use for this application.
+   * Set this value to the relative base path of your API endpoints for this application.
    *
-   * @example api.mysite.com
+   * @example /api/faust
    *
-   * @default wpUrl
+   * @default /api/faust
    * @type {string}
-   * @memberof Config
+   * @memberof HeadlessConfig
    */
-  apiUrl?: string;
-
-  /**
-   * This is a prefix URL path that we will use as the base URL for your WordPress posts.
-   * By default we will assume that your site is configured with no blog-specific URL.
-   *
-   * @example /blog
-   *
-   * @default ''
-   * @type {string}
-   * @memberof Config
-   */
-  blogUrlPrefix?: string;
-
-  /**
-   * Set this value to be the path to your API endpoint that you want to use for this application
-   *
-   * @example /api/auth/wordpress
-   *
-   * @default /api/auth/wpe-headless
-   * @type {string}
-   * @memberof Config
-   */
-  apiEndpoint?: string;
+  apiBasePath?: string;
 
   /**
    * Set this to the secret provided by the Headless WordPress plugin to be used for authentication
@@ -140,9 +120,7 @@ let configSet = false;
  */
 export function normalizeConfig(config: Config): Config {
   const cfg = defaults({}, config, {
-    blogUrlPrefix: '',
-    apiUrl: '',
-    apiEndpoint: '/api/auth/wpe-headless',
+    apiBasePath: '/api/faust',
     authType: 'redirect',
     loginPagePath: '/login',
     disableLogging: false,
@@ -157,18 +135,14 @@ export function normalizeConfig(config: Config): Config {
     }
   });
 
-  let { wpUrl, blogUrlPrefix, apiUrl, apiEndpoint } = cfg;
+  let { wpUrl, apiBasePath } = cfg;
 
   wpUrl = trimEnd(wpUrl, '/');
-  blogUrlPrefix = trimEnd(blogUrlPrefix, '/');
-  apiUrl = trimEnd(apiUrl, '/');
-  apiEndpoint = trimEnd(apiEndpoint, '/');
+  apiBasePath = `/${trim(apiBasePath, '/')}`;
 
   return extend(cfg, {
     wpUrl,
-    blogUrlPrefix,
-    apiUrl,
-    apiEndpoint,
+    apiBasePath,
   });
 }
 
