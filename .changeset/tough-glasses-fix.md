@@ -10,11 +10,13 @@ With the introduction of `apiRouter` we have introduced a breaking change. You w
 
 ```ts
 import 'faust.config';
-import { apiRouter } from '@faustjs/core';
+import { apiRouter } from '@faustjs/core/api';
 
 export default apiRouter;
 ```
 
 **Note**: The `[[...route]]` naming convention is a [Next.js convention for a catch-all route.](https://nextjs.org/docs/routing/dynamic-routes#optional-catch-all-routes)
 
-In addition, the `apiEndpoint` config option has been removed in exchange for the `apiBasePath` option. This option specifies the base path for all of the Faust.js endpoints.
+### Config changes
+
+The `apiEndpoint` and `apiUrl` config options have been removed in exchange for the `apiBasePath` option. This option specifies the base path for all of the Faust.js endpoints. The `blogUrlPrefix` is no longer necessary and has been removed from the config interface.

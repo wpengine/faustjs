@@ -13,9 +13,8 @@ import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
 import isObject from 'lodash/isObject';
 import omit from 'lodash/omit';
-import { Cookies, getAccessToken } from '../../auth';
-import { OAuth } from '../../auth/server/token';
-import { getGqlUrl } from '../../config/config';
+import { getAccessToken } from '../auth';
+import { getGqlUrl } from '../config/config';
 
 export interface GqlClientSchema {
   query: any;
@@ -72,6 +71,8 @@ export function createAuthQueryFetcher(
     let token: string | undefined;
 
     if (!isNil(context)) {
+      const { Cookies } = await import('../server/auth/cookie');
+      const { OAuth } = await import('../server/auth/token');
       const oauth = new OAuth(new Cookies(context));
       const oauthTokens = await oauth.fetch();
 

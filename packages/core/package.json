@@ -9,6 +9,10 @@
     ".": {
       "import": "./dist/mjs/index.js",
       "require": "./dist/cjs/index.js"
+    },
+    "./api": {
+      "import": "./dist/mjs/api.js",
+      "require": "./dist/cjs/api.js"
     }
   },
   "scripts": {

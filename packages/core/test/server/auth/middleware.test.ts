@@ -5,7 +5,7 @@ import { headlessConfig } from '../../../src';
 import {
   authorizeHandler,
   redirect,
-} from '../../../src/auth/server/middleware';
+} from '../../../src/server/auth/middleware';
 
 describe('auth/middleware', () => {
   test('redirect will write a 302', () => {
