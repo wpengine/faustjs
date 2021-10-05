@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
-import type { RequestContext } from '../api';
+import type { RequestContext } from '../gqty';
 import isNil from 'lodash/isNil';
 import trim from 'lodash/trim';
 import { isValidUrl } from '../utils';
@@ -50,18 +50,6 @@ export interface Config extends Record<string, unknown> {
    * @memberof HeadlessConfig
    */
   apiBasePath?: string;
-
-  /**
-   * This is a prefix URL path that we will use as the base URL for your WordPress posts.
-   * By default we will assume that your site is configured with no blog-specific URL.
-   *
-   * @example /blog
-   *
-   * @default ''
-   * @type {string}
-   * @memberof Config
-   */
-  blogUrlPrefix?: string;
 
   /**
    * Set this to the secret provided by the Headless WordPress plugin to be used for authentication

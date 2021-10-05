@@ -89,13 +89,11 @@ describe('config/config', () => {
     const coreConfig = normalizeConfig({
       wpUrl: '   foo   ',
       gqlUrl: '   foo   ',
-      blogUrlPrefix: '   foo   ',
       apiBasePath: '   foo   ',
     });
 
     expect(coreConfig.wpUrl).toBe('foo');
     expect(coreConfig.gqlUrl).toBe('foo');
-    expect(coreConfig.blogUrlPrefix).toBe('foo');
     expect(coreConfig.apiBasePath).toBe('/foo');
   });
 
@@ -104,13 +102,11 @@ describe('config/config', () => {
       wpUrl: 'http://test.local/',
       gqlUrl: 'http://test.local/graphql',
       apiBasePath: '/api/my-api/',
-      blogUrlPrefix: '/blog/',
     });
 
     expect(coreConfig.wpUrl).toBe('http://test.local');
     expect(coreConfig.gqlUrl).toBe('http://test.local/graphql');
     expect(coreConfig.apiBasePath).toBe('/api/my-api');
-    expect(coreConfig.blogUrlPrefix).toBe('/blog');
   });
 });
 

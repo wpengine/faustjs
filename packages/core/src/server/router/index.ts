@@ -1,14 +1,11 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { isUndefined } from 'lodash';
-import {
-  authorizeHandler,
-  getUrlPath,
-  headlessConfig,
-  logoutHandler,
-} from '../..';
+import { authorizeHandler, logoutHandler } from '../auth/middleware';
+import { getUrlPath } from '../../utils';
 import {
   LOGOUT_ENDPOINT_PARTIAL_PATH,
   TOKEN_ENDPOINT_PARTIAL_PATH,
+  headlessConfig,
 } from '../../config';
 
 /**
