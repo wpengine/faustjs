@@ -5,7 +5,7 @@ import { getUrlPath } from '../../utils';
 import {
   LOGOUT_ENDPOINT_PARTIAL_PATH,
   TOKEN_ENDPOINT_PARTIAL_PATH,
-  headlessConfig,
+  config,
 } from '../../config';
 
 /**
@@ -26,7 +26,7 @@ export async function apiRouter(
   req: IncomingMessage,
   res: ServerResponse,
 ): Promise<void> {
-  const { apiBasePath } = headlessConfig();
+  const { apiBasePath } = config();
 
   if (isUndefined(apiBasePath)) {
     throw new Error(
