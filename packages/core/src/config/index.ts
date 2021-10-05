@@ -1,1 +1,1 @@
-export { HeadlessConfig, headlessConfig, getGqlUrl } from './config';
+export { Config, config, getGqlUrl } from './config';

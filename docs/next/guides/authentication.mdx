@@ -51,7 +51,7 @@ This strategy is great for use cases where you want to support a more "white lab
 To use this strategy, you'll need to configure your `faust.config.js` file to use the `local` authentication strategy, in addition to the route of your Next.js login page. Take the following `faust.config.js` file for example:
 
 ```tsx title=faust.config.js {15,16}
-import { headlessConfig } from '@faustjs/core';
+import { config as coreConfig } from '@faustjs/core';
 
 if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   console.error(
@@ -60,9 +60,9 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
 }
 
 /**
- * @type {import("@faustjs/core").HeadlessConfig}
+ * @type {import("@faustjs/core").Config}
  */
-export default headlessConfig({
+export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
   apiClientSecret: process.env.WP_HEADLESS_SECRET,
   authType: 'local',

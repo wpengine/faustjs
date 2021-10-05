@@ -1,120 +1,120 @@
 import {
   getGqlUrl,
-  headlessConfig,
+  config,
   normalizeConfig,
 } from '../../src/config/config';
 
 describe('config/config', () => {
-  test('headlessConfig() should throw an error if no config is set', () => {
-    expect(() => headlessConfig()).toThrowError();
+  test('config() should throw an error if no config is set', () => {
+    expect(() => config()).toThrowError();
   });
 
-  test('headlessConfig() should NOT throw an error if a config is set', () => {
-    headlessConfig({
+  test('config() should NOT throw an error if a config is set', () => {
+    config({
       wpUrl: '',
     });
 
-    expect(() => headlessConfig()).not.toThrowError();
+    expect(() => config()).not.toThrowError();
   });
 
-  test('headlessConfig() called with no arguments should not modify the config', () => {
-    const config = headlessConfig({
+  test('config() called with no arguments should not modify the config', () => {
+    const coreConfig = config({
       wpUrl: '',
       apiEndpoint: '',
     });
 
-    expect(headlessConfig()).toBe(config);
+    expect(config()).toBe(coreConfig);
   });
 
-  test('headlessConfig() should return the set wpUrl', () => {
+  test('config() should return the set wpUrl', () => {
     const cfg = {
       wpUrl: 'http://wpengine.com',
     };
 
-    let config = headlessConfig(cfg);
-    expect(config.wpUrl).toBe(cfg.wpUrl);
+    let coreConfig = config(cfg);
+    expect(coreConfig.wpUrl).toBe(cfg.wpUrl);
   });
 
-  test('headlessConfig() arguments should be immutable', () => {
+  test('config() arguments should be immutable', () => {
     const cfg = {
       wpUrl: '',
       apiEndpoint: '',
     };
 
-    let config = headlessConfig(cfg);
+    let coreConfig = config(cfg);
 
-    expect(config).not.toBe(cfg);
+    expect(coreConfig).not.toBe(cfg);
   });
 
-  test('headlessConfig() should return the set wpUrl', () => {
+  test('config() should return the set wpUrl', () => {
     const cfg = {
       wpUrl: 'http://my-headless-site.com',
     };
 
-    const config = headlessConfig(cfg);
-    expect(config.wpUrl).toBe(cfg.wpUrl);
+    const coreConfig = config(cfg);
+    expect(coreConfig.wpUrl).toBe(cfg.wpUrl);
   });
 
-  test('headlessConfig() should always return the config', () => {
+  test('config() should always return the config', () => {
     const cfg = {
       wpUrl: '',
       apiEndpoint: '',
     };
 
-    const config1 = headlessConfig(cfg);
-    const config2 = headlessConfig();
+    const coreConfig1 = config(cfg);
+    const coreConfig2 = config();
 
-    expect(config1).toBe(config2);
-    expect(headlessConfig()).toBe(config1);
+    expect(coreConfig1).toBe(coreConfig2);
+    expect(config()).toBe(coreConfig2);
   });
 
   test('apiEndpoint should default to `/api/auth/wpe-headless` unless set', () => {
-    let config = normalizeConfig({
+    let coreConfig = normalizeConfig({
       wpUrl: '',
     });
 
-    expect(config.apiEndpoint).toBe('/api/auth/wpe-headless');
+    expect(coreConfig.apiEndpoint).toBe('/api/auth/wpe-headless');
 
-    config = normalizeConfig({
+    coreConfig = normalizeConfig({
       wpUrl: '',
       apiEndpoint: '/api/auth',
     });
 
-    expect(config.apiEndpoint).toBe('/api/auth');
+    expect(coreConfig.apiEndpoint).toBe('/api/auth');
   });
 
   test('All strings should be trimmed', () => {
-    const config = normalizeConfig({
+    const coreConfig = normalizeConfig({
       wpUrl: '   foo   ',
       gqlUrl: '   foo   ',
       apiEndpoint: '   foo   ',
       blogUrlPrefix: '   foo   ',
     });
 
-    expect(config.wpUrl).toBe('foo');
-    expect(config.gqlUrl).toBe('foo');
-    expect(config.apiEndpoint).toBe('foo');
-    expect(config.blogUrlPrefix).toBe('foo');
+    expect(coreConfig.wpUrl).toBe('foo');
+    expect(coreConfig.gqlUrl).toBe('foo');
+    expect(coreConfig.apiEndpoint).toBe('foo');
+    expect(coreConfig.blogUrlPrefix).toBe('foo');
   });
 
   test('URLs should never end in `/`', () => {
-    const config = normalizeConfig({
+    const coreConfig = normalizeConfig({
       wpUrl: 'http://test.local/',
       gqlUrl: 'http://test.local/graphql',
       apiEndpoint: '/api/auth/',
       blogUrlPrefix: '/blog/',
     });
 
-    expect(config.wpUrl).toBe('http://test.local');
-    expect(config.gqlUrl).toBe('http://test.local/graphql');
-    expect(config.apiEndpoint).toBe('/api/auth');
-    expect(config.blogUrlPrefix).toBe('/blog');
+    expect(coreConfig.wpUrl).toBe('http://test.local');
+    expect(coreConfig.gqlUrl).toBe('http://test.local/graphql');
+    expect(coreConfig.apiEndpoint).toBe('/api/auth');
+    expect(coreConfig.blogUrlPrefix).toBe('/blog');
   });
 });
 
 describe('getGqlUrl', () => {
   test('getGqlUrl() should return the default graphql endpoint if gqlUrl is not set', () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
     });
 
@@ -122,7 +122,7 @@ describe('getGqlUrl', () => {
   });
 
   test('getGqlUrl() should return gqlUrl if it is a full URL', () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       gqlUrl: 'http://my-gql-url.com/graphql/',
     });
@@ -131,7 +131,7 @@ describe('getGqlUrl', () => {
   });
 
   test('getGqlUrl() should return the wpUrl with gqlUrl if it is NOT a full URL', () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       gqlUrl: '/custom-graphql-endpoint',
     });
