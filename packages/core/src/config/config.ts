@@ -8,6 +8,9 @@ import isNil from 'lodash/isNil';
 import trim from 'lodash/trim';
 import { isValidUrl } from '../utils';
 
+export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
+export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';
+
 /* eslint-disable @typescript-eslint/ban-types */
 /**
  * The configuration for your headless site

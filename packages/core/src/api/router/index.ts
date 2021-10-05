@@ -6,9 +6,10 @@ import {
   headlessConfig,
   logoutHandler,
 } from '../..';
-
-export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
-export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';
+import {
+  LOGOUT_ENDPOINT_PARTIAL_PATH,
+  TOKEN_ENDPOINT_PARTIAL_PATH,
+} from '../../config';
 
 /**
  * A node handler for processing all incoming Faust.js API requests.

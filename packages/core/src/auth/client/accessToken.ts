@@ -1,8 +1,7 @@
-import { headlessConfig } from '../../config';
+import { headlessConfig, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config';
 import { isServerSide } from '../../utils';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
-import { TOKEN_ENDPOINT_PARTIAL_PATH } from '../..';
 
 export interface AccessToken {
   token: string | undefined;
