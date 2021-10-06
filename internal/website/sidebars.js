@@ -108,6 +108,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'withFaust',
+              id: 'next/reference/with-faust',
+            },
+            {
+              type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
