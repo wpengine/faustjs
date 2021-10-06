@@ -127,3 +127,70 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 ```
+
+## Configuring Custom Page Props And ISR
+
+### Custom Page Props
+
+If you need to send custom props to your page you can do so in the configuration options for both `getNextServerSideProps` and `getNextStaticProps`. Below is some example code demonstrating how to do this.
+
+```tsx {2,5-9,14,26-28}
+import { GetStaticPropsContext } from 'next';
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+interface MyPageProps {
+  title: string;
+}
+
+export default function MyPage({ title }: MyPageProps) {
+  const { usePosts } = client;
+
+  return (
+    <>
+      <h2>{title}</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+    props: {
+      title: 'Recent Posts',
+    },
+  });
+}
+```
+
+You might want to use this to send props down based on calls to APIs you make outside of Faust.js.
+
+### Setting Up Incremental Static Regeneration (ISR)
+
+Next.js enables ISR with [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration) using a `revalidate` property. By default in Next.js ISR is disabled. Faust.js enables ISR, and by default it sets it to 15 minutes. What this means is your page will be cached for 15 minutes before being regenerated. [Read more on the Next.js site about ISR](https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration).
+
+With Faust.js you can configure ISR at both the page level and the global level. At the page level you can pass it along in the configuration options for `getNextStaticProps` as follows:
+
+```ts {4}
+return getNextStaticProps(context, {
+  Page: MyPage,
+  client,
+  revalidate: 60, // 60 seconds
+});
+```
+
+To configure ISR at a global level you can add the following code to your `faust.config`:
+
+```ts title=src/faust.config.js
+import { config as nextConfig } from '@faustjs/next';
+
+nextConfig({
+  revalidate: 60, // 60 seconds
+});
+```
+
+The code above will set the default ISR revalidate time for every page, and can be overridden on each page.
