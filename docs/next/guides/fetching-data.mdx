@@ -271,7 +271,7 @@ The `logQueries` function returns a function that you can call to turn the log o
 if (process.env.NODE_ENV === 'development') {
 	const unsubscribe = logQueries(client)
 
-	// queries are not logging
+	// queries are now logging
 	// ...
 
 	unsubscribe();
