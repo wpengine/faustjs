@@ -30,19 +30,18 @@ export const AUTH_CLIENT_CACHE_PROP = '__AUTH_CLIENT_CACHE_PROP';
 
 export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   client: ReturnType<typeof getClient>;
-  Page?: FunctionComponent | ComponentClass;
+  Page?:
+    | FunctionComponent<Props>
+    | ComponentClass<Props>
+    | ((props: Props) => JSX.Element);
   props?: Props;
   notFound?: boolean;
   redirect?: Redirect;
 }
 
-export interface GetNextStaticPropsConfig<Props = Record<string, unknown>> {
-  client: ReturnType<typeof getClient>;
-  Page?: FunctionComponent | ComponentClass;
-  props?: Props;
+export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
+  extends GetNextServerSidePropsConfig<Props> {
   revalidate?: number | boolean;
-  notFound?: boolean;
-  redirect?: Redirect;
 }
 
 export interface PageProps<Props> {
@@ -58,14 +57,14 @@ export interface Is404Config {
 
 export async function getProps<
   Context extends GetStaticPropsContext | GetServerSidePropsContext,
-  Props,
+  Props
 >(
   context: Context,
   {
     client,
     Page,
     props,
-  }: GetNextServerSidePropsConfig | GetNextStaticPropsConfig,
+  }: GetNextServerSidePropsConfig<Props> | GetNextStaticPropsConfig<Props>,
 ): Promise<PageProps<Props>> {
   let cacheSnapshot: string | undefined;
   let authSnapshot: string | undefined;
@@ -79,10 +78,11 @@ export async function getProps<
         const { cacheSnapshot: coreSnapshot } = await client.prepareReactRender(
           <RouterContext.Provider
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            value={{ query: { ...context.params } } as any}>
+            value={{ query: { ...context.params } } as any}
+          >
             <HeadlessContext.Provider value={{ client }}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Page {...props} />
+              <Page {...props as Props} />
             </HeadlessContext.Provider>
           </RouterContext.Provider>,
         );
@@ -104,7 +104,7 @@ export async function getProps<
 }
 
 export async function is404<
-  Context extends GetStaticPropsContext | GetServerSidePropsContext,
+  Context extends GetStaticPropsContext | GetServerSidePropsContext
 >({ params }: Context, { client }: Is404Config): Promise<boolean> {
   if (!params) {
     return false;
@@ -210,7 +210,7 @@ export async function is404<
  */
 export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
-  cfg: GetNextServerSidePropsConfig,
+  cfg: GetNextServerSidePropsConfig<Props>,
 ): Promise<GetServerSidePropsResult<Props>> {
   const { notFound, redirect } = cfg;
 
@@ -238,7 +238,7 @@ export async function getNextServerSideProps<Props>(
  */
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
-  cfg: GetNextStaticPropsConfig,
+  cfg: GetNextStaticPropsConfig<Props>,
 ): Promise<GetStaticPropsResult<Props>> {
   const { notFound, redirect, revalidate } = cfg;
   const nextConfig = config();
