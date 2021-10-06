@@ -1,0 +1,72 @@
+---
+slug: /next/reference/with-faust
+title: Using withFaust
+description: withFaust is a helper function that merges your next.config.js with Faust related configuration.
+---
+
+The `withFaust` helper function is used to merge your `next.config.js` config with necessary Faust.js configuration.
+
+## Usage
+
+To use `withFaust`, create a `next.config.js` file in your project root with the following content:
+
+```js title="next.config.js"
+const { withFaust } = require('@faustjs/next');
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+module.exports = withFaust();
+```
+
+If you already have a `next.config.js` file, you can use the first argument of `withFaust` to merge in your existing config.
+
+Take the following example, where we have a custom `next.config.js` handling a rewrite:
+
+```js title="next.config.js"
+const { withFaust } = require('@faustjs/next');
+
+const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/about',
+        destination: '/',
+      },
+    ];
+  },
+};
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+module.exports = withFaust(nextConfig);
+```
+
+## Additional Options
+
+`withFaust` also accepts a second argument for `withFaustConfig`. `withFaustConfig` represented as a TypeScript interface looks like:
+
+```ts
+interface WithFaustConfig {
+  // Where preview links will be redirected to.
+  previewDestination?: string;
+}
+```
+
+For example, if you wanted to change the default preview destination from `/preview` to `/previews`, you can do so by passing the following to `withFaust`:
+
+```js title="next.config.js"
+const { withFaust } = require('@faustjs/next');
+
+const nextConfig = {};
+
+const withFaustConfig = {
+  previewDestination: '/previews',
+};
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+module.exports = withFaust(nextConfig, withFaustConfig);
+```
