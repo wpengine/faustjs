@@ -57,7 +57,7 @@ export interface Is404Config {
 
 export async function getProps<
   Context extends GetStaticPropsContext | GetServerSidePropsContext,
-  Props
+  Props,
 >(
   context: Context,
   {
@@ -78,11 +78,10 @@ export async function getProps<
         const { cacheSnapshot: coreSnapshot } = await client.prepareReactRender(
           <RouterContext.Provider
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            value={{ query: { ...context.params } } as any}
-          >
+            value={{ query: { ...context.params } } as any}>
             <HeadlessContext.Provider value={{ client }}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Page {...props as Props} />
+              <Page {...(props as Props)} />
             </HeadlessContext.Provider>
           </RouterContext.Provider>,
         );
@@ -104,7 +103,7 @@ export async function getProps<
 }
 
 export async function is404<
-  Context extends GetStaticPropsContext | GetServerSidePropsContext
+  Context extends GetStaticPropsContext | GetServerSidePropsContext,
 >({ params }: Context, { client }: Is404Config): Promise<boolean> {
   if (!params) {
     return false;
