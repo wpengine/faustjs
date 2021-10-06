@@ -235,3 +235,50 @@ export function PostForm() {
 > **NOTE**: The above code is not a complete example of how you would implement form submissions to your Headless WordPress API. It is intended to demonstrate how mutations work using the Faust.js client.
 
 The code above uses `useMutation` combined with a form to create new posts by calling the [WPGraphQL](https://www.wpgraphql.com/) Headless WordPress API.
+
+## Logging Queries
+
+Sometimes you want to understand what GraphQL queries are made for debugging purposes. Faust.js provides this for you by exposing a `logQueries` function. The following code demonstrates how you might use it.
+
+```ts title=src/client/index.ts {2, 21}
+import type { IncomingMessage } from 'http';
+import { getClient, logQueries } from '@faustjs/next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+});
+
+if (process.env.NODE_ENV === 'development') {
+	logQueries(client);
+}
+```
+
+The `logQueries` function returns a function that you can call to turn the log off.
+
+```ts
+if (process.env.NODE_ENV === 'development') {
+	const unsubscribe = logQueries(client)
+
+	// queries are now logging
+	// ...
+
+	unsubscribe();
+
+	// queries no longer log
+	// ...
+}
+```
+
+> **NOTE**: It is recommended that you turn this off in production, or write code to use `process.env.NODE_ENV` to safely log queries.
