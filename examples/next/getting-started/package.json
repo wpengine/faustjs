@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@faustjs/core": "^0.12.0",
-    "@faustjs/next": "^0.12.1",
+    "@faustjs/next": "^0.12.2",
     "next": "^11.1.2",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",

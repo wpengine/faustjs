@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.12.2
+
+### Patch Changes
+
+- 1e32f81: Typeings for `getNextStaticProps` and `getNextServerSideProps` now allow and protect custom props.
+
 ## 0.12.1
 
 ### Patch Changes
