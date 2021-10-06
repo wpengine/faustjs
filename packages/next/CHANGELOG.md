@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.12.1
+
+### Patch Changes
+
+- 7d30277: `logQueries` is can now be called and will log GraphQL queries if desired.
+
 ## 0.12.0
 
 ### Minor Changes
