@@ -103,6 +103,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'API Router',
+              id: 'next/reference/api-router',
+            },
+            {
+              type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
