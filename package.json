@@ -43,8 +43,8 @@
     "release": "npm run build && changeset publish"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
-    "@wordpress/env": "^4.0.0",
+    "@types/jest": "^27.0.2",
+    "@wordpress/env": "^4.1.1",
     "gqty": "^2.0.2",
     "rimraf": "^3.0.2"
   },
