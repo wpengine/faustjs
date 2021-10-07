@@ -16,6 +16,17 @@ Authentication can be a cumbersome process when building headless WordPress site
 4. Faust.js stores the refresh token in a secure, http only cookie. The refresh token is used to request a new access token when the current one expires
 5. Faust.js stores the access token in memory to be used in subsequent authenticated requests
 
+## Initial Setup
+
+Before you get started with implementing an authentication strategy, you'll need to setup the API Router. You can do this by creating a file, `src/pages/api/faust/[[...route]].ts`, with the following code:
+
+```ts title=src/pages/api/faust/[[...route]].ts
+import 'faust.config';
+import { apiRouter } from '@faustjs/core';
+
+export default apiRouter;
+```
+
 ## Strategies
 
 There are two authentication strategies available in Faust.js: `redirect` and `local`
@@ -93,7 +104,8 @@ export default function Login() {
         e.preventDefault();
 
         login(usernameEmail, password);
-      }}>
+      }}
+    >
       <div>
         <div>
           <label htmlFor="usernameEmail">Username or Email</label>
@@ -142,6 +154,41 @@ For a more detailed explanation of the `useLogin` hook, see the [`useLogin` hook
 Upon a successful login, a refresh token will be stored in a secure, http only cookie, as well as the access token in memory to use for subsequent authenticated requests. A login request can be confirmed it succeeded by checking for the `code` property in the `data` object.
 
 Additionally, if the login page URL contains a `redirect_uri` query parameter, the user will be redirected to the specified URL upon successful login.
+
+Finally, you can create a `logout.tsx` page to handle logout requests. This is done by using the `useLogout` hook:
+
+```tsx title="src/pages/logout.tsx"
+import { client } from 'client';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+export default function Logout() {
+  const router = useRouter();
+  const { isLoggedOut, logout } = client.auth.useLogout();
+  useEffect(() => {
+    if (isLoggedOut !== undefined) {
+      return;
+    }
+
+    // Initiate the logout process.
+    // This could also be called on a button click, for example, in a nav menu.
+    logout();
+  }, [isLoggedOut, logout]);
+
+  useEffect(() => {
+    if (isLoggedOut) {
+      // The user was successfully logged out. Redirect them.
+      router.push('/');
+    }
+  }, [router, isLoggedOut]);
+  return <>Logging out...</>;
+}
+```
+
+The `useLogout` hook exports an object with the following properties:
+
+- `logout`: a function that initiates a request to the logout middleware to remove the refresh token from the cookie.
+- `isLoading`: a boolean that indicates whether the logout request is in progress.
+- `isLoggedOut`: a boolean that indicates whether the logout request was successful.
 
 <video
   width="100%"
