@@ -1,5 +1,16 @@
 # @faustjs/next
 
+## 0.12.3
+
+### Patch Changes
+
+- 068f3c3: Introduced the `useLogout` hook to facilitate logging out a user
+
+  See https://faustjs.org/docs/next/reference/custom-hooks#uselogout for more details.
+
+- Updated dependencies [068f3c3]
+  - @faustjs/core@0.12.3
+
 ## 0.12.2
 
 ### Patch Changes
