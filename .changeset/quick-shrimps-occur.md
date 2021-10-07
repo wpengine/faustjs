@@ -1,5 +1,5 @@
 ---
-'@faustjs/next': minor
+'@faustjs/next': patch
 ---
 
 Introduced the `useLogout` hook to facilitate logging out a user
