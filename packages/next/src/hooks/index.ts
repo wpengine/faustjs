@@ -17,6 +17,7 @@ import { create as createPostHook } from './usePost';
 import { create as createPageHook } from './usePage';
 import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
 import { create as createLoginHook, UseLoginOptions } from './useLogin';
+import { create as createLogoutHook } from './useLogout';
 
 export type UseClient<
   Schema extends RequiredSchema,
@@ -74,6 +75,17 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
         }
       | undefined;
     error: GQtyError | undefined;
+  };
+
+  /**
+   * Faust.js hook to facilitate a logout request.
+   *
+   * @see https://faustjs.org/docs/next/reference/custom-hooks#uselogout
+   */
+  useLogout(): {
+    isLoading: boolean;
+    isLoggedOut: boolean | undefined;
+    logout: () => Promise<void>;
   };
 }
 
@@ -194,5 +206,6 @@ export function createAuthHooks<
     usePage: createPageHook(useQuery),
     usePreview: createPreviewHook(useAuth, useQuery),
     useLogin: createLoginHook(useMutation),
+    useLogout: createLogoutHook(),
   };
 }
