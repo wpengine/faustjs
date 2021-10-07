@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.12.3
+
+### Patch Changes
+
+- 068f3c3: Fixed an issue that caused the API Router to not route requests with an authorization code
+
 ## 0.12.0
 
 ### Minor Changes
