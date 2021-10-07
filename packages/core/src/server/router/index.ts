@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { isUndefined } from 'lodash';
 import { authorizeHandler, logoutHandler } from '../auth/middleware';
-import { getUrlPath } from '../../utils';
+import { parseUrl } from '../../utils';
 import {
   LOGOUT_ENDPOINT_PARTIAL_PATH,
   TOKEN_ENDPOINT_PARTIAL_PATH,
@@ -34,9 +34,10 @@ export async function apiRouter(
     );
   }
 
-  const route = getUrlPath(req.url);
+  const parsedUrl = parseUrl(req.url);
+  const pathname = parsedUrl?.pathname;
 
-  switch (route) {
+  switch (pathname) {
     case `${apiBasePath}/${TOKEN_ENDPOINT_PARTIAL_PATH}`:
       return authorizeHandler(req, res);
     case `${apiBasePath}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`:
