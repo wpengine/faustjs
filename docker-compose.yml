@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  wordpress:
+    build: ./plugins/wpe-headless/.docker
+    restart: always
+    ports:
+      - 8096:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: wordpress
+    links:
+      - db
+    volumes:
+      - wordpress:/var/www/html
+      - ./plugins/wpe-headless:/var/www/html/wp-content/plugins/wpe-headless
+  
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 33066:3306
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: wordpress
+    volumes:
+      - ./plugins/wpe-headless/.docker/mysql:/docker-entrypoint-initdb.d
+  
+  frontend:
+    build:
+      context: ./examples/next/getting-started
+      dockerfile: ../../../.docker/dockerfile
+    restart: always
+    ports:
+      - 8097:3000
+    volumes:
+      - ./examples/next/getting-started:/app
+    depends_on:
+      - wordpress
+      - db
+    environment:
+      NEXT_PUBLIC_WORDPRESS_URL: http://localhost:8096
+    command: /bin/sh -c "wait_for_it.sh localhost:8096 && npm run build"
+
+
+volumes:
+  wordpress:
+  db:
+  frontend:
