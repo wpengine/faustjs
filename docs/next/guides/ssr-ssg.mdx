@@ -56,6 +56,65 @@ The reason `MyPage` and `client` are passed to `getNextStaticProps` is because u
 
 This allows the developer to not have to think about batching/constructing queries, or data fetching. You are able to write your page as if you will be using Client-side Rendering (CSR). Then, you add the `getStaticProps` function above and can take advantage of SSG!
 
+### How To Handle `getStaticPaths`
+
+Next.js supports [SSG with `getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) as well. This function is used to build a list of paths that can be used to statically generate your site. This function should be used when you have a dynamic page that needs to be statically generated (e.g. `[postSlug].tsx`). In the `getStaticPaths` function you have the option to return the paths that you have several options that inform Next.js how you want to statically generate your pages. Consider the following examples:
+
+#### Statically Generate All Your Pages Upon Request
+
+If you don't know exactly how you want to statically generate your site, a good option for `getStaticPaths` is to inform Next.js not to generate any HTML at build time, but to generated it on-the-fly as new requests come in. You can do this as follows:
+
+```tsx title=src/pages/posts/[postSlug]/index.tsx
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+The above code will tell Next.js not to generate any pages up front. Then, as requests come in they will be generated server-side and stored for subsequent requests. Read more about [`fallback: 'blocking'`](https://nextjs.org/docs/basic-features/data-fetching#fallback-blocking).
+
+#### Statically Generate **Some** Of Your Pages At Build Time Based On A Query
+
+Maybe you want to generate a specific set of posts during build time. Perhaps you want to generate the most recent posts, or maybe you want to generate posts that receive a lot of traffic. You can do this by providing paths to Next.js that are based on a query as follows:
+
+```tsx title=src/pages/posts/[postSlug]/index.tsx
+import { client } from 'client';
+
+export async function getStaticPaths() {
+  const values = await client.client.inlineResolved(() => {
+    return client.client.query
+      .posts({
+        first: 5,
+      })
+      ?.nodes?.map((node) => node?.uri);
+  });
+  const paths = [];
+
+  if (Array.isArray(values)) {
+    paths.push(
+      ...values
+        .filter((value) => {
+          return typeof value === 'string';
+        }),
+    );
+  }
+
+  return {
+    paths,
+    fallback: 'blocking',
+  };
+```
+
+> **NOTE**: The code above assumes you have your permalink structure set to `/posts/%postname%/` in WordPress. You can add additional logic here to format the proper URL if that is not the case.
+
+The code above will perform an inline query to WordPress in order to get the 5 most recent posts. Then it will create a list of paths based on the post URIs. In this case we are not rendering all the post pages up front, so some will be dynamically generated on-the-fly using the `fallback: 'blocking'` feature in Next.js.
+
+
+The above scenarios are most common, but there are other options for [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) that might be useful depending upon your needs.
+
+
 ## SSR Using `getNextServerSideProps`
 
 This helper function lets you server side render your page with WordPress data. The function should be returned from `getServerSideProps`:
