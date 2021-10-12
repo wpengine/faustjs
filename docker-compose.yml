@@ -10,17 +10,21 @@ services:
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: wordpress
-    links:
+    depends_on:
       - db
+      - webdriver
     volumes:
       - wordpress:/var/www/html
       - ./plugins/wpe-headless:/var/www/html/wp-content/plugins/wpe-headless
+    command: /bin/sh -c "wp plugin install wp-graphql --activate --allow-root && wp db export /var/www/html/wp-content/plugins/wpe-headless/tests/_data/dump.sql --allow-root && apache2-foreground"
   
   db:
     image: mysql:5.7
     restart: always
     ports:
       - 33066:3306
+    depends_on:
+      - webdriver
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
@@ -36,14 +40,20 @@ services:
     restart: always
     ports:
       - 8097:3000
-    volumes:
-      - ./examples/next/getting-started:/app
     depends_on:
-      - wordpress
+      - webdriver
       - db
+      - wordpress
     environment:
       NEXT_PUBLIC_WORDPRESS_URL: http://localhost:8096
-    command: /bin/sh -c "wait_for_it.sh localhost:8096 && npm run build"
+      WP_HEADLESS_SECRET: 00000000-0000-0000-0000-000000000001
+    command: /bin/sh -c "./wait-for-it.sh localhost:8096 -- npm run build && npm run start"
+  
+  webdriver:
+    image: selenium/standalone-chrome:latest
+    restart: always
+    ports:
+      - 9515:4444
 
 
 volumes:
