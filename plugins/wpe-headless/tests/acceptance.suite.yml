@@ -37,8 +37,8 @@ modules:
             adminPassword: '%TEST_SITE_ADMIN_PASSWORD%'
             adminPath: '%TEST_SITE_WP_ADMIN_PATH%'
             browser: chrome
-            host: localhost
-            port: 9515
+            host: webdriver
+            port: 4444
             window_size: false
             capabilities:
                 chromeOptions:

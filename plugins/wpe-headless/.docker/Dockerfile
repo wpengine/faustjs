@@ -11,6 +11,9 @@ RUN docker-php-ext-install pdo pdo_mysql
 COPY --from=wp-cli --chown=www-data:www-data /usr/local/bin/wp /public/bin/wp-cli.phar
 COPY wp-cli/wp-cli.sh /usr/local/bin/wp
 
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN ["chmod", "+x", "/usr/local/bin/wait-for-it"]
+
 RUN set -e \
     ; apt-get -qq update \
     ; apt-get install \
