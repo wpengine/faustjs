@@ -1,7 +1,9 @@
 version: '3.8'
 services:
   wordpress:
-    build: ./plugins/wpe-headless/.docker
+    build:
+      context: ./plugins/wpe-headless
+      dockerfile: ../../.docker/dockerfile.wordpress
     restart: always
     links:
       - frontend
@@ -33,7 +35,7 @@ services:
   frontend:
     build:
       context: ./examples/next/getting-started
-      dockerfile: ../../../.docker/dockerfile
+      dockerfile: ../../../.docker/dockerfile.frontend
     restart: always
     ports:
       - 8097:3000
