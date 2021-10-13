@@ -12,7 +12,9 @@ jobs:
       - name: Test
         run: |
           docker-compose \
-          exec -T \
-          --workdir=/var/www/html/wp-content/plugins/wpe-headless \
-          wordpress \
-          /bin/sh -c 'wait-for-it --timeout=30 --strict frontend:3000 -- vendor/bin/codecept run acceptance'
+            exec \
+            -T --workdir=/var/www/html/wp-content/plugins/wpe-headless \
+            wordpress \
+            /bin/sh -c 'wait-for-it --timeout=30 --strict frontend:3000 -- vendor/bin/codecept run acceptance'
+      - name: Test Logs
+        run: docker-compose logs wordpress
