@@ -15,7 +15,6 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: wordpress
     volumes:
-      - wordpress:/var/www/html
       - ./plugins/wpe-headless:/var/www/html/wp-content/plugins/wpe-headless
     command: /bin/sh -c "wp plugin install wp-graphql --activate --allow-root && wp db export /var/www/html/wp-content/plugins/wpe-headless/tests/_data/dump.sql --allow-root && apache2-foreground"
   
@@ -49,8 +48,3 @@ services:
     restart: always
     ports:
       - 9515:4444
-
-volumes:
-  wordpress:
-  db:
-  frontend:
