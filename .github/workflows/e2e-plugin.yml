@@ -11,6 +11,8 @@ jobs:
         run: docker-compose up -d
       - name: Check containers
         run: sleep 60 && docker ps -a
+      - name: Check WordPress container logs
+        run: docker-compose logs wordpress
       - name: Test
         run: |
           docker \
