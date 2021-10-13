@@ -10,7 +10,7 @@ jobs:
       - name: Build containers
         run: docker-compose up -d
       - name: Check containers
-        run: sleep 10 && docker ps -a
+        run: sleep 60 && docker ps -a
       - name: Test
         run: |
           docker \
