@@ -3,6 +3,7 @@ on: pull_request
 jobs:
   e2e-test-next-getting-started-example:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
     defaults:

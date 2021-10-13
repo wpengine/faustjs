@@ -9,6 +9,7 @@ jobs:
   release_packages:
     name: Release Packages
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master

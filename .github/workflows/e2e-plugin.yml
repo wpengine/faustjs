@@ -1,0 +1,18 @@
+name: E2E Codecept Tests
+on: pull_request
+jobs:
+  e2e-codecept:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build containers
+        run: docker-compose up -d --build
+      - name: Test
+        run: |
+          docker-compose \
+          exec \
+          --workdir=/var/www/html/wp-content/plugins/wpe-headless \
+          wordpress \
+          /bin/sh -c 'wait-for-it --timeout=30 --strict frontend:3000 -- vendor/bin/codecept run acceptance'
