@@ -8,9 +8,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build containers
-        run: docker-compose up -d
+        run: docker-compose up -d --build
       - name: Check containers
-        run: sleep 60 && docker ps -a
+        run: docker ps -a
+      - name: sleep
+        run: sleep 60
       - name: Check WordPress container logs
         run: docker-compose logs wordpress
       - name: Test
