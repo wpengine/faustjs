@@ -27,7 +27,7 @@ Now, add the following content to your newly created `[[...route]].ts` file:
 
 ```tsx title="src/pages/api/faust/[[...route]].ts"
 import 'faust.config';
-import { apiRouter } from '@faustjs/core';
+import { apiRouter } from '@faustjs/core/api';
 
 export default apiRouter;
 ```
@@ -69,7 +69,7 @@ Finally, the content of `src/pages/api/headless/[[...route]].ts` would be:
 
 ```ts title="src/pages/api/headless/[[...route]].ts"
 import 'faust.config';
-import { apiRouter } from '@faustjs/core';
+import { apiRouter } from '@faustjs/core/api';
 
 export default apiRouter;
 ```
