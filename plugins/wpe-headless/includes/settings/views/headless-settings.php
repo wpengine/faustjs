@@ -41,7 +41,7 @@
 				<form action="options.php" method="POST">
 					<?php settings_fields( 'wpe_headless' ); ?>
 
-					<?php do_settings_sections( 'wpe-headless-settings' ); ?>
+					<?php do_settings_sections( 'faustwp-settings' ); ?>
 
 					<?php submit_button(); ?>
 				</form>

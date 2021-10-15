@@ -43,7 +43,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function amOnFaustWPSettingsPage()
     {
-        $this->amOnPage('/wp-admin/options-general.php?page=wpe-headless-settings');
+        $this->amOnPage('/wp-admin/options-general.php?page=faustwp-settings');
     }
 
     /**
