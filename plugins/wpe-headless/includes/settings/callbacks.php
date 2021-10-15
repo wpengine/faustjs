@@ -329,7 +329,7 @@ function add_settings_assets() {
 
 	if ( ! function_exists( 'graphql' ) ) {
 		wp_enqueue_script(
-			'wpe-headless-wpgraphql-install',
+			'faustwp-wpgraphql-install',
 			FAUSTWP_URL . 'includes/settings/assets/js/wpgraphql-install.js',
 			array( 'wp-a11y', 'wp-api-fetch' ),
 			$plugin['Version'],
@@ -347,7 +347,7 @@ function add_settings_assets() {
 		);
 
 		wp_localize_script(
-			'wpe-headless-wpgraphql-install',
+			'faustwp-wpgraphql-install',
 			'faustwp',
 			$faustwp
 		);
