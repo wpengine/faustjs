@@ -31,13 +31,13 @@ function wpe_headless_check_for_plugin_updates( $data ) {
 		return $data;
 	}
 
-	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
+	$current_plugin_data = get_plugin_data( FAUSTWP_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $response->requires_at_least, '>=' );
 
 	// Only update the response if there's a newer version, otherwise WP shows an update notice for the same version.
 	if ( $meets_wp_req && version_compare( $current_plugin_data['Version'], $response->version, '<' ) ) {
-		$response->plugin                    = plugin_basename( WPE_HEADLESS_FILE );
-		$data->response[ WPE_HEADLESS_PATH ] = $response;
+		$response->plugin                = plugin_basename( FAUSTWP_FILE );
+		$data->response[ FAUSTWP_PATH ] = $response;
 	}
 
 	return $data;
@@ -58,7 +58,7 @@ add_filter( 'plugins_api', 'wpe_headless_custom_plugin_api_request', 10, 3 );
  * @return false|stdClass $response Plugin API arguments.
  */
 function wpe_headless_custom_plugin_api_request( $api, $action, $args ) {
-	if ( empty( $args->slug ) || WPE_HEADLESS_SLUG !== $args->slug ) {
+	if ( empty( $args->slug ) || FAUSTWP_SLUG !== $args->slug ) {
 		return $api;
 	}
 
@@ -91,7 +91,7 @@ function wpe_headless_delegate_plugin_row_notice() {
 		return;
 	}
 
-	$plugin_basename = plugin_basename( WPE_HEADLESS_FILE );
+	$plugin_basename = plugin_basename( FAUSTWP_FILE );
 
 	remove_action( "after_plugin_row_{$plugin_basename}", 'wp_plugin_update_row' );
 	add_action( "after_plugin_row_{$plugin_basename}", 'wpe_headless_display_plugin_row_notice', 10, 2 );

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-register_activation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_activation' );
+register_activation_hook( FAUSTWP_FILE, 'wpe_headless_handle_activation' );
 /**
  * Callback for WordPress register_activation_hook() function.
  *
@@ -40,7 +40,7 @@ function wpe_headless_handle_activation() {
 	flush_rewrite_rules();
 }
 
-register_deactivation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_deactivation' );
+register_deactivation_hook( FAUSTWP_FILE, 'wpe_headless_handle_deactivation' );
 /**
  * Callback for WordPress register_deactivation_hook() function.
  *

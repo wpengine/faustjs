@@ -38,7 +38,7 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="wpe_headless" />
-				<element value="WPE_HEADLESS" />
+				<element value="FAUSTWP" />
 			</property>
 		</properties>
 	</rule>

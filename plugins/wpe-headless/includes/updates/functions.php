@@ -22,7 +22,7 @@ function wpe_headless_get_plugin_data() {
 		return;
 	}
 
-	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
+	$current_plugin_data = get_plugin_data( FAUSTWP_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $product_info->requires_at_least, '>=' );
 
 	$api                        = new stdClass();
@@ -57,7 +57,7 @@ function wpe_headless_get_plugin_api_error() {
  * @return stdClass
  */
 function wpe_headless_get_remote_plugin_info() {
-	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
+	$current_plugin_data = get_plugin_data( FAUSTWP_FILE );
 	$response            = get_transient( 'wpe_headless_poc_product_info' );
 
 	if ( false === $response ) {
