@@ -61,7 +61,7 @@ export class OAuth {
       );
     }
 
-    const response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+    const response = await fetch(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
       headers: {
         'Content-Type': 'application/json',
         'x-wpe-headless-secret': apiClientSecret,
