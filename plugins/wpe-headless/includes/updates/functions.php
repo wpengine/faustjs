@@ -108,17 +108,17 @@ function wpe_headless_get_remote_plugin_info() {
 function wpe_headless_get_api_error_text( $reason ) {
 	switch ( $reason ) {
 		case 'key-unknown':
-			return __( 'The product you requested information for is unknown. Please contact support.', 'wpe-headless' );
+			return __( 'The product you requested information for is unknown. Please contact support.', 'faustwp' );
 
 		default:
 			/* translators: %1$s: Link to account portal. %2$s: The text that is linked. */
 			return sprintf(
 				__(
 					'There was an unknown error connecting to the update service. This issue could be temporary. Please contact support if this error persists.',
-					'wpe-headless'
+					'faustwp'
 				),
 				'https://my.wpengine.com/products',
-				esc_html__( 'WP Engine Account Portal', 'wpe-headless' )
+				esc_html__( 'WP Engine Account Portal', 'faustwp' )
 			);
 	}
 }

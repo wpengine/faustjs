@@ -135,7 +135,7 @@ function wpe_headless_register_conditional_tags_field() {
 	register_graphql_object_type(
 		'ConditionalTags',
 		array(
-			'description' => __( 'GraphQL representation of WordPress Conditional Tags.', 'wpe-headless' ),
+			'description' => __( 'GraphQL representation of WordPress Conditional Tags.', 'faustwp' ),
 			'fields'      => array_map(
 				function ( $tag ) {
 					return array(
@@ -197,25 +197,25 @@ function wpe_headless_register_generate_ac_mutation() {
 			'inputFields'         => array(
 				'username' => array(
 					'type'        => 'String',
-					'description' => __( 'Username for WordPress user', 'wpe-headless' ),
+					'description' => __( 'Username for WordPress user', 'faustwp' ),
 				),
 				'email'    => array(
 					'type'        => 'String',
-					'description' => __( 'Email for WordPress user', 'wpe-headless' ),
+					'description' => __( 'Email for WordPress user', 'faustwp' ),
 				),
 				'password' => array(
 					'type'        => 'String',
-					'description' => __( 'Password for WordPress user', 'wpe-headless' ),
+					'description' => __( 'Password for WordPress user', 'faustwp' ),
 				),
 			),
 			'outputFields'        => array(
 				'code'  => array(
 					'type'        => 'String',
-					'description' => __( 'Authorization code used for requesting refresh/access tokens', 'wpe-headless' ),
+					'description' => __( 'Authorization code used for requesting refresh/access tokens', 'faustwp' ),
 				),
 				'error' => array(
 					'type'        => 'String',
-					'description' => __( 'Error encountered during user authentication, if any', 'wpe-headless' ),
+					'description' => __( 'Error encountered during user authentication, if any', 'faustwp' ),
 				),
 			),
 			'mutateAndGetPayload' => function( $input, $context, $info ) {
