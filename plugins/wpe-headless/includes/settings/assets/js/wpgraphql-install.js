@@ -2,7 +2,7 @@
  * Handles WPGraphQL plugin installation at Settings → Headless.
  */
 faustwp.installWPGraphQL = (() => {
-	const $button = document.getElementById('wpe-headless-button-install-graphql');
+	const $button = document.getElementById('faustwp-button-install-graphql');
 	const $spinner = document.querySelector('.get-started .spinner');
 	const $status = document.querySelector('.get-started .error-message');
 
