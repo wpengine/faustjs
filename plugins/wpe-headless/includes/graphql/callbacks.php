@@ -5,6 +5,9 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\GraphQL;
+
+use function WPE\FaustWP\Auth\generate_authorization_code;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 
@@ -12,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'graphql_register_types', 'wpe_headless_register_templates_field' );
+add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_templates_field' );
 /**
  * Registers templates field on the UniformResourceIdentifiable type in WP GraphQL. This templates field lists out the
  * templates that WordPress would typically try to locate and load for a given URI.
@@ -23,20 +26,20 @@ add_action( 'graphql_register_types', 'wpe_headless_register_templates_field' );
  *
  * @return void
  *
- * @uses wpe_headless_log_template_hierarchy
- * @uses wpe_headless_template_hierarchy_types
- * @uses wpe_headless_get_conditional_tags
+ * @uses WPE\FaustWP\GraphQL\log_template_hierarchy
+ * @uses WPE\FaustWP\GraphQL\template_hierarchy_types
+ * @uses WPE\FaustWP\GraphQL\get_conditional_tags
  *
  * @see  template-loader.php
  * @uses register_graphql_field
  */
-function wpe_headless_register_templates_field() {
+function register_templates_field() {
 	register_graphql_field(
 		'UniformResourceIdentifiable',
 		'templates',
 		array(
 			'type'    => array( 'list_of' => 'String' ),
-			'resolve' => 'wpe_headless_templates_resolver',
+			'resolve' => __NAMESPACE__ . '\\templates_resolver',
 		)
 	);
 }
@@ -51,14 +54,14 @@ function wpe_headless_register_templates_field() {
  *
  * @return array|string[]
  */
-function wpe_headless_templates_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
+function templates_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
 	global $wp_query;
 	global $wpe_headless_checked_templates;
 	$wpe_headless_checked_templates = array();
 
 	// Loop through each of the template conditionals, and find the appropriate template file.
-	foreach ( wpe_headless_template_hierarchy_types() as $type ) {
-		add_filter( "{$type}_template_hierarchy", 'wpe_headless_log_template_hierarchy' );
+	foreach ( template_hierarchy_types() as $type ) {
+		add_filter( "{$type}_template_hierarchy", __NAMESPACE__ . '\\log_template_hierarchy' );
 	}
 
 	$template = false;
@@ -69,7 +72,7 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
 	 */
 	$wp_query->parse_query();
 
-	foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
+	foreach ( get_conditional_tags() as $tag => $tag_info ) {
 		if ( empty( $tag_info['template_getter'] ) ) {
 			continue;
 		}
@@ -89,8 +92,8 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
 		}
 	}
 
-	foreach ( wpe_headless_template_hierarchy_types() as $type ) {
-		remove_filter( "{$type}_template_hierarchy", 'wpe_headless_log_template_hierarchy' );
+	foreach ( template_hierarchy_types() as $type ) {
+		remove_filter( "{$type}_template_hierarchy", __NAMESPACE__ . '\\log_template_hierarchy' );
 	}
 
 	/* Strip PHP extension from the checked templates */
@@ -114,24 +117,24 @@ function wpe_headless_templates_resolver( $root, $args, AppContext $context, Res
  *
  * @return array
  */
-function wpe_headless_log_template_hierarchy( $templates ) {
+function log_template_hierarchy( $templates ) {
 	global $wpe_headless_checked_templates;
 	$wpe_headless_checked_templates = array_merge( $wpe_headless_checked_templates, $templates );
 	return $wpe_headless_checked_templates;
 }
 
-add_action( 'graphql_register_types', 'wpe_headless_register_conditional_tags_field' );
+add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_conditional_tags_field' );
 /**
  * Adds ConditionalTags type and registers it as a field on the UniformResourceIdentifiable type. This type handles
  * evaluating the supported conditional tags and providing it over GraphQL for a given URI.
  *
  * @return void
  * @uses register_graphql_field
- * @uses wpe_headless_get_conditional_tags
+ * @uses WPE\FaustWP\GraphQL\get_conditional_tags
  *
  * @uses register_graphql_object_type
  */
-function wpe_headless_register_conditional_tags_field() {
+function register_conditional_tags_field() {
 	register_graphql_object_type(
 		'ConditionalTags',
 		array(
@@ -145,10 +148,10 @@ function wpe_headless_register_conditional_tags_field() {
 				},
 				array_combine(
 					array_map(
-						'wpe_headless_camelcase',
-						array_keys( wpe_headless_get_conditional_tags() )
+						'\WPE\FaustWP\Utilities\camelcase',
+						array_keys( get_conditional_tags() )
 					),
-					array_values( wpe_headless_get_conditional_tags() )
+					array_values( get_conditional_tags() )
 				)
 			),
 		)
@@ -159,7 +162,7 @@ function wpe_headless_register_conditional_tags_field() {
 		'conditionalTags',
 		array(
 			'type'    => 'ConditionalTags',
-			'resolve' => 'wpe_headless_conditional_tags_resolver',
+			'resolve' => __NAMESPACE__ . '\\conditional_tags_resolver',
 		)
 	);
 }
@@ -174,23 +177,23 @@ function wpe_headless_register_conditional_tags_field() {
  *
  * @return array
  */
-function wpe_headless_conditional_tags_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
+function conditional_tags_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
 	$conditional_tag_values = array();
 
-	foreach ( wpe_headless_get_conditional_tags() as $tag => $tag_info ) {
-		$conditional_tag_values[ wpe_headless_camelcase( $tag ) ] = $tag();
+	foreach ( get_conditional_tags() as $tag => $tag_info ) {
+		$conditional_tag_values[ \WPE\FaustWP\Utilities\camelcase( $tag ) ] = $tag();
 	}
 
 	return $conditional_tag_values;
 }
 
-add_action( 'graphql_register_types', 'wpe_headless_register_generate_ac_mutation' );
+add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_generate_ac_mutation' );
 /**
  * Register a mutation for exchanging a username/email and password for a short-lived authorization code.
  *
  * @return void
  */
-function wpe_headless_register_generate_ac_mutation() {
+function register_generate_ac_mutation() {
 	register_graphql_mutation(
 		'generateAuthorizationCode',
 		array(
@@ -250,7 +253,7 @@ function wpe_headless_register_generate_ac_mutation() {
 				}
 
 				// Generate an authorization code that expires in 1 minute.
-				$code = wpe_headless_generate_authorization_code( $user, MINUTE_IN_SECONDS * 1 );
+				$code = generate_authorization_code( $user, MINUTE_IN_SECONDS * 1 );
 
 				return array(
 					'code'  => $code,

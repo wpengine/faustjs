@@ -37,8 +37,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="wpe_headless" />
+				<element value="faustwp" />
 				<element value="FAUSTWP" />
+				<element value="WPE\FaustWP" />
 			</property>
 		</properties>
 	</rule>

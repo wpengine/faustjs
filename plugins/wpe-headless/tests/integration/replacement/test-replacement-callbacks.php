@@ -5,7 +5,16 @@
  * @package FaustWP
  */
 
-class ReplacementCallbacksTestCases extends WP_UnitTestCase {
+namespace WPE\FaustWP\Tests\Replacement;
+
+use function WPE\FaustWP\Replacement\{
+	content_replacement,
+	image_source_replacement,
+	image_source_srcset_replacement
+};
+use function WPE\FaustWP\Settings\faustwp_update_setting;
+
+class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 	protected $post_id;
 
 	public function setUp() {
@@ -19,69 +28,69 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	}
 
 	public function test_the_content_filter() {
-		$this->assertSame( 10, has_action( 'the_content', 'wpe_headless_content_replacement' ) );
+		$this->assertSame( 10, has_action( 'the_content', 'WPE\FaustWP\Replacement\content_replacement' ) );
 	}
 
 	public function test_preview_post_link_filter() {
-		$this->assertSame( 1000, has_action( 'preview_post_link', 'wpe_headless_post_preview_link' ) );
+		$this->assertSame( 1000, has_action( 'preview_post_link', 'WPE\FaustWP\Replacement\post_preview_link' ) );
 	}
 
 	public function test_post_link_filter() {
-		$this->assertSame( 1000, has_action( 'post_link', 'wpe_headless_post_link' ) );
+		$this->assertSame( 1000, has_action( 'post_link', 'WPE\FaustWP\Replacement\post_link' ) );
 	}
 
 	public function test_term_link_filter() {
-		$this->assertSame( 1000, has_action( 'term_link', 'wpe_headless_term_link' ) );
+		$this->assertSame( 1000, has_action( 'term_link', 'WPE\FaustWP\Replacement\term_link' ) );
 	}
 
 	public function test_graphql_request_results_filter() {
-		$this->assertSame( 10, has_action( 'graphql_request_results', 'wpe_headless_url_replacement' ) );
+		$this->assertSame( 10, has_action( 'graphql_request_results', 'WPE\FaustWP\Replacement\url_replacement' ) );
 	}
 
 	public function test_enqueue_preview_scripts_action() {
-		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'wpe_headless_enqueue_preview_scripts' ) );
+		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'WPE\FaustWP\Replacement\enqueue_preview_scripts' ) );
 	}
 
 	/**
-	 * Tests wpe_headless_content_replacement() returns original value when content replacement is not enabled.
+	 * Tests content_replacement() returns original value when content replacement is not enabled.
 	 */
-	public function test_wpe_headless_content_replacement_does_not_filter_content_when_content_replacement_is_not_enabled() {
+	public function test_content_replacement_does_not_filter_content_when_content_replacement_is_not_enabled() {
 		$content = '<a href="http://example.org">moo</a>';
-		$this->assertSame( $content, wpe_headless_content_replacement( $content ) );
+		$this->assertSame( $content, content_replacement( $content ) );
 	}
 
 	/**
-	 * Tests wpe_headless_content_replacement() replaces the site_url() value when content replacement is enabled.
+	 * Tests content_replacement() replaces the site_url() value when content replacement is enabled.
 	 */
-	public function test_wpe_headless_content_replacement_filters_content_when_content_replacement_enabled() {
-		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
+	public function test_content_replacement_filters_content_when_content_replacement_enabled() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		add_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
-		$this->assertSame( '<a href="http://moo">moo</a>', wpe_headless_content_replacement( '<a href="http://example.org">moo</a>' ) );
-		wpe_headless_update_setting( 'frontend_uri', null );
+		$this->assertSame( '<a href="http://moo">moo</a>', content_replacement( '<a href="http://example.org">moo</a>' ) );
+		faustwp_update_setting( 'frontend_uri', null );
 		remove_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
 	}
 
 	/**
-	 * Tests wpe_headless_image_source_replacement() replaces the frontend_uri value when image replacement is enabled.
+	 * Tests image_source_replacement() replaces the frontend_uri value when image replacement is enabled.
 	 */
-	public function test_wpe_headless_image_source_replacement_filters_content_when_image_replacement_enabled() {
-		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
-		wpe_headless_update_setting( 'enable_image_source', '1' );
+	public function test_image_source_replacement_filters_content_when_image_replacement_enabled() {
+		faustwp_update_setting( 'frontend_uri', 'http://foo.co' );
+		faustwp_update_setting( 'enable_image_source', '1' );
 		# Do not replace partial domain match.
-		$this->assertSame( '<img src="http://foo.com/image.png">', wpe_headless_image_source_replacement( '<img src="http://foo.com/image.png">' ) );
+		$this->assertSame( '<img src="http://foo.com/image.png">', image_source_replacement( '<img src="http://foo.com/image.png">' ) );
 		# Do replace exact domain match
-		$this->assertSame( '<img src="http://example.org/image.png">', wpe_headless_image_source_replacement( '<img src="http://foo.co/image.png">' ) );
-		$this->assertSame( '<img src="http://example.org/image.png">', wpe_headless_image_source_replacement( '<img src="/image.png">' ) );
-		wpe_headless_update_setting( 'frontend_uri', null );
-		wpe_headless_update_setting( 'enable_image_source', '0' );
+		$this->assertSame( '<img src="http://example.org/image.png">', image_source_replacement( '<img src="http://foo.co/image.png">' ) );
+		$this->assertSame( '<img src="http://example.org/image.png">', image_source_replacement( '<img src="/image.png">' ) );
+		faustwp_update_setting( 'frontend_uri', null );
+		faustwp_update_setting( 'enable_image_source', '0' );
 	}
 
 	/**
-	 * Tests wpe_headless_image_source_srcset_replacement() replaces the frontend_uri value when image replacement is enabled.
+	 * Tests image_source_srcset_replacement() replaces the frontend_uri value when image replacement is enabled.
 	 */
-	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_image_replacement_enabled() {
-		wpe_headless_update_setting( 'frontend_uri', 'http://foo.co' );
-		wpe_headless_update_setting( 'enable_image_source', '1' );
+	public function test_image_source_srcset_replacement_filters_content_when_image_replacement_enabled() {
+		faustwp_update_setting( 'frontend_uri', 'http://foo.co' );
+		faustwp_update_setting( 'enable_image_source', '1' );
 		# Do not replace partial domain match.
 		# Do replace exact domain match
 		$sources = array (
@@ -94,45 +103,45 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 			300 => array('url' => 'http://example.org/wp-content/uploads/image300.jpg'),
 			400 => array('url' => 'http://example.org/image400.png'),
 		);
-		$this->assertSame( $expected, wpe_headless_image_source_srcset_replacement( $sources ) );
-		wpe_headless_update_setting( 'frontend_uri', null );
-		wpe_headless_update_setting( 'enable_image_source', '0' );
+		$this->assertSame( $expected, image_source_srcset_replacement( $sources ) );
+		faustwp_update_setting( 'frontend_uri', null );
+		faustwp_update_setting( 'enable_image_source', '0' );
 	}
 
 	/**
-	 * Tests wpe_headless_image_source_replacement() doesn't replace when image replacement is not enabled.
+	 * Tests image_source_replacement() doesn't replace when image replacement is not enabled.
 	 */
-	public function test_wpe_headless_image_source_replacement_filters_content_when_image_replacement_not_enabled() {
-		wpe_headless_update_setting( 'enable_image_source', '0' );
-		$this->assertSame( '<img src="/image.png">', wpe_headless_image_source_replacement( '<img src="/image.png">' ) );
+	public function test_image_source_replacement_filters_content_when_image_replacement_not_enabled() {
+		faustwp_update_setting( 'enable_image_source', '0' );
+		$this->assertSame( '<img src="/image.png">', image_source_replacement( '<img src="/image.png">' ) );
 	}
 
 	/**
-	 * Tests wpe_headless_image_source_srcset_replacement() doesn't replace when image replacement is not enabled.
+	 * Tests image_source_srcset_replacement() doesn't replace when image replacement is not enabled.
 	 */
-	public function test_wpe_headless_image_source_srcset_replacement_filters_content_when_image_replacement_not_enabled() {
-		wpe_headless_update_setting( 'enable_image_source', '0' );
+	public function test_image_source_srcset_replacement_filters_content_when_image_replacement_not_enabled() {
+		faustwp_update_setting( 'enable_image_source', '0' );
 		$sources = array (
 			100 => array('url' => '/wp-content/uploads/image.jpg'),
 		);
-		$this->assertSame( $sources, wpe_headless_image_source_srcset_replacement( $sources ) );
+		$this->assertSame( $sources, image_source_srcset_replacement( $sources ) );
 	}
 
 	/**
 	 * Tests get_permalink() returns the original value when content replacement is not enabled.
 	 *
-	 * @covers ::wpe_headless_post_link() which runs on post_link filter.
+	 * @covers ::post_link() which runs on post_link filter.
 	 */
-	public function test_wpe_headless_post_link_returns_unfiltered_link_when_content_replacement_is_not_enabled() {
+	public function test_post_link_returns_unfiltered_link_when_content_replacement_is_not_enabled() {
 		$this->assertSame( 'http://example.org/?p=' . $this->post_id, get_permalink( $this->post_id ) );
 	}
 
 	/**
 	 * Tests get_preview_post_link() returns rewritten value when content replacement is enabled.
 	 */
-	public function test_wpe_headless_post_link_returns_filtered_link_when_content_replacement_enabled() {
-		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
-		wpe_headless_update_setting( 'enable_rewrites', true );
+	public function test_post_link_returns_filtered_link_when_content_replacement_enabled() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', true );
 		// @todo this feels like a hack
 		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true', get_preview_post_link( $this->post_id ) );
 	}
@@ -140,20 +149,20 @@ class ReplacementCallbacksTestCases extends WP_UnitTestCase {
 	/**
 	 * Tests get_term_link() returns original value when term link rewrites are not enabled.
 	 *
-	 * @covers ::wpe_headless_term_link(), which runs on term_link filter inside get_term_link().
+	 * @covers ::term_link(), which runs on term_link filter inside get_term_link().
 	 */
-	public function test_wpe_headless_term_link_returns_unfiltered_link_when_rewrite_term_links_is_not_enabled() {
+	public function test_term_link_returns_unfiltered_link_when_rewrite_term_links_is_not_enabled() {
 		$this->assertSame( 'http://example.org/?cat=1', get_term_link( 1 ) );
 	}
 
 	/**
 	 * Tests get_term_link() returns rewritten value when term link rewrites are enabled.
 	 *
-	 * @covers ::wpe_headless_term_link(), which runs on term_link filter inside get_term_link().
+	 * @covers ::term_link(), which runs on term_link filter inside get_term_link().
 	 */
-	public function test_wpe_headless_term_link_returns_filtered_link_when_rewrite_term_links_enabled() {
-		wpe_headless_update_setting( 'frontend_uri', 'http://moo' );
-		wpe_headless_update_setting( 'enable_rewrites', '1' );
+	public function test_term_link_returns_filtered_link_when_rewrite_term_links_enabled() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
 		$term_id = get_terms( [ 'hide_empty' => false, 'fields' => 'ids' ] )[0];
 		$this->assertSame( 'http://moo/?cat=' . $term_id, get_term_link( $term_id ) );
 	}
