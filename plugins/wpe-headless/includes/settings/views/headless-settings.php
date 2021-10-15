@@ -55,7 +55,7 @@
 						<?php if ( function_exists( 'graphql' ) ) : ?>
 							<button class="button-primary" disabled><?php esc_html_e( '☑️ WPGraphQL is active', 'faustwp' ); ?></button>
 						<?php else : ?>
-							<button class="button-primary" id="wpe-headless-button-install-graphql" aria-label="<?php esc_html_e( 'Install and Activate the WPGraphQL plugin', 'faustwp' ); ?>"><?php esc_html_e( 'Install and Activate', 'faustwp' ); ?></button>
+							<button class="button-primary" id="faustwp-button-install-graphql" aria-label="<?php esc_html_e( 'Install and Activate the WPGraphQL plugin', 'faustwp' ); ?>"><?php esc_html_e( 'Install and Activate', 'faustwp' ); ?></button>
 							<span class="spinner"></span>
 							<p class="error-message"></p>
 						<?php endif; ?>
