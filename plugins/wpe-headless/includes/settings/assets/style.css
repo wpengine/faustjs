@@ -175,11 +175,11 @@ svg.wpengine {
 /* WP Admin Layout Overrides
 ---------------------------------------------------------------------------- */
 
-.settings_page_wpe-headless-settings #wpcontent {
+.settings_page_faustwp-settings #wpcontent {
 	padding-left: 0;
 }
 
-.settings_page_wpe-headless-settings #wpcontent .wrap {
+.settings_page_faustwp-settings #wpcontent .wrap {
 	margin: 0;
 }
 
