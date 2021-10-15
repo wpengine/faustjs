@@ -2,7 +2,7 @@
 /**
  * Resets menu locations to those from Settings → Headless → Menu Locations.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

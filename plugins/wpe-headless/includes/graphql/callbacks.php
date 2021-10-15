@@ -2,7 +2,7 @@
 /**
  * Various callbacks to augment WP GraphQL by adding types, fields, etc.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 use GraphQL\Type\Definition\ResolveInfo;

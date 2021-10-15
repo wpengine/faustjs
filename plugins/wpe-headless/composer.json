@@ -1,6 +1,6 @@
 {
-    "name": "wpengine/wpe-headless",
-    "description": "Plugin for working with headless WordPress.",
+    "name": "wpengine/faustwp",
+    "description": "Plugin for working with Faust.js, the Headless WordPress Framework.",
     "type": "project",
     "minimum-stability": "stable",
     "require-dev": {

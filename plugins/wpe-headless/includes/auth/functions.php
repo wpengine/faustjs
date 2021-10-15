@@ -2,7 +2,7 @@
 /**
  * Redirect related functions.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

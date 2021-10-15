@@ -2,7 +2,7 @@
 /**
  * Disables wp-admin menu items that aren't supported in a headless environment.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

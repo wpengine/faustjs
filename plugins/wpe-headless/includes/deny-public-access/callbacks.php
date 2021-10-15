@@ -2,7 +2,7 @@
 /**
  * Prevents access to WP front-end URLs by redirecting to a user-specified URL.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

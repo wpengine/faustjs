@@ -2,7 +2,7 @@
 /**
  * Class FunctionsTest
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 namespace WPE_Headless\Tests\Settings;

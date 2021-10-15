@@ -2,7 +2,7 @@
 /**
  * Settings functions.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -65,7 +65,7 @@ function wpe_headless_get_secret_key() {
 }
 
 /**
- * Get a headless setting by name.
+ * Get a Faust WP setting by name.
  *
  * @param string $name    The setting name.
  * @param mixed  $default Optional setting value. Default false.
@@ -91,7 +91,7 @@ function wpe_headless_get_setting( $name, $default = false ) {
 }
 
 /**
- * Update a headless setting value.
+ * Update a Faust WP setting value.
  *
  * @link https://developer.wordpress.org/reference/functions/update_option/
  *
@@ -108,7 +108,7 @@ function wpe_headless_update_setting( $name, $value ) {
 }
 
 /**
- * Get all headless settings.
+ * Get all Faust WP settings.
  *
  * @return array An array of settings.
  */
