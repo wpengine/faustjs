@@ -45,7 +45,7 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="wpe-headless" />
+			<property name="text_domain" type="array" value="faustwp" />
 		</properties>
 	</rule>
 

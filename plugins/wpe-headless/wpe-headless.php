@@ -5,7 +5,7 @@
  * Description: Plugin for working with Faust.js, the Headless WordPress Framework.
  * Author: WP Engine
  * Author URI: https://wpengine.com/
- * Text Domain: wpe-headless
+ * Text Domain: faustwp
  * Domain Path: /languages
  * Version: 0.6.1
  * Requires PHP: 7.2
