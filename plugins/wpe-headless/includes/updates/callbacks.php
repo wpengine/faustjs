@@ -38,7 +38,7 @@ function check_for_plugin_updates( $data ) {
 
 	// Only update the response if there's a newer version, otherwise WP shows an update notice for the same version.
 	if ( $meets_wp_req && version_compare( $current_plugin_data['Version'], $response->version, '<' ) ) {
-		$response->plugin                = plugin_basename( FAUSTWP_FILE );
+		$response->plugin               = plugin_basename( FAUSTWP_FILE );
 		$data->response[ FAUSTWP_PATH ] = $response;
 	}
 
