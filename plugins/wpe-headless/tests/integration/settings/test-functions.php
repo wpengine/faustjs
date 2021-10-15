@@ -88,9 +88,9 @@ class FunctionsTest extends \WP_UnitTestCase {
 	 * Test faustwp_get_setting() returns filtered value.
 	 */
 	public function test_faustwp_get_setting_returns_expected_value_when_filtered() {
-		add_filter( 'wpe_headless_get_setting', [ $this, 'faustwp_get_setting_test_filtered_value' ] );
+		add_filter( 'faustwp_get_setting', [ $this, 'faustwp_get_setting_test_filtered_value' ] );
 		$this->assertSame( 'filtered value', faustwp_get_setting( 'moo', 'this default value should not be returned because of the filter' ) );
-		remove_filter( 'wpe_headless_get_setting', [ $this, 'faustwp_get_setting_test_filtered_value' ] );
+		remove_filter( 'faustwp_get_setting', [ $this, 'faustwp_get_setting_test_filtered_value' ] );
 	}
 
 	/**
