@@ -83,13 +83,13 @@ function faustwp_get_setting( $name, $default = false ) {
 	}
 
 	/**
-	 * Filter 'wpe_headless_get_setting'.
+	 * Filter 'faustwp_get_setting'.
 	 *
 	 * @param mixed  $value   The setting value.
 	 * @param string $name    The setting name.
 	 * @param mixed  $default Optional setting value.
 	 */
-	return apply_filters( 'wpe_headless_get_setting', $value, $name, $default );
+	return apply_filters( 'faustwp_get_setting', $value, $name, $default );
 }
 
 /**
@@ -118,9 +118,9 @@ function faustwp_get_settings() {
 	$settings = get_option( 'wpe_headless', array() );
 
 	/**
-	 * Filter 'wpe_headless_get_settings'.
+	 * Filter 'faustwp_get_settings'.
 	 *
 	 * @param array $settings Array of plugin settings.
 	 */
-	return apply_filters( 'wpe_headless_get_settings', $settings );
+	return apply_filters( 'faustwp_get_settings', $settings );
 }

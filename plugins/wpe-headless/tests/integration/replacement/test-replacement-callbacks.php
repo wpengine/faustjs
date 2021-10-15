@@ -64,10 +64,10 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 	 */
 	public function test_content_replacement_filters_content_when_content_replacement_enabled() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		add_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
+		add_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
 		$this->assertSame( '<a href="http://moo">moo</a>', content_replacement( '<a href="http://example.org">moo</a>' ) );
 		faustwp_update_setting( 'frontend_uri', null );
-		remove_filter( 'wpe_headless_domain_replacement_enabled', '__return_true' );
+		remove_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
 	}
 
 	/**
