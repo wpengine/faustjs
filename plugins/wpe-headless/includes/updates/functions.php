@@ -29,7 +29,7 @@ function faustwp_get_plugin_data() {
 	$current_plugin_data = get_plugin_data( FAUSTWP_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $product_info->requires_at_least, '>=' );
 
-	$api                        = new \stdClass();
+	$api                        = new stdClass();
 	$api->author                = 'WP Engine';
 	$api->homepage              = 'https://wpengine.com';
 	$api->name                  = $product_info->name;
