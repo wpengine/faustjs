@@ -5,8 +5,8 @@
 window.addEventListener('DOMContentLoaded', function () {
   wp.domReady(function () {
     // Get the correct preview link via wp_localize_script
-    const previewLink = window._wpe_headless_preview_link
-      ? window._wpe_headless_preview_link._preview_link
+    const previewLink = window._faustwp_preview_link
+		? window._faustwp_preview_link._preview_link
       : undefined;
 
     /**

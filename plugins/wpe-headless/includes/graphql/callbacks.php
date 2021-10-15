@@ -56,8 +56,8 @@ function register_templates_field() {
  */
 function templates_resolver( $root, $args, AppContext $context, ResolveInfo $info ) {
 	global $wp_query;
-	global $wpe_headless_checked_templates;
-	$wpe_headless_checked_templates = array();
+	global $faustwp_checked_templates;
+	$faustwp_checked_templates = array();
 
 	// Loop through each of the template conditionals, and find the appropriate template file.
 	foreach ( template_hierarchy_types() as $type ) {
@@ -97,17 +97,17 @@ function templates_resolver( $root, $args, AppContext $context, ResolveInfo $inf
 	}
 
 	/* Strip PHP extension from the checked templates */
-	$wpe_headless_checked_templates = array_map(
+	$faustwp_checked_templates = array_map(
 		function ( $template ) {
 			return basename( $template, '.php' );
 		},
-		$wpe_headless_checked_templates
+		$faustwp_checked_templates
 	);
 
 	/**
 	 * Add index as the default template.
 	 */
-	return array_unique( array_merge( $wpe_headless_checked_templates, array( 'index' ) ) );
+	return array_unique( array_merge( $faustwp_checked_templates, array( 'index' ) ) );
 }
 
 /**
@@ -118,9 +118,9 @@ function templates_resolver( $root, $args, AppContext $context, ResolveInfo $inf
  * @return array
  */
 function log_template_hierarchy( $templates ) {
-	global $wpe_headless_checked_templates;
-	$wpe_headless_checked_templates = array_merge( $wpe_headless_checked_templates, $templates );
-	return $wpe_headless_checked_templates;
+	global $faustwp_checked_templates;
+	$faustwp_checked_templates = array_merge( $faustwp_checked_templates, $templates );
+	return $faustwp_checked_templates;
 }
 
 add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_conditional_tags_field' );

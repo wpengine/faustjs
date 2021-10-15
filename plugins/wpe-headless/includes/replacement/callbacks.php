@@ -225,5 +225,5 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_sc
  */
 function enqueue_preview_scripts() {
 	wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
-	wp_localize_script( 'awp-gutenberg-filters', '_wpe_headless_preview_link', array( '_preview_link' => get_preview_post_link() ) );
+	wp_localize_script( 'awp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 }

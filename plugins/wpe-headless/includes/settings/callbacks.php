@@ -336,7 +336,7 @@ function add_settings_assets() {
 			true
 		);
 
-		$wpe_headless = array(
+		$faustwp = array(
 			'wpgraphqlIsInstalled' => array_key_exists( 'wp-graphql/wp-graphql.php', get_plugins() ),
 			'strings'              => array(
 				'default'    => esc_html__( 'Install and Activate', 'faustwp' ),
@@ -348,8 +348,8 @@ function add_settings_assets() {
 
 		wp_localize_script(
 			'wpe-headless-wpgraphql-install',
-			'wpeHeadless',
-			$wpe_headless
+			'faustwp',
+			$faustwp
 		);
 	}
 }
