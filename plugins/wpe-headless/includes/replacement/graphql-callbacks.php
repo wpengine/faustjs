@@ -2,7 +2,7 @@
 /**
  * Replacements for GraphQL responses.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

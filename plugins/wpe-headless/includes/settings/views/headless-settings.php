@@ -2,7 +2,7 @@
 /**
  * The view used on the Settings → Headless admin page.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 ?>

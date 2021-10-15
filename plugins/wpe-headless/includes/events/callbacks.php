@@ -2,7 +2,7 @@
 /**
  * Callback for WordPress actions.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -2,7 +2,7 @@
 /**
  * Utility functions pertaining to augmenting WP GraphQL.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

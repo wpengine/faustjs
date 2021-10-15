@@ -2,7 +2,7 @@
 /**
  * Class ReplacementFunctionsTestCases
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 class ReplacementFunctionsTestCases extends WP_UnitTestCase {

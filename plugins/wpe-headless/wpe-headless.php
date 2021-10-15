@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: WP Engine Headless
+ * Plugin Name: Faust WP
  * Plugin URI: https://wpengine.com/
- * Description: Plugin for working with Headless WordPress.
+ * Description: Plugin for working with Faust.js, the Headless WordPress Framework.
  * Author: WP Engine
  * Author URI: https://wpengine.com/
  * Text Domain: wpe-headless
  * Domain Path: /languages
  * Version: 0.6.1
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -48,7 +48,7 @@ add_action( 'activated_plugin', 'wpe_headless_activated_plugin', 10, 2 );
 /**
  * Callback for WordPress 'activated_plugin' action.
  *
- * Redirect the user to WPE Headless settings page on activation.
+ * Redirect the user to Faust WP settings page on activation.
  *
  * @param string $plugin       The plugin name.
  * @param bool   $network_wide True if a network plugin, false if else.

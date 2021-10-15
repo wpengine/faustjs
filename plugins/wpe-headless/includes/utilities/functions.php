@@ -1,8 +1,8 @@
 <?php
 /**
- * Various utility functions used through the WP Engine Headless Framework plugin.
+ * Various utility functions used through the Faust WP plugin.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

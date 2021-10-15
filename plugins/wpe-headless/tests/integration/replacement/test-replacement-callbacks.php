@@ -2,7 +2,7 @@
 /**
  * Class ReplacementCallbacksTestCases
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
 
 class ReplacementCallbacksTestCases extends WP_UnitTestCase {

@@ -3,7 +3,7 @@
 class SettingsCest
 {
     /**
-     * Ensure the WPEngine Headless settings page is available.
+     * Ensure the Faust WP settings page is available.
      */
     public function i_can_access_the_settings_page(AcceptanceTester $I)
     {
@@ -13,7 +13,7 @@ class SettingsCest
     }
 
     /**
-     * Ensure the WPE Headless default settings are set when the plugin is
+     * Ensure the Faust WP default settings are set when the plugin is
      * activated for the first time.
      */
     public function i_can_see_the_default_settings(AcceptanceTester $I)
@@ -22,11 +22,11 @@ class SettingsCest
         $I->amOnPluginsPage();
 
         // Deactivate plugin and remove settings.
-        $I->deactivatePlugin('wp-engine-headless');
+        $I->deactivatePlugin('faust-wp');
         $I->dontHaveOptionInDatabase('wpe_headless');
 
         // Reactivate plugin triggering default settings.
-        $I->activatePlugin('wp-engine-headless');
+        $I->activatePlugin('faust-wp');
 
         $settings = $I->grabOptionFromDatabase('wpe_headless');
 
