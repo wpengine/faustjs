@@ -8,6 +8,7 @@
  * Text Domain: wpe-headless
  * Domain Path: /languages
  * Version: 0.6.1
+ * Requires PHP: 7.2
  *
  * @package FaustWP
  */
