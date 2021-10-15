@@ -5,11 +5,15 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\Replacement;
+
+use function WPE\FaustWP\Settings\faustwp_get_setting;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'graphql_request_results', 'wpe_headless_url_replacement' );
+add_filter( 'graphql_request_results', __NAMESPACE__ . '\\url_replacement' );
 /**
  * Callback for WP GraphQL 'graphql_request_results' filter.
  *
@@ -19,8 +23,8 @@ add_filter( 'graphql_request_results', 'wpe_headless_url_replacement' );
  *
  * @return object The modified response with URLs replaced.
  */
-function wpe_headless_url_replacement( $response ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+function url_replacement( $response ) {
+	if ( ! domain_replacement_enabled() ) {
 		return $response;
 	}
 
@@ -28,14 +32,14 @@ function wpe_headless_url_replacement( $response ) {
 		is_object( $response ) &&
 		property_exists( $response, 'data' ) &&
 		is_array( $response->data ) &&
-		wpe_headless_domain_replacement_enabled() &&
+		domain_replacement_enabled() &&
 		! array_key_exists( 'generalSettings', $response->data )
 	) {
 		array_walk_recursive(
 			$response->data,
 			function( &$value, $key ) {
 				if ( 'url' === $key || 'href' === $key ) {
-					$replacement = wpe_headless_get_setting( 'frontend_uri', '/' );
+					$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 					$value       = str_replace( site_url(), $replacement, $value );
 				}
 			}

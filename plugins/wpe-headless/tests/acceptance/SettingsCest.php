@@ -8,7 +8,7 @@ class SettingsCest
     public function i_can_access_the_settings_page(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
-        $I->amOnWPEngineHeadlessSettingsPage();
+        $I->amOnFaustWPSettingsPage();
         $I->see('Headless by WP Engine');
     }
 
@@ -30,7 +30,7 @@ class SettingsCest
 
         $settings = $I->grabOptionFromDatabase('wpe_headless');
 
-        $I->amOnWPEngineHeadlessSettingsPage();
+        $I->amOnFaustWPSettingsPage();
         $I->seeInField('wpe_headless[frontend_uri]', '');
         $I->seeInField('wpe_headless[secret_key]', $settings['secret_key']);
         $I->seeInField('wpe_headless[menu_locations]', 'Primary, Footer');
@@ -46,7 +46,7 @@ class SettingsCest
     public function i_can_regenerate_my_secret_key(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
-        $I->amOnWPEngineHeadlessSettingsPage();
+        $I->amOnFaustWPSettingsPage();
 
         $old_secret_key = $I->grabValueFrom('wpe_headless[secret_key]');
 
@@ -62,7 +62,7 @@ class SettingsCest
     public function i_can_cancel_my_secret_key_from_being_regenerated(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
-        $I->amOnWPEngineHeadlessSettingsPage();
+        $I->amOnFaustWPSettingsPage();
 
         $secret_key = $I->grabValueFrom('wpe_headless[secret_key]');
 

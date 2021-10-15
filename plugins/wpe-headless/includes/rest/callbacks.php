@@ -5,11 +5,22 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\REST;
+
+use function WPE\FaustWP\Auth\{
+	get_user_from_access_token,
+	get_user_from_refresh_token,
+	get_user_from_authorization_code,
+	generate_refresh_token,
+	generate_access_token
+};
+use function WPE\FaustWP\Settings\get_secret_key;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'determine_current_user', 'wpe_headless_rest_determine_current_user', 20 );
+add_filter( 'determine_current_user', __NAMESPACE__ . '\\rest_determine_current_user', 20 );
 /**
  * Callback for WordPress 'determine_current_user' filter.
  *
@@ -22,7 +33,7 @@ add_filter( 'determine_current_user', 'wpe_headless_rest_determine_current_user'
  *
  * @return int|bool User ID if one has been determined, false otherwise.
  */
-function wpe_headless_rest_determine_current_user( $user_id ) {
+function rest_determine_current_user( $user_id ) {
 	if ( $user_id ) {
 		return $user_id;
 	}
@@ -36,7 +47,7 @@ function wpe_headless_rest_determine_current_user( $user_id ) {
 		return $user_id;
 	}
 
-	$wp_user = wpe_headless_get_user_from_access_token( $parts[1] );
+	$wp_user = get_user_from_access_token( $parts[1] );
 	if ( $wp_user ) {
 		$user_id = $wp_user->ID;
 	}
@@ -44,7 +55,7 @@ function wpe_headless_rest_determine_current_user( $user_id ) {
 	return $user_id;
 }
 
-add_action( 'rest_api_init', 'wpe_headless_register_rest_routes' );
+add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 /**
  * Callback for WordPress 'rest_api_init' action.
  *
@@ -57,14 +68,14 @@ add_action( 'rest_api_init', 'wpe_headless_register_rest_routes' );
  *
  * @return void
  */
-function wpe_headless_register_rest_routes() {
+function register_rest_routes() {
 	register_rest_route(
 		'wpac/v1',
 		'/authorize',
 		array(
 			'methods'             => 'POST',
-			'callback'            => 'wpe_headless_handle_rest_authorize_callback',
-			'permission_callback' => 'wpe_headless_rest_authorize_permission_callback',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_authorize_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
 		)
 	);
 }
@@ -79,33 +90,33 @@ function wpe_headless_register_rest_routes() {
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
  *
- * @param WP_REST_Request $request Current WP_REST_Request object.
+ * @param \WP_REST_Request $request Current WP_REST_Request object.
  *
  * @return mixed A WP_REST_Response, array, or WP_Error.
  */
-function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request ) {
+function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 	$code          = trim( $request->get_param( 'code' ) );
 	$refresh_token = trim( $request->get_param( 'refreshToken' ) );
 
 	if ( ! $code && ! $refresh_token ) {
-		return new WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
+		return new \WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
 	}
 
 	if ( $refresh_token ) {
-		$user = wpe_headless_get_user_from_refresh_token( $refresh_token );
+		$user = get_user_from_refresh_token( $refresh_token );
 	} else {
-		$user = wpe_headless_get_user_from_authorization_code( $code );
+		$user = get_user_from_authorization_code( $code );
 	}
 
 	if ( ! $user ) {
-		return new WP_Error( 'invalid_request', 'Invalid authorization code or refresh token.' );
+		return new \WP_Error( 'invalid_request', 'Invalid authorization code or refresh token.' );
 	}
 
 	$refresh_token_expiration = WEEK_IN_SECONDS * 2;
 	$access_token_expiration  = MINUTE_IN_SECONDS * 5;
 
-	$access_token  = wpe_headless_generate_access_token( $user, $access_token_expiration );
-	$refresh_token = wpe_headless_generate_refresh_token( $user, $refresh_token_expiration );
+	$access_token  = generate_access_token( $user, $access_token_expiration );
+	$refresh_token = generate_refresh_token( $user, $refresh_token_expiration );
 
 	return array(
 		'accessToken'            => $access_token,
@@ -123,12 +134,12 @@ function wpe_headless_handle_rest_authorize_callback( WP_REST_Request $request )
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
  *
- * @param WP_REST_Request $request The current WP_REST_Request object.
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
  *
  * @return bool True if current user can, false if else.
  */
-function wpe_headless_rest_authorize_permission_callback( WP_REST_Request $request ) {
-	$secret_key = wpe_headless_get_secret_key();
+function rest_authorize_permission_callback( \WP_REST_Request $request ) {
+	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-wpe-headless-secret' );
 
 	if ( $secret_key && $header_key ) {

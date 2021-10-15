@@ -5,11 +5,15 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\Auth;
+
+use function WPE\FaustWP\Settings\faustwp_get_setting;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'parse_request', 'wpe_headless_handle_generate_endpoint' );
+add_action( 'parse_request', __NAMESPACE__ . '\\handle_generate_endpoint' );
 /**
  * Callback for WordPress 'parse_request' action.
  *
@@ -17,7 +21,7 @@ add_action( 'parse_request', 'wpe_headless_handle_generate_endpoint' );
  *
  * @return void
  */
-function wpe_headless_handle_generate_endpoint() {
+function handle_generate_endpoint() {
 	if ( ! preg_match( '/^\/generate/', $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security
 		return;
 	}
@@ -36,7 +40,7 @@ function wpe_headless_handle_generate_endpoint() {
 		exit;
 	}
 
-	$auth_code = wpe_headless_generate_authorization_code(
+	$auth_code = generate_authorization_code(
 		wp_get_current_user(),
 		MINUTE_IN_SECONDS * 1
 	);
@@ -48,7 +52,7 @@ function wpe_headless_handle_generate_endpoint() {
 	exit;
 }
 
-add_filter( 'allowed_redirect_hosts', 'wpe_headless_allowed_redirect_hosts', 10, 2 );
+add_filter( 'allowed_redirect_hosts', __NAMESPACE__ . '\\allowed_redirect_hosts', 10, 2 );
 /**
  * Callback for WordPress 'allowed_redirect_hosts' filter.
  *
@@ -61,9 +65,9 @@ add_filter( 'allowed_redirect_hosts', 'wpe_headless_allowed_redirect_hosts', 10,
  *
  * @return string[] An array of allowed host names.
  */
-function wpe_headless_allowed_redirect_hosts( $hosts, $host ) {
+function allowed_redirect_hosts( $hosts, $host ) {
 	$hosts         = wp_parse_args( $hosts, array( 'localhost', '0.0.0.0' ) );
-	$frontend_host = wp_parse_url( wpe_headless_get_setting( 'frontend_uri' ), PHP_URL_HOST );
+	$frontend_host = wp_parse_url( faustwp_get_setting( 'frontend_uri' ), PHP_URL_HOST );
 
 	if ( $frontend_host ) {
 		$hosts[] = $frontend_host;

@@ -13,6 +13,10 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP;
+
+use function WPE\FaustWP\Settings\is_events_enabled;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -41,11 +45,11 @@ require FAUSTWP_DIR . '/includes/settings/callbacks.php';
 require FAUSTWP_DIR . '/includes/updates/callbacks.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
 
-if ( wpe_headless_is_events_enabled() ) {
+if ( is_events_enabled() ) {
 	require FAUSTWP_DIR . '/includes/events/callbacks.php';
 }
 
-add_action( 'activated_plugin', 'wpe_headless_activated_plugin', 10, 2 );
+add_action( 'activated_plugin', 'activated_plugin', 10, 2 );
 /**
  * Callback for WordPress 'activated_plugin' action.
  *
@@ -54,7 +58,7 @@ add_action( 'activated_plugin', 'wpe_headless_activated_plugin', 10, 2 );
  * @param string $plugin       The plugin name.
  * @param bool   $network_wide True if a network plugin, false if else.
  */
-function wpe_headless_activated_plugin( $plugin, $network_wide ) {
+function activated_plugin( $plugin, $network_wide ) {
 	if ( ! defined( 'WP_CLI' ) && ! $network_wide && FAUSTWP_PATH === $plugin ) {
 		wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=wpe-headless-settings&new_activation=1' ) ) );
 		exit;

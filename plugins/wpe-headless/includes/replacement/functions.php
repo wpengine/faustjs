@@ -5,6 +5,10 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\Replacement;
+
+use function WPE\FaustWP\Settings\is_rewrites_enabled;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -16,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool True if can proceed with replacement, false if else.
  */
-function wpe_headless_domain_replacement_enabled() {
+function domain_replacement_enabled() {
 	/**
 	 * Filter 'wpe_headless_domain_replacement_enabled'.
 	 *

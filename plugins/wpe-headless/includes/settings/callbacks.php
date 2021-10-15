@@ -5,11 +5,13 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\Settings;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_menu', 'wpe_headless_register_settings_menu' );
+add_action( 'admin_menu', __NAMESPACE__ . '\\register_settings_menu' );
 /**
  * Callback for WordPress 'admin_menu' action.
  *
@@ -20,18 +22,18 @@ add_action( 'admin_menu', 'wpe_headless_register_settings_menu' );
  *
  * @return void
  */
-function wpe_headless_register_settings_menu() {
+function register_settings_menu() {
 	add_submenu_page(
 		'options-general.php',
 		__( 'Headless', 'faustwp' ),
 		__( 'Headless', 'faustwp' ),
 		'manage_options',
 		'wpe-headless-settings',
-		'wpe_headless_display_settings_page'
+		__NAMESPACE__ . '\\display_settings_page'
 	);
 }
 
-add_action( 'admin_init', 'wpe_headless_register_settings' );
+add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );
 /**
  * Callback for WordPress 'admin_init' action.
  *
@@ -42,11 +44,11 @@ add_action( 'admin_init', 'wpe_headless_register_settings' );
  *
  * @return void
  */
-function wpe_headless_register_settings() {
+function register_settings() {
 	register_setting( 'wpe_headless', 'wpe_headless' );
 }
 
-add_action( 'admin_init', 'wpe_headless_register_settings_section' );
+add_action( 'admin_init', __NAMESPACE__ . '\\register_settings_section' );
 /**
  * Callback for WordPress 'admin_init' action.
  *
@@ -57,7 +59,7 @@ add_action( 'admin_init', 'wpe_headless_register_settings_section' );
  *
  * @return void
  */
-function wpe_headless_register_settings_section() {
+function register_settings_section() {
 	add_settings_section(
 		'settings_section',
 		null,
@@ -66,7 +68,7 @@ function wpe_headless_register_settings_section() {
 	);
 }
 
-add_action( 'admin_init', 'wpe_headless_register_settings_fields' );
+add_action( 'admin_init', __NAMESPACE__ . '\\register_settings_fields' );
 /**
  * Callback for WordPress 'admin_init' action.
  *
@@ -77,11 +79,11 @@ add_action( 'admin_init', 'wpe_headless_register_settings_fields' );
  *
  * @return void
  */
-function wpe_headless_register_settings_fields() {
+function register_settings_fields() {
 	add_settings_field(
 		'frontend_uri',
 		__( 'Front-end site URL', 'faustwp' ),
-		'wpe_headless_display_frontend_uri_field',
+		__NAMESPACE__ . '\\display_frontend_uri_field',
 		'wpe-headless-settings',
 		'settings_section',
 		array(
@@ -93,7 +95,7 @@ function wpe_headless_register_settings_fields() {
 	add_settings_field(
 		'secret_key',
 		__( 'Secret Key', 'faustwp' ),
-		'wpe_headless_display_secret_key_field',
+		__NAMESPACE__ . '\\display_secret_key_field',
 		'wpe-headless-settings',
 		'settings_section',
 		array(
@@ -105,7 +107,7 @@ function wpe_headless_register_settings_fields() {
 	add_settings_field(
 		'menu_locations',
 		__( 'Menu Locations', 'faustwp' ),
-		'wpe_headless_display_menu_locations_field',
+		__NAMESPACE__ . '\\display_menu_locations_field',
 		'wpe-headless-settings',
 		'settings_section',
 		array(
@@ -117,23 +119,23 @@ function wpe_headless_register_settings_fields() {
 	add_settings_field(
 		'enable_disable',
 		__( 'Features', 'faustwp' ),
-		'wpe_headless_display_enable_disable_fields',
+		__NAMESPACE__ . '\\display_enable_disable_fields',
 		'wpe-headless-settings',
 		'settings_section'
 	);
 }
 
-add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_handle_regenerate_secret_key', 5 );
+add_action( 'load-settings_page_wpe-headless-settings', __NAMESPACE__ . '\\handle_regenerate_secret_key', 5 );
 /**
  * Callback for WordPress 'load-{$page_hook}' action.
  *
- * Nonce set in wpe_headless_display_secret_key_field().
+ * Nonce set in WPE\FaustWP\Settings\display_secret_key_field().
  *
  * Regenerate the secret key.
  *
  * @return void
  */
-function wpe_headless_handle_regenerate_secret_key() {
+function handle_regenerate_secret_key() {
 	$screen = get_current_screen();
 	if ( 'settings_page_wpe-headless-settings' !== $screen->id ) {
 		return;
@@ -149,7 +151,7 @@ function wpe_headless_handle_regenerate_secret_key() {
 
 	check_admin_referer( 'regenerate_secret', 'regenerate_nonce' );
 
-	wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
+	faustwp_update_setting( 'secret_key', wp_generate_uuid4() );
 
 	wp_safe_redirect(
 		admin_url( '/options-general.php?page=wpe-headless-settings' )
@@ -165,7 +167,7 @@ function wpe_headless_handle_regenerate_secret_key() {
  *
  * @return void
  */
-function wpe_headless_display_settings_page() {
+function display_settings_page() {
 	require FAUSTWP_DIR . '/includes/settings/views/headless-settings.php';
 }
 
@@ -176,8 +178,8 @@ function wpe_headless_display_settings_page() {
  *
  * @return void
  */
-function wpe_headless_display_menu_locations_field() {
-	$menu_locations = wpe_headless_get_setting( 'menu_locations', 'Primary, Footer' );
+function display_menu_locations_field() {
+	$menu_locations = faustwp_get_setting( 'menu_locations', 'Primary, Footer' );
 
 	?>
 	<input type="text" id="menu_locations" name="wpe_headless[menu_locations]" value="<?php echo esc_attr( $menu_locations ); ?>" class="regular-text" />
@@ -197,8 +199,8 @@ function wpe_headless_display_menu_locations_field() {
  *
  * @return void
  */
-function wpe_headless_display_secret_key_field() {
-	$secret_key     = wpe_headless_get_secret_key();
+function display_secret_key_field() {
+	$secret_key     = get_secret_key();
 	$regenerate_url = wp_nonce_url(
 		admin_url( 'options-general.php?page=wpe-headless-settings' ),
 		'regenerate_secret',
@@ -245,8 +247,8 @@ function wpe_headless_display_secret_key_field() {
  *
  * @return void
  */
-function wpe_headless_display_frontend_uri_field() {
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri', '' );
+function display_frontend_uri_field() {
+	$frontend_uri = faustwp_get_setting( 'frontend_uri', '' );
 
 	?>
 	<input type="text" id="frontend_uri" name="wpe_headless[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
@@ -263,11 +265,11 @@ function wpe_headless_display_frontend_uri_field() {
  *
  * @return void
  */
-function wpe_headless_display_enable_disable_fields() {
-	$disable_theme       = wpe_headless_is_themes_disabled();
-	$enable_rewrites     = wpe_headless_is_rewrites_enabled();
-	$enable_redirects    = wpe_headless_is_redirects_enabled();
-	$enable_image_source = wpe_headless_is_image_source_replacement_enabled();
+function display_enable_disable_fields() {
+	$disable_theme       = is_themes_disabled();
+	$enable_rewrites     = is_rewrites_enabled();
+	$enable_redirects    = is_redirects_enabled();
+	$enable_image_source = is_image_source_replacement_enabled();
 
 	?>
 	<fieldset>
@@ -297,7 +299,7 @@ function wpe_headless_display_enable_disable_fields() {
 	<?php
 }
 
-add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_graphql_dependency' );
+add_action( 'load-settings_page_wpe-headless-settings', __NAMESPACE__ . '\\verify_graphql_dependency' );
 /**
  * Verifies the WP GraphQL dependency is met.
  *
@@ -306,8 +308,8 @@ add_action( 'load-settings_page_wpe-headless-settings', 'wpe_headless_verify_gra
  *
  * @return void
  */
-function wpe_headless_verify_graphql_dependency() {
-	add_action( 'admin_enqueue_scripts', 'wpe_headless_add_settings_assets' );
+function verify_graphql_dependency() {
+	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\add_settings_assets' );
 }
 
 /**
@@ -315,7 +317,7 @@ function wpe_headless_verify_graphql_dependency() {
  *
  * Callback for admin_enqueue_scripts.
  */
-function wpe_headless_add_settings_assets() {
+function add_settings_assets() {
 	$plugin = get_plugin_data( FAUSTWP_FILE );
 
 	wp_enqueue_style(

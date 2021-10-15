@@ -5,6 +5,8 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\GraphQL;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -24,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * }
  * @see template-loader.php
  */
-function wpe_headless_get_conditional_tags() {
+function get_conditional_tags() {
 	return array(
 		'is_search'            => array(
 			'description'     => __( 'Determines whether the query is for a search.', 'faustwp' ),
@@ -117,7 +119,7 @@ function wpe_headless_get_conditional_tags() {
  *
  * @return string[] list of template hierarchy types
  */
-function wpe_headless_template_hierarchy_types() {
+function template_hierarchy_types() {
 	return array(
 		'index',
 		'404',

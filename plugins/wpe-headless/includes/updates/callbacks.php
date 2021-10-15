@@ -5,11 +5,13 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\Updates;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'pre_set_site_transient_update_plugins', 'wpe_headless_check_for_plugin_updates' );
+add_filter( 'pre_set_site_transient_update_plugins', __NAMESPACE__ . '\\check_for_plugin_updates' );
 /**
  * Callback for WordPress 'pre_set_site_transient_update_plugins' filter.
  *
@@ -21,12 +23,12 @@ add_filter( 'pre_set_site_transient_update_plugins', 'wpe_headless_check_for_plu
  *
  * @return object $data An updated object if an update exists, default object if not.
  */
-function wpe_headless_check_for_plugin_updates( $data ) {
+function check_for_plugin_updates( $data ) {
 	if ( empty( $data ) ) {
 		return $data;
 	}
 
-	$response = wpe_headless_get_remote_plugin_info();
+	$response = get_remote_plugin_info();
 	if ( empty( $response->requires_at_least ) || empty( $response->version ) ) {
 		return $data;
 	}
@@ -43,7 +45,7 @@ function wpe_headless_check_for_plugin_updates( $data ) {
 	return $data;
 }
 
-add_filter( 'plugins_api', 'wpe_headless_custom_plugin_api_request', 10, 3 );
+add_filter( 'plugins_api', __NAMESPACE__ . '\\custom_plugin_api_request', 10, 3 );
 /**
  * Callback for WordPress 'plugins_api' filter.
  *
@@ -57,12 +59,12 @@ add_filter( 'plugins_api', 'wpe_headless_custom_plugin_api_request', 10, 3 );
  *
  * @return false|stdClass $response Plugin API arguments.
  */
-function wpe_headless_custom_plugin_api_request( $api, $action, $args ) {
+function custom_plugin_api_request( $api, $action, $args ) {
 	if ( empty( $args->slug ) || FAUSTWP_SLUG !== $args->slug ) {
 		return $api;
 	}
 
-	$response = wpe_headless_get_plugin_data();
+	$response = faustwp_get_plugin_data();
 	if ( empty( $response ) || is_wp_error( $response ) ) {
 		return $api;
 	}
@@ -70,7 +72,7 @@ function wpe_headless_custom_plugin_api_request( $api, $action, $args ) {
 	return $response;
 }
 
-add_action( 'admin_notices', 'wpe_headless_delegate_plugin_row_notice' );
+add_action( 'admin_notices', __NAMESPACE__ . '\\delegate_plugin_row_notice' );
 /**
  * Callback for WordPress 'admin_notices' action.
  *
@@ -80,13 +82,13 @@ add_action( 'admin_notices', 'wpe_headless_delegate_plugin_row_notice' );
  *
  * @return void
  */
-function wpe_headless_delegate_plugin_row_notice() {
+function delegate_plugin_row_notice() {
 	$screen = get_current_screen();
 	if ( 'plugins' !== $screen->id ) {
 		return;
 	}
 
-	$error = wpe_headless_get_plugin_api_error();
+	$error = get_plugin_api_error();
 	if ( ! $error ) {
 		return;
 	}
@@ -94,13 +96,11 @@ function wpe_headless_delegate_plugin_row_notice() {
 	$plugin_basename = plugin_basename( FAUSTWP_FILE );
 
 	remove_action( "after_plugin_row_{$plugin_basename}", 'wp_plugin_update_row' );
-	add_action( "after_plugin_row_{$plugin_basename}", 'wpe_headless_display_plugin_row_notice', 10, 2 );
+	add_action( "after_plugin_row_{$plugin_basename}", __NAMESPACE__ . '\\display_plugin_row_notice', 10, 2 );
 }
 
 /**
  * Callback for WordPress 'after_plugin_row_{plugin_basename}' action.
- *
- * Callback added in wpe_headless_add_plugin_page_notices().
  *
  * Show a notice in the plugin table row when there is an error present.
  *
@@ -109,15 +109,15 @@ function wpe_headless_delegate_plugin_row_notice() {
  *
  * @return void
  */
-function wpe_headless_display_plugin_row_notice( $plugin_file, $plugin_data ) {
-	$error = wpe_headless_get_plugin_api_error();
+function display_plugin_row_notice( $plugin_file, $plugin_data ) {
+	$error = get_plugin_api_error();
 
 	?>
 	<tr class="plugin-update-tr active" id="wpe-headless-update" data-slug="wpe-headless" data-plugin="wpe-headless/wpe-headless.php">
 		<td colspan="3" class="plugin-update">
 			<div class="update-message notice inline notice-error notice-alt">
 				<p>
-					<?php echo wp_kses_post( wpe_headless_get_api_error_text( $error ) ); ?>
+					<?php echo wp_kses_post( get_api_error_text( $error ) ); ?>
 				</p>
 			</div>
 		</td>
@@ -125,7 +125,7 @@ function wpe_headless_display_plugin_row_notice( $plugin_file, $plugin_data ) {
 	<?php
 }
 
-add_action( 'admin_notices', 'wpe_headless_display_update_page_notice' );
+add_action( 'admin_notices', __NAMESPACE__ . '\\display_update_page_notice' );
 /**
  * Callback for WordPress 'admin_notices' action.
  *
@@ -135,13 +135,13 @@ add_action( 'admin_notices', 'wpe_headless_display_update_page_notice' );
  *
  * @return void
  */
-function wpe_headless_display_update_page_notice() {
+function display_update_page_notice() {
 	$screen = get_current_screen();
 	if ( 'update-core' !== $screen->id ) {
 		return;
 	}
 
-	$error = wpe_headless_get_plugin_api_error();
+	$error = get_plugin_api_error();
 	if ( ! $error ) {
 		return;
 	}
@@ -149,7 +149,7 @@ function wpe_headless_display_update_page_notice() {
 	?>
 		<div class="error">
 			<p>
-				<?php echo wp_kses_post( wpe_headless_get_api_error_text( $error ) ); ?>
+				<?php echo wp_kses_post( get_api_error_text( $error ) ); ?>
 			</p>
 		</div>
 	<?php

@@ -5,6 +5,8 @@
  * @package FaustWP
  */
 
+namespace WPE\FaustWP\Settings;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -14,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool True if redirects are enabled, false if else.
  */
-function wpe_headless_is_redirects_enabled() {
-	return '1' === wpe_headless_get_setting( 'enable_redirects' );
+function is_redirects_enabled() {
+	return '1' === faustwp_get_setting( 'enable_redirects' );
 }
 
 /**
@@ -23,8 +25,8 @@ function wpe_headless_is_redirects_enabled() {
  *
  * @return bool True if rewrites are enabled, false if else.
  */
-function wpe_headless_is_rewrites_enabled() {
-	return '1' === wpe_headless_get_setting( 'enable_rewrites' );
+function is_rewrites_enabled() {
+	return '1' === faustwp_get_setting( 'enable_rewrites' );
 }
 
 /**
@@ -32,8 +34,8 @@ function wpe_headless_is_rewrites_enabled() {
  *
  * @return bool True if themes are disabled, false if else.
  */
-function wpe_headless_is_themes_disabled() {
-	return '1' === wpe_headless_get_setting( 'disable_theme' );
+function is_themes_disabled() {
+	return '1' === faustwp_get_setting( 'disable_theme' );
 }
 
 /**
@@ -41,8 +43,8 @@ function wpe_headless_is_themes_disabled() {
  *
  * @return bool True if events are enabled, false if else.
  */
-function wpe_headless_is_events_enabled() {
-	return '1' === wpe_headless_get_setting( 'events_enabled' );
+function is_events_enabled() {
+	return '1' === faustwp_get_setting( 'events_enabled' );
 }
 
 /**
@@ -50,8 +52,8 @@ function wpe_headless_is_events_enabled() {
  *
  * @return bool True if image sources from WP are enabled, false if else.
  */
-function wpe_headless_is_image_source_replacement_enabled() {
-	return '1' === wpe_headless_get_setting( 'enable_image_source' );
+function is_image_source_replacement_enabled() {
+	return '1' === faustwp_get_setting( 'enable_image_source' );
 }
 
 
@@ -60,8 +62,8 @@ function wpe_headless_is_image_source_replacement_enabled() {
  *
  * @return string The secret key.
  */
-function wpe_headless_get_secret_key() {
-	return wpe_headless_get_setting( 'secret_key', '' );
+function get_secret_key() {
+	return faustwp_get_setting( 'secret_key', '' );
 }
 
 /**
@@ -72,9 +74,9 @@ function wpe_headless_get_secret_key() {
  *
  * @return mixed The setting value.
  */
-function wpe_headless_get_setting( $name, $default = false ) {
+function faustwp_get_setting( $name, $default = false ) {
 	$value    = $default;
-	$settings = wpe_headless_get_settings();
+	$settings = faustwp_get_settings();
 
 	if ( isset( $settings[ $name ] ) ) {
 		$value = $settings[ $name ];
@@ -100,8 +102,8 @@ function wpe_headless_get_setting( $name, $default = false ) {
  *
  * @return void
  */
-function wpe_headless_update_setting( $name, $value ) {
-	$settings          = wpe_headless_get_settings();
+function faustwp_update_setting( $name, $value ) {
+	$settings          = faustwp_get_settings();
 	$settings[ $name ] = $value;
 
 	update_option( 'wpe_headless', $settings );
@@ -112,7 +114,7 @@ function wpe_headless_update_setting( $name, $value ) {
  *
  * @return array An array of settings.
  */
-function wpe_headless_get_settings() {
+function faustwp_get_settings() {
 	$settings = get_option( 'wpe_headless', array() );
 
 	/**
