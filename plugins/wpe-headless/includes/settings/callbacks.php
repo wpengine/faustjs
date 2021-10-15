@@ -166,7 +166,7 @@ function wpe_headless_handle_regenerate_secret_key() {
  * @return void
  */
 function wpe_headless_display_settings_page() {
-	require WPE_HEADLESS_DIR . '/includes/settings/views/headless-settings.php';
+	require FAUSTWP_DIR . '/includes/settings/views/headless-settings.php';
 }
 
 /**
@@ -316,11 +316,11 @@ function wpe_headless_verify_graphql_dependency() {
  * Callback for admin_enqueue_scripts.
  */
 function wpe_headless_add_settings_assets() {
-	$plugin = get_plugin_data( WPE_HEADLESS_FILE );
+	$plugin = get_plugin_data( FAUSTWP_FILE );
 
 	wp_enqueue_style(
 		'wpe-headless-settings',
-		WPE_HEADLESS_URL . 'includes/settings/assets/style.css',
+		FAUSTWP_URL . 'includes/settings/assets/style.css',
 		array(),
 		$plugin['Version']
 	);
@@ -328,7 +328,7 @@ function wpe_headless_add_settings_assets() {
 	if ( ! function_exists( 'graphql' ) ) {
 		wp_enqueue_script(
 			'wpe-headless-wpgraphql-install',
-			WPE_HEADLESS_URL . 'includes/settings/assets/js/wpgraphql-install.js',
+			FAUSTWP_URL . 'includes/settings/assets/js/wpgraphql-install.js',
 			array( 'wp-a11y', 'wp-api-fetch' ),
 			$plugin['Version'],
 			true

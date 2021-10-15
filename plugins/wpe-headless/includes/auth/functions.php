@@ -208,8 +208,8 @@ function wpe_headless_decrypt( $value ) {
  * @return string The default key.
  */
 function wpe_headless_get_default_key() {
-	if ( defined( 'WP_HEADLESS_SECRET_KEY' ) && WP_HEADLESS_SECRET_KEY ) {
-		return WP_HEADLESS_SECRET_KEY;
+	if ( defined( 'FAUSTWP_SECRET_KEY' ) && FAUSTWP_SECRET_KEY ) {
+		return FAUSTWP_SECRET_KEY;
 	}
 
 	if ( defined( 'AUTH_KEY' ) && AUTH_KEY ) {
