@@ -104,7 +104,7 @@ describe('auth/middleware', () => {
 
     const { wpUrl } = config();
 
-    fetchMock.post(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
+    fetchMock.post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
       status: 401,
       body: JSON.stringify({ error: 'some error' }),
     });
