@@ -27,5 +27,8 @@ RUN set -e \
 COPY scripts/init-testing-environment.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-testing-environment.sh
 
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
