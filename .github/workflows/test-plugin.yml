@@ -12,6 +12,7 @@ jobs:
     - name: Sleep 10 seconds
       run: sleep 10
     - name: inspect
+      working-directory: ./plugins/wpe-headless
       run: docker inspect $(docker-compose ps -q wordpress)
     - name: Setup Testing Framework
       working-directory: ./plugins/wpe-headless
