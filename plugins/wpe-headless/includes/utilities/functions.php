@@ -1,6 +1,6 @@
 <?php
 /**
- * Various utility functions used through the Faust WP plugin.
+ * Various utility functions used through the FaustWP plugin.
  *
  * @package FaustWP
  */
