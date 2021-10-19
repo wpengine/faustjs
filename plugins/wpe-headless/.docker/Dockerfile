@@ -27,4 +27,5 @@ RUN set -e \
 COPY scripts/init-testing-environment.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-testing-environment.sh
 
-ENTRYPOINT ["apache2-foreground"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
