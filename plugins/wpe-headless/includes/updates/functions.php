@@ -2,8 +2,12 @@
 /**
  * Plugin updates related functions.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
+
+namespace WPE\FaustWP\Updates;
+
+use stdClass;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return false|stdClass $api Plugin API arguments.
  */
-function wpe_headless_get_plugin_data() {
-	$product_info = wpe_headless_get_remote_plugin_info();
+function faustwp_get_plugin_data() {
+	$product_info = get_remote_plugin_info();
 	if ( empty( $product_info ) || is_wp_error( $product_info ) ) {
 		return;
 	}
 
-	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
+	$current_plugin_data = get_plugin_data( FAUSTWP_FILE );
 	$meets_wp_req        = version_compare( get_bloginfo( 'version' ), $product_info->requires_at_least, '>=' );
 
 	$api                        = new stdClass();
@@ -47,7 +51,7 @@ function wpe_headless_get_plugin_data() {
  *
  * @return mixed|false The plugin api error or false.
  */
-function wpe_headless_get_plugin_api_error() {
+function get_plugin_api_error() {
 	return get_option( 'wpe_headless_product_info_api_error', false );
 }
 
@@ -56,8 +60,8 @@ function wpe_headless_get_plugin_api_error() {
  *
  * @return stdClass
  */
-function wpe_headless_get_remote_plugin_info() {
-	$current_plugin_data = get_plugin_data( WPE_HEADLESS_FILE );
+function get_remote_plugin_info() {
+	$current_plugin_data = get_plugin_data( FAUSTWP_FILE );
 	$response            = get_transient( 'wpe_headless_poc_product_info' );
 
 	if ( false === $response ) {
@@ -69,7 +73,7 @@ function wpe_headless_get_remote_plugin_info() {
 			),
 		);
 
-		$response = wpe_headless_request_plugin_updates( $request_args );
+		$response = request_plugin_updates( $request_args );
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			if ( is_wp_error( $response ) ) {
 				update_option( 'wpe_headless_product_info_api_error', $response->get_error_code(), false );
@@ -105,20 +109,20 @@ function wpe_headless_get_remote_plugin_info() {
  *
  * @return string The error message.
  */
-function wpe_headless_get_api_error_text( $reason ) {
+function get_api_error_text( $reason ) {
 	switch ( $reason ) {
 		case 'key-unknown':
-			return __( 'The product you requested information for is unknown. Please contact support.', 'wpe-headless' );
+			return __( 'The product you requested information for is unknown. Please contact support.', 'faustwp' );
 
 		default:
 			/* translators: %1$s: Link to account portal. %2$s: The text that is linked. */
 			return sprintf(
 				__(
 					'There was an unknown error connecting to the update service. This issue could be temporary. Please contact support if this error persists.',
-					'wpe-headless'
+					'faustwp'
 				),
 				'https://my.wpengine.com/products',
-				esc_html__( 'WP Engine Account Portal', 'wpe-headless' )
+				esc_html__( 'WP Engine Account Portal', 'faustwp' )
 			);
 	}
 }
@@ -133,7 +137,7 @@ function wpe_headless_get_api_error_text( $reason ) {
  *
  * @return array|WP_Error A response as an array or WP_Error.
  */
-function wpe_headless_request_plugin_updates( $args ) {
+function request_plugin_updates( $args ) {
 	return wp_remote_get(
 		'https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless',
 		$args

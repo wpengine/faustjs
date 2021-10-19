@@ -2,14 +2,22 @@
 /**
  * Utility callbacks.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
+
+namespace WPE\FaustWP\Utilities;
+
+use function WPE\FaustWP\Settings\{
+	get_secret_key,
+	faustwp_get_settings,
+	faustwp_update_setting
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-register_activation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_activation' );
+register_activation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_activation' );
 /**
  * Callback for WordPress register_activation_hook() function.
  *
@@ -23,24 +31,24 @@ register_activation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_activation' );
  *
  * @return void
  */
-function wpe_headless_handle_activation() {
-	$secret_key = wpe_headless_get_secret_key();
-	$settings   = wpe_headless_get_settings();
+function handle_activation() {
+	$secret_key = get_secret_key();
+	$settings   = faustwp_get_settings();
 
 	if ( empty( $settings ) ) {
-		wpe_headless_update_setting( 'disable_theme', '1' );
-		wpe_headless_update_setting( 'enable_rewrites', '1' );
-		wpe_headless_update_setting( 'enable_redirects', '1' );
+		faustwp_update_setting( 'disable_theme', '1' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_redirects', '1' );
 	}
 
 	if ( ! $secret_key ) {
-		wpe_headless_update_setting( 'secret_key', wp_generate_uuid4() );
+		faustwp_update_setting( 'secret_key', wp_generate_uuid4() );
 	}
 
 	flush_rewrite_rules();
 }
 
-register_deactivation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_deactivation' );
+register_deactivation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_deactivation' );
 /**
  * Callback for WordPress register_deactivation_hook() function.
  *
@@ -52,6 +60,6 @@ register_deactivation_hook( WPE_HEADLESS_FILE, 'wpe_headless_handle_deactivation
  *
  * @return void
  */
-function wpe_headless_handle_deactivation() {
+function handle_deactivation() {
 	flush_rewrite_rules();
 }

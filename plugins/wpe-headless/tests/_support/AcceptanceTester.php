@@ -41,9 +41,9 @@ class AcceptanceTester extends \Codeception\Actor
     /**
      * Visit the WPE Headless settings page.
      */
-    public function amOnWPEngineHeadlessSettingsPage()
+    public function amOnFaustWPSettingsPage()
     {
-        $this->amOnPage('/wp-admin/options-general.php?page=wpe-headless-settings');
+        $this->amOnPage('/wp-admin/options-general.php?page=faustwp-settings');
     }
 
     /**
@@ -52,7 +52,7 @@ class AcceptanceTester extends \Codeception\Actor
      * @param string $name  The wpe_headless setting name.
      * @param string $value The wpe_headless setting value.
      */
-    public function haveWpeHeadlessSetting($name, $value = '')
+    public function haveFaustWPSetting($name, $value = '')
     {
         $options = $this->grabOptionFromDatabase('wpe_headless');
         $options[ $name ] = $value;

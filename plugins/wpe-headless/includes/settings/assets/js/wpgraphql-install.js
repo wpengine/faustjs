@@ -1,8 +1,8 @@
 /**
  * Handles WPGraphQL plugin installation at Settings → Headless.
  */
-wpeHeadless.installWPGraphQL = (() => {
-	const $button = document.getElementById('wpe-headless-button-install-graphql');
+faustwp.installWPGraphQL = (() => {
+	const $button = document.getElementById('faustwp-button-install-graphql');
 	const $spinner = document.querySelector('.get-started .spinner');
 	const $status = document.querySelector('.get-started .error-message');
 
@@ -14,10 +14,10 @@ wpeHeadless.installWPGraphQL = (() => {
 				if (result.status === 'active') {
 					update('complete');
 				} else {
-					update('failed', wpeHeadless.strings.failed);
+					update('failed', faustwp.strings.failed);
 				}
 			}).catch(result => {
-				update('failed', result.message || wpeHeadless.strings.failed);
+				update('failed', result.message || faustwp.strings.failed);
 			});
 		}
 	}
@@ -34,7 +34,7 @@ wpeHeadless.installWPGraphQL = (() => {
 		}
 
 		// Just activate the plugin if it is already installed.
-		if (wpeHeadless.wpgraphqlIsInstalled) {
+		if (faustwp.wpgraphqlIsInstalled) {
 			request.path = '/wp/v2/plugins/wp-graphql/wp-graphql';
 			request.data = {status: 'active'};
 		}
@@ -46,20 +46,20 @@ wpeHeadless.installWPGraphQL = (() => {
 	function update(state = 'installing', error = '') {
 		switch (state) {
 			case 'installing':
-				wp.a11y.speak(wpeHeadless.strings.installing, 'polite');
-				$button.innerHTML = wpeHeadless.strings.installing;
+				wp.a11y.speak(faustwp.strings.installing, 'polite');
+				$button.innerHTML = faustwp.strings.installing;
 				$button.disabled = true;
 				$spinner.style.visibility = 'visible';
 				$status.innerHTML = '';
 				break;
 			case 'complete':
-				wp.a11y.speak(wpeHeadless.strings.active, 'polite');
-				$button.innerHTML = `☑️ ${wpeHeadless.strings.active}`;
+				wp.a11y.speak(faustwp.strings.active, 'polite');
+				$button.innerHTML = `☑️ ${faustwp.strings.active}`;
 				$spinner.style.visibility = 'hidden';
 				break;
 			case 'failed':
-				wp.a11y.speak(error || wpeHeadless.strings.failed, 'polite');
-				$button.innerHTML = wpeHeadless.strings.default;
+				wp.a11y.speak(error || faustwp.strings.failed, 'polite');
+				$button.innerHTML = faustwp.strings.default;
 				$button.disabled = false;
 				$spinner.style.visibility = 'hidden';
 				$status.innerHTML = error;
@@ -70,4 +70,4 @@ wpeHeadless.installWPGraphQL = (() => {
 	return {init: init}
 })();
 
-wpeHeadless.installWPGraphQL.init();
+faustwp.installWPGraphQL.init();

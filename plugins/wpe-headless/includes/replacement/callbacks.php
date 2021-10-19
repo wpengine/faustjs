@@ -2,14 +2,22 @@
 /**
  * Replacement related callbacks.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
+
+namespace WPE\FaustWP\Replacement;
+
+use function WPE\FaustWP\Settings\{
+	faustwp_get_setting,
+	is_image_source_replacement_enabled,
+	is_rewrites_enabled
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'the_content', 'wpe_headless_content_replacement' );
+add_filter( 'the_content', __NAMESPACE__ . '\\content_replacement' );
 /**
  * Callback for WordPress 'the_content' filter.
  *
@@ -18,12 +26,12 @@ add_filter( 'the_content', 'wpe_headless_content_replacement' );
  * @return string The post content.
  * @todo Needs work...
  */
-function wpe_headless_content_replacement( $content ) {
-	if ( ! wpe_headless_domain_replacement_enabled() ) {
+function content_replacement( $content ) {
+	if ( ! domain_replacement_enabled() ) {
 		return $content;
 	}
 
-	$replacement = wpe_headless_get_setting( 'frontend_uri' );
+	$replacement = faustwp_get_setting( 'frontend_uri' );
 	$site_url    = site_url();
 
 	if ( ! $replacement ) {
@@ -35,7 +43,7 @@ function wpe_headless_content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'the_content', 'wpe_headless_image_source_replacement' );
+add_filter( 'the_content', __NAMESPACE__ . '\\image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -43,12 +51,12 @@ add_filter( 'the_content', 'wpe_headless_image_source_replacement' );
  *
  * @return string The post content.
  */
-function wpe_headless_image_source_replacement( $content ) {
-	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
+function image_source_replacement( $content ) {
+	if ( ! is_image_source_replacement_enabled() ) {
 		return $content;
 	}
 
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 	$site_url     = site_url();
 
 	// For urls with no domain or the frontend domain, replace with the wp site_url.
@@ -59,7 +67,7 @@ function wpe_headless_image_source_replacement( $content ) {
 	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
 }
 
-add_filter( 'wp_calculate_image_srcset', 'wpe_headless_image_source_srcset_replacement' );
+add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -67,12 +75,12 @@ add_filter( 'wp_calculate_image_srcset', 'wpe_headless_image_source_srcset_repla
  *
  * @return string One or more arrays of source data.
  */
-function wpe_headless_image_source_srcset_replacement( $sources ) {
-	if ( ! wpe_headless_is_image_source_replacement_enabled() ) {
+function image_source_srcset_replacement( $sources ) {
+	if ( ! is_image_source_replacement_enabled() ) {
 		return $sources;
 	}
 
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 	$site_url     = site_url();
 
 	if ( is_array( $sources ) ) {
@@ -89,7 +97,7 @@ function wpe_headless_image_source_srcset_replacement( $sources ) {
 	return $sources;
 }
 
-add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 1000, 2 );
+add_filter( 'preview_post_link', __NAMESPACE__ . '\\post_preview_link', 1000, 2 );
 /**
  * Callback for WordPress 'preview_post_link' filter.
  *
@@ -100,15 +108,15 @@ add_filter( 'preview_post_link', 'wpe_headless_post_preview_link', 1000, 2 );
  *
  * @return string URL used for the post preview.
  */
-function wpe_headless_post_preview_link( $link, $post ) {
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+function post_preview_link( $link, $post ) {
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
 		$home_url     = trailingslashit( get_home_url() );
 		$frontend_uri = trailingslashit( $frontend_uri );
 		/**
-		 * This should already be handled by wpe_headless_post_link, but it's here for verbosity's sake and if the
-		 * other filter changes for any reason.
+		 * This should already be handled by WPE\FaustWP\Replacement\post_link, but
+		 * it's here for verbosity's sake and if the other filter changes for any reason.
 		 */
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
@@ -154,7 +162,7 @@ function wpe_headless_post_preview_link( $link, $post ) {
 }
 
 
-add_filter( 'post_link', 'wpe_headless_post_link', 1000 );
+add_filter( 'post_link', __NAMESPACE__ . '\\post_link', 1000 );
 /**
  * Callback for WordPress 'preview_post_link' filter and 'post_link' filter.
  *
@@ -166,15 +174,15 @@ add_filter( 'post_link', 'wpe_headless_post_link', 1000 );
  *
  * @return string URL used for the post.
  */
-function wpe_headless_post_link( $link ) {
+function post_link( $link ) {
 	if (
-		! wpe_headless_is_rewrites_enabled()
+		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
 	) {
 		return $link;
 	}
 
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
 		return str_replace( trailingslashit( get_home_url() ), trailingslashit( $frontend_uri ), $link );
@@ -183,7 +191,7 @@ function wpe_headless_post_link( $link ) {
 	return $link;
 }
 
-add_filter( 'term_link', 'wpe_headless_term_link', 1000 );
+add_filter( 'term_link', __NAMESPACE__ . '\\term_link', 1000 );
 /**
  * Rewrites term links to point to the specified front-end URL.
  *
@@ -191,12 +199,12 @@ add_filter( 'term_link', 'wpe_headless_term_link', 1000 );
  *
  * @return string
  */
-function wpe_headless_term_link( $term_link ) {
-	if ( ! wpe_headless_is_rewrites_enabled() ) {
+function term_link( $term_link ) {
+	if ( ! is_rewrites_enabled() ) {
 		return $term_link;
 	}
 
-	$frontend_uri = wpe_headless_get_setting( 'frontend_uri' );
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( empty( $frontend_uri ) ) {
 		return $term_link;
@@ -209,13 +217,13 @@ function wpe_headless_term_link( $term_link ) {
 }
 
 
-add_action( 'enqueue_block_editor_assets', 'wpe_headless_enqueue_preview_scripts' );
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_scripts' );
 /**
  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link.
  *
  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
-function wpe_headless_enqueue_preview_scripts() {
-	wp_enqueue_script( 'awp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
-	wp_localize_script( 'awp-gutenberg-filters', '_wpe_headless_preview_link', array( '_preview_link' => get_preview_post_link() ) );
+function enqueue_preview_scripts() {
+	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
+	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 }

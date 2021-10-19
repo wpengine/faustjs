@@ -157,7 +157,7 @@ svg.wpengine {
 	width: 0.5em;
 }
 
-.sidebar .box.get-started #wpe-headless-button-install-graphql {
+.sidebar .box.get-started #faustwp-button-install-graphql {
 	float: left;
 	margin-bottom: 5px;
 }
@@ -175,11 +175,11 @@ svg.wpengine {
 /* WP Admin Layout Overrides
 ---------------------------------------------------------------------------- */
 
-.settings_page_wpe-headless-settings #wpcontent {
+.settings_page_faustwp-settings #wpcontent {
 	padding-left: 0;
 }
 
-.settings_page_wpe-headless-settings #wpcontent .wrap {
+.settings_page_faustwp-settings #wpcontent .wrap {
 	margin: 0;
 }
 

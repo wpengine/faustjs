@@ -2,8 +2,12 @@
 /**
  * Replacement functions.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
+
+namespace WPE\FaustWP\Replacement;
+
+use function WPE\FaustWP\Settings\is_rewrites_enabled;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return bool True if can proceed with replacement, false if else.
  */
-function wpe_headless_domain_replacement_enabled() {
+function domain_replacement_enabled() {
 	/**
-	 * Filter 'wpe_headless_domain_replacement_enabled'.
+	 * Filter 'faustwp_domain_replacement_enabled'.
 	 *
 	 * Used to override or extend if domain replacement is enabled.
 	 *
 	 * @param bool $enabled True if domain replacement is enabled, false if else.
 	 */
-	return apply_filters( 'wpe_headless_domain_replacement_enabled', wpe_headless_is_rewrites_enabled() );
+	return apply_filters( 'faustwp_domain_replacement_enabled', is_rewrites_enabled() );
 }

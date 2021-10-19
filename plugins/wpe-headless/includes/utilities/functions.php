@@ -1,9 +1,11 @@
 <?php
 /**
- * Various utility functions used through the WP Engine Headless Framework plugin.
+ * Various utility functions used through the Faust WP plugin.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
+
+namespace WPE\FaustWP\Utilities;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -19,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string camelCase'd string
  */
-function wpe_headless_camelcase( $str, $preserved_chars = array() ) {
+function camelcase( $str, $preserved_chars = array() ) {
 	/* Convert non-alpha and non-numeric characters to spaces. */
 	$str = preg_replace( '/[^a-z0-9' . implode( '', $preserved_chars ) . ']+/i', ' ', $str );
 	$str = trim( $str );

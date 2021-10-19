@@ -2,14 +2,16 @@
 /**
  * Callback for WordPress actions.
  *
- * @package WPE_Headless
+ * @package FaustWP
  */
+
+namespace WPE\FaustWP\Events;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'update_option_rewrite_rules', 'wpe_headless_rewrite_rules_change', 10, 3 );
+add_action( 'update_option_rewrite_rules', __NAMESPACE__ . '\\rewrite_rules_change', 10, 3 );
 /**
  * Callback for WordPress 'update_option_rewrite_rules' action.
  *
@@ -23,7 +25,7 @@ add_action( 'update_option_rewrite_rules', 'wpe_headless_rewrite_rules_change', 
  *
  * @return void
  */
-function wpe_headless_rewrite_rules_change( $old_value, $new_value, $option_name ) {
+function rewrite_rules_change( $old_value, $new_value, $option_name ) {
 	if ( '' !== $new_value ) {
 		$existing_hash = get_option( 'rewrite_rules_hash' );
 		$new_hash      = md5( wp_json_encode( $new_value ) );
@@ -36,7 +38,7 @@ function wpe_headless_rewrite_rules_change( $old_value, $new_value, $option_name
 	}
 }
 
-add_action( 'post_updated', 'wpe_headless_check_post_slug', 10, 3 );
+add_action( 'post_updated', __NAMESPACE__ . '\\check_post_slug', 10, 3 );
 /**
  * Callback for WordPress 'post_updated' action.
  *
@@ -48,7 +50,7 @@ add_action( 'post_updated', 'wpe_headless_check_post_slug', 10, 3 );
  *
  * @return void
  */
-function wpe_headless_check_post_slug( $post_ID, $post_after, $post_before ) {
+function check_post_slug( $post_ID, $post_after, $post_before ) {
 	if ( ! in_array( $post_after->post_type, array( 'post', 'page' ), true ) ) {
 		return;
 	}
@@ -71,9 +73,9 @@ function wpe_headless_check_post_slug( $post_ID, $post_after, $post_before ) {
 	error_log( "Post {$post_ID} slug changed..." ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 }
 
-add_action( 'draft_to_publish', 'wpe_headless_post_status_changed' );
-add_action( 'publish_to_draft', 'wpe_headless_post_status_changed' );
-add_action( 'publish_to_trash', 'wpe_headless_post_status_changed' );
+add_action( 'draft_to_publish', __NAMESPACE__ . '\\post_status_changed' );
+add_action( 'publish_to_draft', __NAMESPACE__ . '\\post_status_changed' );
+add_action( 'publish_to_trash', __NAMESPACE__ . '\\post_status_changed' );
 /**
  * Callback for WordPress "{$old_status}_to_{$new_status}" action.
  *
@@ -83,7 +85,7 @@ add_action( 'publish_to_trash', 'wpe_headless_post_status_changed' );
  *
  * @return void
  */
-function wpe_headless_post_status_changed( $post ) {
+function post_status_changed( $post ) {
 	if ( ! in_array( $post->post_type, array( 'post', 'page' ), true ) ) {
 		return;
 	}
