@@ -96,7 +96,7 @@ jobs:
       - run:
           name: Setup WordPress testing framework
           command: |
-            /bin/bash tests/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
+            /bin/bash bin/install-wp-tests.sh wp_database wp_user wp_pass 127.0.0.1 latest true
           working_directory: .
       - run:
           name: Run testing suite
