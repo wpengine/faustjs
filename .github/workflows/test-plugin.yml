@@ -2,7 +2,7 @@ name: Test Plugin
 on: pull_request
 jobs:
   test_plugin:
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
