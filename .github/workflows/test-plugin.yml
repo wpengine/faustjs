@@ -9,8 +9,8 @@ jobs:
     - name: Create Docker Containers
       working-directory: ./plugins/wpe-headless
       run: docker-compose up -d
-    - name: Sleep 5 seconds
-      run: sleep 5
+    - name: Sleep 15 seconds
+      run: sleep 15
     - name: Setup testing framework
       working-directory: ./plugins/wpe-headless
       run: docker exec $(docker-compose ps -q wordpress) init-testing-environment.sh
