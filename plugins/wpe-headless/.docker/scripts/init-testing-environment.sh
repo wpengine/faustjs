@@ -2,6 +2,8 @@
 
 cd /var/www/html/
 
+ls
+
 #1. check if wordpress is already installed/configured
 if (sudo -u www-data -- wp core is-installed)
 then
