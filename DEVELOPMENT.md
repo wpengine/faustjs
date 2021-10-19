@@ -61,34 +61,29 @@ composer phpcs:fix
 ```
 
 **WordPress Unit Tests**
-To run WordPress unit tests, set up the test framework:
+
+To run WordPress unit tests, first create the Docker containers from the `plugins/wpe-headless` directory:
 
 ```
-/bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh faustwp_tests db_name db_password
+docker-compose up -d
 ```
 
-If you connect to MySQL via a sock connection, you can run the following.
+Once the containers are up, set up the test framework:
 
 ```
-/bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh faustwp_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
+docker-compose exec wordpress init-testing-environment.sh
 ```
 
-Install the composer packages from within `wpe-headless` directory if you haven't already.
+Run the unit tests:
 
 ```
-composer install
+docker-compose exec -w /var/www/html/wp-content/plugins/wpe-headless wordpress composer test
 ```
 
-Within the `wpe-headless` directory, run `phpunit` either directly or as a composer command:
+Finally, to remove the containers:
 
 ```
-vendor/bin/phpunit
-```
-
-or
-
-```
-composer test
+docker-compose down
 ```
 
 ## End-2-End Testing
@@ -110,6 +105,7 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 ### 2. Front-end Setup
 
 1. Create the following `.env.test` in `examples/next/getting-started`.
+
 ```
 # Your WordPress site URL
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
@@ -117,6 +113,7 @@ NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 # Plugin secret found in WordPress Settings->Headless
 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
 ```
+
 2. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
 
 ### 3. WordPress Setup
@@ -125,9 +122,9 @@ WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
 1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
 1. Run `composer install` if you haven't already.
 1. Prepare a test WordPress site.
-    1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
-    1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+   1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
+   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
