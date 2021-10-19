@@ -3,7 +3,7 @@
 class SettingsCest
 {
     /**
-     * Ensure the Faust WP settings page is available.
+     * Ensure the FaustWP settings page is available.
      */
     public function i_can_access_the_settings_page(AcceptanceTester $I)
     {
@@ -13,7 +13,7 @@ class SettingsCest
     }
 
     /**
-     * Ensure the Faust WP default settings are set when the plugin is
+     * Ensure the FaustWP default settings are set when the plugin is
      * activated for the first time.
      */
     public function i_can_see_the_default_settings(AcceptanceTester $I)
@@ -22,11 +22,11 @@ class SettingsCest
         $I->amOnPluginsPage();
 
         // Deactivate plugin and remove settings.
-        $I->deactivatePlugin('faust-wp');
+        $I->deactivatePlugin('faustwp');
         $I->dontHaveOptionInDatabase('wpe_headless');
 
         // Reactivate plugin triggering default settings.
-        $I->activatePlugin('faust-wp');
+        $I->activatePlugin('faustwp');
 
         $settings = $I->grabOptionFromDatabase('wpe_headless');
 
