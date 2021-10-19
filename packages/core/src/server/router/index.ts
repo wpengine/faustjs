@@ -14,7 +14,7 @@ import {
  * @example ```ts
  * // filename: pages/api/faust/[[...route]].ts
  * import 'faust.config';
- * import { apiRouter } from '@faustjs/core';
+ * import { apiRouter } from '@faustjs/core/api';
  *
  * export default apiRouter;
  * ```
