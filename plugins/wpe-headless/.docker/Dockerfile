@@ -18,6 +18,9 @@ RUN set -e \
         less \
         openssh-server \
         sudo \
+        subversion \
+        default-mysql-client \
+        telnet \
         vim \
         -qq --no-install-recommends \
     ; sudo adduser www-data sudo \
@@ -25,3 +28,9 @@ RUN set -e \
     ; chmod +x /usr/local/bin/wp \
     ; chown -R www-data:www-data /public /var/www \
     ; rm -rf /var/lib/apt/lists/*
+
+#4. Copy the script to create the testing environment when the container is started
+COPY scripts/init-testing-environment.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init-testing-environment.sh
+
+ENTRYPOINT ["apache2-foreground"]

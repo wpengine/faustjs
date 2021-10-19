@@ -1,0 +1,19 @@
+name: Test Plugin
+on: pull_request
+jobs:
+  test_plugin:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Create Docker Containers
+      working-directory: ./plugins/wpe-headless
+      run: docker-compose up -d
+    - name: Sleep 10 seconds
+      run: sleep 10
+    - name: Setup Testing Framework
+      working-directory: ./plugins/wpe-headless
+      run: docker-compose exec wordpress init-testing-environment.sh
+    - name: Run unit tests
+      working-directory: ./plugins/wpe-headless
+      run: docker-compose exec --workdir /var/www/html/wp-content/plugins/wpe-headless wordpress vendor/bin/phpunit
