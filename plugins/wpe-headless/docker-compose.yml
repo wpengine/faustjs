@@ -15,7 +15,6 @@ services:
       WP_TESTS_DB_NAME: wordpress_unit_test
       WP_PLUGIN_FOLDER: wpe-headless
     volumes:
-      - wordpress:/var/www/html
       - ./:/var/www/html/wp-content/plugins/wpe-headless
 
   db:
