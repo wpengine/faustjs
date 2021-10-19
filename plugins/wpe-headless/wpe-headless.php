@@ -50,19 +50,3 @@ require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
 if ( is_events_enabled() ) {
 	require FAUSTWP_DIR . '/includes/events/callbacks.php';
 }
-
-add_action( 'activated_plugin', 'activated_plugin', 10, 2 );
-/**
- * Callback for WordPress 'activated_plugin' action.
- *
- * Redirect the user to FaustWP settings page on activation.
- *
- * @param string $plugin       The plugin name.
- * @param bool   $network_wide True if a network plugin, false if else.
- */
-function activated_plugin( $plugin, $network_wide ) {
-	if ( ! defined( 'WP_CLI' ) && ! $network_wide && FAUSTWP_PATH === $plugin ) {
-		wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=faustwp-settings&new_activation=1' ) ) );
-		exit;
-	}
-}
