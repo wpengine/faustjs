@@ -19,4 +19,4 @@ jobs:
       run: docker exec $(docker-compose ps -q wordpress) init-testing-environment.sh
     - name: Run unit tests
       working-directory: ./plugins/wpe-headless
-      run: docker exec -w /var/www/html/wp-content/plugins/wpe-headless $(docker-compose ps -q wordpress) bash -c "vendor/bin/phpunit"
+      run: docker exec -w /var/www/html/wp-content/plugins/wpe-headless $(docker-compose ps -q wordpress) bash -c "ls && vendor/bin/phpunit"
