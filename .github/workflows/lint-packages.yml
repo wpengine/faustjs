@@ -1,7 +1,7 @@
-name: test
+name: Lint Packages
 on: pull_request
 jobs:
-  test:
+  lint_packages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -11,5 +11,5 @@ jobs:
       - run: rm package-lock.json
       - run: npm install
       - run: npm run build
-      - run: npm test
+      - run: npm run lint
         continue-on-error: FALSE
