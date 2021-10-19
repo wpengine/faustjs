@@ -11,6 +11,8 @@ jobs:
       run: docker-compose up -d
     - name: Sleep 10 seconds
       run: sleep 10
+    - name: inspect
+      run: docker inspect $(docker-compose ps -q wordpress)
     - name: Setup Testing Framework
       working-directory: ./plugins/wpe-headless
       run: docker exec $(docker-compose ps -q wordpress) init-testing-environment.sh
