@@ -13,7 +13,7 @@ jobs:
       run: sleep 10
     - name: Setup Testing Framework
       working-directory: ./plugins/wpe-headless
-      run: docker-compose exec wordpress init-testing-environment.sh
+      run: docker-compose exec -T wordpress init-testing-environment.sh
     - name: Run unit tests
       working-directory: ./plugins/wpe-headless
-      run: docker-compose exec --workdir /var/www/html/wp-content/plugins/wpe-headless wordpress vendor/bin/phpunit
+      run: docker-compose exec -T --workdir /var/www/html/wp-content/plugins/wpe-headless wordpress vendor/bin/phpunit
