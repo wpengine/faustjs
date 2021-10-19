@@ -3,7 +3,7 @@ FROM wordpress
 # Needed for Codeception WPDB test integration.
 RUN docker-php-ext-install pdo pdo_mysql
 
-RUN && curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/local/bin/wp \
+RUN curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/local/bin/wp \
     && chmod +x /usr/local/bin/wp
 
 RUN set -e \
