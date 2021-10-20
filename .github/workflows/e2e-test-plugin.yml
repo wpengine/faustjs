@@ -21,7 +21,7 @@ jobs:
         working-directory: examples/next/getting-started
         run: |
           npm install
-          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev &
       - name: Composer install
         working-directory: plugins/wpe-headless
         run: composer install
