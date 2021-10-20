@@ -4,7 +4,8 @@ import {
   mockedServerSidePropsContext,
   mockedStaticPropsContext,
 } from '../jest.setup';
-import { getNextStaticProps, getNextServerSideProps, config } from '../src';
+import { config } from '../src/config';
+import { getNextStaticProps, getNextServerSideProps } from '../src/getProps';
 import { AUTH_CLIENT_CACHE_PROP, CLIENT_CACHE_PROP } from '../src/getProps';
 
 describe('getNextStaticProps', () => {
