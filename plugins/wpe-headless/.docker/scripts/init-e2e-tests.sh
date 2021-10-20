@@ -8,6 +8,8 @@ wp db export /var/www/html/wp-content/plugins/$WP_PLUGIN_FOLDER/tests/_data/dump
 
 cd /var/www/html/wp-content/plugins/$WP_PLUGIN_FOLDER
 
+composer install
+
 cp .env.testing.example .env.testing
 
 cd /var/www/html

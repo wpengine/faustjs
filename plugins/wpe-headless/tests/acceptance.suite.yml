@@ -29,8 +29,8 @@ modules:
             cleanup: true
             waitlock: 10
             url: '%TEST_SITE_WP_URL%'
-            urlReplacement: true #replace the hardcoded dump URL with the one above
             tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
+            urlReplacement: true #replace the hardcoded dump URL with the one above
         WPWebDriver:
             url: '%TEST_SITE_WP_URL%'
             adminUsername: '%TEST_SITE_ADMIN_USERNAME%'
