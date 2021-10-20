@@ -24,9 +24,13 @@ RUN set -e \
     ; sudo adduser www-data sudo \
     ; rm -rf /var/lib/apt/lists/*
 
-# Copy the script to create the testing environment
+# Copy the script to create the unit testing environment
 COPY scripts/init-testing-environment.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-testing-environment.sh
+
+# Copy the script to create the e2e testing environment
+COPY scripts/init-e2e-tests.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init-e2e-tests.sh
 
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer

@@ -9,6 +9,7 @@ services:
       - 8080:80
     links:
       - db
+      - webdriver
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: wordpress
@@ -32,6 +33,10 @@ services:
       MYSQL_ROOT_PASSWORD: wordpress
     volumes:
       - ./.docker/mysql:/docker-entrypoint-initdb.d
+  
+  webdriver:
+    image: selenium/standalone-chrome:latest
+    restart: always
 
 volumes:
   wordpress:
