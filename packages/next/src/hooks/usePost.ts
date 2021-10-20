@@ -1,4 +1,4 @@
-import { PostIdType } from '@faustjs/core';
+import { PostIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
 import { useRouter } from 'next/router';
 import defaults from 'lodash/defaults';

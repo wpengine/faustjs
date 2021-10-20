@@ -1,7 +1,5 @@
-import {
-  config as coreConfig,
-  LOGOUT_ENDPOINT_PARTIAL_PATH,
-} from '@faustjs/core';
+import { config as coreConfig } from '@faustjs/core';
+import { LOGOUT_ENDPOINT_PARTIAL_PATH } from '@faustjs/core/config';
 import type { RequiredSchema } from '@faustjs/react';
 import { isNil } from 'lodash';
 import { useState } from 'react';

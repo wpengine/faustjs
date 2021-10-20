@@ -1,9 +1,6 @@
-import {
-  fetchAccessToken,
-  getQueryParam,
-  isValidEmail,
-  Mutation,
-} from '@faustjs/core';
+import type { Mutation } from '@faustjs/core/client';
+import { fetchAccessToken } from '@faustjs/core/auth';
+import { getQueryParam, isValidEmail } from '@faustjs/core/utils';
 import type { RequiredSchema } from '@faustjs/react';
 import { UseMutationOptions } from '@gqty/react';
 import noop from 'lodash/noop';

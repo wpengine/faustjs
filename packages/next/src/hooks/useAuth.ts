@@ -1,4 +1,5 @@
-import { ensureAuthorization, config } from '@faustjs/core';
+import { config } from '@faustjs/core';
+import { ensureAuthorization } from '@faustjs/core/auth';
 import type { RequiredSchema } from '@faustjs/react';
 import defaults from 'lodash/defaults';
 import isObject from 'lodash/isObject';

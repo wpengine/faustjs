@@ -1,4 +1,4 @@
-import { PageIdType, PostIdType } from '@faustjs/core';
+import { PageIdType, PostIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
 import isUndefined from 'lodash/isUndefined';
 import { useRouter } from 'next/router';

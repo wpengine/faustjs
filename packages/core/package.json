@@ -18,6 +18,10 @@
       "import": "./dist/mjs/export/auth.js",
       "require": "./dist/cjs/export/auth.js"
     },
+    "./client": {
+      "import": "./dist/mjs/export/client.js",
+      "require": "./dist/cjs/export/client.js"
+    },
     "./config": {
       "import": "./dist/mjs/export/config.js",
       "require": "./dist/cjs/export/config.js"

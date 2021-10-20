@@ -1,4 +1,8 @@
-export * from '../gqty';
-export * from '../auth';
-export * from '../config';
-export * from '../utils';
+export {
+  getClient,
+  ClientConfig,
+  ApiClient,
+  WithClient,
+  GqlClientSchema,
+} from '../gqty';
+export { Config, config } from '../config';

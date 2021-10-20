@@ -1,4 +1,4 @@
-import { CategoryIdType } from '@faustjs/core';
+import { CategoryIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
 import { useRouter } from 'next/router';
 import isString from 'lodash/isString';
