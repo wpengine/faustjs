@@ -1,0 +1,34 @@
+name: E2E Test Plugin
+on: pull_request
+jobs:
+  e2e_test_plugin:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@master
+      - name: Setup Frontend
+        working-directory: examples/next/getting-started
+        run: |
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev
+      - name: Composer install
+        working-directory: plugins/wpe-headless
+        run: composer install
+      - name: Setup Containers
+        working-directory: plugins/wpe-headless
+        run: docker-compose up -d
+      - name: Install WP GraphQL
+        working-directory: plugins/wpe-headless
+        run: |
+          docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate
+      - name: Setup testing data
+        run: |
+          docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql
+      - name: Copy env file
+        working-directory: plugins/wpe-headless
+        run: cp .env.testing.example .env.testing
+      - name: Run test
+        working-directory: plugins/wpe-headless
+        run: vendor/bin/codecept run acceptance
