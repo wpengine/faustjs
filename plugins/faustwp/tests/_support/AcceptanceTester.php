@@ -39,7 +39,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * Visit the WPE Headless settings page.
+     * Visit the FaustWP settings page.
      */
     public function amOnFaustWPSettingsPage()
     {

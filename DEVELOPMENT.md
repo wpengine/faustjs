@@ -30,10 +30,10 @@ As this is a monorepo, you will not be able to check out this repository into `w
 
 Instead, you can create symlinks to the themes/plugins in this repository. Best of all, this will also sync your work across multiple local sites!
 
-#### WPE Headless Plugin
+#### FaustWP Plugin
 
 **Setup**
-To begin working with the WPE Headless WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
+To begin working with the FaustWP WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
 
 ```
 ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/faustwp
@@ -119,7 +119,7 @@ WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
 ### 3. WordPress Setup
 
 1. Leave the node server running and open a new shell.
-1. Move into the WPE Headless plugin directory `plugins/faustwp`.
+1. Move into the FaustWP plugin directory `plugins/faustwp`.
 1. Run `composer install` if you haven't already.
 1. Prepare a test WordPress site.
    1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
