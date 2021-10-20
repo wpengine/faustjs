@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { trim } from 'lodash';
-import { config } from '../../src';
+import { config } from '../../src/config';
 import * as authorize from '../../src/auth/authorize';
 
 describe('auth/ensureAuthorization', () => {
