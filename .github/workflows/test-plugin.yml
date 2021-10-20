@@ -7,13 +7,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Create Docker Containers
-      working-directory: ./plugins/wpe-headless
+      working-directory: ./plugins/faustwp
       run: docker-compose up -d
     - name: Sleep 15 seconds
       run: sleep 15
     - name: Setup testing framework
-      working-directory: ./plugins/wpe-headless
+      working-directory: ./plugins/faustwp
       run: docker exec $(docker-compose ps -q wordpress) init-testing-environment.sh
     - name: Run unit tests
-      working-directory: ./plugins/wpe-headless
-      run: docker exec -w /var/www/html/wp-content/plugins/wpe-headless $(docker-compose ps -q wordpress) composer test
+      working-directory: ./plugins/faustwp
+      run: docker exec -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) composer test

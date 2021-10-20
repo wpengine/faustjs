@@ -27,7 +27,7 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
  * @return void
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/wpe-headless.php';
+	require dirname( dirname( __FILE__ ) ) . '/faustwp.php';
 }
 
 require $_tests_dir . '/includes/bootstrap.php';

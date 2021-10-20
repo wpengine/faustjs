@@ -36,13 +36,13 @@ Instead, you can create symlinks to the themes/plugins in this repository. Best 
 To begin working with the WPE Headless WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
 
 ```
-ln -s /path/to/faustjs/plugins/wpe-headless /path/to/wordpress/wp-content/plugins/wpe-headless
+ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/faustwp
 ```
 
 **PHP Code Sniffer**
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
-Install the composer packages from within `wpe-headless` directory if you haven't already.
+Install the composer packages from within `faustwp` directory if you haven't already.
 
 ```
 composer install
@@ -62,7 +62,7 @@ composer phpcs:fix
 
 **WordPress Unit Tests**
 
-To run WordPress unit tests, first create the Docker containers from the `plugins/wpe-headless` directory:
+To run WordPress unit tests, first create the Docker containers from the `plugins/faustwp` directory:
 
 ```
 docker-compose up -d
@@ -77,7 +77,7 @@ docker-compose exec wordpress init-testing-environment.sh
 Run the unit tests:
 
 ```
-docker-compose exec -w /var/www/html/wp-content/plugins/wpe-headless wordpress composer test
+docker-compose exec -w /var/www/html/wp-content/plugins/faustwp wordpress composer test
 ```
 
 Finally, to remove the containers:
@@ -119,12 +119,12 @@ WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
 ### 3. WordPress Setup
 
 1. Leave the node server running and open a new shell.
-1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
+1. Move into the WPE Headless plugin directory `plugins/faustwp`.
 1. Run `composer install` if you haven't already.
 1. Prepare a test WordPress site.
    1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
-   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp plugin install wp-graphql --activate`
+   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
@@ -139,12 +139,12 @@ WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001
 
 Developers with full GitHub repository access can create public releases:
 
-### Release the wpe-headless plugin
+### Release the FaustWP plugin
 
-1. Update the `Version` in the file header at `plugins/wpe-headless/wpe-headless.php`.
-2. Update the changelog and 'stable tag' in `plugins/wpe-headless/readme.txt`.
+1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
+2. Update the changelog and 'stable tag' in `plugins/faustwp/readme.txt`.
 3. Commit and push your changes for review **(DO NOT MERGE YET)**.
-4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `git tag plugin/wpe-headless/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/faustjs/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
+4. Tag the approved commit with `plugin/faustwp/[version]`, for example: `git tag plugin/faustwp/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/faustjs/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
 5. Merge your changes into the `canary` branch
 
 CircleCI will build and deploy the plugin zip. The latest version will be available here:

@@ -113,7 +113,7 @@ function display_plugin_row_notice( $plugin_file, $plugin_data ) {
 	$error = get_plugin_api_error();
 
 	?>
-	<tr class="plugin-update-tr active" id="wpe-headless-update" data-slug="wpe-headless" data-plugin="wpe-headless/wpe-headless.php">
+	<tr class="plugin-update-tr active" id="faustwp-update" data-slug="faustwp" data-plugin="faustwp/faustwp.php">
 		<td colspan="3" class="plugin-update">
 			<div class="update-message notice inline notice-error notice-alt">
 				<p>
