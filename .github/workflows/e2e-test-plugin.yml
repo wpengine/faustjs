@@ -35,6 +35,7 @@ jobs:
         run: |
           docker exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate
       - name: Setup testing data
+        working-directory: plugins/wpe-headless
         run: |
           docker exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql
       - name: Copy env file
