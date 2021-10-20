@@ -11,6 +11,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
+        run: chrome --version
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
