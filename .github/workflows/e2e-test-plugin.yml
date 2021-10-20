@@ -13,6 +13,7 @@ jobs:
           node-version: '16'
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@latest
+      - name: Get Chrome version
         run: chrome --version
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
