@@ -7,11 +7,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
       - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@master
       - name: Setup Frontend
         working-directory: examples/next/getting-started
         run: |
+          npm install
           NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev
       - name: Composer install
         working-directory: plugins/wpe-headless
