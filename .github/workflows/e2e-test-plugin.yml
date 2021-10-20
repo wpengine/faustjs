@@ -28,6 +28,8 @@ jobs:
       - name: Setup Containers
         working-directory: plugins/wpe-headless
         run: docker-compose up -d
+      - name: Sleep 15 seconds
+        run: sleep 15
       - name: Install WP GraphQL
         working-directory: plugins/wpe-headless
         run: |
