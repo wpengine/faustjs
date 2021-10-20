@@ -31,10 +31,10 @@ jobs:
       - name: Install WP GraphQL
         working-directory: plugins/wpe-headless
         run: |
-          docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate
+          docker exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate
       - name: Setup testing data
         run: |
-          docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql
+          docker exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql
       - name: Copy env file
         working-directory: plugins/wpe-headless
         run: cp .env.testing.example .env.testing
