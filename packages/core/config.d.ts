@@ -1,1 +1,1 @@
-export * from './dist/cjs/export/auth';
+export * from './dist/cjs/export/config';
