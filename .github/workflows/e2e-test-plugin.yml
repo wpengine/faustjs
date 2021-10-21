@@ -21,24 +21,24 @@ jobs:
           npm install
           NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev &
       - name: Composer install
-        working-directory: plugins/wpe-headless
+        working-directory: plugins/faustwp
         run: composer install
       - name: Setup Containers
-        working-directory: plugins/wpe-headless
+        working-directory: plugins/faustwp
         run: docker-compose up -d
       - name: Sleep 15 seconds
         run: sleep 15
       - name: Install WP GraphQL
-        working-directory: plugins/wpe-headless
+        working-directory: plugins/faustwp
         run: |
-          docker exec --workdir=/var/www/html/wp-content/plugins/wpe-headless $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
+          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
       - name: Setup testing data
-        working-directory: plugins/wpe-headless
+        working-directory: plugins/faustwp
         run: |
-          docker exec --workdir=/var/www/html/wp-content/plugins/wpe-headless $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root
+          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root
       - name: Copy env file
-        working-directory: plugins/wpe-headless
+        working-directory: plugins/faustwp
         run: cp .env.testing.example .env.testing
       - name: Run test
-        working-directory: plugins/wpe-headless
+        working-directory: plugins/faustwp
         run: vendor/bin/codecept run acceptance

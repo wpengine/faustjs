@@ -26,7 +26,8 @@ class PostPreviewCest
         $I->click('div.components-guide .components-modal__header button.components-button');
         $I->click('button.block-editor-post-preview__button-toggle');
         $I->seeLink(
-            'Preview in new tab'
+            'Preview in new tab',
+            "${front_end_url}/${post_name}/?preview=true",
         );
 
 		$I->click('Preview in new tab');
