@@ -11,16 +11,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@latest
-      - name: Get Chrome version
-        run: chrome --version
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
-      - name: Setup ChromeDriver
-        uses: nanasess/setup-chromedriver@master
       - name: Setup Frontend
         working-directory: examples/next/getting-started
         run: |
