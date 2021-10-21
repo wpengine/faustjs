@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",
-    "gqty": "^2.0.2",
+    "gqty": "^2.0.3",
     "rimraf": "^3.0.2"
   },
   "dependencies": {

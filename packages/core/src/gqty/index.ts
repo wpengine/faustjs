@@ -124,7 +124,7 @@ export interface ClientConfig<
    * @param {string} url
    * @param {RequestInit} init
    * @returns {RequestContext}
-   * @memberof HeadlessConfig
+   * @memberof ClientConfig
    */
   applyRequestContext?(
     url: string,

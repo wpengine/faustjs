@@ -1,4 +1,4 @@
-import { PageIdType } from '@faustjs/core';
+import { PageIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
 import { useRouter } from 'next/router';
 import defaults from 'lodash/defaults';

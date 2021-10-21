@@ -1,5 +1,5 @@
 /* eslint-disable react/no-children-prop */
-import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core';
+import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core/client';
 import { isBoolean, isObject } from 'lodash';
 import isNil from 'lodash/isNil';
 import {
