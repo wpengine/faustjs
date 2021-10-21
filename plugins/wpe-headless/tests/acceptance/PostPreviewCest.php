@@ -26,13 +26,12 @@ class PostPreviewCest
         $I->click('div.components-guide .components-modal__header button.components-button');
         $I->click('button.block-editor-post-preview__button-toggle');
         $I->seeLink(
-            'Preview in new tab',
-            "${front_end_url}/${post_name}/?preview=true",
+            'Preview in new tab'
         );
 
 		$I->click('Preview in new tab');
 		$I->switchToNextTab();
-		$I->wait(2); // Wait for authentication
+		$I->wait(8); // Wait for authentication
         $I->see($post_title, 'section h1');
 		$I->see($post_content, 'main.content-single .wrap p');
     }
