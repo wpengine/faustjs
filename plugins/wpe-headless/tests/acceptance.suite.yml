@@ -42,4 +42,4 @@ modules:
             window_size: false
             capabilities:
                 chromeOptions:
-                    args: ["disable-gpu"]
+                    args: ["headless", "no-sandbox", "disable-gpu"]
