@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.12.4
+
+### Patch Changes
+
+- 81d6162: Refactored core exports and naming to make root namespace cleaner
+
 ## 0.12.3
 
 ### Patch Changes
