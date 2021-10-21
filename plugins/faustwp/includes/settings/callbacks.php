@@ -233,7 +233,7 @@ function display_secret_key_field() {
 		printf(
 			/* translators: %s: Documentation URL. */
 			wp_kses_post( __( 'This key is used to enable <a href="%s" target="_blank" rel="noopener noreferrer">headless post previews</a>.', 'faustwp' ) ),
-			'https://github.com/wpengine/faustjs/blob/main/docs/previews/README.md'
+			'https://faustjs.org/docs/next/guides/post-page-previews'
 		);
 		?>
 	</p>
