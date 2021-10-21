@@ -11,8 +11,8 @@ jobs:
       with:
         php-version: '7.3'
     - name: Install Dependencies
-      working-directory: plugins/wpe-headless
+      working-directory: plugins/faustwp
       run: composer install
     - name: Run Lint
-      working-directory: plugins/wpe-headless
+      working-directory: plugins/faustwp
       run: composer lint
