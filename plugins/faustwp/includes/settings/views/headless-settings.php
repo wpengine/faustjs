@@ -39,7 +39,7 @@
 		<div>
 			<div class="content">
 				<form action="options.php" method="POST">
-					<?php settings_fields( 'wpe_headless' ); ?>
+					<?php settings_fields( 'faustwp_settings' ); ?>
 
 					<?php do_settings_sections( 'faustwp-settings' ); ?>
 
