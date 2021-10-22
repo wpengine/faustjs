@@ -33,7 +33,7 @@ class PostPreviewCest
 
 		$I->click('Preview in new tab');
 		$I->switchToNextTab();
-		$I->wait(8); // Wait for authentication
+		$I->wait(2); // Wait for authentication
         $I->see($post_title, 'section h1');
 		$I->see($post_content, 'main.content-single .wrap p');
     }

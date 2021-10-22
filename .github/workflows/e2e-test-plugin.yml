@@ -42,3 +42,9 @@ jobs:
       - name: Run test
         working-directory: plugins/faustwp
         run: vendor/bin/codecept run acceptance
+      - name: Upload Test Output
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: failed-test-output
+          path: ${{ github.workspace }}/plugins/faustwp/tests/_output
