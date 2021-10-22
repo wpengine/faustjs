@@ -1,12 +1,12 @@
 import isNil from 'lodash/isNil';
 import React from 'react';
-import type { getClient } from './gqty/client';
+import type { getClient } from '../gqty/client';
 import {
   AUTH_CLIENT_CACHE_PROP,
   CLIENT_CACHE_PROP,
   PageProps,
-} from './server/getProps';
-import { HeadlessContext } from './gqty/client';
+} from '../server/getProps';
+import { HeadlessContext } from '../gqty/client';
 
 /**
  * The HeadlessProvider is a React component required to properly facilitate SSR and SSG for Faust.js.
