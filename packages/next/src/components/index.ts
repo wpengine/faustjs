@@ -1,1 +1,1 @@
-export * from './HeadlessProvider';
+export * from './FaustProvider';

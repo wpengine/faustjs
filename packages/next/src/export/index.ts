@@ -9,4 +9,4 @@ export {
   getNextStaticProps,
   is404,
 } from '../server';
-export { HeadlessProvider } from '../components';
+export { FaustProvider } from '../components';
