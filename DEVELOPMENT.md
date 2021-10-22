@@ -143,22 +143,16 @@ Developers with full GitHub repository access can create public releases:
 
 1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
 2. Update the changelog and 'stable tag' in `plugins/faustwp/readme.txt`.
-3. Commit and push your changes for review **(DO NOT MERGE YET)**.
-4. Tag the approved commit with `plugin/faustwp/[version]`, for example: `git tag plugin/faustwp/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/faustjs/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
-5. Merge your changes into the `canary` branch
-
-CircleCI will build and deploy the plugin zip. The latest version will be available here:
-
-`https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download`
+3. Commit and merge your changes into the `canary` branch.
+4. Create a new release on GitHub with a tag of `plugin/faustwp/[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org
 
 ### Release the @faustjs packages
 
-1. From the monorepo root directory, run either `npm run patch` or `npm run minor`. This will increment all the packages' versions, keeping them in lockstep.
-2. Remove `node_modules` and `package-lock.json` from the root directory.
-3. Run `npm i && npm test` to verify that the packages are working.
-4. Update the changelogs of the applicable packages.
-5. Commit and push your changes for review.
-6. Once reviewed and merged into `canary`, our GitHub Actions workflow will publish the packages to NPM.
+We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
+
+1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Release Packages" PR.
+2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
+3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
 
 Once deployed, the updated packages will be visible here:
 
