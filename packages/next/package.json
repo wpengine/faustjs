@@ -22,6 +22,10 @@
       "import": "./dist/mjs/export/log.js",
       "require": "./dist/cjs/export/log.js"
     },
+    "./server": {
+      "import": "./dist/mjs/export/server.js",
+      "require": "./dist/cjs/export/server.js"
+    },
     "./utils": {
       "import": "./dist/mjs/export/utils.js",
       "require": "./dist/cjs/export/utils.js"

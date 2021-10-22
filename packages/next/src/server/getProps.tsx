@@ -12,8 +12,8 @@ import {
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
-import { config } from './config/config';
-import { getClient, HeadlessContext } from './gqty/client';
+import { config } from '../config/config';
+import { getClient, HeadlessContext } from '../gqty/client';
 
 import {
   hasCategoryId,
@@ -23,7 +23,7 @@ import {
   hasPostId,
   hasPostSlug,
   hasPostUri,
-} from './utils';
+} from '../utils';
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 export const AUTH_CLIENT_CACHE_PROP = '__AUTH_CLIENT_CACHE_PROP';

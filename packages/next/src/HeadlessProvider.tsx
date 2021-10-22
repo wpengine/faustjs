@@ -5,7 +5,7 @@ import {
   AUTH_CLIENT_CACHE_PROP,
   CLIENT_CACHE_PROP,
   PageProps,
-} from './getProps';
+} from './server/getProps';
 import { HeadlessContext } from './gqty/client';
 
 /**
