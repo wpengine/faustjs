@@ -27,8 +27,8 @@ export function HeadlessProvider<Props = Record<string, unknown>>({
     useHydrateCache,
     auth: { useHydrateCache: useAuthHydrateCache },
   } = client;
-  const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
-  const authSnapshot = pageProps[AUTH_CLIENT_CACHE_PROP];
+  const cacheSnapshot = pageProps?.[CLIENT_CACHE_PROP];
+  const authSnapshot = pageProps?.[AUTH_CLIENT_CACHE_PROP];
 
   useHydrateCache({
     cacheSnapshot: isNil(cacheSnapshot) ? undefined : cacheSnapshot,

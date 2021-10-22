@@ -1,7 +1,12 @@
-export * from '../gqty/client';
-export * from '../config/config';
-export * from '../server/getProps';
-export * from '../components/HeadlessProvider';
-export * from '../utils';
-export * from '../config/withFaust';
-export * from '../log/log';
+export { Config, WithFaustConfig, config, withFaust } from '../config';
+export { getClient, NextClient } from '../gqty';
+export { logQueries } from '../log';
+export {
+  GetNextServerSidePropsConfig,
+  GetNextStaticPropsConfig,
+  Is404Config,
+  getNextServerSideProps,
+  getNextStaticProps,
+  is404,
+} from '../server';
+export { HeadlessProvider } from '../components';
