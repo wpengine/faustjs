@@ -2,13 +2,17 @@
   "name": "@faustjs/next",
   "version": "0.12.4",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
-  "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "main": "dist/cjs/export/index.js",
+  "module": "dist/mjs/export/index.js",
+  "types": "dist/cjs/export/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/mjs/index.js",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/mjs/export/index.js",
+      "require": "./dist/cjs/export/index.js"
+    },
+    "./client": {
+      "import": "./dist/mjs/export/client.js",
+      "require": "./dist/cjs/export/client.js"
     }
   },
   "scripts": {

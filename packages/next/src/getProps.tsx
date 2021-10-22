@@ -13,7 +13,7 @@ import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
 import { config } from './config';
-import { getClient, HeadlessContext } from './client';
+import { getClient, HeadlessContext } from './gqty/client';
 
 import {
   hasCategoryId,
