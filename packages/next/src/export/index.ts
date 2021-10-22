@@ -4,4 +4,4 @@ export * from '../getProps';
 export * from '../HeadlessProvider';
 export * from '../utils';
 export * from '../config/withFaust';
-export * from '../log';
+export * from '../log/log';
