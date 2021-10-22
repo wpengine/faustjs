@@ -106,7 +106,7 @@ function faustwp_update_setting( $name, $value ) {
 	$settings          = faustwp_get_settings();
 	$settings[ $name ] = $value;
 
-	update_option( 'wpe_headless', $settings );
+	update_option( 'faustwp_settings', $settings );
 }
 
 /**
@@ -115,7 +115,7 @@ function faustwp_update_setting( $name, $value ) {
  * @return array An array of settings.
  */
 function faustwp_get_settings() {
-	$settings = get_option( 'wpe_headless', array() );
+	$settings = get_option( 'faustwp_settings', array() );
 
 	/**
 	 * Filter 'faustwp_get_settings'.
