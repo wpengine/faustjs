@@ -13,6 +13,10 @@
     "./client": {
       "import": "./dist/mjs/export/client.js",
       "require": "./dist/cjs/export/client.js"
+    },
+    "./utils": {
+      "import": "./dist/mjs/export/utils.js",
+      "require": "./dist/cjs/export/utils.js"
     }
   },
   "scripts": {
