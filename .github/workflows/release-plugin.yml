@@ -7,12 +7,14 @@ jobs:
   release_plugin:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@master
       - name: WordPress Plugin Deploy
-        # GitHub Action based on 10up/action-wordpress-plugin-deploy with support for specifying a source directory.
-        uses: nk-o/action-wordpress-plugin-deploy@v0.0.5
+        # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
+        # to support our monorepo structure.
+        uses: ./.github/actions/release-plugin
         env:
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SOURCE_DIR: plugins/faustwp/
+          PLUGIN_DIR: plugins/faustwp
           SLUG: faustwp
