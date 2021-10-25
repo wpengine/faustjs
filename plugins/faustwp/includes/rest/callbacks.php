@@ -59,9 +59,7 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 /**
  * Callback for WordPress 'rest_api_init' action.
  *
- * Register the POST /wpac/v1/authorize endpoint.
- *
- * @todo Are we keeping the `wpac` namespace?
+ * Register the POST /faustwp/v1/authorize endpoint.
  *
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/
@@ -70,7 +68,7 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
  */
 function register_rest_routes() {
 	register_rest_route(
-		'wpac/v1',
+		'faustwp/v1',
 		'/authorize',
 		array(
 			'methods'             => 'POST',
@@ -83,7 +81,7 @@ function register_rest_routes() {
 /**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
- * Handle POST /wpac/v1/authorize response.
+ * Handle POST /faustwp/v1/authorize response.
  *
  * Use the 'code' (authorization code) parameter to generate a new access token.
  *
