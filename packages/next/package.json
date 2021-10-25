@@ -2,37 +2,13 @@
   "name": "@faustjs/next",
   "version": "0.12.4",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
-  "main": "dist/cjs/export/index.js",
-  "module": "dist/mjs/export/index.js",
-  "types": "dist/cjs/export/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/mjs/export/index.js",
-      "require": "./dist/cjs/export/index.js"
-    },
-    "./client": {
-      "import": "./dist/mjs/export/client.js",
-      "require": "./dist/cjs/export/client.js"
-    },
-    "./components": {
-      "import": "./dist/mjs/export/components.js",
-      "require": "./dist/cjs/export/components.js"
-    },
-    "./config": {
-      "import": "./dist/mjs/export/config.js",
-      "require": "./dist/cjs/export/config.js"
-    },
-    "./log": {
-      "import": "./dist/mjs/export/log.js",
-      "require": "./dist/cjs/export/log.js"
-    },
-    "./server": {
-      "import": "./dist/mjs/export/server.js",
-      "require": "./dist/cjs/export/server.js"
-    },
-    "./utils": {
-      "import": "./dist/mjs/export/utils.js",
-      "require": "./dist/cjs/export/utils.js"
+      "import": "./dist/mjs/index.js",
+      "require": "./dist/cjs/index.js"
     }
   },
   "scripts": {

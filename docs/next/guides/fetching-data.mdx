@@ -104,20 +104,20 @@ To do this you will need to run `gqty generate` again. Running `gqty generate` w
 
 ## Providing the GQty Client to Faust.js
 
-Using the boilerplate client code will provide two different GQty clients that you can use depending upon whether you are on the client or server. However, you will still need to provide the client to Faust.js so that it can use it to fetch data. To do this you can use the `FaustProvider` component published by Faust.js, and provide it the GQty client you want to use. This is done in your `_app.tsx` file as follows:
+Using the boilerplate client code will provide two different GQty clients that you can use depending upon whether you are on the client or server. However, you will still need to provide the client to Faust.js so that it can use it to fetch data. To do this you can use the `HeadlessProvider` component published by Faust.js, and provide it the GQty client you want to use. This is done in your `_app.tsx` file as follows:
 
 ```tsx title=src/pages/_app.tsx {2,9,11}
 import 'faust.config';
-import { FaustProvider } from '@faustjs/next';
+import { HeadlessProvider } from '@faustjs/next';
 import { client } from 'client';
 import type { AppProps } from 'next/app';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <FaustProvider client={client} pageProps={pageProps}>
+      <HeadlessProvider client={client} pageProps={pageProps}>
         <Component {...pageProps} />
-      </FaustProvider>
+      </HeadlessProvider>
     </>
   );
 }

@@ -211,9 +211,9 @@ npm run generate
 
 The `generate` script will create a `client/schema.generated.ts` file upon completion.
 
-### Implement the `<FaustProvider>` Component
+### Implement the `<HeadlessProvider>` Component
 
-The `<FaustProvider>` is a [Higher-Order Component](https://reactjs.org/docs/higher-order-components.html) that wraps your Next.js app to provide Faust.js with the context needed for fetching data and caching.
+The `<HeadlessProvider>` is a [Higher-Order Component](https://reactjs.org/docs/higher-order-components.html) that wraps your Next.js app to provide Faust.js with the context needed for fetching data and caching.
 
 Replace the existing `pages/_app.tsx` file contents with the following:
 
@@ -222,14 +222,14 @@ import '../faust.config';
 import '../styles/globals.css';
 
 import type { AppProps /*, AppContext */ } from 'next/app';
-import { FaustProvider } from '@faustjs/next';
+import { HeadlessProvider } from '@faustjs/next';
 import { client } from '../client';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <FaustProvider client={client} pageProps={pageProps}>
+    <HeadlessProvider client={client} pageProps={pageProps}>
       <Component {...pageProps} />
-    </FaustProvider>
+    </HeadlessProvider>
   );
 }
 

@@ -3,7 +3,7 @@ import type { RequiredSchema } from '@faustjs/react';
 import { useRouter } from 'next/router';
 import defaults from 'lodash/defaults';
 import isString from 'lodash/isString';
-import { hasPageId, hasPageUri } from '../../utils';
+import { hasPageId, hasPageUri } from '../utils';
 import type { NextClientHooks } from '.';
 
 export function create<Schema extends RequiredSchema>(

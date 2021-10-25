@@ -12,8 +12,8 @@ import {
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
-import { config } from '../config/config';
-import { getClient, FaustContext } from '../gqty/client';
+import { config } from './config';
+import { getClient, HeadlessContext } from './client';
 
 import {
   hasCategoryId,
@@ -23,7 +23,7 @@ import {
   hasPostId,
   hasPostSlug,
   hasPostUri,
-} from '../utils';
+} from './utils';
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 export const AUTH_CLIENT_CACHE_PROP = '__AUTH_CLIENT_CACHE_PROP';
@@ -79,10 +79,10 @@ export async function getProps<
           <RouterContext.Provider
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             value={{ query: { ...context.params } } as any}>
-            <FaustContext.Provider value={{ client }}>
+            <HeadlessContext.Provider value={{ client }}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
               <Page {...(props as Props)} />
-            </FaustContext.Provider>
+            </HeadlessContext.Provider>
           </RouterContext.Provider>,
         );
 

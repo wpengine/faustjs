@@ -1,19 +1,19 @@
 import isNil from 'lodash/isNil';
 import React from 'react';
-import type { getClient } from '../gqty/client';
+import type { getClient } from './client';
 import {
   AUTH_CLIENT_CACHE_PROP,
   CLIENT_CACHE_PROP,
   PageProps,
-} from '../server/getProps';
-import { FaustContext } from '../gqty/client';
+} from './getProps';
+import { HeadlessContext } from './client';
 
 /**
- * The FaustProvider is a React component required to properly facilitate SSR and SSG for Faust.js.
+ * The HeadlessProvider is a React component required to properly facilitate SSR and SSG for Faust.js.
  *
- * @see https://faustjs.org/docs/next/guides/ssr-ssg#rehydration-using-faustprovider-
+ * @see https://faustjs.org/docs/next/guides/ssr-ssg#rehydration-using-headlessprovider-
  */
-export function FaustProvider<Props = Record<string, unknown>>({
+export function HeadlessProvider<Props = Record<string, unknown>>({
   children,
   pageProps,
   client,
@@ -27,8 +27,8 @@ export function FaustProvider<Props = Record<string, unknown>>({
     useHydrateCache,
     auth: { useHydrateCache: useAuthHydrateCache },
   } = client;
-  const cacheSnapshot = pageProps?.[CLIENT_CACHE_PROP];
-  const authSnapshot = pageProps?.[AUTH_CLIENT_CACHE_PROP];
+  const cacheSnapshot = pageProps[CLIENT_CACHE_PROP];
+  const authSnapshot = pageProps[AUTH_CLIENT_CACHE_PROP];
 
   useHydrateCache({
     cacheSnapshot: isNil(cacheSnapshot) ? undefined : cacheSnapshot,
@@ -39,11 +39,11 @@ export function FaustProvider<Props = Record<string, unknown>>({
   });
 
   return (
-    <FaustContext.Provider
+    <HeadlessContext.Provider
       value={{
         client,
       }}>
       {children}
-    </FaustContext.Provider>
+    </HeadlessContext.Provider>
   );
 }

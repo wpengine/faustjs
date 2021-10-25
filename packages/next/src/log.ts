@@ -1,6 +1,6 @@
 import type { LoggerOptions } from '@gqty/logger';
 import defaults from 'lodash/defaults';
-import type { NextClient } from '../gqty/client';
+import type { NextClient } from './client';
 
 export async function logQueries(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

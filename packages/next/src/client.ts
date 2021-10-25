@@ -51,13 +51,13 @@ export interface NextClient<
   context: WithClient<IncomingMessage, Schema> | undefined;
 }
 
-export interface FaustContextType {
+export interface HeadlessContextType {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client?: NextClient<RequiredSchema>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const FaustContext = React.createContext<FaustContextType>({});
+export const HeadlessContext = React.createContext<HeadlessContextType>({});
 
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/explicit-module-boundary-types */
 export function getClient<
@@ -100,7 +100,7 @@ export function getClient<
   let nextClient: NextClient<Schema, ObjectTypesNames, ObjectTypes>;
 
   function useClient() {
-    let client: typeof nextClient | undefined = useContext(FaustContext)
+    let client: typeof nextClient | undefined = useContext(HeadlessContext)
       ?.client as typeof nextClient;
 
     if (haveServerContext || !isObject(client)) {
@@ -111,7 +111,7 @@ export function getClient<
   }
 
   function useAuthClient() {
-    let client: typeof nextClient | undefined = useContext(FaustContext)
+    let client: typeof nextClient | undefined = useContext(HeadlessContext)
       ?.client as typeof nextClient;
 
     if (haveServerContext || !isObject(client)) {
@@ -140,7 +140,7 @@ export function getClient<
     nextClient.useSubscription = reactClient.useSubscription;
     nextClient.useClient = () => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useContext(FaustContext);
+      useContext(HeadlessContext);
       return nextClient;
     };
 
@@ -152,7 +152,7 @@ export function getClient<
     nextClient.auth.useSubscription = authReactClient.useSubscription;
     nextClient.auth.useClient = () => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useContext(FaustContext);
+      useContext(HeadlessContext);
       return nextClient.auth;
     };
 

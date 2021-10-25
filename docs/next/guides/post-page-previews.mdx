@@ -39,16 +39,16 @@ You'll need to import it at the top of your `_app.tsx` file to ensure the `confi
 
 ```tsx title=_app.tsx {1}
 import 'faust.config';
-import { FaustProvider } from '@faustjs/next';
+import { HeadlessProvider } from '@faustjs/next';
 import { client } from 'client';
 import type { AppProps } from 'next/app';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <FaustProvider client={client} pageProps={pageProps}>
+      <HeadlessProvider client={client} pageProps={pageProps}>
         <Component {...pageProps} />
-      </FaustProvider>
+      </HeadlessProvider>
     </>
   );
 }
