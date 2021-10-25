@@ -366,7 +366,7 @@ export default function Login() {
 - `data`: An object that contains the response data from the `login` function.
 - `error`: An object that contains the error data from the `login` function.
 
-When an authorization code is successfully fetched, `useLogin` will facilitate the request to the WPE Headless authorize endpoint to obtain the refresh/access tokens. From there, the tokens are stored properly, and the user is logged in.
+When an authorization code is successfully fetched, `useLogin` will facilitate the request to the FaustWP plugin's authorize endpoint to obtain the refresh/access tokens. From there, the tokens are stored properly, and the user is logged in.
 
 Additionally, if the login page URL contains a `redirect_uri` query parameter, the user will be redirected to the `redirect_uri` URL after the login is successful.
 
