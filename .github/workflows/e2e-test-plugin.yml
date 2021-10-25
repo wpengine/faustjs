@@ -22,7 +22,7 @@ jobs:
           php-version: '7.4'
       - name: Setup Frontend
         run: |
-          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev:next:getting-started &
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001 npm run dev:next:getting-started &
       - name: Composer install
         working-directory: plugins/faustwp
         run: composer install
