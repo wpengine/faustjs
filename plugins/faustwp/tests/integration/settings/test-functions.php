@@ -21,44 +21,44 @@ use function WPE\FaustWP\Settings\{
 class FunctionsTest extends \WP_UnitTestCase {
 	/** @test */
 	public function is_redirects_enabled_will_return_true_if_enabled() {
-		delete_option( 'wpe_headless' );
+		delete_option( 'faustwp_settings' );
 
 		$this->assertFalse( is_redirects_enabled() );
 
-		update_option( 'wpe_headless', array( 'enable_redirects' => '1' ) );
+		update_option( 'faustwp_settings', array( 'enable_redirects' => '1' ) );
 
 		$this->assertTrue( is_redirects_enabled() );
 	}
 
 	/** @test */
 	public function is_rewrites_enabled_will_return_true_if_enabled() {
-		delete_option( 'wpe_headless' );
+		delete_option( 'faustwp_settings' );
 
 		$this->assertFalse( is_rewrites_enabled() );
 
-		update_option( 'wpe_headless', array( 'enable_rewrites' => '1' ) );
+		update_option( 'faustwp_settings', array( 'enable_rewrites' => '1' ) );
 
 		$this->assertTrue( is_rewrites_enabled() );
 	}
 
 	/** @test */
 	public function is_themes_disabled_will_return_true_if_disabled() {
-		delete_option( 'wpe_headless' );
+		delete_option( 'faustwp_settings' );
 
 		$this->assertFalse( is_themes_disabled() );
 
-		update_option( 'wpe_headless', array( 'disable_theme' => '1' ) );
+		update_option( 'faustwp_settings', array( 'disable_theme' => '1' ) );
 
 		$this->assertTrue( is_themes_disabled() );
 	}
 
 	/** @test */
 	public function is_image_source_replacement_enabled_will_return_true_if_disabled() {
-		delete_option( 'wpe_headless' );
+		delete_option( 'faustwp_settings' );
 
 		$this->assertFalse( is_image_source_replacement_enabled() );
 
-		update_option( 'wpe_headless', array( 'enable_image_source' => '1' ) );
+		update_option( 'faustwp_settings', array( 'enable_image_source' => '1' ) );
 
 		$this->assertTrue( is_image_source_replacement_enabled() );
 	}

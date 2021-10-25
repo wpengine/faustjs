@@ -47,16 +47,16 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * Set a wpe_headless setting value.
+     * Set a faustwp_settings setting value.
      *
-     * @param string $name  The wpe_headless setting name.
-     * @param string $value The wpe_headless setting value.
+     * @param string $name  The faustwp_settings setting name.
+     * @param string $value The faustwp_settings setting value.
      */
     public function haveFaustWPSetting($name, $value = '')
     {
-        $options = $this->grabOptionFromDatabase('wpe_headless');
+        $options = $this->grabOptionFromDatabase('faustwp_settings') ?: [];
         $options[ $name ] = $value;
 
-        $this->haveOptionInDatabase('wpe_headless', $options);
+        $this->haveOptionInDatabase('faustwp_settings', $options);
     }
 }

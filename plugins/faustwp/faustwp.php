@@ -45,6 +45,7 @@ require FAUSTWP_DIR . '/includes/graphql/callbacks.php';
 require FAUSTWP_DIR . '/includes/rest/callbacks.php';
 require FAUSTWP_DIR . '/includes/settings/callbacks.php';
 require FAUSTWP_DIR . '/includes/updates/callbacks.php';
+require FAUSTWP_DIR . '/includes/updates/upgrade-database.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
 
 if ( is_events_enabled() ) {

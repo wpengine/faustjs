@@ -45,7 +45,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\\register_settings' );
  * @return void
  */
 function register_settings() {
-	register_setting( 'wpe_headless', 'wpe_headless' );
+	register_setting( 'faustwp_settings', 'faustwp_settings' );
 }
 
 add_action( 'admin_init', __NAMESPACE__ . '\\register_settings_section' );
@@ -182,7 +182,7 @@ function display_menu_locations_field() {
 	$menu_locations = faustwp_get_setting( 'menu_locations', 'Primary, Footer' );
 
 	?>
-	<input type="text" id="menu_locations" name="wpe_headless[menu_locations]" value="<?php echo esc_attr( $menu_locations ); ?>" class="regular-text" />
+	<input type="text" id="menu_locations" name="faustwp_settings[menu_locations]" value="<?php echo esc_attr( $menu_locations ); ?>" class="regular-text" />
 
 	<p class="description">
 		<?php esc_html_e( 'A comma-separated list of menu locations. Assign menus to locations at Appearance → Menus.', 'faustwp' ); ?>
@@ -209,7 +209,7 @@ function display_secret_key_field() {
 
 	?>
 	<input type="text" id="secret_key" value="<?php echo esc_attr( $secret_key ); ?>" class="regular-text code" readonly />
-	<input type="hidden" name="wpe_headless[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
+	<input type="hidden" name="faustwp_settings[secret_key]" value="<?php echo esc_attr( $secret_key ); ?>" />
 
 	<a
 		href="<?php echo esc_url( $regenerate_url ); ?>"
@@ -251,7 +251,7 @@ function display_frontend_uri_field() {
 	$frontend_uri = faustwp_get_setting( 'frontend_uri', '' );
 
 	?>
-	<input type="text" id="frontend_uri" name="wpe_headless[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
+	<input type="text" id="frontend_uri" name="faustwp_settings[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
 	<p class="description">
 		<?php esc_html_e( 'The URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'faustwp' ); ?>
 	</p>
@@ -274,25 +274,25 @@ function display_enable_disable_fields() {
 	?>
 	<fieldset>
 		<label for="disable_theme">
-			<input type="checkbox" id="disable_theme" name="wpe_headless[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
+			<input type="checkbox" id="disable_theme" name="faustwp_settings[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
 			<?php esc_html_e( 'Disable WordPress theme admin pages', 'faustwp' ); ?>
 		</label>
 		<br />
 
 		<label for="enable_rewrites">
-			<input type="checkbox" id="enable_rewrites" name="wpe_headless[enable_rewrites]" value="1" <?php checked( $enable_rewrites ); ?> />
+			<input type="checkbox" id="enable_rewrites" name="faustwp_settings[enable_rewrites]" value="1" <?php checked( $enable_rewrites ); ?> />
 			<?php esc_html_e( 'Enable Post and Category URL rewrites', 'faustwp' ); ?>
 		</label>
 		<br />
 
 		<label for="enable_redirects">
-			<input type="checkbox" id="enable_redirects" name="wpe_headless[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
+			<input type="checkbox" id="enable_redirects" name="faustwp_settings[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
 			<?php esc_html_e( 'Enable public route redirects', 'faustwp' ); ?>
 		</label>
 		<br />
 
 		<label for="enable_image_source">
-			<input type="checkbox" id="enable_image_source" name="wpe_headless[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
+			<input type="checkbox" id="enable_image_source" name="faustwp_settings[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
 			<?php esc_html_e( 'Use the WordPress domain for media URLs in post content', 'faustwp' ); ?>
 		</label>
 	</fieldset>

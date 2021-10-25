@@ -23,17 +23,17 @@ class SettingsCest
 
         // Deactivate plugin and remove settings.
         $I->deactivatePlugin('faustwp');
-        $I->dontHaveOptionInDatabase('wpe_headless');
+        $I->dontHaveOptionInDatabase('faustwp_settings');
 
         // Reactivate plugin triggering default settings.
         $I->activatePlugin('faustwp');
 
-        $settings = $I->grabOptionFromDatabase('wpe_headless');
+        $settings = $I->grabOptionFromDatabase('faustwp_settings');
 
         $I->amOnFaustWPSettingsPage();
-        $I->seeInField('wpe_headless[frontend_uri]', '');
-        $I->seeInField('wpe_headless[secret_key]', $settings['secret_key']);
-        $I->seeInField('wpe_headless[menu_locations]', 'Primary, Footer');
+        $I->seeInField('faustwp_settings[frontend_uri]', '');
+        $I->seeInField('faustwp_settings[secret_key]', $settings['secret_key']);
+        $I->seeInField('faustwp_settings[menu_locations]', 'Primary, Footer');
         $I->seeCheckboxIsChecked('#disable_theme');
         $I->seeCheckboxIsChecked('#enable_rewrites');
         $I->seeCheckboxIsChecked('#enable_redirects');
@@ -48,12 +48,12 @@ class SettingsCest
         $I->loginAsAdmin();
         $I->amOnFaustWPSettingsPage();
 
-        $old_secret_key = $I->grabValueFrom('wpe_headless[secret_key]');
+        $old_secret_key = $I->grabValueFrom('faustwp_settings[secret_key]');
 
         $I->click('.content form a.field-action');
         $I->acceptPopup();
-        $I->dontSeeInField('wpe_headless[secret_key]', '');
-        $I->dontSeeInField('wpe_headless[secret_key]', $old_secret_key);
+        $I->dontSeeInField('faustwp_settings[secret_key]', '');
+        $I->dontSeeInField('faustwp_settings[secret_key]', $old_secret_key);
     }
 
     /**
@@ -64,10 +64,10 @@ class SettingsCest
         $I->loginAsAdmin();
         $I->amOnFaustWPSettingsPage();
 
-        $secret_key = $I->grabValueFrom('wpe_headless[secret_key]');
+        $secret_key = $I->grabValueFrom('faustwp_settings[secret_key]');
 
         $I->click('.content form a.field-action');
         $I->cancelPopup();
-        $I->seeInField('wpe_headless[secret_key]', $secret_key);
+        $I->seeInField('faustwp_settings[secret_key]', $secret_key);
     }
 }
