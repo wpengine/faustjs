@@ -1,4 +1,4 @@
-import { createRedirects, withFaust } from '../src/withFaust';
+import { createRedirects, withFaust } from '../src/config/withFaust';
 
 describe('withFaust', () => {
   test('withFaust merges default config with user specified config', async () => {
