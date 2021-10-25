@@ -127,7 +127,7 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 /**
  * Callback for WordPress register_rest_route() 'permission_callback' parameter.
  *
- * Authorized if the 'secret_key' settings value and http header 'x-wpe-headless-secret' match.
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
  *
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
@@ -138,7 +138,7 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  */
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	$secret_key = get_secret_key();
-	$header_key = $request->get_header( 'x-wpe-headless-secret' );
+	$header_key = $request->get_header( 'x-faustwp-secret' );
 
 	if ( $secret_key && $header_key ) {
 		return $secret_key === $header_key;
