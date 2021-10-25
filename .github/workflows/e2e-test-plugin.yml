@@ -11,15 +11,18 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - name: Install NPM Deps
+        run: |
+          rm package-lock.json
+          npm install
+          npm run build
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
       - name: Setup Frontend
-        working-directory: examples/next/getting-started
         run: |
-          npm install
-          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev &
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev:next:getting-started &
       - name: Composer install
         working-directory: plugins/faustwp
         run: composer install
