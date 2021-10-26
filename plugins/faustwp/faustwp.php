@@ -32,7 +32,6 @@ define( 'FAUSTWP_SLUG', dirname( plugin_basename( FAUSTWP_FILE ) ) );
 require FAUSTWP_DIR . '/includes/auth/functions.php';
 require FAUSTWP_DIR . '/includes/replacement/functions.php';
 require FAUSTWP_DIR . '/includes/settings/functions.php';
-require FAUSTWP_DIR . '/includes/updates/functions.php';
 require FAUSTWP_DIR . '/includes/graphql/functions.php';
 require FAUSTWP_DIR . '/includes/utilities/functions.php';
 require FAUSTWP_DIR . '/includes/auth/callbacks.php';
@@ -44,7 +43,6 @@ require FAUSTWP_DIR . '/includes/replacement/graphql-callbacks.php';
 require FAUSTWP_DIR . '/includes/graphql/callbacks.php';
 require FAUSTWP_DIR . '/includes/rest/callbacks.php';
 require FAUSTWP_DIR . '/includes/settings/callbacks.php';
-require FAUSTWP_DIR . '/includes/updates/callbacks.php';
 require FAUSTWP_DIR . '/includes/updates/upgrade-database.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
 
