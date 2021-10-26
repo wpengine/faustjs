@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.13.0
+
+### Minor Changes
+
+- 8630834: **BREAKING**: Rename `HeadlessProvider` to `FaustProvider`
+
 ## 0.12.4
 
 ### Patch Changes
