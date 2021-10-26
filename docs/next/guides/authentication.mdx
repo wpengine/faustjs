@@ -11,8 +11,8 @@ Authentication can be a cumbersome process when building headless WordPress site
 **TL;DR**: Authentication in Faust.js can be boiled down to 5 main steps:
 
 1. User initiates request to authenticated data
-2. Faust.js facilitates the request for an authorization code from the WPE Headless plugin. This is a short lived token that is used to request a refresh and access token
-3. Faust.js facilitates the request for a refresh and access token from the WPE Headless plugin using the authorization code
+2. Faust.js facilitates the request for an authorization code from the FaustWP plugin. This is a short lived token that is used to request a refresh and access token
+3. Faust.js facilitates the request for a refresh and access token from the FaustWP plugin using the authorization code
 4. Faust.js stores the refresh token in a secure, http only cookie. The refresh token is used to request a new access token when the current one expires
 5. Faust.js stores the access token in memory to be used in subsequent authenticated requests
 
@@ -75,7 +75,7 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
  */
 export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  apiClientSecret: process.env.FAUSTWP_SECRET_KEY,
   authType: 'local',
   loginPagePath: '/login',
 });

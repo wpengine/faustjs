@@ -9,5 +9,5 @@ dotenv.config();
 export default config({
   wpUrl: process.env.REACT_APP_WORDPRESS_URL || '',
   apiUrl: process.env.REACT_APP_API_URL,
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  apiClientSecret: process.env.FAUSTWP_SECRET_KEY,
 });
