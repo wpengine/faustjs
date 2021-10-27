@@ -4,5 +4,5 @@ export {
   ApiClient,
   WithClient,
   GqlClientSchema,
-} from '../gqty';
-export { Config, config } from '../config';
+} from '../gqty/index';
+export { Config, config } from '../config/index';

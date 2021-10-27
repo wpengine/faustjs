@@ -1,5 +1,5 @@
-import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config';
-import { isServerSide } from '../../utils';
+import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config/index';
+import { isServerSide } from '../../utils/index';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
 

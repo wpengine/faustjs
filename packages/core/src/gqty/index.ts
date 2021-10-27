@@ -13,7 +13,7 @@ import isFunction from 'lodash/isFunction';
 import isNil from 'lodash/isNil';
 import isObject from 'lodash/isObject';
 import omit from 'lodash/omit';
-import { getAccessToken } from '../auth';
+import { getAccessToken } from '../auth/index';
 import { getGqlUrl } from '../config/config';
 
 export interface GqlClientSchema {

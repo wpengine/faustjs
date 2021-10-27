@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import isString from 'lodash/isString';
-import { config } from '../config';
-import { getQueryParam, removeURLParam } from '../utils';
+import { config } from '../config/index';
+import { getQueryParam, removeURLParam } from '../utils/index';
 import { fetchAccessToken } from './client/accessToken';
 
 export interface EnsureAuthorizationOptions {

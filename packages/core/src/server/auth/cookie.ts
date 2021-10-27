@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import isString from 'lodash/isString';
 import cookie, { CookieSerializeOptions } from 'cookie';
-import { base64Decode, base64Encode } from '../../utils';
+import { base64Decode, base64Encode } from '../../utils/index';
 
 export interface CookieOptions {
   encoded?: boolean;

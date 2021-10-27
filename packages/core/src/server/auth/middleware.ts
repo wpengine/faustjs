@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
-import { getQueryParam, log } from '../../utils';
+import { getQueryParam, log } from '../../utils/index';
 import { Cookies } from './cookie';
 import { OAuth } from './token';
 

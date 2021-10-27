@@ -3,10 +3,10 @@ import defaults from 'lodash/defaults';
 import trimEnd from 'lodash/trimEnd';
 import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
-import type { RequestContext } from '../gqty';
+import type { RequestContext } from '../gqty/index';
 import isNil from 'lodash/isNil';
 import trim from 'lodash/trim';
-import { isValidUrl } from '../utils';
+import { isValidUrl } from '../utils/index';
 
 export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
 export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';

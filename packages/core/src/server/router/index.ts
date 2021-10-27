@@ -1,12 +1,12 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { isUndefined } from 'lodash';
 import { authorizeHandler, logoutHandler } from '../auth/middleware';
-import { parseUrl } from '../../utils';
+import { parseUrl } from '../../utils/index';
 import {
   LOGOUT_ENDPOINT_PARTIAL_PATH,
   TOKEN_ENDPOINT_PARTIAL_PATH,
   config,
-} from '../../config';
+} from '../../config/index';
 
 /**
  * A node handler for processing all incoming Faust.js API requests.

@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import { Cookies } from './cookie';
-import { config } from '../../config';
+import { config } from '../../config/index';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
 import isNumber from 'lodash/isNumber';
