@@ -13,7 +13,7 @@ module.exports = {
   docsSidebar: [
     {
       type: 'category',
-      label: 'Tutorial',
+      label: 'Tutorial for PHP Developers',
       items: [
         {
           type: 'doc',
