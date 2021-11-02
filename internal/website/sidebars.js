@@ -97,9 +97,50 @@ module.exports = {
           label: 'Reference',
           items: [
             {
-              type: 'doc',
-              label: 'Custom Hooks',
-              id: 'next/reference/custom-hooks',
+              type: 'category',
+              label: 'Hooks',
+              items: [
+                {
+                  type: 'doc',
+                  label: 'usePost',
+                  id: 'next/reference/hooks/usePost',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePosts',
+                  id: 'next/reference/hooks/usePosts',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePage',
+                  id: 'next/reference/hooks/usePage',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePreview',
+                  id: 'next/reference/hooks/usePreview',
+                },
+                {
+                  type: 'doc',
+                  label: 'useAuth',
+                  id: 'next/reference/hooks/useAuth',
+                },
+                {
+                  type: 'doc',
+                  label: 'useLogin',
+                  id: 'next/reference/hooks/useLogin',
+                },
+                {
+                  type: 'doc',
+                  label: 'useLogout',
+                  id: 'next/reference/hooks/useLogout',
+                },
+                {
+                  type: 'doc',
+                  label: 'GQty Hooks',
+                  id: 'next/reference/hooks/gqty-hooks',
+                },
+              ],
             },
             {
               type: 'doc',

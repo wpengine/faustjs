@@ -1,0 +1,59 @@
+---
+slug: /next/reference/hooks/usePost
+title: usePost Hook
+description: The usePost hook provides a standard way to get a WordPress post
+---
+
+The `usePost` hook provides the standard interface for getting a post from your Headless WordPress API. It also allows you to pass-in no arguments. When you do not pass arguments into `usePost` it will attempt to look at the URL params in order to determine how to get a post from your Headless WordPress API. In Next.js this means you will need to name your post page file in a particular way in order to get the proper URL params. Below are the possible names that will work automatically with Faust.js:
+
+- `[postId].tsx`
+- `[postSlug].tsx`
+- `[...postUri].tsx`
+
+Using the above names, Faust.js is able to apply the following logic to determine how to get a post from your Headless WordPress API:
+
+1. If `postId` is found in the URL params, Faust.js makes a request to retrieve a `post` from WordPress by `ID`
+1. If `postSlug` is found in the URL params, Faust.js makes a request to retrieve a `post` from WordPress by `SLUG`
+1. If `postUri` is found in the URL params, Faust.js makes a request to retrieve a `post` from WordPress by `URI`
+
+The following is an example of how to use the `usePost` hook with a `postSlug`:
+
+```tsx title=/src/pages/posts/[postSlug].tsx {5,6}
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function Page() {
+  const { usePost } = client;
+  const post = usePost();
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+```
+
+The above code will also work with `postId` and `postUri` depending upon what URL scheme you want to use. You may also want to fetch a specific post. Doing that might look similar to the following:
+
+```tsx {6-10}
+import { getNextStaticProps } from '@faustjs/next';
+import { GetStaticPropsContext } from 'next';
+import { client, PostIdType } from 'client';
+
+export default function Page() {
+  const { usePost } = client;
+  const post = usePost({
+    id: 'hello-world',
+    idType: PostIdType.SLUG,
+  });
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+```
