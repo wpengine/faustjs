@@ -107,6 +107,11 @@ module.exports = {
               items: [
                 {
                   type: 'doc',
+                  label: 'Hooks Intro',
+                  id: 'next/reference/hooks/hooks',
+                },
+                {
+                  type: 'doc',
                   label: 'usePost Hook',
                   id: 'next/reference/hooks/usePost',
                 },

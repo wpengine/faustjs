@@ -12,7 +12,7 @@ In this tutorial, we'll use the client we created in the previous tutorial to qu
 
 ## Using The Client Hooks
 
-The client we created in the previous tutorial gives us access to helpful [React Hooks](../next/reference/custom-hooks) for easily querying data from WordPress.
+The client we created in the previous tutorial gives us access to helpful [React Hooks](../next/reference/hooks) for easily querying data from WordPress.
 
 ### Get Posts Using `usePosts` Hook
 
@@ -96,9 +96,9 @@ Once those changes are made, navigate to [http://localhost:3000/posts](http://lo
 
 ### Get Data Using The `useQuery` Hook
 
-While Faust.js provides [custom hooks](../next/reference/custom-hooks) for fetching data like posts, pages, etc, sometimes you need to fetch data outside of the scope of the custom hooks.
+While Faust.js provides [custom hooks](../next/reference/hooks) for fetching data like posts, pages, etc, sometimes you need to fetch data outside of the scope of the custom hooks.
 
-That is where the [`useQuery`](../next/reference/custom-hooks#custom-queries-and-mutations) hook comes in. This is a GQty hook that gives access to your entire schema.
+That is where the [`useQuery`](../next/reference/hooks/gqty-hooks) hook comes in. This is a GQty hook that gives access to your entire schema.
 
 Let's display the site title and description using the `useQuery` hook.
 

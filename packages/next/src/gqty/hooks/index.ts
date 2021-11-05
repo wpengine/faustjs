@@ -103,7 +103,7 @@ export interface NextClientHooks<Schema extends RequiredSchema>
   /**
    * GQty hook to make any query request to the Headless Wordpress API.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#custom-queries-and-mutations
+   * @see https://faustjs.org/docs/next/reference/hooks/gqty-hooks
    */
   useQuery: ReactClient<Schema>['useQuery'];
 
