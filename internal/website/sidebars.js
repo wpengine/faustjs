@@ -87,6 +87,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Logging Queries',
+              id: 'next/guides/logging-queries',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },
