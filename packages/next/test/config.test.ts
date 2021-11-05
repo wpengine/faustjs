@@ -1,4 +1,4 @@
-import { config } from '../src';
+import { config } from '../src/config';
 
 describe('config', () => {
   test('config() should setup a default next config', () => {

@@ -1,0 +1,53 @@
+name: E2E Test Plugin
+on: pull_request
+jobs:
+  e2e_test_plugin:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install NPM Deps
+        run: |
+          rm package-lock.json
+          npm install
+          npm run build
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+      - name: Setup Frontend
+        run: |
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 WP_HEADLESS_SECRET=00000000-0000-0000-0000-000000000001 npm run dev:next:getting-started &
+      - name: Composer install
+        working-directory: plugins/faustwp
+        run: composer install
+      - name: Setup Containers
+        working-directory: plugins/faustwp
+        run: docker-compose up -d
+      - name: Sleep 15 seconds
+        run: sleep 15
+      - name: Install WP GraphQL
+        working-directory: plugins/faustwp
+        run: |
+          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
+      - name: Setup testing data
+        working-directory: plugins/faustwp
+        run: |
+          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root
+      - name: Copy env file
+        working-directory: plugins/faustwp
+        run: cp .env.testing.example .env.testing
+      - name: Run test
+        working-directory: plugins/faustwp
+        run: vendor/bin/codecept run acceptance
+      - name: Upload Test Output
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: failed-test-output
+          path: ${{ github.workspace }}/plugins/faustwp/tests/_output

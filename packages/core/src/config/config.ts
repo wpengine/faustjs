@@ -47,7 +47,7 @@ export interface Config extends Record<string, unknown> {
    *
    * @default /api/faust
    * @type {string}
-   * @memberof HeadlessConfig
+   * @memberof Config
    */
   apiBasePath?: string;
 

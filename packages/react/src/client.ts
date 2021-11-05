@@ -1,11 +1,10 @@
-import {
+import { ClientConfig, getClient as getCoreClient } from '@faustjs/core';
+import type {
   CategoryIdType,
-  ClientConfig,
-  getClient as getCoreClient,
   Maybe,
   PageIdType,
   PostIdType,
-} from '@faustjs/core';
+} from '@faustjs/core/client';
 import {
   createReactClient,
   CreateReactClientOptions,
