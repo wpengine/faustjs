@@ -44,7 +44,7 @@ Redirect based authentication is the default strategy in Faust.js. This strategy
 
 This strategy is great for use cases where your authenticated users are admins/editors/etc. and do not necessarily need a "white label" login/register experience. Typically, you would use the redirect strategy if your primary reason for authentication is previews.
 
-Since Redirect based authentication is the default authentication method, there is no configuration needed on your end to use it. It comes out of the box, and you'll see it in action when using previews or the [`useAuth`](/docs/next/reference/custom-hooks#useauth) hook.
+Since Redirect based authentication is the default authentication method, there is no configuration needed on your end to use it. It comes out of the box, and you'll see it in action when using previews or the [`useAuth`](/docs/next/reference/hooks/useAuth) hook.
 
 ### Local Based Authentication
 
@@ -149,7 +149,7 @@ The `useLogin` hook exports an object with the following properties:
 - `data`: the response data from the login request.
 - `error`: the error from the login request.
 
-For a more detailed explanation of the `useLogin` hook, see the [`useLogin` hook docs](/docs/next/reference/custom-hooks#uselogin) .
+For a more detailed explanation of the `useLogin` hook, see the [`useLogin` hook docs](/docs/next/reference/hooks/useLogin) .
 
 Upon a successful login, a refresh token will be stored in a secure, http only cookie, as well as the access token in memory to use for subsequent authenticated requests. A login request can be confirmed it succeeded by checking for the `code` property in the `data` object.
 
@@ -241,4 +241,4 @@ export default function Page() {
 }
 ```
 
-**Note:** The [`useAuth`](/docs/next/reference/custom-hooks#useauth) hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` prior to making authenticated requests, as doing so too early will result in a request without a valid access token.
+**Note:** The [`useAuth`](/docs/next/reference/hooks/useAuth) hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` prior to making authenticated requests, as doing so too early will result in a request without a valid access token.

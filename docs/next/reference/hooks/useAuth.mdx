@@ -1,0 +1,86 @@
+---
+slug: /next/reference/hooks/useAuth
+title: useAuth
+description: The useAuth hook provides a way to ensure that the user is authenticated.
+---
+
+The `useAuth` hook provides a way to guarantee a users' authentication state, thus allowing you to control how a page's content is rendered.
+
+The `useAuth` hook accepts 1 argument of `UseAuthOptions`, which is an object that contains the following properties:
+
+```ts
+const options = {
+  // Specify if the useAuth hook should facilitate the redirect to the appropriate url.
+  shouldRedirect: true;
+}
+```
+
+By default, if the user is not authenticated, the page will redirect to the WordPress backend if the `authType` is `redirect`, and to the `loginPagePath` if `authType` is `local`.
+
+However, if the `shouldRedirect` option is `false`, the `useAuth` hook will **not** facilitate the redirect.
+
+The example below shows how to use the `useAuth` hook to render a page that requires authentication. If a user is authenticated, they will be shown the content. Otherwise, they will be redirected to the appropriate URL to authenticate:
+
+```tsx title=src/pages/gated-content.tsx {5}
+import { client } from 'client';
+
+export default function Gated() {
+  const { useAuth } = client.auth;
+  const { isLoading, isAuthenticated } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <div>Authenticated content</div>;
+}
+```
+
+Additionally, the example below shows how to use `useAuth` with the `shouldRedirect` option set to `false`. This will disable the automatic redirect to the appropriate URL to authenticate, and allows you to control how the page's content is rendered in an unauthenticated state:
+
+```tsx title=src/pages/gated-content.tsx {5-7,13-15}
+import { client } from 'client';
+
+export default function Gated() {
+  const { useAuth } = client.auth;
+  const { isLoading, isAuthenticated, authResult } = useAuth({
+    shouldRedirect: false,
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>You are not authenticated! Please login.</div>;
+  }
+
+  return <div>Authenticated content</div>;
+}
+```
+
+`useAuth` exports an object with the following properties:
+
+- `isLoading`: A boolean that indicates whether the `useAuth` function is currently checking if a user is authenticated.
+- `isAuthenticated`: A boolean that indicates whether the user is authenticated.
+- `authResult`: The result from checking if there is an authenticated user.
+
+  If there is an authenticated user, the `authResult` will be `true`. Otherwise, the `authResult` will be an object with the following properties:
+
+  ```js title="The authResult object when there is no authenticated user"
+  {
+    /**
+     * An absolute URL to the WordPress backend that the user should be redirected to in order to authenticate.
+     * This property is used for the "redirect" based authentication strategy
+     */
+    redirect: 'xxxx';
+
+    /*
+     * A relative URL path to the local login page as specified in the `loginPagePath` option.
+     * This property is used for the "local" based authentication strategy
+     */
+    login: 'xxxx';
+  }
+  ```
+
+  The `authResult` can be helpful if you want to handle the redirection yourself, instead of the `useAuth` hook.
