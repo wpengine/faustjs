@@ -1,0 +1,65 @@
+---
+slug: /next/guides/logging-queries
+title: Logging Queries
+description: You can log all the queries that are executed in Faust.js
+---
+
+In a development environment, you may want to log GraphQL queries that are being executed in your application. Faust.js provides a function, `logQueries`, to do this.
+
+`logQueries` is called within your `client/index.ts` file. Take the following `client/index.ts` example:
+
+```ts title="client/index.ts" {23-25}
+/**
+ * GQTY: You can safely modify this file and Query Fetcher based on your needs
+ */
+import type { IncomingMessage } from 'http';
+import { getClient } from '@faustjs/next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+});
+
+if (process.env.NODE_ENV === 'development') {
+    logQueries(client);
+}
+
+export function serverClient(req: IncomingMessage) {
+  return getClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
+    context: req,
+  });
+}
+
+export * from './schema.generated';
+```
+
+Note the conditional check for the node environment. It is recommended that you only log queries in a dev environment, and not in production.
+
+Additionally, the `logQueries` function returns a function than can be called to turn off the logger:
+
+```ts
+if (process.env.NODE_ENV === 'development') {
+  const unsubscribe = logQueries(client);
+
+  // queries are now logging
+  // ...
+
+  unsubscribe();
+
+  // queries no longer log
+  // ...
+}
+```

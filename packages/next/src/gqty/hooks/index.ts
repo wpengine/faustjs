@@ -35,14 +35,14 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
   /**
    * Faust.js hook to get preview data for a page or post.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#usepreview
+   * @see https://faustjs.org/docs/next/reference/hooks/usePreview
    */
   usePreview(): UsePreviewResponse<Schema>;
 
   /**
    * Faust.js hook to ensure a user is authenticated.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#useauth
+   * @see https://faustjs.org/docs/next/reference/hooks/useAuth
    */
   useAuth(options?: UseAuthOptions): {
     isLoading: boolean;
@@ -57,7 +57,7 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
    * Faust.js hook to facilitate a login request.
    *
    * @param {UseLoginOptions} [options]
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#uselogin
+   * @see https://faustjs.org/docs/next/reference/hooks/useLogin
    */
   useLogin(options?: UseLoginOptions): {
     login: (usernameEmail: string, password: string) => Promise<void>;
@@ -80,7 +80,7 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
   /**
    * Faust.js hook to facilitate a logout request.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#uselogout
+   * @see https://faustjs.org/docs/next/reference/hooks/useLogout
    */
   useLogout(): {
     isLoading: boolean;
@@ -103,7 +103,7 @@ export interface NextClientHooks<Schema extends RequiredSchema>
   /**
    * GQty hook to make any query request to the Headless Wordpress API.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#custom-queries-and-mutations
+   * @see https://faustjs.org/docs/next/reference/hooks/gqty-hooks
    */
   useQuery: ReactClient<Schema>['useQuery'];
 
@@ -119,7 +119,7 @@ export interface NextClientHooks<Schema extends RequiredSchema>
   /**
    * Faust.js hook to get a list of posts.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#useposts
+   * @see https://faustjs.org/docs/next/reference/hooks/usePosts
    */
   usePosts(
     args?: Parameters<Schema['query']['posts']>[0],
@@ -128,7 +128,7 @@ export interface NextClientHooks<Schema extends RequiredSchema>
   /**
    * Faust.js hook to get a single post.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#usepost
+   * @see https://faustjs.org/docs/next/reference/hooks/usePost
    */
   usePost(
     args?: Parameters<Schema['query']['post']>[0],
@@ -137,7 +137,7 @@ export interface NextClientHooks<Schema extends RequiredSchema>
   /**
    * Faust.js hook to get a single page.
    *
-   * @see https://faustjs.org/docs/next/reference/custom-hooks#usepage
+   * @see https://faustjs.org/docs/next/reference/hooks/usePage
    */
   usePage(
     args?: Parameters<Schema['query']['page']>[0],

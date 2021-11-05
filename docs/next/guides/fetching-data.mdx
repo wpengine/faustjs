@@ -127,11 +127,11 @@ This will ensure Faust.js uses the correct client to make requests on your behal
 
 ## Using the Client to Make Queries
 
-Assuming you have created a client using the Faust.js `getClient` function, you will be able to take advantage of many of the added features that Faust.js provides, and also the general features provided by GQty. You can read our [hooks for fething data reference](../reference/custom-hooks) for examples on how to use some of the built-in hooks using the Faust.js client, but the client will support any query to your Headless WordPress API. Let's look at a few examples of how to use the client to make queries.
+Assuming you have created a client using the Faust.js `getClient` function, you will be able to take advantage of many of the added features that Faust.js provides, and also the general features provided by GQty. You can read our [hooks for fetching data reference](../reference/hooks) for examples on how to use some of the built-in hooks using the Faust.js client, but the client will support any query to your Headless WordPress API. Let's look at a few examples of how to use the client to make queries.
 
 ### The useQuery Hook
 
-If you are not able to use one of the [WordPress-specific hooks](../reference/custom-hooks) you can use the `useQuery` hook to make a query to the Headless WordPress API. This hook is useful for making any query supported by your Headless WordPress API. It essentially exposes your entire generated GQL schema to you for you to use what you need. For example, say you have a `Header` component and you want to fetch menu items from your "Primary" menu in WordPress. You could do so as follows:
+If you are not able to use one of the [WordPress-specific hooks](../reference/hooks) you can use the `useQuery` hook to make a query to the Headless WordPress API. This hook is useful for making any query supported by your Headless WordPress API. It essentially exposes your entire generated GQL schema to you for you to use what you need. For example, say you have a `Header` component and you want to fetch menu items from your "Primary" menu in WordPress. You could do so as follows:
 
 ```tsx title=src/components/Header.tsx {4,12-15,30-36}
 import React from 'react';
@@ -222,7 +222,8 @@ export function PostForm() {
             content: content.value,
           },
         });
-      }}>
+      }}
+    >
       <input type="text" name="postTitle" placeholder="Title" />
       <textarea name="content" placeholder="Content" />
       <input disabled={isLoading} type="submit" value="Send" />
@@ -269,15 +270,15 @@ The `logQueries` function returns a function that you can call to turn the log o
 
 ```ts
 if (process.env.NODE_ENV === 'development') {
-	const unsubscribe = logQueries(client)
+  const unsubscribe = logQueries(client);
 
-	// queries are now logging
-	// ...
+  // queries are now logging
+  // ...
 
-	unsubscribe();
+  unsubscribe();
 
-	// queries no longer log
-	// ...
+  // queries no longer log
+  // ...
 }
 ```
 
