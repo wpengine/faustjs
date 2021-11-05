@@ -102,37 +102,37 @@ module.exports = {
               items: [
                 {
                   type: 'doc',
-                  label: 'usePost',
+                  label: 'usePost Hook',
                   id: 'next/reference/hooks/usePost',
                 },
                 {
                   type: 'doc',
-                  label: 'usePosts',
+                  label: 'usePosts Hook',
                   id: 'next/reference/hooks/usePosts',
                 },
                 {
                   type: 'doc',
-                  label: 'usePage',
+                  label: 'usePage Hook',
                   id: 'next/reference/hooks/usePage',
                 },
                 {
                   type: 'doc',
-                  label: 'usePreview',
+                  label: 'usePreview Hook',
                   id: 'next/reference/hooks/usePreview',
                 },
                 {
                   type: 'doc',
-                  label: 'useAuth',
+                  label: 'useAuth Hook',
                   id: 'next/reference/hooks/useAuth',
                 },
                 {
                   type: 'doc',
-                  label: 'useLogin',
+                  label: 'useLogin Hook',
                   id: 'next/reference/hooks/useLogin',
                 },
                 {
                   type: 'doc',
-                  label: 'useLogout',
+                  label: 'useLogout Hook',
                   id: 'next/reference/hooks/useLogout',
                 },
                 {
