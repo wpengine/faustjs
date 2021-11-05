@@ -1,0 +1,20 @@
+name: Deploy to WordPress.org
+on:
+  push:
+    tags:
+    - "plugin/faustwp/*"
+jobs:
+  release_plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: WordPress Plugin Deploy
+        # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
+        # to support our monorepo structure.
+        uses: ./.github/actions/release-plugin
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          PLUGIN_DIR: plugins/faustwp
+          SLUG: faustwp

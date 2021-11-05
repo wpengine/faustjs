@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import { config } from '../../../src';
+import { config } from '../../../src/config';
 import { apiRouter } from '../../../src/server';
 import * as middleware from '../../../src/server/auth/middleware';
 

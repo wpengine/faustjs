@@ -1,0 +1,42 @@
+---
+slug: /next/reference/hooks/useLogout
+title: useLogout Hook
+description: The useLogout hook provides a way to logout a user
+---
+
+The `useLogout` hook provides a way to logout a user from your headless frontend.
+
+The following example shows how you could use the `useLogout` hook in a `logout.tsx` page:
+
+```tsx title="src/pages/logout.tsx"
+import { client } from 'client';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+export default function Logout() {
+  const router = useRouter();
+  const { isLoggedOut, logout } = client.auth.useLogout();
+  useEffect(() => {
+    if (isLoggedOut !== undefined) {
+      return;
+    }
+
+    // Initiate the logout process.
+    // This could also be called on a button click, for example, in a nav menu.
+    logout();
+  }, [isLoggedOut, logout]);
+
+  useEffect(() => {
+    if (isLoggedOut) {
+      // The user was successfully logged out. Redirect them.
+      router.push('/');
+    }
+  }, [router, isLoggedOut]);
+  return <>Logging out...</>;
+}
+```
+
+`useLogout` exports an object with the following properties:
+
+- `logout`: a function that initiates a request to logout the user by clearing their refresh token from the cookie.
+- `isLoggedOut`: `undefiend` until the `logout` function is called. Then a `boolean` that indicates whether the user was successfully logged out
+- `isLoading`: A boolean that indicates whether the `logout` function is currently logging out the user.

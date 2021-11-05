@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
-import { config } from '../../../src';
+import { config } from '../../../src/config';
 import {
   authorizeHandler,
   redirect,

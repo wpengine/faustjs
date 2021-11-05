@@ -61,7 +61,7 @@ export async function fetchAccessToken(code?: string): Promise<string | null> {
 
   if (isNil(apiBasePath)) {
     throw new Error(
-      'You must provide an apiBasePath value in your Headless config in order to use the fetchToken middleware',
+      'You must provide an apiBasePath value in your Faust.js config in order to use the fetchToken middleware',
     );
   }
 

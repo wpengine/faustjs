@@ -1,12 +1,27 @@
 # @faustjs/next
 
+## 0.13.0
+
+### Minor Changes
+
+- 8630834: **BREAKING**: Rename `HeadlessProvider` to `FaustProvider`
+
+## 0.12.4
+
+### Patch Changes
+
+- 81d6162: Refactored core exports and naming to make root namespace cleaner
+- Updated dependencies [81d6162]
+  - @faustjs/core@0.12.4
+  - @faustjs/react@0.12.4
+
 ## 0.12.3
 
 ### Patch Changes
 
 - 068f3c3: Introduced the `useLogout` hook to facilitate logging out a user
 
-  See https://faustjs.org/docs/next/reference/custom-hooks#uselogout for more details.
+  See https://faustjs.org/docs/next/reference/hooks/useLogout for more details.
 
 - Updated dependencies [068f3c3]
   - @faustjs/core@0.12.3
