@@ -26,19 +26,19 @@ Let's create a custom post type for team members. Click the "Get Started" button
 
 ## Create Fields for the Custom Post Type
 
-Now, that we've created the custom post type, let's add some fields to it. From WP Admin -> Content Modeler, select the Team Members custom post type.
+Now that we've created the custom post type let's add some fields to it. From **WP-Admin -> Content Modeler**, select the Team Members custom post type.
 
 We'll add three fields:
 
-1. A Media field type. The name will be "Profile Pic" and the API identifier "profilePic"
-2. A Text field type. The name will be "Full Name" and the API identifier "fullName". We'll also select "Use this field as the entry title"
+1. A Media field type. The name will be "Profile Pic" and the API identifier "profilePic".
+2. A Text field type. The name will be "Full Name" and the API identifier "fullName". We'll also select "Use this field as the entry title".
 3. A Rich Text field type. The name will be "Bio" and the API identifier "bio".
 
 <img src="/docs/img/team-members-content-modeler-fields.png" alt="The Atlas Content Modeler admin interface with filled custom fields" />
 
 ## Add Some Team Members
 
-Now that you have created a custom post type and fields, you can start entering data. Navigate to WP Admin -> Team Members to start creating!
+Now that you have created a custom post type and fields, you can start entering data. Navigate to **WP-Admin -> Team Members** to start creating!
 
 For this example, I've created two team members, Jane and John Doe, with bios and profile pics:
 
@@ -46,13 +46,13 @@ For this example, I've created two team members, Jane and John Doe, with bios an
 
 ## Clone the Starter Headless Project
 
-Thus far, you have created a WordPress site with the necessary headless plugins, and data. Now, we need to create a frontend app to consume this data.
+Thus far, you have created a WordPress site with the necessary headless plugins and data. Now, we need to create a frontend app to consume this data.
 
-We are going to use the getting started example project in Next.js, but the same concepts apply in other frontend frameworks.
+We will use the getting started example project in Next.js, but the same concepts apply in other frontend frameworks.
 
 [Follow the steps in the getting started with Next.js usage guide to create a frontend app](../getting-started.mdx)
 
-Once your frontend app is created, the structure should look something like this:
+Once your frontend app renders, the structure should look something like this:
 
 ```
 my-app/
@@ -80,7 +80,7 @@ my-app/
 
 ### Regenerate the GraphQL Schema
 
-Your schema is a TypeScript representation of your WordPress site. Since we have added some custom post types and fields, we'll want to regenerate this schema to ensure it's up to date. To regenerate your schema from the Next.js getting started example, simply run:
+Your schema is a TypeScript representation of your WordPress site. Since we have added some custom post types and fields, we'll want to regenerate this schema to ensure it's up to date. To restore your schema from the Next.js getting started example, run:
 
 ```bash
 npm run generate
@@ -92,13 +92,13 @@ npm run generate
 
 ##### "GraphQL introspection is not allowed"
 
-If you run into the error message `GraphQL introspection is not allowed, but the query contained __schema or __type`, you will have to temporarily enable introspection.
+If you run into the error message `GraphQL introspection is not allowed, but the query contained __schema or __type`, you will have to enable introspection temporarily.
 
 [Introspection is disabled by default in WPGraphQL.](https://www.wpgraphql.com/docs/security/#introspection-disabled-by-default) To enable it, go to WP Admin -> GraphQL -> Enable Public Introspection.
 
-If you are using something other than `WPGraphQL` you will need to refer to the documentation on how to enable introspection.
+If you are using something other than `WPGraphQL` you will need to refer to the documentation to enable introspection.
 
-Once the schema file has been generated, you can then disable introspection again.
+Once the schema file generates, you can then disable introspection again.
 
 ### Run the Dev Server
 
@@ -151,7 +151,7 @@ This will look something like:
 
 ### Query for Team Members
 
-When querying custom post types in Faust.js, you can leverage the `useQuery` hook that is exported from the client. This allows you to access all of WordPress' data. You'll also notice it's typed from your schema, making things super easy to find.
+When querying custom post types in Faust.js, you can leverage the `useQuery` hook exported from the client. `useQuery` allows you to access all of WordPress' data. You'll also notice it's typed from your schema, making things super easy to find.
 
 <img src="/docs/img/useQuery-typed.png" alt="A screenshot of the useQuery hook and its typings" />
 
@@ -261,7 +261,7 @@ export default function Team() {
 }
 ```
 
-Now, head back over to [http://localhost:3000/team](http://localhost:3000/team) to see your WordPress data come to life!
+Now, head back to [http://localhost:3000/team](http://localhost:3000/team) to see your WordPress data come to life!
 
 <img src="/docs/img/nextjs-team-page.png" alt="A web page with a list of team members" />
 
