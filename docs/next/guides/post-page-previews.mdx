@@ -4,15 +4,15 @@ title: Setting Up Post and Page Previews
 description: View WordPress preview post/page content on your headless frontend with Faust.js
 ---
 
-Faust.js has support for page and post previews. This allows you to view your WordPress content on the headless frontend as drafts or even before publishing.
+Faust.js supports page and post previews, allowing you to view your WordPress content on the headless frontend as drafts or even before publishing.
 
 ## Set Your Headless Secret
 
-Your headless secret is a value that is used to authenticate requests to WordPress. This enables you to view content that isn't yet published, on your Next.js frontend.
+Your headless secret is a value that authenticates requests to WordPress. This secret enables you to view content that doesn't publish on your Next.js frontend.
 
 ### Copy your Headless Secret
 
-Your headless secret can be found in WP Admin -> Settings -> Headless. Copy this value.
+Find your Headless Secre in **WP-Admin -> Settings -> Headless**. Copy this value:
 
 <img
   src="/docs/img/headless-admin-secret.png"
@@ -35,7 +35,7 @@ WP_HEADLESS_SECRET=xxxx
 
 Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/canary/examples/next/getting-started) Faust.js example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/canary/examples/next/getting-started/src/faust.config.js) file will live in the `src` directory.
 
-You'll need to import it at the top of your `_app.tsx` file to ensure the `config` is set, and your Faust.js app is initialized properly.
+You'll need to import it at the top of your `_app.tsx` file to ensure the `config` is set, and your Faust.js app initializes appropriately.
 
 ```tsx title=_app.tsx {1}
 import 'faust.config';
@@ -136,14 +136,14 @@ We abstract the page and post layouts into components to be reusable so there is
 
 Start by logging into your WordPress Admin. For this example, we'll create a new post.
 
-So far, I've added a title and a simple line of text for the content. To view this post as a preview on your frontend, click the **Preview** link (1). From there, click, **Preview in new tab** (2):
+So far, I've added a title and a simple line of text for the content. To view this post as a preview on your front end, click the **Preview** link (1). From there, click, **Preview in new tab** (2):
 
 <img
   src="/docs/img/post-preview.png"
   alt="WordPress post page using the Gutenberg editor with a red arrow to the preview and preview in new tab dropdowns"
 />
 
-Notice the **Publish** button is also visible. This means the post has not been published yet and can not be viewed on the frontend without being authenticated.
+Notice the **Publish** button is also visible, meaning that you still need to publish the post. Therefore you can now view the post on the frontend without being authenticated.
 
 Clicking on **Preview in new tab** should take you to your post preview page with the current preview content:
 
