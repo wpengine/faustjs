@@ -8,13 +8,13 @@ Authentication can be a cumbersome process when building headless WordPress site
 
 ## How It Works
 
-**TL;DR**: Authentication in Faust.js can be boiled down to 5 main steps:
+**TL;DR**: Authentication in Faust.js can happen in five main steps:
 
-1. User initiates request to authenticated data
-2. Faust.js facilitates the request for an authorization code from the WPE Headless plugin. This is a short lived token that is used to request a refresh and access token
-3. Faust.js facilitates the request for a refresh and access token from the WPE Headless plugin using the authorization code
-4. Faust.js stores the refresh token in a secure, http only cookie. The refresh token is used to request a new access token when the current one expires
-5. Faust.js stores the access token in memory to be used in subsequent authenticated requests
+1. User initiates request to authenticate data.
+2. Faust.js facilitates the request for an authorization code from the WPE Headless plugin. This code is a short-lived token used to request a refresh and access token.
+3. Faust.js facilitates a refresh and access token request from the WPE Headless plugin using the authorization code.
+4. Faust.js stores the refresh token in a secure, HTTP-only cookie. The token refresh requests a new access token when the current one expires
+5. Faust.js stores the access token in memory that you can use in subsequent authenticated requests.
 
 ## Initial Setup
 
@@ -29,7 +29,7 @@ export default apiRouter;
 
 ## Strategies
 
-There are two authentication strategies available in Faust.js: `redirect` and `local`
+There are two authentication strategies available in Faust.js: `redirect` and `local`.
 
 ### Redirect Based Authentication
 
@@ -40,9 +40,9 @@ There are two authentication strategies available in Faust.js: `redirect` and `l
   />
 </a>
 
-Redirect based authentication is the default strategy in Faust.js. This strategy involves the user being redirected to WordPress to authenticate. Once the user has authenticated, the user is redirected back to the Next.js application with an authorization code that is then used to request a refresh and access token, thus completing the login process.
+Redirect-based authentication is the default strategy in Faust.js. This strategy involves the user being redirected to WordPress to authenticate. Once the user has shown, the user redirects back to the Next.js application with an authorization code you can then use to request a refresh and access token, thus completing the login process.
 
-This strategy is great for use cases where your authenticated users are admins/editors/etc. and do not necessarily need a "white label" login/register experience. Typically, you would use the redirect strategy if your primary reason for authentication is previews.
+This strategy is excellent for use cases where your authenticated users are admins/editors/etc. and do not necessarily need a "white label" login/register experience. Typically, you would use the redirect strategy if your primary reason for authentication is previewing.
 
 Since Redirect based authentication is the default authentication method, there is no configuration needed on your end to use it. It comes out of the box, and you'll see it in action when using previews or the [`useAuth`](/docs/next/reference/hooks/useAuth) hook.
 
@@ -55,13 +55,13 @@ Since Redirect based authentication is the default authentication method, there 
   />
 </a>
 
-Local Based Authentication is the second strategy available in Faust.js. This strategy involves the user initiating a login request from the Next.js application via the `useLogin` hook. Upon successful login, `useLogin` returns an authorization code that is then used to request a refresh and access token, thus completing the login process.
+Local Based Authentication is the second strategy available in Faust.js. This strategy involves the user initiating a login request from the Next.js application via the `useLogin` hook. Upon successful login, `useLogin` returns an authorization code used to request a refresh and access token, thus completing the login process.
 
-This strategy is great for use cases where you want to support a more "white label" login/register experience. This strategy routes un-authenticated requests to your specified Next.js login page. In addition, users who wish to login/register will not have to interact with WordPress or the WordPress backend at all, giving you the flexibility to implement and fine tune your user flow.
+This strategy is excellent for use cases where you want to support a more "white label" login/register experience. This strategy routes un-authenticated requests to your specified Next.js login page. In addition, users who wish to login/register will not have to interact with WordPress or the WordPress backend at all, giving you the flexibility to implement and fine-tune your user flow.
 
-To use this strategy, you'll need to configure your `faust.config.js` file to use the `local` authentication strategy, in addition to the route of your Next.js login page. Take the following `faust.config.js` file for example:
+To use this strategy, you'll need to configure your `faust.config.js` file to use the `local` authentication strategy, in addition to the route of your Next.js login page. Take the following `faust.config.js` file, for example:
 
-```tsx title=faust.config.js {15,16}
+```TSX title=faust.config.js {15,16}
 import { config as coreConfig } from '@faustjs/core';
 
 if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
@@ -81,7 +81,7 @@ export default coreConfig({
 });
 ```
 
-We define the `authType` to `local` to indicate to the Faust.js config that we want to use the `local` strategy for authentication. We also define the `loginPagePath` to `/login` to indicate the route of the Next.js login page. This means un-authenticated requests will be redirected to the `/login` route in your Next.js application.
+We define the `authType` to `local` to indicate to the Faust.js config that we use the `local` strategy for authentication. We also describe the `loginPagePath` to `/login` to mark the route of the Next.js login page. This strategy redirects unauthenticated requests to the `/login` route in your Next.js application.
 
 In your `login.tsx` page, you could take advantage of the `useLogin` hook to initiate a login request to the WordPress backend:
 
@@ -151,9 +151,9 @@ The `useLogin` hook exports an object with the following properties:
 
 For a more detailed explanation of the `useLogin` hook, see the [`useLogin` hook docs](/docs/next/reference/hooks/useLogin) .
 
-Upon a successful login, a refresh token will be stored in a secure, http only cookie, as well as the access token in memory to use for subsequent authenticated requests. A login request can be confirmed it succeeded by checking for the `code` property in the `data` object.
+Upon successful login, a secure, HTTP only cookie stores a refresh token and the access token in memory for subsequent authenticated requests. You can confirm a login request succeeded by checking for the `code` property in the `data` object.
 
-Additionally, if the login page URL contains a `redirect_uri` query parameter, the user will be redirected to the specified URL upon successful login.
+Additionally, if the login page URL contains a `redirect_uri` query parameter, it will redirect the user to the specified URL upon successful login.
 
 Finally, you can create a `logout.tsx` page to handle logout requests. This is done by using the `useLogout` hook:
 
@@ -202,7 +202,7 @@ The `useLogout` hook exports an object with the following properties:
 
 ## Making Authenticated Requests
 
-In the Faust.js client, you can use `useQuery`, `usePost`, `usePage`, etc. to make a request to the WordPress backend.
+In the Faust.js client, you can use `useQuery`, `usePost`, `usePage`, etc., to request the WordPress backend.
 
 These are exported from the `client` like so:
 
@@ -220,9 +220,9 @@ export default function Page() {
 
 Requests using the above methodology will be un-authenticated.
 
-To make authenticated requests, use the `auth` property exported from the `client`. This is essentially a replica of the `client`, except every request gets called with an access token:
+To make authenticated requests, use the `auth` property exported from the `client`. This  property is essentially a replica of the `client`, except every request gets called with an access token:
 
-```tsx {1,4,5}
+```TSX {1,4,5}
 import { client } from 'client';
 
 export default function Page() {
@@ -241,4 +241,4 @@ export default function Page() {
 }
 ```
 
-**Note:** The [`useAuth`](/docs/next/reference/hooks/useAuth) hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` prior to making authenticated requests, as doing so too early will result in a request without a valid access token.
+**Note:** The [`useAuth`](/docs/next/reference/hooks/useAuth) hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` before making authenticated requests, as doing so too early will result in a request without a valid access token.
