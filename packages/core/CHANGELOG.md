@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.13.1
+
+### Patch Changes
+
+- a3b08d6: Updated dependencies
+
 ## 0.12.4
 
 ### Patch Changes

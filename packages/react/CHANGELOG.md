@@ -1,5 +1,13 @@
 # @faustjs/react
 
+## 0.13.1
+
+### Patch Changes
+
+- a3b08d6: Updated dependencies
+- Updated dependencies [a3b08d6]
+  - @faustjs/core@0.13.1
+
 ## 0.12.4
 
 ### Patch Changes
