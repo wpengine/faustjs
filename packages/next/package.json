@@ -108,7 +108,7 @@
   },
   "dependencies": {
     "@gqty/logger": "^2.0.1",
-    "@gqty/react": "^2.0.1",
+    "@gqty/react": "^2.1.0",
     "@faustjs/core": "^0.12.4",
     "@faustjs/react": "^0.12.4",
     "graphql": ">=15.6",

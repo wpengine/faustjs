@@ -79,7 +79,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@gqty/react": "^2.0.1",
+    "@gqty/react": "^2.1.0",
     "@faustjs/core": "^0.12.4",
     "gqty": "^2.1.0",
     "graphql": ">=15.6",
