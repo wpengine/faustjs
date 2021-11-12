@@ -1,16 +1,16 @@
 ---
 slug: /tutorial/basic-headless-site
 title: Create A Basic Headless WordPress Site
-description: In this tutorial, we'll walk you through the process of creating a basic headless WordPress site using Next.js and Local
+description: In this tutorial, we'll walk you through the process of creating a basic headless WordPress site using Next.js and Local.
 ---
 
-In the previous tutorial, we setup our development environment to create JavaScript/TypeScript apps efficiently.
+In the previous tutorial, we set up our development environment to create JavaScript/TypeScript apps efficiently.
 
-Now, we are going to create our frontend web app using Next.js, and spin up an instance of WordPress.
+Now, we will create our frontend web app using Next.js, and spin up an instance of WordPress.
 
 ## Create a Next.js App
 
-Next.js offers a handy CLI tool called `create-next-app` that will help us create a basic Next.js app.
+Next.js offers a handy CLI tool called `create-next-app` to help us create a basic Next.js app.
 
 To get started, run the following command:
 
@@ -18,13 +18,13 @@ To get started, run the following command:
 npx create-next-app my-app
 ```
 
-You may be asked to install `create-next-app` if you haven't already. If you are prompted, enter `y` to continue.
+If prompted to `create-next-app`, enter `y' to continue.
 
-Great! Your app has been created. However, it's not quite ready for TypeScript yet. Let's do that now.
+Great! You've deployed your app! However, it's not quite ready for TypeScript yet. Let's do that now.
 
 ### Setup TypeScript
 
-Start by `cd`ing into your app directory:
+Start by `cd'ing into your app directory:
 
 ```bash
 cd my-app
@@ -36,7 +36,7 @@ Now, run:
 touch tsconfig.json
 ```
 
-This will create your [TypeScript config file.](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+This command creates your [TypeScript config file.](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
 
 Now, let's install TypeScript and our dependencies.
 
@@ -44,7 +44,7 @@ Now, let's install TypeScript and our dependencies.
 npm install --save-dev typescript @types/react
 ```
 
-Once the dependencies are installed, you can run `npm run dev` to start the development server. Doing this will automatically generate the settings needed for `tsconfig.json`.
+Once the dependencies are installed, run `npm run dev` to start the development server. Doing this will automatically generate the settings needed for `tsconfig.json`.
 
 Now, convert your existing pages to TypeScript:
 
@@ -70,10 +70,9 @@ Your Next.js site is now ready for TypeScript! Let's move on to WordPress.
 
 Now that we have created a Next.js app, we can create a WordPress site. We use [Local](https://localwp.com) to spin up instances of WordPress locally.
 
-Start by downloading and installing Local from https://localwp.com. Once, installed, click the `+` button in the bottom left corner of the screen.
+Download and install Local from https://localwp.com. Once installed, click the `+` button in the bottom left corner of the screen.
 
-<img
-  src="/docs/img/localwp-create-site.png"
+<img src="/docs/img/localwp-create-site.png"
   alt="Red arrow pointing to the create site button in Local"
 />
 

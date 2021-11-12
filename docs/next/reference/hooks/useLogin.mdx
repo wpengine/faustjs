@@ -1,0 +1,77 @@
+---
+slug: /next/reference/hooks/useLogin
+title: useLogin
+description: The useLogin hook provides a way to log in a user
+---
+
+The `useLogin` hook provides an abstraction around obtaining an authorization code and fetching refresh/access tokens from WordPress, thus logging in a user to your Headless frontend.
+
+The following example shows how to use the `useLogin` hook to login a user:
+
+```tsx title=pages/login.tsx {9,18}
+import { client } from 'client';
+import { useState } from 'react';
+
+export default function Login() {
+  const { useLogin } = client.auth;
+  const [usernameEmail, setUserNameEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const { login, isLoading, data, error } = useLogin();
+
+  const errorMessage = data?.error || error?.message;
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        login(usernameEmail, password);
+      }}
+    >
+      <div>
+        <div>
+          <label htmlFor="usernameEmail">Username or Email</label>
+        </div>
+        <div>
+          <input
+            type="text"
+            value={usernameEmail}
+            onChange={(e) => setUserNameEmail(e.target.value)}
+            id="usernameEmail"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password">Password</label>
+        </div>
+        <div>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            id="password"
+          />
+        </div>
+
+        <div>
+          <button type="submit">Login</button>
+        </div>
+      </div>
+
+      {errorMessage ? <p>Error: {errorMessage}</p> : null}
+    </form>
+  );
+}
+```
+
+`useLogin` exports an object with the following properties:
+
+- `login`: A function that initiates a request to obtain an authorization code via a GraphQL mutation by the provided `usernameEmail` and `password` arguments. Note that the `usernameEmail` argument is a string that can be either a username or an email address.
+- `isLoading`: A boolean that indicates whether the `login` function is currently fetching an authorization code.
+- `data`: An object that contains the response data from the `login` function.
+- `error`: An object that contains the error data from the `login` function.
+
+When an authorization code is successfully fetched, `useLogin` will facilitate the request to the FaustWP plugin's authorize endpoint to obtain the refresh/access tokens. From there, the tokens are stored properly, and the user is logged in.
+
+Additionally, if the login page URL contains a `redirect_uri` query parameter, the user will be redirected to the `redirect_uri` URL after the login is successful.

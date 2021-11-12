@@ -13,7 +13,7 @@ module.exports = {
   docsSidebar: [
     {
       type: 'category',
-      label: 'Tutorial',
+      label: 'Tutorial for PHP Developers',
       items: [
         {
           type: 'doc',
@@ -87,6 +87,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Logging Queries',
+              id: 'next/guides/logging-queries',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },
@@ -97,9 +102,55 @@ module.exports = {
           label: 'Reference',
           items: [
             {
-              type: 'doc',
-              label: 'Custom Hooks',
-              id: 'next/reference/custom-hooks',
+              type: 'category',
+              label: 'Hooks',
+              items: [
+                {
+                  type: 'doc',
+                  label: 'Hooks Intro',
+                  id: 'next/reference/hooks/hooks',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePost Hook',
+                  id: 'next/reference/hooks/usePost',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePosts Hook',
+                  id: 'next/reference/hooks/usePosts',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePage Hook',
+                  id: 'next/reference/hooks/usePage',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePreview Hook',
+                  id: 'next/reference/hooks/usePreview',
+                },
+                {
+                  type: 'doc',
+                  label: 'useAuth Hook',
+                  id: 'next/reference/hooks/useAuth',
+                },
+                {
+                  type: 'doc',
+                  label: 'useLogin Hook',
+                  id: 'next/reference/hooks/useLogin',
+                },
+                {
+                  type: 'doc',
+                  label: 'useLogout Hook',
+                  id: 'next/reference/hooks/useLogout',
+                },
+                {
+                  type: 'doc',
+                  label: 'GQty Hooks',
+                  id: 'next/reference/hooks/gqty-hooks',
+                },
+              ],
             },
             {
               type: 'doc',
