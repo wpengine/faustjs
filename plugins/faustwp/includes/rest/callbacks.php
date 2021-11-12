@@ -76,6 +76,17 @@ function register_rest_routes() {
 			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
 		)
 	);
+
+	// Deprecated. Faust.js packages now use faustwp/v1/authorize.
+	register_rest_route(
+		'wpac/v1',
+		'/authorize',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_authorize_callback',
+			'permission_callback' => __NAMESPACE__ . '\\wpac_authorize_permission_callback',
+		)
+	);
 }
 
 /**
@@ -125,7 +136,7 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 }
 
 /**
- * Callback for WordPress register_rest_route() 'permission_callback' parameter.
+ * Callback to check permissions for requests to `faustwp/v1/authorize`.
  *
  * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
  *
@@ -139,6 +150,31 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
+
+	if ( $secret_key && $header_key ) {
+		return $secret_key === $header_key;
+	}
+
+	return false;
+}
+
+/**
+ * Callback to check permissions for requests to `wpac/v1/authorize`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-wpe-headless-secret' match.
+ *
+ * @deprecated The `wpac/v1/authorize` route is deprecated. Use `faustwp/v1/authorize` instead.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function wpac_authorize_permission_callback( \WP_REST_Request $request ) {
+	$secret_key = get_secret_key();
+	$header_key = $request->get_header( 'x-wpe-headless-secret' );
 
 	if ( $secret_key && $header_key ) {
 		return $secret_key === $header_key;
