@@ -1,7 +1,7 @@
 import type { RequiredSchema } from '@faustjs/react';
 import { useRouter } from 'next/router';
-import defaults from 'lodash/defaults';
-import { hasCategoryId, hasCategorySlug } from '../../utils';
+import defaults from 'lodash/defaults.js';
+import { hasCategoryId, hasCategorySlug } from '../../utils/index.js';
 import type { NextClientHooks } from '.';
 
 export function create<Schema extends RequiredSchema>(

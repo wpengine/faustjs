@@ -3,7 +3,7 @@ import { LOGOUT_ENDPOINT_PARTIAL_PATH } from '@faustjs/core/config';
 import type { RequiredSchema } from '@faustjs/react';
 import { isNil } from 'lodash';
 import { useState } from 'react';
-import type { NextClient } from '../client';
+import type { NextClient } from '../client.js';
 
 export function create<
   Schema extends RequiredSchema,

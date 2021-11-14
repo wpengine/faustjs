@@ -1,13 +1,13 @@
 import { config } from '@faustjs/core';
 import { ensureAuthorization } from '@faustjs/core/auth';
 import type { RequiredSchema } from '@faustjs/react';
-import defaults from 'lodash/defaults';
-import isObject from 'lodash/isObject';
-import isUndefined from 'lodash/isUndefined';
-import noop from 'lodash/noop';
-import trim from 'lodash/trim';
+import defaults from 'lodash/defaults.js';
+import isObject from 'lodash/isObject.js';
+import isUndefined from 'lodash/isUndefined.js';
+import noop from 'lodash/noop.js';
+import trim from 'lodash/trim.js';
 import { useEffect, useState } from 'react';
-import type { NextClient } from '../client';
+import type { NextClient } from '../client.js';
 
 export interface UseAuthOptions {
   /**

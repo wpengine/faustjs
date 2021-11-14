@@ -3,7 +3,7 @@ import { fetchAccessToken } from '@faustjs/core/auth';
 import { getQueryParam, isValidEmail } from '@faustjs/core/utils';
 import type { RequiredSchema } from '@faustjs/react';
 import { UseMutationOptions } from '@gqty/react';
-import noop from 'lodash/noop';
+import noop from 'lodash/noop.js';
 import { useEffect } from 'react';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 

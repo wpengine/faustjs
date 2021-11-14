@@ -1,4 +1,4 @@
-export * from './schema.generated';
+export * from './schema.generated.js';
 import {
   ClientOptions,
   createClient,
@@ -9,12 +9,12 @@ import {
 } from 'gqty';
 import type { IncomingMessage } from 'http';
 import fetch from 'isomorphic-fetch';
-import isFunction from 'lodash/isFunction';
-import isNil from 'lodash/isNil';
-import isObject from 'lodash/isObject';
-import omit from 'lodash/omit';
-import { getAccessToken } from '../auth';
-import { getGqlUrl } from '../config/config';
+import isFunction from 'lodash/isFunction.js';
+import isNil from 'lodash/isNil.js';
+import isObject from 'lodash/isObject.js';
+import omit from 'lodash/omit.js';
+import { getAccessToken } from '../auth/index.js';
+import { getGqlUrl } from '../config/index.js';
 
 export interface GqlClientSchema {
   query: any;

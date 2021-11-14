@@ -1,6 +1,6 @@
-export { Config, WithFaustConfig, config, withFaust } from '../config';
-export { getClient, NextClient } from '../gqty';
-export { logQueries } from '../log';
+export { Config, WithFaustConfig, config, withFaust } from '../config/index.js';
+export { getClient, NextClient } from '../gqty/index.js';
+export { logQueries } from '../log/index.js';
 export {
   GetNextServerSidePropsConfig,
   GetNextStaticPropsConfig,
@@ -8,5 +8,5 @@ export {
   getNextServerSideProps,
   getNextStaticProps,
   is404,
-} from '../server';
-export { FaustProvider } from '../components';
+} from '../server/index.js';
+export { FaustProvider } from '../components/index.js';

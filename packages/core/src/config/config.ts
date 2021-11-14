@@ -1,12 +1,12 @@
-import isString from 'lodash/isString';
-import defaults from 'lodash/defaults';
-import trimEnd from 'lodash/trimEnd';
-import extend from 'lodash/extend';
-import isObject from 'lodash/isObject';
-import type { RequestContext } from '../gqty';
-import isNil from 'lodash/isNil';
-import trim from 'lodash/trim';
-import { isValidUrl } from '../utils';
+import isString from 'lodash/isString.js';
+import defaults from 'lodash/defaults.js';
+import trimEnd from 'lodash/trimEnd.js';
+import extend from 'lodash/extend.js';
+import isObject from 'lodash/isObject.js';
+import type { RequestContext } from '../gqty/index.js';
+import isNil from 'lodash/isNil.js';
+import trim from 'lodash/trim.js';
+import { isValidUrl } from '../utils/index.js';
 
 export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
 export const LOGOUT_ENDPOINT_PARTIAL_PATH = 'auth/logout';

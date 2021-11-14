@@ -1,9 +1,9 @@
 import { PageIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
 import { useRouter } from 'next/router';
-import defaults from 'lodash/defaults';
-import isString from 'lodash/isString';
-import { hasPageId, hasPageUri } from '../../utils';
+import defaults from 'lodash/defaults.js';
+import isString from 'lodash/isString.js';
+import { hasPageId, hasPageUri } from '../../utils/index.js';
 import type { NextClientHooks } from '.';
 
 export function create<Schema extends RequiredSchema>(

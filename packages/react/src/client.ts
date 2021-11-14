@@ -11,8 +11,8 @@ import {
   ReactClient as GQtyReactClient,
 } from '@gqty/react';
 import { GQtyClient } from 'gqty';
-import isObject from 'lodash/isObject';
-import merge from 'lodash/merge';
+import isObject from 'lodash/isObject.js';
+import merge from 'lodash/merge.js';
 
 export interface Node {
   id?: string | null;

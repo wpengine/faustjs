@@ -1,8 +1,8 @@
 import { PageIdType, PostIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
-import isUndefined from 'lodash/isUndefined';
+import isUndefined from 'lodash/isUndefined.js';
 import { useRouter } from 'next/router';
-import { hasPageId, hasPostId } from '../../utils';
+import { hasPageId, hasPostId } from '../../utils/index.js';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
 export type UsePreviewResponse<Schema extends RequiredSchema> =
