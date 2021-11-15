@@ -56,7 +56,7 @@ npm install --save-prod @faustjs/core @faustjs/next
 #### Dev Dependencies
 
 ```bash
-npm install --save-dev @gqty/cli dotenv
+npm install --save-dev @gqty/cli dotenv-flow
 ```
 
 ### Create `faust.config.js`
@@ -105,7 +105,7 @@ Replace the `NEXT_PUBLIC_WORDPRESS_URL` value with the URL of your WordPress sit
 We use [GQty](https://gqty.dev) as our GraphQL client. To configure GQty, we need to create a `gqty.config.js` file in the root of our project.
 
 ```js title=gqty.config.js
-require('dotenv').config();
+require('dotenv-flow').config();
 
 /**
  * @type {import("@gqty/cli").GQtyConfig}
@@ -186,7 +186,7 @@ Next, add the following `generate` script to your `package.json`:
   "devDependencies": {
     "@gqty/cli": "^1.0.4",
     "@types/react": "^17.0.15",
-    "dotenv": "^10.0.0",
+    "dotenv-flow": "^3.2.0",
     "typescript": "^4.3.5"
   }
 }
