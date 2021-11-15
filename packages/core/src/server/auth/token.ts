@@ -61,7 +61,7 @@ export class OAuth {
       );
     }
 
-    const response = await fetch(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
+    let response = await fetch(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
       headers: {
         'Content-Type': 'application/json',
         'x-faustwp-secret': apiClientSecret,
@@ -72,6 +72,28 @@ export class OAuth {
         refreshToken: this.getRefreshToken(),
       }),
     });
+
+    if (response.status === 404) {
+      // Check for the deprecated authorize endpoint.
+      response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-wpe-headless-secret': apiClientSecret,
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          code,
+          refreshToken: this.getRefreshToken(),
+        }),
+      });
+
+      if (response.status !== 404 && process.env.NODE_ENV !== 'production') {
+        process.emitWarning(
+          'The FaustWP WordPress plugin is out of date. Please update to the latest version.',
+          'DeprecationWarning',
+        );
+      }
+    }
 
     const result = await response.json();
 
