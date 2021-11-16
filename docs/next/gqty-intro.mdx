@@ -1,0 +1,81 @@
+---
+slug: /next/gqty-intro
+title: Introduction to GQty
+description: Faust.js uses GQty under the hood as a GraphQL client
+---
+
+Faust uses GQty under the hood.
+
+GQty is a fundamentally new approach to a GraphQL client. GQty works by generating queries at runtime based on the data your app consumes. This means you no longer have to write queries by hand.
+
+## How it works
+
+Take the following example code:
+
+```tsx
+import { client } from 'client';
+
+export default function Page() {
+  const { useQuery } = client;
+  const generalSettings = useQuery().generalSettings;
+
+  return (
+    <>
+      <h1>{generalSettings.title}</h1>
+      <p>{generalSettings.description}</p>
+    </>
+  );
+}
+```
+
+This would result in the following query being generated automatically:
+
+```graphql
+query {
+  generalSettings {
+    title
+    description
+  }
+}
+```
+
+For further reading into how GQty works, check out the [GQty "What is it & why" docs](https://gqty.dev/docs/intro).
+
+## GQty React Hooks
+
+Faust.js exports the [GQty React hooks](https://gqty.dev/docs/react/fetching-data#fetching-data-with-react) from the `client`. They can be used as so:
+
+```tsx
+import { client } from 'client';
+
+export default function Page() {
+  const {
+    useQuery,
+    usePaginatedQuery,
+    useTransactionQuery,
+    useLazyQuery,
+    useRefetch,
+    prepareQuery,
+  } = client;
+
+  return <>...</>;
+}
+```
+
+You can find the docs for each of these hooks below:
+
+- [useQuery](https://gqty.dev/docs/react/fetching-data#usequery)
+- [usePaginatedQuery](https://gqty.dev/docs/react/fetching-data#usepaginatedquery)
+- [useTransactionQuery](https://gqty.dev/docs/react/fetching-data#usetransactionquery)
+- [useLazyQuery](https://gqty.dev/docs/react/fetching-data#uselazyquery)
+- [useRefetch](https://gqty.dev/docs/react/fetching-data#userefetch)
+- [prepareQuery](https://gqty.dev/docs/react/fetching-data#preparequery)
+
+## Further Reading
+
+For most cases, GQty related functionality is covered in the [GQty docs](https://gqty.dev/docs). Some of the common use cases are:
+
+- [Fetching data in React](https://gqty.dev/docs/react/fetching-data)
+- [Using Mutations in React](https://gqty.dev/docs/react/mutations)
+- [Fetching data in `getStaticProps` or `getServerSideProps` with `inlineResolved`](https://gqty.dev/docs/client/fetching-data#inlineresolved)
+- [High level overview how GQty works](https://gqty.dev/docs/intro/how-it-works)
