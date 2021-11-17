@@ -1,5 +1,15 @@
 # @faustjs/next
 
+## 0.13.1
+
+### Patch Changes
+
+- a3b08d6: Fixed an intermittent error `TypeError: Cannot read property 'get' of undefined` when running in dev mode.
+- a3b08d6: Updated dependencies
+- Updated dependencies [a3b08d6]
+  - @faustjs/core@0.13.1
+  - @faustjs/react@0.13.1
+
 ## 0.13.0
 
 ### Minor Changes
