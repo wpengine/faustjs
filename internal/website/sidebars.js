@@ -52,11 +52,6 @@ module.exports = {
           id: 'next/getting-started',
         },
         {
-          type: 'doc',
-          label: 'Introduction to GQty',
-          id: 'next/gqty-intro',
-        },
-        {
           type: 'category',
           label: 'Guides',
           items: [
