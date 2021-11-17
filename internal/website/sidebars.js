@@ -173,6 +173,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'Introduction to GQty',
+      id: 'gqty-intro',
+    },
+    {
+      type: 'doc',
       label: 'Release Notes',
       id: 'release-notes',
     },
