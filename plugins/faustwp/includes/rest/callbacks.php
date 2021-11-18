@@ -77,7 +77,11 @@ function register_rest_routes() {
 		)
 	);
 
-	// Deprecated. Faust.js packages now use faustwp/v1/authorize.
+	/**
+	 * Faust.js packages now use `faustwp/v1/authorize`.
+	 *
+	 * @deprecated
+	 */
 	register_rest_route(
 		'wpac/v1',
 		'/authorize',
