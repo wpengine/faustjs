@@ -4,6 +4,7 @@ import { config } from '../../config';
 import isNil from 'lodash/isNil';
 import isString from 'lodash/isString';
 import isNumber from 'lodash/isNumber';
+import { log } from '../../utils';
 
 export type OAuthTokenResponse =
   | OAuthTokens
@@ -87,10 +88,9 @@ export class OAuth {
         }),
       });
 
-      if (response.status !== 404 && process.env.NODE_ENV !== 'production') {
-        process.emitWarning(
+      if (response.status !== 404) {
+        log(
           'The FaustWP WordPress plugin is out of date. Please update to the latest version.',
-          'DeprecationWarning',
         );
       }
     }
