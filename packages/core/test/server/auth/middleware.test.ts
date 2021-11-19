@@ -139,7 +139,7 @@ describe('auth/middleware', () => {
     } as any;
 
     const endSpy = jest.spyOn(res, 'end');
-    const warningSpy = jest.spyOn(process, 'emitWarning').mockImplementation(jest.fn());
+    const warningSpy = jest.spyOn(console, 'log').mockImplementation(jest.fn());
     const successResponse = {
       message: 'Successfully called deprecated endpoint.',
       accessToken: 'valid-at',
