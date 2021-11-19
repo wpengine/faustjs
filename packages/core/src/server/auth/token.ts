@@ -90,7 +90,9 @@ export class OAuth {
 
       if (response.status !== 404) {
         log(
-          'The FaustWP WordPress plugin is out of date. Please update to the latest version.',
+          'Authentication and post previews will soon be incompatible with ' +
+            'your version of the FaustWP plugin. Please update to the latest' +
+            ' version.',
         );
       }
     }
