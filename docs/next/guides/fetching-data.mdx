@@ -12,12 +12,12 @@ Faust.js uses [GQty](https://gqty.dev/docs/react/fetching-data) as the primary w
 
 GQty works primarily based on TypeScript typings generated using introspection on your GraphQL API. Using WPGraphQL as your Headless WordPress API, you can enable introspection and then generate typings for GQty. You will need to do the following:
 
-1. Run `npm install -D @gqty/cli dotenv`
+1. Run `npm install -D @gqty/cli dotenv-flow`
 1. Create a `generate` script in your `package.json` that runs `gqty generate`.
 1. Create a `gqty.config.js` file at the root of your project. Use the following example config:
 
    ```js
-   require('dotenv').config();
+   require('dotenv-flow').config();
 
    /**
     * @type {import("@gqty/cli").GQtyConfig}
