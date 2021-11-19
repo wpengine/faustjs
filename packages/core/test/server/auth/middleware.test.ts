@@ -118,4 +118,57 @@ describe('auth/middleware', () => {
     endSpy.mockRestore();
     fetchMock.restore();
   });
+
+  test('authorizeHandler will fallback to deprecated authorize endpoint if first attempt is 404', async () => {
+    config({
+      wpUrl: 'http://test.local',
+      authType: 'redirect',
+      loginPagePath: '/login',
+      apiClientSecret: 'secret',
+    });
+
+    const req: IncomingMessage = {
+      url: 'https://developers.wpengine.com/?code=code',
+      headers: {},
+    } as any;
+
+    const res: ServerResponse = {
+      setHeader() { },
+      writeHead() { },
+      end() { },
+    } as any;
+
+    const endSpy = jest.spyOn(res, 'end');
+    const warningSpy = jest.spyOn(console, 'log').mockImplementation(jest.fn());
+    const successResponse = {
+      message: 'Successfully called deprecated endpoint.',
+      accessToken: 'valid-at',
+      refreshToken: 'valid-rt',
+      accessTokenExpiration: 10000,
+      refreshTokenExpiration: 10000,
+    };
+
+    const { wpUrl } = config();
+
+    fetchMock
+      .post(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
+        status: 404,
+        body: JSON.stringify({ error: 'Plugin out of date.' }),
+      })
+      .post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+        status: 200,
+        body: JSON.stringify(successResponse),
+      });
+
+    await authorizeHandler(req, res);
+
+    expect(warningSpy).toBeCalled();
+    expect(endSpy).toBeCalled();
+    expect(res.statusCode).toBe(200);
+    expect(endSpy).toBeCalledWith(JSON.stringify(successResponse));
+
+    endSpy.mockRestore();
+    warningSpy.mockRestore();
+    fetchMock.restore();
+  });
 });
