@@ -23,11 +23,10 @@ The plugin also provides useful options for headless sites, such as the ability 
 
 == Installation ==
 
-== Frequently Asked Questions ==
+1. Search for the plugin in WordPress under "Plugins -> Add New".
+2. Click the “Install Now” button, followed by "Activate".
 
-= A question that someone might have =
-
-== Screenshots ==
+That's it! For more information on getting started with headless WordPress, see <a href="https://faustjs.org/docs/tutorial/dev-env-setup" target="_blank">Getting Started with Faust.js</a>.
 
 == Changelog ==
 
