@@ -8,9 +8,18 @@ Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Transform your WordPress site to a powerful Headless API.
+FaustWP transforms your traditional WordPress installation into a flexible headless CMS.
 
 == Description ==
+
+In conjunction with Faust.js, FaustWP enables a decoupled front-end to authenticate with WordPress through GraphQL mutations and REST API endpoints. It is the connective glue between a Faust.js-powered front-end app, and a WordPress backend.
+
+The plugin also provides useful options for headless sites, such as the ability to:
+<ul>
+<li>Hide “theme” admin pages.</li>
+<li>Redirect public route requests to the front-end application.</li>
+<li>Rewrite WordPress URLs to front-end URLs in queried content.</li>
+</ul>
 
 == Installation ==
 
