@@ -1,9 +1,9 @@
 === FaustWP ===
-Author: WP Engine
 Contributors: antpb, apmatthe, blakewpe, claygriffiths, markkelnar, mindctrl, modernnerd, rfmeier, wpengine
+Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
-Tested up to: 5.8.1
-Stable tag: 0.6.1
+Tested up to: 5.8.2
+Stable tag: 0.7.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -37,14 +37,15 @@ That's it! For more information on getting started with headless WordPress, see 
 - Changed the authentication endpoint namespace from `wpac/v1` to `faustwp/v1`
 - Changed settings option name from `wpe_headless` to `faustwp_settings`
 - Changed the following filter names:
-    - `wpe_headless_setting` to `faustwp_setting`
+	- `wpe_headless_setting` to `faustwp_setting`
 	- `wpe_headless_settings` to `faustwp_settings`
 	- `wpe_headless_domain_replacement_enabled` to `faustwp_domain_replacement_enabled`
-- Changed the text domain to faustwp.
+- Changed the text domain to `faustwp`.
 - Changed minimum required PHP version to 7.2.
 - Changed the hook used for public route redirection.
 - Fixed the "headless post preview" link on the FaustWP settings page.
 - Fixed "unexpected output" error during plugin activation.
+- Fixed skipped domain replacement in GraphQL responses that include `generalSettings`.
 - Added LICENSE file.
 
 = 0.6.1 =
