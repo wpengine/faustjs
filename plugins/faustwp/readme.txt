@@ -1,7 +1,7 @@
 === FaustWP ===
 Author: WP Engine
 Contributors: antpb, apmatthe, blakewpe, claygriffiths, markkelnar, mindctrl, modernnerd, rfmeier, wpengine
-Requires at least: 5.3
+Requires at least: 5.7
 Tested up to: 5.8.1
 Stable tag: 0.6.1
 Requires PHP: 7.2

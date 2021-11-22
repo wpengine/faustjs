@@ -11,6 +11,7 @@
  * Domain Path: /languages
  * Version: 0.6.1
  * Requires PHP: 7.2
+ * Requires at least: 5.7
  *
  * @package FaustWP
  */
