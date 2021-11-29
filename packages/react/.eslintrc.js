@@ -13,6 +13,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:import/recommended',
     'plugin:prettier/recommended', // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
   ],
   parserOptions: {
@@ -24,7 +25,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'react-hooks', 'simple-import-sort'],
+  plugins: ['react', 'react-hooks', 'import', 'simple-import-sort'],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
@@ -55,6 +56,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 0,
     'jsx-a11y/anchor-is-valid': 0,
     'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
+    'import/extensions': ['error', 'always'],
   },
   settings: {
     react: {
