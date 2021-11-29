@@ -1,4 +1,4 @@
-import { config } from '../config';
+import { config } from '../config/index.js';
 
 export const log: typeof console.log = (...args) => {
   if (config().disableLogging) {
