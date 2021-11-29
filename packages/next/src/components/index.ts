@@ -1,1 +1,1 @@
-export * from './FaustProvider';
+export * from './FaustProvider.js';
