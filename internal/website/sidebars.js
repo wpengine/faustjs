@@ -197,6 +197,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'FaustWP',
+          id: 'changelog/faustwp',
+        },
+        {
+          type: 'doc',
           label: 'Faust.js 0.9.0 - 12.0.0',
           id: 'changelog/archive',
         },
