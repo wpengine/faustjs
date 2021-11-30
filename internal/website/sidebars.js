@@ -203,7 +203,7 @@ module.exports = {
         {
           type: 'doc',
           label: 'Faust.js 0.9.0 - 12.0.0',
-          id: 'changelog/archive',
+          id: 'release-notes',
         },
       ]
     },
