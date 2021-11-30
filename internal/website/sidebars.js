@@ -177,9 +177,35 @@ module.exports = {
       id: 'gqty-intro',
     },
     {
-      type: 'doc',
-      label: 'Release Notes',
-      id: 'release-notes',
+      type: 'category',
+      label: 'Changelogs',
+      items: [
+        {
+          type: 'doc',
+          label: '@faustjs/core',
+          id: 'changelog/core',
+        },
+        {
+          type: 'doc',
+          label: '@faustjs/next',
+          id: 'changelog/next',
+        },
+        {
+          type: 'doc',
+          label: '@faustjs/react',
+          id: 'changelog/react',
+        },
+        {
+          type: 'doc',
+          label: 'FaustWP',
+          id: 'changelog/faustwp',
+        },
+        {
+          type: 'doc',
+          label: 'Faust.js 0.9.0 - 12.0.0',
+          id: 'release-notes',
+        },
+      ]
     },
   ],
 };
