@@ -182,10 +182,12 @@ We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/com
 
 ### Staging Site Deployment
 
-With your existing feature branch:
+When your feature branch includes changes to the documentation website, it's helpful to include a live preview link in the PR description. The [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/) is used for this purpose. You can deploy your changes to the staging site using the following steps:
 
-- Create a PR to the `site-dev` branch
-- Merge the PR into the `site-dev` branch
+- Checkout and switch to the `site-dev` branch.
+- Merge your feature branch into `site-dev`.
+- Push your merge commit to `site-dev`.
+- Within about 10 minutes, the docs changes from your feature branch should be visible on the [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/).
 
 ### Prod Site Deployment
 
