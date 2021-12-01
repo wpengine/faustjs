@@ -12,6 +12,7 @@
 	- `wpe_headless_domain_replacement_enabled` to `faustwp_domain_replacement_enabled`
 - Changed the text domain to `faustwp`.
 - Changed minimum required PHP version to 7.2.
+- Changed minimum required WordPress version to 5.7.
 - Changed the hook used for public route redirection.
 - Fixed the "headless post preview" link on the FaustWP settings page.
 - Fixed "unexpected output" error during plugin activation.
