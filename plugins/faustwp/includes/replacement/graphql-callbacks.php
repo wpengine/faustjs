@@ -17,7 +17,9 @@ add_filter( 'graphql_request_results', __NAMESPACE__ . '\\url_replacement' );
 /**
  * Callback for WP GraphQL 'graphql_request_results' filter.
  *
- * Replaces the WordPress Site URL with the replacement domain in 'url' nodes.
+ * Replaces the WordPress Site URL with the replacement domain in 'url' and
+ * 'href' fields. Response data for RootQuery.generalSettings is intentionally
+ * left unaltered.
  *
  * @param object $response The default GraphQL query response.
  *
@@ -31,20 +33,25 @@ function url_replacement( $response ) {
 	if (
 		is_object( $response ) &&
 		property_exists( $response, 'data' ) &&
-		is_array( $response->data ) &&
-		domain_replacement_enabled() &&
-		! array_key_exists( 'generalSettings', $response->data )
+		is_array( $response->data )
 	) {
-		array_walk_recursive(
-			$response->data,
-			function( &$value, $key ) {
-				if ( 'url' === $key || 'href' === $key ) {
-					$replacement = faustwp_get_setting( 'frontend_uri', '/' );
-					$value       = str_replace( site_url(), $replacement, $value );
-				}
-			}
-		);
+		url_replace_recursive( $response->data );
 	}
 
 	return $response;
+}
+
+function url_replace_recursive( &$data ) {
+	foreach ( $data as $key => &$value ) {
+		if ( $key === 'generalSettings' ) {
+			continue;
+		}
+
+		if ( ( 'url' === $key || 'href' === $key ) && is_string( $value ) ) {
+			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
+			$value       = str_replace( site_url(), $replacement, $value );
+		} else if ( is_array( $value ) ) {
+			url_replace_recursive( $value );
+		}
+	}
 }

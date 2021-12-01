@@ -1,10 +1,20 @@
 ---
-slug: /release-notes
-title: Release Notes for Faust.js
-description: A central place for Faust.js release notes
+slug: release-notes
+title: Faust.js 0.9.0 - 0.12.0
+description: The former location of Faust.js release notes
 ---
 
-## Faust.js 0.12.0 - Oct 5, 2021
+## Changelogs
+
+For package versions greater than 0.12.0, visit the individual changelog pages:
+
+- [@faustjs/core](./changelog/core)
+- [@faustjs/next](./changelog/next)
+- [@faustjs/react](./changelog/react)
+
+## Release Notes
+
+### Faust.js 0.12.0 - Oct 5, 2021
 
 For a full list of features/changes, visit the releases on GitHub:
 
@@ -12,7 +22,7 @@ For a full list of features/changes, visit the releases on GitHub:
 - [@faustjs/next@0.12.0](https://github.com/wpengine/faustjs/releases/tag/%40faustjs%2Fnext%400.12.0)
 - [@faustjs/react@0.12.0](https://github.com/wpengine/faustjs/releases/tag/%40faustjs%2Freact%400.12.0)
 
-### Breaking Changes
+#### Breaking Changes
 
 First, you will need to create a new file at your [Next.js pages directory](https://nextjs.org/docs/basic-features/pages), `src/pages/api/faust/[[...route]].ts` with the following content:
 
@@ -49,41 +59,41 @@ export default coreConfig({
 
 [Take a look at the Getting Started example for a closer look at these breaking changes.](https://github.com/wpengine/faustjs/tree/canary/examples/next/getting-started)
 
-## Faust.js 0.11.0 - Sept 23, 2021
+### Faust.js 0.11.0 - Sept 23, 2021
 
-### Features
+#### Features
 
 - `GQty` has been updated to `2.0.1` to bring support to [`Unions` and `Interfaces` with the `$on` property](https://github.com/gqty-dev/gqty/releases). ([#491](https://github.com/wpengine/faustjs/pull/491))
 
-### Breaking Changes
+#### Breaking Changes
 
 Please update the `@gqty/cli` package in your `package.json` to `2.0.1` and run `npm run generate`.
 
-## Faust.js 0.10.2 - Sept 13, 2021
+### Faust.js 0.10.2 - Sept 13, 2021
 
-### Fixes
+#### Fixes
 
 - Fixed the `WithRevisions` interface to use proper `Maybe<>` type checks ([#452](https://github.com/wpengine/faustjs/pull/452/files))
 
-## Faust.js 0.10.1 - Sept 10, 2021
+### Faust.js 0.10.1 - Sept 10, 2021
 
-### Fixes
+#### Fixes
 
 - Fixed an issue where the `ObjectTypeNames` client interface was incompatible with `@faustjs/core` ([#445](https://github.com/wpengine/faustjs/pull/445))
 
-### Chore & Maintenance
+#### Chore & Maintenance
 
 - Updated `@faustjs` package dependencies to their latest versions ([#440](https://github.com/wpengine/faustjs/pull/440))
 
-## Faust.js 0.10.0 - Sept 08, 2021
+### Faust.js 0.10.0 - Sept 08, 2021
 
 Release `0.10.0` of the NPM packages include **BREAKING CHANGES**. Existing users of Faust.js will need to make the following changes:
 
-### Step 1 - Update the WPE Headless Plugin
+#### Step 1 - Update the WPE Headless Plugin
 
 Ensure that you are on version `0.6.0` or later of the WPE Headless Plugin.
 
-### Step 2 - Update `preview.tsx` file
+#### Step 2 - Update `preview.tsx` file
 
 If you started from the `next/getting-started` example, replace the contents of `src/pages/preview.tsx` with the following:
 
@@ -116,7 +126,7 @@ export default function Preview() {
 }
 ```
 
-### Step 3 - Create `next.config.js` file
+#### Step 3 - Create `next.config.js` file
 
 In the root of your project, alongside `package.json`, create a `next.config.js` file with the following contents:
 
@@ -142,12 +152,12 @@ module.exports = withFaust({
 });
 ```
 
-### Step 4 - Update `gqty.config.js` file
+#### Step 4 - Update `gqty.config.js` file
 
 In the root of your project, alongside `package.json`, replace the `gqty.config.js` file with the following:
 
 ```js
-require('dotenv').config();
+require('dotenv-flow').config();
 
 /**
  * @type {import("@gqty/cli").GQtyConfig}
@@ -169,7 +179,7 @@ console.log(`Using "${config.introspection.endpoint}" to generate schema...`);
 module.exports = config;
 ```
 
-## Faust.js 0.9.0 - Aug 27, 2021
+### Faust.js 0.9.0 - Aug 27, 2021
 
 Release `0.9.0` of the NPM packages include **BREAKING CHANGES**. Existing users of Faust.js will need to update their [`faust.config.js`](https://github.com/wpengine/faustjs/blob/canary/examples/next/getting-started/src/faust.config.js) file to use ESM syntax, opposed to CJS syntax.
 
