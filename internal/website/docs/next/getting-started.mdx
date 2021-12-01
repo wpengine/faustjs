@@ -72,16 +72,16 @@ Once the necessary plugins have been installed, open the `.env.local` file you c
 NEXT_PUBLIC_WORDPRESS_URL=https://headlessfw.wpengine.com
 
 # Plugin secret found in WordPress Settings->Headless
-WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+FAUSTWP_SECRET_KEY=YOUR_PLUGIN_SECRET
 ```
 
 Update the `NEXT_PUBLIC_WORDPRESS_URL` value with your WordPress site URL (be sure to include `http://` or `https://`).
 
-Additionally, update the `WP_HEADLESS_SECRET` value with the secret key found in Settings → Headless in your WordPress admin area to support previews.
+Additionally, update the `FAUSTWP_SECRET_KEY` value with the secret key found in Settings → Headless in your WordPress admin area to support previews.
 
 <img
   src="/docs/img/headless-admin-secret.png"
-  alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field"
+  alt="The FaustWP WordPress admin interface with a red rectangle around the Secret Key field"
 />
 
 ## Setting Your Permalinks

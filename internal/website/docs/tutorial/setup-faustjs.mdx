@@ -16,11 +16,11 @@ We use the WPGraphQL plugin to transform WordPress into a GraphQL API that can b
 
 You can download and install WPGraphQL from the [WordPress Plugin Directory](https://wordpress.org/plugins/wp-graphql/).
 
-### Install WPE Headless
+### Install FaustWP
 
-The WPE Headless plugin ensures that your WordPress site runs smoothly as a headless CMS. This includes things like smart content redirects and enabling post previews.
+The FaustWP plugin ensures that your WordPress site runs smoothly as a headless CMS. This includes things like smart content redirects and enabling post previews.
 
-To install WPE Headless, [download the latest version](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download) and activate the plugin through the WordPress admin.
+You can download and install FaustWP from the [WordPress Plugin Directory](https://wordpress.org/plugins/faustwp/).
 
 ## Setting Up Faust.js
 
@@ -77,7 +77,7 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
  */
 export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: process.env.WP_HEADLESS_SECRET,
+  apiClientSecret: process.env.FAUSTWP_SECRET_KEY,
 });
 ```
 
@@ -90,10 +90,10 @@ You'll also need a `.env.local` file to hold your environment variables:
 NEXT_PUBLIC_WORDPRESS_URL=http://your-wordpress-site.com
 
 # Plugin secret found in WordPress Settings->Headless
-WP_HEADLESS_SECRET=YOUR_PLUGIN_SECRET
+FAUSTWP_SECRET_KEY=YOUR_PLUGIN_SECRET
 ```
 
-Replace the `NEXT_PUBLIC_WORDPRESS_URL` value with the URL of your WordPress site. Additionally, grab the Headless Secret from WordPress Settings -> Headless and replace it with the `WP_HEADLESS_SECRET` value.
+Replace the `NEXT_PUBLIC_WORDPRESS_URL` value with the URL of your WordPress site. Additionally, grab the Headless Secret from WordPress Settings -> Headless and replace it with the `FAUSTWP_SECRET_KEY` value.
 
 <img
   src="/docs/img/headless-admin-secret.png"
