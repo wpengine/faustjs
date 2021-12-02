@@ -104,7 +104,7 @@ describe('auth/middleware', () => {
 
     const { wpUrl } = config();
 
-    fetchMock.post(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
+    fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
       status: 401,
       body: JSON.stringify({ error: 'some error' }),
     });
@@ -133,9 +133,9 @@ describe('auth/middleware', () => {
     } as any;
 
     const res: ServerResponse = {
-      setHeader() { },
-      writeHead() { },
-      end() { },
+      setHeader() {},
+      writeHead() {},
+      end() {},
     } as any;
 
     const endSpy = jest.spyOn(res, 'end');
@@ -151,11 +151,11 @@ describe('auth/middleware', () => {
     const { wpUrl } = config();
 
     fetchMock
-      .post(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
+      .post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
         status: 404,
         body: JSON.stringify({ error: 'Plugin out of date.' }),
       })
-      .post(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+      .post(`${wpUrl}/?rest_route=/wpac/v1/authorize`, {
         status: 200,
         body: JSON.stringify(successResponse),
       });
