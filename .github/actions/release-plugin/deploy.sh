@@ -61,9 +61,9 @@ if [[ -e "$GITHUB_WORKSPACE/$PLUGIN_DIR/.distignore" ]]; then
 	echo "ℹ︎ Using .distignore"
 	# Copy from PLUGIN_DIR to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
-	rsync -rc --exclude-from="$GITHUB_WORKSPACE/$PLUGIN_DIR/.distignore" "$GITHUB_WORKSPACE/$PLUGIN_DIR" trunk/ --delete --delete-excluded
+	rsync -rc --exclude-from="$GITHUB_WORKSPACE/$PLUGIN_DIR/.distignore" "$GITHUB_WORKSPACE/$PLUGIN_DIR/" trunk/ --delete --delete-excluded
 else
-	rsync -rc "$GITHUB_WORKSPACE/$PLUGIN_DIR" trunk --delete --delete-excluded
+	rsync -rc "$GITHUB_WORKSPACE/$PLUGIN_DIR/" trunk --delete --delete-excluded
 fi
 
 # Copy dotorg assets to /assets
