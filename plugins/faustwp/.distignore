@@ -17,3 +17,5 @@ composer.lock
 docker-compose.yml
 phpunit.xml.dist
 vendor
+package.json
+.wordpress-org
