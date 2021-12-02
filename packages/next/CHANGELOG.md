@@ -1,5 +1,13 @@
 # @faustjs/next
 
+## 0.14.0
+
+### Patch Changes
+
+- Updated dependencies [dc936a5]
+  - @faustjs/core@0.14.0
+  - @faustjs/react@0.14.0
+
 ## 0.13.1
 
 ### Patch Changes

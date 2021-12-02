@@ -9,7 +9,7 @@ class SettingsCest
     {
         $I->loginAsAdmin();
         $I->amOnFaustWPSettingsPage();
-        $I->see('Headless by WP Engine');
+        $I->see('FaustWP by WP Engine');
     }
 
     /**

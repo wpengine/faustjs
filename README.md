@@ -51,13 +51,13 @@ As we work towards our first release, we will be introducing support for other f
 
 Visit [https://faustjs.org/docs/next/getting-started](https://faustjs.org/docs/next/getting-started) to view the full documentation.
 
-## WordPress Plugin
+## WordPress Plugin (FaustWP)
 
 There are two key parts to Faust.js: the NPM packages and the WordPress plugin. To take full advantage of headless, you will need to install the plugin in addition to the npm packages.
 
-[📥 Download Latest Version](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+You can download and install FaustWP from the [WordPress Plugin Directory](https://wordpress.org/plugins/faustwp/), or by using the zip linked below.
 
-After downloading the zip linked above, we recommend installing by [manually uploading via the WordPress admin](https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download)
+[📥 Download Latest Version](https://downloads.wordpress.org/plugin/faustwp.latest-stable.zip)
 
 ## Community
 
