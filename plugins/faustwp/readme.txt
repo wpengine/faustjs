@@ -30,7 +30,15 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.1 =
+
+### Patch Changes
+
+- f948c04: Fixed plugin icon SVG display issue in Chrome [#683](https://github.com/wpengine/faustjs/pull/683)
+
 = 0.7.0 =
+
+### Minor Changes
 
 - Changed the plugin name to FaustWP.
 - Changed all internal PHP function names to use namespaces.
@@ -38,9 +46,9 @@ That's it! For more information on getting started with headless WordPress, see 
 - Changed the authentication endpoint namespace from `wpac/v1` to `faustwp/v1`
 - Changed settings option name from `wpe_headless` to `faustwp_settings`
 - Changed the following filter names:
-	- `wpe_headless_setting` to `faustwp_setting`
-	- `wpe_headless_settings` to `faustwp_settings`
-	- `wpe_headless_domain_replacement_enabled` to `faustwp_domain_replacement_enabled`
+  - `wpe_headless_setting` to `faustwp_setting`
+  - `wpe_headless_settings` to `faustwp_settings`
+  - `wpe_headless_domain_replacement_enabled` to `faustwp_domain_replacement_enabled`
 - Changed the text domain to `faustwp`.
 - Changed minimum required PHP version to 7.2.
 - Changed minimum required WordPress version to 5.7.
@@ -49,3 +57,9 @@ That's it! For more information on getting started with headless WordPress, see 
 - Fixed "unexpected output" error during plugin activation.
 - Fixed skipped domain replacement in GraphQL responses that include `generalSettings`.
 - Added LICENSE file.
+
+= 0.6.1 =
+
+- Fixed the headless options page sidebar links to new Faust.js documentation site.
+
+[View the full changelog](https://faustjs.org/docs/changelog/faustwp)
