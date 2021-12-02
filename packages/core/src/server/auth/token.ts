@@ -4,6 +4,7 @@ import { config } from '../../config/index.js';
 import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
 import isNumber from 'lodash/isNumber.js';
+import { log } from '../../utils/index.js';
 
 export type OAuthTokenResponse =
   | OAuthTokens
@@ -61,10 +62,10 @@ export class OAuth {
       );
     }
 
-    const response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+    let response = await fetch(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
       headers: {
         'Content-Type': 'application/json',
-        'x-wpe-headless-secret': apiClientSecret,
+        'x-faustwp-secret': apiClientSecret,
       },
       method: 'POST',
       body: JSON.stringify({
@@ -72,6 +73,29 @@ export class OAuth {
         refreshToken: this.getRefreshToken(),
       }),
     });
+
+    if (response.status === 404) {
+      // Check for the deprecated authorize endpoint.
+      response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-wpe-headless-secret': apiClientSecret,
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          code,
+          refreshToken: this.getRefreshToken(),
+        }),
+      });
+
+      if (response.status !== 404) {
+        log(
+          'Authentication and post previews will soon be incompatible with ' +
+            'your version of the FaustWP plugin. Please update to the latest' +
+            ' version.',
+        );
+      }
+    }
 
     const result = await response.json();
 
