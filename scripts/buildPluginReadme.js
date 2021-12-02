@@ -1,6 +1,6 @@
 /**
  * Updates the FaustWP plugin's readme.txt changelog with the
- * latest release found in the plugin's CHANGELOG.md file.
+ * latest 3 releases found in the plugin's CHANGELOG.md file.
  */
 
 const fs = require("fs");
@@ -25,18 +25,18 @@ async function buildPluginReadme() {
   // split the contents by new line
   const origLines = changelog.split(/\r?\n/);
   const processedLines = [];
-  let inLatestVersion = false;
+  let versionCount = 0;
 
   // print all lines in current version
   origLines.every((line) => {
     // Version numbers in CHANGELOG.md are h2
     if (line.startsWith("## ")) {
-      if (inLatestVersion) {
+      if (versionCount == 3) {
         return false;
       }
       // Format version number for WordPress
       line = line.replace("## ", "= ") + " =";
-      inLatestVersion = true;
+      versionCount++;
     }
 
     processedLines.push(line);
@@ -54,7 +54,7 @@ async function buildPluginReadme() {
 
       const changelogStart = data.indexOf('== Changelog ==');
       output = data.substring(0, changelogStart) + changelog;
-      output += "\nFor the full changelog, visit https://faustjs.org/docs/changelog/faustwp";
+      output += "\n[View the full changelog](https://faustjs.org/docs/changelog/faustwp)";
 
       fs.writeFile(
         readmePath,
