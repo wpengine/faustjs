@@ -159,3 +159,40 @@ Once deployed, the updated packages will be visible here:
 - https://www.npmjs.com/package/@faustjs/core
 - https://www.npmjs.com/package/@faustjs/react
 - https://www.npmjs.com/package/@faustjs/next
+
+## Git Workflows
+
+We have three notable branches:
+
+- `canary` - This branch has the latest changes
+- `main` - This branch is used to deploy changes to [faustjs.org](https://faustjs.org)
+- `site-dev` - This branch is used to deploy to the staging site
+
+### Code Changes/Feature Workflow
+
+We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow). The workflow for a typical code change looks like:
+
+- Create a new branch for the feature
+- Make changes to the code
+- Commit your changes
+- Open a pull request to the `canary` branch
+- Squash and Merge the pull request into the `canary` branch
+
+**Note**: We use Squash and Merge when merging pull requests into the `canary` branch.
+
+### Staging Site Deployment
+
+When your feature branch includes changes to the documentation website, it's helpful to include a live preview link in the PR description. The [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/) is used for this purpose. You can deploy your changes to the staging site using the following steps:
+
+- Checkout and switch to the `site-dev` branch.
+- Merge your feature branch into `site-dev`.
+- Push your merge commit to `site-dev`.
+- Within about 10 minutes, the docs changes from your feature branch should be visible on the [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/).
+
+### Prod Site Deployment
+
+- Ensure all changes have been merged into the `canary` branch
+- Create a PR to the `main` branch from `canary`
+- Merge the PR into the `main` branch
+
+**Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
