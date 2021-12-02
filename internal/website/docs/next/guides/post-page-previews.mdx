@@ -16,19 +16,19 @@ Find your Headless Secre in **WP-Admin -> Settings -> Headless**. Copy this valu
 
 <img
   src="/docs/img/headless-admin-secret.png"
-  alt="The Headless WordPress admin interface with a red rectangle around the Secret Key field"
+  alt="The FaustWP plugin admin interface with a red rectangle around the Secret Key field"
 />
 
 ### Add your Headless Secret to your `.env.local` File
 
-Add the `WP_HEADLESS_SECRET` key to your `.env.local` file with the headless secret as the value. Your `.env.local` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
+Add the `FAUSTWP_SECRET_KEY` key to your `.env.local` file with the headless secret as the value. Your `.env.local` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
 
 ```bash title=.env.local {13}
 # Your WordPress site URL
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 
 # Plugin secret found in WordPress Settings->Headless
-WP_HEADLESS_SECRET=xxxx
+FAUSTWP_SECRET_KEY=xxxx
 ```
 
 ### Ensure you've created your `faust.config.js` file and are importing it in your `_app.tsx`

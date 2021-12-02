@@ -21,9 +21,10 @@ register_activation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_activation' );
 /**
  * Callback for WordPress register_activation_hook() function.
  *
- * 1. Set default settings if no settings exist.
- * 2. Set secret_key if does not exist.
- * 3. Flush rewrite rules.
+ * 1. Deactivate the WPE Headless plugin if it's active.
+ * 2. Set default settings if no settings exist.
+ * 3. Set secret_key if does not exist.
+ * 4. Flush rewrite rules.
  *
  * @todo is flush_rewrite_rules() needed?
  *
@@ -32,6 +33,10 @@ register_activation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_activation' );
  * @return void
  */
 function handle_activation() {
+	if ( is_plugin_active( 'wpe-headless/wpe-headless.php' ) ) {
+		deactivate_plugins( 'wpe-headless/wpe-headless.php', true );
+	}
+
 	$secret_key = get_secret_key();
 	$settings   = faustwp_get_settings();
 
