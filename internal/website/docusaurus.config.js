@@ -106,8 +106,6 @@ module.exports = {
             'https://github.com/wpengine/faustjs/edit/site-dev/internal/website/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
-          routeBasePath: '/docs',
-          path: '../../docs',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
