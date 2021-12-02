@@ -1,5 +1,5 @@
 ---
-'faustwp': patch
+'faustwp': minor
 ---
 
 - Changed the plugin name to FaustWP.
