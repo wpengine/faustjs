@@ -142,15 +142,15 @@ Developers with full GitHub repository access can create public releases:
 ### Release the FaustWP plugin
 
 1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
-2. Update the changelog and 'stable tag' in `plugins/faustwp/readme.txt`.
-3. Commit and merge your changes into the `canary` branch.
-4. Create a new release on GitHub with a tag of `plugin/faustwp/[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org
+2. Update the 'stable tag' in `plugins/faustwp/readme.txt`.
+3. Open a PR to merge your changes into the `canary` branch.
+4. Once your PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
 
 ### Release the @faustjs packages
 
 We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
 
-1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Release Packages" PR.
+1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
 2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
 3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
 
@@ -174,6 +174,7 @@ We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/com
 
 - Create a new branch for the feature
 - Make changes to the code
+- Use `npm run changeset` to create a changeset describing any package or plugin updates
 - Commit your changes
 - Open a pull request to the `canary` branch
 - Squash and Merge the pull request into the `canary` branch
