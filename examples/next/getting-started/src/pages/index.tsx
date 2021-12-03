@@ -32,15 +32,15 @@ export default function Page() {
 
       <main className="content">
         <Hero
-          title="Get Started with Headless"
+          title="Get Started with Faust.js"
           buttonText="Developer Docs"
           buttonURL="https://faustjs.org"
-          button2Text="Headless on GitHub"
+          button2Text="Faust.js on GitHub"
           button2URL="https://github.com/wpengine/faustjs"
           bgImage="/images/headless_hero_background.jpg"
           id={styles.home_hero}>
           <p>
-            WP&nbsp;Engine’s Headless WordPress Framework includes this example
+            WP&nbsp;Engine’s Faust.js Framework includes this example
             project, the{' '}
             <a href="https://github.com/wpengine/faustjs#wordpress-plugin">
               headless WordPress plugin
