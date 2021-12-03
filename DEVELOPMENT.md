@@ -9,7 +9,7 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
 ## Project Structure
 
-- `/docs` - Documentation
+- `/internal/website` - faustjs.org
 - `/packages` - NPM packages
 - `/plugins` - WordPress Plugins
 
@@ -42,7 +42,7 @@ ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/fau
 **PHP Code Sniffer**
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
-Install the composer packages from within `faustwp` directory if you haven't already.
+Install the composer packages from within `plugins/faustwp` directory if you haven't already.
 
 ```
 composer install
