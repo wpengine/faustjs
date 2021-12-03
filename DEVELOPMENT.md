@@ -135,6 +135,16 @@ FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
   - WordPress framework wrapping Codeception for browser testing WordPress.
 
+## Documentation
+
+The documentation site uses [Docusaurus](https://docusaurus.io/). Content lives primarily in MDX files under `internal/website/docs`. The following commands will get you up and running with a local copy of the docs.
+
+```sh
+npm run docs:install # Install docs dependencies
+npm run docs:build   # Build the docs
+npm run docs         # Serve the site on http://localhost:3000
+```
+
 ## Git Workflows
 
 We have three notable branches:
