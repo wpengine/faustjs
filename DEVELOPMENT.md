@@ -160,6 +160,10 @@ Once deployed, the updated packages will be visible here:
 - https://www.npmjs.com/package/@faustjs/react
 - https://www.npmjs.com/package/@faustjs/next
 
+### Update the docs
+
+After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.
+
 ## Git Workflows
 
 We have three notable branches:
@@ -191,6 +195,8 @@ When your feature branch includes changes to the documentation website, it's hel
 - Within about 10 minutes, the docs changes from your feature branch should be visible on the [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/).
 
 ### Prod Site Deployment
+
+After releasing the packages or plugins, you'll need to update faustjs.org with the latest docs.
 
 - Ensure all changes have been merged into the `canary` branch
 - Create a PR to the `main` branch from `canary`
