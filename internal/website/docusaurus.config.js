@@ -27,8 +27,13 @@ module.exports = {
         {
           type: 'doc',
           docId: 'next/getting-started',
-          position: 'right',
+          position: 'left',
           label: 'Docs',
+        },
+        {
+          to: 'blog',
+          label: 'Blog',
+          position: 'left'
         },
         {
           href: 'https://github.com/wpengine/faustjs?ref=faustjs',
