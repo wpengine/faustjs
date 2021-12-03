@@ -135,35 +135,6 @@ FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
   - WordPress framework wrapping Codeception for browser testing WordPress.
 
-## Deployment
-
-Developers with full GitHub repository access can create public releases:
-
-### Release the FaustWP plugin
-
-1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
-2. Update the 'stable tag' in `plugins/faustwp/readme.txt`.
-3. Open a PR to merge your changes into the `canary` branch.
-4. Once your PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
-
-### Release the @faustjs packages
-
-We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
-
-1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
-2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
-3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
-
-Once deployed, the updated packages will be visible here:
-
-- https://www.npmjs.com/package/@faustjs/core
-- https://www.npmjs.com/package/@faustjs/react
-- https://www.npmjs.com/package/@faustjs/next
-
-### Update the docs
-
-After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.
-
 ## Git Workflows
 
 We have three notable branches:
@@ -203,3 +174,32 @@ After releasing the packages or plugins, you'll need to update faustjs.org with 
 - Merge the PR into the `main` branch
 
 **Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
+
+## Deployment
+
+Developers with full GitHub repository access can create public releases:
+
+### Release the FaustWP plugin
+
+1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
+2. Update the 'stable tag' in `plugins/faustwp/readme.txt`.
+3. Open a PR to merge your changes into the `canary` branch.
+4. Once your PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
+
+### Release the @faustjs packages
+
+We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
+
+1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
+2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
+3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
+
+Once deployed, the updated packages will be visible here:
+
+- https://www.npmjs.com/package/@faustjs/core
+- https://www.npmjs.com/package/@faustjs/react
+- https://www.npmjs.com/package/@faustjs/next
+
+### Update the docs
+
+After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.
