@@ -52,5 +52,9 @@ export function withFaust(
   nextConfig.redirects = () =>
     createRedirects(existingRedirects, previewDestination);
 
+  if(nextConfig.compress == null) {
+    nextConfig.compress = false;  
+  }
+
   return nextConfig;
 }
