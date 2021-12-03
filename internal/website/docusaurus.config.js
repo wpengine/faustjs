@@ -33,11 +33,16 @@ module.exports = {
         {
           to: 'blog',
           label: 'Blog',
-          position: 'left'
+          position: 'left',
         },
         {
           href: 'https://github.com/wpengine/faustjs?ref=faustjs',
           label: 'GitHub',
+          position: 'right',
+        },
+        {
+          href: 'https://wordpress.org/plugins/faustwp',
+          label: 'WordPress Plugin',
           position: 'right',
         },
       ],
@@ -71,7 +76,8 @@ module.exports = {
             },
             {
               label: 'YouTube',
-              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
+              href:
+                'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
             },
           ],
         },
