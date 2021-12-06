@@ -4,6 +4,7 @@ import type {
   Maybe,
   PageIdType,
   PostIdType,
+  ContentNodeIdType,
 } from '@faustjs/core/client';
 import {
   createReactClient,
@@ -16,6 +17,7 @@ import merge from 'lodash/merge';
 
 export interface Node {
   id?: string | null;
+  __typename?: string | null;
 }
 
 export interface WithRevisions {
@@ -26,6 +28,12 @@ export interface WithRevisions {
       }>[]
     >;
   }>;
+}
+
+export interface WithOn {
+  $on: {
+    [key: string]: Node;
+  };
 }
 
 export interface RequiredQuery {
@@ -49,6 +57,11 @@ export interface RequiredQuery {
     id: string;
     idType?: CategoryIdType;
   }) => Node | null | undefined;
+  contentNode: (args: {
+    id: string;
+    idType?: ContentNodeIdType;
+    asPreview?: boolean;
+  }) => (Node & WithOn) | null | undefined;
   generalSettings?: unknown;
 }
 

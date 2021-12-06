@@ -2,22 +2,25 @@ import type { RequiredSchema } from '@faustjs/react';
 import { ReactClient } from '@gqty/react';
 import type { GQtyError } from 'gqty';
 import type { NextClient } from '../client';
-
 import { create as createAuthHook, UseAuthOptions } from './useAuth';
+import { create as createCategoryHook } from './useCategory';
+import { create as createHydrateCacheHook } from './useHydrateCache';
 import { create as createLazyQueryHook } from './useLazyQuery';
+import { create as createLoginHook, UseLoginOptions } from './useLogin';
+import { create as createLogoutHook } from './useLogout';
 import { create as createMutationHook } from './useMutation';
+import { create as createPageHook } from './usePage';
 import { create as createPaginatedQueryHook } from './usePaginatedQuery';
+import { create as createPostHook } from './usePost';
+import { create as createPostsHook } from './usePosts';
+import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
+import {
+  create as createPreviewNodeHook,
+  UsePreviewNodeResponse,
+} from './usePreviewNode';
 import { create as createQueryHook } from './useQuery';
 import { create as createSubscriptionHook } from './useSubscription';
 import { create as createTransactionQueryHook } from './useTransactionQuery';
-import { create as createHydrateCacheHook } from './useHydrateCache';
-import { create as createCategoryHook } from './useCategory';
-import { create as createPostsHook } from './usePosts';
-import { create as createPostHook } from './usePost';
-import { create as createPageHook } from './usePage';
-import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
-import { create as createLoginHook, UseLoginOptions } from './useLogin';
-import { create as createLogoutHook } from './useLogout';
 
 export type UseClient<
   Schema extends RequiredSchema,
@@ -38,6 +41,13 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
    * @see https://faustjs.org/docs/next/reference/hooks/usePreview
    */
   usePreview(): UsePreviewResponse<Schema>;
+
+  /**
+   * Faust.js hook to get preview data for a post type.
+   *
+   * @see https://faustjs.org/docs/next/reference/hooks/usePreviewNode
+   */
+  usePreviewNode(): UsePreviewNodeResponse;
 
   /**
    * Faust.js hook to ensure a user is authenticated.
@@ -205,6 +215,7 @@ export function createAuthHooks<
     usePost: createPostHook(useQuery),
     usePage: createPageHook(useQuery),
     usePreview: createPreviewHook(useAuth, useQuery),
+    usePreviewNode: createPreviewNodeHook(useAuth, useQuery),
     useLogin: createLoginHook(useMutation),
     useLogout: createLogoutHook(),
   };

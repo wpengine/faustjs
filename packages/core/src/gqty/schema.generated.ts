@@ -36,6 +36,16 @@ export enum CategoryIdType {
   URI = 'URI',
 }
 
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum ContentNodeIdType {
+  /** Identify a resource by the Database ID. */
+  DATABASE_ID = 'DATABASE_ID',
+  /** Identify a resource by the (hashed) Global ID. */
+  ID = 'ID',
+  /** Identify a resource by the URI. */
+  URI = 'URI',
+}
+
 export interface Mutation {
   generateAuthorizationCode: (args: {
     input: GenerateAuthorizationCodeInput;
