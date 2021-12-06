@@ -42,8 +42,8 @@ export default function Page() {
           <p>
             WP&nbsp;Engine’s Faust.js Framework includes this example
             project, the{' '}
-            <a href="https://github.com/wpengine/faustjs#wordpress-plugin">
-              headless WordPress plugin
+            <a href="https://wordpress.org/plugins/faustwp/">
+              FaustWP plugin
             </a>
             ,{' '}
             <a href="https://github.com/wpengine/faustjs">headless packages</a>,
