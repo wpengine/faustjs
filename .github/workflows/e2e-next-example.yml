@@ -4,6 +4,7 @@ jobs:
   e2e-test-next-getting-started-example:
     runs-on: ubuntu-latest
     env:
+      PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
     defaults:
       run:
@@ -19,12 +20,16 @@ jobs:
     - name: echo current pr branch name
       run: |
         echo $PR_BRANCH
+    # Get the PR repo so we can pull the correct Next.js example path
+    - name: echo current pr repo
+      run: |
+        echo $PR_REPO
     # Install the Faust.js Next getting started example via npx create next app
     # and use the PR branch to pull the correct example URL
     - name: npx create next app
       run: |
         npx create-next-app \
-          -e https://github.com/wpengine/faustjs/tree/${PR_BRANCH} \
+          -e https://github.com/${PR_REPO}/tree/${PR_BRANCH} \
           --example-path examples/next/getting-started \
           --use-npm \
           e2e-app
