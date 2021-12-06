@@ -57,7 +57,7 @@ There are two key parts to Faust.js: the NPM packages and the WordPress plugin. 
 
 You can download and install FaustWP from the [WordPress Plugin Directory](https://wordpress.org/plugins/faustwp/), or by using the zip linked below.
 
-[📥 Download Latest Version](https://downloads.wordpress.org/plugin/faustwp.latest-stable.zip)
+[📥 Download Latest Version](https://wordpress.org/plugins/faustwp/)
 
 ## Community
 
