@@ -13,7 +13,7 @@ The WP Engine Headless (or WPE Headless) plugin has been renamed to FaustWP star
 4. Click the “Install Now” button.
 5. Once the installation is complete, click “Activate”.
 
-Activating FaustWP will automatically deactivate WP Engine Headless if it is installed and active on your site. You can now remove the old, deactivated WP Engine Headless plugin:
+Activating FaustWP will automatically deactivate WP Engine Headless if it is installed and active on your site. **All plugin settings will be preserved, including your secret key.** You can now remove the old, deactivated WP Engine Headless plugin:
 
 1. Go to "Plugins -> Installed Plugins" in the admin sidebar.
 2. Verify that FaustWP is installed and active.
