@@ -9,7 +9,7 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
 ## Project Structure
 
-- `/docs` - Documentation
+- `/internal/website` - faustjs.org
 - `/packages` - NPM packages
 - `/plugins` - WordPress Plugins
 
@@ -42,7 +42,7 @@ ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/fau
 **PHP Code Sniffer**
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
-Install the composer packages from within `faustwp` directory if you haven't already.
+Install the composer packages from within `plugins/faustwp` directory if you haven't already.
 
 ```
 composer install
@@ -135,6 +135,56 @@ FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
   - WordPress framework wrapping Codeception for browser testing WordPress.
 
+## Documentation
+
+The documentation site uses [Docusaurus](https://docusaurus.io/). Content lives primarily in MDX files under `internal/website/docs`. The following commands will get you up and running with a local copy of the docs.
+
+```sh
+npm run docs:install # Install docs dependencies
+npm run docs:build   # Build the docs
+npm run docs         # Serve the site on http://localhost:3000
+```
+
+## Git Workflows
+
+We have three notable branches:
+
+- `canary` - This branch has the latest changes
+- `main` - This branch is used to deploy changes to [faustjs.org](https://faustjs.org)
+- `site-dev` - This branch is used to deploy to the staging site
+
+### Code Changes/Feature Workflow
+
+We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow). The workflow for a typical code change looks like:
+
+- Create a new branch for the feature
+- Make changes to the code
+- Use `npm run changeset` to create a changeset describing any package or plugin updates
+- Commit your changes
+- Open a pull request to the `canary` branch
+- Squash and Merge the pull request into the `canary` branch
+
+**Note**: We use Squash and Merge when merging pull requests into the `canary` branch.
+
+### Staging Site Deployment
+
+When your feature branch includes changes to the documentation website, it's helpful to include a live preview link in the PR description. The [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/) is used for this purpose. You can deploy your changes to the staging site using the following steps:
+
+- Checkout and switch to the `site-dev` branch.
+- Merge your feature branch into `site-dev`.
+- Push your merge commit to `site-dev`.
+- Within about 10 minutes, the docs changes from your feature branch should be visible on the [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/).
+
+### Prod Site Deployment
+
+After releasing the packages or plugins, you'll need to update faustjs.org with the latest docs.
+
+- Ensure all changes have been merged into the `canary` branch
+- Create a PR to the `main` branch from `canary`
+- Merge the PR into the `main` branch
+
+**Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
+
 ## Deployment
 
 Developers with full GitHub repository access can create public releases:
@@ -142,15 +192,15 @@ Developers with full GitHub repository access can create public releases:
 ### Release the FaustWP plugin
 
 1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
-2. Update the changelog and 'stable tag' in `plugins/faustwp/readme.txt`.
-3. Commit and merge your changes into the `canary` branch.
-4. Create a new release on GitHub with a tag of `plugin/faustwp/[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org
+2. Update the 'stable tag' in `plugins/faustwp/readme.txt`.
+3. Open a PR to merge your changes into the `canary` branch.
+4. Once your PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
 
 ### Release the @faustjs packages
 
 We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
 
-1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Release Packages" PR.
+1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
 2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
 3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
 
@@ -159,3 +209,7 @@ Once deployed, the updated packages will be visible here:
 - https://www.npmjs.com/package/@faustjs/core
 - https://www.npmjs.com/package/@faustjs/react
 - https://www.npmjs.com/package/@faustjs/next
+
+### Update the docs
+
+After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.

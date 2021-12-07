@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.14.1
+
+### Patch Changes
+
+- 844df61: Fixed an issue that caused an `Internal Server Error` when fetching access/refresh tokens when permalinks are not set
+
 ## 0.14.0
 
 ### Minor Changes

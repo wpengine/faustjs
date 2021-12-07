@@ -62,7 +62,7 @@ export class OAuth {
       );
     }
 
-    let response = await fetch(`${wpUrl}/wp-json/faustwp/v1/authorize`, {
+    let response = await fetch(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
       headers: {
         'Content-Type': 'application/json',
         'x-faustwp-secret': apiClientSecret,
@@ -76,7 +76,7 @@ export class OAuth {
 
     if (response.status === 404) {
       // Check for the deprecated authorize endpoint.
-      response = await fetch(`${wpUrl}/wp-json/wpac/v1/authorize`, {
+      response = await fetch(`${wpUrl}/?rest_route=/wpac/v1/authorize`, {
         headers: {
           'Content-Type': 'application/json',
           'x-wpe-headless-secret': apiClientSecret,
