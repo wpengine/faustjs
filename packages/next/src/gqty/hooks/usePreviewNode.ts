@@ -6,8 +6,8 @@ import { useRouter } from 'next/router';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
 export type UsePreviewNodeResponse = {
-  type: string | undefined;
-  node: Node | undefined;
+  type: string | null | undefined;
+  node: Node | null | undefined;
 };
 
 export function create<Schema extends RequiredSchema>(
@@ -22,44 +22,58 @@ export function create<Schema extends RequiredSchema>(
     const { isAuthenticated } = useAuth();
     const { contentNode } = useQuery();
 
+    const unreadyResponse: UsePreviewNodeResponse = {
+      type: undefined,
+      node: undefined,
+    };
+
+    const notFoundResponse: UsePreviewNodeResponse = {
+      type: null,
+      node: null,
+    };
+
     if (!isReady) {
-      return {
-        type: undefined,
-        node: undefined,
-      };
+      return unreadyResponse;
     }
 
     if (isUndefined(isAuthenticated) || isAuthenticated !== true) {
-      return {
-        type: undefined,
-        node: undefined,
-      };
+      return unreadyResponse;
     }
 
-    if (!postId) {
-      throw new Error('usePreviewNode needs "p" query parameter');
-    }
-
-    if (isNil(preview) || preview !== 'true') {
+    if (isNil(postId) || isNil(preview) || preview !== 'true') {
       throw new Error(
-        'usePreviewNode needs "preview" query parameter to be "true"',
+        `usePreviewNode() requires the "p" and "preview" ` +
+          `URL query parameters i.e. ?p=123&preview=true`,
+      );
+    }
+
+    if (Array.isArray(postId)) {
+      throw new Error(
+        'usePreviewNode() requires the "p" URL query parameter to be a string',
       );
     }
 
     const node = contentNode({
-      id: postId as string,
+      id: postId,
       idType: ContentNodeIdType.DATABASE_ID,
       asPreview: true,
     });
+
+    /**
+     * `contentNode` returns null if the post does not exist
+     * or if the preview has not been generated yet
+     *
+     * @link https://github.com/wp-graphql/wp-graphql/issues/2166
+     */
+    if (node === null) {
+      return notFoundResponse;
+    }
 
     // eslint-disable-next-line no-underscore-dangle
     const postType = node?.__typename;
 
     if (isNil(postType)) {
-      return {
-        type: undefined,
-        node: undefined,
-      };
+      return notFoundResponse;
     }
 
     const postTypeNode = node?.$on?.[postType];
