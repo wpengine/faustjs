@@ -1,4 +1,4 @@
-import defaults from 'lodash/defaults';
+import defaults from 'lodash/defaults.js';
 
 export interface Config {
   revalidate: number | boolean;

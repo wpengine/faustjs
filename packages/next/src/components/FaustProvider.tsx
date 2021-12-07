@@ -1,12 +1,12 @@
-import isNil from 'lodash/isNil';
+import isNil from 'lodash/isNil.js';
 import React from 'react';
-import type { getClient } from '../gqty/client';
+import type { getClient } from '../gqty/client.js';
 import {
   AUTH_CLIENT_CACHE_PROP,
   CLIENT_CACHE_PROP,
   PageProps,
-} from '../server/getProps';
-import { FaustContext } from '../gqty/client';
+} from '../server/getProps.js';
+import { FaustContext } from '../gqty/client.js';
 
 /**
  * The FaustProvider is a React component required to properly facilitate SSR and SSG for Faust.js.

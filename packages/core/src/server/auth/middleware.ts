@@ -1,8 +1,8 @@
 import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
-import { getQueryParam, log } from '../../utils';
-import { Cookies } from './cookie';
-import { OAuth } from './token';
+import { getQueryParam, log } from '../../utils/index.js';
+import { Cookies } from './cookie.js';
+import { OAuth } from './token.js';
 
 export function redirect(res: ServerResponse, url: string): void {
   res.writeHead(302, {

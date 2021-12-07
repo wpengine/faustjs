@@ -1,2 +1,2 @@
-export * from './config';
-export * from './withFaust';
+export * from './config.js';
+export * from './withFaust.js';

@@ -1,7 +1,7 @@
 import { trim } from 'lodash';
-import isFunction from 'lodash/isFunction';
+import isFunction from 'lodash/isFunction.js';
 import { NextConfig } from 'next';
-import { Redirect } from 'next/dist/lib/load-custom-routes';
+import { Redirect } from 'next/dist/lib/load-custom-routes.js';
 
 export interface WithFaustConfig {
   previewDestination?: string;

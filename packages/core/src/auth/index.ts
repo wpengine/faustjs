@@ -1,2 +1,2 @@
-export * from './authorize';
-export * from './client/accessToken';
+export * from './authorize.js';
+export * from './client/accessToken.js';

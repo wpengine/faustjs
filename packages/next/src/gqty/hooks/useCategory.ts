@@ -1,9 +1,10 @@
+// eslint-disable-next-line import/extensions
 import { CategoryIdType } from '@faustjs/core/client';
 import type { RequiredSchema } from '@faustjs/react';
-import { useRouter } from 'next/router';
-import isString from 'lodash/isString';
-import defaults from 'lodash/defaults';
-import { hasCategoryId, hasCategorySlug } from '../../utils';
+import { useRouter } from 'next/router.js';
+import isString from 'lodash/isString.js';
+import defaults from 'lodash/defaults.js';
+import { hasCategoryId, hasCategorySlug } from '../../utils/index.js';
 import type { NextClientHooks } from '.';
 
 export function create<Schema extends RequiredSchema>(

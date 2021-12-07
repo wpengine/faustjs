@@ -1,4 +1,6 @@
 // TODO: Re-enable with Jest 28
+// Jest 28 should include support for the "exports" field in package.json, which is required for these tests to work.
+// @link https://github.com/facebook/jest/issues/9771
 describe('Re-enable with Jest 28', () => {
   test('Using Jest 28', () => {
     expect(true).toBe(true);
