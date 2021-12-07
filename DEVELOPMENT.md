@@ -187,28 +187,35 @@ After releasing the packages or plugins, you'll need to update faustjs.org with 
 
 ## Deployment
 
-Developers with full GitHub repository access can create public releases:
+Developers with full GitHub repository access can create public releases. We use [Changesets](https://github.com/atlassian/changesets) to automate the versioning and deployment process for all of our packages and plugins.
 
-### Release the FaustWP plugin
+### Versioning
 
-1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
-2. Update the 'stable tag' in `plugins/faustwp/readme.txt`.
-3. Open a PR to merge your changes into the `canary` branch.
-4. Once your PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
+When you are ready to release, you should first create the new package and plugin versions.
 
-### Release the @faustjs packages
+1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
+2. Review the PR:
+    - [ ] Changelog entries were created in all updated packages or plugins.
+    - [ ] Version numbers were appropriately bumped in the relevant package.json files.
+    - [ ] All `.changeset/*.md` files were removed.
+    - [ ] Version number updated in the main plugin file and readme.txt (Plugin versioning only)
+    - [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
+3. Approve, then "Squash and merge" the "Version Packages" PR into `canary`.
 
-We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
+### Publishing the @faustjs packages
 
-1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
-2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
-3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
+The @faustjs packages are automatically published to NPM through a GitHub action once the "Version Packages" PR is merged.
 
-Once deployed, the updated packages will be visible here:
+### Publishing the FaustWP plugin
+
+Once the "Version Packages" PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
+
+Once deployed, the updated packages and plugin will be visible here:
 
 - https://www.npmjs.com/package/@faustjs/core
 - https://www.npmjs.com/package/@faustjs/react
 - https://www.npmjs.com/package/@faustjs/next
+- https://plugins.trac.wordpress.org/browser/faustwp/tags
 
 ### Update the docs
 
