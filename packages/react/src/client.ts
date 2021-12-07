@@ -5,15 +5,15 @@ import type {
   PageIdType,
   PostIdType,
   ContentNodeIdType,
-} from '@faustjs/core/client';
+} from '@faustjs/core/client'; // eslint-disable-line import/extensions
 import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient as GQtyReactClient,
 } from '@gqty/react';
 import { GQtyClient } from 'gqty';
-import isObject from 'lodash/isObject';
-import merge from 'lodash/merge';
+import isObject from 'lodash/isObject.js';
+import merge from 'lodash/merge.js';
 
 export interface Node {
   id?: string | null;

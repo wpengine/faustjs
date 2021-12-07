@@ -1,1 +1,1 @@
-export * from '../gqty';
+export * from '../gqty/index.js';
