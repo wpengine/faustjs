@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.15.0
+
+### Minor Changes
+
+- a044a07: Add file extensions to import statements to fully support ES Modules. Support for Next.js 12 🎉
+
 ## 0.14.1
 
 ### Patch Changes

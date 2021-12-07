@@ -1,5 +1,16 @@
 # @faustjs/react
 
+## 0.15.0
+
+### Minor Changes
+
+- a044a07: Add file extensions to import statements to fully support ES Modules. Support for Next.js 12 🎉
+
+### Patch Changes
+
+- Updated dependencies [a044a07]
+  - @faustjs/core@0.15.0
+
 ## 0.14.0
 
 ### Patch Changes
