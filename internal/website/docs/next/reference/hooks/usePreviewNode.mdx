@@ -1,0 +1,82 @@
+---
+slug: /next/reference/hooks/usePreviewNode
+title: usePreviewNode Hook
+description: The usePreviewNode hook provides a way to get post preview data from WordPress for any post type
+---
+
+The `usePreviewNode` hook provides an abstraction around getting preview data for any post type. When calling the `usePreviewNode` hook on an appropriate preview page, the hook will ensure authorization, determine the post type, and make a request to retrieve the proper preview data.
+
+The following example shows how to use the `usePreviewNode` hook to render the default `post`/`page` post types:
+
+```tsx title="src/pages/preview.tsx"
+import { PageComponent } from 'pages/[...pageUri]';
+import { PostComponent } from 'pages/posts/[postSlug]';
+import { client, Page, Post } from 'client';
+
+export default function Preview() {
+  const isLoading = client.useIsLoading();
+  const { type, node } = client.auth.usePreviewNode();
+
+  if (isLoading || node === undefined) {
+    return <p>loading...</p>;
+  }
+
+  if (node === null) {
+    return <p>Post not found</p>;
+  }
+
+  switch (type) {
+    case 'Page': {
+      return <PageComponent page={node as Page} />;
+    }
+    case 'Post': {
+      return <PostComponent post={node as Post} />;
+    }
+    default: {
+      throw new Error(`Unspecified post type preview: ${type}`);
+    }
+  }
+}
+```
+
+Additionally, the `usePreviewNode` hook can be used to get preview data for any custom post type. Say we have a custom post type called `Event`:
+
+```tsx title="src/pages/preview.tsx"
+import { PageComponent } from 'pages/[...pageUri]';
+import { PostComponent } from 'pages/posts/[postSlug]';
+import { client, Page, Post, Event } from 'client';
+
+export default function Preview() {
+  const isLoading = client.useIsLoading();
+  const { type, node } = client.auth.usePreviewNode();
+
+  if (isLoading || node === undefined) {
+    return <p>loading...</p>;
+  }
+
+  if (node === null) {
+    return <p>Post not found</p>;
+  }
+
+  switch (type) {
+    case 'Page': {
+      return <PageComponent page={node as Page} />;
+    }
+    case 'Post': {
+      return <PostComponent post={node as Post} />;
+    }
+    case 'Event': {
+      const event = node as Event;
+
+      return (
+        <h1>{event.title()}</h1>
+        <p>{event.content()}</p>
+      )
+    }
+    // Add additional custom post types here as needed
+    default: {
+      throw new Error(`Unspecified post type preview: ${type}`);
+    }
+  }
+}
+```
