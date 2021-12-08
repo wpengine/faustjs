@@ -40,6 +40,8 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
   /**
    * Faust.js hook to get preview data for a page or post.
    *
+   * @deprecated Deprecated in favor of `usePreviewNode`
+   *
    * @see https://faustjs.org/docs/next/reference/hooks/usePreview
    */
   usePreview(): UsePreviewResponse<Schema>;
