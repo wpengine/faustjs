@@ -2,11 +2,11 @@
  * Versions the FaustWP plugin.
  */
 
-const fs = require("fs");
+const fs = require('fs/promises');
 const path = require("path");
-const util = require("util");
-const readFile = (fileName) => util.promisify(fs.readFile)(fileName, "utf8");
-const writeFile = (fileName, data) => util.promisify(fs.writeFile)(fileName, data);
+
+const readFile = (filename) => fs.readFile(filename, { encoding: "utf8" });
+const writeFile = fs.writeFile;
 
 /**
  * Runs all WordPress plugin versioning operations for FaustWP
