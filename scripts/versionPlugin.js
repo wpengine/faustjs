@@ -90,8 +90,8 @@ async function bumpVersion(file, regex, version) {
 /**
  * Get the current version number from a plugin's package.json file.
  *
- * @param {*} pluginPath Full path to the directory containing the plugin's
- *                       package.json file.
+ * @param {String} pluginPath Full path to the directory containing the plugin's
+ *                            package.json file.
  * @returns The version number string found in the plugin's package.json.
  */
 async function getNewVersion(pluginPath) {
@@ -114,8 +114,8 @@ async function getNewVersion(pluginPath) {
  * Updates the FaustWP plugin's readme.txt changelog with the latest 3 releases
  * found in the plugin's CHANGELOG.md file.
  *
- * @param {*} readmeTxtFile Full path to the plugin's readme.txt file.
- * @param {*} changelog     Full path to the plugin's CHANGELOG.md file.
+ * @param {String} readmeTxtFile Full path to the plugin's readme.txt file.
+ * @param {String} changelog     Full path to the plugin's CHANGELOG.md file.
  */
 async function generateReadmeChangelog(readmeTxtFile, changelog) {
   let output = "";
