@@ -24,7 +24,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'react-hooks', 'simple-import-sort'],
+  plugins: ['react', 'react-hooks', 'import', 'simple-import-sort'],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
@@ -55,6 +55,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 0,
     'jsx-a11y/anchor-is-valid': 0,
     'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
+    'import/extensions': ['error', 'always'],
   },
   settings: {
     react: {

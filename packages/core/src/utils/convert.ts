@@ -1,8 +1,8 @@
-import isArrayLike from 'lodash/isArrayLike';
-import isEmpty from 'lodash/isEmpty';
-import isString from 'lodash/isString';
-import isUndefined from 'lodash/isUndefined';
-import { isBase64, isServerSide, previewRegex } from './assert';
+import isArrayLike from 'lodash/isArrayLike.js';
+import isEmpty from 'lodash/isEmpty.js';
+import isString from 'lodash/isString.js';
+import isUndefined from 'lodash/isUndefined.js';
+import { isBase64, isServerSide, previewRegex } from './assert.js';
 
 /**
  * The result of parsing a URL into its parts

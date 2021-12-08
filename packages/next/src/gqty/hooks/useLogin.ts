@@ -1,9 +1,12 @@
+// eslint-disable-next-line import/extensions
 import type { Mutation } from '@faustjs/core/client';
+// eslint-disable-next-line import/extensions
 import { fetchAccessToken } from '@faustjs/core/auth';
+// eslint-disable-next-line import/extensions
 import { getQueryParam, isValidEmail } from '@faustjs/core/utils';
 import type { RequiredSchema } from '@faustjs/react';
 import { UseMutationOptions } from '@gqty/react';
-import noop from 'lodash/noop';
+import noop from 'lodash/noop.js';
 import { useEffect } from 'react';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 

@@ -1,8 +1,8 @@
 import type { RequiredSchema } from '@faustjs/react';
 import { useEffect, useRef } from 'react';
-import isString from 'lodash/isString';
-import isObject from 'lodash/isObject';
-import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString.js';
+import isObject from 'lodash/isObject.js';
+import isFunction from 'lodash/isFunction.js';
 import type { NextClientHooks, UseClient } from '.';
 
 export function create<

@@ -1,10 +1,10 @@
 import 'isomorphic-fetch';
-import { Cookies } from './cookie';
-import { config } from '../../config';
-import isNil from 'lodash/isNil';
-import isString from 'lodash/isString';
-import isNumber from 'lodash/isNumber';
-import { log } from '../../utils';
+import { Cookies } from './cookie.js';
+import { config } from '../../config/index.js';
+import isNil from 'lodash/isNil.js';
+import isString from 'lodash/isString.js';
+import isNumber from 'lodash/isNumber.js';
+import { log } from '../../utils/index.js';
 
 export type OAuthTokenResponse =
   | OAuthTokens
