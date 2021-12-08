@@ -15,7 +15,7 @@ import { client, Page, Post } from 'client';
 
 export default function Preview() {
   const isLoading = client.useIsLoading();
-  const { type, node } = client.auth.usePreviewNode();
+  const { postType, node } = client.auth.usePreviewNode();
 
   if (isLoading || node === undefined) {
     return <p>loading...</p>;
@@ -25,7 +25,7 @@ export default function Preview() {
     return <p>Post not found</p>;
   }
 
-  switch (type) {
+  switch (postType) {
     case 'Page': {
       return <PageComponent page={node as Page} />;
     }
@@ -33,7 +33,7 @@ export default function Preview() {
       return <PostComponent post={node as Post} />;
     }
     default: {
-      throw new Error(`Unspecified post type preview: ${type}`);
+      throw new Error(`Unspecified post type preview: ${postType}`);
     }
   }
 }
@@ -41,14 +41,14 @@ export default function Preview() {
 
 Additionally, the `usePreviewNode` hook can be used to get preview data for any custom post type. Say we have a custom post type called `Event`:
 
-```tsx title="src/pages/preview.tsx"
+```tsx title="src/pages/preview.tsx" {24-32}
 import { PageComponent } from 'pages/[...pageUri]';
 import { PostComponent } from 'pages/posts/[postSlug]';
 import { client, Page, Post, Event } from 'client';
 
 export default function Preview() {
   const isLoading = client.useIsLoading();
-  const { type, node } = client.auth.usePreviewNode();
+  const { postType, node } = client.auth.usePreviewNode();
 
   if (isLoading || node === undefined) {
     return <p>loading...</p>;
@@ -58,7 +58,7 @@ export default function Preview() {
     return <p>Post not found</p>;
   }
 
-  switch (type) {
+  switch (postType) {
     case 'Page': {
       return <PageComponent page={node as Page} />;
     }
@@ -75,7 +75,7 @@ export default function Preview() {
     }
     // Add additional custom post types here as needed
     default: {
-      throw new Error(`Unspecified post type preview: ${type}`);
+      throw new Error(`Unspecified post type preview: ${postType}`);
     }
   }
 }

@@ -1,12 +1,13 @@
+// eslint-disable-next-line import/extensions
 import { ContentNodeIdType } from '@faustjs/core/client';
 import type { RequiredSchema, Node } from '@faustjs/react';
-import isNil from 'lodash/isNil';
-import isUndefined from 'lodash/isUndefined';
-import { useRouter } from 'next/router';
+import isNil from 'lodash/isNil.js';
+import isUndefined from 'lodash/isUndefined.js';
+import { useRouter } from 'next/router.js';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
 export type UsePreviewNodeResponse = {
-  type: string | null | undefined;
+  postType: string | null | undefined;
   node: Node | null | undefined;
 };
 
@@ -23,12 +24,12 @@ export function create<Schema extends RequiredSchema>(
     const { contentNode } = useQuery();
 
     const unreadyResponse: UsePreviewNodeResponse = {
-      type: undefined,
+      postType: undefined,
       node: undefined,
     };
 
     const notFoundResponse: UsePreviewNodeResponse = {
-      type: null,
+      postType: null,
       node: null,
     };
 
@@ -79,7 +80,7 @@ export function create<Schema extends RequiredSchema>(
     const postTypeNode = node?.$on?.[postType];
 
     return {
-      type: postType,
+      postType,
       node: postTypeNode,
     };
   }
