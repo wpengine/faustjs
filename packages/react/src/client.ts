@@ -4,7 +4,8 @@ import type {
   Maybe,
   PageIdType,
   PostIdType,
-  ContentNodeIdType,
+  ContentNodeIdTypeEnum,
+  ContentTypeEnum,
 } from '@faustjs/core/client'; // eslint-disable-line import/extensions
 import {
   createReactClient,
@@ -31,9 +32,8 @@ export interface WithRevisions {
 }
 
 export interface WithOn {
-  $on: {
-    [key: string]: Node;
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  $on: any;
 }
 
 export interface RequiredQuery {
@@ -59,7 +59,8 @@ export interface RequiredQuery {
   }) => Node | null | undefined;
   contentNode: (args: {
     id: string;
-    idType?: ContentNodeIdType;
+    idType?: ContentNodeIdTypeEnum;
+    contentType?: ContentTypeEnum;
     asPreview?: boolean;
   }) => (Node & WithOn) | null | undefined;
   generalSettings?: unknown;

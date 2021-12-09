@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/extensions
-import { ContentNodeIdType } from '@faustjs/core/client';
+import { ContentNodeIdTypeEnum } from '@faustjs/core/client';
 import type { RequiredSchema, Node } from '@faustjs/react';
 import isNil from 'lodash/isNil.js';
 import isUndefined from 'lodash/isUndefined.js';
@@ -56,7 +56,7 @@ export function create<Schema extends RequiredSchema>(
 
     const node = contentNode({
       id: postId,
-      idType: ContentNodeIdType.DATABASE_ID,
+      idType: ContentNodeIdTypeEnum.DATABASE_ID,
       asPreview: true,
     });
 
