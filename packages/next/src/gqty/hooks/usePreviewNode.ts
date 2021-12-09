@@ -66,7 +66,7 @@ export function create<Schema extends RequiredSchema>(
      *
      * @link https://github.com/wp-graphql/wp-graphql/issues/2166
      */
-    if (node === null) {
+    if (isNil(node)) {
       return notFoundResponse;
     }
 
