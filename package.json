@@ -44,11 +44,11 @@
     "release": "npm run build && changeset publish"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.2",
-    "gqty": "^2.0.3",
+    "@types/jest": "^27.0.3",
+    "gqty": "^2.1.0",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@changesets/cli": "^2.17.0"
+    "@changesets/cli": "^2.18.1"
   }
 }
