@@ -1,8 +1,5 @@
 ---
-'@faustjs/core': bump
-'@faustjs/next': bump
-'@faustjs/react': bump
-'faustwp': bump
+'@faustjs/next': patch
 ---
 
 Introduced the `usePreviewNode` hook to get preview data from any post type. You can use it like so:
