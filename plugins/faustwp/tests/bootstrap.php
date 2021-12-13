@@ -7,6 +7,8 @@
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
+define( 'WP_TEST_PLUGINS_DIR', '/var/www/html/wp-content/plugins' );
+
 if ( ! $_tests_dir ) {
 	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
 }
@@ -28,6 +30,9 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
  */
 function _manually_load_plugin() {
 	require dirname( dirname( __FILE__ ) ) . '/faustwp.php';
+	
+	// Load WP-GraphQL
+	require_once WP_TEST_PLUGINS_DIR . '/wp-graphql/wp-graphql.php';
 }
 
 require $_tests_dir . '/includes/bootstrap.php';
