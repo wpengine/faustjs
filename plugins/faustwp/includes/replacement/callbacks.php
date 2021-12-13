@@ -145,6 +145,18 @@ function post_preview_link( $link, $post ) {
 			$args['page_id'] = $preview_id;
 		}
 
+		/**
+		 * We use this query param to get the correct preview post type.
+		 * This saves us a second request to the GraphQL endpoint, as we first
+		 * need to determine the preview node post type before retrieving
+		 * the data.
+		 */
+		$post_type_object = get_post_type_object( $post->post_type );
+		if ( ! isset( $args['typeName'] ) && isset( $post_type_object ) ) {
+			$gql_type_name    = ucfirst( $post_type_object->graphql_single_name );
+			$args['typeName'] = $gql_type_name;
+		}
+
 		$untrailingslash_frontend_uri = untrailingslashit( $frontend_uri );
 		$unleadingslash_path          = ltrim( $path, '/\\' );
 		$link                         = $untrailingslash_frontend_uri . '/' . $unleadingslash_path;
