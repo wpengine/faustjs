@@ -13,6 +13,7 @@ import { FaustContext } from '../gqty/client.js';
  *
  * @see https://faustjs.org/docs/next/guides/ssr-ssg#rehydration-using-faustprovider-
  */
+// eslint-disable-next-line react/function-component-definition
 export function FaustProvider<Props = Record<string, unknown>>({
   children,
   pageProps,
