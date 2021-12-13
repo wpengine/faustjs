@@ -7,7 +7,7 @@ import { useRouter } from 'next/router.js';
 import type { NextClientHooks, NextClientHooksWithAuth } from '.';
 
 export type UsePreviewNodeResponse = {
-  postType: string | null | undefined;
+  typeName: string | null | undefined;
   node: Node | null | undefined;
 };
 
@@ -18,18 +18,18 @@ export function create<Schema extends RequiredSchema>(
   function usePreviewNode(): UsePreviewNodeResponse {
     const {
       isReady,
-      query: { p: postId, preview },
+      query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
     } = useRouter();
     const { isAuthenticated } = useAuth();
     const { contentNode } = useQuery();
 
     const unreadyResponse: UsePreviewNodeResponse = {
-      postType: undefined,
+      typeName: undefined,
       node: undefined,
     };
 
     const notFoundResponse: UsePreviewNodeResponse = {
-      postType: null,
+      typeName: null,
       node: null,
     };
 
@@ -41,21 +41,21 @@ export function create<Schema extends RequiredSchema>(
       return unreadyResponse;
     }
 
-    if (isNil(postId) || isNil(preview) || preview !== 'true') {
+    if (isNil(postIdQuery) || isNil(previewQuery) || previewQuery !== 'true') {
       throw new Error(
         `usePreviewNode() requires the "p" and "preview" ` +
           `URL query parameters i.e. ?p=123&preview=true`,
       );
     }
 
-    if (Array.isArray(postId)) {
+    if (Array.isArray(postIdQuery)) {
       throw new Error(
         'usePreviewNode() requires the "p" URL query parameter to be a string',
       );
     }
 
     const node = contentNode({
-      id: postId,
+      id: postIdQuery,
       idType: ContentNodeIdTypeEnum.DATABASE_ID,
       asPreview: true,
     });
@@ -66,22 +66,37 @@ export function create<Schema extends RequiredSchema>(
      *
      * @link https://github.com/wp-graphql/wp-graphql/issues/2166
      */
-    if (isNil(node)) {
+    if (node === null) {
       return notFoundResponse;
+    }
+
+    if (!isNil(typeNameQuery) && Array.isArray(typeNameQuery)) {
+      throw new Error(
+        'usePreviewNode() requires the "postType" URL' +
+          'query parameter to be a string',
+      );
     }
 
     // eslint-disable-next-line no-underscore-dangle
-    const postType = node?.__typename;
+    const previewNodeTypeName = typeNameQuery ?? node?.__typename;
 
-    if (isNil(postType)) {
+    if (isNil(previewNodeTypeName)) {
       return notFoundResponse;
     }
 
-    const postTypeNode = node?.$on?.[postType];
+    const previewNode: Node = node?.$on?.[previewNodeTypeName];
+
+    /**
+     * `previewNodeTypeName` could be `undefined` here if the postType
+     * URL query param is manually specified and it is not valid.
+     */
+    if (isUndefined(previewNode)) {
+      return notFoundResponse;
+    }
 
     return {
-      postType,
-      node: postTypeNode,
+      typeName: previewNodeTypeName,
+      node: previewNode,
     };
   }
 
