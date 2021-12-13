@@ -1,8 +1,8 @@
 ---
-'@faustjs/core': minor
-'@faustjs/next': minor
-'@faustjs/react': minor
-'faustwp': minor
+'@faustjs/core': bump
+'@faustjs/next': bump
+'@faustjs/react': bump
+'faustwp': bump
 ---
 
 Introduced the `usePreviewNode` hook to get preview data from any post type. You can use it like so:
