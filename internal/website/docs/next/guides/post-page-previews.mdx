@@ -69,65 +69,69 @@ export default apiRouter;
 
 With your headless secret set and the `authorizeHandler` ready to handle requests, you can now create a Next.js [page](https://nextjs.org/docs/basic-features/pages) for previews. Create a file at `/src/pages/preview.tsx` with the following:
 
+> **NOTE**: The `usePreviewNode` was introduced in `v0.15.1` and replaces the `usePreview` hook.
+From now on you should be using this hook for showing preview content.
+
+
 ```tsx title=src/pages/preview.tsx
 import { PageComponent } from './[...pageUri]';
 import { PostComponent } from './posts/[postSlug]';
+import type { Page, Post } from 'client';
 import { client } from 'client';
 
 export default function Preview() {
-  const { usePreview } = client.auth;
-  const result = usePreview();
+  const { typeName, node } = client.auth.usePreviewNode();
 
-  if (client.useIsLoading() || !result) {
+  if (client.useIsLoading() || node === undefined) {
     return <p>loading...</p>;
   }
 
-  if (result.type === 'page') {
-    if (!result.page) {
-      return <>Not Found</>;
+  if (node === null) {
+    return <p>Post not found</p>;
+  }
+
+  switch (typeName) {
+    case 'Page': {
+      return <PageComponent page={node as Page} />
     }
-
-    return <PageComponent page={result.page} />;
+    case 'Post': {
+      return <PostComponent post={node as Post} />
+    }
+    // Add custom post types here as needed
+    default: {
+      throw new Error(`Unknown post type: ${typeName}`);
+    }
   }
-
-  if (!result.post) {
-    return <>Not Found</>;
-  }
-
-  return <PostComponent post={result.post} />;
 }
 ```
 
 Let's break down what is going on here:
 
-First, we are getting the `usePreview` hook from the `auth` property of the `client`:
+First, we are getting the `usePreviewNode` hook from the `auth` property of the `client` and we extract the typeName and node properties.
 
 ```tsx
-const { usePreview } = client.auth;
+const { typeName, node } = client.auth.usePreviewNode();
 ```
 
-We can then get the result of the `usePreview` hook:
-
-```tsx
-const result = usePreview();
-```
+The `typeName` specifies the type of the node content (`Page`, `Post` or any `Custom Post Type`).
+The `node` on the other hand represents the actual data for that particular node content.
+Since Typescript cannot infer the type correctly (since it thinks that it's still a `Node` type), we need to cast it to the correct type before we pass it on as a property to the component.
 
 From there, we can make a determination if the result is a page or post, and render the appropriate component:
 
 ```tsx
-if (result.type === 'page') {
-  if (!result.page) {
-    return <>Not Found</>;
+switch (typeName) {
+  case 'Page': {
+    return <PageComponent page={node as Page} />
   }
-
-  return <PageComponent page={result.page} />;
+  case 'Post': {
+    return <PostComponent post={node as Post} />
+  }
+  // Add custom post types here as needed
+  default: {
+    throw new Error(`Unknown post type: ${typeName}`);
+  }
 }
-
-if (!result.post) {
-  return <>Not Found</>;
-}
-
-return <PostComponent post={result.post} />;
 ```
 
 We abstract the page and post layouts into components to be reusable so there is no divergence between preview pages/posts and actual pages/posts.
