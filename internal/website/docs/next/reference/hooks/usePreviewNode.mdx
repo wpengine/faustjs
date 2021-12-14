@@ -74,8 +74,10 @@ export default function Preview() {
       const event = node as Event;
 
       return (
-        <h1>{event.title()}</h1>
-        <p>{event.content()}</p>
+        <>
+          <h1>{event.title()}</h1>
+          <p>{event.content()}</p>
+        </>
       )
     }
     // Add additional custom post types here as needed
