@@ -359,7 +359,7 @@ add_filter( 'plugin_action_links_faustwp/faustwp.php', __NAMESPACE__ . '\\add_ac
  * Adds a link to the Settings page on the Installed Plugins page.
  */
 function add_action_link_settings( $links ) {
-	$url = add_query_arg( 'page', 'faustwp-settings', get_admin_url() . 'admin.php' );
+	$url = add_query_arg( 'page', 'faustwp-settings', admin_url('options-general.php') );
 	return array_merge( [
 		'<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'faustwp' ) . '</a>'
 	], $links );
