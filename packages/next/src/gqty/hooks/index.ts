@@ -2,6 +2,7 @@ import type { RequiredSchema } from '@faustjs/react';
 import { ReactClient } from '@gqty/react';
 import type { GQtyError } from 'gqty';
 import type { NextClient } from '../client.js';
+import type { UsePreviewNodeResponse } from './usePreviewNode.js';
 
 import { create as createAuthHook, UseAuthOptions } from './useAuth.js';
 import { create as createLazyQueryHook } from './useLazyQuery.js';
@@ -19,6 +20,7 @@ import {
   create as createPreviewHook,
   UsePreviewResponse,
 } from './usePreview.js';
+import { create as createPreviewNodeHook } from './usePreviewNode.js';
 import { create as createLoginHook, UseLoginOptions } from './useLogin.js';
 import { create as createLogoutHook } from './useLogout.js';
 
@@ -38,9 +40,18 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
   /**
    * Faust.js hook to get preview data for a page or post.
    *
+   * @deprecated Deprecated in favor of `usePreviewNode`
+   *
    * @see https://faustjs.org/docs/next/reference/hooks/usePreview
    */
   usePreview(): UsePreviewResponse<Schema>;
+
+  /**
+   * Faust.js hook to get preview data for a post type.
+   *
+   * @see https://faustjs.org/docs/next/reference/hooks/usePreviewNode
+   */
+  usePreviewNode(): UsePreviewNodeResponse;
 
   /**
    * Faust.js hook to ensure a user is authenticated.
@@ -208,6 +219,7 @@ export function createAuthHooks<
     usePost: createPostHook(useQuery),
     usePage: createPageHook(useQuery),
     usePreview: createPreviewHook(useAuth, useQuery),
+    usePreviewNode: createPreviewNodeHook(useAuth, useQuery),
     useLogin: createLoginHook(useMutation),
     useLogout: createLogoutHook(),
   };

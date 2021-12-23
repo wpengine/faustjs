@@ -132,6 +132,11 @@ module.exports = {
                 },
                 {
                   type: 'doc',
+                  label: 'usePreviewNode Hook',
+                  id: 'next/reference/hooks/usePreviewNode',
+                },
+                {
+                  type: 'doc',
                   label: 'useAuth Hook',
                   id: 'next/reference/hooks/useAuth',
                 },
@@ -205,7 +210,7 @@ module.exports = {
           label: 'Faust.js 0.9.0 - 12.0.0',
           id: 'release-notes',
         },
-      ]
+      ],
     },
   ],
 };

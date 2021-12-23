@@ -36,6 +36,26 @@ export enum CategoryIdType {
   URI = 'URI',
 }
 
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum ContentNodeIdTypeEnum {
+  /** Identify a resource by the Database ID. */
+  DATABASE_ID = 'DATABASE_ID',
+  /** Identify a resource by the (hashed) Global ID. */
+  ID = 'ID',
+  /** Identify a resource by the URI. */
+  URI = 'URI',
+}
+
+/** Allowed Content Types */
+export enum ContentTypeEnum {
+  /** The Type of Content object */
+  ATTACHMENT = 'ATTACHMENT',
+  /** The Type of Content object */
+  PAGE = 'PAGE',
+  /** The Type of Content object */
+  POST = 'POST',
+}
+
 export interface Mutation {
   generateAuthorizationCode: (args: {
     input: GenerateAuthorizationCodeInput;
@@ -89,4 +109,5 @@ export interface ScalarsEnums extends MakeNullable<Scalars> {
   CategoryIdType: CategoryIdType | undefined;
   PageIdType: PageIdType | undefined;
   PostIdType: PostIdType | undefined;
+  ContentNodeIdTypeEnum: ContentNodeIdTypeEnum | undefined;
 }
