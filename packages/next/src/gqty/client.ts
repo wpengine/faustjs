@@ -12,9 +12,9 @@ import {
 } from '@gqty/react';
 import type { GQtyClient } from 'gqty';
 import type { IncomingMessage } from 'http';
-import noop from 'lodash/noop';
-import isObject from 'lodash/isObject';
-import merge from 'lodash/merge';
+import noop from 'lodash/noop.js';
+import isObject from 'lodash/isObject.js';
+import merge from 'lodash/merge.js';
 import React, { useContext } from 'react';
 
 import {
@@ -22,7 +22,7 @@ import {
   createHooks,
   NextClientHooks,
   NextClientHooksWithAuth,
-} from './hooks';
+} from './hooks/index.js';
 
 export interface NextClient<
   Schema extends RequiredSchema,

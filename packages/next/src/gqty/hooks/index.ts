@@ -1,23 +1,28 @@
 import type { RequiredSchema } from '@faustjs/react';
 import { ReactClient } from '@gqty/react';
 import type { GQtyError } from 'gqty';
-import type { NextClient } from '../client';
+import type { NextClient } from '../client.js';
+import type { UsePreviewNodeResponse } from './usePreviewNode.js';
 
-import { create as createAuthHook, UseAuthOptions } from './useAuth';
-import { create as createLazyQueryHook } from './useLazyQuery';
-import { create as createMutationHook } from './useMutation';
-import { create as createPaginatedQueryHook } from './usePaginatedQuery';
-import { create as createQueryHook } from './useQuery';
-import { create as createSubscriptionHook } from './useSubscription';
-import { create as createTransactionQueryHook } from './useTransactionQuery';
-import { create as createHydrateCacheHook } from './useHydrateCache';
-import { create as createCategoryHook } from './useCategory';
-import { create as createPostsHook } from './usePosts';
-import { create as createPostHook } from './usePost';
-import { create as createPageHook } from './usePage';
-import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
-import { create as createLoginHook, UseLoginOptions } from './useLogin';
-import { create as createLogoutHook } from './useLogout';
+import { create as createAuthHook, UseAuthOptions } from './useAuth.js';
+import { create as createLazyQueryHook } from './useLazyQuery.js';
+import { create as createMutationHook } from './useMutation.js';
+import { create as createPaginatedQueryHook } from './usePaginatedQuery.js';
+import { create as createQueryHook } from './useQuery.js';
+import { create as createSubscriptionHook } from './useSubscription.js';
+import { create as createTransactionQueryHook } from './useTransactionQuery.js';
+import { create as createHydrateCacheHook } from './useHydrateCache.js';
+import { create as createCategoryHook } from './useCategory.js';
+import { create as createPostsHook } from './usePosts.js';
+import { create as createPostHook } from './usePost.js';
+import { create as createPageHook } from './usePage.js';
+import {
+  create as createPreviewHook,
+  UsePreviewResponse,
+} from './usePreview.js';
+import { create as createPreviewNodeHook } from './usePreviewNode.js';
+import { create as createLoginHook, UseLoginOptions } from './useLogin.js';
+import { create as createLogoutHook } from './useLogout.js';
 
 export type UseClient<
   Schema extends RequiredSchema,
@@ -35,9 +40,18 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
   /**
    * Faust.js hook to get preview data for a page or post.
    *
+   * @deprecated Deprecated in favor of `usePreviewNode`
+   *
    * @see https://faustjs.org/docs/next/reference/hooks/usePreview
    */
   usePreview(): UsePreviewResponse<Schema>;
+
+  /**
+   * Faust.js hook to get preview data for a post type.
+   *
+   * @see https://faustjs.org/docs/next/reference/hooks/usePreviewNode
+   */
+  usePreviewNode(): UsePreviewNodeResponse;
 
   /**
    * Faust.js hook to ensure a user is authenticated.
@@ -205,6 +219,7 @@ export function createAuthHooks<
     usePost: createPostHook(useQuery),
     usePage: createPageHook(useQuery),
     usePreview: createPreviewHook(useAuth, useQuery),
+    usePreviewNode: createPreviewNodeHook(useAuth, useQuery),
     useLogin: createLoginHook(useMutation),
     useLogout: createLogoutHook(),
   };

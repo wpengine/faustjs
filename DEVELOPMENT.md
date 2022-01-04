@@ -9,7 +9,7 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
 ## Project Structure
 
-- `/docs` - Documentation
+- `/internal/website` - faustjs.org
 - `/packages` - NPM packages
 - `/plugins` - WordPress Plugins
 
@@ -42,7 +42,7 @@ ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/fau
 **PHP Code Sniffer**
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
-Install the composer packages from within `faustwp` directory if you haven't already.
+Install the composer packages from within `plugins/faustwp` directory if you haven't already.
 
 ```
 composer install
@@ -72,6 +72,12 @@ Once the containers are up, set up the test framework:
 
 ```
 docker-compose exec wordpress init-testing-environment.sh
+```
+
+Install and activate WP GraphQL:
+
+```
+docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp plugin install wp-graphql --activate
 ```
 
 Run the unit tests:
@@ -135,30 +141,15 @@ FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
   - WordPress framework wrapping Codeception for browser testing WordPress.
 
-## Deployment
+## Documentation
 
-Developers with full GitHub repository access can create public releases:
+The documentation site uses [Docusaurus](https://docusaurus.io/). Content lives primarily in MDX files under `internal/website/docs`. The following commands will get you up and running with a local copy of the docs.
 
-### Release the FaustWP plugin
-
-1. Update the `Version` in the file header at `plugins/faustwp/faustwp.php`.
-2. Update the changelog and 'stable tag' in `plugins/faustwp/readme.txt`.
-3. Commit and merge your changes into the `canary` branch.
-4. Create a new release on GitHub with a tag of `plugin/faustwp/[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org
-
-### Release the @faustjs packages
-
-We use [Changesets](https://github.com/atlassian/changesets) to automate our deployment process for the @faustjs packages.
-
-1. When you are ready to release the @faustjs packages, go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Release Packages" PR.
-2. Review the changes and make sure that the packages are versioned appropriately, and that the changelogs reflect the changes accurately.
-3. When ready to release, merge the PR into `canary`. This will kick off the GitHub Action to publish to NPM.
-
-Once deployed, the updated packages will be visible here:
-
-- https://www.npmjs.com/package/@faustjs/core
-- https://www.npmjs.com/package/@faustjs/react
-- https://www.npmjs.com/package/@faustjs/next
+```sh
+npm run docs:install # Install docs dependencies
+npm run docs:build   # Build the docs
+npm run docs         # Serve the site on http://localhost:3000
+```
 
 ## Git Workflows
 
@@ -174,6 +165,7 @@ We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/com
 
 - Create a new branch for the feature
 - Make changes to the code
+- Use `npm run changeset` to create a changeset describing any package or plugin updates
 - Commit your changes
 - Open a pull request to the `canary` branch
 - Squash and Merge the pull request into the `canary` branch
@@ -191,8 +183,46 @@ When your feature branch includes changes to the documentation website, it's hel
 
 ### Prod Site Deployment
 
+After releasing the packages or plugins, you'll need to update faustjs.org with the latest docs.
+
 - Ensure all changes have been merged into the `canary` branch
 - Create a PR to the `main` branch from `canary`
 - Merge the PR into the `main` branch
 
 **Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
+
+## Deployment
+
+Developers with full GitHub repository access can create public releases. We use [Changesets](https://github.com/atlassian/changesets) to automate the versioning and deployment process for all of our packages and plugins.
+
+### Versioning
+
+When you are ready to release, you should first create the new package and plugin versions.
+
+1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
+2. Review the PR:
+   - [ ] Changelog entries were created in all updated packages or plugins.
+   - [ ] Version numbers were appropriately bumped in the relevant package.json files.
+   - [ ] All `.changeset/*.md` files were removed.
+   - [ ] Version number updated in the main plugin file and readme.txt (Plugin versioning only)
+   - [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
+3. Approve, then "Squash and merge" the "Version Packages" PR into `canary`.
+
+### Publishing the @faustjs packages
+
+The @faustjs packages are automatically published to NPM through a GitHub action once the "Version Packages" PR is merged.
+
+### Publishing the FaustWP plugin
+
+Once the "Version Packages" PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
+
+Once deployed, the updated packages and plugin will be visible here:
+
+- https://www.npmjs.com/package/@faustjs/core
+- https://www.npmjs.com/package/@faustjs/react
+- https://www.npmjs.com/package/@faustjs/next
+- https://plugins.trac.wordpress.org/browser/faustwp/tags
+
+### Update the docs
+
+After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.

@@ -1,7 +1,8 @@
 /* eslint-disable react/no-children-prop */
+// eslint-disable-next-line import/extensions
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core/client';
 import { isBoolean, isObject } from 'lodash';
-import isNil from 'lodash/isNil';
+import isNil from 'lodash/isNil.js';
 import {
   GetServerSidePropsContext,
   GetStaticPropsContext,
@@ -9,11 +10,11 @@ import {
   GetServerSidePropsResult,
   Redirect,
 } from 'next';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context.js';
 
 import React, { FunctionComponent, ComponentClass } from 'react';
-import { config } from '../config/config';
-import { getClient, FaustContext } from '../gqty/client';
+import { config } from '../config/config.js';
+import { getClient, FaustContext } from '../gqty/client.js';
 
 import {
   hasCategoryId,
@@ -23,7 +24,7 @@ import {
   hasPostId,
   hasPostSlug,
   hasPostUri,
-} from '../utils';
+} from '../utils/index.js';
 
 export const CLIENT_CACHE_PROP = '__CLIENT_CACHE_PROP';
 export const AUTH_CLIENT_CACHE_PROP = '__AUTH_CLIENT_CACHE_PROP';

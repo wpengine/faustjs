@@ -115,4 +115,11 @@ class FunctionsTest extends \WP_UnitTestCase {
 	public function faustwp_get_setting_test_filtered_value() {
 		return 'filtered value';
 	}
+
+	/**
+	 * Tests that plugin_action_links_faustwp/faustwp.php has callback attached.
+	 */
+	public function test_plugin_action_links_has_settings_callback_attached() {
+		$this->assertSame( 10, has_action( 'plugin_action_links_faustwp/faustwp.php', 'WPE\FaustWP\Settings\add_action_link_settings' ) );
+	}
 }

@@ -1,5 +1,24 @@
 # @faustjs/react
 
+## 0.15.1
+
+### Patch Changes
+
+- 3c1280b: Updated client to support `contentNode` for `usePreviewNode` usage.
+- Updated dependencies [3c1280b]
+  - @faustjs/core@0.15.1
+
+## 0.15.0
+
+### Minor Changes
+
+- a044a07: Add file extensions to import statements to fully support ES Modules. Support for Next.js 12 🎉
+
+### Patch Changes
+
+- Updated dependencies [a044a07]
+  - @faustjs/core@0.15.0
+
 ## 0.14.0
 
 ### Patch Changes

@@ -4,18 +4,21 @@ import type {
   Maybe,
   PageIdType,
   PostIdType,
-} from '@faustjs/core/client';
+  ContentNodeIdTypeEnum,
+  ContentTypeEnum,
+} from '@faustjs/core/client'; // eslint-disable-line import/extensions
 import {
   createReactClient,
   CreateReactClientOptions,
   ReactClient as GQtyReactClient,
 } from '@gqty/react';
 import { GQtyClient } from 'gqty';
-import isObject from 'lodash/isObject';
-import merge from 'lodash/merge';
+import isObject from 'lodash/isObject.js';
+import merge from 'lodash/merge.js';
 
 export interface Node {
   id?: string | null;
+  __typename?: string | null;
 }
 
 export interface WithRevisions {
@@ -26,6 +29,11 @@ export interface WithRevisions {
       }>[]
     >;
   }>;
+}
+
+export interface WithOn {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  $on: any;
 }
 
 export interface RequiredQuery {
@@ -49,6 +57,12 @@ export interface RequiredQuery {
     id: string;
     idType?: CategoryIdType;
   }) => Node | null | undefined;
+  contentNode: (args: {
+    id: string;
+    idType?: ContentNodeIdTypeEnum;
+    contentType?: ContentTypeEnum;
+    asPreview?: boolean;
+  }) => (Node & WithOn) | null | undefined;
   generalSettings?: unknown;
 }
 
