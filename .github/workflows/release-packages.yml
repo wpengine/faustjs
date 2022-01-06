@@ -51,7 +51,7 @@ jobs:
     name: "Sync `main` with `canary`"
     runs-on: ubuntu-latest
     needs: release_packages
-    if: ${{ needs.release_packages.outputs.published == 'true' }}
+    if: ${{ needs.release_packages.outputs.published == true }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
