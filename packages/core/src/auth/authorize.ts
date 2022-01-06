@@ -1,8 +1,8 @@
 import 'isomorphic-fetch';
-import isString from 'lodash/isString';
-import { config } from '../config';
-import { getQueryParam, removeURLParam } from '../utils';
-import { fetchAccessToken } from './client/accessToken';
+import isString from 'lodash/isString.js';
+import { config } from '../config/index.js';
+import { getQueryParam, removeURLParam } from '../utils/index.js';
+import { fetchAccessToken } from './client/accessToken.js';
 
 export interface EnsureAuthorizationOptions {
   redirectUri?: string;

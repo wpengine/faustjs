@@ -1,1 +1,1 @@
-export * from './getProps';
+export * from './getProps.js';

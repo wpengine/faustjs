@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, claygriffiths, markkelnar, mindctrl, mo
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 5.8.2
-Stable tag: 0.7.1
+Stable tag: 0.7.2
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,13 @@ The plugin also provides useful options for headless sites, such as the ability 
 That's it! For more information on getting started with headless WordPress, see <a href="https://faustjs.org/docs/tutorial/dev-env-setup" target="_blank">Getting Started with Faust.js</a>.
 
 == Changelog ==
+
+= 0.7.2 =
+
+### Patch Changes
+
+- 4cff9dc: feat: add link to Settings page on Installed Plugins list page
+- 3c1280b: Adds the GraphQL `Type` name to the preview URL to avoid making a request to get the content type in the Faust.js packages
 
 = 0.7.1 =
 
@@ -57,9 +64,5 @@ That's it! For more information on getting started with headless WordPress, see 
 - Fixed "unexpected output" error during plugin activation.
 - Fixed skipped domain replacement in GraphQL responses that include `generalSettings`.
 - Added LICENSE file.
-
-= 0.6.1 =
-
-- Fixed the headless options page sidebar links to new Faust.js documentation site.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)

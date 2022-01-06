@@ -143,7 +143,7 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		faustwp_update_setting( 'enable_rewrites', true );
 		// @todo this feels like a hack
-		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true', get_preview_post_link( $this->post_id ) );
+		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&typeName=Post', get_preview_post_link( $this->post_id ) );
 	}
 
 	/**

@@ -1,5 +1,12 @@
 # FaustWP
 
+## 0.7.2
+
+### Patch Changes
+
+- 4cff9dc: feat: add link to Settings page on Installed Plugins list page
+- 3c1280b: Adds the GraphQL `Type` name to the preview URL to avoid making a request to get the content type in the Faust.js packages
+
 ## 0.7.1
 
 ### Patch Changes
