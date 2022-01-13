@@ -169,6 +169,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'FaustProvider',
+              id: 'next/reference/faust-provider',
+            },
+            {
+              type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
