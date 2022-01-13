@@ -183,11 +183,9 @@ When your feature branch includes changes to the documentation website, it's hel
 
 ### Prod Site Deployment
 
-After releasing the packages or plugins, you'll need to update faustjs.org with the latest docs.
+The docs on faustjs.org are automatically built on pushes to `main`. Updating the docs on `main` will update faustjs.org within 10 minutes.
 
-- Ensure all changes have been merged into the `canary` branch
-- Create a PR to the `main` branch from `canary`
-- Merge the PR into the `main` branch
+After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faustjs.org.
 
 **Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
 
