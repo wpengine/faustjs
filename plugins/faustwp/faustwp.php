@@ -36,6 +36,7 @@ require FAUSTWP_DIR . '/includes/settings/functions.php';
 require FAUSTWP_DIR . '/includes/graphql/functions.php';
 require FAUSTWP_DIR . '/includes/utilities/functions.php';
 require FAUSTWP_DIR . '/includes/auth/callbacks.php';
+require FAUSTWP_DIR . '/includes/deny-public-access/functions.php';
 require FAUSTWP_DIR . '/includes/deny-public-access/callbacks.php';
 require FAUSTWP_DIR . '/includes/menus/callbacks.php';
 require FAUSTWP_DIR . '/includes/admin-menus/callbacks.php';
