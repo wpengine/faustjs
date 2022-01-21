@@ -39,7 +39,7 @@ function deny_public_access() {
 	$request_uri = home_url( add_query_arg( null, null ) );
 
 	// Allow saving from file editor.
-	if ( false !== strpos( $request_uri, 'wp_scrape_key' ) ) {
+	if ( doing_file_editor_save() ) {
 		return;
 	}
 
