@@ -49,7 +49,7 @@ function url_replacement( $response ) {
  */
 function url_replace_recursive( &$data ) {
 	foreach ( $data as $key => &$value ) {
-		if ( $key === 'generalSettings' ) {
+		if ( 'generalSettings' === $key ) {
 			continue;
 		}
 
