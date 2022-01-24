@@ -357,6 +357,8 @@ function add_settings_assets() {
 add_filter( 'plugin_action_links_faustwp/faustwp.php', __NAMESPACE__ . '\\add_action_link_settings' );
 /**
  * Adds a link to the Settings page on the Installed Plugins page.
+ *
+ * @param array $links The array of plugin action links.
  */
 function add_action_link_settings( $links ) {
 	$url = add_query_arg( 'page', 'faustwp-settings', admin_url( 'options-general.php' ) );
