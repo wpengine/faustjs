@@ -41,6 +41,12 @@ function url_replacement( $response ) {
 	return $response;
 }
 
+/**
+ * Replaces the WordPress Site URL with the replacement domain in 'url' and
+ * 'href' fields.
+ *
+ * @param array $data The response data.
+ */
 function url_replace_recursive( &$data ) {
 	foreach ( $data as $key => &$value ) {
 		if ( $key === 'generalSettings' ) {
