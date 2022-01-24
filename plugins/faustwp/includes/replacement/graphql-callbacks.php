@@ -50,7 +50,7 @@ function url_replace_recursive( &$data ) {
 		if ( ( 'url' === $key || 'href' === $key ) && is_string( $value ) ) {
 			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 			$value       = str_replace( site_url(), $replacement, $value );
-		} else if ( is_array( $value ) ) {
+		} elseif ( is_array( $value ) ) {
 			url_replace_recursive( $value );
 		}
 	}
