@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function doing_file_editor_save() {
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	// Disabling as we are mimicking WordPress core's own check.
-	// https://github.com/WordPress/wordpress-develop/blob/5.8.1/src/wp-includes/load.php#L1591-L1595
+	// https://github.com/WordPress/wordpress-develop/blob/5.8.1/src/wp-includes/load.php#L1591-L1595.
 	if ( ! isset( $_REQUEST['wp_scrape_key'] ) || ! isset( $_REQUEST['wp_scrape_nonce'] ) ) {
 		return false;
 	}
