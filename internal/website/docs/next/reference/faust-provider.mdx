@@ -33,7 +33,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
 With your `_app.tsx` file created, you can now import the `<FaustProvider>` component and wrap your app with it. The `<FaustProvider>` component should wrap everything in the return statement. You'll also need to import the `client`, as it is a required prop of the `<FaustProvider>`:
 
-```tsx title="_app.tsx" {2,7,9}
+```tsx title="_app.tsx" {1,2,7,9}
 import { FaustProvider } from '@faustjs/next';
 import { client } from 'client';
 import type { AppProps } from 'next/app';
