@@ -16,3 +16,6 @@ jobs:
     - name: Run Lint
       working-directory: plugins/faustwp
       run: composer lint
+    - name: Run PHPCS
+      working-directory: plugins/faustwp
+      run: composer phpcs
