@@ -41,16 +41,22 @@ function url_replacement( $response ) {
 	return $response;
 }
 
+/**
+ * Replaces the WordPress Site URL with the replacement domain in 'url' and
+ * 'href' fields.
+ *
+ * @param array $data The response data.
+ */
 function url_replace_recursive( &$data ) {
 	foreach ( $data as $key => &$value ) {
-		if ( $key === 'generalSettings' ) {
+		if ( 'generalSettings' === $key ) {
 			continue;
 		}
 
 		if ( ( 'url' === $key || 'href' === $key ) && is_string( $value ) ) {
 			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 			$value       = str_replace( site_url(), $replacement, $value );
-		} else if ( is_array( $value ) ) {
+		} elseif ( is_array( $value ) ) {
 			url_replace_recursive( $value );
 		}
 	}
