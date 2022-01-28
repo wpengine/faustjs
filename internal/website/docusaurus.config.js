@@ -17,6 +17,15 @@ module.exports = {
   organizationName: 'wpengine', // Usually your GitHub org/user name.
   projectName: 'faustjs', // Usually your repo name.
   themeConfig: {
+    algolia: {
+      // If Algolia did not provide you any appId, use 'BH4D9OD16A'
+      appId: 'KUERGG39MB',
+
+      // Public API key: it is safe to commit it
+      apiKey: '1f3b1850f5442cf1d15033644ff5b1d3',
+
+      indexName: 'faustjs',
+    },
     navbar: {
       title: 'Faust.js™',
       // logo: {
