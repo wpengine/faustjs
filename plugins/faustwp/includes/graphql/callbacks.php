@@ -10,9 +10,71 @@ namespace WPE\FaustWP\GraphQL;
 use function WPE\FaustWP\Auth\generate_authorization_code;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
+use function WPE\FaustWP\Settings\{
+	faustwp_get_setting,
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_sitemap_urls_field' );
+/**
+ * Registers templates field on the UniformResourceIdentifiable type in WP GraphQL. This templates field lists out the
+ * templates that WordPress would typically try to locate and load for a given URI.
+ *
+ * A good amount of the logic in the resolver for this type is extracted from WordPress' template-loader.php file. It's
+ * important that we keep this in sync as much as possible to ensure that the returned array is consistent with what
+ * WordPress would actually do.
+ *
+ * @return void
+ *
+ * @uses WPE\FaustWP\GraphQL\log_template_hierarchy
+ * @uses WPE\FaustWP\GraphQL\template_hierarchy_types
+ * @uses WPE\FaustWP\GraphQL\get_conditional_tags
+ *
+ * @see  template-loader.php
+ * @uses register_graphql_field
+ */
+function register_sitemap_urls_field() {
+	register_graphql_field(
+		'RootQuery',
+		'sitemapUrls',
+		array(
+			'type'        => [ 'list_of' => 'String' ],
+			'description' => __( 'A list of all sitemap urls.', 'faustwp' ),
+			'resolve'     => __NAMESPACE__ . '\\sitemap_urls_resolver'
+		)
+	);
+}
+
+/**
+ * Resolver for getting the sitemap URLs.
+ *
+ * @param array       $root    GraphQL Root Object.
+ * @param array       $args    Args passed to query.
+ * @param AppContext  $context The context of the query to pass along.
+ * @param ResolveInfo $info    The ResolveInfo object.
+ *
+ * @return array|string[]
+ */
+function sitemap_urls_resolver( $root, $args, $context, $info ) {
+	// Get the frontend uri to use.
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' ) ?: get_home_url();
+
+	// Start collecting all URLS.
+	$meta_urls = array( $frontend_uri );
+
+	// Hardcoded array. You would need to fetch the URLs for all Pages.
+	$all_pages = [ "$frontend_uri/pages", "$frontend_uri/page-2" ];
+
+	// Hardcoded array. You would need to fetch the URLs for all Posts.
+	$all_posts = [ "$frontend_uri/post", "$frontend_uri/post-2" ];
+
+	// Hardcoded array. You would need to fetch the URLs for all Terms
+	$all_terms = [ "$frontend_uri/tag", "$frontend_uri/category" ];
+
+	return array_merge( $meta_urls, $all_pages, $all_posts, $all_terms );
 }
 
 add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_templates_field' );
