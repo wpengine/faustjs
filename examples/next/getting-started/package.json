@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "clean": "rimraf .next node_modules",
     "lint": "next lint",
@@ -33,6 +34,7 @@
     "dotenv-flow": "3.2.0",
     "eslint": "^8.4.1",
     "eslint-config-next": "^12.0.7",
+    "next-sitemap": "^2.1.8",
     "rimraf": "^3.0.2",
     "typescript": "^4.5.2"
   }
