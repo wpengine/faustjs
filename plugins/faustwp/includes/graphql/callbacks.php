@@ -133,6 +133,8 @@ add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_conditional_ta
  * @uses WPE\FaustWP\GraphQL\get_conditional_tags
  *
  * @uses register_graphql_object_type
+ *
+ * @deprecated
  */
 function register_conditional_tags_field() {
 	register_graphql_object_type(
@@ -142,8 +144,9 @@ function register_conditional_tags_field() {
 			'fields'      => array_map(
 				function ( $tag ) {
 					return array(
-						'type'        => 'Boolean',
-						'description' => $tag['description'],
+						'type'              => 'Boolean',
+						'deprecationReason' => __( 'Deprecated in favor of using Next.js pages', 'faustwp' ),
+						'description'       => $tag['description'],
 					);
 				},
 				array_combine(
@@ -161,8 +164,9 @@ function register_conditional_tags_field() {
 		'UniformResourceIdentifiable',
 		'conditionalTags',
 		array(
-			'type'    => 'ConditionalTags',
-			'resolve' => __NAMESPACE__ . '\\conditional_tags_resolver',
+			'type'              => 'ConditionalTags',
+			'deprecationReason' => __( 'Deprecated in favor of using Next.js pages', 'faustwp' ),
+			'resolve'           => __NAMESPACE__ . '\\conditional_tags_resolver',
 		)
 	);
 }
