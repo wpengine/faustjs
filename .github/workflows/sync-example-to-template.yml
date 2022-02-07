@@ -30,15 +30,17 @@ jobs:
           cd ../
           mkdir source
 
-          # Move all files in SYNC_DIR to the "source" dir
+          # Rsync all files in SYNC_DIR to the "source" dir
+          # Using -a, the archive flag, to preserve ownership and permissions
+          # Using --no-compress as the sync is between local devices
           cd $CHECKOUT_DIR_NAME
-          mv $SYNC_DIR/* ../source/
+          rsync -a --no-compress $SYNC_DIR/ ../source/
           cd ../
 
-          # Clone the target repo, and move it's .git dir to the "source" dir
+          # Clone the target repo, and rsync it's .git dir to the "source" dir
           git clone git@github.com:$TARGET_REPO.git target
           cd target
-          mv .git ../source
+          rsync -a --no-compress .git ../source
           cd ../
 
           cd source
