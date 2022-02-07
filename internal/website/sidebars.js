@@ -188,6 +188,22 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Going to Production',
+      items: [
+        {
+          type: 'doc',
+          label: 'Deploy Your Faust.JS App',
+          id: 'going-to-production/deployment',
+        },
+        {
+          type: 'doc',
+          label: 'Optimizations',
+          id: 'going-to-production/optimizations',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Changelogs',
       items: [
         {
