@@ -192,7 +192,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-          label: 'Deploy Your Faust.JS App',
+          label: 'Deploy Your Faust.js App',
           id: 'going-to-production/deployment',
         },
         {
