@@ -9,7 +9,7 @@ export function useCheckFaustContext<T extends FaustContextType>(
 
   if (client === undefined) {
     throw new Error(
-      `Could not find "client" in the context. Wrap the root component in a <FaustProvider>`,
+      `Could not find "client" in the context. Wrap the root component in a <FaustProvider>. See: https://faustjs.org/docs/next/reference/faust-provider`,
     );
   }
 
