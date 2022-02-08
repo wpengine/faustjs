@@ -1,7 +1,6 @@
 ---
 slug: going-to-production/deployment
-title: Deploy Your Faust.JS App
-description: Deploying your Faust.js app
+title: Deploy Your Faust.js App
 ---
 
 ## Picking The Right Node.js Version
@@ -14,10 +13,10 @@ Faust.js is build on top of [Next.js](https://nextjs.org/), so the build process
 
 ## Deploying To Atlas
 
-Atlas is the most effortless way to deploy a Faust.js app. Atlas works by connecting to your Faust.js GitHub repo, and upon changes, Atlas will automatically build and deploy it. Some of the benefits you get out of the box are:
+Atlas is the most effortless way to deploy a Faust.js app. Connect your GitHub repo and Atlas will automatically build and deploy your Faust.js project on each push. Some of the benefits you get out of the box are:
 
 - Automatic installation of required plugins ([FaustWP](https://wordpress.org/plugins/faustwp/), [WPGraphQL](https://wordpress.org/plugins/wp-graphql/), etc.)
-- Automatic setup of Faust environment variables
+- Automatic setup of Faust.js environment variables
 - Automatic configuration of FaustWP headless settings
 - WordPress and your headless app live in the same place
 - Automatic rebuilds on code changes
@@ -27,9 +26,9 @@ Atlas is the most effortless way to deploy a Faust.js app. Atlas works by connec
 
 ## Self Hosted
 
-Faust.js can also be self hosted by using any hosting provider that supports Node.js.
+You can also self host Faust.js apps on any hosting provider that supports Node.js.
 
-To self host your Faust.js app, you will need to first build the app, then start it. This is done by having the `next build` and `next start` scripts specified in your `package.json` file:
+To self host your Faust.js app, you will need to first build the app, then start it. Make sure you have the `next build` and `next start` scripts specified in your `package.json` file:
 
 ```json title="package.json"
 {
@@ -40,7 +39,7 @@ To self host your Faust.js app, you will need to first build the app, then start
 }
 ```
 
-After adding the following scripts to your `package.json`, run `npm run build`, and then `npm run start` from the Node.js server to start your app.
+Then, from the Node.js server run `npm run build` to build the app and `npm run start`  to start it.
 
 ## Related
 
