@@ -81,6 +81,7 @@
 							<li><a href="https://faustjs.org/docs/next/guides/fetching-data" target="_blank" rel="noopener noreferrer">Fetching Data</a></li>
 							<li><a href="https://faustjs.org/docs/next/guides/post-page-previews" target="_blank" rel="noopener noreferrer">Previews</a></li>
 							<li><a href="https://faustjs.org/docs/next/guides/auth" target="_blank" rel="noopener noreferrer">Authentication</a></li>
+							<li><a href="https://faustjs.org/docs/faustwp/settings" target="_blank" rel="noopener noreferrer">Headless Settings</a></li>
 						</ul>
 						<p><a class="button-primary" href="https://github.com/wpengine/faustjs/" target="_blank" rel="noopener noreferrer">Faust.js on GitHub</a></p>
 					</section>

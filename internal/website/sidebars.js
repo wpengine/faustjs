@@ -183,6 +183,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'FaustWP Plugin',
+      items: [
+        {
+          type: 'doc',
+          label: 'Settings Reference',
+          id: 'faustwp/settings',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Changelogs',
       items: [
         {

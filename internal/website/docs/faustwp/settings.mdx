@@ -1,0 +1,72 @@
+---
+slug: /faustwp/settings
+title: FaustWP Plugin Headless Settings
+description: This section describes the various WP Plugin Headless Settings.
+---
+
+The `Headless` page of the FaustWP Plugin (located within the WP Admin `Settings` Sidebar)
+allows you to customize the behavior of the plugin by configuring certain features. We explain those features in detail:
+
+
+## Features Explained
+
+The following options are available to enable/disabled based on your requirements:
+
+### Disabling WordPress theme admin pages
+
+This option is controlled by the `Disable WordPress theme admin pages` checkbox.
+When enabled it removes certain wp-admin menu items that aren't supported in a headless environment.
+For example, it will remove the following pages:
+
+* `Appearance > Themes`
+* `Appearance > Theme Editor`
+* `Appearance > Widgets`
+* `Appearance > Customize`
+
+It will also remove any features that require the `Customizer` which means that the
+`Appearance` tab will only contain the menu options.
+
+If you still want to have access to those pages then, you can disable this setting.
+
+### Enabling Post and Category URL rewrites
+
+This option is controlled by the `Enable Post and Category URL rewrites` checkbox. When enabled it will
+perform domain replacement of all terms, post, preview, category links from your `home url` into your headless `Front-end site URL` by using
+relevant `link` filters.
+
+For example if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+then it will replace all post/page/category links to point to the headless `site_url`:
+
+`http://example.com/posts/category/recipes/` -> `http://headless.com/posts/category/recipes/`
+
+If you don't want this replacement to happen then you can disable this option which
+will prevent the original content links from pointing to the headless url.
+
+> **NOTE:** It is recommended to keep this setting enabled so that all links will be properly served by the headless site.
+
+### Enabling public route redirects
+
+This option is controlled by the `Enable public route redirects` checkbox. When enabled it will
+redirect any public API requests to your `home url` into your headless `Front-end site URL` by using
+the [template_redirect](https://developer.wordpress.org/reference/hooks/template_redirect/) filter.
+
+For example if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+then if you visit any page on your `home_url` will be redirected to the headless `site_url` passing any query params as well:
+
+`http://example.com/posts/welcome-to-the-gutenberg-editor/` -> `http://headless.com/posts/welcome-to-the-gutenberg-editor`
+
+If you don't want this redirect to happen then you can disable this option which allows you to access the original WP site.
+
+
+### Using the WordPress domain for media URLs in post content
+
+This option is controlled by the `Use the WordPress domain for media URLs in post content` checkbox and is disabled by default.
+When enabled it will perform a `src` and `srcset` replacement of all media urls of the sites post/page content using
+the [the_content](https://developer.wordpress.org/reference/hooks/the_content/) filter to point back to the `home_url` domain.
+
+For example if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+then any images served from headless `site_url` will be rewritten to point to the `home_url`:
+
+`http://headless.com/wp-content/uploads/2020/07/bird.png` -> `http://example.com/wp-content/uploads/2020/07/bird.png`
+
+If you don't want this replacement to happen then, you can keep this option disabled.
