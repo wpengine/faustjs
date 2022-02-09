@@ -18,8 +18,6 @@
 
 namespace WPE\FaustWP;
 
-use function WPE\FaustWP\Settings\is_events_enabled;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -47,7 +45,3 @@ require FAUSTWP_DIR . '/includes/rest/callbacks.php';
 require FAUSTWP_DIR . '/includes/settings/callbacks.php';
 require FAUSTWP_DIR . '/includes/updates/upgrade-database.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
-
-if ( is_events_enabled() ) {
-	require FAUSTWP_DIR . '/includes/events/callbacks.php';
-}
