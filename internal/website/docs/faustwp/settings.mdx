@@ -64,9 +64,24 @@ This option is controlled by the `Use the WordPress domain for media URLs in pos
 When enabled it will perform a `src` and `srcset` replacement of all media urls of the sites post/page content using
 the [the_content](https://developer.wordpress.org/reference/hooks/the_content/) filter to point back to the `home_url` domain.
 
-For example if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+For example, if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
 then any images served from headless `site_url` will be rewritten to point to the `home_url`:
 
 `http://headless.com/wp-content/uploads/2020/07/bird.png` -> `http://example.com/wp-content/uploads/2020/07/bird.png`
 
-If you don't want this replacement to happen then, you can keep this option disabled.
+This happens when a user migrates a classical WP site a root domain of `example.com` to `headless.com`
+(to allow their headless front-end to be served from `example.com` and pull data from the WP instance that was moved to `headless.com`)
+then all media URLs in post content will be wrong.
+
+If for example you uploaded images to the post content their image srcs will still point to `example.com/wp-content/uploads/2020/07/bird.png`,
+resulting in a `404` because the WP instance no longer lives at `example.com`.
+
+You can enable this option to allow having the media content served by the classical
+WP site a root domain and when you switch the live domain to headless,
+you should disable the option to replace those links worrying about missing media.
+
+> **NOTE:** When moving your site to a new domain it is recommended to perform a search/replace on your website’s database.
+This is to ensure all hard-coded references of the old domain in your database point to your live production domain instead. [Read more about search/replace](https://wpengine.com/support/move-domain-new-environment/#Optional_Perform_a_search_and_replace)
+
+
+
