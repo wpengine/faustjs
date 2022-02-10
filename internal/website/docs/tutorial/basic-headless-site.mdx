@@ -51,7 +51,7 @@ Now, convert your existing pages to TypeScript:
 Rename `pages/_app.js` to `pages/_app.tsx`, and replace the contents with the following:
 
 ```jsx title=_app.tsx
-import '../styles/globals.css';
+import 'styles/globals.css';
 
 import type { AppProps /*, AppContext */ } from 'next/app';
 
@@ -72,23 +72,30 @@ Now that we have created a Next.js app, we can create a WordPress site. We use [
 
 Download and install Local from https://localwp.com. Once installed, click the `+` button in the bottom left corner of the screen.
 
-<img src="/docs/img/localwp-create-site.png"
+<img
+  src="/docs/img/localwp-create-site.png"
   alt="Red arrow pointing to the create site button in Local"
 />
 
 Follow the onboarding process to create a new WordPress site.
 
-<img src="/docs/img/localwp-site-created.png" alt="Created site settings in Local" />
+<img
+  src="/docs/img/localwp-site-created.png"
+  alt="Created site settings in Local"
+/>
 
 You can then copy the "Site Domain" and visit your new WordPress site directly.
 
-<img src="/docs/img/localwp-site-created-preview.png" alt="WordPress site created using Local" />
+<img
+  src="/docs/img/localwp-site-created-preview.png"
+  alt="WordPress site created using Local"
+/>
 
 ### Key Takeaways
 
-  - We used `create-next-app` to create a Next.js app
-  - We installed and setup TypeScript on a basic Next.js app
-  - We created a WordPress site using Local
+- We used `create-next-app` to create a Next.js app
+- We installed and setup TypeScript on a basic Next.js app
+- We created a WordPress site using Local
 
 ### What's Next?
 
