@@ -48,7 +48,7 @@ export default function Page() {
 The same can be done for `[postId]` only this time it will make a request using the `postId` param to get a post by ID.
 
 ```tsx title=/src/pages/posts/[postId].tsx {6}
-import { client, getNextStaticProps } from '@faust/next';
+import { client, getNextStaticProps } from '@faustjs/next';
 import { GetStaticPropsContext } from 'next';
 
 export default function Page() {
