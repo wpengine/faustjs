@@ -4,11 +4,9 @@ title: Server-side Rendering & Static Generation
 description: Use Faust.js and Next.js to statically generate your Headless WordPress site
 ---
 
-:::note
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
 
-This guide assumes you're storing your pages/styles/etc. in a directory called `src`, and you have the `baseUrl` option set to `src` in your `tsconfig.json` for import modules from the root.
-
-:::
+<BaseUrlNotice />
 
 Next.js supports Server-side Rendering (SSR) and Static Site Generation (SSG) out of the box for [pages](https://nextjs.org/docs/basic-features/pages). However, with Next.js you are responsible for defining `getStaticProps` or `getServersideProps`, fetching the necessary data, and providing it on `props`. Faust.js provides two functions that can be used for SSG and SSR respectively called `getNextStaticProps` and `getNextServerSideProps`.
 

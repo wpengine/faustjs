@@ -4,11 +4,9 @@ title: Setting Up Post and Page Previews
 description: View WordPress preview post/page content on your headless frontend with Faust.js
 ---
 
-:::note
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
 
-This guide assumes you're storing your pages/styles/etc. in a directory called `src`, and you have the `baseUrl` option set to `src` in your `tsconfig.json` for import modules from the root.
-
-:::
+<BaseUrlNotice />
 
 Faust.js supports page and post previews, allowing you to view your WordPress content on the headless frontend as drafts or even before publishing.
 
@@ -38,12 +36,6 @@ FAUSTWP_SECRET_KEY=xxxx
 ```
 
 ### Ensure you've created your `faust.config.js` file and are importing it in your `_app.tsx`
-
-:::note
-
-This guide assumes you're storing your pages/styles/etc. in a directory called `src`, and you have the `baseUrl` option set to `src` in your `tsconfig.json` for import modules from the root.
-
-:::
 
 Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/getting-started) Faust.js example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/main/examples/next/getting-started/src/faust.config.js) file will live in the `src` directory.
 
