@@ -18,25 +18,34 @@ To get started, run the following command:
 npx create-next-app my-app
 ```
 
-If prompted to `create-next-app`, enter `y' to continue.
+If prompted to `create-next-app`, enter `y` to continue.
 
 Great! You've deployed your app! However, it's not quite ready for TypeScript yet. Let's do that now.
 
 ### Setup TypeScript
 
-Start by `cd'ing into your app directory:
+Start by `cd`ing into your app directory:
 
 ```bash
 cd my-app
 ```
 
-Now, run:
+Now, create a `tsconfig.json` file in the root directory of your app with the following:
 
-```bash
-touch tsconfig.json
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "."
+  }
+}
 ```
 
-This command creates your [TypeScript config file.](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+:::note
+
+We're setting the `baseUrl` to `.` so we can import files relative to the root of our app. For example: <br />
+`import 'styles/globals.css'` instead of `import '../styles/globals.css'`
+
+:::
 
 Now, let's install TypeScript and our dependencies.
 
@@ -44,9 +53,15 @@ Now, let's install TypeScript and our dependencies.
 npm install --save-dev typescript @types/react
 ```
 
-Once the dependencies are installed, run `npm run dev` to start the development server. Doing this will automatically generate the settings needed for `tsconfig.json`.
+Once the dependencies are installed, run:
 
-Now, convert your existing pages to TypeScript:
+```bash
+npm run dev
+```
+
+This will automatically generate the rest of the settings needed for `tsconfig.json`, and start the development server.
+
+Congrats! You've setup TypeScript within your project. Let's now convert your existing JavaScript pages to TypeScript pages:
 
 Rename `pages/_app.js` to `pages/_app.tsx`, and replace the contents with the following:
 
