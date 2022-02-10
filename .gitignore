@@ -11,4 +11,4 @@ process.yml
 !.env.local.sample
 .docusaurus
 build/
-examples/next/getting-started/package-lock.json
+examples/**/package-lock.json
