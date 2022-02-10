@@ -92,6 +92,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Modifying the GraphQL Request',
+              id: 'next/guides/modifying-graphql-request',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },
