@@ -34,7 +34,7 @@ This option is controlled by the `Enable Post and Category URL rewrites` checkbo
 perform domain replacement of all terms, post, preview, category links from your `WordPress URL` into your headless `Front-end site URL` by using
 relevant `link` filters.
 
-For example if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+For example if your WP `WordPress URL` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
 then it will replace all post/page/category links to point to the headless `Front-end site URL`:
 
 `http://example.com/posts/category/recipes/` -> `http://headless.com/posts/category/recipes/`
@@ -50,8 +50,8 @@ This option is controlled by the `Enable public route redirects` checkbox. When 
 redirect any public API requests to your `WordPress URL` into your headless `Front-end site URL` by using
 the [template_redirect](https://developer.wordpress.org/reference/hooks/template_redirect/) filter.
 
-For example if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
-then if you visit any page on your `home_url` will be redirected to the headless `Front-end site URL` passing any query params as well:
+For example if your WP `WordPress URL` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+then if you visit any page on your `WordPress URL` will be redirected to the headless `Front-end site URL` passing any query params as well:
 
 `http://example.com/posts/welcome-to-the-gutenberg-editor/` -> `http://headless.com/posts/welcome-to-the-gutenberg-editor`
 
@@ -62,10 +62,10 @@ If you don't want this redirect to happen then you can disable this option which
 
 This option is controlled by the `Use the WordPress domain for media URLs in post content` checkbox and is disabled by default.
 When enabled it will perform a `src` and `srcset` replacement of all media urls of the sites post/page content using
-the [the_content](https://developer.wordpress.org/reference/hooks/the_content/) filter to point back to the `home_url` domain.
+the [the_content](https://developer.wordpress.org/reference/hooks/the_content/) filter to point back to the `WordPress URL` domain.
 
-For example, if your WP `home_url` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
-then any images served from headless `Front-end site URL` will be rewritten to point to the `home_url`:
+For example, if your WP `WordPress URL` is `http://example.com` and your `Front-end site URL` is `http://headless.com`
+then any images served from headless `Front-end site URL` will be rewritten to point to the `WordPress URL`:
 
 `http://headless.com/wp-content/uploads/2020/07/bird.png` -> `http://example.com/wp-content/uploads/2020/07/bird.png`
 
