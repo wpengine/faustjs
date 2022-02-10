@@ -1,0 +1,67 @@
+---
+slug: /next/reference/faust-provider
+title: Using FaustProvider
+description: The FaustProvider React component wraps your app to provide context to Faust.js
+---
+
+The `<FaustProvider>` component is a React component that follows the [provider pattern](https://www.patterns.dev/posts/provider-pattern/), wrapping your Next.js app to provide the necessary context to Faust.js. This includes:
+
+- React Context for state management
+- GraphQL query cache
+- Necessary context for usage with Faust.js hooks
+
+## Props
+
+The `<FaustProvider>` React component requires the following props:
+
+- `client`: [The GQty client from your app](/docs/next/guides/fetching-data#setting-up-your-client)
+- `pageProps`: The Next.js `pageProps` that are passed from the [Next.js App component](https://nextjs.org/docs/advanced-features/custom-app)
+
+## Usage
+
+The `<FaustProvider>` should be called in your application's `_app.tsx` file. This file may live in either `src/pages/_app.tsx` or `pages/_app.tsx` depending on how you've setup your project. If your project doesn't yet have this file, you can use this as the default `_app.tsx` file:
+
+```tsx title="_app.tsx"
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <Component {...pageProps} />
+  );
+}
+```
+
+With your `_app.tsx` file created, you can now import the `<FaustProvider>` component and wrap your app with it. The `<FaustProvider>` component should wrap everything in the return statement. You'll also need to import the `client`, as it is a required prop of the `<FaustProvider>`:
+
+```tsx title="_app.tsx" {1,2,7,9}
+import { FaustProvider } from '@faustjs/next';
+import { client } from 'client';
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <FaustProvider client={client} pageProps={pageProps}>
+      <Component {...pageProps} />
+    </FaustProvider>
+  );
+}
+```
+
+Finally, we will import the Faust.js config at the top of the `_app.tsx` file to give our Faust.js app access to the config:
+
+```tsx title="_app.tsx" {1}
+import 'faust.config';
+import { FaustProvider } from '@faustjs/next';
+import { client } from 'client';
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <FaustProvider client={client} pageProps={pageProps}>
+      <Component {...pageProps} />
+    </FaustProvider>
+  );
+}
+```
+
+With the above in place, your app is now ready to properly use Faust.js.

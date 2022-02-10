@@ -39,15 +39,6 @@ function is_themes_disabled() {
 }
 
 /**
- * Determine if events are enabled.
- *
- * @return bool True if events are enabled, false if else.
- */
-function is_events_enabled() {
-	return '1' === faustwp_get_setting( 'events_enabled' );
-}
-
-/**
  * Determine if sourcing images from WP domain is enabled.
  *
  * @return bool True if image sources from WP are enabled, false if else.

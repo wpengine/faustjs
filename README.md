@@ -1,14 +1,10 @@
+![Faust.js](https://user-images.githubusercontent.com/5306336/152221545-53087444-b3ad-477d-90a9-606785854656.jpg)
+
 <p align="center">
   <strong>
     NOTE: This is prerelease software. As we work towards our first release, we
     will 💯 introduce breaking changes.
   </strong>
-</p>
-
-<p align="center">
-  <a href="https://faustjs.org">
-    <h1 align="center">Faust.js</h1>
-  </a>
 </p>
 
 <p align="center">

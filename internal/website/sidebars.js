@@ -169,6 +169,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'FaustProvider',
+              id: 'next/reference/faust-provider',
+            },
+            {
+              type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
@@ -180,6 +185,22 @@ module.exports = {
       type: 'doc',
       label: 'Introduction to GQty',
       id: 'gqty-intro',
+    },
+    {
+      type: 'category',
+      label: 'Going to Production',
+      items: [
+        {
+          type: 'doc',
+          label: 'Deploy Your Faust.js App',
+          id: 'going-to-production/deployment',
+        },
+        {
+          type: 'doc',
+          label: 'Optimizations',
+          id: 'going-to-production/optimizations',
+        },
+      ],
     },
     {
       type: 'category',

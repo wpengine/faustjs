@@ -1,5 +1,11 @@
 # FaustWP
 
+## 0.7.3
+
+### Patch Changes
+
+- ab4a661: Fixed issue where file editor was unable to save
+
 ## 0.7.2
 
 ### Patch Changes
