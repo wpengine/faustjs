@@ -70,7 +70,7 @@
     "cookie": "^0.4.1"
   },
   "devDependencies": {
-    "@gqty/cli": "^2.3.0",
+    "@gqty/cli": "^3.1.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@types/cookie": "^0.4.1",
     "@types/is-number": "^7.0.1",
