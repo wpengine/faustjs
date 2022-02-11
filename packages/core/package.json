@@ -39,7 +39,6 @@
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
     "prepublish": "npm run build",
-    "generate:gqty": "gqty generate",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
@@ -69,7 +68,6 @@
     "cookie": "^0.4.1"
   },
   "devDependencies": {
-    "@gqty/cli": "^3.1.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@types/cookie": "^0.4.1",
     "@types/is-number": "^7.0.1",
