@@ -99,7 +99,7 @@ Head back over to the `pages/posts.tsx` file we created earlier. Let's use our n
 First, we import our `Post` component:
 
 ```tsx title=pages/posts.tsx {1}
-import Post from '../components/post';
+import Post from 'components/post';
 
 export default function PostsPage() {
   return <h1>My posts page</h1>;
@@ -109,7 +109,7 @@ export default function PostsPage() {
 Let's also create some fake data to use in our example:
 
 ```tsx title=pages/posts.tsx {3-17}
-import Post from '../components/post';
+import Post from 'components/post';
 
 const posts = [
   {
@@ -135,7 +135,7 @@ export default function PostsPage() {
 Finally, we'll create a list of posts by looping through the `posts` array and rendering a `Post` component for each post:
 
 ```tsx title=pages/posts.tsx {23-25}
-import Post from '../components/post';
+import Post from 'components/post';
 
 const posts = [
   {
@@ -174,11 +174,11 @@ Your final result will look something like:
 
 ### Key Takeaways
 
-  - React is a framework for building user interfaces with components.
-  - React components are JavaScript functions that return React elements.
-  - React elements are written in a special JavaScript syntax called JSX. JSX allows you to write JavaScript code that looks like HTML.
-  - React components can receive data from the parent component in the form of `props`.
-  - React components are used to build pages in Next.js by placing the component in a `pages` directory.
+- React is a framework for building user interfaces with components.
+- React components are JavaScript functions that return React elements.
+- React elements are written in a special JavaScript syntax called JSX. JSX allows you to write JavaScript code that looks like HTML.
+- React components can receive data from the parent component in the form of `props`.
+- React components are used to build pages in Next.js by placing the component in a `pages` directory.
 
 ### What's Next?
 

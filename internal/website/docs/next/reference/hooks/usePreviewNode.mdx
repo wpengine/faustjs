@@ -4,6 +4,10 @@ title: usePreviewNode Hook
 description: The usePreviewNode hook provides a way to get post preview data from WordPress for any post type
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 The `usePreviewNode` hook provides an abstraction around getting preview data for any post type. When calling the `usePreviewNode` hook on an appropriate preview page, the hook will ensure authorization, make a request to determine the post type, then make a subsequent request to retrieve the proper preview data. When using 0.7.2 of FaustWP or later, preview data will be retrieved with one request.
 
 The `usePreviewNode` hook will return an object with the following properties:
@@ -78,7 +82,7 @@ export default function Preview() {
           <h1>{event.title()}</h1>
           <p>{event.content()}</p>
         </>
-      )
+      );
     }
     // Add additional custom post types here as needed
     default: {

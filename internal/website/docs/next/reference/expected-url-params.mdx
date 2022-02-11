@@ -29,7 +29,7 @@ For example, say you have a page:
 Since `[postSlug]` is one of the params we look for, you can use the `usePost()` hook without any arguments and it will understand that it needs to get a post using the value stored in the `postSlug` param!
 
 ```tsx title=/src/pages/posts/[postSlug].tsx {6}
-import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { client, getNextStaticProps } from '@faustjs/next';
 import { GetStaticPropsContext } from 'next';
 
 export default function Page() {
@@ -48,7 +48,7 @@ export default function Page() {
 The same can be done for `[postId]` only this time it will make a request using the `postId` param to get a post by ID.
 
 ```tsx title=/src/pages/posts/[postId].tsx {6}
-import { client, getNextStaticProps } from '@wpengine/headless-next';
+import { client, getNextStaticProps } from '@faustjs/next';
 import { GetStaticPropsContext } from 'next';
 
 export default function Page() {

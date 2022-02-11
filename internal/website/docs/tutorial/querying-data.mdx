@@ -19,8 +19,8 @@ The client we created in the previous tutorial gives us access to helpful [React
 Let's use the [`usePosts`](../next/reference/hooks/usePosts) hook to get the latest posts from your headless WordPress site.
 
 ```tsx title=pages/posts.tsx {1,5-6}
-import { client } from '../client';
-import Post from '../components/post';
+import { client } from 'client';
+import Post from 'components/post';
 
 export default function PostsPage() {
   const { usePosts } = client;
@@ -40,7 +40,7 @@ export default function PostsPage() {
 Let's also update the `Post` component to accept a `post` prop:
 
 ```tsx title=components/post.tsx {1,4,8}
-import { Post as PostType } from '../client';
+import { Post as PostType } from 'client';
 
 export interface PostProps {
   post: PostType;
@@ -69,8 +69,8 @@ post.title({ format: PostObjectFieldFormatEnum.RAW });
 Let's go back to the `pages/posts.tsx` component and hook up the data we're fetching to the `Post` component:
 
 ```tsx title=pages/posts.tsx {12}
-import { client } from '../client';
-import Post from '../components/post';
+import { client } from 'client';
+import Post from 'components/post';
 
 export default function PostsPage() {
   const { usePosts } = client;
@@ -103,8 +103,8 @@ That is where the [`useQuery`](../next/reference/hooks/gqty-hooks) hook comes in
 Let's display the site title and description using the `useQuery` hook.
 
 ```tsx title=pages/posts.tsx {5,10,11}
-import { client } from '../client';
-import Post from '../components/post';
+import { client } from 'client';
+import Post from 'components/post';
 
 export default function PostsPage() {
   const { usePosts, useQuery } = client;

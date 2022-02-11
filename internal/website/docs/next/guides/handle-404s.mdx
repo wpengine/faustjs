@@ -4,6 +4,10 @@ title: Handling 404s with is404
 description: Use a built-in Faust.js function to automatically determine if a page is a 404
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 # Handling 404s with is404
 
 With Next.js, you can return `{ notFound: true }` from `getServerSideProps` or `getStaticProps`, which will signal to Next.js that you want to send a `404 Not Found` response. When building a Headless WordPress site, you want to send a 404 in the following conditions:
@@ -41,7 +45,7 @@ import { getNextStaticProps, is404 } from '@faust/next';
 import { client } from 'client';
 
 export default function Page() {
-    return <></>;
+  return <></>;
 }
 
 export async function getStaticProps(context: GetStaticPropsContext) {
