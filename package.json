@@ -40,9 +40,7 @@
     "release": "npm run build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.17.0",
     "rimraf": "^3.0.2"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.17.0"
   }
 }
