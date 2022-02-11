@@ -34,7 +34,6 @@
   "scripts": {
     "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "dev": "npm run ts:watch",
-    "dev-lerna": "npm run dev",
     "clean": "rimraf dist",
     "package": "node ../../scripts/package.js",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
