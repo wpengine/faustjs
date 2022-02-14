@@ -218,12 +218,12 @@ The `<FaustProvider>` is a [Higher-Order Component](https://reactjs.org/docs/hig
 Replace the existing `pages/_app.tsx` file contents with the following:
 
 ```tsx title=pages/_app.tsx
-import '../faust.config';
-import '../styles/globals.css';
+import 'faust.config';
+import 'styles/globals.css';
 
 import type { AppProps /*, AppContext */ } from 'next/app';
 import { FaustProvider } from '@faustjs/next';
-import { client } from '../client';
+import { client } from 'client';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

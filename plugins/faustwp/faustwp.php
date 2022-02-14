@@ -9,7 +9,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: faustwp
  * Domain Path: /languages
- * Version: 0.7.3
+ * Version: 0.7.4
  * Requires PHP: 7.2
  * Requires at least: 5.7
  *
@@ -17,8 +17,6 @@
  */
 
 namespace WPE\FaustWP;
-
-use function WPE\FaustWP\Settings\is_events_enabled;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -47,7 +45,3 @@ require FAUSTWP_DIR . '/includes/rest/callbacks.php';
 require FAUSTWP_DIR . '/includes/settings/callbacks.php';
 require FAUSTWP_DIR . '/includes/updates/upgrade-database.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
-
-if ( is_events_enabled() ) {
-	require FAUSTWP_DIR . '/includes/events/callbacks.php';
-}

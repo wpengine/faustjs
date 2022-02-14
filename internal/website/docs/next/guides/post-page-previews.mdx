@@ -4,6 +4,10 @@ title: Setting Up Post and Page Previews
 description: View WordPress preview post/page content on your headless frontend with Faust.js
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 Faust.js supports page and post previews, allowing you to view your WordPress content on the headless frontend as drafts or even before publishing.
 
 ## Set Your Headless Secret
@@ -37,7 +41,7 @@ Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/
 
 You'll need to import it at the top of your `_app.tsx` file to ensure the `config` is set, and your Faust.js app initializes appropriately.
 
-```tsx title=_app.tsx {1}
+```tsx title=src/pages/_app.tsx {1}
 import 'faust.config';
 import { FaustProvider } from '@faustjs/next';
 import { client } from 'client';
@@ -70,12 +74,11 @@ export default apiRouter;
 With your headless secret set and the `authorizeHandler` ready to handle requests, you can now create a Next.js [page](https://nextjs.org/docs/basic-features/pages) for previews. Create a file at `/src/pages/preview.tsx` with the following:
 
 > **NOTE**: The `usePreviewNode` was introduced in `v0.15.1` and replaces the `usePreview` hook.
-From now on you should be using this hook for showing preview content.
-
+> From now on you should be using this hook for showing preview content.
 
 ```tsx title=src/pages/preview.tsx
-import { PageComponent } from './[...pageUri]';
-import { PostComponent } from './posts/[postSlug]';
+import { PageComponent } from 'pages/[...pageUri]';
+import { PostComponent } from 'pages/posts/[postSlug]';
 import type { Page, Post } from 'client';
 import { client } from 'client';
 
@@ -122,10 +125,10 @@ From there, we can make a determination if the result is a page or post, and ren
 ```tsx
 switch (typeName) {
   case 'Page': {
-    return <PageComponent page={node as Page} />
+    return <PageComponent page={node as Page} />;
   }
   case 'Post': {
-    return <PostComponent post={node as Post} />
+    return <PostComponent post={node as Post} />;
   }
   // Add custom post types here as needed
   default: {
@@ -156,7 +159,6 @@ Clicking on **Preview in new tab** should take you to your post preview page wit
   alt="Post preview on the frontend in Next.js"
 />
 
-
 > **NOTE**: If you are having problems viewing Custom Post Type (CPT) previews using the above example,
-you need to make sure you have installed the latest version of the WPGraphQL plugin (> v1.6.11).
-It especially contains a bug fix when the draft previews query returns null for CPTs without revisions.
+> you need to make sure you have installed the latest version of the WPGraphQL plugin (> v1.6.11).
+> It especially contains a bug fix when the draft previews query returns null for CPTs without revisions.

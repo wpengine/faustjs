@@ -4,6 +4,10 @@ title: Authentication
 description: Use Faust.js' built-in authentication strategies to authenticate users from your WordPress backend
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 Authentication can be a cumbersome process when building headless WordPress sites. Thankfully, Faust.js takes care of all your authentication needs in your Next.js application.
 
 ## How It Works
@@ -220,7 +224,7 @@ export default function Page() {
 
 Requests using the above methodology will be un-authenticated.
 
-To make authenticated requests, use the `auth` property exported from the `client`. This  property is essentially a replica of the `client`, except every request gets called with an access token:
+To make authenticated requests, use the `auth` property exported from the `client`. This property is essentially a replica of the `client`, except every request gets called with an access token:
 
 ```TSX {1,4,5}
 import { client } from 'client';

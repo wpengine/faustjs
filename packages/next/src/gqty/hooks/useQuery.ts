@@ -1,5 +1,7 @@
 import type { RequiredSchema } from '@faustjs/react';
 import type { NextClientHooks, UseClient } from '.';
+import { useCheckFaustContext } from './useCheckFaustContext.js';
+import { FaustContext } from '../client.js';
 
 export function create<
   Schema extends RequiredSchema,
@@ -13,6 +15,7 @@ export function create<
   useClient: UseClient<Schema, ObjectTypesNames, ObjectTypes>,
 ): NextClientHooks<Schema>['useQuery'] {
   return (...args) => {
+    useCheckFaustContext(FaustContext);
     return useClient().useQuery(...args);
   };
 }

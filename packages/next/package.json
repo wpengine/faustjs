@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/next",
-  "version": "0.15.1",
+  "version": "0.15.3",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/cjs/export/index.js",
   "module": "dist/mjs/export/index.js",
@@ -38,7 +38,6 @@
   "scripts": {
     "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "dev": "npm run ts:watch",
-    "dev-lerna": "npm run dev",
     "clean": "rimraf dist",
     "package": "node ../../scripts/package.js",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",

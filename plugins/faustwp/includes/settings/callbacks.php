@@ -273,6 +273,17 @@ function display_enable_disable_fields() {
 
 	?>
 	<fieldset>
+		<legend style="margin-bottom:5px;padding:0;">
+			<p class="description">
+				<?php
+				printf(
+				/* translators: %s: Documentation URL. */
+					wp_kses_post( __( 'Learn more about <a href="%s" target="_blank" rel="noopener noreferrer">features</a>.', 'faustwp' ) ),
+					'https://faustjs.org/docs/faustwp/settings'
+				);
+				?>
+			</p>
+		</legend>
 		<label for="disable_theme">
 			<input type="checkbox" id="disable_theme" name="faustwp_settings[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
 			<?php esc_html_e( 'Disable WordPress theme admin pages', 'faustwp' ); ?>

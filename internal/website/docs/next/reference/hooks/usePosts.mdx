@@ -4,6 +4,10 @@ title: usePosts Hook
 description: The usePosts hook provides a standard way to get multiple WordPress posts
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 The `usePosts` hook provides the standard interface for getting a list of posts from your Headless WordPress API. It also allows you to pass-in no arguments. When you do not pass arguments into `usePosts` it will attempt to look at the URL params in order to determine how to get a list of posts from your Headless WordPress API. In Next.js this means you will need to name your post page file in a particular way in order to get the proper URL params. Below are the possible names that will work automatically with Faust.js:
 
 1. If `categoryId` is found in the URL params, a request is made to retrieve a list of posts for a `category` by `ID`
