@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, claygriffiths, joefusco, markkelnar, mi
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 5.9
-Stable tag: 0.7.3
+Stable tag: 0.7.4
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,14 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.4 =
+
+### Patch Changes
+
+- 1dcd987: Removes unused event callbacks for rewrite rule and post status changes. The `is_events_enabled()` function has also been removed.
+- 5c69b68: ConditionalTags has been deprecated as it was introduced in an older version of the framework when routing was done from the NextTemplateLoader. Now that we are using Next.js pages for routing, conditionalTags are no longer needed.
+- 7d156ba: Add a documentation link that explains "Features" checkbox settings in more detail
+
 = 0.7.3 =
 
 ### Patch Changes
@@ -42,11 +50,5 @@ That's it! For more information on getting started with headless WordPress, see 
 
 - 4cff9dc: feat: add link to Settings page on Installed Plugins list page
 - 3c1280b: Adds the GraphQL `Type` name to the preview URL to avoid making a request to get the content type in the Faust.js packages
-
-= 0.7.1 =
-
-### Patch Changes
-
-- f948c04: Fixed plugin icon SVG display issue in Chrome [#683](https://github.com/wpengine/faustjs/pull/683)
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
