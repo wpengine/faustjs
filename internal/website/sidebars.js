@@ -97,7 +97,7 @@ module.exports = {
             },
             {
               type: 'doc',
-              label: 'Testing With Jest',
+              label: 'Testing with Jest',
               id: 'next/guides/testing-with-jest',
             },
             {
