@@ -97,6 +97,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Testing With Jest',
+              id: 'next/guides/testing-with-jest',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },

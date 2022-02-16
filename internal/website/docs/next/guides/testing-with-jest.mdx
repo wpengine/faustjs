@@ -1,0 +1,72 @@
+---
+slug: /next/guides/testing-with-jest
+title: Testing With Jest
+description: How to test Faust.js apps with Jest
+---
+
+We recommend using Jest to test Faust.js apps. [Jest](https://jestjs.io/) is a JavaScript testing framework that uses minimal config, and provides a simple API for writing tests.
+
+## Setup
+
+The fastest way to get started is to clone our Faust.js example in the [Getting Started](/docs/next/getting-started) section. We'll assume you are starting from there. Now, let's setup Jest!
+
+### Install Dependencies
+
+Our Getting Started example uses Next.js 12, which has a built in configuration for Jest.
+
+To setup Jest, install the following dependencies:
+
+```bash
+npm install --save-dev jest@next jest-environment-jsdom @testing-library/react @testing-library/jest-dom
+```
+
+:::note
+
+We are installing `jest` at the `next` tag. Faust.js uses ES modules under the hood, which is only supported in `jest@next` currently.
+
+:::
+
+### Create The Jest Config File
+
+In your root directory, create a `jest.config.js` file with the following contents:
+
+```js
+// jest.config.js
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: './',
+});
+
+// Add any custom config to be passed to Jest
+const customJestConfig = {
+  // Add more setup options before each test is run
+  // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
+  moduleDirectories: ['node_modules', '<rootDir>/'],
+  testEnvironment: 'jest-environment-jsdom',
+};
+
+// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+module.exports = createJestConfig(customJestConfig);
+```
+
+### Create Test Script
+
+Finally, add a script in your `package.json` file to run Jest tests:
+
+```json title="package.json" {4}
+{
+  // ... Rest of package.json
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+
+## Testing
+
+Let's now create a basic test for
+
+### Mocking the GQty Client
