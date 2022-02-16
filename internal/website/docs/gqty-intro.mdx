@@ -1,0 +1,81 @@
+---
+slug: /gqty-intro
+title: Introduction to GQty
+description: Introduction to GQty in Faust.js
+---
+
+Faust.js uses GQty under the hood for its GraphQL client.
+
+GQty is a new approach to a GraphQL client. Instead of defining queries by hand, GQty generates queries for you at runtime based on the data your app consumes. Take the following example:
+
+Your app consumes the `title` and `description` from `generalSettings`:
+
+```tsx title="Your App"
+import { client } from 'client'
+
+export default function App() {
+    const query = client.useQuery()
+
+    return(
+        <h1>{query.generalSettings.title}</h1>
+        <p>{query.generalSettings.description}</p>
+    )
+}
+```
+
+The following query is automatically generated and requested for you:
+
+```graphql
+query {
+  generalSettings {
+    title
+    description
+  }
+}
+```
+
+## React Hooks
+
+GQty has React Hooks for fetching data, mutations, subscriptions, and more:
+
+- [useQuery](https://gqty.dev/docs/react/fetching-data#usequery)
+- [usePaginatedQuery](https://gqty.dev/docs/react/fetching-data#usepaginatedquery)
+- [useTransactionQuery](https://gqty.dev/docs/react/fetching-data#usetransactionquery)
+- [useLazyQuery](https://gqty.dev/docs/react/fetching-data#uselazyquery)
+- [useRefetch](https://gqty.dev/docs/react/fetching-data#userefetch)
+- [useMutation](https://gqty.dev/docs/react/mutations#usemutation)
+- [useSubscription](https://gqty.dev/docs/react/subscriptions#usesubscription)
+
+Faust.js exports these hooks from the `client`. You can use them in your React components like so:
+
+```tsx
+import { client } from 'client';
+
+export default function App() {
+  const {
+    useQuery,
+    usePaginatedQuery,
+    useTransactionQuery,
+    useLazyQuery,
+    useRefetch,
+    useMutation,
+    useSubscription,
+  } = client;
+
+  return(
+    ...
+  )
+}
+```
+
+## Further Reading
+
+We recommend reading the ["What Is & Why"](https://gqty.dev/docs/intro) and ["How It Works"](https://gqty.dev/docs/intro/how-it-works) docs to get a better picture of how GQty works.
+
+Additionally, the following docs may be helpful:
+
+- [Features](https://gqty.dev/docs/intro/features)
+- [Fetching Data in React](https://gqty.dev/docs/react/fetching-data)
+- [react Suspense & Usage Without](https://gqty.dev/docs/react/suspense)
+- [Helper Functions](https://gqty.dev/docs/client/helper-functions)
+- [Troubleshooting](https://gqty.dev/docs/react/troubleshooting)

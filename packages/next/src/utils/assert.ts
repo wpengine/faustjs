@@ -1,7 +1,7 @@
-import isArray from 'lodash/isArray';
-import isObject from 'lodash/isObject';
-import isString from 'lodash/isString';
-import trim from 'lodash/trim';
+import isArray from 'lodash/isArray.js';
+import isObject from 'lodash/isObject.js';
+import isString from 'lodash/isString.js';
+import trim from 'lodash/trim.js';
 
 export type HasObject = Record<string, string | string[] | undefined>;
 

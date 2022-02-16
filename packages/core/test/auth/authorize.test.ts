@@ -1,24 +1,19 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { trim } from 'lodash';
-import {
-  getAccessToken,
-  getAccessTokenExpiration,
-  headlessConfig,
-  setAccessToken,
-} from '../../src';
+import { config } from '../../src/config';
 import * as authorize from '../../src/auth/authorize';
 
 describe('auth/ensureAuthorization', () => {
   test('ensureAuthorization() returns true when an access token is successfully fetched', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'test',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
     });
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 200,
       body: JSON.stringify({
         accessToken: 'at',
@@ -33,18 +28,18 @@ describe('auth/ensureAuthorization', () => {
   });
 
   test('ensureAuthorization() return a redirect key when the token cannot be fetched', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
     });
 
-    const { wpUrl } = headlessConfig();
+    const { wpUrl } = config();
 
     const redirectUri = 'http://localhost:3000';
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
     });
 
@@ -60,18 +55,18 @@ describe('auth/ensureAuthorization', () => {
   });
 
   test('ensureAuthorization() returns a login key when the token cannot be fetched', async () => {
-    headlessConfig({
+    config({
       wpUrl: 'http://test.local',
       authType: 'redirect',
       loginPagePath: '/login',
       apiClientSecret: 'secret',
     });
 
-    const { loginPagePath } = headlessConfig();
+    const { loginPagePath } = config();
 
     const loginPageUri = `/${trim(loginPagePath, '/')}`;
 
-    fetchMock.get('/api/auth/wpe-headless', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
     });
 
