@@ -125,6 +125,72 @@ function register_settings_fields() {
 	);
 }
 
+add_filter( 'sanitize_option_faustwp_settings', __NAMESPACE__ . '\\sanitize_faustwp_settings', 10, 2 );
+/**
+ * Validates and sanitizes FaustWP settings.
+ *
+ * The plugin settings page will display any relevant errors when
+ * rejecting invalid settings values. Updates to FaustWP settings that
+ * are not initiated from the plugin settings page will not return or
+ * display errors, but will still reject invalid values.
+ *
+ * Once settings are validated, the sanitized values are returned.
+ *
+ * @param array  $settings FaustWP settings array to validate and sanitize.
+ * @param string $option   WP option name where settings are saved.
+ * @return array Sanitized settings.
+ */
+function sanitize_faustwp_settings( $settings, $option ) {
+	$errors = null;
+
+	foreach ( $settings as $name => $value ) {
+		switch ( $name ) {
+			case 'frontend_uri':
+				if ( '' === $value || preg_match( '#http(s?)://(.+)#i', $value ) ) {
+					$settings[ $name ] = esc_url_raw( $value );
+				} else {
+					$errors[ $name ]   = __( 'The Front-end site URL you entered did not appear to be a valid URL. Please enter a valid URL.', 'faustwp' );
+					$settings[ $name ] = faustwp_get_setting( $name );
+				}
+				break;
+
+			case 'secret_key':
+				if ( ! wp_is_uuid( $value, 4 ) ) {
+					$errors[ $name ]   = __( 'The secret key you entered did not appear to be a valid UUID.', 'faustwp' );
+					$settings[ $name ] = get_secret_key();
+				}
+				break;
+
+			case 'menu_locations':
+				$settings[ $name ] = esc_html( $value );
+				break;
+
+			case 'enable_redirects':
+			case 'enable_rewrites':
+			case 'disable_theme':
+			case 'enable_image_source':
+				if ( $value ) {
+					$settings[ $name ] = '1';
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
+
+			default:
+				// Remove any settings we don't expect.
+				unset( $settings[ $name ] );
+		}
+	}
+
+	if ( null !== $errors && is_array( $errors ) ) {
+		foreach ( $errors as $name => $error ) {
+			add_settings_error( $option, "faustwp_invalid_{$name}", $error );
+		}
+	}
+
+	return $settings;
+}
+
 add_action( 'load-settings_page_faustwp-settings', __NAMESPACE__ . '\\handle_regenerate_secret_key', 5 );
 /**
  * Callback for WordPress 'load-{$page_hook}' action.
