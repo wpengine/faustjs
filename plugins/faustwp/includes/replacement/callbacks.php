@@ -122,7 +122,7 @@ function post_preview_link( $link, $post ) {
 
 		$parsed_link_query = wp_parse_url( $link, PHP_URL_QUERY );
 		$args              = wp_parse_args( $parsed_link_query );
-		$preview_id = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
+		$preview_id        = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
 
 		// Remove ?p=xx&preview=true from link temporarily.
 		$link = remove_query_arg(
