@@ -1,0 +1,93 @@
+---
+slug: /next/reference/expected-url-params
+title: Expected URL Params
+description: Faust.js has built-in URL params that it expects to be present in the URL, making it easier to get data from Headless WordPress.
+---
+
+When querying WordPress for data you are often going to use pieces of the current URL to determine what type of request to make. For example, if you have a list of posts in your site at `/posts` and your `Hello World` post can be found at `/posts/hello-world`, then the assumption is your `Hello World` post slug is `hello-world`. However, you still need a way to get the `hello-world` value from the URL in order to make a requests for the post. With Next.js you do this using `params` of [Static Props Context](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [Server Side Props Context](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering). Faust.js takes this one step further and has some predefined param names that you can use in order to have Faust.js find the URL params and make requests on your behalf. A lot of this is documented in our [hooks reference](./hooks). In general our hooks work based on an expected URL param of the content type and either `Id`, `Slug`, or `Uri` at the end. Below is the interface we look for:
+
+```tsx
+interface Params {
+  postId: string;
+  postSlug: string;
+  postUri: string[];
+  pageId: string;
+  pageUri: string[];
+  categoryId: string;
+  categorySlug: string;
+}
+```
+
+This means by building your [Next.js pages](https://nextjs.org/docs/basic-features/pages) with these params in mind, our hooks will just work without having to specify any IDs, slugs, etc.
+
+For example, say you have a page:
+
+```
+/src/pages/posts/[postSlug].tsx
+```
+
+Since `[postSlug]` is one of the params we look for, you can use the `usePost()` hook without any arguments and it will understand that it needs to get a post using the value stored in the `postSlug` param!
+
+```tsx title=/src/pages/posts/[postSlug].tsx {6}
+import { client, getNextStaticProps } from '@faustjs/next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost();
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+```
+
+The same can be done for `[postId]` only this time it will make a request using the `postId` param to get a post by ID.
+
+```tsx title=/src/pages/posts/[postId].tsx {6}
+import { client, getNextStaticProps } from '@faustjs/next';
+import { GetStaticPropsContext } from 'next';
+
+export default function Page() {
+  const { usePost } = client();
+  const post = usePost();
+
+  return (
+    <article>
+      <h1>{post?.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post?.content() }} />
+    </article>
+  );
+}
+```
+
+So your code doesn't change, but your file name does. Based on what you name the file, `usePost()` will make the proper request for data. This works with `usePage()` and `usePosts()` as well. So for `usePosts()` you might have something like the following:
+
+```tsx title=/src/pages/category/[categorySlug]/index.tsx {6}
+export default function Page() {
+  const { usePosts } = client();
+  const posts = usePosts();
+
+  return (
+    <>
+      {posts.nodes?.map((post) => (
+        <div key={post.id ?? ''}>
+          <div>
+            <Heading level={postTitleLevel} className={styles.title}>
+              <Link href={`/posts/${post.slug}`}>
+                <a>{post.title()}</a>
+              </Link>
+            </Heading>
+            <div dangerouslySetInnerHTML={{ __html: post.excerpt() ?? '' }} />
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+```
+
+Notice the above file is `index.tsx`, but `[categorySlug]` is used in the URL. So the `usePosts()` hook will make a request using the `categorySlug` param to get posts for the category based on the value stored in `categorySlug`.

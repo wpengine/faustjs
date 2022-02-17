@@ -1,0 +1,117 @@
+<?php
+/**
+ * Settings functions.
+ *
+ * @package FaustWP
+ */
+
+namespace WPE\FaustWP\Settings;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Determine if redirects are enabled.
+ *
+ * @return bool True if redirects are enabled, false if else.
+ */
+function is_redirects_enabled() {
+	return '1' === faustwp_get_setting( 'enable_redirects' );
+}
+
+/**
+ * Determine if rewrites are enabled.
+ *
+ * @return bool True if rewrites are enabled, false if else.
+ */
+function is_rewrites_enabled() {
+	return '1' === faustwp_get_setting( 'enable_rewrites' );
+}
+
+/**
+ * Determine if themes are disabled.
+ *
+ * @return bool True if themes are disabled, false if else.
+ */
+function is_themes_disabled() {
+	return '1' === faustwp_get_setting( 'disable_theme' );
+}
+
+/**
+ * Determine if sourcing images from WP domain is enabled.
+ *
+ * @return bool True if image sources from WP are enabled, false if else.
+ */
+function is_image_source_replacement_enabled() {
+	return '1' === faustwp_get_setting( 'enable_image_source' );
+}
+
+
+/**
+ * Get the secret key setting.
+ *
+ * @return string The secret key.
+ */
+function get_secret_key() {
+	return faustwp_get_setting( 'secret_key', '' );
+}
+
+/**
+ * Get a FaustWP setting by name.
+ *
+ * @param string $name    The setting name.
+ * @param mixed  $default Optional setting value. Default false.
+ *
+ * @return mixed The setting value.
+ */
+function faustwp_get_setting( $name, $default = false ) {
+	$value    = $default;
+	$settings = faustwp_get_settings();
+
+	if ( isset( $settings[ $name ] ) ) {
+		$value = $settings[ $name ];
+	}
+
+	/**
+	 * Filter 'faustwp_get_setting'.
+	 *
+	 * @param mixed  $value   The setting value.
+	 * @param string $name    The setting name.
+	 * @param mixed  $default Optional setting value.
+	 */
+	return apply_filters( 'faustwp_get_setting', $value, $name, $default );
+}
+
+/**
+ * Update a FaustWP setting value.
+ *
+ * @link https://developer.wordpress.org/reference/functions/update_option/
+ *
+ * @param string $name  The setting name.
+ * @param mixed  $value The setting value.
+ *
+ * @return void
+ */
+function faustwp_update_setting( $name, $value ) {
+	$settings          = faustwp_get_settings();
+	$settings[ $name ] = $value;
+
+	update_option( 'faustwp_settings', $settings );
+}
+
+/**
+ * Get all FaustWP settings.
+ *
+ * @return array An array of settings.
+ */
+function faustwp_get_settings() {
+	$settings = get_option( 'faustwp_settings', array() );
+
+	/**
+	 * Filter 'faustwp_get_settings'.
+	 *
+	 * @param array $settings Array of plugin settings.
+	 */
+	return apply_filters( 'faustwp_get_settings', $settings );
+}

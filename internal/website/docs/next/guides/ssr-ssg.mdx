@@ -1,0 +1,257 @@
+---
+slug: /next/guides/ssr-ssg
+title: Server-side Rendering & Static Generation
+description: Use Faust.js and Next.js to statically generate your Headless WordPress site
+---
+
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
+Next.js supports Server-side Rendering (SSR) and Static Site Generation (SSG) out of the box for [pages](https://nextjs.org/docs/basic-features/pages). However, with Next.js you are responsible for defining `getStaticProps` or `getServersideProps`, fetching the necessary data, and providing it on `props`. Faust.js provides two functions that can be used for SSG and SSR respectively called `getNextStaticProps` and `getNextServerSideProps`.
+
+## SSG Using `getNextStaticProps`
+
+This helper function lets you build a static site with your WordPress data. The function should be returned from `getStaticProps`:
+
+```tsx
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+The function accepts two arguments: the static props context, and an object with a `Page` key and `client` key. This should be your Next.js page component:
+
+```tsx {2,5,20,21}
+import { GetStaticPropsContext } from 'next';
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function MyPage() {
+  const { usePosts } = client;
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+The reason `MyPage` and `client` are passed to `getNextStaticProps` is because under the hood Faust.js perform a skeleton render of the page component to know what data to fetch and what queries to build. The flow is as follows:
+
+1. The passed in `client` is used for all requests.
+1. A skeleton render of the `Page` component is invoked, with `next/router` context and the proper `client` for making requests provided.
+1. After rendering, the `client` cache is serialized and stored on `props`.
+1. The `props` are returned in the standard Next.js format, with `revalidate: 1`
+
+This allows the developer to not have to think about batching/constructing queries, or data fetching. You are able to write your page as if you will be using Client-side Rendering (CSR). Then, you add the `getStaticProps` function above and can take advantage of SSG!
+
+### How To Handle `getStaticPaths`
+
+Next.js supports [SSG with `getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) as well. This function is used to build a list of paths that can be used to statically generate your site. This function should be used when you have a dynamic page that needs to be statically generated (e.g. `[postSlug].tsx`). In the `getStaticPaths` function you have the option to return the paths that you have several options that inform Next.js how you want to statically generate your pages. Consider the following examples:
+
+#### Statically Generate All Your Pages Upon Request
+
+If you don't know exactly how you want to statically generate your site, a good option for `getStaticPaths` is to inform Next.js not to generate any HTML at build time, but to generated it on-the-fly as new requests come in. You can do this as follows:
+
+```tsx title=src/pages/posts/[postSlug]/index.tsx
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+```
+
+The above code will tell Next.js not to generate any pages up front. Then, as requests come in they will be generated server-side and stored for subsequent requests. Read more about [`fallback: 'blocking'`](https://nextjs.org/docs/basic-features/data-fetching#fallback-blocking).
+
+#### Statically Generate **Some** Of Your Pages At Build Time Based On A Query
+
+Maybe you want to generate a specific set of posts during build time. Perhaps you want to generate the most recent posts, or maybe you want to generate posts that receive a lot of traffic. You can do this by providing paths to Next.js that are based on a query as follows:
+
+```tsx title=src/pages/posts/[postSlug]/index.tsx
+import { client } from 'client';
+
+export async function getStaticPaths() {
+  const values = await client.client.inlineResolved(() => {
+    return client.client.query
+      .posts({
+        first: 5,
+      })
+      ?.nodes?.map((node) => node?.uri);
+  });
+  const paths = [];
+
+  if (Array.isArray(values)) {
+    paths.push(
+      ...values
+        .filter((value) => {
+          return typeof value === 'string';
+        }),
+    );
+  }
+
+  return {
+    paths,
+    fallback: 'blocking',
+  };
+```
+
+> **NOTE**: The code above assumes you have your permalink structure set to `/posts/%postname%/` in WordPress. You can add additional logic here to format the proper URL if that is not the case.
+
+The code above will perform an inline query to WordPress in order to get the 5 most recent posts. Then it will create a list of paths based on the post URIs. In this case we are not rendering all the post pages up front, so some will be dynamically generated on-the-fly using the `fallback: 'blocking'` feature in Next.js.
+
+The above scenarios are most common, but there are other options for [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) that might be useful depending upon your needs.
+
+## SSR Using `getNextServerSideProps`
+
+This helper function lets you server side render your page with WordPress data. The function should be returned from `getServerSideProps`:
+
+```tsx
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+The function accepts two arguments: the server side props context, and an object with a `Page` key. This should be your Next.js page component:
+
+```tsx {2,5,20,21}
+import { GetServerSidePropsContext } from 'next';
+import { getNextServerSideProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function MyPage() {
+  const { usePosts } = client;
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+As mentioned in `getNextStaticProps`, the reason `MyPage` and `client` are passed to `getNextServerSideProps` is because under the hood Faust.js performs a skeleton render of the page component to know what data to fetch and what queries to build. This allows the developer to not have to think about batching/constructing queries, or data fetching.
+
+## Rehydration Using `<FaustProvider />`
+
+In order to properly facilitate SSR and SSG you must use the built-in component published in `faustjs/next` called `FaustProvider`. This component performs the following:
+
+1. Sets the `client` to be used with every request for WordPress data.
+1. Hydrates the `client` cache using the prepared cache snapshot from `getNextServerSideProps` or `getNextStaticProps`.
+1. Renders its `children`
+
+### Adding `<FaustProvider />` to your `_app.tsx`
+
+Using the `FaustProvider` component us easy, and if you are using an example `next` project published by Faust.js it will happen automatically. If you are adding `Faust.js` to your project, you will want to put `FaustProvider` at the top of your component tree. Typically in a Next.js app this means in your `pages/_app.tsx` file as follows:
+
+```tsx title=src/pages/_app.tsx {9,11}
+import 'faust.config';
+import { FaustProvider } from '@faustjs/next';
+import { client } from 'client';
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <FaustProvider client={client} pageProps={pageProps}>
+        <Component {...pageProps} />
+      </FaustProvider>
+    </>
+  );
+}
+```
+
+## Configuring Custom Page Props And ISR
+
+### Custom Page Props
+
+If you need to send custom props to your page you can do so in the configuration options for both `getNextServerSideProps` and `getNextStaticProps`. Below is some example code demonstrating how to do this.
+
+```tsx {2,5-9,14,26-28}
+import { GetStaticPropsContext } from 'next';
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+interface MyPageProps {
+  title: string;
+}
+
+export default function MyPage({ title }: MyPageProps) {
+  const { usePosts } = client;
+
+  return (
+    <>
+      <h2>{title}</h2>
+      {usePosts()?.nodes.map((post) => (
+        <li key={post.id}>{post.title()}</li>
+      ))}
+    </>
+  );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+    props: {
+      title: 'Recent Posts',
+    },
+  });
+}
+```
+
+You might want to use this to send props down based on calls to APIs you make outside of Faust.js.
+
+### Setting Up Incremental Static Regeneration (ISR)
+
+Next.js enables ISR with [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration) using a `revalidate` property. By default in Next.js ISR is disabled. Faust.js enables ISR, and by default it sets it to 15 minutes. What this means is your page will be cached for 15 minutes before being regenerated. [Read more on the Next.js site about ISR](https://nextjs.org/docs/basic-features/data-fetching#incremental-static-regeneration).
+
+With Faust.js you can configure ISR at both the page level and the global level. At the page level you can pass it along in the configuration options for `getNextStaticProps` as follows:
+
+```ts {4}
+return getNextStaticProps(context, {
+  Page: MyPage,
+  client,
+  revalidate: 60, // 60 seconds
+});
+```
+
+To configure ISR at a global level you can add the following code to your `faust.config`:
+
+```ts title=src/faust.config.js
+import { config as nextConfig } from '@faustjs/next';
+
+nextConfig({
+  revalidate: 60, // 60 seconds
+});
+```
+
+The code above will set the default ISR revalidate time for every page, and can be overridden on each page.

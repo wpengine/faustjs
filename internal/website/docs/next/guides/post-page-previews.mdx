@@ -1,0 +1,164 @@
+---
+slug: /next/guides/post-page-previews
+title: Setting Up Post and Page Previews
+description: View WordPress preview post/page content on your headless frontend with Faust.js
+---
+
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
+Faust.js supports page and post previews, allowing you to view your WordPress content on the headless frontend as drafts or even before publishing.
+
+## Set Your Headless Secret
+
+Your headless secret is a value that authenticates requests to WordPress. This secret enables you to view content that doesn't publish on your Next.js frontend.
+
+### Copy your Headless Secret
+
+Find your Headless Secre in **WP-Admin -> Settings -> Headless**. Copy this value:
+
+<img
+  src="/docs/img/headless-admin-secret.png"
+  alt="The FaustWP plugin admin interface with a red rectangle around the Secret Key field"
+/>
+
+### Add your Headless Secret to your `.env.local` File
+
+Add the `FAUSTWP_SECRET_KEY` key to your `.env.local` file with the headless secret as the value. Your `.env.local` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
+
+```bash title=.env.local {13}
+# Your WordPress site URL
+NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
+
+# Plugin secret found in WordPress Settings->Headless
+FAUSTWP_SECRET_KEY=xxxx
+```
+
+### Ensure you've created your `faust.config.js` file and are importing it in your `_app.tsx`
+
+Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/getting-started) Faust.js example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/main/examples/next/getting-started/src/faust.config.js) file will live in the `src` directory.
+
+You'll need to import it at the top of your `_app.tsx` file to ensure the `config` is set, and your Faust.js app initializes appropriately.
+
+```tsx title=src/pages/_app.tsx {1}
+import 'faust.config';
+import { FaustProvider } from '@faustjs/next';
+import { client } from 'client';
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <FaustProvider client={client} pageProps={pageProps}>
+        <Component {...pageProps} />
+      </FaustProvider>
+    </>
+  );
+}
+```
+
+## Create the Faust.js API Router
+
+Next, you will need to create the `apiRouter`. This sets up the Faust.js API endpoints needed to authenticate requests from WordPress. Create a page at `/src/pages/api/faust/[[...route]].ts` with the following:
+
+```ts
+import 'faust.config';
+import { apiRouter } from '@faustjs/core/api';
+
+export default apiRouter;
+```
+
+## Create your Preview Page
+
+With your headless secret set and the `authorizeHandler` ready to handle requests, you can now create a Next.js [page](https://nextjs.org/docs/basic-features/pages) for previews. Create a file at `/src/pages/preview.tsx` with the following:
+
+> **NOTE**: The `usePreviewNode` was introduced in `v0.15.1` and replaces the `usePreview` hook.
+> From now on you should be using this hook for showing preview content.
+
+```tsx title=src/pages/preview.tsx
+import { PageComponent } from 'pages/[...pageUri]';
+import { PostComponent } from 'pages/posts/[postSlug]';
+import type { Page, Post } from 'client';
+import { client } from 'client';
+
+export default function Preview() {
+  const { typeName, node } = client.auth.usePreviewNode();
+
+  if (client.useIsLoading() || node === undefined) {
+    return <p>loading...</p>;
+  }
+
+  if (node === null) {
+    return <p>Post not found</p>;
+  }
+
+  switch (typeName) {
+    case 'Page': {
+      return <PageComponent page={node as Page} />
+    }
+    case 'Post': {
+      return <PostComponent post={node as Post} />
+    }
+    // Add custom post types here as needed
+    default: {
+      throw new Error(`Unknown post type: ${typeName}`);
+    }
+  }
+}
+```
+
+Let's break down what is going on here:
+
+First, we are getting the `usePreviewNode` hook from the `auth` property of the `client` and we extract the typeName and node properties.
+
+```tsx
+const { typeName, node } = client.auth.usePreviewNode();
+```
+
+The `typeName` specifies the type of the node content (`Page`, `Post` or any `Custom Post Type`).
+The `node` on the other hand represents the actual data for that particular node content.
+Since Typescript cannot infer the type correctly (since it thinks that it's still a `Node` type), we need to cast it to the correct type before we pass it on as a property to the component.
+
+From there, we can make a determination if the result is a page or post, and render the appropriate component:
+
+```tsx
+switch (typeName) {
+  case 'Page': {
+    return <PageComponent page={node as Page} />;
+  }
+  case 'Post': {
+    return <PostComponent post={node as Post} />;
+  }
+  // Add custom post types here as needed
+  default: {
+    throw new Error(`Unknown post type: ${typeName}`);
+  }
+}
+```
+
+We abstract the page and post layouts into components to be reusable so there is no divergence between preview pages/posts and actual pages/posts.
+
+## Navigating to Preview Pages
+
+Start by logging into your WordPress Admin. For this example, we'll create a new post.
+
+So far, I've added a title and a simple line of text for the content. To view this post as a preview on your front end, click the **Preview** link (1). From there, click, **Preview in new tab** (2):
+
+<img
+  src="/docs/img/post-preview.png"
+  alt="WordPress post page using the Gutenberg editor with a red arrow to the preview and preview in new tab dropdowns"
+/>
+
+Notice the **Publish** button is also visible, meaning that you still need to publish the post. Therefore you can now view the post on the frontend without being authenticated.
+
+Clicking on **Preview in new tab** should take you to your post preview page with the current preview content:
+
+<img
+  src="/docs/img/post-preview-frontend.png"
+  alt="Post preview on the frontend in Next.js"
+/>
+
+> **NOTE**: If you are having problems viewing Custom Post Type (CPT) previews using the above example,
+> you need to make sure you have installed the latest version of the WPGraphQL plugin (> v1.6.11).
+> It especially contains a bug fix when the draft previews query returns null for CPTs without revisions.

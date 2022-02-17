@@ -2,14 +2,14 @@
 
 There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
-* [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
-* [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
-* Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
-* [Contribute bug fixes](/CONTRIBUTING.md)
+- [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
+- [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
+- Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
+- [Contribute bug fixes](/CONTRIBUTING.md)
 
 ## Project Structure
 
-- `/docs` - Documentation
+- `/internal/website` - faustjs.org
 - `/packages` - NPM packages
 - `/plugins` - WordPress Plugins
 
@@ -28,27 +28,28 @@ When switching git branch, run `npm run clean` from the root and then re-run `np
 
 As this is a monorepo, you will not be able to check out this repository into `wp-content/themes` or `wp-content/plugins`.
 
-Instead, you can create symlinks to the themes/plugins in this repository. Best of all, this will also sync your work
-across multiple local sites!
+Instead, you can create symlinks to the themes/plugins in this repository. Best of all, this will also sync your work across multiple local sites!
 
-#### WPE Headless Plugin
+#### FaustWP Plugin
 
 **Setup**
-To begin working with the WPE Headless WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
+To begin working with the FaustWP WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
 
 ```
-ln -s /path/to/faustjs/plugins/wpe-headless /path/to/wordpress/wp-content/plugins/wpe-headless
+ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/faustwp
 ```
 
 **PHP Code Sniffer**
 [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) is configured for the [WordPress code standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
-Install the composer packages from within `wpe-headless` directory if you haven't already.
+Install the composer packages from within `plugins/faustwp` directory if you haven't already.
+
 ```
 composer install
 ```
 
 Run the syntax check.
+
 ```
 composer phpcs
 ```
@@ -60,32 +61,35 @@ composer phpcs:fix
 ```
 
 **WordPress Unit Tests**
-To run WordPress unit tests, set up the test framework:
+
+To run WordPress unit tests, first create the Docker containers from the `plugins/faustwp` directory:
 
 ```
-/bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password
+docker-compose up -d
 ```
 
-If you connect to MySQL via a sock connection, you can run the following.
-```
-/bin/bash /path/to/faustjs/plugins/wpe-headless/tests/install-wp-tests.sh wpe_headless_tests db_name db_password localhost:/path/to/mysql/mysqld.sock
-```
-
-Install the composer packages from within `wpe-headless` directory if you haven't already.
-```
-composer install
-```
-
-Within the `wpe-headless` directory, run `phpunit` either directly or as a composer command:
+Once the containers are up, set up the test framework:
 
 ```
-vendor/bin/phpunit
+docker-compose exec wordpress init-testing-environment.sh
 ```
 
-or
+Install and activate WP GraphQL:
 
 ```
-composer test
+docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp plugin install wp-graphql --activate
+```
+
+Run the unit tests:
+
+```
+docker-compose exec -w /var/www/html/wp-content/plugins/faustwp wordpress composer test
+```
+
+Finally, to remove the containers:
+
+```
+docker-compose down
 ```
 
 ## End-2-End Testing
@@ -94,66 +98,129 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 
 ### 1. Environment Setup
 
+1. Install [Docker](https://www.docker.com/get-started).
 1. Install [Composer](https://getcomposer.org/).
-    - Within the `plugins/wpe-headless` directory, run `composer install`.
 1. Install [Google Chrome](https://www.google.com/chrome/).
 1. Install [Chromedriver](https://chromedriver.chromium.org/downloads)
-    - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
-    - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
-      `mv chromedriver /usr/local/bin`
-    - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
-    - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
+   - The major version will need to match your Google Chrome [version](https://www.whatismybrowser.com/detect/what-version-of-chrome-do-i-have). See [Chromedriver Version Selection](https://chromedriver.chromium.org/downloads/version-selection).
+   - Unzip the chromedriver zip file and move `chromedriver` application into the `/usr/local/bin` directory.
+     `mv chromedriver /usr/local/bin`
+   - In shell, run `chromedriver --version`. _Note: If you are using OS X, it may prevent this program from opening. Open "Security & Privacy" and allow chromedriver_.
+   - Run `chromedriver --version` again. _Note: On OS X, you may be prompted for a final time, click "Open"_. When you can see the version, chromedriver is ready.
 
-### 2. Headless Site Setup
-1. From within the headless site `examples/getting-started` copy `.env.test.sample` to `.env.test`.
-    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file; else, you can adjust the environment variables as needed.
+### 2. Front-end Setup
 
-### 3. WPE Headless Setup
-1. Move into the WPE Headless plugin directory `plugins/wpe-headless`.
+1. Create the following `.env.test` in `examples/next/getting-started`.
+
+```
+# Your WordPress site URL
+NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
+
+# Plugin secret found in WordPress Settings->Headless
+FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001
+```
+
+2. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
+
+### 3. WordPress Setup
+
+1. Leave the node server running and open a new shell.
+1. Move into the FaustWP plugin directory `plugins/faustwp`.
+1. Run `composer install` if you haven't already.
 1. Prepare a test WordPress site.
-    - We have provided a Docker build to reduce the setup needed. You are welcome to set up your own WordPress end-2-end testing site.
-      1. Install [Docker](https://www.docker.com/get-started).
-      1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp plugin install wp-graphql --activate`
-      1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/wpe-headless --user=www-data wordpress wp db export tests/_data/dump.sql`
+   1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
+   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp plugin install wp-graphql --activate`
+   1. Run `docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp db export tests/_data/dump.sql`
 1. Copy `.env.testing.example` to `.env.testing`.
-    - If you are using the provided Docker build, you will not need to adjust any variables in the `.env.testing` file.
-    - If you are not using the provided Docker build, edit the `.env.testing` file with your test WordPress site information.
 1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
 ### Browser testing documentation
+
 - [Codeception Acceptance Tests](https://codeception.com/docs/03-AcceptanceTests)
   - Base framework for browser testing in php.
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
   - WordPress framework wrapping Codeception for browser testing WordPress.
 
+## Documentation
+
+The documentation site uses [Docusaurus](https://docusaurus.io/). Content lives primarily in MDX files under `internal/website/docs`. The following commands will get you up and running with a local copy of the docs.
+
+```sh
+npm run docs:install # Install docs dependencies
+npm run docs:build   # Build the docs
+npm run docs         # Serve the site on http://localhost:3000
+```
+
+## Git Workflows
+
+We have three notable branches:
+
+- `canary` - This branch has the latest changes
+- `main` - This branch is used to deploy changes to [faustjs.org](https://faustjs.org)
+- `site-dev` - This branch is used to deploy to the staging site
+
+### Code Changes/Feature Workflow
+
+We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow). The workflow for a typical code change looks like:
+
+- Create a new branch for the feature
+- Make changes to the code
+- Use `npm run changeset` to create a changeset describing any package or plugin updates
+- Commit your changes
+- Open a pull request to the `canary` branch
+- Squash and Merge the pull request into the `canary` branch
+
+**Note**: We use Squash and Merge when merging pull requests into the `canary` branch.
+
+### Staging Site Deployment
+
+When your feature branch includes changes to the documentation website, it's helpful to include a live preview link in the PR description. The [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/) is used for this purpose. You can deploy your changes to the staging site using the following steps:
+
+- Checkout and switch to the `site-dev` branch.
+- Merge your feature branch into `site-dev`.
+- Push your merge commit to `site-dev`.
+- Within about 10 minutes, the docs changes from your feature branch should be visible on the [staging site](https://hcixzyt38dn5ak04xxcqc36lf.js.wpenginepowered.com/).
+
+### Prod Site Deployment
+
+The docs on faustjs.org are automatically built on pushes to `main`. Updating the docs on `main` will update faustjs.org within 10 minutes.
+
+After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faustjs.org.
+
+**Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
+
 ## Deployment
 
-Developers with full GitHub repository access can create public releases:
+Developers with full GitHub repository access can create public releases. We use [Changesets](https://github.com/atlassian/changesets) to automate the versioning and deployment process for all of our packages and plugins.
 
-### Release the wpe-headless plugin
+### Versioning
 
-1. Update the `Version` in the file header at `plugins/wpe-headless/wpe-headless.php`.
-2. Update the changelog and 'stable tag' in `plugins/wpe-headless/readme.txt`.
-3. Commit and push your changes for review **(DO NOT MERGE YET)**.
-4. Tag the approved commit with `plugin/wpe-headless/[version]`, for example: `git tag plugin/wpe-headless/0.3.5` and push the tag (`git push --tags`). Or use GitHub to [create a new release](https://github.com/wpengine/faustjs/releases/new) with that tag. This must be done prior to merging changes into the `canary` branch.
-5. Merge your changes into the `canary` branch
+When you are ready to release, you should first create the new package and plugin versions.
 
-CircleCI will build and deploy the plugin zip. The latest version will be available here:
+1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
+2. Review the PR:
+   - [ ] Changelog entries were created in all updated packages or plugins.
+   - [ ] Version numbers were appropriately bumped in the relevant package.json files.
+   - [ ] All `.changeset/*.md` files were removed.
+   - [ ] Version number updated in the main plugin file and readme.txt (Plugin versioning only)
+   - [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
+3. Approve, then "Squash and merge" the "Version Packages" PR into `canary`.
 
-`https://wp-product-info.wpesvc.net/v1/plugins/wpe-headless?download`
+### Publishing the @faustjs packages
 
-### Release the @faustjs packages
+The @faustjs packages are automatically published to NPM through a GitHub action once the "Version Packages" PR is merged.
 
-1. From the monorepo root directory, run either `npm run patch` or `npm run minor`. This will increment all the packages' versions, keeping them in lockstep.
-2. Remove `node_modules` and `package-lock.json` from the root directory.
-3. Run `npm i && npm test` to verify that the packages are working.
-4. Update the changelogs of the applicable packages.
-5. Commit and push your changes for review.
-6. Once reviewed and merged into `canary`, our GitHub Actions workflow will publish the packages to NPM.
+### Publishing the FaustWP plugin
 
-Once deployed, the updated packages will be visible here:
+Once the "Version Packages" PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
 
-* https://www.npmjs.com/package/@faustjs/core
-* https://www.npmjs.com/package/@faustjs/react
-* https://www.npmjs.com/package/@faustjs/next
+Once deployed, the updated packages and plugin will be visible here:
+
+- https://www.npmjs.com/package/@faustjs/core
+- https://www.npmjs.com/package/@faustjs/react
+- https://www.npmjs.com/package/@faustjs/next
+- https://plugins.trac.wordpress.org/browser/faustwp/tags
+
+### Update the docs
+
+After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.

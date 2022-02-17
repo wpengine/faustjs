@@ -1,0 +1,130 @@
+---
+slug: /tutorial/dev-env-setup
+title: Development Environment Setup
+description: Setting up your development environment with this guide will make your experience developing with Faust.js fast and efficient.
+---
+
+# Development Environment Setup
+
+Use this guide to make your experience developing with Faust.js fast and efficient.
+
+<div style={{ position: `relative`, paddingTop: `56.25%`, marginBottom: `1rem` }}>
+  <iframe
+    width="100%"
+    style={{
+      position: `absolute`,
+      top: 0,
+      left: 0,
+      width: `100%`,
+      height: `100%`,
+      border: 0,
+    }}
+    src="https://www.youtube.com/embed/i_L_Gl_Pp7g"
+    title="YouTube video player"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+  ></iframe>
+</div>
+
+## WordPress Site
+
+As you may know, WordPress is a content management system (CMS) that allows you to create a website with themes/plugins/etc. It is one of the most popular CMSs globally, used by over 40% of all websites.
+
+### What is Headless?
+
+Up until recently, WordPress could only build monolithic websites. Meaning, the frontend, and backend were both tightly coupled via themes and plugins. Headless shifts away from a monolithic approach.
+
+Headless is a term used when the frontend detaches from the backend. WordPress is used as a backend (headless CMS) in a more specific sense, while the frontend uses a more modern framework, like React.
+
+Headless allows designers and developers to use modern frameworks they are familiar with to build fast and reliable frontend experiences with an easy and standard backend.
+
+### Setting up WordPress for Headless
+
+To setup WordPress for headless, follow the [Setting Up WordPress guide for Faust.js](./setup-faustjs#installing-plugins-on-wordpress)
+
+## Languages & Tooling
+
+If you come from a WordPress background, you may be familiar with doing everything in [PHP](https://php.net).
+
+The frontend landscape has embraced JavaScript/TypeScript as the languages of choice, so it will be helpful to know what these languages are and how they play a part in developing headless WordPress sites.
+
+### JavaScript
+
+To quote [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript):
+
+> JavaScript is a scripting or programming language that allows you to implement complex features on web pages. Every time a web page does display static information for you to look such as showing timely content updates, interactive maps, animated 2D/3D graphics, scrolling video jukeboxes, etc. — you can bet that JavaScript is probably involved. It is the third layer of the layer cake of standard web technologies, two of which (HTML and CSS) we have covered in much more detail in other parts of the Learning Area.
+
+JavaScript shows up in almost all frontend frameworks like React, Vue, Angular, etc., and Faust.js.
+
+There is no need to install JavaScript since it comes bundled in all modern browsers.
+
+If you are new to JavaScript, check out the [JavaScript basics on MDN Web Docs.](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)
+
+### TypeScript
+
+JavaScript is a loosely typed language, which means you don't have to specify the type of variable. While this is convenient, it can also lead to bugs and errors that you may not know about until runtime.
+
+TypeScript is a typed superset of JavaScript that adds compile-time type checking. You can catch errors at compile time rather than runtime.
+
+Although it is not required to know TypeScript, we recommend it, as it makes the developer experience, especially when using Faust.js, much better.
+
+## Node.js & NPM
+
+In the world of JavaScript development, you may see a lot of talk about Node.js and NPM.
+
+### Node.js
+
+Node.js is a JavaScript runtime that allows you to run JavaScript on the server. You may see this in JavaScript frameworks like [Next.js](https://nextjs.org/), providing server-side functionality.
+
+### NPM
+
+[NPM](https://npmjs.org) is a package manager for JavaScript used to install JavaScript packages, such as Faust.js, React, etc.
+
+### Installation
+
+You will need to install Node.js and NPM to write and develop JavaScript applications.
+
+You can download the installer for Node.js (and NPM) via https://nodejs.org/en/download/.
+
+## React
+
+React is a JavaScript library for building user interfaces. It is component-based, meaning that you can break down your UI into smaller components to reuse.
+
+React is currently the world's most popular JavaScript framework, with about 60% of the market share. With this level of popularity comes plenty of great resources to learn React. We recommend viewing the [React docs to get started.](https://reactjs.org/docs/getting-started.html)
+
+## GraphQL
+
+GraphQL is a query language for APIs. In Faust.js, it is used to define the data schema of WordPress.
+
+The critical distinction between GraphQL and a REST API is that GraphQL is a query language, meaning that you can ask for as much or as little of the data as you want. Whereas with REST, you are stuck with a fixed set of data.
+
+For example, you may want to request a list of WordPress posts, but I only want the title and content. In a GraphQL API, you can specify these two fields as the only pieces of data to fetch, and you get that data back. In a REST API, you cannot determine that level of granularity, and you're left with requesting more data than you may need.
+
+To learn more about GraphQL, check out the [GraphQL docs](https://graphql.org/learn/).
+
+## Git
+
+Unlike WordPress, where you may be updating plugins and themes from the admin interface, building a JavaScript frontend is very easy to version control; it's only JavaScript code and maybe some assets.
+
+We recommend using Git for version control. Typically users will store their code in a Git repository on [GitHub](https://github.com) or [GitLab](https://gitlab.com).
+
+To get started with Git, [download and install the latest release for your OS.](https://git-scm.com/downloads)
+
+## VS Code
+
+Finally, we recommend you use [VS Code](https://code.visualstudio.com/) for your code editor. VS Code has powerful IntelliSense, a built-in debugger, and many other features that make it a great editor for JavaScript development.
+
+In addition, there are a few extensions that will make your experience building headless WordPress sites a lot easier:
+
+- [VS Code ES7 React/Redux/GraphQL/React-Native snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets) - A set of snippets for React, Redux, and GraphQL
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Opinionated code formatted that enforces a consistent style
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - A linting tool to find problems in your JavaScript
+
+## On Windows
+
+If you are using Windows, we suggest you install [Powershell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-7.1) and [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701) and then use Windows Terminal to run your command line commands. These two tools provide an experience that closely resembles the command line experience you would see in a Linux environment, making things easier for you.
+
+## What's Next?
+
+The next step is to setup your [basic headless site](./basic-headless-site).
