@@ -162,7 +162,7 @@ function sanitize_faustwp_settings( $settings, $option ) {
 				break;
 
 			case 'menu_locations':
-				$settings[ $name ] = esc_html( $value );
+				$settings[ $name ] = sanitize_text_field( $value );
 				break;
 
 			case 'enable_redirects':

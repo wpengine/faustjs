@@ -141,7 +141,7 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 		$values = [
 			'' => '',
 			'Primary, Sidebar, Footer' => 'Primary, Sidebar, Footer',
-			'Sidebar</div><script>alert("DANGER!");</script><div>' => 'Sidebar&lt;/div&gt;&lt;script&gt;alert(&quot;DANGER!&quot;);&lt;/script&gt;&lt;div&gt;'
+			'Sidebar</div><script>alert("DANGER!");</script><div>' => 'Sidebar'
 		];
 
 		foreach ( $values as $in => $out ) {
