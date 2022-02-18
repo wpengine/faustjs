@@ -319,7 +319,7 @@ function display_frontend_uri_field() {
 	?>
 	<input type="text" id="frontend_uri" name="faustwp_settings[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
 	<p class="description">
-		<?php esc_html_e( 'The URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'faustwp' ); ?>
+		<?php esc_html_e( 'The full URL to your headless front-end, including https:// or http://. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'faustwp' ); ?>
 	</p>
 	<?php
 }
