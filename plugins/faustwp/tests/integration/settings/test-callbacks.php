@@ -25,6 +25,8 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		update_option( $this->option, $this->init_settings );
+		// We have to clear this manually since all tests execute in a single "request"
+		$GLOBALS['wp_settings_errors'] = [];
 	}
 
 	public function test_the_sanitize_option_filter_is_registered() {
@@ -36,10 +38,6 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 	}
 
 	public function test_sanitize_faustwp_settings_allows_valid_frontend_uris() {
-		global $wp_settings_errors;
-		// We have to clear this manually since all tests execute in a single "request"
-		$wp_settings_errors = [];
-
 		$valid_uris = [
 			// Clean URLs
 			'' => '',
@@ -60,16 +58,10 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 
 			$errors = get_settings_errors( $this->option );
 			$this->assertCount( 0, $errors );
-			// Clear errors between test cases.
-			$wp_settings_errors = [];
 		}
 	}
 
 	public function test_sanitize_faustwp_settings_rejects_invalid_frontend_uris() {
-		global $wp_settings_errors;
-		// We have to clear this manually since all tests execute in a single "request"
-		$wp_settings_errors = [];
-
 		$invalid_uris = [
 			'localhost:3000',
 			'my.example.com',
@@ -90,15 +82,11 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 			$this->assertCount( 1, $errors );
 			$this->assertEquals( $errors[0]['code'], 'faustwp_invalid_frontend_uri' );
 			// Clear errors between test cases.
-			$wp_settings_errors = [];
+			$GLOBALS['wp_settings_errors'] = [];
 		}
 	}
 
 	public function test_sanitize_faustwp_settings_allows_valid_secret_key() {
-		global $wp_settings_errors;
-		// We have to clear this manually since all tests execute in a single "request"
-		$wp_settings_errors = [];
-
 		$updates['secret_key'] = '83ef3cfa-401b-4973-9371-af316a78275d';
 		$sanitized = sanitize_faustwp_settings( $updates, $this->option );
 
@@ -109,10 +97,6 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 	}
 
 	public function test_sanitize_faustwp_settings_rejects_invalid_secret_key() {
-		global $wp_settings_errors;
-		// We have to clear this manually since all tests execute in a single "request"
-		$wp_settings_errors = [];
-
 		$invalid_keys = [
 			'',                                     // Can't be empty
 			'83ef3cfa-401b-4973-9371-nonhexvalues', // Non hex values
@@ -133,7 +117,7 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 			$this->assertCount( 1, $errors );
 			$this->assertEquals( $errors[0]['code'], 'faustwp_invalid_secret_key' );
 			// Clear errors between test cases.
-			$wp_settings_errors = [];
+			$GLOBALS['wp_settings_errors'] = [];
 		}
 	}
 
