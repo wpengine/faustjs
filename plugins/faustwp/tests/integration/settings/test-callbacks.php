@@ -27,7 +27,7 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 		update_option( $this->option, $this->init_settings );
 	}
 
-	public function test_the_sanitize_option_filter_is_registerd() {
+	public function test_the_sanitize_option_filter_is_registered() {
 		$this->assertSame( 10, has_action( 'sanitize_option_faustwp_settings', 'WPE\FaustWP\Settings\sanitize_faustwp_settings' ) );
 	}
 
