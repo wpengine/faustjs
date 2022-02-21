@@ -4,9 +4,27 @@
 
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
-import * as accessToken from '../../../src/auth/client/accessToken';
-import { config } from '../../../src/config/config';
+
 describe('auth/client/accessToken', () => {
+  let config: any;
+  let accessToken: any;
+
+  afterEach(() => {
+    fetchMock.restore();
+    jest.useRealTimers();
+  });
+
+  /**
+   * Isolate modules so that local module state doesn't conflict between tests
+   * @link https://jestjs.io/docs/jest-object#jestisolatemodulesfn
+   */
+  beforeEach(() => {
+    jest.isolateModules(() => {
+      config = require('../../../src/config/config').config;
+      accessToken = require('../../../src/auth/client/accessToken');
+    });
+  });
+
   test('getAccessToken() returns undefined when there is no access token', () => {
     config({
       wpUrl: 'test',
@@ -57,8 +75,6 @@ describe('auth/client/accessToken', () => {
     expect(token).toBe(undefined);
     expect(accessToken.getAccessToken()).toBe(undefined);
     expect(accessToken.getAccessTokenExpiration()).toBe(undefined);
-
-    fetchMock.restore();
   });
 
   test('fetchAccessToken() should set the token/expiration upon success', async () => {
@@ -85,8 +101,6 @@ describe('auth/client/accessToken', () => {
 
     expect(accessToken.getAccessToken()).toBe('test');
     expect(accessToken.getAccessTokenExpiration()).toBe(exp);
-
-    fetchMock.restore();
   });
 
   test('fetchAccessToken() should append the code query param to the fetch URL if provided', async () => {
@@ -115,12 +129,9 @@ describe('auth/client/accessToken', () => {
 
     expect(token).toBe('test');
     expect(accessToken.getAccessToken()).toBe('test');
-
-    fetchMock.restore();
   });
 
   test('A refresh timer is set after calling fetchAccessToken()', async () => {
-    jest.spyOn(accessToken, 'fetchAccessToken');
     jest.spyOn(accessToken, 'getRefreshTimer');
 
     config({
@@ -143,14 +154,11 @@ describe('auth/client/accessToken', () => {
     await accessToken.fetchAccessToken();
 
     expect(accessToken.getRefreshTimer()).toBeDefined();
-
-    fetchMock.restore();
   });
 
   test('Refresh timer is called after the refresh time lapses', async () => {
     jest.useFakeTimers();
-    jest.spyOn(global, 'setTimeout');
-    jest.spyOn(accessToken, 'fetchAccessToken');
+    const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
 
     config({
       wpUrl: 'http://headless.local',
@@ -171,9 +179,6 @@ describe('auth/client/accessToken', () => {
 
     jest.runAllTimers();
 
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-
-    jest.useRealTimers();
-    fetchMock.restore();
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
   });
 });
