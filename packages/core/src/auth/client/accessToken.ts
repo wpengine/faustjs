@@ -3,6 +3,19 @@ import { isServerSide } from '../../utils/index.js';
 import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
 
+export interface AccessToken {
+  /**
+   * Base 64 encoded access token
+   */
+  token: string | undefined;
+  /**
+   * The time in seconds until the access token expires.
+   */
+  expiration: number | undefined;
+}
+
+export type RefreshTimer = ReturnType<typeof setTimeout> | undefined;
+
 /**
  * The amount of time in seconds until the access token is fetched
  * before it expires.
@@ -18,21 +31,17 @@ export const TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES = 60;
 /**
  * The setTimeout instance that refreshes the access token.
  */
-export let __REFRESH_TIMER: ReturnType<typeof setTimeout> | undefined =
-  undefined;
-
-export interface AccessToken {
-  /**
-   * Base 64 encoded access token
-   */
-  token: string | undefined;
-  /**
-   * The time in seconds until the access token expires.
-   */
-  expiration: number | undefined;
-}
+export let __REFRESH_TIMER: RefreshTimer = undefined;
 
 let accessToken: AccessToken | undefined;
+
+export function getRefreshTimer(): RefreshTimer {
+  return __REFRESH_TIMER;
+}
+
+export function setRefreshTimer(timer: RefreshTimer): void {
+  __REFRESH_TIMER = timer;
+}
 
 /**
  * Get an access token from memory if one exists
@@ -94,9 +103,8 @@ export function setAccessTokenRefreshTimer(): void {
   const secondsUntilRefresh =
     secondsUntilExpiration - TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES;
 
-  __REFRESH_TIMER = setTimeout(
-    () => void fetchAccessToken(),
-    secondsUntilRefresh * 1000,
+  setRefreshTimer(
+    setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000),
   );
 }
 
@@ -104,8 +112,9 @@ export function setAccessTokenRefreshTimer(): void {
  * Clears the current access token refresh timer if one exists.
  */
 export function clearAccessTokenRefreshTimer(): void {
-  if (__REFRESH_TIMER !== undefined) {
-    clearTimeout(__REFRESH_TIMER);
+  const timer = getRefreshTimer();
+  if (timer !== undefined) {
+    clearTimeout(timer);
   }
 }
 
@@ -116,6 +125,7 @@ export function clearAccessTokenRefreshTimer(): void {
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
+  console.log('running fetchAccessToken()');
   const { apiBasePath } = config();
 
   if (isNil(apiBasePath)) {
