@@ -31,9 +31,7 @@ export const TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES = 60;
 /**
  * The setTimeout instance that refreshes the access token.
  */
-export let __REFRESH_TIMER: RefreshTimer = undefined;
-
-let accessToken: AccessToken | undefined;
+let __REFRESH_TIMER: RefreshTimer = undefined;
 
 export function getRefreshTimer(): RefreshTimer {
   return __REFRESH_TIMER;
@@ -42,6 +40,11 @@ export function getRefreshTimer(): RefreshTimer {
 export function setRefreshTimer(timer: RefreshTimer): void {
   __REFRESH_TIMER = timer;
 }
+
+/**
+ * The access token object
+ */
+let accessToken: AccessToken | undefined;
 
 /**
  * Get an access token from memory if one exists
@@ -125,7 +128,6 @@ export function clearAccessTokenRefreshTimer(): void {
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
-  console.log('running fetchAccessToken()');
   const { apiBasePath } = config();
 
   if (isNil(apiBasePath)) {
