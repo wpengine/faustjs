@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import isUndefined from 'lodash/isUndefined.js';
+import trimEnd from 'lodash/trimEnd.js';
 import { authorizeHandler, logoutHandler } from '../auth/middleware.js';
 import { parseUrl } from '../../utils/index.js';
 import {
@@ -35,7 +36,7 @@ export async function apiRouter(
   }
 
   const parsedUrl = parseUrl(req.url);
-  const pathname = parsedUrl?.pathname;
+  const pathname = trimEnd(parsedUrl?.pathname, '/');
 
   switch (pathname) {
     case `${apiBasePath}/${TOKEN_ENDPOINT_PARTIAL_PATH}`:
