@@ -13,7 +13,10 @@ In a development environment, you may want to log GraphQL queries that are being
  * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
 import type { IncomingMessage } from 'http';
-import { getClient } from '@faustjs/next';
+import {
+  getClient,
+  logQueries,
+} from '@faustjs/next';
 import {
   generatedSchema,
   scalarsEnumsHash,
