@@ -13,7 +13,7 @@ module.exports = {
   docsSidebar: [
     {
       type: 'category',
-      label: 'Tutorial',
+      label: 'Tutorial for PHP Developers',
       items: [
         {
           type: 'doc',
@@ -87,6 +87,16 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Logging Queries',
+              id: 'next/guides/logging-queries',
+            },
+            {
+              type: 'doc',
+              label: 'Modifying the GraphQL Request',
+              id: 'next/guides/modifying-graphql-request',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },
@@ -97,9 +107,75 @@ module.exports = {
           label: 'Reference',
           items: [
             {
+              type: 'category',
+              label: 'Hooks',
+              items: [
+                {
+                  type: 'doc',
+                  label: 'Hooks Intro',
+                  id: 'next/reference/hooks/hooks',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePost Hook',
+                  id: 'next/reference/hooks/usePost',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePosts Hook',
+                  id: 'next/reference/hooks/usePosts',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePage Hook',
+                  id: 'next/reference/hooks/usePage',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePreview Hook',
+                  id: 'next/reference/hooks/usePreview',
+                },
+                {
+                  type: 'doc',
+                  label: 'usePreviewNode Hook',
+                  id: 'next/reference/hooks/usePreviewNode',
+                },
+                {
+                  type: 'doc',
+                  label: 'useAuth Hook',
+                  id: 'next/reference/hooks/useAuth',
+                },
+                {
+                  type: 'doc',
+                  label: 'useLogin Hook',
+                  id: 'next/reference/hooks/useLogin',
+                },
+                {
+                  type: 'doc',
+                  label: 'useLogout Hook',
+                  id: 'next/reference/hooks/useLogout',
+                },
+                {
+                  type: 'doc',
+                  label: 'GQty Hooks',
+                  id: 'next/reference/hooks/gqty-hooks',
+                },
+              ],
+            },
+            {
               type: 'doc',
-              label: 'Custom Hooks',
-              id: 'next/reference/custom-hooks',
+              label: 'API Router',
+              id: 'next/reference/api-router',
+            },
+            {
+              type: 'doc',
+              label: 'withFaust',
+              id: 'next/reference/with-faust',
+            },
+            {
+              type: 'doc',
+              label: 'FaustProvider',
+              id: 'next/reference/faust-provider',
             },
             {
               type: 'doc',
@@ -112,8 +188,66 @@ module.exports = {
     },
     {
       type: 'doc',
-      label: 'Release Notes',
-      id: 'release-notes',
+      label: 'Introduction to GQty',
+      id: 'gqty-intro',
+    },
+    {
+      type: 'category',
+      label: 'Going to Production',
+      items: [
+        {
+          type: 'doc',
+          label: 'Deploy Your Faust.js App',
+          id: 'going-to-production/deployment',
+        },
+        {
+          type: 'doc',
+          label: 'Optimizations',
+          id: 'going-to-production/optimizations',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'FaustWP Plugin',
+      items: [
+        {
+          type: 'doc',
+          label: 'Settings Reference',
+          id: 'faustwp/settings',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Changelogs',
+      items: [
+        {
+          type: 'doc',
+          label: '@faustjs/core',
+          id: 'changelog/core',
+        },
+        {
+          type: 'doc',
+          label: '@faustjs/next',
+          id: 'changelog/next',
+        },
+        {
+          type: 'doc',
+          label: '@faustjs/react',
+          id: 'changelog/react',
+        },
+        {
+          type: 'doc',
+          label: 'FaustWP',
+          id: 'changelog/faustwp',
+        },
+        {
+          type: 'doc',
+          label: 'Faust.js 0.9.0 - 12.0.0',
+          id: 'release-notes',
+        },
+      ],
     },
   ],
 };

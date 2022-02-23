@@ -1,26 +1,32 @@
-import { PageComponent } from './[...pageUri]';
-import { PostComponent } from './posts/[postSlug]';
+import type { Page, Post } from 'client';
 import { client } from 'client';
+import { PostComponent } from './posts/[postSlug]';
+import { PageComponent } from './[...pageUri]';
 
 export default function Preview() {
-  const { usePreview } = client.auth;
-  const result = usePreview();
+  const isLoading = client.useIsLoading();
+  const { typeName, node } = client.auth.usePreviewNode();
 
-  if (client.useIsLoading() || !result) {
-    return <p>loading...</p>;
+  if (isLoading || node === undefined) {
+    return <p>Loading...</p>;
   }
 
-  if (result.type === 'page') {
-    if (!result.page) {
-      return <>Not Found</>;
+  if (node === null) {
+    return <p>Post not found</p>;
+  }
+
+  switch (typeName) {
+    case 'Page': {
+      const page = node as Page;
+      return <PageComponent page={page} />;
     }
-
-    return <PageComponent page={result.page} />;
+    case 'Post': {
+      const post = node as Post;
+      return <PostComponent post={post} />;
+    }
+    // Add custom post types here as needed
+    default: {
+      throw new Error(`Unknown post type: ${typeName}`);
+    }
   }
-
-  if (!result.post) {
-    return <>Not Found</>;
-  }
-
-  return <PostComponent post={result.post} />;
 }

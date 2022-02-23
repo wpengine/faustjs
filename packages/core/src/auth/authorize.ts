@@ -1,8 +1,8 @@
 import 'isomorphic-fetch';
-import isString from 'lodash/isString';
-import { headlessConfig } from '../config';
-import { getQueryParam, removeURLParam } from '../utils';
-import { fetchAccessToken } from './client/accessToken';
+import isString from 'lodash/isString.js';
+import { config } from '../config/index.js';
+import { getQueryParam, removeURLParam } from '../utils/index.js';
+import { fetchAccessToken } from './client/accessToken.js';
 
 export interface EnsureAuthorizationOptions {
   redirectUri?: string;
@@ -23,7 +23,7 @@ export async function ensureAuthorization(
 ): Promise<
   true | { redirect?: string | undefined; login?: string | undefined }
 > {
-  const { wpUrl } = headlessConfig();
+  const { wpUrl } = config();
   const { redirectUri, loginPageUri } = options || {};
 
   // Get the authorization code from the URL if it exists

@@ -49,7 +49,7 @@ const FeatureList = [
     description: (
       <>Fetch posts, categories, pages, and more using standard URL params.</>
     ),
-    link: '/docs/next/reference/custom-hooks',
+    link: '/docs/next/reference/hooks',
   },
   {
     title: 'Custom Post Types',

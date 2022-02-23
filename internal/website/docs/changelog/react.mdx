@@ -1,0 +1,16 @@
+---
+slug: ./react
+title: Changelog for @faustjs/react
+description: A central place for Faust.js changelogs
+---
+
+import Changelog, {toc as ChangelogTOC} from "@site/../../packages/react/CHANGELOG.md"
+
+<Changelog />
+
+export const toc = (() => {
+	return ChangelogTOC.map((item) => {
+		item.children = [];
+		return item;
+	});
+})();
