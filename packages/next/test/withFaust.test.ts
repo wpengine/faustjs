@@ -26,7 +26,7 @@ describe('withFaust', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview$).*)',
+        source: '/((?!preview).*)',
         has: [
           {
             type: 'query',
@@ -63,7 +63,7 @@ describe('withFaust', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview-new$).*)',
+        source: '/((?!preview-new).*)',
         has: [
           {
             type: 'query',
