@@ -39,6 +39,9 @@ function remove_admin_menu_pages() {
 	// Remove Appearance > Theme Editor.
 	remove_submenu_page( 'themes.php', 'theme-editor.php' );
 
+	// Remove Appearance > Editor.
+	remove_submenu_page( 'themes.php', 'site-editor.php' );
+
 	// Remove Appearance > Widgets.
 	remove_submenu_page( 'themes.php', 'widgets.php' );
 
