@@ -97,9 +97,14 @@ function prevent_admin_page_access() {
 		return;
 	}
 
+	$disabled_screens = array(
+		'site-editor',
+		'themes',
+	);
+
 	$screen = get_current_screen();
 
-	if ( is_object( $screen ) && 'themes' === $screen->id ) {
+	if ( is_object( $screen ) && in_array( $screen->id, $disabled_screens, true ) ) {
 		wp_safe_redirect( admin_url() );
 		exit;
 	}
