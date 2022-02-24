@@ -82,6 +82,7 @@ function remove_admin_bar_items() {
 
 	$wp_admin_bar->remove_menu( 'customize' );
 	$wp_admin_bar->remove_node( 'themes' );
+	$wp_admin_bar->remove_node( 'site-editor' );
 	$wp_admin_bar->remove_node( 'widgets' );
 }
 
