@@ -2,4 +2,4 @@
 'faustwp': patch
 ---
 
-Hide the site editor menu item when themes are disabled
+Disables access to the site editor when themes are disabled
