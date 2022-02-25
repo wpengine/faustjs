@@ -85,6 +85,9 @@ export interface SitemapSchemaSitemapElement {
   lastmod?: string;
 }
 
+/**
+ * the "pages" config type
+ */
 export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
   /**
    * The relative URL of the Next.js page.
@@ -94,12 +97,17 @@ export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
 
 export interface HandleSitemapRequestsConfig {
   /**
-   * A list of sitemap index file URLs from your WordPress site to proxy to your
-   * headless frontend.
+   * A list of pathnames to proxy to the headless frontend from your
+   * WordPress site. These must be XML sitemaps.
+   *
+   * For example, if you have a pathname of `/wp-sitemap-posts-post-1.xml`,
+   * and a WordPress site at `https://my-wp-site.com`, your sitemap will be
+   * proxied from `https://my-wp-site.com/wp-sitemap-posts-post-1.xml`
    */
   sitemapPathsToProxy?: string[];
   /**
-   * Next.js static pages you want included in you /sitemap.xml file.
+   * Next.js pages you want included in you sitemap. When provided, an index
+   * will be created specifically for these pages.
    */
   pages?: NextJSPage[];
   /**
@@ -123,16 +131,15 @@ export interface ParsedSitemap {
  *
  * @param config The user provided config
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function validateConfig(config: any) {
+
+export function validateConfig(config: Partial<HandleSitemapRequestsConfig>) {
   // Validate sitemapIndexPaths structure and required values
-  if (!isUndefined(config?.sitemapIndexPaths)) {
-    if (!isArray(config.sitemapIndexPaths)) {
+  if (!isUndefined(config?.sitemapPathsToProxy)) {
+    if (!isArray(config.sitemapPathsToProxy)) {
       throw new Error('sitemapIndexPaths must be an array');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (config?.sitemapIndexPaths as any[]).forEach((sitemapIndexPath: any) => {
+    (config?.sitemapPathsToProxy).forEach((sitemapIndexPath) => {
       if (!isString(sitemapIndexPath)) {
         throw new Error('sitemapIndexPaths must be an array of strings');
       }
@@ -151,14 +158,12 @@ export function validateConfig(config: any) {
       throw new Error('pages must be an array');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (config?.pages as any[]).forEach((page: any) => {
+    (config?.pages).forEach((page) => {
       if (!isObject(page)) {
         throw new Error('pages must be an array of objects');
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (isUndefined((page as any).path)) {
+      if (isUndefined(page.path)) {
         throw new Error('pages must have a path property');
       }
     });
@@ -167,14 +172,6 @@ export function validateConfig(config: any) {
   // Validate replaceUrls is a boolean
   if (!isUndefined(config?.replaceUrls) && !isBoolean(config?.replaceUrls)) {
     throw new Error('replaceUrls must be a boolean');
-  }
-
-  // Validate proxySitemapXml is a boolean
-  if (
-    !isUndefined(config?.proxySitemapXml) &&
-    !isBoolean(config?.proxySitemapXml)
-  ) {
-    throw new Error('proxySitemapXml must be a boolean');
   }
 }
 
