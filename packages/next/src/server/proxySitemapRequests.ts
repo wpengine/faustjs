@@ -1,9 +1,10 @@
 import { config as coreConfig } from '@faustjs/core';
 import { XMLParser } from 'fast-xml-parser';
-import { trim, trimEnd } from 'lodash';
 import defaults from 'lodash/defaults.js';
 import isArray from 'lodash/isArray.js';
 import isUndefined from 'lodash/isUndefined.js';
+import trim from 'lodash/trim.js';
+import trimEnd from 'lodash/trimEnd.js';
 import { NextRequest } from 'next/server.js';
 
 /**
@@ -246,8 +247,6 @@ export async function resolveSitemapIndexPaths(
 
   const xmlRes = await res.text();
 
-  console.log('xmlRes', xmlRes);
-
   const parser = new XMLParser({
     ignoreAttributes: false,
     preserveOrder: false,
@@ -266,8 +265,6 @@ export async function resolveSitemapIndexPaths(
   xmlJson.urlset.url.forEach((url) => {
     const newUrl = url;
     newUrl.loc = url.loc.replace(trim(wpUrl, '/'), trim(origin, '/'));
-
-    console.log('new url', newUrl);
 
     urls = [...urls, newUrl];
   });
