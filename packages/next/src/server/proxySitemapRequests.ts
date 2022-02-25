@@ -1,5 +1,6 @@
 import { config as coreConfig } from '@faustjs/core';
 import { XMLParser } from 'fast-xml-parser';
+import { isBoolean, isObject } from 'lodash';
 import defaults from 'lodash/defaults.js';
 import isArray from 'lodash/isArray.js';
 import isUndefined from 'lodash/isUndefined.js';
@@ -92,11 +93,61 @@ export interface ProxySitemapRequestsConfig {
    * Replace the WordPress site URL for your headless frontend site url in the
    * sitemap url entries.
    */
-  replaceWPUrls?: boolean;
+  replaceUrls?: boolean;
   /**
    * Should the middleware generate the /sitemap.xml file for you?
    */
   proxySitemapXml?: boolean;
+}
+
+/**
+ * Validates the structure of the user defined config.
+ *
+ * @param config The user provided config
+ */
+export function validateConfig(config: any) {
+  // Validate sitemapIndexPaths structure and required values
+  if (!isUndefined(config?.sitemapIndexPaths)) {
+    if (!isArray(config.sitemapIndexPaths)) {
+      throw new Error('sitemapIndexPaths must be an array');
+    }
+
+    (config?.sitemapIndexPaths as any[]).forEach((sitemapIndexPath: any) => {
+      if (typeof sitemapIndexPath !== 'string') {
+        throw new Error('sitemapIndexPaths must be an array of strings');
+      }
+    });
+  }
+
+  // Validate pages structure and required values
+  if (!isUndefined(config?.pages)) {
+    if (!isArray(config.pages)) {
+      throw new Error('pages must be an array');
+    }
+
+    (config?.pages as any[]).forEach((page: any) => {
+      if (!isObject(page)) {
+        throw new Error('pages must be an array of objects');
+      }
+
+      if (isUndefined((page as any).path)) {
+        throw new Error('pages must have a path property');
+      }
+    });
+  }
+
+  // Validate replaceUrls is a boolean
+  if (!isUndefined(config?.replaceUrls) && !isBoolean(config?.replaceUrls)) {
+    throw new Error('replaceUrls must be a boolean');
+  }
+
+  // Validate proxySitemapXml is a boolean
+  if (
+    !isUndefined(config?.proxySitemapXml) &&
+    !isBoolean(config?.proxySitemapXml)
+  ) {
+    throw new Error('proxySitemapXml must be a boolean');
+  }
 }
 
 /**
@@ -232,14 +283,15 @@ export function createPagesSitemap(
   return createSitemap(urls);
 }
 
-export async function resolveSitemapIndexPaths(
+export async function handleSitemapIndexPath(
   req: NextRequest,
   config: ProxySitemapRequestsConfig,
 ) {
   const { wpUrl } = coreConfig();
   const { pathname, origin } = new URL(req.url);
 
-  const res = await fetch(`${trimEnd(wpUrl, '/')}/${pathname}`);
+  const wpSitemapIndexUrl = `${trimEnd(wpUrl, '/')}/${trim(pathname, '/')}`;
+  const res = await fetch(wpSitemapIndexUrl);
 
   if (res.status === 404) {
     return undefined;
@@ -274,14 +326,15 @@ export async function resolveSitemapIndexPaths(
 
 export async function proxySitemapRequests(
   req: NextRequest,
-  _config: ProxySitemapRequestsConfig,
+  config: any,
 ): Promise<Response | undefined> {
-  const config = defaults({}, _config, {
+  // Validate config structure
+  validateConfig(config);
+
+  const normalizedConfig: ProxySitemapRequestsConfig = defaults({}, config, {
     replaceWPUrls: true,
     proxySitemapXml: true,
   });
-
-  // TODO: validate config
 
   const headlessPathname = new URL(req?.url, 'http://non-existant-host')
     ?.pathname;
@@ -289,15 +342,15 @@ export async function proxySitemapRequests(
   const { proxySitemapXml, pages } = config;
 
   if (headlessPathname === '/sitemap.xml' && proxySitemapXml === true) {
-    return createRootSitemap(req, config);
+    return createRootSitemap(req, normalizedConfig);
   }
 
   if (headlessPathname === '/sitemap-pages.xml' && pages && pages?.length > 0) {
-    return createPagesSitemap(req, config);
+    return createPagesSitemap(req, normalizedConfig);
   }
 
-  if (config.sitemapIndexPaths.includes(headlessPathname)) {
-    return resolveSitemapIndexPaths(req, config);
+  if (normalizedConfig.sitemapIndexPaths.includes(headlessPathname)) {
+    return handleSitemapIndexPath(req, normalizedConfig);
   }
 
   return undefined;
