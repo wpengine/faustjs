@@ -100,6 +100,8 @@ export interface SitemapSchemaSitemapElement {
 export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
   /**
    * The relative URL of the Next.js page.
+   *
+   * @example /about
    */
   path: string;
 }
@@ -138,11 +140,12 @@ export interface ParsedSitemap {
 /**
  * Validates the structure of the user defined config.
  *
- * @param config The user provided config
+ * @param {Partial<HandleSitemapRequestsConfig>} config The user provided config
  */
-
-export function validateConfig(config: Partial<HandleSitemapRequestsConfig>) {
-  // Validate sitemapIndexPaths structure and required values
+export function validateConfig(
+  config: Partial<HandleSitemapRequestsConfig>,
+): void {
+  // Validate sitemapPathsToProxy structure and required values
   if (!isUndefined(config?.sitemapPathsToProxy)) {
     if (!isArray(config.sitemapPathsToProxy)) {
       throw new Error('sitemapPathsToProxy must be an array');
@@ -175,6 +178,10 @@ export function validateConfig(config: Partial<HandleSitemapRequestsConfig>) {
       if (isUndefined(page.path)) {
         throw new Error('pages must have a path property');
       }
+
+      if (!isString(page.path)) {
+        throw new Error('The pages path property must be a string');
+      }
     });
   }
 
@@ -187,10 +194,12 @@ export function validateConfig(config: Partial<HandleSitemapRequestsConfig>) {
 /**
  * Creates an XML sitemap index file from a list of sitemap URLs
  *
- * @param sitemaps A list of sitemap URL objects
+ * @param {SitemapSchemaSitemapElement[]} sitemaps A list of sitemap URL objects
  * @returns
  */
-export function createSitemapIndex(sitemaps: SitemapSchemaSitemapElement[]) {
+export function createSitemapIndex(
+  sitemaps: SitemapSchemaSitemapElement[],
+): Response {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${sitemaps
@@ -222,7 +231,7 @@ export function createSitemapIndex(sitemaps: SitemapSchemaSitemapElement[]) {
  * @param {SitemapSchemaUrlElement[]} urls A list of URL objects
  * @returns {Response}
  */
-export function createSitemap(urls: SitemapSchemaUrlElement[]) {
+export function createSitemap(urls: SitemapSchemaUrlElement[]): Response {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${urls
@@ -265,14 +274,14 @@ export function createSitemap(urls: SitemapSchemaUrlElement[]) {
  * sitemaps provided as the sitemapPaths property in the config, in addition to
  * a sitemap for the Next.js pages provided as the pages property in the config.
  *
- * @param req The Next.js middleware request object
- * @param normalizedConfig A normalized config object
+ * @param {NextRequest} req The Next.js middleware request object
+ * @param {HandleSitemapRequestsConfig} normalizedConfig A normalized config object
  * @returns {Response|undefined}
  */
 export function createRootSitemapIndex(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
-): Response {
+): Response | undefined {
   const { pages, sitemapPathsToProxy } = normalizedConfig;
   const { origin } = new URL(req.url);
   let sitemapIndices: SitemapSchemaSitemapElement[] = [];
@@ -310,7 +319,7 @@ export function createRootSitemapIndex(
 export function createPagesSitemap(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
-) {
+): Response | undefined {
   const { origin } = new URL(req.url);
   const { pages } = normalizedConfig;
 
