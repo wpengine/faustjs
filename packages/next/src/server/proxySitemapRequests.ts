@@ -97,7 +97,7 @@ export interface HandleSitemapRequestsConfig {
    * A list of sitemap index file URLs from your WordPress site to proxy to your
    * headless frontend.
    */
-  sitemapPaths?: string[];
+  sitemapPathsToProxy?: string[];
   /**
    * Next.js static pages you want included in you /sitemap.xml file.
    */
@@ -263,7 +263,7 @@ export function createRootSitemapIndex(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
 ): Response {
-  const { pages, sitemapPaths } = normalizedConfig;
+  const { pages, sitemapPathsToProxy } = normalizedConfig;
   const { origin } = new URL(req.url);
   let sitemapIndices: SitemapSchemaSitemapElement[] = [];
 
@@ -275,11 +275,11 @@ export function createRootSitemapIndex(
   }
 
   if (
-    !isUndefined(sitemapPaths) &&
-    isArray(sitemapPaths) &&
-    sitemapPaths.length
+    !isUndefined(sitemapPathsToProxy) &&
+    isArray(sitemapPathsToProxy) &&
+    sitemapPathsToProxy.length
   ) {
-    sitemapPaths.forEach((sitemapPath) => {
+    sitemapPathsToProxy.forEach((sitemapPath) => {
       sitemapIndices = [
         ...sitemapIndices,
         { loc: `${trimEnd(origin, '/')}/${trim(sitemapPath, '/')}` },
@@ -428,7 +428,7 @@ export async function handleSitemapRequests(
   }
 
   // Handle the sitemap index paths specified in the config
-  if (normalizedConfig?.sitemapPaths?.includes(pathname)) {
+  if (normalizedConfig?.sitemapPathsToProxy?.includes(pathname)) {
     return handleSitemapPath(req, normalizedConfig);
   }
 
