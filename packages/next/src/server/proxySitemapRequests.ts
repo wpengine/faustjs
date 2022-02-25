@@ -92,7 +92,7 @@ export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
   path: string;
 }
 
-export interface ProxySitemapRequestsConfig {
+export interface HandleSitemapRequestsConfig {
   /**
    * A list of sitemap index file URLs from your WordPress site to proxy to your
    * headless frontend.
@@ -107,10 +107,6 @@ export interface ProxySitemapRequestsConfig {
    * sitemap url entries.
    */
   replaceUrls: boolean;
-  /**
-   * Should the middleware generate the /sitemap.xml file for you?
-   */
-  proxySitemapXml: boolean;
 }
 
 /**
@@ -265,7 +261,7 @@ export function createSitemap(urls: SitemapSchemaUrlElement[]) {
  */
 export function createRootSitemapIndex(
   req: NextRequest,
-  normalizedConfig: ProxySitemapRequestsConfig,
+  normalizedConfig: HandleSitemapRequestsConfig,
 ): Response {
   const { pages, sitemapPaths } = normalizedConfig;
   const { origin } = new URL(req.url);
@@ -303,7 +299,7 @@ export function createRootSitemapIndex(
  */
 export function createPagesSitemap(
   req: NextRequest,
-  normalizedConfig: ProxySitemapRequestsConfig,
+  normalizedConfig: HandleSitemapRequestsConfig,
 ) {
   const { origin } = new URL(req.url);
   const { pages } = normalizedConfig;
@@ -338,7 +334,7 @@ export function createPagesSitemap(
  */
 export async function handleSitemapPath(
   req: NextRequest,
-  normalizedConfig: ProxySitemapRequestsConfig,
+  normalizedConfig: HandleSitemapRequestsConfig,
 ): Promise<Response | undefined> {
   const { wpUrl } = coreConfig();
   const { replaceUrls } = normalizedConfig;
@@ -405,24 +401,24 @@ export async function handleSitemapPath(
  * @returns {Response|undefined} A response object if the current request
  * is for a sitemap that needs to be handled, undefined otherwise
  */
-export async function proxySitemapRequests(
+export async function handleSitemapRequests(
   req: NextRequest,
-  config: Partial<ProxySitemapRequestsConfig>,
+  config: Partial<HandleSitemapRequestsConfig>,
 ): Promise<Response | undefined> {
   // Validate config structure
   validateConfig(config);
 
   // Normalize config if some optional values are missing
-  const normalizedConfig: ProxySitemapRequestsConfig = defaults({}, config, {
+  const normalizedConfig: HandleSitemapRequestsConfig = defaults({}, config, {
     replaceUrls: true,
     proxySitemapXml: true,
   });
 
   const { pathname } = new URL(req.url);
-  const { proxySitemapXml, pages } = normalizedConfig;
+  const { pages } = normalizedConfig;
 
   // Handle the root XML sitemap if specified in the config
-  if (pathname === FAUST_SITEMAP_PATHNAME && proxySitemapXml === true) {
+  if (pathname === FAUST_SITEMAP_PATHNAME) {
     return createRootSitemapIndex(req, normalizedConfig);
   }
 
