@@ -1,6 +1,8 @@
 import { config as coreConfig } from '@faustjs/core';
 import { XMLParser } from 'fast-xml-parser';
-import { isBoolean, isObject } from 'lodash';
+import isBoolean from 'lodash/isBoolean.js';
+import isObject from 'lodash/isObject.js';
+import isString from 'lodash/isString.js';
 import defaults from 'lodash/defaults.js';
 import isArray from 'lodash/isArray.js';
 import isUndefined from 'lodash/isUndefined.js';
@@ -84,7 +86,7 @@ export interface ProxySitemapRequestsConfig {
    * A list of sitemap index file URLs from your WordPress site to proxy to your
    * headless frontend.
    */
-  sitemapIndexPaths: string[];
+  sitemapIndexPaths?: string[];
   /**
    * Next.js static pages you want included in you /sitemap.xml file.
    */
@@ -113,8 +115,14 @@ export function validateConfig(config: any) {
     }
 
     (config?.sitemapIndexPaths as any[]).forEach((sitemapIndexPath: any) => {
-      if (typeof sitemapIndexPath !== 'string') {
+      if (!isString(sitemapIndexPath)) {
         throw new Error('sitemapIndexPaths must be an array of strings');
+      }
+
+      if (!sitemapIndexPath.startsWith('/')) {
+        throw new Error(
+          'Each sitemapIndexPath must start with a forward slash',
+        );
       }
     });
   }
@@ -324,6 +332,14 @@ export async function handleSitemapIndexPath(
   return createSitemap(urls);
 }
 
+/**
+ * Next.js middleware to proxy sitemap requests from the WordPress site.
+ *
+ * @param req The Next.js middleware request object
+ * @param config The user specified config object
+ * @returns {Response|undefined} A response object if current request sitemap
+ * that needs to be handled, undefined otherwise
+ */
 export async function proxySitemapRequests(
   req: NextRequest,
   config: any,
@@ -331,27 +347,33 @@ export async function proxySitemapRequests(
   // Validate config structure
   validateConfig(config);
 
+  // Normalize config if some optional values are missing
   const normalizedConfig: ProxySitemapRequestsConfig = defaults({}, config, {
     replaceWPUrls: true,
     proxySitemapXml: true,
   });
 
-  const headlessPathname = new URL(req?.url, 'http://non-existant-host')
-    ?.pathname;
+  const { pathname } = new URL(req.url);
+  const { proxySitemapXml, pages } = normalizedConfig;
 
-  const { proxySitemapXml, pages } = config;
-
-  if (headlessPathname === '/sitemap.xml' && proxySitemapXml === true) {
+  // Handle the root XML sitemap if specified in the config
+  if (pathname === '/sitemap.xml' && proxySitemapXml === true) {
     return createRootSitemap(req, normalizedConfig);
   }
 
-  if (headlessPathname === '/sitemap-pages.xml' && pages && pages?.length > 0) {
+  // Handle the sitemap for the specified Next.js pages if specified in the config
+  if (pathname === '/sitemap-pages.xml' && pages?.length) {
     return createPagesSitemap(req, normalizedConfig);
   }
 
-  if (normalizedConfig.sitemapIndexPaths.includes(headlessPathname)) {
+  // Handle the sitemap index paths specified in the config
+  if (normalizedConfig?.sitemapIndexPaths?.includes(pathname)) {
     return handleSitemapIndexPath(req, normalizedConfig);
   }
 
+  /**
+   * If the above conditions are not met, return undefined and go on to the
+   * next middleware
+   */
   return undefined;
 }
