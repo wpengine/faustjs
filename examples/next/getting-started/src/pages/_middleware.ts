@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const response = await proxySitemapRequests(req, {
-    sitemapIndexPaths: [
+    sitemapPaths: [
       '/wp-sitemap-posts-post-1.xml',
       '/wp-sitemap-posts-page-1.xml',
     ],

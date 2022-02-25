@@ -293,7 +293,12 @@ export function createPagesSitemap(
   pages.forEach((page) => {
     urls = [
       ...urls,
-      { loc: `${trimEnd(origin, '/')}/${trim(page.path, '/')}` },
+      {
+        loc: `${trimEnd(origin, '/')}/${trim(page.path, '/')}`,
+        lastmod: page?.lastmod,
+        changefreq: page?.changefreq,
+        priority: page?.priority,
+      },
     ];
   });
 
