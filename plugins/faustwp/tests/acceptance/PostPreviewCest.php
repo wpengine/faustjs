@@ -13,7 +13,7 @@ class PostPreviewCest
         $front_end_url = 'http://localhost:3000';
 
         $I->haveFaustWPSetting('frontend_uri', $front_end_url);
-        $I->haveFaustWPSetting('secret_key', '00000000-0000-0000-0000-000000000001');
+        $I->haveFaustWPSetting('secret_key', '00000000-0000-4000-8000-000000000001');
         $post_id = $I->havePostInDatabase([
             'post_type' => 'post',
             'post_title' => $post_title,
