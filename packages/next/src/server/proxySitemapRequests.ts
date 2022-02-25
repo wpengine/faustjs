@@ -1,17 +1,80 @@
-import defaults from 'lodash/defaults.js';
-import isUndefined from 'lodash/isUndefined.js';
-import isArray from 'lodash/isArray.js';
-import isObject from 'lodash/isObject.js';
 import { config as coreConfig } from '@faustjs/core';
-import { NextRequest } from 'next/server.js';
-import { XMLParser, XMLBuilder } from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 import { trim, trimEnd } from 'lodash';
+import defaults from 'lodash/defaults.js';
+import isArray from 'lodash/isArray.js';
+import isUndefined from 'lodash/isUndefined.js';
+import { NextRequest } from 'next/server.js';
 
-export interface NextPage {
+/**
+ * TypeScript representation of the "URL" element from the Sitemap
+ * schema
+ *
+ * @link https://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+ */
+export interface SitemapSchemaUrlElement {
+  /**
+   * The location URI of a document. The URI must conform to RFC 2396 (http://www.ietf.org/rfc/rfc2396.txt).
+   */
   loc: string;
+  /**
+   * The date the document was last modified. The date must conform to the
+   * W3C DATETIME format (http://www.w3.org/TR/NOTE-datetime).
+   * Example: 2005-05-10
+   * Lastmod may also contain a timestamp. Example: 2005-05-10T17:33:30+08:00
+   */
   lastmod?: string;
-  changefreq?: string;
-  priority?: string;
+  /**
+   * Indicates how frequently the content at a particular URL is likely
+   * to change. The value "always" should be used to describe documents that
+   * change each time they are accessed. The value "never" should be used to
+   * describe archived URLs. Please note that web crawlers may not necessarily
+   * crawl pages marked "always" more often. Consider this element as a
+   * friendly suggestion and not a command.
+   */
+  changefreq?:
+    | 'always'
+    | 'hourly'
+    | 'daily'
+    | 'weekly'
+    | 'monthly'
+    | 'yearly'
+    | 'never';
+  /**
+   * The priority of a particular URL relative to other pages on the same site.
+   * The value for this element is a number between 0.0 and 1.0
+   * where 0.0 identifies the lowest priority page(s). The default priority of
+   * a page is 0.5. Priority is used to select between pages on your site.
+   * Setting a priority of 1.0 for all URLs will not help you, as the relative
+   * priority of pages on your site is what will be considered.
+   */
+  priority?: number;
+}
+
+/**
+ * TypeScript representation of the "sitemap" element from the
+ * siteindex schema
+ *
+ * @link https://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd
+ */
+export interface SitemapSchemaSitemapElement {
+  /**
+   * The location URI of a sitemap. The URI must conform to RFC 2396 (http://www.ietf.org/rfc/rfc2396.txt).
+   */
+  loc: string;
+  /**
+   * The date the document was last modified. The date must conform to the
+   * W3C DATETIME format (http://www.w3.org/TR/NOTE-datetime). Example: 2005-05-10
+   * Lastmod may also contain a timestamp. Example: 2005-05-10T17:33:30+08:00
+   */
+  lastmod?: string;
+}
+
+export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
+  /**
+   * The relative URL of the Next.js page.
+   */
+  path: string;
 }
 
 export interface ProxySitemapRequestsConfig {
@@ -23,7 +86,7 @@ export interface ProxySitemapRequestsConfig {
   /**
    * Next.js static pages you want included in you /sitemap.xml file.
    */
-  pages?: NextPage[];
+  pages?: NextJSPage[];
   /**
    * Replace the WordPress site URL for your headless frontend site url in the
    * sitemap url entries.
@@ -35,21 +98,23 @@ export interface ProxySitemapRequestsConfig {
   proxySitemapXml?: boolean;
 }
 
-export interface Index {
-  loc: string;
-  lastmod?: string;
-}
-export function createSitemapIndex(indices: Index[]) {
+/**
+ * Creates an XML sitemap index file from a list of sitemap URLs
+ *
+ * @param sitemaps A list of sitemap URL objects
+ * @returns
+ */
+export function createSitemapIndex(sitemaps: SitemapSchemaSitemapElement[]) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    ${indices
-      .map((sitemapIndex) => {
-        const lastmod = sitemapIndex?.lastmod
-          ? `<lastmod>${sitemapIndex.lastmod}</lastmod>`
+    ${sitemaps
+      .map((sitemap) => {
+        const lastmod = sitemap?.lastmod
+          ? `<lastmod>${sitemap.lastmod}</lastmod>`
           : '';
 
         return `<sitemap>
-          <loc>${sitemapIndex.loc}</loc>
+          <loc>${sitemap.loc}</loc>
           ${lastmod}
         </sitemap>`;
       })
@@ -62,20 +127,13 @@ export function createSitemapIndex(indices: Index[]) {
   return response;
 }
 
-export interface Url {
-  loc: string;
-  lastmod?: string;
-  changefreq?:
-    | 'always'
-    | 'hourly'
-    | 'daily'
-    | 'weekly'
-    | 'monthly'
-    | 'yearly'
-    | 'never';
-  priority?: number;
-}
-export function createSitemap(urls: Url[]) {
+/**
+ * Creates an XML Sitemap file from a list of URLs
+ *
+ * @param urls A list of URL objects
+ * @returns
+ */
+export function createSitemap(urls: SitemapSchemaUrlElement[]) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${urls
@@ -103,18 +161,26 @@ export function createSitemap(urls: Url[]) {
   return response;
 }
 
+/**
+ * Creates the root XML sitemap (e.g. /sitemap.xml) that combines all the
+ * specified sitemap index paths with the specified Next.js pages.
+ *
+ * @param req The Next.js middleware request object
+ * @param config The proxySitemapRequests config object
+ * @returns A response object
+ */
 export function createRootSitemap(
   req: NextRequest,
   config: ProxySitemapRequestsConfig,
-) {
+): Response {
   const { pages, sitemapIndexPaths } = config;
   const { origin } = new URL(req.url);
-  let sitemapIndices: Array<{ loc: string; lastmod?: string }> = [];
+  let sitemapIndices: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
     sitemapIndices = [
       ...sitemapIndices,
-      { loc: `${origin}/sitemap-pages.xml` },
+      { loc: `${trimEnd(origin, '/')}/sitemap-pages.xml` },
     ];
   }
 
@@ -123,14 +189,25 @@ export function createRootSitemap(
     isArray(sitemapIndexPaths) &&
     sitemapIndexPaths.length
   ) {
-    sitemapIndexPaths.forEach((index) => {
-      sitemapIndices = [...sitemapIndices, { loc: `${origin}${index}` }];
+    sitemapIndexPaths.forEach((sitemapIndexPath) => {
+      sitemapIndices = [
+        ...sitemapIndices,
+        { loc: `${trimEnd(origin, '/')}/${trim(sitemapIndexPath, '/')}` },
+      ];
     });
   }
 
   return createSitemapIndex(sitemapIndices);
 }
 
+/**
+ * Creates a sitemap for the specified Next.js pages. Visitable at
+ * /sitemap-pages.xml
+ *
+ * @param req The Next.js middleware request object
+ * @param config The proxySitemapRequests config object
+ * @returns A response object
+ */
 export function createPagesSitemap(
   req: NextRequest,
   config: ProxySitemapRequestsConfig,
@@ -142,10 +219,13 @@ export function createPagesSitemap(
     return createSitemap([]);
   }
 
-  let urls: Url[] = [];
+  let urls: SitemapSchemaUrlElement[] = [];
 
   pages.forEach((page) => {
-    urls = [...urls, { loc: `${origin}${page.loc}` }];
+    urls = [
+      ...urls,
+      { loc: `${trimEnd(origin, '/')}/${trim(page.path, '/')}` },
+    ];
   });
 
   return createSitemap(urls);
@@ -177,11 +257,11 @@ export async function resolveSitemapIndexPaths(
   });
   const xmlJson: {
     urlset: {
-      url: Url[];
+      url: SitemapSchemaUrlElement[];
     };
   } = parser.parse(xmlRes);
 
-  let urls: Url[] = [];
+  let urls: SitemapSchemaUrlElement[] = [];
 
   xmlJson.urlset.url.forEach((url) => {
     const newUrl = url;
@@ -199,19 +279,15 @@ export async function proxySitemapRequests(
   req: NextRequest,
   _config: ProxySitemapRequestsConfig,
 ): Promise<Response | undefined> {
-  const { wpUrl } = coreConfig();
-
   const config = defaults({}, _config, {
     replaceWPUrls: true,
     proxySitemapXml: true,
   });
 
-  // validate config
+  // TODO: validate config
 
   const headlessPathname = new URL(req?.url, 'http://non-existant-host')
     ?.pathname;
-
-  console.log('headlessPathname, ', headlessPathname);
 
   const { proxySitemapXml, pages } = config;
 
