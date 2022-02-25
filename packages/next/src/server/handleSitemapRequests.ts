@@ -123,6 +123,7 @@ export interface ParsedSitemap {
  *
  * @param config The user provided config
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function validateConfig(config: any) {
   // Validate sitemapIndexPaths structure and required values
   if (!isUndefined(config?.sitemapIndexPaths)) {
@@ -130,6 +131,7 @@ export function validateConfig(config: any) {
       throw new Error('sitemapIndexPaths must be an array');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (config?.sitemapIndexPaths as any[]).forEach((sitemapIndexPath: any) => {
       if (!isString(sitemapIndexPath)) {
         throw new Error('sitemapIndexPaths must be an array of strings');
@@ -149,11 +151,13 @@ export function validateConfig(config: any) {
       throw new Error('pages must be an array');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (config?.pages as any[]).forEach((page: any) => {
       if (!isObject(page)) {
         throw new Error('pages must be an array of objects');
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (isUndefined((page as any).path)) {
         throw new Error('pages must have a path property');
       }
