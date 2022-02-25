@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
     ],
     pages: [
       {
-        loc: '/about',
+        path: '/about',
         lastmod: new Date().toISOString(),
       },
     ],
