@@ -8,5 +8,6 @@ export {
   getNextServerSideProps,
   getNextStaticProps,
   is404,
+  proxySitemapRequests,
 } from '../server/index.js';
 export { FaustProvider } from '../components/index.js';
