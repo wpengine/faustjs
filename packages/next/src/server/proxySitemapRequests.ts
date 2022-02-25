@@ -10,6 +10,14 @@ import trim from 'lodash/trim.js';
 import trimEnd from 'lodash/trimEnd.js';
 import { NextRequest } from 'next/server.js';
 
+/**
+ * This middleware may be used on the Vercel Edge Runtime for middleware.
+ * This runtime is strict, and has a very limited amount of Node.js apis.
+ * Please ensure that any logic here works with the Vercel Edge Runtime.
+ *
+ * @link https://nextjs.org/docs/api-reference/edge-runtime
+ */
+
 const FAUST_SITEMAP_PATHNAME = '/sitemap.xml';
 const FAUST_PAGES_PATHNAME = '/sitemap-faust-pages.xml';
 
@@ -105,6 +113,9 @@ export interface ProxySitemapRequestsConfig {
   proxySitemapXml: boolean;
 }
 
+/**
+ * TypeScript representation of a parsed XML sitemap
+ */
 export interface ParsedSitemap {
   urlset: {
     url: SitemapSchemaUrlElement[];
@@ -178,12 +189,15 @@ export function createSitemapIndex(sitemaps: SitemapSchemaSitemapElement[]) {
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${sitemaps
       .map((sitemap) => {
-        const lastmod = sitemap?.lastmod
-          ? `<lastmod>${sitemap.lastmod}</lastmod>`
-          : '';
+        const loc = `<loc>${sitemap.loc}</loc>`;
+        let lastmod = '';
+
+        if (sitemap?.lastmod) {
+          lastmod = `<lastmod>${sitemap.lastmod}</lastmod>`;
+        }
 
         return `<sitemap>
-          <loc>${sitemap.loc}</loc>
+          ${loc}
           ${lastmod}
         </sitemap>`;
       })
@@ -197,29 +211,39 @@ export function createSitemapIndex(sitemaps: SitemapSchemaSitemapElement[]) {
 }
 
 /**
- * Creates an XML Sitemap file from a list of URLs
+ * Creates an XML Sitemap from a list of URLs
  *
- * @param urls A list of URL objects
- * @returns
+ * @param {SitemapSchemaUrlElement[]} urls A list of URL objects
+ * @returns {Response}
  */
 export function createSitemap(urls: SitemapSchemaUrlElement[]) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     ${urls
       .map((url) => {
-        const lastmod = url?.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : '';
-        const changefreq = url?.changefreq
-          ? `<changefreq>${url.changefreq}</changefreq>`
-          : '';
-        const priority = url?.priority
-          ? `<priority>${url.priority}</priority>`
-          : '';
+        const loc = `<loc>${url.loc}</loc>`;
+        let lastmod = '';
+        let changefreq = '';
+        let priority = '';
+
+        if (url?.lastmod) {
+          lastmod = `<lastmod>${url.lastmod}</lastmod>`;
+        }
+
+        if (url?.changefreq) {
+          changefreq = `<changefreq>${url.changefreq}</changefreq>`;
+        }
+
+        if (url?.priority) {
+          priority = `<priority>${url.priority}</priority>`;
+        }
+
         return `<url>
-            <loc>${url.loc}</loc>
+            ${loc}
             ${lastmod}
             ${changefreq}
             ${priority}
-          </url>`;
+        </url>`;
       })
       .join('')}
   </urlset>`;
@@ -231,14 +255,15 @@ export function createSitemap(urls: SitemapSchemaUrlElement[]) {
 }
 
 /**
- * Creates the root XML sitemap (e.g. /sitemap.xml) that combines all the
- * specified sitemap index paths with the specified Next.js pages.
+ * Creates the root XML sitemap index (e.g. /sitemap.xml) that lists all the
+ * sitemaps provided as the sitemapPaths property in the config, in addition to
+ * a sitemap for the Next.js pages provided as the pages property in the config.
  *
  * @param req The Next.js middleware request object
- * @param config The proxySitemapRequests config object
- * @returns A response object
+ * @param normalizedConfig A normalized config object
+ * @returns {Response|undefined}
  */
-export function createRootSitemap(
+export function createRootSitemapIndex(
   req: NextRequest,
   normalizedConfig: ProxySitemapRequestsConfig,
 ): Response {
@@ -270,12 +295,11 @@ export function createRootSitemap(
 }
 
 /**
- * Creates a sitemap for the specified Next.js pages. Visitable at
- * /sitemap-pages.xml
+ * Creates a sitemap for the Next.js pages specified in the "pages" config option
  *
  * @param req The Next.js middleware request object
- * @param config The proxySitemapRequests config object
- * @returns A response object
+ * @param normalizedConfig A normalized config object
+ * @returns {Response|undefined}
  */
 export function createPagesSitemap(
   req: NextRequest,
@@ -305,10 +329,17 @@ export function createPagesSitemap(
   return createSitemap(urls);
 }
 
+/**
+ * Handles a request to a sitemap path listed in the sitemapPaths config option
+ *
+ * @param req The Next.js middleware request object
+ * @param normalizedConfig A normalized config object
+ * @returns {Promise<Response|Undefined>}
+ */
 export async function handleSitemapPath(
   req: NextRequest,
   normalizedConfig: ProxySitemapRequestsConfig,
-) {
+): Promise<Response | undefined> {
   const { wpUrl } = coreConfig();
   const { replaceUrls } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
@@ -371,8 +402,8 @@ export async function handleSitemapPath(
  *
  * @param req The Next.js middleware request object
  * @param config The user specified config object
- * @returns {Response|undefined} A response object if current request sitemap
- * that needs to be handled, undefined otherwise
+ * @returns {Response|undefined} A response object if the current request
+ * is for a sitemap that needs to be handled, undefined otherwise
  */
 export async function proxySitemapRequests(
   req: NextRequest,
@@ -392,7 +423,7 @@ export async function proxySitemapRequests(
 
   // Handle the root XML sitemap if specified in the config
   if (pathname === FAUST_SITEMAP_PATHNAME && proxySitemapXml === true) {
-    return createRootSitemap(req, normalizedConfig);
+    return createRootSitemapIndex(req, normalizedConfig);
   }
 
   // Handle the sitemap for the specified Next.js pages if specified in the config
