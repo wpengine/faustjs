@@ -18,7 +18,16 @@ import { NextRequest } from 'next/server.js';
  * @link https://nextjs.org/docs/api-reference/edge-runtime
  */
 
+/**
+ * The pathname to the root sitemap index file. We may want to make this
+ * configurable in the future.
+ */
 const FAUST_SITEMAP_PATHNAME = '/sitemap.xml';
+
+/**
+ * The pathname to the Next.js pages sitemap file. We may want to make this
+ * configurable in the future.
+ */
 const FAUST_PAGES_PATHNAME = '/sitemap-faust-pages.xml';
 
 /**
@@ -136,17 +145,17 @@ export function validateConfig(config: Partial<HandleSitemapRequestsConfig>) {
   // Validate sitemapIndexPaths structure and required values
   if (!isUndefined(config?.sitemapPathsToProxy)) {
     if (!isArray(config.sitemapPathsToProxy)) {
-      throw new Error('sitemapIndexPaths must be an array');
+      throw new Error('sitemapPathsToProxy must be an array');
     }
 
-    (config?.sitemapPathsToProxy).forEach((sitemapIndexPath) => {
-      if (!isString(sitemapIndexPath)) {
-        throw new Error('sitemapIndexPaths must be an array of strings');
+    (config?.sitemapPathsToProxy).forEach((sitemapPath) => {
+      if (!isString(sitemapPath)) {
+        throw new Error('sitemapPathsToProxy must be an array of strings');
       }
 
-      if (!sitemapIndexPath.startsWith('/')) {
+      if (!sitemapPath.startsWith('/')) {
         throw new Error(
-          'Each sitemapIndexPath must start with a forward slash',
+          'Each sitemapPathsToProxy must start with a forward slash',
         );
       }
     });
