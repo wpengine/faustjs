@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, claygriffiths, joefusco, markkelnar, mi
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 5.9
-Stable tag: 0.7.4
+Stable tag: 0.7.5
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,14 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.5 =
+
+### Patch Changes
+
+- b7af359: Simplify generation of preview links. Fixes an issue where preview links were missing slashes with certain permalink structures. Thanks @torounit!
+- 662c377: Plugin settings are now validated and sanitized before saving.
+- c730348: Disables access to the site editor when themes are disabled
+
 = 0.7.4 =
 
 ### Patch Changes
@@ -43,12 +51,5 @@ That's it! For more information on getting started with headless WordPress, see 
 ### Patch Changes
 
 - ab4a661: Fixed issue where file editor was unable to save
-
-= 0.7.2 =
-
-### Patch Changes
-
-- 4cff9dc: feat: add link to Settings page on Installed Plugins list page
-- 3c1280b: Adds the GraphQL `Type` name to the preview URL to avoid making a request to get the content type in the Faust.js packages
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
