@@ -132,7 +132,7 @@ function Header({
 export default Header;
 ```
 
-As a generic example, let's create a test case that check for the rendered navigation items that we have hardcoded, and have received from GraphQL via GQty. Create a file called `src/components/Header.test.tsx`.
+As a generic example, let's create a test case that checks for the rendered navigation items. We'll test both the hardcoded items and the items received from GraphQL via GQty. Create a file called `src/components/Header.test.tsx`.
 
 We'll start off by mocking the Faust.js `client` module to return a mock GraphQL query result:
 
