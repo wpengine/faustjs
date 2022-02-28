@@ -4,10 +4,46 @@ import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
 
 export interface AccessToken {
+  /**
+   * Base 64 encoded access token
+   */
   token: string | undefined;
+  /**
+   * The time in seconds until the access token expires.
+   */
   expiration: number | undefined;
 }
 
+export type RefreshTimer = ReturnType<typeof setTimeout> | undefined;
+
+/**
+ * The amount of time in seconds until the access token is fetched
+ * before it expires.
+ *
+ * For example, if the access token expires in 5 minutes (300 seconds), and
+ * this value is 60, then the access token will be refreshed at 240 seconds.
+ *
+ * This allows for enough time to fetch a new access token before it expires.
+ *
+ */
+export const TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES = 60;
+
+/**
+ * The setTimeout instance that refreshes the access token.
+ */
+let __REFRESH_TIMER: RefreshTimer = undefined;
+
+export function getRefreshTimer(): RefreshTimer {
+  return __REFRESH_TIMER;
+}
+
+export function setRefreshTimer(timer: RefreshTimer): void {
+  __REFRESH_TIMER = timer;
+}
+
+/**
+ * The access token object
+ */
 let accessToken: AccessToken | undefined;
 
 /**
@@ -48,6 +84,41 @@ export function setAccessToken(
     token,
     expiration,
   };
+}
+
+/**
+ * Creates the access token refresh timer that will fetch a new access token
+ * before the current one expires.
+ *
+ * @returns {void}
+ */
+export function setAccessTokenRefreshTimer(): void {
+  const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+  const accessTokenExpirationInSeconds = getAccessTokenExpiration();
+
+  // If there is no access token/expiration, don't create a timer.
+  if (accessTokenExpirationInSeconds === undefined) {
+    return;
+  }
+
+  const secondsUntilExpiration =
+    accessTokenExpirationInSeconds - currentTimeInSeconds;
+  const secondsUntilRefresh =
+    secondsUntilExpiration - TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES;
+
+  setRefreshTimer(
+    setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000),
+  );
+}
+
+/**
+ * Clears the current access token refresh timer if one exists.
+ */
+export function clearAccessTokenRefreshTimer(): void {
+  const timer = getRefreshTimer();
+  if (timer !== undefined) {
+    clearTimeout(timer);
+  }
 }
 
 /**
@@ -93,6 +164,15 @@ export async function fetchAccessToken(code?: string): Promise<string | null> {
 
     setAccessToken(result.accessToken, result.accessTokenExpiration);
 
+    // If there is an existing refresh timer, clear it.
+    clearAccessTokenRefreshTimer();
+
+    /**
+     * Set a refresh timer to fetch a new access token before
+     * the current one expires.
+     */
+    setAccessTokenRefreshTimer();
+
     return result.accessToken;
   } catch (error) {
     setAccessToken(undefined, undefined);
@@ -100,34 +180,3 @@ export async function fetchAccessToken(code?: string): Promise<string | null> {
     return null;
   }
 }
-
-/**
- * The interval (in ms) in which the access token is check if a new one
- * needs to be fetched
- */
-export const ACCESS_TOKEN_EXP_CHECK_INTERVAL_MS = 15000;
-
-/**
- * The difference in seconds between the current time and the expiration
- * which the access token should be re-fetched
- */
-export const TIME_DIFF_TO_FETCH_TOKEN = 60;
-
-/**
- * Continuously check if the access token is close to
- * expiration and fetch a new one if needed.
- */
-setInterval(() => {
-  if (!accessToken?.token || !accessToken?.expiration) {
-    return;
-  }
-
-  const currentTime = Math.floor(Date.now() / 1000);
-
-  // Only refetch the token if it's 60 seconds before its expiration
-  if (currentTime + TIME_DIFF_TO_FETCH_TOKEN < accessToken.expiration) {
-    return;
-  }
-
-  void fetchAccessToken();
-}, ACCESS_TOKEN_EXP_CHECK_INTERVAL_MS);
