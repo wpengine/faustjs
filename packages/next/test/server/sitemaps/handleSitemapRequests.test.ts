@@ -229,6 +229,8 @@ describe('handleSitemapRequests', () => {
   });
 
   it('does not return a response if the path is not a sitemap route', async () => {
+    jest.restoreAllMocks();
+
     const createRootSitemapIndexSpy = jest.spyOn(
       createSitemaps,
       'createRootSitemapIndex',

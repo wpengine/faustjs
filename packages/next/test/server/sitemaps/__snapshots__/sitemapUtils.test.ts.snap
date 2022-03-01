@@ -1,23 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`creatSitemapIndex() returns a sitemap index with sitemaps 1`] = `
+exports[`createSitemap() returns a sitemap with no links 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
-      <sitemapindex xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
-      <sitemap>
-            <loc>http://localhost:3000/post-sitemap.xml</loc>
-            <lastmod>2022-01-01</lastmod>
-          </sitemap><sitemap>
-            <loc>http://localhost:3000/page-sitemap.xml</loc>
-            
-          </sitemap>
-      </sitemapindex>"
-`;
-
-exports[`creatSitemapIndex() returns a sitemap with no sitemaps 1`] = `
-"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
-      <sitemapindex xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+    <urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
       
-      </sitemapindex>"
+    </urlset>"
 `;
 
 exports[`createSitemap() returns a sitemap with specified urls 1`] = `
@@ -50,4 +37,24 @@ exports[`createSitemap() returns a sitemap with specified urls 1`] = `
               
           </url>
     </urlset>"
+`;
+
+exports[`createSitemapIndex() returns a sitemap index with no sitemaps 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+      <sitemapindex xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+      
+      </sitemapindex>"
+`;
+
+exports[`createSitemapIndex() returns a sitemap index with specified sitemaps 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+      <sitemapindex xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+      <sitemap>
+            <loc>http://localhost:3000/post-sitemap.xml</loc>
+            <lastmod>2022-01-01</lastmod>
+          </sitemap><sitemap>
+            <loc>http://localhost:3000/page-sitemap.xml</loc>
+            
+          </sitemap>
+      </sitemapindex>"
 `;
