@@ -51,6 +51,22 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'WPE\FaustWP\Replacement\enqueue_preview_scripts' ) );
 	}
 
+	public function test_wp_sitemaps_posts_entry_filter() {
+		$this->assertSame( 10, has_action( 'wp_sitemaps_posts_entry', 'WPE\FaustWP\Replacement\sitemaps_posts_entry' ) );
+	}
+
+	public function test_wp_sitemaps_taxonomies_entry_filter() {
+		$this->assertSame( 10, has_action( 'wp_sitemaps_taxonomies_entry', 'WPE\FaustWP\Replacement\sitemaps_taxonomies_entry' ) );
+	}
+
+	public function test_wpseo_xml_sitemap_post_url_filter() {
+		$this->assertSame( 10, has_action( 'wpseo_xml_sitemap_post_url', 'WPE\FaustWP\Replacement\yoast_sitemap_post_url' ) );
+	}
+
+	public function test_wpseo_sitemap_entry_filter() {
+		$this->assertSame( 10, has_action( 'wpseo_sitemap_entry', 'WPE\FaustWP\Replacement\yoast_sitemap_entry' ) );
+	}
+
 	/**
 	 * Tests content_replacement() returns original value when content replacement is not enabled.
 	 */
