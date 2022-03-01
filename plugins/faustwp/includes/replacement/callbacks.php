@@ -228,3 +228,45 @@ function enqueue_preview_scripts() {
 	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
 	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 }
+
+add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
+/**
+ * Filters the sitemap entry for an individual post.
+ *
+ * @param array $sitemap_entry Sitemap entry for the post.
+ */
+function sitemaps_posts_entry( $sitemap_entry ) {
+	return normalize_sitemap_entry( $sitemap_entry );
+}
+
+add_filter( 'wp_sitemaps_taxonomies_entry', __NAMESPACE__ . '\\sitemaps_taxonomies_entry' );
+/**
+ * Filters the sitemap entry for an individual term.
+ *
+ * @param array  $sitemap_entry  Sitemap entry for the term.
+ */
+function sitemaps_taxonomies_entry( $sitemap_entry ) {
+	return normalize_sitemap_entry( $sitemap_entry );
+}
+
+add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_url' );
+/**
+ * Filter the URL Yoast SEO uses in the XML sitemap.
+ *
+ * Note that only absolute local URLs are allowed as the check after this removes external URLs.
+ *
+ * @param string  $url  URL to use in the XML sitemap
+ */
+function yoast_sitemap_post_url( $url ) {
+	return normalize_sitemap_url( $url );
+}
+
+add_filter( 'wpseo_sitemap_entry', __NAMESPACE__ . '\\wpseo_sitemap_entry' );
+/**
+ * Filter URL entry before it gets added to the sitemap.
+ *
+ * @param array  $sitemap_entry  Array of URL parts.
+ */
+function wpseo_sitemap_entry( $sitemap_entry ) {
+	return normalize_sitemap_entry( $sitemap_entry );
+}
