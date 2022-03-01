@@ -167,9 +167,7 @@ function post_preview_link( $link, $post ) {
 
 add_filter( 'post_link', __NAMESPACE__ . '\\post_link', 1000 );
 /**
- * Callback for WordPress 'preview_post_link' filter and 'post_link' filter.
- *
- * Callback for WordPress  'post_link' filter.
+ * Callback for WordPress 'post_link' filter.
  *
  * Swap post links in admin for headless front-end.
  *
