@@ -84,7 +84,12 @@ export async function createRootSitemapIndex(
 
   // JS object representation of the XML sitemap index
   const parsedSitemapIndex: ParsedSitemapIndex = parser.parse(xmlRes);
-  let wpSitemaps = parsedSitemapIndex.sitemapindex.sitemap;
+  let wpSitemaps = parsedSitemapIndex?.sitemapindex?.sitemap;
+
+  // The XML we parsed was not a proper sitemap
+  if (isUndefined(wpSitemaps)) {
+    return undefined;
+  }
 
   /**
    * Ignore paths with exact matches to the sitemapPathsToIgnore property
@@ -135,7 +140,7 @@ export async function createRootSitemapIndex(
       ];
     });
   } else {
-    sitemaps = wpSitemaps;
+    sitemaps = [...sitemaps, ...wpSitemaps];
   }
 
   return createSitemapIndex(sitemaps);
