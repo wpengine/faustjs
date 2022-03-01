@@ -104,8 +104,9 @@ class FunctionsTest extends \WP_UnitTestCase {
 	 * Test get_secret_key() returns expected value from database.
 	 */
 	public function test_get_secret_key_returns_expected_value() {
-		faustwp_update_setting( 'secret_key', 'abc123' );
-		$this->assertSame( 'abc123', get_secret_key() );
+		$uuid = wp_generate_uuid4();
+		faustwp_update_setting( 'secret_key', $uuid );
+		$this->assertSame( $uuid, get_secret_key() );
 	}
 
 	/**

@@ -117,7 +117,7 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 
 # Plugin secret found in WordPress Settings->Headless
-FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001
+FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001
 ```
 
 2. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
