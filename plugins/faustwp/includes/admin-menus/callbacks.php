@@ -39,6 +39,9 @@ function remove_admin_menu_pages() {
 	// Remove Appearance > Theme Editor.
 	remove_submenu_page( 'themes.php', 'theme-editor.php' );
 
+	// Remove Appearance > Editor.
+	remove_submenu_page( 'themes.php', 'site-editor.php' );
+
 	// Remove Appearance > Widgets.
 	remove_submenu_page( 'themes.php', 'widgets.php' );
 
@@ -79,6 +82,7 @@ function remove_admin_bar_items() {
 
 	$wp_admin_bar->remove_menu( 'customize' );
 	$wp_admin_bar->remove_node( 'themes' );
+	$wp_admin_bar->remove_node( 'site-editor' );
 	$wp_admin_bar->remove_node( 'widgets' );
 }
 
@@ -93,9 +97,14 @@ function prevent_admin_page_access() {
 		return;
 	}
 
+	$disabled_screens = array(
+		'site-editor',
+		'themes',
+	);
+
 	$screen = get_current_screen();
 
-	if ( is_object( $screen ) && 'themes' === $screen->id ) {
+	if ( is_object( $screen ) && in_array( $screen->id, $disabled_screens, true ) ) {
 		wp_safe_redirect( admin_url() );
 		exit;
 	}
