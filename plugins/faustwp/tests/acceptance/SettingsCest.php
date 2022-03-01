@@ -59,6 +59,24 @@ class SettingsCest
     }
 
     /**
+     * Ensure the frontend_uri is updated when the user saves a valid value.
+     */
+    public function i_see_no_trailing_slash_when_saving_frontend_uri_with_a_trailing_slash(AcceptanceTester $I) {
+        $I->loginAsAdmin();
+        $I->amOnFaustWPSettingsPage();
+
+        $new_frontend_uri = 'http://headless.example.com/';
+
+        $I->dontSeeInField('faustwp_settings[frontend_uri]', $new_frontend_uri);
+        $I->fillField('faustwp_settings[frontend_uri]', $new_frontend_uri);
+
+        $I->click("Save Changes");
+
+        $I->see("Settings saved.");
+        $I->seeInField('faustwp_settings[frontend_uri]', untrailingslashit($new_frontend_uri));
+    }
+
+    /**
      * Ensure the frontend_uri is not updated and an error message is shown when
      * the user saves an invalid value.
      */
