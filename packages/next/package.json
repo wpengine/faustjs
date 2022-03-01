@@ -81,6 +81,7 @@
     "@types/react": "^17.0.34",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
+    "bs-logger": "^0.2.6",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^15.0.0",
@@ -93,7 +94,6 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "gqty": "^2.1.0",
     "jest": "^27.3.1",
-    "bs-logger": "^0.2.6",
     "make-error": "^1.3.6",
     "next": "^12.1.0",
     "prettier": "^2.4.1",
@@ -106,10 +106,11 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@gqty/logger": "^2.0.1",
-    "@gqty/react": "^2.1.0",
     "@faustjs/core": "^0.15.4",
     "@faustjs/react": "^0.15.1",
+    "@gqty/logger": "^2.0.1",
+    "@gqty/react": "^2.1.0",
+    "fast-xml-parser": "^4.0.3",
     "graphql": ">=15.6",
     "lodash": "^4.17.21"
   }
