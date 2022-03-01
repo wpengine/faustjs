@@ -156,7 +156,7 @@ export function createPagesSitemap(
   const { pages } = normalizedConfig;
 
   if (isUndefined(pages) || !isArray(pages) || !pages.length) {
-    return createSitemap([]);
+    return undefined;
   }
 
   let urls: SitemapSchemaUrlElement[] = [];
@@ -216,7 +216,12 @@ export async function handleSitemapPath(
 
   // JS object representation of the XML sitemap
   const parsedSitemap: ParsedSitemap = parser.parse(xmlRes);
-  const wpSitemapUrls = parsedSitemap.urlset.url;
+  const wpSitemapUrls = parsedSitemap?.urlset?.url;
+
+  // The XML we parsed was not a proper sitemap
+  if (isUndefined(wpSitemapUrls)) {
+    return undefined;
+  }
 
   let urls: SitemapSchemaUrlElement[] = [];
 
