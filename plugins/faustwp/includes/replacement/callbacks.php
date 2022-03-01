@@ -243,7 +243,7 @@ add_filter( 'wp_sitemaps_taxonomies_entry', __NAMESPACE__ . '\\sitemaps_taxonomi
 /**
  * Filters the sitemap entry for an individual term.
  *
- * @param array  $sitemap_entry  Sitemap entry for the term.
+ * @param array $sitemap_entry Sitemap entry for the term.
  */
 function sitemaps_taxonomies_entry( $sitemap_entry ) {
 	return normalize_sitemap_entry( $sitemap_entry );
@@ -255,7 +255,7 @@ add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_
  *
  * Note that only absolute local URLs are allowed as the check after this removes external URLs.
  *
- * @param string  $url  URL to use in the XML sitemap
+ * @param string $url URL to use in the XML sitemap.
  */
 function yoast_sitemap_post_url( $url ) {
 	return normalize_sitemap_url( $url );
@@ -265,7 +265,7 @@ add_filter( 'wpseo_sitemap_entry', __NAMESPACE__ . '\\yoast_sitemap_entry' );
 /**
  * Filter URL entry before it gets added to the sitemap.
  *
- * @param array  $sitemap_entry  Array of URL parts.
+ * @param array $sitemap_entry Array of URL parts.
  */
 function yoast_sitemap_entry( $sitemap_entry ) {
 	return normalize_sitemap_entry( $sitemap_entry );
