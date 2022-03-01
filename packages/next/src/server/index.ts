@@ -1,2 +1,2 @@
 export * from './getProps.js';
-export * from './handleSitemapRequests.js';
+export { handleSitemapRequests } from './sitemaps/handleSitemapRequests.js';
