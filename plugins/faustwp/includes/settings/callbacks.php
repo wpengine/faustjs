@@ -446,3 +446,20 @@ function add_action_link_settings( $links ) {
 		$links
 	);
 }
+
+add_filter( 'faustwp_get_setting', __NAMESPACE__ . '\\trim_frontend_uri_trailing_slash', 10, 2 );
+/**
+ * Ensure that this plugin's frontend_uri setting does not have a trailing slash.
+ *
+ * @param mixed  $value   The setting value.
+ * @param string $name    The setting name.
+ *
+ * @return string
+ */
+function trim_frontend_uri_trailing_slash( $value, $name ) {
+	if ( 'frontend_uri' !== $name ) {
+		return $value;
+	}
+
+	return untrailingslashit( $value );
+}
