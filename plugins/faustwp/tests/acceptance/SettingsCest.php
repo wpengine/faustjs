@@ -73,7 +73,7 @@ class SettingsCest
         $I->click("Save Changes");
 
         $I->see("Settings saved.");
-        $I->seeInField('faustwp_settings[frontend_uri]', untrailingslashit($new_frontend_uri));
+        $I->seeInField('faustwp_settings[frontend_uri]', rtrim( $new_frontend_uri, '/\\' ));
     }
 
     /**
