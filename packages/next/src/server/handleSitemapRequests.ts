@@ -19,12 +19,6 @@ import { NextRequest } from 'next/server.js';
  */
 
 /**
- * The pathname to the root sitemap index file. We may want to make this
- * configurable in the future.
- */
-const FAUST_SITEMAP_PATHNAME = '/sitemap.xml';
-
-/**
  * The pathname to the Next.js pages sitemap file. We may want to make this
  * configurable in the future.
  */
@@ -108,14 +102,15 @@ export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
 
 export interface HandleSitemapRequestsConfig {
   /**
-   * A list of pathnames to proxy to the headless frontend from your
-   * WordPress site. These must be XML sitemaps.
+   * The pathname to the sitemap index file.
    *
-   * For example, if you have a pathname of `/wp-sitemap-posts-post-1.xml`,
-   * and a WordPress site at `https://my-wp-site.com`, your sitemap will be
-   * proxied from `https://my-wp-site.com/wp-sitemap-posts-post-1.xml`
+   * @example /sitemap.xml, /wp-sitemap.xml, /sitemap_index.xml
    */
-  sitemapPathsToProxy?: string[];
+  sitemapIndexPath: string;
+  /**
+   * A list of pathnames to ignore when proxying sitemaps.
+   */
+  sitemapPathsToIgnore?: string[];
   /**
    * Next.js pages you want included in you sitemap. When provided, an index
    * will be created specifically for these pages.
@@ -138,6 +133,15 @@ export interface ParsedSitemap {
 }
 
 /**
+ * TypeScript representation of a parsed XML sitemap index
+ */
+export interface ParsedSitemapIndex {
+  sitemapindex: {
+    sitemap: SitemapSchemaSitemapElement[];
+  };
+}
+
+/**
  * Validates the structure of the user defined config.
  *
  * @param {Partial<HandleSitemapRequestsConfig>} config The user provided config
@@ -145,20 +149,37 @@ export interface ParsedSitemap {
 export function validateConfig(
   config: Partial<HandleSitemapRequestsConfig>,
 ): void {
-  // Validate sitemapPathsToProxy structure and required values
-  if (!isUndefined(config?.sitemapPathsToProxy)) {
-    if (!isArray(config.sitemapPathsToProxy)) {
-      throw new Error('sitemapPathsToProxy must be an array');
+  if (isUndefined(config?.sitemapIndexPath)) {
+    throw new Error('sitemapIndexPath is required');
+  }
+
+  if (!isString(config?.sitemapIndexPath)) {
+    throw new Error('sitemapIndexPath must be a string');
+  }
+
+  if (!config?.sitemapIndexPath.startsWith('/')) {
+    throw new Error('sitemapIndexPath must start with a forward slash');
+  }
+
+  if (!isUndefined(config?.sitemapPathsToIgnore)) {
+    if (!isArray(config.sitemapPathsToIgnore)) {
+      throw new Error('sitemapPathsToIgnore must be an array');
     }
 
-    (config?.sitemapPathsToProxy).forEach((sitemapPath) => {
-      if (!isString(sitemapPath)) {
-        throw new Error('sitemapPathsToProxy must be an array of strings');
+    (config?.sitemapPathsToIgnore).forEach((path) => {
+      if (!isString(path)) {
+        throw new Error('sitemapPathsToIgnore must be an array of strings');
       }
 
-      if (!sitemapPath.startsWith('/')) {
+      if (!path.startsWith('/')) {
         throw new Error(
-          'Each sitemapPathsToProxy must start with a forward slash',
+          'Each sitemapPathsToIgnore must start with a forward slash',
+        );
+      }
+
+      if (path.includes('*') && !path.endsWith('*')) {
+        throw new Error(
+          'sitemapPathsToIgnore with a wildcard must end with a wildcard',
         );
       }
     });
@@ -278,35 +299,102 @@ export function createSitemap(urls: SitemapSchemaUrlElement[]): Response {
  * @param {HandleSitemapRequestsConfig} normalizedConfig A normalized config object
  * @returns {Response|undefined}
  */
-export function createRootSitemapIndex(
+export async function createRootSitemapIndex(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
-): Response | undefined {
-  const { pages, sitemapPathsToProxy } = normalizedConfig;
-  const { origin } = new URL(req.url);
-  let sitemapIndices: SitemapSchemaSitemapElement[] = [];
+): Promise<Response | undefined> {
+  const { wpUrl } = coreConfig();
+  const { pages, sitemapPathsToIgnore, replaceUrls } = normalizedConfig;
+  const { pathname, origin } = new URL(req.url);
+  let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
-    sitemapIndices = [
-      ...sitemapIndices,
+    sitemaps = [
+      ...sitemaps,
       { loc: `${trimEnd(origin, '/')}/${trim(FAUST_PAGES_PATHNAME, '/')}` },
     ];
   }
 
-  if (
-    !isUndefined(sitemapPathsToProxy) &&
-    isArray(sitemapPathsToProxy) &&
-    sitemapPathsToProxy.length
-  ) {
-    sitemapPathsToProxy.forEach((sitemapPath) => {
-      sitemapIndices = [
-        ...sitemapIndices,
-        { loc: `${trimEnd(origin, '/')}/${trim(sitemapPath, '/')}` },
-      ];
-    });
+  const wpSitemapUrl = `${trimEnd(wpUrl, '/')}/${trim(pathname, '/')}`;
+  const res = await fetch(wpSitemapUrl);
+
+  // Don't proxy the sitemap index if the response was not ok.
+  if (!res.ok) {
+    return undefined;
   }
 
-  return createSitemapIndex(sitemapIndices);
+  const xmlRes = await res.text();
+
+  /**
+   * Create a parser to convert our XML data into a JS object
+   *
+   * @link https://github.com/NaturalIntelligence/fast-xml-parser/blob/HEAD/docs/v4/6.HTMLParsing.md
+   */
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    preserveOrder: false,
+    unpairedTags: ['xml', 'xml-stylesheet'],
+    processEntities: true,
+    htmlEntities: true,
+  });
+
+  // JS object representation of the XML sitemap index
+  const parsedSitemapIndex: ParsedSitemapIndex = parser.parse(xmlRes);
+  let wpSitemaps = parsedSitemapIndex.sitemapindex.sitemap;
+
+  /**
+   * Ignore paths with exact matches to the sitemapPathsToIgnore property
+   */
+  wpSitemaps = wpSitemaps.filter((sitemap) => {
+    const { pathname: sitemapPathname } = new URL(sitemap.loc);
+
+    return !sitemapPathsToIgnore?.includes(sitemapPathname);
+  });
+
+  /**
+   * Ignore paths from sitemapPathsToIgnore property that end in a wildcard
+   */
+  const wildcardPathsToIgnore = sitemapPathsToIgnore?.filter((path) =>
+    path.endsWith('*'),
+  );
+  wpSitemaps = wpSitemaps.filter((sitemap) => {
+    const { pathname: sitemapPathname } = new URL(sitemap.loc);
+
+    let hasWildcard = false;
+
+    wildcardPathsToIgnore?.forEach((path) => {
+      const pathLessWildcard = trimEnd(path, '*');
+      if (sitemapPathname.startsWith(pathLessWildcard)) {
+        hasWildcard = true;
+      }
+    });
+
+    return !hasWildcard;
+  });
+
+  /**
+   * Replace the existing WordPress URL in each "loc" with the headless URL
+   * if necessary
+   *
+   * @example
+   * Replaces http://headless.local/wp-sitemap-posts-page-1.xml with
+   * http://localhost:3000/wp-sitemap-posts-page-1.xml
+   */
+  if (replaceUrls) {
+    wpSitemaps.forEach((sitemap) => {
+      sitemaps = [
+        ...sitemaps,
+        {
+          ...sitemap,
+          loc: sitemap.loc.replace(trim(wpUrl, '/'), trim(origin, '/')),
+        },
+      ];
+    });
+  } else {
+    sitemaps = wpSitemaps;
+  }
+
+  return createSitemapIndex(sitemaps);
 }
 
 /**
@@ -359,8 +447,8 @@ export async function handleSitemapPath(
   const { replaceUrls } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
 
-  const wpSitemapIndexUrl = `${trimEnd(wpUrl, '/')}/${trim(pathname, '/')}`;
-  const res = await fetch(wpSitemapIndexUrl);
+  const wpSitemapUrl = `${trimEnd(wpUrl, '/')}/${trim(pathname, '/')}`;
+  const res = await fetch(wpSitemapUrl);
 
   // Don't proxy the sitemap if the response was not ok.
   if (!res.ok) {
@@ -428,16 +516,19 @@ export async function handleSitemapRequests(
   validateConfig(config);
 
   // Normalize config if some optional values are missing
-  const normalizedConfig: HandleSitemapRequestsConfig = defaults({}, config, {
-    replaceUrls: true,
-    proxySitemapXml: true,
-  });
+  const normalizedConfig: HandleSitemapRequestsConfig = defaults(
+    {},
+    config as HandleSitemapRequestsConfig,
+    {
+      replaceUrls: true,
+    },
+  );
 
   const { pathname } = new URL(req.url);
-  const { pages } = normalizedConfig;
+  const { sitemapIndexPath, pages } = normalizedConfig;
 
   // Handle the root XML sitemap if specified in the config
-  if (pathname === FAUST_SITEMAP_PATHNAME) {
+  if (pathname === sitemapIndexPath) {
     return createRootSitemapIndex(req, normalizedConfig);
   }
 
@@ -447,7 +538,11 @@ export async function handleSitemapRequests(
   }
 
   // Handle the sitemap index paths specified in the config
-  if (normalizedConfig?.sitemapPathsToProxy?.includes(pathname)) {
+  if (
+    pathname.includes('sitemap') &&
+    pathname.endsWith('.xml') &&
+    !normalizedConfig?.sitemapPathsToIgnore?.includes(pathname)
+  ) {
     return handleSitemapPath(req, normalizedConfig);
   }
 
