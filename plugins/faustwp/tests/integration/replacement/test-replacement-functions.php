@@ -35,7 +35,7 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 		remove_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
 	}
 
-	public function test_normalize_sitemap_url() {
+	public function test_normalize_sitemap_url_replaces_frontend_uri_with_home_url() {
 		$frontend_post_url      = $this->init_settings['frontend_uri'] . '/posts/hello-world/';
 		$normalized_sitemap_url = normalize_sitemap_url( $frontend_post_url );
 
