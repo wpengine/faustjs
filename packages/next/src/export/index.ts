@@ -8,6 +8,6 @@ export {
   getNextServerSideProps,
   getNextStaticProps,
   is404,
-  handleSitemapRequests,
 } from '../server/index.js';
 export { FaustProvider } from '../components/index.js';
+export { handleSitemapRequests } from '../middleware/index.js';

@@ -1,5 +1,5 @@
 import 'faust.config';
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function middleware(req: NextRequest) {
