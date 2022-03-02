@@ -23,8 +23,6 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		update_option( $this->option, $this->init_settings );
-		// We have to clear this manually since all tests execute in a single "request"
-		$GLOBALS['wp_settings_errors'] = [];
 	}
 
 	public function test_domain_replacement_enabled_returns_false() {
