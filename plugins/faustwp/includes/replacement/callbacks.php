@@ -260,13 +260,3 @@ add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_
 function yoast_sitemap_post_url( $url ) {
 	return normalize_sitemap_url( $url );
 }
-
-add_filter( 'wpseo_sitemap_entry', __NAMESPACE__ . '\\yoast_sitemap_entry' );
-/**
- * Filter URL entry before it gets added to the sitemap.
- *
- * @param array $sitemap_entry Array of URL parts.
- */
-function yoast_sitemap_entry( $sitemap_entry ) {
-	return normalize_sitemap_entry( $sitemap_entry );
-}

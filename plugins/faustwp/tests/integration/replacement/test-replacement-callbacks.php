@@ -63,10 +63,6 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'wpseo_xml_sitemap_post_url', 'WPE\FaustWP\Replacement\yoast_sitemap_post_url' ) );
 	}
 
-	public function test_wpseo_sitemap_entry_filter() {
-		$this->assertSame( 10, has_action( 'wpseo_sitemap_entry', 'WPE\FaustWP\Replacement\yoast_sitemap_entry' ) );
-	}
-
 	/**
 	 * Tests content_replacement() returns original value when content replacement is not enabled.
 	 */
