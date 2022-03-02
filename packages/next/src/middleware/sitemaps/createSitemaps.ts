@@ -109,7 +109,7 @@ export async function createRootSitemapIndex(
     let hasWildcard = false;
 
     wildcardPathsToIgnore?.forEach((path) => {
-      const pathLessWildcard = trimSlashes(path);
+      const pathLessWildcard = path.slice(0, -1);
       if (sitemapPathname.startsWith(pathLessWildcard)) {
         hasWildcard = true;
       }
