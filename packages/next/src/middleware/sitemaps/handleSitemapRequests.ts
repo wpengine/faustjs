@@ -69,6 +69,20 @@ export const FAUST_PAGES_PATHNAME = '/sitemap-faust-pages.xml';
 export function validateConfig(
   config: Partial<HandleSitemapRequestsConfig>,
 ): void {
+  if (isUndefined(config?.wpUrl)) {
+    throw new Error('wpUrl is required.');
+  }
+
+  if (!isString(config?.wpUrl)) {
+    throw new Error('wpUrl must be a string.');
+  }
+
+  try {
+    const url = new URL(config.wpUrl);
+  } catch (e) {
+    throw new Error('wpUrl must be a valid URL.');
+  }
+
   if (isUndefined(config?.sitemapIndexPath)) {
     throw new Error('sitemapIndexPath is required');
   }

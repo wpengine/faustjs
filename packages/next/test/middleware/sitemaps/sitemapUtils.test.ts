@@ -1,5 +1,5 @@
 import 'isomorphic-fetch';
-import * as sitemapUtils from '../../../src/server/sitemaps/sitemapUtils';
+import * as sitemapUtils from '../../../src/middleware/sitemaps/sitemapUtils';
 describe('createSitemapIndex()', () => {
   it('returns a sitemap index with no sitemaps', async () => {
     const sitemaps: sitemapUtils.SitemapSchemaSitemapElement[] = [];

@@ -1,11 +1,37 @@
-import { config as coreConfig } from '@faustjs/core';
+import 'isomorphic-fetch';
 import { NextRequest } from 'next/server';
-import * as createSitemaps from '../../../src/server/sitemaps/createSitemaps';
-import * as handleSitemapRequests from '../../../src/server/sitemaps/handleSitemapRequests';
+import * as createSitemaps from '../../../src/middleware/sitemaps/createSitemaps';
+import * as handleSitemapRequests from '../../../src/middleware/sitemaps/handleSitemapRequests';
 
 describe('validateConfig', () => {
-  it('throws an error if sitemapIndexPath is missing', () => {
+  it('throws an error if wpUrl is missing', () => {
     const config = {};
+
+    expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
+      'wpUrl is required',
+    );
+  });
+
+  it('throws an error if wpUrl is not a string', () => {
+    const config: any = { wpUrl: {} };
+
+    expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
+      'wpUrl must be a string',
+    );
+  });
+
+  it('throws an error if wpUrl is not a string', () => {
+    const config: any = { wpUrl: 'testing' };
+
+    expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
+      'wpUrl must be a valid URL.',
+    );
+  });
+
+  it('throws an error if sitemapIndexPath is missing', () => {
+    const config = {
+      wpUrl: 'http://headless.local',
+    };
 
     expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
       'sitemapIndexPath is required',
@@ -14,6 +40,7 @@ describe('validateConfig', () => {
 
   it('throws an error if sitemapIndexPath is not a string', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: {},
     };
 
@@ -24,6 +51,7 @@ describe('validateConfig', () => {
 
   it('throws an error if sitemapIndexPath does not start with a forward slash', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: 'sitemap.xml',
     };
 
@@ -34,6 +62,7 @@ describe('validateConfig', () => {
 
   it('throws an error if sitemapPathsToIgnore is not an array', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: {},
     };
@@ -45,6 +74,7 @@ describe('validateConfig', () => {
 
   it('throws an error if sitemapPathsToIgnore is not an array of strings', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: [{}],
     };
@@ -56,6 +86,7 @@ describe('validateConfig', () => {
 
   it('throws an error if sitemapPathsToIgnore contains a path that does not start with a forward slash', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: ['author-sitemap.xml'],
     };
@@ -67,6 +98,7 @@ describe('validateConfig', () => {
 
   it('throws an error if sitemapPathsToIgnore contains a path that contains a wildcard and does not end with a wildcard', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: ['/author-*sitemap.xml'],
     };
@@ -78,6 +110,7 @@ describe('validateConfig', () => {
 
   it('throws an error if pages is not an array', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: {},
     };
@@ -89,6 +122,7 @@ describe('validateConfig', () => {
 
   it('throws an error if pages is not an array of objects', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: ['some-string'],
     };
@@ -100,6 +134,7 @@ describe('validateConfig', () => {
 
   it('throws an error if pages contains an object with no path', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [{}],
     };
@@ -111,6 +146,7 @@ describe('validateConfig', () => {
 
   it('throws an error if pages contains an object path that is not a string', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [{ path: {} }],
     };
@@ -122,6 +158,7 @@ describe('validateConfig', () => {
 
   it('throws an error if replaceUrls is not a boolean', () => {
     const config: any = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: 'some-string',
     };
@@ -133,10 +170,6 @@ describe('validateConfig', () => {
 });
 
 describe('handleSitemapRequests', () => {
-  coreConfig({
-    wpUrl: 'http://headless.local',
-  });
-
   it('properly routes to the sitemap index', async () => {
     const createRootSitemapIndexSpy = jest
       .spyOn(createSitemaps, 'createRootSitemapIndex')
@@ -147,6 +180,7 @@ describe('handleSitemapRequests', () => {
     } as NextRequest;
 
     let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
     };
@@ -174,6 +208,7 @@ describe('handleSitemapRequests', () => {
     } as NextRequest;
 
     let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
         {
@@ -206,6 +241,7 @@ describe('handleSitemapRequests', () => {
     } as NextRequest;
 
     let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
         {
@@ -245,6 +281,7 @@ describe('handleSitemapRequests', () => {
     );
 
     let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
+      wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
         {
