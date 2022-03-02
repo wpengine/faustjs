@@ -78,6 +78,7 @@ export function validateConfig(
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const url = new URL(config.wpUrl);
   } catch (e) {
     throw new Error('wpUrl must be a valid URL.');

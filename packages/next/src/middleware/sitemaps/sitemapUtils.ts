@@ -140,6 +140,16 @@ export function createSitemap(urls: SitemapSchemaUrlElement[]): Response {
   return response;
 }
 
+/**
+ * The below helper functions are pretty close to exactly what Lodash exports.
+ * We are not including lodash because Next.js middleware is very sensitive to
+ * imports. Lodash uses eval, and new Function(evalString), which is not supported
+ * by Next.js middleware.
+ *
+ * @link https://nextjs.org/docs/api-reference/edge-runtime#unsupported-apis
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isString(str: any): str is string {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   if (str != null && typeof str.valueOf() === 'string') {
@@ -148,18 +158,22 @@ export function isString(str: any): str is string {
   return false;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isArray(arr: any): arr is any[] {
   return Array.isArray(arr);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isUndefined(val: any): val is undefined {
   return val === undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isBoolean(val: any): val is boolean {
   return typeof val === 'boolean';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isObject(val: any): val is object {
   const type = typeof val;
   return val != null && (type === 'object' || type === 'function');
