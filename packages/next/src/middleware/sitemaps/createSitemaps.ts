@@ -1,9 +1,4 @@
-import { config as coreConfig } from '@faustjs/core';
 import { XMLParser } from 'fast-xml-parser';
-import isArray from 'lodash/isArray.js';
-import isUndefined from 'lodash/isUndefined.js';
-import trim from 'lodash/trim.js';
-import trimEnd from 'lodash/trimEnd.js';
 import { NextRequest } from 'next/server.js';
 import {
   HandleSitemapRequestsConfig,
@@ -14,6 +9,9 @@ import {
   createSitemapIndex,
   SitemapSchemaSitemapElement,
   SitemapSchemaUrlElement,
+  isArray,
+  trimSlashes,
+  isUndefined,
 } from './sitemapUtils.js';
 
 /**
@@ -47,19 +45,18 @@ export async function createRootSitemapIndex(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
 ): Promise<Response | undefined> {
-  const { wpUrl } = coreConfig();
-  const { pages, sitemapPathsToIgnore, replaceUrls } = normalizedConfig;
+  const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
   let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
     sitemaps = [
       ...sitemaps,
-      { loc: `${trimEnd(origin, '/')}/${trim(FAUST_PAGES_PATHNAME, '/')}` },
+      { loc: `${trimSlashes(origin)}/${trimSlashes(FAUST_PAGES_PATHNAME)}` },
     ];
   }
 
-  const wpSitemapUrl = `${trimEnd(wpUrl, '/')}/${trim(pathname, '/')}`;
+  const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
   const res = await fetch(wpSitemapUrl);
 
   // Don't proxy the sitemap index if the response was not ok.
@@ -112,7 +109,7 @@ export async function createRootSitemapIndex(
     let hasWildcard = false;
 
     wildcardPathsToIgnore?.forEach((path) => {
-      const pathLessWildcard = trimEnd(path, '*');
+      const pathLessWildcard = trimSlashes(path);
       if (sitemapPathname.startsWith(pathLessWildcard)) {
         hasWildcard = true;
       }
@@ -135,7 +132,7 @@ export async function createRootSitemapIndex(
         ...sitemaps,
         {
           ...sitemap,
-          loc: sitemap.loc.replace(trim(wpUrl, '/'), trim(origin, '/')),
+          loc: sitemap.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
         },
       ];
     });
@@ -170,7 +167,7 @@ export function createPagesSitemap(
     urls = [
       ...urls,
       {
-        loc: `${trimEnd(origin, '/')}/${trim(page.path, '/')}`,
+        loc: `${trimSlashes(origin)}/${trimSlashes(page.path)}`,
         lastmod: page?.lastmod,
         changefreq: page?.changefreq,
         priority: page?.priority,
@@ -192,11 +189,10 @@ export async function handleSitemapPath(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
 ): Promise<Response | undefined> {
-  const { wpUrl } = coreConfig();
-  const { replaceUrls } = normalizedConfig;
+  const { wpUrl, replaceUrls } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
 
-  const wpSitemapUrl = `${trimEnd(wpUrl, '/')}/${trim(pathname, '/')}`;
+  const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
   const res = await fetch(wpSitemapUrl);
 
   // Don't proxy the sitemap if the response was not ok.
@@ -243,7 +239,7 @@ export async function handleSitemapPath(
         ...urls,
         {
           ...url,
-          loc: url.loc.replace(trim(wpUrl, '/'), trim(origin, '/')),
+          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
         },
       ];
     });

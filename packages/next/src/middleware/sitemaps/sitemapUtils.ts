@@ -139,3 +139,32 @@ export function createSitemap(urls: SitemapSchemaUrlElement[]): Response {
 
   return response;
 }
+
+export function isString(str: any): str is string {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  if (str != null && typeof str.valueOf() === 'string') {
+    return true;
+  }
+  return false;
+}
+
+export function isArray(arr: any): arr is any[] {
+  return Array.isArray(arr);
+}
+
+export function isUndefined(val: any): val is undefined {
+  return val === undefined;
+}
+
+export function isBoolean(val: any): val is boolean {
+  return typeof val === 'boolean';
+}
+
+export function isObject(val: any): val is object {
+  const type = typeof val;
+  return val != null && (type === 'object' || type === 'function');
+}
+
+export function trimSlashes(str: string) {
+  return str.replace(/^\/+|\/+$/g, '');
+}

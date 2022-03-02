@@ -1,16 +1,17 @@
-import defaults from 'lodash/defaults.js';
-import isArray from 'lodash/isArray.js';
-import isBoolean from 'lodash/isBoolean.js';
-import isObject from 'lodash/isObject.js';
-import isString from 'lodash/isString.js';
-import isUndefined from 'lodash/isUndefined.js';
 import { NextRequest } from 'next/server.js';
 import {
   createPagesSitemap,
   createRootSitemapIndex,
   handleSitemapPath,
 } from './createSitemaps.js';
-import { SitemapSchemaUrlElement } from './sitemapUtils.js';
+import {
+  SitemapSchemaUrlElement,
+  isArray,
+  isBoolean,
+  isString,
+  isUndefined,
+  isObject,
+} from './sitemapUtils.js';
 
 /**
  * the "pages" config type
@@ -25,6 +26,13 @@ export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
 }
 
 export interface HandleSitemapRequestsConfig {
+  /**
+   * The URL of your WordPress site.
+   *
+   * @example https://my-wp-site.com
+   */
+  wpUrl: string;
+
   /**
    * The pathname to the sitemap index file.
    *
@@ -140,13 +148,12 @@ export async function handleSitemapRequests(
   validateConfig(config);
 
   // Normalize config if some optional values are missing
-  const normalizedConfig: HandleSitemapRequestsConfig = defaults(
+  // eslint-disable-next-line prefer-object-spread
+  const normalizedConfig: HandleSitemapRequestsConfig = Object.assign(
     {},
-    config as HandleSitemapRequestsConfig,
-    {
-      replaceUrls: true,
-    },
-  );
+    { replaceUrls: true },
+    config,
+  ) as HandleSitemapRequestsConfig;
 
   const { pathname } = new URL(req.url);
   const { sitemapIndexPath, pages } = normalizedConfig;
