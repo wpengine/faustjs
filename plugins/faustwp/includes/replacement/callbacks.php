@@ -183,13 +183,7 @@ function post_link( $link ) {
 		return $link;
 	}
 
-	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-
-	if ( $frontend_uri ) {
-		return str_replace( trailingslashit( get_home_url() ), trailingslashit( $frontend_uri ), $link );
-	}
-
-	return $link;
+	return equivalent_frontend_url( $link );
 }
 
 add_filter( 'term_link', __NAMESPACE__ . '\\term_link', 1000 );
@@ -205,16 +199,7 @@ function term_link( $term_link ) {
 		return $term_link;
 	}
 
-	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-
-	if ( empty( $frontend_uri ) ) {
-		return $term_link;
-	}
-
-	$frontend_uri = trailingslashit( $frontend_uri );
-	$site_url     = trailingslashit( site_url() );
-
-	return str_replace( $site_url, $frontend_uri, $term_link );
+	return equivalent_frontend_url( $term_link );
 }
 
 
@@ -258,5 +243,5 @@ add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_
  * @param string $url URL to use in the XML sitemap.
  */
 function yoast_sitemap_post_url( $url ) {
-	return normalize_sitemap_url( $url );
+	return equivalent_wp_url( $url );
 }
