@@ -1,11 +1,11 @@
-import 'faust.config';
 import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function middleware(req: NextRequest) {
   const isSitemapRequest = await handleSitemapRequests(req, {
-    sitemapIndexPath: '/sitemap_index.xml',
-    sitemapPathsToIgnore: ['/author-*'],
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: '/wp-sitemap.xml',
+    sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
     replaceUrls: true,
   });
 
