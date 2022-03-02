@@ -33,6 +33,10 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'sanitize_option_faustwp_settings', 'WPE\FaustWP\Settings\sanitize_faustwp_settings' ) );
 	}
 
+	public function test_faustwp_get_setting_filter_is_registered() {
+		$this->assertSame( 10, has_action( 'faustwp_get_setting', 'WPE\FaustWP\Settings\trim_frontend_uri_trailing_slash' ) );
+	}
+
 	public function test_sanitize_faustwp_settings_does_not_change_existing_settings() {
 		$this->assertSame( $this->init_settings, sanitize_faustwp_settings( $this->init_settings, $this->option ) );
 	}
