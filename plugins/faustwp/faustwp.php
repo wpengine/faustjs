@@ -29,6 +29,7 @@ define( 'FAUSTWP_PATH', plugin_basename( FAUSTWP_FILE ) );
 define( 'FAUSTWP_SLUG', dirname( plugin_basename( FAUSTWP_FILE ) ) );
 
 require FAUSTWP_DIR . '/includes/auth/functions.php';
+require FAUSTWP_DIR . '/includes/telemetry/functions.php';
 require FAUSTWP_DIR . '/includes/replacement/functions.php';
 require FAUSTWP_DIR . '/includes/settings/functions.php';
 require FAUSTWP_DIR . '/includes/graphql/functions.php';
