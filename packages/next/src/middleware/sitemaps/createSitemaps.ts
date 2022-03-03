@@ -77,6 +77,20 @@ export async function createRootSitemapIndex(
     unpairedTags: ['xml', 'xml-stylesheet'],
     processEntities: true,
     htmlEntities: true,
+    /**
+     * FXP can not determine if a single tag should be parsed as an array or
+     * an object, so we need to specify we always want "sitemap" tags to be an
+     * array.
+     *
+     * @see https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md#isarray
+     */
+    isArray: (tagName) => {
+      if (tagName === 'sitemap') {
+        return true;
+      }
+
+      return false;
+    },
   });
 
   // JS object representation of the XML sitemap index
@@ -213,6 +227,20 @@ export async function handleSitemapPath(
     unpairedTags: ['xml', 'xml-stylesheet'],
     processEntities: true,
     htmlEntities: true,
+    /**
+     * FXP can not determine if a single tag should be parsed as an array or
+     * an object, so we need to specify we always want "url" tags to be an
+     * array.
+     *
+     * @see https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md#isarray
+     */
+    isArray: (tagName) => {
+      if (tagName === 'url') {
+        return true;
+      }
+
+      return false;
+    },
   });
 
   // JS object representation of the XML sitemap
