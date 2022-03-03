@@ -286,7 +286,7 @@ export async function handleSitemapPath(
  * @param normalizedConfig A normalized config object
  * @returns {Promise<Response|Undefined>}
  */
-export async function createRobotsTxt(
+export async function handleRobotsTxt(
   req: NextRequest,
   normalizedConfig: HandleSitemapRequestsConfig,
 ): Promise<Response | undefined> {

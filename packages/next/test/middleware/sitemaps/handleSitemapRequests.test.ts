@@ -244,12 +244,12 @@ describe('handleSitemapRequests', () => {
   });
 
   it('does not create /robots.txt route when robotsTxt is not defined', async () => {
-    const createRobotsTxtSpy = jest
-      .spyOn(createSitemaps, 'createRobotsTxt')
+    const handleRobotsTxtSpy = jest
+      .spyOn(createSitemaps, 'handleRobotsTxt')
       .mockImplementation();
 
     let res = {
-      url: 'http://localhost:3000/robots.tx',
+      url: 'http://localhost:3000/robots.txt',
     } as NextRequest;
 
     let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
@@ -260,12 +260,12 @@ describe('handleSitemapRequests', () => {
 
     await handleSitemapRequests.handleSitemapRequests(res, config);
 
-    expect(createRobotsTxtSpy).not.toHaveBeenCalled();
+    expect(handleRobotsTxtSpy).not.toHaveBeenCalled();
   });
 
   it('properly routes to the /robots.txt route when robotsTxt is specified', async () => {
-    const createRobotsTxtSpy = jest
-      .spyOn(createSitemaps, 'createRobotsTxt')
+    const handleRobotsTxtSpy = jest
+      .spyOn(createSitemaps, 'handleRobotsTxt')
       .mockImplementation();
 
     let res = {
@@ -287,7 +287,7 @@ describe('handleSitemapRequests', () => {
 
     await handleSitemapRequests.handleSitemapRequests(res, config);
 
-    expect(createRobotsTxtSpy).not.toHaveBeenCalled();
+    expect(handleRobotsTxtSpy).not.toHaveBeenCalled();
 
     res = {
       url: 'http://localhost:3000/robots.txt',
@@ -295,7 +295,7 @@ describe('handleSitemapRequests', () => {
 
     await handleSitemapRequests.handleSitemapRequests(res, config);
 
-    expect(createRobotsTxtSpy).toHaveBeenCalledWith(res, config);
+    expect(handleRobotsTxtSpy).toHaveBeenCalledWith(res, config);
   });
 
   it('properly routes to a sitemap page', async () => {

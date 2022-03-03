@@ -3,7 +3,7 @@ import {
   createPagesSitemap,
   createRootSitemapIndex,
   handleSitemapPath,
-  createRobotsTxt,
+  handleRobotsTxt,
 } from './createSitemaps.js';
 import {
   SitemapSchemaUrlElement,
@@ -204,7 +204,7 @@ export async function handleSitemapRequests(
 
   // Handle the robots.txt file if specified in the config
   if (pathname === FAUST_ROBOTS_PATHNAME && robotsTxt) {
-    return createRobotsTxt(req, normalizedConfig);
+    return handleRobotsTxt(req, normalizedConfig);
   }
 
   // Handle the sitemap index paths specified in the config
