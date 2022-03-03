@@ -1,5 +1,19 @@
 # @faustjs/next
 
+## 0.15.4
+
+### Patch Changes
+
+- d2b2b39: Fixed previews when trailingSlash is enabled in Next.js config
+- Updated dependencies [d2b2b39]
+  - @faustjs/core@0.15.4
+
+## 0.15.3
+
+### Patch Changes
+
+- 1d386de: Check for FaustContext before calling GQty queries and throw an error if it's not provided.
+
 ## 0.15.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/core",
-  "version": "0.15.2",
+  "version": "0.15.4",
   "description": "This module helps you use WordPress as a Headless CMS",
   "main": "dist/cjs/export/index.js",
   "module": "dist/mjs/export/index.js",
@@ -34,13 +34,11 @@
   "scripts": {
     "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "dev": "npm run ts:watch",
-    "dev-lerna": "npm run dev",
     "clean": "rimraf dist",
     "package": "node ../../scripts/package.js",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
     "prepublish": "npm run build",
-    "generate:gqty": "gqty generate",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "ts": "tsc -p .",
@@ -50,7 +48,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wpengine/faustjs/tree/main/packages/headless"
+    "url": "https://github.com/wpengine/faustjs/tree/main/packages/core"
   },
   "keywords": [
     "WordPress",
@@ -70,14 +68,13 @@
     "cookie": "^0.4.1"
   },
   "devDependencies": {
-    "@gqty/cli": "^2.3.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@types/cookie": "^0.4.1",
     "@types/is-number": "^7.0.1",
     "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",
-    "@types/node": "^16.11.7",
+    "@types/node": "^17.0.17",
     "@types/webpack-env": "^1.16.3",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",

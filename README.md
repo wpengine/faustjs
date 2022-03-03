@@ -69,3 +69,7 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 - [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
 - Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
 - [Contribute bug fixes](/CONTRIBUTING.md)
+
+### Pull Request Notice
+
+While pull requests are welcome, please note we are in the process of reviewing licensing on the plugin internally and may not be able to merge your pull request in a timely manner.

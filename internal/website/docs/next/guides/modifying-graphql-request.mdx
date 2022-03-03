@@ -1,0 +1,48 @@
+---
+slug: /next/guides/modifying-the-graphql-request
+title: Modifying the GraphQL Request
+description: How to modify the GraphQL request before it is sent to WordPress
+---
+
+There may be some situations where you need to modify the request object of the GraphQL requests that get sent to WordPress. If you find yourself needing to add headers or other information to the request, you can do so by providing a function to `getClient` called `applyRequestContext`. Take the following default client example using `applyRequestContext`:
+
+```ts title=src/client/index.ts {21-27}
+/**
+ * GQTY: You can safely modify this file and Query Fetcher based on your needs
+ */
+import type { IncomingMessage } from 'http';
+import { getClient } from '@faustjs/next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+​
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+  applyRequestContext: async (url, init) => {
+    // Make modifications to the request here as you see fit
+    console.log('url', url);
+    console.log('init', init);
+
+    return {url, init}
+  }
+});
+​
+export function serverClient(req: IncomingMessage) {
+  return getClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
+    context: req,
+  });
+}
+​
+export * from './schema.generated';
+```

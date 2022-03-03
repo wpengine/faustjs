@@ -9,6 +9,7 @@ export interface WithFaustConfig {
 
 export async function createRedirects(
   redirectFn?: NextConfig['redirects'],
+  trailingSlash = false,
   previewDestination = '/preview',
 ): Promise<Redirect[]> {
   let redirects: Redirect[] = [];
@@ -17,8 +18,14 @@ export async function createRedirects(
     redirects = await redirectFn();
   }
 
+  let previewPath = trim(previewDestination, '/');
+
+  if (trailingSlash) {
+    previewPath += '/';
+  }
+
   redirects.unshift({
-    source: `/((?!${trim(previewDestination, '/')}$).*)`,
+    source: `/((?!${previewPath}).*)`,
     has: [
       {
         type: 'query',
@@ -26,7 +33,7 @@ export async function createRedirects(
         value: 'true',
       },
     ],
-    destination: `/${trim(previewDestination, '/')}`,
+    destination: `/${previewPath}`,
     permanent: false,
   });
 
@@ -50,7 +57,11 @@ export function withFaust(
 
   const existingRedirects = nextConfig.redirects;
   nextConfig.redirects = () =>
-    createRedirects(existingRedirects, previewDestination);
+    createRedirects(
+      existingRedirects,
+      nextConfig.trailingSlash,
+      previewDestination,
+    );
 
   return nextConfig;
 }

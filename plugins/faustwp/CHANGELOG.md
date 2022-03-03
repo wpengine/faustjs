@@ -1,5 +1,21 @@
 # FaustWP
 
+## 0.7.5
+
+### Patch Changes
+
+- b7af359: Simplify generation of preview links. Fixes an issue where preview links were missing slashes with certain permalink structures. Thanks @torounit!
+- 662c377: Plugin settings are now validated and sanitized before saving.
+- c730348: Disables access to the site editor when themes are disabled
+
+## 0.7.4
+
+### Patch Changes
+
+- 1dcd987: Removes unused event callbacks for rewrite rule and post status changes. The `is_events_enabled()` function has also been removed.
+- 5c69b68: ConditionalTags has been deprecated as it was introduced in an older version of the framework when routing was done from the NextTemplateLoader. Now that we are using Next.js pages for routing, conditionalTags are no longer needed.
+- 7d156ba: Add a documentation link that explains "Features" checkbox settings in more detail
+
 ## 0.7.3
 
 ### Patch Changes

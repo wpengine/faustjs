@@ -26,7 +26,7 @@ describe('withFaust', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview$).*)',
+        source: '/((?!preview).*)',
         has: [
           {
             type: 'query',
@@ -63,7 +63,7 @@ describe('withFaust', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview-new$).*)',
+        source: '/((?!preview-new).*)',
         has: [
           {
             type: 'query',
@@ -72,6 +72,43 @@ describe('withFaust', () => {
           },
         ],
         destination: '/preview-new',
+        permanent: false,
+      },
+      { source: '/about', destination: '/', permanent: true },
+    ];
+
+    expect(configRedirects).toStrictEqual(expectedRedirects);
+  });
+
+  test('preview redirect respects trailingSlash config', async () => {
+    const config = withFaust(
+      {
+        trailingSlash: true,
+        async redirects() {
+          return [
+            {
+              source: '/about',
+              destination: '/',
+              permanent: true,
+            },
+          ];
+        },
+      }
+    );
+
+    const configRedirects = await (config as any).redirects();
+
+    const expectedRedirects = [
+      {
+        source: '/((?!preview/).*)',
+        has: [
+          {
+            type: 'query',
+            key: 'preview',
+            value: 'true',
+          },
+        ],
+        destination: '/preview/',
         permanent: false,
       },
       { source: '/about', destination: '/', permanent: true },

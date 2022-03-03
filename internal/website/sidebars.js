@@ -92,6 +92,16 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Modifying the GraphQL Request',
+              id: 'next/guides/modifying-graphql-request',
+            },
+            {
+              type: 'doc',
+              label: 'Testing with Jest',
+              id: 'next/guides/testing-with-jest',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },
@@ -164,6 +174,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'is404',
+              id: 'next/reference/is404',
+            },
+            {
+              type: 'doc',
               label: 'withFaust',
               id: 'next/reference/with-faust',
             },
@@ -199,6 +214,17 @@ module.exports = {
           type: 'doc',
           label: 'Optimizations',
           id: 'going-to-production/optimizations',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'FaustWP Plugin',
+      items: [
+        {
+          type: 'doc',
+          label: 'Settings Reference',
+          id: 'faustwp/settings',
         },
       ],
     },
