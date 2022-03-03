@@ -3,6 +3,7 @@ import {
   createPagesSitemap,
   createRootSitemapIndex,
   handleSitemapPath,
+  createRobotsTxt,
 } from './createSitemaps.js';
 import {
   SitemapSchemaUrlElement,
@@ -11,6 +12,7 @@ import {
   isString,
   isUndefined,
   isObject,
+  isFunction,
 } from './sitemapUtils.js';
 
 /**
@@ -53,6 +55,13 @@ export interface HandleSitemapRequestsConfig {
    * sitemap url entries.
    */
   replaceUrls: boolean;
+
+  /**
+   * If defined, the text returned from this function will be used for the
+   * `/robots.txt` route. The `/robots.txt` route will not be created if this
+   * function is not defined.
+   */
+  robotsTxt?: (sitemapUrl: string) => Promise<string>;
 }
 
 /**
@@ -60,6 +69,11 @@ export interface HandleSitemapRequestsConfig {
  * configurable in the future.
  */
 export const FAUST_PAGES_PATHNAME = '/sitemap-faust-pages.xml';
+
+/**
+ * The pathname to the robots.txt file.
+ */
+export const FAUST_ROBOTS_PATHNAME = '/robots.txt';
 
 /**
  * Validates the structure of the user defined config.
@@ -145,6 +159,11 @@ export function validateConfig(
   if (!isUndefined(config?.replaceUrls) && !isBoolean(config?.replaceUrls)) {
     throw new Error('replaceUrls must be a boolean');
   }
+
+  // Validate robotsTxt is a function
+  if (!isUndefined(config?.robotsTxt) && !isFunction(config?.robotsTxt)) {
+    throw new Error('robotsTxt must be a function');
+  }
 }
 
 /**
@@ -171,7 +190,7 @@ export async function handleSitemapRequests(
   ) as HandleSitemapRequestsConfig;
 
   const { pathname } = new URL(req.url);
-  const { sitemapIndexPath, pages } = normalizedConfig;
+  const { sitemapIndexPath, pages, robotsTxt } = normalizedConfig;
 
   // Handle the root XML sitemap if specified in the config
   if (pathname === sitemapIndexPath) {
@@ -181,6 +200,11 @@ export async function handleSitemapRequests(
   // Handle the sitemap for the specified Next.js pages if specified in the config
   if (pathname === FAUST_PAGES_PATHNAME && pages?.length) {
     return createPagesSitemap(req, normalizedConfig);
+  }
+
+  // Handle the robots.txt file if specified in the config
+  if (pathname === FAUST_ROBOTS_PATHNAME && robotsTxt) {
+    return createRobotsTxt(req, normalizedConfig);
   }
 
   // Handle the sitemap index paths specified in the config

@@ -114,6 +114,8 @@
     "@faustjs/react": "^0.15.1",
     "@gqty/logger": "^2.0.1",
     "@gqty/react": "^2.1.0",
+    "@types/common-tags": "^1.8.1",
+    "common-tags": "^1.8.2",
     "fast-xml-parser": "^4.0.3",
     "graphql": ">=15.6",
     "lodash": "^4.17.21"

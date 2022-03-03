@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
+import { stripIndent } from 'common-tags';
 import { NextRequest } from 'next/server.js';
 import {
   HandleSitemapRequestsConfig,
@@ -276,4 +277,36 @@ export async function handleSitemapPath(
   }
 
   return createSitemap(urls);
+}
+
+/**
+ * Handles a request to the `/robots.txt` path
+ *
+ * @param req The Next.js middleware request object
+ * @param normalizedConfig A normalized config object
+ * @returns {Promise<Response|Undefined>}
+ */
+export async function createRobotsTxt(
+  req: NextRequest,
+  normalizedConfig: HandleSitemapRequestsConfig,
+): Promise<Response | undefined> {
+  const { origin } = new URL(req.url);
+  const { sitemapIndexPath, robotsTxt } = normalizedConfig;
+
+  if (robotsTxt === undefined || robotsTxt === null) {
+    return undefined;
+  }
+
+  const sitemapUrl = `${trimSlashes(origin)}/${trimSlashes(sitemapIndexPath)}`;
+  let text = await robotsTxt(sitemapUrl);
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  text = stripIndent`
+    ${text}
+  `;
+
+  const response = new Response(text);
+  response.headers.set('Content-Type', 'text/plain');
+
+  return response;
 }
