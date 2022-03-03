@@ -167,6 +167,18 @@ describe('validateConfig', () => {
       'replaceUrls must be a boolean',
     );
   });
+
+  it('throws an error if robotsTxt is not a function', () => {
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      robotsTxt: 'some-string',
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
+      'robotsTxt must be a function',
+    );
+  });
 });
 
 describe('handleSitemapRequests', () => {
@@ -229,6 +241,61 @@ describe('handleSitemapRequests', () => {
     await handleSitemapRequests.handleSitemapRequests(res, config);
 
     expect(createPagesSitemapSpy).toHaveBeenCalledWith(res, config);
+  });
+
+  it('does not create /robots.txt route when robotsTxt is not defined', async () => {
+    const createRobotsTxtSpy = jest
+      .spyOn(createSitemaps, 'createRobotsTxt')
+      .mockImplementation();
+
+    let res = {
+      url: 'http://localhost:3000/robots.tx',
+    } as NextRequest;
+
+    let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      replaceUrls: true,
+    };
+
+    await handleSitemapRequests.handleSitemapRequests(res, config);
+
+    expect(createRobotsTxtSpy).not.toHaveBeenCalled();
+  });
+
+  it('properly routes to the /robots.txt route when robotsTxt is specified', async () => {
+    const createRobotsTxtSpy = jest
+      .spyOn(createSitemaps, 'createRobotsTxt')
+      .mockImplementation();
+
+    let res = {
+      url: 'http://localhost:3000/non-sitemap-route',
+    } as NextRequest;
+
+    let config: Partial<handleSitemapRequests.HandleSitemapRequestsConfig> = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      replaceUrls: true,
+      robotsTxt: async (sitemapUrl) => {
+        return `
+          User-agent: *
+          Disallow: /
+          Sitemap: ${sitemapUrl}
+        `;
+      },
+    };
+
+    await handleSitemapRequests.handleSitemapRequests(res, config);
+
+    expect(createRobotsTxtSpy).not.toHaveBeenCalled();
+
+    res = {
+      url: 'http://localhost:3000/robots.txt',
+    } as NextRequest;
+
+    await handleSitemapRequests.handleSitemapRequests(res, config);
+
+    expect(createRobotsTxtSpy).toHaveBeenCalledWith(res, config);
   });
 
   it('properly routes to a sitemap page', async () => {
