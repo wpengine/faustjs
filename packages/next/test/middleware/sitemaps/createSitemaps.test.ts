@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import { NextRequest } from 'next/server';
 import * as createSitemaps from '../../../src/middleware/sitemaps/createSitemaps';
-import { HandleSitemapRequestsConfig } from '../../../src/middleware/sitemaps/handleSitemapRequests';
+import { NormalizedConfig } from '../../../src/middleware/sitemaps/handleSitemapRequests';
 import * as sitemapUtils from '../../../src/middleware/sitemaps/sitemapUtils';
 
 describe('createRootSitemapIndex', () => {
@@ -46,7 +46,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -69,7 +69,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: false,
@@ -96,7 +96,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: ['/post-sitemap.xml', '/page-sitemap.xml'],
@@ -135,7 +135,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: [
@@ -174,7 +174,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -223,7 +223,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -276,7 +276,7 @@ describe('createRootSitemapIndex', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       sitemapPathsToIgnore: ['/author-sitemap.xml'],
@@ -297,7 +297,7 @@ describe('createRootSitemapIndex', () => {
 
 describe('createPagesSitemap()', () => {
   it('returns undefined if no pages are specified in the config', () => {
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -313,7 +313,7 @@ describe('createPagesSitemap()', () => {
   });
 
   it('calls createSitemap() with the correct pages when specified', () => {
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -411,7 +411,7 @@ describe('handleSitemapPath()', () => {
       url: 'http://localhost:3000/sitemap-posts.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -434,7 +434,7 @@ describe('handleSitemapPath()', () => {
       url: 'http://localhost:3000/sitemap-posts.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -459,7 +459,7 @@ describe('handleSitemapPath()', () => {
       url: 'http://localhost:3000/sitemap-pages.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: false,
@@ -503,7 +503,7 @@ describe('handleSitemapPath()', () => {
       url: 'http://localhost:5000/sitemap-pages.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -551,7 +551,7 @@ describe('handleSitemapPath()', () => {
       url: 'http://localhost:3000/sitemap-pages.xml',
     } as NextRequest;
 
-    const config: HandleSitemapRequestsConfig = {
+    const config: NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,

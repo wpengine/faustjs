@@ -1,7 +1,7 @@
 import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
 import {
-  HandleSitemapRequestsConfig,
+  NormalizedConfig,
   FAUST_PAGES_PATHNAME,
 } from './handleSitemapRequests.js';
 import {
@@ -46,12 +46,12 @@ const parserConfig: Partial<X2jOptions> = {
  * a sitemap for the Next.js pages provided as the pages property in the config.
  *
  * @param {NextRequest} req The Next.js middleware request object
- * @param {HandleSitemapRequestsConfig} normalizedConfig A normalized config object
+ * @param {NormalizedConfig} normalizedConfig A normalized config object
  * @returns {Response|undefined}
  */
 export async function createRootSitemapIndex(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
   const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
@@ -166,7 +166,7 @@ export async function createRootSitemapIndex(
  */
 export function createPagesSitemap(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Response | undefined {
   const { origin } = new URL(req.url);
   const { pages } = normalizedConfig;
@@ -201,7 +201,7 @@ export function createPagesSitemap(
  */
 export async function handleSitemapPath(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
   const { wpUrl, replaceUrls } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
