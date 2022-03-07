@@ -129,7 +129,6 @@ function register_rest_routes() {
 function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	$data = array(
 		'php_version'            => PHP_VERSION,
-		'web_server_info'        => $_SERVER['SERVER_SOFTWARE'],
 		'wp_version'             => get_wp_version(),
 		'wp_multisite'           => is_multisite(),
 		'wp_theme'               => get_active_theme(),
