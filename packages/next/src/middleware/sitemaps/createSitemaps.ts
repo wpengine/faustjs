@@ -85,11 +85,7 @@ export async function createRootSitemapIndex(
      * @see https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md#isarray
      */
     isArray: (tagName) => {
-      if (tagName === 'sitemap') {
-        return true;
-      }
-
-      return false;
+      return tagName === 'sitemap';
     },
   });
 
@@ -235,11 +231,7 @@ export async function handleSitemapPath(
      * @see https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md#isarray
      */
     isArray: (tagName) => {
-      if (tagName === 'url') {
-        return true;
-      }
-
-      return false;
+      return tagName === 'url';
     },
   });
 
