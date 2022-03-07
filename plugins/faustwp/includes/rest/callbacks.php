@@ -84,7 +84,7 @@ function register_rest_routes() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_callback',
-			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_permission_callback',
 		)
 	);
 
@@ -214,6 +214,19 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	}
 
 	return false;
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/telemetry`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_telemetry_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**

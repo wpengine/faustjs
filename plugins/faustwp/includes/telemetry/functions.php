@@ -19,14 +19,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Returns the current WordPress version.
+ *
+ * @return string
+ */
 function get_wp_version() {
 	return get_bloginfo( 'version' );
 }
 
+/**
+ * Checks if the current hosting environment is WP Engine.
+ *
+ * @return boolean
+ */
 function is_wpe() {
 	return defined( 'WPE_APIKEY' );
 }
 
+/**
+ * Returns the active theme text domain.
+ *
+ * @return string
+ */
 function get_active_theme() {
 	$theme       = wp_get_theme();
 	$text_domain = $theme->get( 'TextDomain' );
@@ -34,6 +49,11 @@ function get_active_theme() {
 	return $text_domain;
 }
 
+/**
+ * Returns the active theme's version.
+ *
+ * @return string
+ */
 function get_active_theme_version() {
 	$theme   = wp_get_theme();
 	$version = $theme->get( 'Version' );
@@ -41,6 +61,11 @@ function get_active_theme_version() {
 	return $version;
 }
 
+/**
+ * Returns an array of active plugin text domains with their versions.
+ *
+ * @return array
+ */
 function get_active_plugins() {
 	if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -61,6 +86,11 @@ function get_active_plugins() {
 	return $active_plugin_versions;
 }
 
+/**
+ * Returns an array of active network plugin text domains with their versions.
+ *
+ * @return array
+ */
 function get_active_network_plugins() {
 	if ( ! is_multisite() ) {
 		return false;
@@ -85,10 +115,20 @@ function get_active_network_plugins() {
 	return $active_network_plugins;
 }
 
+/**
+ * Returns the current permalink structure as set in WP settings.
+ *
+ * @return string
+ */
 function get_permalink_structure() {
 	return get_option( 'permalink_structure' );
 }
 
+/**
+ * Returns the current FaustWP settings while keeping identifiable information private.
+ *
+ * @return array
+ */
 function get_anonymous_faustwp_settings() {
 	$anonymous_settings = array(
 		'has_frontend_uri'                 => has_frontend_uri(),
@@ -101,6 +141,11 @@ function get_anonymous_faustwp_settings() {
 	return $anonymous_settings;
 }
 
+/**
+ * Checks if the frontend_uri FaustWP setting has been set.
+ *
+ * @return boolean
+ */
 function has_frontend_uri() {
 	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
