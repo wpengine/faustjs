@@ -1,4 +1,4 @@
-import { XMLParser } from 'fast-xml-parser';
+import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
 import {
   HandleSitemapRequestsConfig,
@@ -31,6 +31,14 @@ export interface ParsedSitemapIndex {
     sitemap: SitemapSchemaSitemapElement[];
   };
 }
+
+const parserConfig: Partial<X2jOptions> = {
+  ignoreAttributes: false,
+  preserveOrder: false,
+  unpairedTags: ['xml', 'xml-stylesheet'],
+  processEntities: true,
+  htmlEntities: true,
+};
 
 /**
  * Creates the root XML sitemap index (e.g. /sitemap.xml) that lists all the
@@ -72,11 +80,7 @@ export async function createRootSitemapIndex(
    * @link https://github.com/NaturalIntelligence/fast-xml-parser/blob/HEAD/docs/v4/6.HTMLParsing.md
    */
   const parser = new XMLParser({
-    ignoreAttributes: false,
-    preserveOrder: false,
-    unpairedTags: ['xml', 'xml-stylesheet'],
-    processEntities: true,
-    htmlEntities: true,
+    ...parserConfig,
     /**
      * FXP can not determine if a single tag should be parsed as an array or
      * an object, so we need to specify we always want "sitemap" tags to be an
@@ -218,11 +222,7 @@ export async function handleSitemapPath(
    * @link https://github.com/NaturalIntelligence/fast-xml-parser/blob/HEAD/docs/v4/6.HTMLParsing.md
    */
   const parser = new XMLParser({
-    ignoreAttributes: false,
-    preserveOrder: false,
-    unpairedTags: ['xml', 'xml-stylesheet'],
-    processEntities: true,
-    htmlEntities: true,
+    ...parserConfig,
     /**
      * FXP can not determine if a single tag should be parsed as an array or
      * an object, so we need to specify we always want "url" tags to be an
