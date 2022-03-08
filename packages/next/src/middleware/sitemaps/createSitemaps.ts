@@ -1,8 +1,8 @@
-import { XMLParser } from 'fast-xml-parser';
 import { stripIndent } from 'common-tags';
+import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
 import {
-  HandleSitemapRequestsConfig,
+  NormalizedConfig,
   FAUST_PAGES_PATHNAME,
 } from './handleSitemapRequests.js';
 import {
@@ -33,18 +33,26 @@ export interface ParsedSitemapIndex {
   };
 }
 
+const parserConfig: Partial<X2jOptions> = {
+  ignoreAttributes: false,
+  preserveOrder: false,
+  unpairedTags: ['xml', 'xml-stylesheet'],
+  processEntities: true,
+  htmlEntities: true,
+};
+
 /**
  * Creates the root XML sitemap index (e.g. /sitemap.xml) that lists all the
  * sitemaps provided as the sitemapPaths property in the config, in addition to
  * a sitemap for the Next.js pages provided as the pages property in the config.
  *
  * @param {NextRequest} req The Next.js middleware request object
- * @param {HandleSitemapRequestsConfig} normalizedConfig A normalized config object
+ * @param {NormalizedConfig} normalizedConfig A normalized config object
  * @returns {Response|undefined}
  */
 export async function createRootSitemapIndex(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
   const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
@@ -73,11 +81,7 @@ export async function createRootSitemapIndex(
    * @link https://github.com/NaturalIntelligence/fast-xml-parser/blob/HEAD/docs/v4/6.HTMLParsing.md
    */
   const parser = new XMLParser({
-    ignoreAttributes: false,
-    preserveOrder: false,
-    unpairedTags: ['xml', 'xml-stylesheet'],
-    processEntities: true,
-    htmlEntities: true,
+    ...parserConfig,
     /**
      * FXP can not determine if a single tag should be parsed as an array or
      * an object, so we need to specify we always want "sitemap" tags to be an
@@ -86,11 +90,7 @@ export async function createRootSitemapIndex(
      * @see https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md#isarray
      */
     isArray: (tagName) => {
-      if (tagName === 'sitemap') {
-        return true;
-      }
-
-      return false;
+      return tagName === 'sitemap';
     },
   });
 
@@ -167,7 +167,7 @@ export async function createRootSitemapIndex(
  */
 export function createPagesSitemap(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Response | undefined {
   const { origin } = new URL(req.url);
   const { pages } = normalizedConfig;
@@ -202,7 +202,7 @@ export function createPagesSitemap(
  */
 export async function handleSitemapPath(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
   const { wpUrl, replaceUrls } = normalizedConfig;
   const { pathname, origin } = new URL(req.url);
@@ -223,11 +223,7 @@ export async function handleSitemapPath(
    * @link https://github.com/NaturalIntelligence/fast-xml-parser/blob/HEAD/docs/v4/6.HTMLParsing.md
    */
   const parser = new XMLParser({
-    ignoreAttributes: false,
-    preserveOrder: false,
-    unpairedTags: ['xml', 'xml-stylesheet'],
-    processEntities: true,
-    htmlEntities: true,
+    ...parserConfig,
     /**
      * FXP can not determine if a single tag should be parsed as an array or
      * an object, so we need to specify we always want "url" tags to be an
@@ -236,11 +232,7 @@ export async function handleSitemapPath(
      * @see https://github.com/NaturalIntelligence/fast-xml-parser/blob/master/docs/v4/2.XMLparseOptions.md#isarray
      */
     isArray: (tagName) => {
-      if (tagName === 'url') {
-        return true;
-      }
-
-      return false;
+      return tagName === 'url';
     },
   });
 
@@ -288,7 +280,7 @@ export async function handleSitemapPath(
  */
 export async function handleRobotsTxt(
   req: NextRequest,
-  normalizedConfig: HandleSitemapRequestsConfig,
+  normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
   const { origin } = new URL(req.url);
   const { sitemapIndexPath, robotsTxt } = normalizedConfig;

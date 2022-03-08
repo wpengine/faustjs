@@ -54,14 +54,18 @@ export interface HandleSitemapRequestsConfig {
    * Replace the WordPress site URL for your headless frontend site url in the
    * sitemap url entries.
    */
-  replaceUrls: boolean;
-
+  replaceUrls?: boolean;
   /**
    * If defined, the text returned from this function will be used for the
    * `/robots.txt` route. The `/robots.txt` route will not be created if this
    * function is not defined.
    */
   robotsTxt?: (sitemapUrl: string) => Promise<string>;
+}
+
+export interface NormalizedConfig
+  extends Omit<HandleSitemapRequestsConfig, 'replaceUrls'> {
+  replaceUrls: boolean;
 }
 
 /**
@@ -176,18 +180,18 @@ export function validateConfig(
  */
 export async function handleSitemapRequests(
   req: NextRequest,
-  config: Partial<HandleSitemapRequestsConfig>,
+  config: HandleSitemapRequestsConfig,
 ): Promise<Response | undefined> {
   // Validate config structure
   validateConfig(config);
 
   // Normalize config if some optional values are missing
   // eslint-disable-next-line prefer-object-spread
-  const normalizedConfig: HandleSitemapRequestsConfig = Object.assign(
+  const normalizedConfig: NormalizedConfig = Object.assign(
     {},
     { replaceUrls: true },
     config,
-  ) as HandleSitemapRequestsConfig;
+  ) as NormalizedConfig;
 
   const { pathname } = new URL(req.url);
   const { sitemapIndexPath, pages, robotsTxt } = normalizedConfig;
