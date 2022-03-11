@@ -366,6 +366,48 @@ describe('createPagesSitemap()', () => {
   });
 });
 
+describe('handleRobotsTxt', () => {
+  it('returns undefined if the robotsTxt config function is not defined', () => {
+    const config: NormalizedConfig = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      replaceUrls: true,
+    };
+
+    let req = {
+      url: 'http://localhost:3000/robots.txt',
+    } as NextRequest;
+
+    const result = createSitemaps.createPagesSitemap(req, config);
+
+    expect(result).toBeUndefined();
+  });
+
+  it('returns the proper robots.txt content specified in the robotsTxt() config function', async () => {
+    const config: NormalizedConfig = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/wp-sitemap.xml',
+      replaceUrls: true,
+      robotsTxt: async (sitemapUrl) => {
+        return `
+          User-agent: *
+          Disallow: /
+          Sitemap: ${sitemapUrl}
+        `;
+      },
+    };
+
+    let req = {
+      url: 'http://localhost:3000/robots.txt',
+    } as NextRequest;
+
+    const result = await createSitemaps.handleRobotsTxt(req, config);
+    const text = await result!.text();
+
+    expect(text).toMatchSnapshot();
+  });
+});
+
 describe('handleSitemapPath()', () => {
   const validSitemapXML = `<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="//headless.local/wp-content/plugins/wordpress-seo/css/main-sitemap.xsl"?>
   <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

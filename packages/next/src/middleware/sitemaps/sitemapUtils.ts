@@ -179,6 +179,11 @@ export function isObject(val: any): val is object {
   return val != null && (type === 'object' || type === 'function');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isFunction(val: any) {
+  return typeof val === 'function';
+}
+
 export function trimSlashes(str: string) {
   return str.replace(/^\/+|\/+$/g, '');
 }

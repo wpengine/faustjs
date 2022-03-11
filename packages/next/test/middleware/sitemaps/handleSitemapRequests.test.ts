@@ -167,6 +167,18 @@ describe('validateConfig', () => {
       'replaceUrls must be a boolean',
     );
   });
+
+  it('throws an error if robotsTxt is not a function', () => {
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      robotsTxt: 'some-string',
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
+      'robotsTxt must be a function',
+    );
+  });
 });
 
 describe('handleSitemapRequests', () => {
@@ -179,7 +191,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -207,7 +219,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -231,6 +243,61 @@ describe('handleSitemapRequests', () => {
     expect(createPagesSitemapSpy).toHaveBeenCalledWith(res, config);
   });
 
+  it('does not create /robots.txt route when robotsTxt is not defined', async () => {
+    const handleRobotsTxtSpy = jest
+      .spyOn(createSitemaps, 'handleRobotsTxt')
+      .mockImplementation();
+
+    const res = {
+      url: 'http://localhost:3000/robots.txt',
+    } as NextRequest;
+
+    const config: handleSitemapRequests.NormalizedConfig = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      replaceUrls: true,
+    };
+
+    await handleSitemapRequests.handleSitemapRequests(res, config);
+
+    expect(handleRobotsTxtSpy).not.toHaveBeenCalled();
+  });
+
+  it('properly routes to the /robots.txt route when robotsTxt is specified', async () => {
+    const handleRobotsTxtSpy = jest
+      .spyOn(createSitemaps, 'handleRobotsTxt')
+      .mockImplementation();
+
+    let res = {
+      url: 'http://localhost:3000/non-sitemap-route',
+    } as NextRequest;
+
+    const config: handleSitemapRequests.NormalizedConfig = {
+      wpUrl: 'http://headless.local',
+      sitemapIndexPath: '/sitemap.xml',
+      replaceUrls: true,
+      robotsTxt: async (sitemapUrl) => {
+        return `
+          User-agent: *
+          Disallow: /
+          Sitemap: ${sitemapUrl}
+        `;
+      },
+    };
+
+    await handleSitemapRequests.handleSitemapRequests(res, config);
+
+    expect(handleRobotsTxtSpy).not.toHaveBeenCalled();
+
+    res = {
+      url: 'http://localhost:3000/robots.txt',
+    } as NextRequest;
+
+    await handleSitemapRequests.handleSitemapRequests(res, config);
+
+    expect(handleRobotsTxtSpy).toHaveBeenCalledWith(res, config);
+  });
+
   it('properly routes to a sitemap page', async () => {
     const handleSitemapPathSpy = jest
       .spyOn(createSitemaps, 'handleSitemapPath')
@@ -240,7 +307,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -280,7 +347,7 @@ describe('handleSitemapRequests', () => {
       'handleSitemapPath',
     );
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -292,7 +359,7 @@ describe('handleSitemapRequests', () => {
     };
 
     // paths with "sitemap" should not be handled
-    let res = {
+    const res = {
       url: 'http://localhost:3000/my-sitemap',
     } as NextRequest;
 
