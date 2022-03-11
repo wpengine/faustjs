@@ -191,7 +191,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -219,7 +219,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -248,11 +248,11 @@ describe('handleSitemapRequests', () => {
       .spyOn(createSitemaps, 'handleRobotsTxt')
       .mockImplementation();
 
-    let res = {
+    const res = {
       url: 'http://localhost:3000/robots.txt',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -272,7 +272,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -307,7 +307,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -347,7 +347,7 @@ describe('handleSitemapRequests', () => {
       'handleSitemapPath',
     );
 
-    let config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -359,7 +359,7 @@ describe('handleSitemapRequests', () => {
     };
 
     // paths with "sitemap" should not be handled
-    let res = {
+    const res = {
       url: 'http://localhost:3000/my-sitemap',
     } as NextRequest;
 
