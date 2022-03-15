@@ -147,7 +147,11 @@ function post_preview_link( $link, $post ) {
 		 * the data.
 		 */
 		$post_type_object = get_post_type_object( $post->post_type );
-		if ( ! isset( $args['typeName'] ) && isset( $post_type_object ) ) {
+		if (
+			! isset( $args['typeName'] ) &&
+			isset( $post_type_object ) &&
+			! empty( $post_type_object->graphql_single_name )
+		) {
 			$gql_type_name    = ucfirst( $post_type_object->graphql_single_name );
 			$args['typeName'] = $gql_type_name;
 		}

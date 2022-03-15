@@ -168,6 +168,24 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests get_preview_post_link() filters link for post types that are not registered with WP GraphQL.
+	 */
+	public function test_post_preview_link_filters_link_for_posts_not_registered_with_wpgraphql() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+
+		register_post_type('notgraphql', ['public' => true]);
+
+		$post_id = wp_insert_post( [
+			'title'        => 'Hello world',
+			'post_content' => 'Hi',
+			'post_status'  => 'publish',
+			'post_type'    => 'notgraphql'
+		] );
+
+		$this->assertSame( 'http://moo/?notgraphql=' . $post_id . '&preview=true&p=' . $post_id, get_preview_post_link( $post_id ) );
+	}
+
+	/**
 	 * Tests get_term_link() returns original value when term link rewrites are not enabled.
 	 *
 	 * @covers ::term_link(), which runs on term_link filter inside get_term_link().
