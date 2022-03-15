@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, claygriffiths, joefusco, markkelnar, mi
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 5.9
-Stable tag: 0.7.5
+Stable tag: 0.7.6
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,13 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.6 =
+
+### Patch Changes
+
+- 420d0b4: Remove trailing slash from frontend uri.
+- 037b57b: Ensure sitemap URLs use the WordPress domain and not the headless frontend domain. Fixes a conflict with Yoast SEO that prevented post links from being added to the posts sitemap.
+
 = 0.7.5 =
 
 ### Patch Changes
@@ -45,11 +52,5 @@ That's it! For more information on getting started with headless WordPress, see 
 - 1dcd987: Removes unused event callbacks for rewrite rule and post status changes. The `is_events_enabled()` function has also been removed.
 - 5c69b68: ConditionalTags has been deprecated as it was introduced in an older version of the framework when routing was done from the NextTemplateLoader. Now that we are using Next.js pages for routing, conditionalTags are no longer needed.
 - 7d156ba: Add a documentation link that explains "Features" checkbox settings in more detail
-
-= 0.7.3 =
-
-### Patch Changes
-
-- ab4a661: Fixed issue where file editor was unable to save
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
