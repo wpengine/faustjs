@@ -174,6 +174,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'is404',
+              id: 'next/reference/is404',
+            },
+            {
+              type: 'doc',
               label: 'withFaust',
               id: 'next/reference/with-faust',
             },

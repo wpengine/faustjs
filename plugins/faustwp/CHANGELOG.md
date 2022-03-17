@@ -1,5 +1,12 @@
 # FaustWP
 
+## 0.7.6
+
+### Patch Changes
+
+- 420d0b4: Remove trailing slash from frontend uri.
+- 037b57b: Ensure sitemap URLs use the WordPress domain and not the headless frontend domain. Fixes a conflict with Yoast SEO that prevented post links from being added to the posts sitemap.
+
 ## 0.7.5
 
 ### Patch Changes

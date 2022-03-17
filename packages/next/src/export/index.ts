@@ -10,3 +10,4 @@ export {
   is404,
 } from '../server/index.js';
 export { FaustProvider } from '../components/index.js';
+export { handleSitemapRequests } from '../middleware/index.js';

@@ -147,7 +147,11 @@ function post_preview_link( $link, $post ) {
 		 * the data.
 		 */
 		$post_type_object = get_post_type_object( $post->post_type );
-		if ( ! isset( $args['typeName'] ) && isset( $post_type_object ) ) {
+		if (
+			! isset( $args['typeName'] ) &&
+			isset( $post_type_object ) &&
+			! empty( $post_type_object->graphql_single_name )
+		) {
 			$gql_type_name    = ucfirst( $post_type_object->graphql_single_name );
 			$args['typeName'] = $gql_type_name;
 		}
@@ -167,9 +171,7 @@ function post_preview_link( $link, $post ) {
 
 add_filter( 'post_link', __NAMESPACE__ . '\\post_link', 1000 );
 /**
- * Callback for WordPress 'preview_post_link' filter and 'post_link' filter.
- *
- * Callback for WordPress  'post_link' filter.
+ * Callback for WordPress 'post_link' filter.
  *
  * Swap post links in admin for headless front-end.
  *
@@ -185,13 +187,7 @@ function post_link( $link ) {
 		return $link;
 	}
 
-	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-
-	if ( $frontend_uri ) {
-		return str_replace( trailingslashit( get_home_url() ), trailingslashit( $frontend_uri ), $link );
-	}
-
-	return $link;
+	return equivalent_frontend_url( $link );
 }
 
 add_filter( 'term_link', __NAMESPACE__ . '\\term_link', 1000 );
@@ -207,16 +203,7 @@ function term_link( $term_link ) {
 		return $term_link;
 	}
 
-	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-
-	if ( empty( $frontend_uri ) ) {
-		return $term_link;
-	}
-
-	$frontend_uri = trailingslashit( $frontend_uri );
-	$site_url     = trailingslashit( site_url() );
-
-	return str_replace( $site_url, $frontend_uri, $term_link );
+	return equivalent_frontend_url( $term_link );
 }
 
 
@@ -229,4 +216,36 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_sc
 function enqueue_preview_scripts() {
 	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
 	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
+}
+
+add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
+/**
+ * Filters the sitemap entry for an individual post.
+ *
+ * @param array $sitemap_entry Sitemap entry for the post.
+ */
+function sitemaps_posts_entry( $sitemap_entry ) {
+	return normalize_sitemap_entry( $sitemap_entry );
+}
+
+add_filter( 'wp_sitemaps_taxonomies_entry', __NAMESPACE__ . '\\sitemaps_taxonomies_entry' );
+/**
+ * Filters the sitemap entry for an individual term.
+ *
+ * @param array $sitemap_entry Sitemap entry for the term.
+ */
+function sitemaps_taxonomies_entry( $sitemap_entry ) {
+	return normalize_sitemap_entry( $sitemap_entry );
+}
+
+add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_url' );
+/**
+ * Filter the URL Yoast SEO uses in the XML sitemap.
+ *
+ * Note that only absolute local URLs are allowed as the check after this removes external URLs.
+ *
+ * @param string $url URL to use in the XML sitemap.
+ */
+function yoast_sitemap_post_url( $url ) {
+	return equivalent_wp_url( $url );
 }
