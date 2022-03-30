@@ -1,0 +1,157 @@
+---
+slug: /next/reference/handle-sitemap-requests
+title: Using handleSitemapRequests
+description: Reference documentation on using the handleSitemapRequests middleware and its options.
+---
+
+The `handleSitemapRequests` helper function is a [Next.js middleware](https://nextjs.org/docs/middleware) that handles proxying sitemap requests from your WordPress site to your headless frontend.
+
+## Usage
+
+To use `handleSitemapRequests`, create a `_middleware.ts` file at the top of your `pages` directory with the following content:
+
+```ts title="src/pages/_middleware.ts"
+import { handleSitemapRequests } from '@faustjs/next/middleware';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: '/wp-sitemap.xml',
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+## Config
+
+`handleSitemapRequests` accepts two required arguments. The first is the Next.js request object ([`NextRequest`](https://nextjs.org/docs/api-reference/next/server#nextrequest)), which comes from the top level default export. The second is a configuration object. This configuration object accepts the following properties:
+
+### `wpUrl`
+
+type: `string`
+
+Required: `true`
+
+This is your WordPress URL. This is typically defined in your `.env` file as `NEXT_PUBLIC_WORDPRESS_URL`.
+
+:::tip
+
+[Next.js middleware is vary particular about what imports and APIs can be used.](https://nextjs.org/docs/api-reference/edge-runtime#unsupported-apis) Typically we could get the `wpUrl` from the Faust.js `config` object, but it's not currently possible with the Next.js middleware constraints.
+
+:::
+
+### `sitemapIndexPath`
+
+type: `string`
+
+Required: `true`
+
+This is the relative path to the sitemap index file that exists on your WordPress site. WordPress has built-in support for sitemaps, and the default index is available at `/wp-sitemap.xml`:
+
+```ts
+handleSitemapRequests(req, {
+  sitemapIndexPath: '/wp-sitemap.xml',
+});
+```
+
+Alternatively, you may be using a plugin to handle your sitemaps, in that case you want to use the relative index path of the sitemap index the plugin has defined. For example, [Yoast SEO](https://yoast.com/) creates a sitemap index file at `/sitemap_index.xml`:
+
+```ts
+handleSitemapRequests(req, {
+  sitemapIndexPath: '/sitemap_index.xml',
+});
+```
+
+### `sitemapPathsToIgnore`
+
+type: `string[]`
+
+An array of pathnames to ignore when proxying sitemaps from your WordPress site.
+
+Useful if you have a sitemap with URLs in your WordPress sitemap index that don't correlate to the URL structure of your headless frontend.
+
+For example, in the default WordPress sitemap, a sitemap is generated for users: `/wp-sitemap-users-1.xml`. In most cases, you likely won't have an archive for users on your headless frontend, so by ignoring this path, you will prevent the sitemap index from including sitemaps with URLs that do not exist.
+
+```ts
+handleSitemapRequests(req, {
+  sitemapPathsToIgnore: ['/wp-sitemap-users-1.xml'],
+});
+```
+
+Additionally, you can provide a wildcard to ignore all paths that start with a certain string:
+
+```ts
+handleSitemapRequests(req, {
+  sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+});
+```
+
+:::note
+
+The wildcard (`*`) character must always be the last character in the pathname.
+
+:::
+
+### `pages`
+
+type: `{path: string; lastmod?: string; changefreq?: string; priority?: number}[]`
+
+An array of objects that define [Next.js file based pages](https://nextjs.org/docs/basic-features/pages) that you would like to include in your sitemap. For example, you may have a custom page called `/src/pages/about.tsx`. You'd like to include this in your sitemap, so you would add it to the `pages` array:
+
+```ts
+handleSitemapRequests(req, {
+  pages: [
+    {
+      path: '/about',
+    },
+  ],
+});
+```
+
+The `path` property is the relative path to the page and the only required property. You can additionally specify the `lastmod`, `changefreq` and `priority` properties for additional configuration:
+
+```ts
+handleSitemapRequests(req, {
+  pages: [
+    {
+      path: '/about',
+      lastmod: '2020-01-01',
+      changefreq: 'monthly',
+      priority: 0.5,
+    },
+  ],
+});
+```
+
+When the `pages` array is provided and not empty, a sitemap is generated at `/sitemap-faust-pages.xml` with the provided URLs.
+
+### `replaceUrls`
+
+Type: `boolean`
+
+By default, this option is set to `true`. Based on this option, the helper function may replace the WordPress site URL with your headless frontend URL.
+
+### `robotsTxt`
+
+type: `(sitemapUrl: string) => Promise<string>`
+
+The `robotsTxt` option is an async function that returns a string that will be used as the `/robots.txt` route for your headless frontend. The function also accepts a single argument, `sitemapUrl`, which can be used when defining your robots.txt content:
+
+```ts
+handleSitemapRequests(req, {
+  async robotsTxt(sitemapUrl) {
+    return `
+      User-agent: *
+      Allow: /
+
+      Sitemap: ${sitemapUrl}
+    `;
+  },
+});
+```
