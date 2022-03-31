@@ -76,7 +76,7 @@ An array of pathnames to ignore when proxying sitemaps from your WordPress site.
 
 Useful if you have a sitemap with URLs in your WordPress sitemap index that don't correlate to the URL structure of your headless frontend.
 
-For example, in the default WordPress sitemap, a sitemap is generated for users: `/wp-sitemap-users-1.xml`. In most cases, you likely won't have an archive for users on your headless frontend, so by ignoring this path, you will prevent the sitemap index from including sitemaps with URLs that do not exist.
+For example, the default WordPress sitemap index includes a sitemap for users: `/wp-sitemap-users-1.xml`. In most cases, your headless frontend is unlikely to have an archive for users. Ignoring this path will prevent the sitemap index from including sitemaps with URLs of user pages that do not exist.
 
 ```ts
 handleSitemapRequests(req, {
