@@ -168,6 +168,27 @@ module.exports = {
               ],
             },
             {
+              type: 'category',
+              label: 'Helpers',
+              items: [
+                {
+                  type: 'doc',
+                  label: 'Helpers Intro',
+                  id: 'next/reference/helpers/intro',
+                },
+                {
+                  type: 'doc',
+                  label: 'getServerSideProps',
+                  id: 'next/reference/helpers/getServerSideProps',
+                },
+                {
+                  type: 'doc',
+                  label: 'getNextStaticProps',
+                  id: 'next/reference/helpers/getNextStaticProps',
+                },
+              ],
+            },
+            {
               type: 'doc',
               label: 'API Router',
               id: 'next/reference/api-router',
@@ -186,6 +207,11 @@ module.exports = {
               type: 'doc',
               label: 'FaustProvider',
               id: 'next/reference/faust-provider',
+            },
+            {
+              type: 'doc',
+              label: 'URL Params',
+              id: 'next/reference/expected-url-params',
             },
             {
               type: 'doc',
