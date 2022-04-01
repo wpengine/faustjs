@@ -178,8 +178,8 @@ module.exports = {
                 },
                 {
                   type: 'doc',
-                  label: 'getServerSideProps',
-                  id: 'next/reference/helpers/getServerSideProps',
+                  label: 'getNextServerSideProps',
+                  id: 'next/reference/helpers/getNextServerSideProps',
                 },
                 {
                   type: 'doc',
