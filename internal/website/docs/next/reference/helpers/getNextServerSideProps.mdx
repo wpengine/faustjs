@@ -16,7 +16,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 ```
 
-The `getNextServerSideProps` function accepts two arguments: the server side props `context`, and an object of type `GetNextServerSidePropsConfig` with a `Page` key.
+The `getNextServerSideProps` function accepts two arguments: the server side props `context`, and an object (type `GetNextServerSidePropsConfig`) with a `Page` key.
 This should be your Next.js page component.
 
 The reason `MyPage` and `client` are passed to `getNextServerSideProps` is because
@@ -35,7 +35,7 @@ The secondary argument object of the `getNextServerSideProps` is of type `GetNex
 * `client`: The GQty client.
 * `notFound`: The `notFound` boolean allows the page to return a 404 status and 404 Page. This is [used by Next.js](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#notfound) to force a page return a 404 even if there was a successfully generated page before.
 * `redirect`: The `redirect` object allows redirecting to internal and external resources. It should match the shape of `{ destination: string, permanent: boolean }`.
-* `props`: The `props` object is any other key value pairs of properties that can be forwarded to the `Page` component.
+* `props`: The `props` object is any other key value pairs of properties where each value is received by the `Page` component.
 
 ## getNextServerSideProps return values
 
