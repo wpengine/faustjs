@@ -1,5 +1,5 @@
 ---
-slug: /next/reference/hooks/getNextStaticProps
+slug: /next/reference/getNextStaticProps
 title: getNextStaticProps
 description: The getNextStaticProps function lets you build a static site with your WordPress data.
 ---
@@ -31,10 +31,10 @@ The second argument of `getNextStaticProps` is of type `GetNextStaticPropsConfig
 
 * `Page`: The current page component. It can be any valid React Element.
 * `client`: The GQty client.
-* `revalidate`: The revalidate property is the amount in seconds after which a page re-generation can occur (defaults to false or no revalidation).
+* `revalidate`: The revalidate property is the amount in seconds after which a page re-generation can occur. By default, it is set to 900 seconds(15 minutes).
 * `props`: The `props` object is any other key value pairs of properties where each value is received by the `Page` component.
 
-Because the `GetNextStaticPropsConfig` type extends `GetNextServerSidePropsConfig`, it can also accept any other properties of the [getNextServerSideProps](/docs/next/reference/helpers/getNextServerSideProps).
+Because the `GetNextStaticPropsConfig` type extends `GetNextServerSidePropsConfig`, it can also accept any other properties of the [getNextServerSideProps](/docs/next/reference/getNextServerSideProps).
 
 ## getNextServerSideProps return values
 

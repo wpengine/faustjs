@@ -168,27 +168,6 @@ module.exports = {
               ],
             },
             {
-              type: 'category',
-              label: 'Helpers',
-              items: [
-                {
-                  type: 'doc',
-                  label: 'Helpers Intro',
-                  id: 'next/reference/helpers/intro',
-                },
-                {
-                  type: 'doc',
-                  label: 'getNextServerSideProps',
-                  id: 'next/reference/helpers/getNextServerSideProps',
-                },
-                {
-                  type: 'doc',
-                  label: 'getNextStaticProps',
-                  id: 'next/reference/helpers/getNextStaticProps',
-                },
-              ],
-            },
-            {
               type: 'doc',
               label: 'API Router',
               id: 'next/reference/api-router',
@@ -215,8 +194,13 @@ module.exports = {
             },
             {
               type: 'doc',
-              label: 'URL Params',
-              id: 'next/reference/expected-url-params',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
             },
           ],
         },
