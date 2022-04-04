@@ -7,7 +7,7 @@ description: The getNextServerSideProps function lets you server side render you
 The `getNextServerSideProps` function lets you server side render your page with WordPress data.
 The function should be returned from [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props) which is required by Next.js to perform Server-Side Rendering (SSR):
 
-```
+```tsx
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return getNextServerSideProps(context, {
     Page: MyPage,
