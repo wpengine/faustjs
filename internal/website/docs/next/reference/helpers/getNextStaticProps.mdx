@@ -6,7 +6,7 @@ description: The getNextStaticProps function lets you build a static site with y
 
 The `getNextStaticProps` function lets you build a static site with your WordPress data. The function should be returned from `getStaticProps`:
 
-```
+```tsx
 export async function getStaticProps(context: GetStaticPropsContext) {
   return getNextStaticProps(context, {
     Page: MyPage,
