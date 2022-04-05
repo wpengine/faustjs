@@ -44,6 +44,23 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Core Package',
+      items: [
+        {
+          type: 'category',
+          label: 'Reference',
+          items: [
+            {
+              type: 'doc',
+              label: 'config',
+              id: 'core/reference/config',
+            },
+          ]
+        }
+      ]
+    },
+    {
+      type: 'category',
       label: 'Usage with Next.js',
       items: [
         {
@@ -197,6 +214,11 @@ module.exports = {
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
+            {
+              type: 'doc',
+              label: 'config',
+              id: 'next/reference/config',
+            }
           ],
         },
       ],

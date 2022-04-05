@@ -60,7 +60,7 @@ export interface Config extends Record<string, unknown> {
   apiClientSecret?: string;
 
   /**
-   * Set this to the type of authentication you wan to use.
+   * Set this to the type of authentication you want to use.
    *
    * Redirect authentication redirects users to the WordPress login page to authenticate,
    * where local assumes that you have setup a login page on your frontend site.
@@ -159,7 +159,7 @@ export function config(cfg?: Config): Config {
       'You must set your faustjs configuration at the highest level in your application. `config` was called with no arguments prior to setting the configuration.',
     );
   }
-
+  console.debug(cfg);
   if (!isObject(cfg)) {
     return faustConfig;
   }
