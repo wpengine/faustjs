@@ -159,7 +159,7 @@ export function config(cfg?: Config): Config {
       'You must set your faustjs configuration at the highest level in your application. `config` was called with no arguments prior to setting the configuration.',
     );
   }
-  console.debug(cfg);
+
   if (!isObject(cfg)) {
     return faustConfig;
   }
