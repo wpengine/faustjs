@@ -197,6 +197,16 @@ module.exports = {
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
+            {
+              type: 'doc',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
+            },
           ],
         },
       ],
