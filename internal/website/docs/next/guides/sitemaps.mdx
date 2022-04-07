@@ -1,0 +1,232 @@
+---
+slug: /next/guides/sitemaps
+title: Sitemaps
+description: Generate sitemaps for your Faust.js site
+---
+
+Sitemaps can be a complicated process when using WordPress in a headless environment. Thankfully, Faust.js takes care of all your sitemap needs through a simple piece of Next.js middleware, [`handleSitemapRequests`](/docs/next/reference/handle-sitemap-requests).
+
+## How It Works
+
+`handleSitemapRequests` works by proxying your existing sitemaps from WordPress to your frontend, while replacing any WordPress URLs with your headless frontend's URL.
+
+This means there is no constraints in how your sitemaps are created on WordPress, giving you the flexibility to use plugins such as [Yoast](https://wordpress.org/plugins/wordpress-seo/) or [XML Sitemaps](https://wordpress.org/plugins/google-sitemap-generator/). As long as your WordPress sitemaps matches the following criteria, they will be proxied:
+
+- Conform to the [XML Sitemaps specification](https://www.sitemaps.org/protocol.html)
+- Has `sitemap` in their pathname (ex. `/page-sitemap.xml`)
+- Has `.xml` as their extension
+
+## Setup
+
+To get started, we'll first have to define a piece of middleware in our Next.js `pages` directory. The file must be named `_middleware.ts`:
+
+```tsx title="src/pages/_middleware.ts"
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  return NextResponse.next();
+}
+```
+
+This is what a default Next.s middleware looks like. Having it at the root of the `pages` directory means that every request to your site will first go through this middleware. You can read more on Next.js middleware [here](https://nextjs.org/docs/middleware).
+
+The middleware above will currently do nothing, as it's an empty function that goes to the "next" middleware via `NextResponse.next()`. Let's add our sitemap handling code:
+
+```tsx title="src/pages/_middleware.ts"
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/wp-sitemap.xml`,
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+`handleSitemapRequests` accepts two required arguments. The first is the `req` object passed from the top level Next.js middleware function, and the second is a configuration object. There are two required properties in the configuration object. The first is `wpUrl`, which is the URL of your WordPress site. The second is `sitemapIndexPath`, which is the relative path to the sitemap index file that exists on your WordPress site.
+
+This is all the configuration you need to get started. As you can see, if you now go to `/wp-sitemap.xml` on your headless frontend, you will see the sitemap index file being proxied over with properly formatted URLs.
+
+## Additional Configuration
+
+### Ignoring Paths
+
+There will be instances in which you don't want to proxy over a specific path. For example, if you have a custom post type that you want to exclude from your sitemap, you can do so by adding it to the `sitemapPathsToIgnore` array.
+
+```tsx title="src/pages/_middleware.ts" {8}
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/wp-sitemap.xml`,
+    sitemapPathsToIgnore: ['/wp-sitemap-users-1.xml'],
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+You can additionally use a wildcard to ignore sitemap paths that may be paginated:
+
+```tsx title="src/pages/_middleware.ts" {8}
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/wp-sitemap.xml`,
+    sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+### Defining Next.js Pages for Sitemaps
+
+The above code examples account for adding your WordPress content to your sitemap, but what about the file based pages you've created in Next.js? Say for an example we have `src/pages/about.tsx` and we'd like to include it in our sitemap. That can be done by creating a `pages` property in the `handleSitemapRequests` config object:
+
+```tsx title="src/pages/_middleware.ts" {8-12}
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/wp-sitemap.xml`,
+    pages: [
+      {
+        path: '/about',
+      },
+    ],
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+The `path` property is a relative path to the page you want to include in your sitemap and is the only required field. Take a look at the [reference doc](/docs/next/reference/handle-sitemap-requests#pages) for more of the available options.
+
+### Creating a `/robots.txt` Route
+
+There will most likely be instances where you will need to create a `/robots.txt` route. This is a file that tells search engines what to do with your site. We have a handy function that you can define in your `handleSitemapRequests` config object that has an argument of `sitemapUrl` to be used:
+
+```tsx title="src/pages/_middleware.ts" {8-15}
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/wp-sitemap.xml`,
+    async robotsTxt(sitemapUrl) {
+      return `
+        User-agent: *
+        Allow: /
+
+        Sitemap: ${sitemapUrl}
+      `;
+    },
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+## Examples
+
+Below you can find some drop in examples for different XML Sitemap configurations on WordPress.
+
+:::note
+
+Be sure to define your `pages` property in your `handleSitemapRequests` config object if you have any Next.js specific pages you want included in your sitemap.
+
+:::
+
+### Usage with default WordPress Sitemaps
+
+Below is a drop in configuration using default WordPress sitemaps. This assumes you want to ignore the "users" sitemap:
+
+```tsx title="src/pages/_middleware.ts"
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/wp-sitemap.xml`,
+    sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+    async robotsTxt(sitemapUrl) {
+      return `
+        User-agent: *
+        Allow: /
+
+        Sitemap: ${sitemapUrl}
+      `;
+    },
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
+
+### Usage with Yoast
+
+Below is a drop in configuration using Yoast's sitemap. This assumes you want to ignore the "author" sitemap:
+
+```tsx title="src/pages/_middleware.ts"
+import { handleSitemapRequests } from '@faustjs/next';
+import { NextRequest, NextResponse } from 'next/server';
+
+export default async function _middleware(req: NextRequest) {
+  const sitemapRequest = await handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: `/sitemap_index.xml`,
+    sitemapPathsToIgnore: ['/author-sitemap.xml'],
+    async robotsTxt(sitemapUrl) {
+      return `
+        User-agent: *
+        Allow: /
+
+        Sitemap: ${sitemapUrl}
+      `;
+    },
+  });
+
+  if (sitemapRequest) {
+    return sitemapRequest;
+  }
+
+  return NextResponse.next();
+}
+```
