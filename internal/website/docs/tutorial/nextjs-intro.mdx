@@ -1,0 +1,93 @@
+---
+slug: /tutorial/nextjs-intro
+title: Introduction to Next.js
+description: In this section of the tutorial we introduce Next.js framework and how Faust.js uses it to support Server-side Rendering (SSR) and Static Site Generation (SSG) out of the box.
+---
+
+## Next.js Introduction
+
+Faust.js offers helper functions and tools for building applications using Next.js.
+This section of the tutorial goes through the basic features of this framework.
+
+### What is Next.js?
+
+Simply stated, Next.js is a React Framework for developing Single Page Applications (SPAs).
+It is an [open-source](https://github.com/vercel/next.js/) project that provides many abstractions and helper functions
+to enable delivering truly production ready React Applications. With Next.js developers don't have to think too much about
+optimizing for performance, server rendering, asset optimization or configuration.
+
+### What are the benefits of Next.js?
+
+Next JS comes with many features out of the box.
+It's been around for some time and has significant adoption rate given that a lot of new web applications are build in React.
+
+Some of its main features include:
+
+* **Support for many rendering patterns**: Including Server Side Rendering (SSR), Static Site Generation (SSG) and Incremental Static Generation (ISR)
+* **Zero Config**: It includes scripts to build your application for production without specifying any configuration.
+* **Build-in Optimized Image Components**: It offers the [Image](https://nextjs.org/docs/api-reference/next/image) component that handles automatic lazy-loading, preloading of critical images, correct sizing across devices, and automatically supports modern formats.
+
+The full list of Next.js features can be summarised in this [page](https://nextjs.org/#features).
+
+### How Next.js works
+
+Next.js provides many abstractions and building blocks to create web applications in React.
+It handles the tooling, configuration and background work, relieving the developers for tackling those tasks on their own.
+In exchange, it requires developers to follow specific conventions. Let's take a look at the most important ones:
+
+#### Folder Structure
+
+In Next.js, each page is associated with a route based on its file name.
+
+Example: If you create `pages/about.js` that exports a React component like below, it will be accessible at `/about`.
+
+```jsx
+function About() {
+  return <div>About</div>
+}
+
+export default About
+```
+Notice here that you don't have to `import React` as Next.js will perform the JSX->JS compilation behind the scenes.
+You just need to export a default JSX Component and will use it as the main page content. You can read more about how [routing works here](https://nextjs.org/docs/routing/introduction).
+
+#### Automatic Static Optimization
+
+Next.js will automatically determine that a page is static based on the presence or absence of `getServerSideProps` and `getInitialProps` in the page.
+If `getServerSideProps` or `getInitialProps` is present in a page, Next.js will switch to render the page on-demand, per-request doing SSR.
+
+```jsx
+function About(props) {
+  return <div>{props.message}</div>
+}
+
+export default About
+
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      message: "About",
+    }, // will be passed to the About page component as props
+  }
+}
+```
+
+You can read more about how [Automatic Static Optimization works here](https://nextjs.org/docs/advanced-features/automatic-static-optimization).
+
+
+#### API Route Handlers
+
+You can build API's with Next.js by creating files inside the `pages/api` folder.
+For example, the following API route `pages/api/user.js` returns a json response with a status code of 200:
+
+```js
+export default function handler(req, res) {
+	res.status(200).json({ message: 'Hello' })
+}
+```
+Any request to the `/api/user` will respond with the JSON payload: `{"message":"Hello"}`.
+The handler function here will run on the server side and no actual code is exposed to the client. You can read more about how [API Routes works here](https://nextjs.org/docs/api-routes/introduction).
+
+## What's Next?
+
+Now that you have a basic overview of Next.js, in the next step you are going to setup a [basic headless site](./basic-headless-site).

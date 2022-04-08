@@ -22,6 +22,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Introduction to Next.js',
+          id: 'tutorial/nextjs-intro',
+        },
+        {
+          type: 'doc',
           label: 'Create A Basic Headless WordPress Site',
           id: 'tutorial/basic-headless-site',
         },
