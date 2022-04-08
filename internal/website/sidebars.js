@@ -22,6 +22,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Introduction to Next.js',
+          id: 'tutorial/nextjs-intro',
+        },
+        {
+          type: 'doc',
           label: 'Create A Basic Headless WordPress Site',
           id: 'tutorial/basic-headless-site',
         },
@@ -41,6 +46,23 @@ module.exports = {
           id: 'tutorial/querying-data',
         },
       ],
+    },
+    {
+      type: 'category',
+      label: 'Core Package',
+      items: [
+        {
+          type: 'category',
+          label: 'Reference',
+          items: [
+            {
+              type: 'doc',
+              label: 'config',
+              id: 'core/reference/config',
+            },
+          ]
+        }
+      ]
     },
     {
       type: 'category',
@@ -201,6 +223,21 @@ module.exports = {
               type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
+            },
+            {
+              type: 'doc',
+              label: 'config',
+              id: 'next/reference/config',
+            },
+            {
+              type: 'doc',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
             },
           ],
         },
