@@ -218,7 +218,17 @@ module.exports = {
               type: 'doc',
               label: 'config',
               id: 'next/reference/config',
-            }
+            },
+            {
+              type: 'doc',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
+            },
           ],
         },
       ],
