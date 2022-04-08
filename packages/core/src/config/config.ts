@@ -60,7 +60,7 @@ export interface Config extends Record<string, unknown> {
   apiClientSecret?: string;
 
   /**
-   * Set this to the type of authentication you wan to use.
+   * Set this to the type of authentication you want to use.
    *
    * Redirect authentication redirects users to the WordPress login page to authenticate,
    * where local assumes that you have setup a login page on your frontend site.
