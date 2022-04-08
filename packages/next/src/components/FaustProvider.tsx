@@ -38,12 +38,14 @@ export function FaustProvider<Props = Record<string, unknown>>({
     cacheSnapshot: isNil(authSnapshot) ? undefined : authSnapshot,
   });
 
+  const value = React.useMemo(
+    () => ({
+      client,
+    }),
+    [client],
+  );
+
   return (
-    <FaustContext.Provider
-      value={{
-        client,
-      }}>
-      {children}
-    </FaustContext.Provider>
+    <FaustContext.Provider value={value}>{children}</FaustContext.Provider>
   );
 }

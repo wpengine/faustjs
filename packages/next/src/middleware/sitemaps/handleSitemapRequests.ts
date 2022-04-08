@@ -119,7 +119,7 @@ export function validateConfig(
       throw new Error('sitemapPathsToIgnore must be an array');
     }
 
-    (config?.sitemapPathsToIgnore).forEach((path) => {
+    config?.sitemapPathsToIgnore?.forEach((path) => {
       if (!isString(path)) {
         throw new Error('sitemapPathsToIgnore must be an array of strings');
       }
@@ -144,7 +144,7 @@ export function validateConfig(
       throw new Error('pages must be an array');
     }
 
-    (config?.pages).forEach((page) => {
+    config?.pages?.forEach((page) => {
       if (!isObject(page)) {
         throw new Error('pages must be an array of objects');
       }
