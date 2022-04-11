@@ -124,6 +124,11 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'Sitemaps',
+              id: 'next/guides/sitemaps',
+            },
+            {
+              type: 'doc',
               label: '404s',
               id: 'next/guides/handle-404s',
             },
