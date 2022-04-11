@@ -93,3 +93,7 @@ html[data-theme='dark'] .footer.footer--dark {
 html[data-theme='dark'] .footer.footer--dark {
   background-color: var(--ifm-navbar-background-color);
 }
+
+video {
+  max-width: 100%;
+}
