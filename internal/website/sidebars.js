@@ -301,7 +301,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          label: 'Faust.js 0.9.0 - 12.0.0',
+          label: 'Faust.js 0.9.0 - 0.12.0',
           id: 'release-notes',
         },
       ],
