@@ -73,3 +73,5 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 ### Pull Request Notice
 
 While pull requests are welcome, please note we are in the process of reviewing licensing on the plugin internally and may not be able to merge your pull request in a timely manner.
+
+### Minor update to check for bot
