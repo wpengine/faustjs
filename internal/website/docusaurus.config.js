@@ -78,10 +78,6 @@ module.exports = {
               label: 'FaustWP',
               to: '/docs/changelog/faustwp',
             },
-            {
-              label: 'Release Notes',
-              to: '/docs/release-notes',
-            },
           ],
         },
         {
