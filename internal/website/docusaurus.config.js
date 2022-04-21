@@ -60,6 +60,27 @@ module.exports = {
       style: 'dark',
       links: [
         {
+          title: 'Changelogs',
+          items: [
+            {
+              label: '@faustjs/core',
+              to: '/docs/changelog/core',
+            },
+            {
+              label: '@faustjs/next',
+              to: '/docs/changelog/next',
+            },
+            {
+              label: '@faustjs/react',
+              to: '/docs/changelog/react',
+            },
+            {
+              label: 'FaustWP',
+              to: '/docs/changelog/faustwp',
+            },
+          ],
+        },
+        {
           title: 'Docs',
           items: [
             {
