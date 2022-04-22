@@ -106,6 +106,7 @@ function is_conflict_dismissed( $plugin ) {
  * Adds any plugins that are currently active, in the conflict list, and not yet
  * dismissed to the current user's list of dismissed plugin conflicts.
  *
+ * @param  array $conflict_list Optional. Alternative list of plugins known to conflict.
  * @return void
  */
 function dismiss_active_conflicts( $conflict_list = null ) {

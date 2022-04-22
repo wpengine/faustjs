@@ -21,7 +21,7 @@ function show_warning() {
 	}
 
 	$plugins  = get_plugin_conflicts();
-	$warnings = [];
+	$warnings = array();
 
 	foreach ( $plugins as $plugin ) {
 		$plugin_headers = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
@@ -37,7 +37,7 @@ function show_warning() {
 		esc_attr( NOTICE_ID ),
 		esc_html__( 'Incompatible plugins detected', 'faustwp' ),
 		esc_html__( 'The following active plugins are known to conflict with FaustWP and may cause unexpected behavior:', 'faustwp' ),
-		implode( ', ', $warnings ),
+		esc_html( implode( ', ', $warnings ) )
 	);
 }
 add_action( 'admin_notices', __NAMESPACE__ . '\\show_warning' );
