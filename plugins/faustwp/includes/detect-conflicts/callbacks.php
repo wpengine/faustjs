@@ -65,7 +65,7 @@ function print_scripts() {
 
 		// Wait for core WP to add the dismiss button to the notice.
 		wait_for_btn = setInterval(function() {
-			var dismissBtn = document.querySelector( notice_selector );
+			let dismissBtn = document.querySelector( notice_selector );
 
 			if (!dismissBtn && !dismissBtn.length) {
 				return;
@@ -75,17 +75,14 @@ function print_scripts() {
 
 			// Add an event listener to the dismiss button.
 			dismissBtn.addEventListener( 'click', function( event ) {
-				var httpRequest = new XMLHttpRequest(),
-					postData    = '';
+				let postData = new FormData();
+				postData.append('action', '<?php echo esc_attr( NOTICE_ID ); ?>');
+				postData.append('nonce', '<?php echo esc_html( $nonce ); ?>');
 
-				// Build the data to send in our request.
-				// Data has to be formatted as a string here.
-				postData += 'action=<?php echo esc_attr( NOTICE_ID ); ?>';
-				postData += '&nonce=<?php echo esc_html( $nonce ); ?>';
-
-				httpRequest.open( 'POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>' );
-				httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-				httpRequest.send( postData );
+				window.fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', {
+					method: 'POST',
+					body: postData,
+				})
 			});
 		}, 100);
 	});
