@@ -35,7 +35,7 @@ function show_warning() {
 			<p>%s</p>
 		</div>',
 		esc_attr( NOTICE_ID ),
-		esc_html__( 'Incompatible plugins detected', 'faustwp' ),
+		esc_html__( 'FaustWP detected incompatible plugins', 'faustwp' ),
 		esc_html__( 'The following active plugins are known to conflict with FaustWP and may cause unexpected behavior:', 'faustwp' ),
 		esc_html( implode( ', ', $warnings ) )
 	);
