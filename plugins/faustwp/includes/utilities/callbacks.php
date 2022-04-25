@@ -7,6 +7,7 @@
 
 namespace WPE\FaustWP\Utilities;
 
+use function WPE\FaustWP\Detect_Conflicts\delete_conflicts_dismissed;
 use function WPE\FaustWP\Settings\{
 	get_secret_key,
 	faustwp_get_settings,
@@ -57,7 +58,7 @@ register_deactivation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_deactivation
 /**
  * Callback for WordPress register_deactivation_hook() function.
  *
- * Flush rewrite rules on plugin deactivation.
+ * Clear conflict dismissals and flush rewrites on plugin deactivation.
  *
  * @todo is flush_rewrite_rules() needed?
  *
@@ -66,5 +67,6 @@ register_deactivation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_deactivation
  * @return void
  */
 function handle_deactivation() {
+	delete_conflicts_dismissed();
 	flush_rewrite_rules();
 }
