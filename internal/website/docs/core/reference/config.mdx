@@ -27,6 +27,7 @@ export default coreConfig({
 ```
 
 ## Config
+
 The Config object has the following properties:
 
 ### `wpUrl`
@@ -96,21 +97,6 @@ type: `(url: string, init: RequestInit): Promise<RequestContext> | RequestContex
 
 Required: `false`
 
-This is a callback function that is called before every request . Use this to apply any headers you might need to for your requests or adjust the request to suite your needs:
+Deprecated: `true`
 
-```tsx
-export default coreConfig({
-  wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: process.env.FAUSTWP_SECRET_KEY,
-  applyRequestContext: (url, init) => {
-    const reqInit = {
-      ...init,
-      headers: {
-        ...init.headers,
-        'X-Powered-By': 'WP Engine'
-      }
-    }
-    return {url, init: reqInit};
-  }
-});
-```
+This property is not used anymore and has no effect. You should use this function in [getClient](/docs/next/guides/modifying-the-graphql-request) instead. This will be removed in subsequent versions of Faust.js.
