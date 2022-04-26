@@ -93,7 +93,7 @@ export interface Config extends Record<string, unknown> {
    * Called before every request, use this to apply any headers you might
    * need to for your requests or adjust the request to suite your needs.
    *
-   * @deprecated This property is not used anymore and has no effect. You should use this function in [getClient](/docs/next/guides/modifying-the-graphql-request) instead. This will be removed in subsequent versions of Faust.js.
+   * @deprecated This property is not used anymore and has no effect. You should use this function in [getClient](https://faustjs.org/docs/next/guides/modifying-the-graphql-request) instead. This will be removed in subsequent versions of Faust.js.
    * @param {string} url
    * @param {RequestInit} init
    * @returns {RequestContext}
