@@ -135,6 +135,11 @@ function post_preview_link( $link, $post ) {
 			$args['p'] = $preview_id;
 		}
 
+		// Add preview=true in case other plugins have stripped it.
+		if ( ! isset( $args['preview'] ) ) {
+			$args['preview'] = 'true';
+		}
+
 		// Add page_id=xx if it's missing, which is the case for published pages.
 		if ( ! isset( $args['page_id'] ) && 'page' === $post->post_type ) {
 			$args['page_id'] = $preview_id;
