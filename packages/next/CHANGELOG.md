@@ -1,5 +1,16 @@
 # @faustjs/next
 
+## 0.15.6
+
+### Patch Changes
+
+- da3a1ae: Fixes draft preview links when i18n is enabled in Next.js config [#853](https://github.com/wpengine/faustjs/pull/853)
+- 59241bb: build: Updates eslint to v8
+- Updated dependencies [a03fae1]
+- Updated dependencies [59241bb]
+  - @faustjs/core@0.15.6
+  - @faustjs/react@0.15.6
+
 ## 0.15.5
 
 ### Patch Changes
