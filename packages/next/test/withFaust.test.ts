@@ -116,4 +116,45 @@ describe('withFaust', () => {
 
     expect(configRedirects).toStrictEqual(expectedRedirects);
   });
+
+  test('preview redirect respects i18n config', async () => {
+    const config = withFaust({
+      i18n: {
+        locales: ['en', 'fr'],
+        defaultLocale: 'en',
+      },
+    });
+
+    const configRedirects = await (config as any).redirects();
+
+    const expectedRedirects = [
+      {
+        source: '/:lang',
+        has: [
+          {
+            type: 'query',
+            key: 'preview',
+            value: 'true',
+          },
+        ],
+        destination: '/:lang/preview',
+        permanent: false,
+        locale: false,
+      },
+      {
+        source: '/((?!preview).*)',
+        has: [
+          {
+            type: 'query',
+            key: 'preview',
+            value: 'true',
+          },
+        ],
+        destination: '/preview',
+        permanent: false,
+      },
+    ];
+
+    expect(configRedirects).toStrictEqual(expectedRedirects);
+  });
 });

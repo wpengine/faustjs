@@ -1,18 +1,25 @@
 import { trim } from 'lodash';
 import isFunction from 'lodash/isFunction.js';
 import { NextConfig } from 'next';
-import { Redirect } from 'next/dist/lib/load-custom-routes.js';
+import { Redirect, RouteHas } from 'next/dist/lib/load-custom-routes.js';
 
 export interface WithFaustConfig {
   previewDestination?: string;
 }
 
 export async function createRedirects(
+  nextConfig?: NextConfig,
   redirectFn?: NextConfig['redirects'],
-  trailingSlash = false,
   previewDestination = '/preview',
 ): Promise<Redirect[]> {
   let redirects: Redirect[] = [];
+  const previewQuery: RouteHas[] = [
+    {
+      type: 'query',
+      key: 'preview',
+      value: 'true',
+    },
+  ];
 
   if (isFunction(redirectFn)) {
     redirects = await redirectFn();
@@ -20,22 +27,33 @@ export async function createRedirects(
 
   let previewPath = trim(previewDestination, '/');
 
-  if (trailingSlash) {
+  if (nextConfig?.trailingSlash) {
     previewPath += '/';
   }
 
   redirects.unshift({
     source: `/((?!${previewPath}).*)`,
-    has: [
-      {
-        type: 'query',
-        key: 'preview',
-        value: 'true',
-      },
-    ],
+    has: previewQuery,
     destination: `/${previewPath}`,
     permanent: false,
   });
+
+  if (nextConfig?.i18n) {
+    /**
+     * All redirect sources are automatically prefixed with available locales
+     * when i18n is configured, so our previous rule won't match '/'. We need
+     * an extra rule to catch each locale's root path.
+     *
+     * https://nextjs.org/docs/api-reference/next.config.js/redirects#redirects-with-i18n-support
+     */
+    redirects.unshift({
+      source: nextConfig.trailingSlash ? '/:lang/' : '/:lang',
+      has: previewQuery,
+      destination: `/:lang/${previewPath}`,
+      permanent: false,
+      locale: false,
+    });
+  }
 
   return redirects;
 }
@@ -57,11 +75,7 @@ export function withFaust(
 
   const existingRedirects = nextConfig.redirects;
   nextConfig.redirects = () =>
-    createRedirects(
-      existingRedirects,
-      nextConfig.trailingSlash,
-      previewDestination,
-    );
+    createRedirects(nextConfig, existingRedirects, previewDestination);
 
   return nextConfig;
 }
