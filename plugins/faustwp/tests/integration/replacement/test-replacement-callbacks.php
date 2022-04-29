@@ -9,6 +9,7 @@ namespace WPE\FaustWP\Tests\Replacement;
 
 use function WPE\FaustWP\Replacement\{
 	content_replacement,
+	post_preview_link,
 	image_source_replacement,
 	image_source_srcset_replacement
 };
@@ -165,6 +166,17 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 
 		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&typeName=Post', get_preview_post_link( $this->post_id ) );
+	}
+
+	/**
+	 * Tests post_preview_link() adds preview=true when it doesn't already exist.
+	 */
+	public function test_post_preview_link_adds_preview_true_query_param() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+
+		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
+
+		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&typeName=Post', $link );
 	}
 
 	/**
