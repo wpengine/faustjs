@@ -129,6 +129,13 @@ function maybe_set_default_settings() {
 		faustwp_update_setting( 'disable_theme', '1' );
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		faustwp_update_setting( 'enable_redirects', '1' );
+
+		// Force WP to regenerate rewrite rules without calling flush_rewrite_rules which breaks
+		// things when used inside of `switch_to_blog()`.
+		// https://iandunn.name/2015/04/23/flushing-rewrite-rules-on-all-sites-in-a-multisite-network/
+		if ( is_multisite() ) {
+			delete_option( 'rewrite_rules' );
+		}
 	}
 
 	if ( ! $secret_key ) {
