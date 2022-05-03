@@ -189,11 +189,6 @@ module.exports = {
             },
             {
               type: 'doc',
-              label: 'handleSitemapRequests',
-              id: 'next/reference/handle-sitemap-requests',
-            },
-            {
-              type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
             },
