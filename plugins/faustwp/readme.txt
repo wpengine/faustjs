@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 5.9
-Stable tag: 0.7.7
+Stable tag: 0.7.8
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,13 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.8 =
+
+### Patch Changes
+
+- 8942b83: Adds warning when known incompatible plugins are active.
+- 6d3f5de: Fix conflict with PublishPress that caused preview links to fail
+
 = 0.7.7 =
 
 ### Patch Changes
@@ -42,13 +49,5 @@ That's it! For more information on getting started with headless WordPress, see 
 
 - 420d0b4: Remove trailing slash from frontend uri.
 - 037b57b: Ensure sitemap URLs use the WordPress domain and not the headless frontend domain. Fixes a conflict with Yoast SEO that prevented post links from being added to the posts sitemap.
-
-= 0.7.5 =
-
-### Patch Changes
-
-- b7af359: Simplify generation of preview links. Fixes an issue where preview links were missing slashes with certain permalink structures. Thanks @torounit!
-- 662c377: Plugin settings are now validated and sanitized before saving.
-- c730348: Disables access to the site editor when themes are disabled
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
