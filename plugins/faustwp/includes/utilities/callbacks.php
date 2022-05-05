@@ -43,10 +43,13 @@ function handle_activation( $network_active ) {
 
 	// Handle network activation of plugin within multisite.
 	if ( $network_active ) {
-		$sites = get_sites();
+		$args  = array(
+			'fields' => 'ids',
+		);
+		$sites = get_sites( $args );
 
 		foreach ( $sites as $site ) {
-			switch_to_blog( $site->blog_id );
+			switch_to_blog( $site );
 			maybe_set_default_settings();
 			restore_current_blog();
 		}
