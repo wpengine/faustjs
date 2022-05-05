@@ -56,7 +56,7 @@ export function serverClient(req: IncomingMessage) {
 
 ### `applyRequestContext`
 
-type: `(url, init) => {url, init} | Promise<{url, init}>`
+type: `(url: string, init: RequestInit): Promise<RequestContext> | RequestContext`
 
 Required: `false`
 
@@ -83,7 +83,7 @@ export const client = getClient<
 
 ### `queryFetcher`
 
-type: `(query, variables) => Promise`
+type: `(query: string, variables?: Record<string, any>) => Promise<ExecutionResult> | ExecutionResult;`
 
 Required: `false`
 
@@ -118,7 +118,7 @@ export const client = getClient<
 
 ### `authQueryFetcher`
 
-type: `(query, variables) => Promise`
+type: `(query: string, variables?: Record<string, any>) => Promise<ExecutionResult> | ExecutionResult;`
 
 Required: `false`
 
