@@ -15,7 +15,8 @@ use function WPE\FaustWP\Settings\{
 	faustwp_get_settings,
 	faustwp_get_setting,
 	faustwp_update_setting,
-	get_secret_key
+	get_secret_key,
+	maybe_set_default_settings
 };
 
 class FunctionsTest extends \WP_UnitTestCase {
@@ -110,11 +111,30 @@ class FunctionsTest extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Used to filter return value of faustwp_get_setting() via faustwp_get_setting filter.
-	 * @return string
+	 * Test maybe_set_default_settings() does not override a preexisting secret key.
 	 */
-	public function faustwp_get_setting_test_filtered_value() {
-		return 'filtered value';
+	public function test_maybe_set_default_settings_does_not_override_preexisting_api_key() {
+		$preexisting_key = wp_generate_uuid4();
+
+		faustwp_update_setting( 'secret_key', $preexisting_key );
+
+		maybe_set_default_settings();
+
+		$this->assertSame( $preexisting_key, faustwp_get_setting( 'secret_key' ) );
+	}
+
+	/**
+	 * Test maybe_set_default_settings() sets the default settings when .
+	 */
+	public function test_default_settings_are_applied_when_settings_do_not_exist() {
+		delete_option( 'faustwp_settings' );
+
+		maybe_set_default_settings();
+
+		$this->assertSame( faustwp_get_setting( 'disable_theme' ), '1' );
+		$this->assertSame( faustwp_get_setting( 'enable_rewrites' ), '1' );
+		$this->assertSame( faustwp_get_setting( 'enable_redirects' ), '1' );
+		$this->assertNotEmpty( faustwp_get_setting( 'secret_key' ) );
 	}
 
 	/**
@@ -123,4 +143,20 @@ class FunctionsTest extends \WP_UnitTestCase {
 	public function test_plugin_action_links_has_settings_callback_attached() {
 		$this->assertSame( 10, has_action( 'plugin_action_links_faustwp/faustwp.php', 'WPE\FaustWP\Settings\add_action_link_settings' ) );
 	}
+
+	/**
+	 * Tests that wp_initialize_site has callback attached.
+	 */
+	public function test_wp_initialize_site_has_settings_callback_attached() {
+		$this->assertSame( 10, has_action( 'wp_initialize_site', 'WPE\FaustWP\Utilities\handle_new_site_creation' ) );
+	}
+
+	/**
+	 * Used to filter return value of faustwp_get_setting() via faustwp_get_setting filter.
+	 * @return string
+	 */
+	public function faustwp_get_setting_test_filtered_value() {
+		return 'filtered value';
+	}
+
 }

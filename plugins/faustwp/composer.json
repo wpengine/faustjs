@@ -31,7 +31,7 @@
       "@phpcs",
       "@test"
     ],
-    "test": "phpunit --testdox"
+    "test": "phpunit --testdox && phpunit --testdox -c phpunit-multisite.xml.dist"
   },
   "config": {
     "preferred-install": "dist",
