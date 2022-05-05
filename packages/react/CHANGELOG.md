@@ -1,5 +1,14 @@
 # @faustjs/react
 
+## 0.15.6
+
+### Patch Changes
+
+- 59241bb: build: Updates eslint to v8
+- Updated dependencies [a03fae1]
+- Updated dependencies [59241bb]
+  - @faustjs/core@0.15.6
+
 ## 0.15.1
 
 ### Patch Changes
