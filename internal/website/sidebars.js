@@ -60,9 +60,9 @@ module.exports = {
               label: 'config',
               id: 'core/reference/config',
             },
-          ]
-        }
-      ]
+          ],
+        },
+      ],
     },
     {
       type: 'category',
@@ -203,6 +203,11 @@ module.exports = {
               type: 'doc',
               label: 'is404',
               id: 'next/reference/is404',
+            },
+            {
+              type: 'doc',
+              label: 'getClient',
+              id: 'next/reference/getClient',
             },
             {
               type: 'doc',
