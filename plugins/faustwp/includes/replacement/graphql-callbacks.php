@@ -59,5 +59,11 @@ function url_replace_recursive( &$data ) {
 		} elseif ( is_array( $value ) ) {
 			url_replace_recursive( $value );
 		}
+
+		if ( 'path' === $key && is_multisite() ) {
+			$site         = get_site();
+			$subdirectory = untrailingslashit( $site->path );
+			$value        = str_replace( $subdirectory, '', $value );
+		}
 	}
 }
