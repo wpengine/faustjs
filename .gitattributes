@@ -1,0 +1,18 @@
+#
+# Set default behavior to automatically normalize line endings.
+#
+* text=auto
+
+#
+# To keep certain files from displaying in diffs by default, or counting toward the repository language,
+# you can mark them with the linguist-generated attribute in a .gitattributes file.
+# https://docs.github.com/en/repositories/working-with-files/managing-files/customizing-how-changed-files-appear-on-github
+#
+package-lock.json linguist-generated=true
+
+#
+# Exclude files from exporting.
+#
+.gitattributes export-ignore
+.gitignore     export-ignore
+.gitkeep       export-ignore

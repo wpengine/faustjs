@@ -4,6 +4,8 @@ title: usePreview Hook
 description: The usePreview hook provides a way to get post preview data from WordPress
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
 :::caution Deprecation Notice
 
 `usePreview` has been deprecated in favor of [`usePreviewNode`](/docs/next/reference/hooks/usePreviewNode)
@@ -14,9 +16,11 @@ The `usePreview` hook provides an abstraction around getting a preview `page` or
 
 The following example shows how to use the `usePreview` hook to render either a `post` or `page` from WordPress:
 
+<BaseUrlNotice />
+
 ```tsx title=src/pages/preview.tsx {14-17}
-import { PageComponent } from './[...pageUri]';
-import { PostComponent } from './posts/[postSlug]';
+import { PageComponent } from 'pages/[...pageUri]';
+import { PostComponent } from 'pages/posts/[postSlug]';
 import { client } from 'client';
 
 export default function Preview() {

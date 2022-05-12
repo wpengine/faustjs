@@ -125,6 +125,72 @@ function register_settings_fields() {
 	);
 }
 
+add_filter( 'sanitize_option_faustwp_settings', __NAMESPACE__ . '\\sanitize_faustwp_settings', 10, 2 );
+/**
+ * Validates and sanitizes FaustWP settings.
+ *
+ * The plugin settings page will display any relevant errors when
+ * rejecting invalid settings values. Updates to FaustWP settings that
+ * are not initiated from the plugin settings page will not return or
+ * display errors, but will still reject invalid values.
+ *
+ * Once settings are validated, the sanitized values are returned.
+ *
+ * @param array  $settings FaustWP settings array to validate and sanitize.
+ * @param string $option   WP option name where settings are saved.
+ * @return array Sanitized settings.
+ */
+function sanitize_faustwp_settings( $settings, $option ) {
+	$errors = null;
+
+	foreach ( $settings as $name => $value ) {
+		switch ( $name ) {
+			case 'frontend_uri':
+				if ( '' === $value || preg_match( '#http(s?)://(.+)#i', $value ) ) {
+					$settings[ $name ] = esc_url_raw( $value );
+				} else {
+					$errors[ $name ]   = __( 'The Front-end site URL you entered did not appear to be a valid URL. Please enter a valid URL.', 'faustwp' );
+					$settings[ $name ] = faustwp_get_setting( $name );
+				}
+				break;
+
+			case 'secret_key':
+				if ( ! wp_is_uuid( $value, 4 ) ) {
+					$errors[ $name ]   = __( 'The secret key you entered did not appear to be a valid UUID.', 'faustwp' );
+					$settings[ $name ] = get_secret_key();
+				}
+				break;
+
+			case 'menu_locations':
+				$settings[ $name ] = sanitize_text_field( $value );
+				break;
+
+			case 'enable_redirects':
+			case 'enable_rewrites':
+			case 'disable_theme':
+			case 'enable_image_source':
+				if ( $value ) {
+					$settings[ $name ] = '1';
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
+
+			default:
+				// Remove any settings we don't expect.
+				unset( $settings[ $name ] );
+		}
+	}
+
+	if ( null !== $errors && is_array( $errors ) ) {
+		foreach ( $errors as $name => $error ) {
+			add_settings_error( $option, "faustwp_invalid_{$name}", $error );
+		}
+	}
+
+	return $settings;
+}
+
 add_action( 'load-settings_page_faustwp-settings', __NAMESPACE__ . '\\handle_regenerate_secret_key', 5 );
 /**
  * Callback for WordPress 'load-{$page_hook}' action.
@@ -253,7 +319,7 @@ function display_frontend_uri_field() {
 	?>
 	<input type="text" id="frontend_uri" name="faustwp_settings[frontend_uri]" value="<?php echo esc_attr( $frontend_uri ); ?>" class="regular-text" />
 	<p class="description">
-		<?php esc_html_e( 'The URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'faustwp' ); ?>
+		<?php esc_html_e( 'The full URL to your headless front-end, including https:// or http://. This is used for authenticated post previews and for rewriting links to point to your front-end site.', 'faustwp' ); ?>
 	</p>
 	<?php
 }
@@ -273,6 +339,17 @@ function display_enable_disable_fields() {
 
 	?>
 	<fieldset>
+		<legend style="margin-bottom:5px;padding:0;">
+			<p class="description">
+				<?php
+				printf(
+				/* translators: %s: Documentation URL. */
+					wp_kses_post( __( 'Learn more about <a href="%s" target="_blank" rel="noopener noreferrer">features</a>.', 'faustwp' ) ),
+					'https://faustjs.org/docs/faustwp/settings'
+				);
+				?>
+			</p>
+		</legend>
 		<label for="disable_theme">
 			<input type="checkbox" id="disable_theme" name="faustwp_settings[disable_theme]" value="1" <?php checked( $disable_theme ); ?> />
 			<?php esc_html_e( 'Disable WordPress theme admin pages', 'faustwp' ); ?>
@@ -357,10 +434,32 @@ function add_settings_assets() {
 add_filter( 'plugin_action_links_faustwp/faustwp.php', __NAMESPACE__ . '\\add_action_link_settings' );
 /**
  * Adds a link to the Settings page on the Installed Plugins page.
+ *
+ * @param array $links The array of plugin action links.
  */
 function add_action_link_settings( $links ) {
-	$url = add_query_arg( 'page', 'faustwp-settings', admin_url('options-general.php') );
-	return array_merge( [
-		'<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'faustwp' ) . '</a>'
-	], $links );
+	$url = add_query_arg( 'page', 'faustwp-settings', admin_url( 'options-general.php' ) );
+	return array_merge(
+		array(
+			'<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'faustwp' ) . '</a>',
+		),
+		$links
+	);
+}
+
+add_filter( 'faustwp_get_setting', __NAMESPACE__ . '\\trim_frontend_uri_trailing_slash', 10, 2 );
+/**
+ * Ensure that this plugin's frontend_uri setting does not have a trailing slash.
+ *
+ * @param mixed  $value   The setting value.
+ * @param string $name    The setting name.
+ *
+ * @return string
+ */
+function trim_frontend_uri_trailing_slash( $value, $name ) {
+	if ( 'frontend_uri' !== $name ) {
+		return $value;
+	}
+
+	return untrailingslashit( $value );
 }

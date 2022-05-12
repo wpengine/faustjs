@@ -26,7 +26,7 @@ describe('withFaust', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview$).*)',
+        source: '/((?!preview).*)',
         has: [
           {
             type: 'query',
@@ -63,7 +63,7 @@ describe('withFaust', () => {
 
     const expectedRedirects = [
       {
-        source: '/((?!preview-new$).*)',
+        source: '/((?!preview-new).*)',
         has: [
           {
             type: 'query',
@@ -75,6 +75,84 @@ describe('withFaust', () => {
         permanent: false,
       },
       { source: '/about', destination: '/', permanent: true },
+    ];
+
+    expect(configRedirects).toStrictEqual(expectedRedirects);
+  });
+
+  test('preview redirect respects trailingSlash config', async () => {
+    const config = withFaust(
+      {
+        trailingSlash: true,
+        async redirects() {
+          return [
+            {
+              source: '/about',
+              destination: '/',
+              permanent: true,
+            },
+          ];
+        },
+      }
+    );
+
+    const configRedirects = await (config as any).redirects();
+
+    const expectedRedirects = [
+      {
+        source: '/((?!preview/).*)',
+        has: [
+          {
+            type: 'query',
+            key: 'preview',
+            value: 'true',
+          },
+        ],
+        destination: '/preview/',
+        permanent: false,
+      },
+      { source: '/about', destination: '/', permanent: true },
+    ];
+
+    expect(configRedirects).toStrictEqual(expectedRedirects);
+  });
+
+  test('preview redirect respects i18n config', async () => {
+    const config = withFaust({
+      i18n: {
+        locales: ['en', 'fr'],
+        defaultLocale: 'en',
+      },
+    });
+
+    const configRedirects = await (config as any).redirects();
+
+    const expectedRedirects = [
+      {
+        source: '/:lang',
+        has: [
+          {
+            type: 'query',
+            key: 'preview',
+            value: 'true',
+          },
+        ],
+        destination: '/:lang/preview',
+        permanent: false,
+        locale: false,
+      },
+      {
+        source: '/((?!preview).*)',
+        has: [
+          {
+            type: 'query',
+            key: 'preview',
+            value: 'true',
+          },
+        ],
+        destination: '/preview',
+        permanent: false,
+      },
     ];
 
     expect(configRedirects).toStrictEqual(expectedRedirects);

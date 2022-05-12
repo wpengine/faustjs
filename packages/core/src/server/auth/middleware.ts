@@ -62,10 +62,18 @@ export async function authorizeHandler(
         res.statusCode = result.response.status;
       } else {
         res.statusCode = 401;
-
-        // If the response to the token endpoint is unauthorized, remove the existing refresh token.
-        oauth.setRefreshToken(undefined);
       }
+
+      /**
+       * If the response to the authorization request does not match
+       * isOAuthTokens, remove the refresh token from the cookie in the case
+       * the token is:
+       * - expired
+       * - invalid
+       * - revoked
+       * - from a different WordPress instance when developing on localhost
+       */
+      oauth.setRefreshToken(undefined);
 
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(result.result));

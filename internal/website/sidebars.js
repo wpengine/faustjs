@@ -22,6 +22,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Introduction to Next.js',
+          id: 'tutorial/nextjs-intro',
+        },
+        {
+          type: 'doc',
           label: 'Create A Basic Headless WordPress Site',
           id: 'tutorial/basic-headless-site',
         },
@@ -39,6 +44,23 @@ module.exports = {
           type: 'doc',
           label: 'Querying Data From Your Headless WordPress Site',
           id: 'tutorial/querying-data',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Core Package',
+      items: [
+        {
+          type: 'category',
+          label: 'Reference',
+          items: [
+            {
+              type: 'doc',
+              label: 'config',
+              id: 'core/reference/config',
+            },
+          ],
         },
       ],
     },
@@ -89,6 +111,21 @@ module.exports = {
               type: 'doc',
               label: 'Logging Queries',
               id: 'next/guides/logging-queries',
+            },
+            {
+              type: 'doc',
+              label: 'Modifying the GraphQL Request',
+              id: 'next/guides/modifying-graphql-request',
+            },
+            {
+              type: 'doc',
+              label: 'Testing with Jest',
+              id: 'next/guides/testing-with-jest',
+            },
+            {
+              type: 'doc',
+              label: 'Sitemaps',
+              id: 'next/guides/sitemaps',
             },
             {
               type: 'doc',
@@ -164,13 +201,48 @@ module.exports = {
             },
             {
               type: 'doc',
+              label: 'is404',
+              id: 'next/reference/is404',
+            },
+            {
+              type: 'doc',
+              label: 'getClient',
+              id: 'next/reference/getClient',
+            },
+            {
+              type: 'doc',
               label: 'withFaust',
               id: 'next/reference/with-faust',
             },
             {
               type: 'doc',
+              label: 'FaustProvider',
+              id: 'next/reference/faust-provider',
+            },
+            {
+              type: 'doc',
+              label: 'handleSitemapRequests',
+              id: 'next/reference/handle-sitemap-requests',
+            },
+            {
+              type: 'doc',
               label: 'URL Params',
               id: 'next/reference/expected-url-params',
+            },
+            {
+              type: 'doc',
+              label: 'config',
+              id: 'next/reference/config',
+            },
+            {
+              type: 'doc',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
             },
           ],
         },
@@ -183,32 +255,28 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Changelogs',
+      label: 'Going to Production',
       items: [
         {
           type: 'doc',
-          label: '@faustjs/core',
-          id: 'changelog/core',
+          label: 'Deploy Your Faust.js App',
+          id: 'going-to-production/deployment',
         },
         {
           type: 'doc',
-          label: '@faustjs/next',
-          id: 'changelog/next',
+          label: 'Optimizations',
+          id: 'going-to-production/optimizations',
         },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Companion WordPress Plugin',
+      items: [
         {
           type: 'doc',
-          label: '@faustjs/react',
-          id: 'changelog/react',
-        },
-        {
-          type: 'doc',
-          label: 'FaustWP',
-          id: 'changelog/faustwp',
-        },
-        {
-          type: 'doc',
-          label: 'Faust.js 0.9.0 - 12.0.0',
-          id: 'release-notes',
+          label: 'Settings Reference',
+          id: 'faustwp/settings',
         },
       ],
     },

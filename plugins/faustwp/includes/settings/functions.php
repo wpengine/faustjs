@@ -39,15 +39,6 @@ function is_themes_disabled() {
 }
 
 /**
- * Determine if events are enabled.
- *
- * @return bool True if events are enabled, false if else.
- */
-function is_events_enabled() {
-	return '1' === faustwp_get_setting( 'events_enabled' );
-}
-
-/**
  * Determine if sourcing images from WP domain is enabled.
  *
  * @return bool True if image sources from WP are enabled, false if else.
@@ -123,4 +114,30 @@ function faustwp_get_settings() {
 	 * @param array $settings Array of plugin settings.
 	 */
 	return apply_filters( 'faustwp_get_settings', $settings );
+}
+
+/**
+ * Applies the default settings to a site if settings don't already exist.
+ *
+ * @return void
+ */
+function maybe_set_default_settings() {
+	$secret_key = get_secret_key();
+	$settings   = faustwp_get_settings();
+
+	if ( empty( $settings ) ) {
+		faustwp_update_setting( 'disable_theme', '1' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_redirects', '1' );
+
+		// Force WP to regenerate rewrite rules without calling flush_rewrite_rules which breaks
+		// things when used inside of `switch_to_blog()`.
+		if ( is_multisite() ) {
+			delete_option( 'rewrite_rules' );
+		}
+	}
+
+	if ( ! $secret_key ) {
+		faustwp_update_setting( 'secret_key', wp_generate_uuid4() );
+	}
 }

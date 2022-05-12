@@ -1,5 +1,108 @@
 # @faustjs/next
 
+## 0.15.6
+
+### Patch Changes
+
+- da3a1ae: Fixes draft preview links when i18n is enabled in Next.js config [#853](https://github.com/wpengine/faustjs/pull/853)
+- 59241bb: build: Updates eslint to v8
+- Updated dependencies [a03fae1]
+- Updated dependencies [59241bb]
+  - @faustjs/core@0.15.6
+  - @faustjs/react@0.15.6
+
+## 0.15.5
+
+### Patch Changes
+
+- 732623e: Added the `robotsTxt` config option in `handleSitemapRequests` that allows you to specify the content of your `/robots.txt` route. You can use the following snippet to create a `/robots.txt` route:
+
+  ```tsx
+  handleSitemapRequests(req, {
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    sitemapIndexPath: '/wp-sitemap.xml',
+    async robotsTxt(sitemapUrl) {
+      return `
+          User-agent: *
+          Allow: /
+  
+          Sitemap: ${sitemapUrl}
+        `;
+    },
+  });
+  ```
+
+  Notice `robotsTxt` is an async function that takes `sitemapUrl` as an argument. `sitemapUrl` can then be used to specify the URL to your sitemap in your robots.txt content.
+
+- 7e98ca6: Added support for sitemaps! Sitemaps in Faust.js work with Next.js middleware. You can create a piece of middleware at `src/pages/_middleware.ts` with the following content:
+
+  ```ts
+  import { handleSitemapRequests } from '@faustjs/next/middleware';
+  import { NextRequest, NextResponse } from 'next/server';
+
+  export default async function middleware(req: NextRequest) {
+    const sitemapRequest = await handleSitemapRequests(req, {
+      wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+      sitemapIndexPath: '/wp-sitemap.xml',
+    });
+
+    if (sitemapRequest) {
+      return sitemapRequest;
+    }
+
+    return NextResponse.next();
+  }
+  ```
+
+  The `handleSitemapRequests` API requires `wpUrl` and `sitemapIndexPath` to be defined. There is optional properties you can define to suit your needs. The config is as follows:
+
+  ```ts
+  import { handleSitemapRequests } from '@faustjs/next';
+
+  handleSitemapRequests(middlewareReq, {
+    // REQUIRED: Your WordPress URL
+    wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+    // REQUIRED: The path to your sitemap index file on WordPress
+    sitemapIndexPath: '/wp-sitemap.xml',
+    /**
+     * OPTIONAL: Sitemap paths to ignore. Useful if you don't want to include sitemaps for users, categories, etc.
+     */
+    sitemapPathsToIgnore: [
+      '/wp-sitemap-posts-page-1.xml',
+      '/wp-sitemap-posts-post-*', // Specify a wildcard a tthe end to avoid multiple indices if necessary
+    ],
+    /**
+     * OPTIONAL: List of Next.js pages to include in your sitemap.
+     */
+    pages: [
+      {
+        path: '/about', // required
+        priority: 0.75, // optional
+        changefreq: 'monthly', // optional
+        lastmod: new Date().toISOString(), // optional
+      },
+    ],
+    /**
+     * OPTIONAL: Replace WP urls with the headless frontend. `true` by default.
+     */
+    replaceUrls: true,
+  });
+  ```
+
+## 0.15.4
+
+### Patch Changes
+
+- d2b2b39: Fixed previews when trailingSlash is enabled in Next.js config
+- Updated dependencies [d2b2b39]
+  - @faustjs/core@0.15.4
+
+## 0.15.3
+
+### Patch Changes
+
+- 1d386de: Check for FaustContext before calling GQty queries and throw an error if it's not provided.
+
 ## 0.15.1
 
 ### Patch Changes

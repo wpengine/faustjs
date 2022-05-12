@@ -33,10 +33,6 @@
     "docs:start": "npm start --prefix internal/website",
     "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "start": "npm run serve:prod --prefix internal/website",
-    "wp-env": "wp-env",
-    "wp:start": "wp-env start",
-    "wp:stop": "wp-env stop",
-    "wp:destroy": "wp-env destroy",
     "wpe-build": "cd internal/website && npm i && cd .. && npm run docs:build",
     "changeset": "changeset",
     "version": "changeset version && node scripts/versionPlugin.js",
@@ -44,11 +40,7 @@
     "release": "npm run build && changeset publish"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.2",
-    "gqty": "^2.0.3",
+    "@changesets/cli": "^2.17.0",
     "rimraf": "^3.0.2"
-  },
-  "dependencies": {
-    "@changesets/cli": "^2.17.0"
   }
 }

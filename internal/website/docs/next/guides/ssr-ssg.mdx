@@ -4,6 +4,10 @@ title: Server-side Rendering & Static Generation
 description: Use Faust.js and Next.js to statically generate your Headless WordPress site
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 Next.js supports Server-side Rendering (SSR) and Static Site Generation (SSG) out of the box for [pages](https://nextjs.org/docs/basic-features/pages). However, with Next.js you are responsible for defining `getStaticProps` or `getServersideProps`, fetching the necessary data, and providing it on `props`. Faust.js provides two functions that can be used for SSG and SSR respectively called `getNextStaticProps` and `getNextServerSideProps`.
 
 ## SSG Using `getNextStaticProps`
@@ -111,9 +115,7 @@ export async function getStaticPaths() {
 
 The code above will perform an inline query to WordPress in order to get the 5 most recent posts. Then it will create a list of paths based on the post URIs. In this case we are not rendering all the post pages up front, so some will be dynamically generated on-the-fly using the `fallback: 'blocking'` feature in Next.js.
 
-
 The above scenarios are most common, but there are other options for [`getStaticPaths`](https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation) that might be useful depending upon your needs.
-
 
 ## SSR Using `getNextServerSideProps`
 
@@ -168,7 +170,7 @@ In order to properly facilitate SSR and SSG you must use the built-in component 
 
 ### Adding `<FaustProvider />` to your `_app.tsx`
 
-Using the `FaustProvider` component us easy, and if you are using an example `next` project published by Faust.js it will happen automatically. If you are adding `Faust.js` to your project, you will want to put `FaustProvider` at the top of your component tree. Typically in a Next.js app this means in your `pages/_app.tsx` file as follows:
+Using the `FaustProvider` component is easy, and if you are using an example `next` project published by Faust.js it will happen automatically. If you are adding `Faust.js` to your project, you will want to put `FaustProvider` at the top of your component tree. Typically in a Next.js app this means in your `pages/_app.tsx` file as follows:
 
 ```tsx title=src/pages/_app.tsx {9,11}
 import 'faust.config';

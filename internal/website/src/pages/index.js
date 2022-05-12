@@ -18,7 +18,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--info button--lg"
-            to="/docs/next/getting-started">
+            to="/docs/next/getting-started"
+          >
             Get Started
           </Link>
         </div>
@@ -38,12 +39,30 @@ export default function Home() {
       <Head>
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self' data: 'unsafe-inline' 'unsafe-eval'"
+          content="default-src 'self' http://kuergg39mb-dsn.algolia.net data: 'unsafe-inline' 'unsafe-eval'"
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteConfig.url ?? ''} />
+        <meta property="og:title" content={siteConfig.title ?? ''} />
+        <meta property="og:site_name" content={siteConfig.title ?? ''} />
+        <meta
+          property="og:description"
+          content={siteConfig.customFields.description ?? ''}
+        />
+        <meta
+          property="og:image"
+          content="/docs/img/logo-with-background.jpg"
+        />
+        <meta
+          property="twitter:image:alt"
+          content="WP Engine Developers Logo"
         />
       </Head>
       <Layout
         title={siteConfig.tagline}
-        description={siteConfig.customFields.description}>
+        description={siteConfig.customFields.description}
+      >
         <HomepageHeader />
         <main>
           <HomepageFeatures />

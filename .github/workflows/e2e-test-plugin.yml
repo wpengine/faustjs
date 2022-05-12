@@ -22,7 +22,7 @@ jobs:
           php-version: '7.4'
       - name: Setup Frontend
         run: |
-          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-0000-0000-000000000001 npm run dev:next:getting-started &
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
       - name: Composer install
         working-directory: plugins/faustwp
         run: composer install
@@ -31,6 +31,9 @@ jobs:
         run: docker-compose up -d
       - name: Sleep 15 seconds
         run: sleep 15
+      - name: Maybe upgrade WP DB
+        working-directory: plugins/faustwp
+        run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp core update-db --allow-root
       - name: Install WP GraphQL
         working-directory: plugins/faustwp
         run: |

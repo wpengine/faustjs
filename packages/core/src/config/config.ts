@@ -60,7 +60,7 @@ export interface Config extends Record<string, unknown> {
   apiClientSecret?: string;
 
   /**
-   * Set this to the type of authentication you wan to use.
+   * Set this to the type of authentication you want to use.
    *
    * Redirect authentication redirects users to the WordPress login page to authenticate,
    * where local assumes that you have setup a login page on your frontend site.
@@ -93,6 +93,7 @@ export interface Config extends Record<string, unknown> {
    * Called before every request, use this to apply any headers you might
    * need to for your requests or adjust the request to suite your needs.
    *
+   * @deprecated This property is not used anymore and has no effect. You should use this function in [getClient](https://faustjs.org/docs/next/guides/modifying-the-graphql-request) instead. This will be removed in subsequent versions of Faust.js.
    * @param {string} url
    * @param {RequestInit} init
    * @returns {RequestContext}

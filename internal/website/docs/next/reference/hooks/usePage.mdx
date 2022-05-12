@@ -4,6 +4,10 @@ title: usePage Hook
 description: The usePage hook provides a standard way to get a wordpress page
 ---
 
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
 The `usePage` hook provides the standard interface for getting a page from your Headless WordPress API. It also allows you to pass-in no arguments. When you do not pass arguments into `usePage` it will attempt to look at the URL params in order to determine how to get a page from your Headless WordPress API. In Next.js this means you will need to name your page file in a particular way in order to get the proper URL params. Below are the possible names that will work automatically with Faust.js:
 
 - `[pageId].tsx`

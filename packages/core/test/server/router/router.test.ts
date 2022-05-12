@@ -52,6 +52,30 @@ describe('server/router', () => {
     authorizeHandlerSpy.mockRestore();
   });
 
+  test('token route with trailing slash calls the authorizeHandler', async () => {
+    config({
+      wpUrl: '',
+    });
+
+    const req: IncomingMessage = {
+      url: '/api/faust/auth/token/?code=xxxx',
+    } as any;
+
+    const res: ServerResponse = {
+      end() {},
+    } as any;
+
+    const authorizeHandlerSpy = jest
+      .spyOn(middleware, 'authorizeHandler')
+      .mockImplementation(async () => {});
+
+    await apiRouter(req, res);
+
+    expect(authorizeHandlerSpy).toBeCalled();
+
+    authorizeHandlerSpy.mockRestore();
+  });
+
   test('req.url with /api/faust/auth/logout calls the logoutHandler', async () => {
     config({
       wpUrl: '',

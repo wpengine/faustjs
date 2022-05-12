@@ -1,14 +1,10 @@
+![Faust.js](https://user-images.githubusercontent.com/5306336/152221545-53087444-b3ad-477d-90a9-606785854656.jpg)
+
 <p align="center">
   <strong>
     NOTE: This is prerelease software. As we work towards our first release, we
     will 💯 introduce breaking changes.
   </strong>
-</p>
-
-<p align="center">
-  <a href="https://faustjs.org">
-    <h1 align="center">Faust.js</h1>
-  </a>
 </p>
 
 <p align="center">
@@ -73,3 +69,7 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 - [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
 - Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
 - [Contribute bug fixes](/CONTRIBUTING.md)
+
+### Pull Request Notice
+
+While pull requests are welcome, please note we are in the process of reviewing licensing on the plugin internally and may not be able to merge your pull request in a timely manner.

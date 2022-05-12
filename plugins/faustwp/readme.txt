@@ -1,9 +1,9 @@
 === FaustWP ===
-Contributors: antpb, apmatthe, blakewpe, claygriffiths, markkelnar, mindctrl, modernnerd, rfmeier, wpengine
+Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, mindctrl, modernnerd, rfmeier, wpengine
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
-Tested up to: 5.8.2
-Stable tag: 0.7.2
+Tested up to: 5.9
+Stable tag: 0.7.8
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,39 +30,24 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
-= 0.7.2 =
+= 0.7.8 =
 
 ### Patch Changes
 
-- 4cff9dc: feat: add link to Settings page on Installed Plugins list page
-- 3c1280b: Adds the GraphQL `Type` name to the preview URL to avoid making a request to get the content type in the Faust.js packages
+- 8942b83: Adds warning when known incompatible plugins are active.
+- 6d3f5de: Fix conflict with PublishPress that caused preview links to fail
 
-= 0.7.1 =
+= 0.7.7 =
 
 ### Patch Changes
 
-- f948c04: Fixed plugin icon SVG display issue in Chrome [#683](https://github.com/wpengine/faustjs/pull/683)
+- 6a75593: Fixes a PHP 8 warning that occured on post types not registered with WP GraphQL [#812](https://github.com/wpengine/faustjs/pull/812)
 
-= 0.7.0 =
+= 0.7.6 =
 
-### Minor Changes
+### Patch Changes
 
-- Changed the plugin name to FaustWP.
-- Changed all internal PHP function names to use namespaces.
-- Changed the WP_HEADLESS_SECRET_KEY constant to FAUSTWP_SECRET_KEY.
-- Changed the authentication endpoint namespace from `wpac/v1` to `faustwp/v1`
-- Changed settings option name from `wpe_headless` to `faustwp_settings`
-- Changed the following filter names:
-  - `wpe_headless_setting` to `faustwp_setting`
-  - `wpe_headless_settings` to `faustwp_settings`
-  - `wpe_headless_domain_replacement_enabled` to `faustwp_domain_replacement_enabled`
-- Changed the text domain to `faustwp`.
-- Changed minimum required PHP version to 7.2.
-- Changed minimum required WordPress version to 5.7.
-- Changed the hook used for public route redirection.
-- Fixed the "headless post preview" link on the FaustWP settings page.
-- Fixed "unexpected output" error during plugin activation.
-- Fixed skipped domain replacement in GraphQL responses that include `generalSettings`.
-- Added LICENSE file.
+- 420d0b4: Remove trailing slash from frontend uri.
+- 037b57b: Ensure sitemap URLs use the WordPress domain and not the headless frontend domain. Fixes a conflict with Yoast SEO that prevented post links from being added to the posts sitemap.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)

@@ -71,7 +71,7 @@
 
 html,
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 }
 
 .docusaurus-highlight-code-line {
@@ -92,6 +92,10 @@ html[data-theme='dark'] .footer.footer--dark {
 
 html[data-theme='dark'] .footer.footer--dark {
   background-color: var(--ifm-navbar-background-color);
+}
+
+video {
+  max-width: 100%;
 }
 
 /* Adjusting default line lengths for better readability */
