@@ -9,6 +9,7 @@ on:
 name: SonarQube Scan
 jobs:
   sonarqube:
+    if: github.repository_owner == 'wpengine'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
