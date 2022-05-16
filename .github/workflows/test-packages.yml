@@ -13,7 +13,7 @@ jobs:
         with:
           node-version: ${{ matrix.version }}
       - run: rm package-lock.json
-      - run: npm install --loglevel silly
-      - run: npm run build --loglevel silly
+      - run: npm install
+      - run: npm run build
       - run: npm test
         continue-on-error: FALSE
