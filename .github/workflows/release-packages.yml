@@ -16,10 +16,10 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 14.x
         uses: actions/setup-node@master
         with:
-          node-version: 16.x
+          node-version: 14.x
 
       - name: Remove package-lock.json
         run: |
@@ -58,7 +58,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 14
       - name: Create PR
         uses: TreTuna/sync-branches@1.4.0
         with:
