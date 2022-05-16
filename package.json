@@ -2,8 +2,8 @@
   "name": "root",
   "private": true,
   "engines": {
-    "node": ">=14.19.x",
-    "npm": ">=6.14.x"
+    "node": ">=16.15.x",
+    "npm": ">=8.5.x"
   },
   "workspaces": {
     "packages": [
