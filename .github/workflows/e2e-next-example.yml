@@ -2,14 +2,10 @@ name: E2E Test - Next Getting Started Example
 on: pull_request
 jobs:
   e2e-test-next-getting-started-example:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        version: [14, 16]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     env:
-      PR_REPO: ${{ github.event.pull_request.head.repo.full_name }}
-      PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+      PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
+      PR_BRANCH: ${{github.event.pull_request.head.ref}}
     defaults:
       run:
         working-directory: ./
@@ -19,7 +15,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.version }}
+          node-version: '16'
       # Get the PR branch so we can pull the correct Next.js example path
       - name: echo current pr branch name
         run: |
