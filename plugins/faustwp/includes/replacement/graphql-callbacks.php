@@ -56,14 +56,12 @@ function url_replace_recursive( &$data ) {
 		if ( ( 'url' === $key || 'href' === $key ) && is_string( $value ) ) {
 			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 			$value       = str_replace( site_url(), $replacement, $value );
-		} elseif ( is_array( $value ) ) {
-			url_replace_recursive( $value );
-		}
-
-		if ( 'path' === $key && is_multisite() ) {
+		} elseif ( ( 'path' === $key && is_multisite() ) && is_string( $value ) ) {
 			$site         = get_site();
 			$subdirectory = untrailingslashit( $site->path );
 			$value        = str_replace( $subdirectory, '', $value );
+		} elseif ( is_array( $value ) ) {
+			url_replace_recursive( $value );
 		}
 	}
 }
