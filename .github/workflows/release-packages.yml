@@ -48,13 +48,13 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   sync_branches:
-    name: "Sync `main` with `canary`"
+    name: 'Sync `main` with `canary`'
     runs-on: ubuntu-latest
     needs: release_packages
     if: ${{ needs.release_packages.outputs.published == true }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
@@ -63,8 +63,8 @@ jobs:
         uses: TreTuna/sync-branches@1.4.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "canary"
-          TO_BRANCH: "main"
+          FROM_BRANCH: 'canary'
+          TO_BRANCH: 'main'
           PULL_REQUEST_TITLE: Deploy faustjs.org and example projects
           PULL_REQUEST_BODY: |
             New releases just landed in `canary`, so let's bring `main` up to speed!

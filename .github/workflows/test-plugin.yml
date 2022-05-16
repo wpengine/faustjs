@@ -4,19 +4,19 @@ jobs:
   test_plugin:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Create Docker Containers
-      working-directory: ./plugins/faustwp
-      run: docker-compose up -d
-    - name: Sleep 15 seconds
-      run: sleep 15
-    - name: Setup testing framework
-      working-directory: ./plugins/faustwp
-      run: docker exec $(docker-compose ps -q wordpress) init-testing-environment.sh
-    - name: Install and activate WP GraphQL
-      working-directory: ./plugins/faustwp
-      run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
-    - name: Run unit tests
-      working-directory: ./plugins/faustwp
-      run: docker exec -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) composer test
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Docker Containers
+        working-directory: ./plugins/faustwp
+        run: docker-compose up -d
+      - name: Sleep 15 seconds
+        run: sleep 15
+      - name: Setup testing framework
+        working-directory: ./plugins/faustwp
+        run: docker exec $(docker-compose ps -q wordpress) init-testing-environment.sh
+      - name: Install and activate WP GraphQL
+        working-directory: ./plugins/faustwp
+        run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
+      - name: Run unit tests
+        working-directory: ./plugins/faustwp
+        run: docker exec -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) composer test

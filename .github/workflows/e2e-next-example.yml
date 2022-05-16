@@ -10,56 +10,56 @@ jobs:
       run:
         working-directory: ./
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: setup node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    # Get the PR branch so we can pull the correct Next.js example path
-    - name: echo current pr branch name
-      run: |
-        echo $PR_BRANCH
-    # Get the PR repo so we can pull the correct Next.js example path
-    - name: echo current pr repo
-      run: |
-        echo $PR_REPO
-    # Install the Faust.js Next getting started example via npx create next app
-    # and use the PR branch to pull the correct example URL
-    - name: npx create next app
-      run: |
-        npx create-next-app \
-          -e https://github.com/${PR_REPO}/tree/${PR_BRANCH} \
-          --example-path examples/next/getting-started \
-          --use-npm \
-          e2e-app
-    - name: install and build packages
-      working-directory: ./
-      run: |
-        rm package-lock.json
-        npm install
-        npm run build
-    # To ensure PR changes are tested accurately, we replace the 
-    # faust node_modules downloaded from NPM with the faust packages
-    # built in the previous step
-    # TODO: It would be nice to use symlink or npm link here, but upon
-    # writing this they do not function as expected on GH actions
-    - name: replace downloaded registry faust packages with local build
-      run: |
-        rm -rf e2e-app/node_modules/@faustjs/core
-        rm -rf e2e-app/node_modules/@faustjs/next
-        cp -r packages/core e2e-app/node_modules/@faustjs/core
-        cp -r packages/next e2e-app/node_modules/@faustjs/next
-    - name: copy env
-      working-directory: e2e-app
-      run: |
-        cp .env.local.sample .env.local
-    # Generate the schema to ensure no type collisions
-    - name: Generate Schema
-      working-directory: e2e-app
-      run: |
-        npm run generate
-    - name: Build
-      working-directory: e2e-app
-      run: |
-        npm run build
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      # Get the PR branch so we can pull the correct Next.js example path
+      - name: echo current pr branch name
+        run: |
+          echo $PR_BRANCH
+      # Get the PR repo so we can pull the correct Next.js example path
+      - name: echo current pr repo
+        run: |
+          echo $PR_REPO
+      # Install the Faust.js Next getting started example via npx create next app
+      # and use the PR branch to pull the correct example URL
+      - name: npx create next app
+        run: |
+          npx create-next-app \
+            -e https://github.com/${PR_REPO}/tree/${PR_BRANCH} \
+            --example-path examples/next/getting-started \
+            --use-npm \
+            e2e-app
+      - name: install and build packages
+        working-directory: ./
+        run: |
+          rm package-lock.json
+          npm install
+          npm run build
+      # To ensure PR changes are tested accurately, we replace the
+      # faust node_modules downloaded from NPM with the faust packages
+      # built in the previous step
+      # TODO: It would be nice to use symlink or npm link here, but upon
+      # writing this they do not function as expected on GH actions
+      - name: replace downloaded registry faust packages with local build
+        run: |
+          rm -rf e2e-app/node_modules/@faustjs/core
+          rm -rf e2e-app/node_modules/@faustjs/next
+          cp -r packages/core e2e-app/node_modules/@faustjs/core
+          cp -r packages/next e2e-app/node_modules/@faustjs/next
+      - name: copy env
+        working-directory: e2e-app
+        run: |
+          cp .env.local.sample .env.local
+      # Generate the schema to ensure no type collisions
+      - name: Generate Schema
+        working-directory: e2e-app
+        run: |
+          npm run generate
+      - name: Build
+        working-directory: e2e-app
+        run: |
+          npm run build
