@@ -8,8 +8,8 @@ jobs:
         version: [14, 16, 18]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.version }}
       - run: rm package-lock.json

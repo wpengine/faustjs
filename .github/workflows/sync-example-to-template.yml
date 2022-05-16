@@ -16,10 +16,10 @@ jobs:
       TARGET_BRANCH: main
       SYNC_DIR: examples/next/getting-started # No trailing slash
       GIT_EMAIL: bot@wpengine.com
-      GIT_NAME: WP Engine Bot 
+      GIT_NAME: WP Engine Bot
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set SSH Agent
         uses: webfactory/ssh-agent@v0.5.4
         with:
@@ -56,6 +56,6 @@ jobs:
 
           # If there are changes, commit them
           git diff-index --quiet HEAD || git commit -m "Automatic sync from $SOURCE_REPO@$SOURCE_AFTER_SHA"
-          
+
           # Push to the target branch
           git push origin $TARGET_BRANCH

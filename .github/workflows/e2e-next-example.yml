@@ -11,9 +11,9 @@ jobs:
         working-directory: ./
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
       # Get the PR branch so we can pull the correct Next.js example path

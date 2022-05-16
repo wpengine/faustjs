@@ -54,7 +54,7 @@ jobs:
     if: ${{ needs.release_packages.outputs.published == true }}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node
         uses: actions/setup-node@v1
         with:
