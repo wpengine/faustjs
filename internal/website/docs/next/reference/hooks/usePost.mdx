@@ -50,7 +50,7 @@ export default function Page() {
   const { usePost } = client;
   const post = usePost({
     id: 'hello-world',
-    idType: PostIdType.SLUG,
+    idType: PostIdType.URI,
   });
 
   return (

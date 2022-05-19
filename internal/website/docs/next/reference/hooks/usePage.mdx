@@ -46,9 +46,9 @@ import { client, PageIdType } from 'client';
 
 export default function Page() {
   const { usePost } = client;
-  const page = usePage({
+  const page = usePost({
     id: 'hello-world',
-    idType: PageIdType.SLUG,
+    idType: PageIdType.URI,
   });
 
   return (
