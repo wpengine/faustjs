@@ -54,7 +54,7 @@ faustwp.installWPGraphQL = (() => {
 				break;
 			case 'complete':
 				wp.a11y.speak(faustwp.strings.active, 'polite');
-				$button.innerHTML = `☑️ ${faustwp.strings.active}`;
+				$button.innerHTML = `${faustwp.icons.checkSmall}  ${faustwp.strings.active}`;
 				$spinner.style.visibility = 'hidden';
 				break;
 			case 'failed':

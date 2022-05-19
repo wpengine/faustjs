@@ -141,3 +141,19 @@ function maybe_set_default_settings() {
 		faustwp_update_setting( 'secret_key', wp_generate_uuid4() );
 	}
 }
+
+/**
+ * Get the contents of an SVG icon.
+ *
+ * @param string $icon Filename of the SVG without the .svg extension.
+ * @return string The SVG icon contents or empty string if the icon file does not exist.
+ */
+function get_icon( $icon ) {
+	$path = __DIR__ . '/assets/icons/' . $icon . '.svg';
+
+	if ( file_exists( $path ) ) {
+		return file_get_contents( $path ); //phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	}
+
+	return '';
+}

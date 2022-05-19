@@ -53,7 +53,10 @@
 						<h4><?php esc_html_e( 'Install WPGraphQL', 'faustwp' ); ?></h4>
 						<p><a href="https://www.wpgraphql.com/docs/quick-start/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn about the plugin', 'faustwp' ); ?></a>.</p>
 						<?php if ( function_exists( 'graphql' ) ) : ?>
-							<button class="button-primary" disabled><?php esc_html_e( '☑️ WPGraphQL is active', 'faustwp' ); ?></button>
+							<button class="button-primary" disabled>
+								<?php echo WPE\FaustWP\Settings\get_icon( 'check-small' ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php esc_html_e( 'WPGraphQL is active', 'faustwp' ); ?>
+							</button>
 						<?php else : ?>
 							<button class="button-primary" id="faustwp-button-install-graphql" aria-label="<?php esc_html_e( 'Install and Activate the WPGraphQL plugin', 'faustwp' ); ?>"><?php esc_html_e( 'Install and Activate', 'faustwp' ); ?></button>
 							<span class="spinner"></span>
