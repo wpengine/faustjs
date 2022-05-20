@@ -23,7 +23,13 @@ add_action( 'template_redirect', __NAMESPACE__ . '\\deny_public_access', 99 );
  * @return void
  */
 function deny_public_access() {
-	if ( ! is_redirects_enabled() || is_customize_preview() ) {
+	if (
+		! is_redirects_enabled() ||
+		is_customize_preview() ||
+		doing_file_editor_save() ||
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		isset( $_GET['_wp-find-template'] ) // Allow loading full site editor.
+	) {
 		return;
 	}
 
@@ -37,11 +43,6 @@ function deny_public_access() {
 
 	// Get the request uri with query params.
 	$request_uri = home_url( add_query_arg( null, null ) );
-
-	// Allow saving from file editor.
-	if ( doing_file_editor_save() ) {
-		return;
-	}
 
 	$response_code = 302;
 	$redirect_url  = str_replace( trailingslashit( get_home_url() ), $frontend_uri, $request_uri );
