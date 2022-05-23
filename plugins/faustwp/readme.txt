@@ -2,7 +2,7 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, mindctrl, modernnerd, rfmeier, wpengine
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
-Tested up to: 5.9
+Tested up to: 6.0
 Stable tag: 0.7.8
 Requires PHP: 7.2
 License: GPLv2 or later
