@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.0
-Stable tag: 0.7.8
+Stable tag: 0.7.9
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,16 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.9 =
+
+### Patch Changes
+
+- 4ab6cdf: Fix menu paths when activated within a multisite using subdirectories.
+- ccb7ff3: Fix page preview links
+- bb59263: The plugin's default settings are now working when activated within a multisite installation.
+- 6c04567: Fixes a conflict between public route redirects and the full site editor
+- d12f938: Updates an icon on the settings page
+
 = 0.7.8 =
 
 ### Patch Changes
@@ -42,12 +52,5 @@ That's it! For more information on getting started with headless WordPress, see 
 ### Patch Changes
 
 - 6a75593: Fixes a PHP 8 warning that occured on post types not registered with WP GraphQL [#812](https://github.com/wpengine/faustjs/pull/812)
-
-= 0.7.6 =
-
-### Patch Changes
-
-- 420d0b4: Remove trailing slash from frontend uri.
-- 037b57b: Ensure sitemap URLs use the WordPress domain and not the headless frontend domain. Fixes a conflict with Yoast SEO that prevented post links from being added to the posts sitemap.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
