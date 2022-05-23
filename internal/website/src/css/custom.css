@@ -97,3 +97,13 @@ html[data-theme='dark'] .footer.footer--dark {
 video {
   max-width: 100%;
 }
+
+/* Adjusting default line lengths for better readability */
+p {
+	max-width: 60ch;
+}
+
+/* Adjusting the Hero Subtitle class so it stays centred after the readability adjustment above */
+.hero__subtitle {
+	margin: 0 auto var(--ifm-paragraph-margin-bottom) auto;
+}
