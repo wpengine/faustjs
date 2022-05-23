@@ -40,6 +40,10 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 		$this->assertSame( 1000, has_action( 'post_link', 'WPE\FaustWP\Replacement\post_link' ) );
 	}
 
+	public function test_page_link_filter() {
+		$this->assertSame( 1000, has_action( 'page_link', 'WPE\FaustWP\Replacement\post_link' ) );
+	}
+
 	public function test_term_link_filter() {
 		$this->assertSame( 1000, has_action( 'term_link', 'WPE\FaustWP\Replacement\term_link' ) );
 	}
