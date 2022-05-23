@@ -415,6 +415,9 @@ function add_settings_assets() {
 
 		$faustwp = array(
 			'wpgraphqlIsInstalled' => array_key_exists( 'wp-graphql/wp-graphql.php', get_plugins() ),
+			'icons'                => array(
+				'checkSmall' => get_icon( 'check-small' ),
+			),
 			'strings'              => array(
 				'default'    => esc_html__( 'Install and Activate', 'faustwp' ),
 				'installing' => esc_html__( 'Installing…', 'faustwp' ),

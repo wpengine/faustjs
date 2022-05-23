@@ -16,7 +16,8 @@ use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
 	faustwp_update_setting,
 	get_secret_key,
-	maybe_set_default_settings
+	maybe_set_default_settings,
+	get_icon
 };
 
 class FunctionsTest extends \WP_UnitTestCase {
@@ -149,6 +150,16 @@ class FunctionsTest extends \WP_UnitTestCase {
 	 */
 	public function test_wp_initialize_site_has_settings_callback_attached() {
 		$this->assertSame( 10, has_action( 'wp_initialize_site', 'WPE\FaustWP\Utilities\handle_new_site_creation' ) );
+	}
+
+	public function test_get_icon_returns_icon() {
+		$icon = get_icon( 'check-small' );
+		$this->assertNotEmpty( $icon );
+	}
+
+	public function test_get_icon_returns_empty_string_when_icon_not_exists() {
+		$icon = get_icon( 'null' );
+		$this->assertEmpty( $icon );
 	}
 
 	/**
