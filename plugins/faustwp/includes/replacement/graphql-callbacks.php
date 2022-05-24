@@ -49,7 +49,7 @@ function url_replacement( $response ) {
  */
 function url_replace_recursive( &$data ) {
 	foreach ( $data as $key => &$value ) {
-		if ( 'generalSettings' === $key ) {
+		if ( in_array( $key, apply_filters( 'faustwp_domain_replacement_blacklist', array( 'generalSettings' ) ) ) ) {
 			continue;
 		}
 
