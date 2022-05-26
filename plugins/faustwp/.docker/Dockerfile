@@ -1,4 +1,12 @@
-FROM wordpress:latest
+ARG WP_VERSION=latest
+
+FROM wordpress:${WP_VERSION}
+
+# Needed to specify the build args again after the FROM command.
+ARG WP_VERSION
+
+# Save the build args for use by the runtime environment
+ENV WP_VERSION=${WP_VERSION}
 
 # Needed for Codeception WPDB test integration.
 RUN docker-php-ext-install pdo pdo_mysql

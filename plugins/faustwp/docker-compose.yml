@@ -4,6 +4,7 @@ services:
   wordpress:
     build:
       context: ./.docker
+    image: faustwp:latest-wp-${WP_VERSION-latest}
     restart: always
     ports:
       - 8080:80

@@ -3,7 +3,7 @@
 cd /var/www/html/wp-content/plugins/$WP_PLUGIN_FOLDER
 
 # Setup WordPress test core files and database
-bash -c "./bin/install-wp-tests.sh $WP_TESTS_DB_NAME $WORDPRESS_DB_USER $WORDPRESS_DB_PASSWORD $WORDPRESS_DB_HOST latest" 
+bash -c "./bin/install-wp-tests.sh $WP_TESTS_DB_NAME $WORDPRESS_DB_USER $WORDPRESS_DB_PASSWORD $WORDPRESS_DB_HOST $WP_VERSION"
 
 # Install composer deps
 composer install
