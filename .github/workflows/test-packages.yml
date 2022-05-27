@@ -6,7 +6,6 @@ jobs:
       matrix:
         os: ['ubuntu-latest']
         version: [16, 18]
-        package: ['core', 'next', 'react']
     permissions:
       checks: write
       pull-requests: write
@@ -23,11 +22,29 @@ jobs:
 
       - run: npm run build
 
-      - name: Code Coverage for ${{ matrix.package }} Package
+      - name: Code Coverage for Core Package
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           test-script: npm run test:coverage:ci
-          working-directory: packages/${{ matrix.package }}
+          working-directory: packages/core
+          skip-step: install
+          annotations: none
+        continue-on-error: FALSE
+
+      - name: Code Coverage for Next Package
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          test-script: npm run test:coverage:ci
+          working-directory: packages/next
+          skip-step: install
+          annotations: none
+        continue-on-error: FALSE
+
+      - name: Code Coverage for React Package
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          test-script: npm run test:coverage:ci
+          working-directory: packages/react
           skip-step: install
           annotations: none
         continue-on-error: FALSE
