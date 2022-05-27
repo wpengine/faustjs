@@ -23,29 +23,19 @@ jobs:
       - run: npm run build
 
       - name: Code Coverage for Core Package
-        uses: ArtiomTr/jest-coverage-report-action@v2
+        uses: ./.github/actions/run-coverage
         with:
-          test-script: npm run test:coverage:ci
+          package: Core
           working-directory: packages/core
-          skip-step: install
-          annotations: none
-        continue-on-error: FALSE
-
-      - name: Code Coverage for Next Package
-        uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          test-script: npm run test:coverage:ci
-          working-directory: packages/next
-          skip-step: install
-          annotations: none
-        continue-on-error: FALSE
 
       - name: Code Coverage for React Package
-        uses: ArtiomTr/jest-coverage-report-action@v2
+        uses: ./.github/actions/run-coverage
         with:
-          test-script: npm run test:coverage:ci
+          package: React
           working-directory: packages/react
-          skip-step: install
-          annotations: none
-        continue-on-error: FALSE
 
+      - name: Code Coverage for Next Package
+        uses: ./.github/actions/run-coverage
+        with:
+          package: Next
+          working-directory: packages/next
