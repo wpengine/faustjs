@@ -6,6 +6,9 @@ jobs:
       matrix:
         os: ['ubuntu-latest']
         version: [16, 18]
+    permissions:
+      checks: write
+      pull-requests: write
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -18,31 +21,26 @@ jobs:
         run: npm install
 
       - run: npm run build
+
       - name: coverage:core
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: packages/core
-          test-script: npm test -- --jest-ci --jest-json --jest-coverage --jest-testLocationInResults --jest-outputFile=report.json
           skip-step: install
           annotations: none
-          base-coverage-file: ./report.json
         continue-on-error: FALSE
       - name: coverage:next
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: packages/next
-          test-script: npm test -- --jest-ci --jest-json --jest-coverage --jest-testLocationInResults --jest-outputFile=report.json
           skip-step: install
           annotations: none
-          base-coverage-file: ./report.json
         continue-on-error: FALSE
       - name: coverage:react
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           working-directory: packages/react
-          test-script: npm test -- --jest-ci --jest-json --jest-coverage --jest-testLocationInResults --jest-outputFile=report.json
           skip-step: install
           annotations: none
-          base-coverage-file: ./report.json
         continue-on-error: FALSE
 
