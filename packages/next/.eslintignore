@@ -4,3 +4,4 @@ node_modules
 /*.ts
 /*.d.ts
 src/types/wpgraphql.d.ts
+coverage

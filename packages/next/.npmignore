@@ -9,3 +9,4 @@ tsconfig-cjs.json
 jest.config.js
 jest.setup.ts
 test/**/*
+coverage

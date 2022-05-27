@@ -41,6 +41,7 @@
     "prepublish": "npm run build",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --passWithNoTests --coverage",
     "ts": "tsc -p .",
     "ts:cjs": "tsc -p tsconfig-cjs.json",
     "ts:watch": "tsc -p . --watch",
