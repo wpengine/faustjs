@@ -25,17 +25,14 @@ jobs:
       - name: Code Coverage for Core Package
         uses: ./.github/actions/run-coverage
         with:
-          package: Core
           working-directory: packages/core
 
       - name: Code Coverage for React Package
         uses: ./.github/actions/run-coverage
         with:
-          package: React
           working-directory: packages/react
 
       - name: Code Coverage for Next Package
         uses: ./.github/actions/run-coverage
         with:
-          package: Next
           working-directory: packages/next
