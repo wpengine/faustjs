@@ -6,6 +6,7 @@ jobs:
       matrix:
         os: ['ubuntu-latest']
         version: [16, 18]
+        package: ['core', 'next', 'react']
     permissions:
       checks: write
       pull-requests: write
@@ -17,29 +18,16 @@ jobs:
           node-version: ${{ matrix.version }}
       - run: rm package-lock.json
 
-      - name: install
+      - name: Install
         run: npm install
 
       - run: npm run build
 
-      - name: coverage:core
+      - name: Code Coverage for ${{ matrix.package }} Package
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          working-directory: packages/core
-          skip-step: install
-          annotations: none
-        continue-on-error: FALSE
-      - name: coverage:next
-        uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          working-directory: packages/next
-          skip-step: install
-          annotations: none
-        continue-on-error: FALSE
-      - name: coverage:react
-        uses: ArtiomTr/jest-coverage-report-action@v2
-        with:
-          working-directory: packages/react
+          test-script: npm run test:coverage:ci
+          working-directory: packages/${{ matrix.package }}
           skip-step: install
           annotations: none
         continue-on-error: FALSE

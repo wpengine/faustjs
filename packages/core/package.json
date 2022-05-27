@@ -42,6 +42,7 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --passWithNoTests --coverage",
+    "test:coverage:ci": "npx jest --passWithNoTests --ci --json --coverage --testLocationInResults --outputFile=report.json",
     "ts": "tsc -p .",
     "ts:cjs": "tsc -p tsconfig-cjs.json",
     "ts:watch": "tsc -p . --watch",
