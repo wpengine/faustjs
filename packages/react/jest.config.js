@@ -27,5 +27,6 @@ module.exports = {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
   collectCoverage: true,
-  coverageReporters: ["json", "html"]
+  coverageReporters: ['json', 'html'],
+  passWithNoTests: true,
 };
