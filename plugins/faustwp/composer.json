@@ -14,6 +14,7 @@
     "codeception/util-universalframework": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "lucatume/wp-browser": "3.0.11",
+    "pcov/clobber": "^2.0",
     "php-parallel-lint/php-parallel-lint": "^1.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
     "phpunit/phpunit": "~7",
