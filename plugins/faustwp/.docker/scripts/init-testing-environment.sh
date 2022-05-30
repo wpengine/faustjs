@@ -14,7 +14,7 @@ bash -c "./bin/install-wp-tests.sh $WP_TESTS_DB_NAME $WORDPRESS_DB_USER $WORDPRE
 composer install
 
 # Install pcov/clobber if PHP7.1+
-if version_gt $PHP_VERSION 7.0 && [[ -n "$COVERAGE" ]]; then
+if version_gt $PHP_VERSION 7.0 && [[ "$COVERAGE" == '1' ]]; then
     echo "Using pcov/clobber for codecoverage"
     docker-php-ext-enable pcov
     echo "pcov.enabled=1" >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
