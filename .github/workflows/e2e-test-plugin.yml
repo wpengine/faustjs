@@ -20,6 +20,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
+          coverage: pcov
+          ini-values: pcov.directory=includes
       - name: Setup Frontend
         run: |
           NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
