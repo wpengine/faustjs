@@ -16,10 +16,8 @@ composer install
 # Install pcov/clobber if PHP7.1+
 if version_gt $PHP_VERSION 7.0 && [[ "$COVERAGE" == '1' ]]; then
     echo "Using pcov/clobber for codecoverage"
-    docker-php-ext-enable pcov
     echo "pcov.enabled=1" >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
     echo "pcov.directory=/var/www/html/wp-content/plugins/$WP_PLUGIN_FOLDER" >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
-    COMPOSER_MEMORY_LIMIT=-1 composer require pcov/clobber --dev
     vendor/bin/pcov clobber
 fi
 

@@ -23,7 +23,8 @@ RUN set -e \
 	-qq --no-install-recommends \
 	; sudo adduser www-data sudo \
 	; rm -rf /var/lib/apt/lists/* \
-	&& pecl install pcov
+	&& pecl install pcov \
+	&& docker-php-ext-enable pcov
 
 # Copy the script to create the testing environment
 COPY scripts/init-testing-environment.sh /usr/local/bin/
