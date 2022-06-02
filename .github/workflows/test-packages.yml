@@ -6,6 +6,9 @@ jobs:
       matrix:
         os: ['ubuntu-latest']
         version: [16, 18]
+    permissions:
+      checks: write
+      pull-requests: write
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -13,7 +16,23 @@ jobs:
         with:
           node-version: ${{ matrix.version }}
       - run: rm package-lock.json
-      - run: npm install
+
+      - name: Install
+        run: npm install
+
       - run: npm run build
-      - run: npm test
-        continue-on-error: FALSE
+
+      - name: Code Coverage for Core Package
+        uses: ./.github/actions/run-coverage
+        with:
+          working-directory: packages/core
+
+      - name: Code Coverage for React Package
+        uses: ./.github/actions/run-coverage
+        with:
+          working-directory: packages/react
+
+      - name: Code Coverage for Next Package
+        uses: ./.github/actions/run-coverage
+        with:
+          working-directory: packages/next
