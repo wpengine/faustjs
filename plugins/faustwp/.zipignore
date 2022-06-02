@@ -27,4 +27,5 @@ deploy.sh
 *docker*
 *docker-compose.yml*
 *codeception.dist.yml*
+*coverage*
 .zipignore
