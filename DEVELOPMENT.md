@@ -74,10 +74,10 @@ If desired, you may specify the WP_VERSION you'd like to run tests against:
 WP_VERSION=5.5 composer run docker:start
 ```
 
-Once the containers are up, set up the test framework:
+Once the containers are up, set up the test framework. If you want to enable code coverage reporting, make sure you provide the `COVERAGE=1` environment variable as a parameter:
 
 ```
-docker-compose exec wordpress init-testing-environment.sh
+docker-compose exec -e COVERAGE=1 wordpress init-testing-environment.sh
 ```
 
 Install and activate WP GraphQL:

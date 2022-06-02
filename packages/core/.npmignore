@@ -10,3 +10,4 @@ jest.setup.ts
 test/**/*
 tsconfig-cjs.json
 gqty.config.js
+coverage

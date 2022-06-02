@@ -4,3 +4,4 @@ Thumbs.db
 
 .env.testing
 !.env.testing.example
+/coverage/

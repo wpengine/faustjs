@@ -1,5 +1,15 @@
 # FaustWP
 
+## 0.7.9
+
+### Patch Changes
+
+- 4ab6cdf: Fix menu paths when activated within a multisite using subdirectories.
+- ccb7ff3: Fix page preview links
+- bb59263: The plugin's default settings are now working when activated within a multisite installation.
+- 6c04567: Fixes a conflict between public route redirects and the full site editor
+- d12f938: Updates an icon on the settings page
+
 ## 0.7.8
 
 ### Patch Changes

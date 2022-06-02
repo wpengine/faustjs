@@ -1,0 +1,19 @@
+name: Code Coverage
+description: Runs a Code Coverage Command within a package directory
+
+inputs:
+  working-directory:
+    required: true
+    description: "Working Directory"
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: ArtiomTr/jest-coverage-report-action@v2
+      with:
+        test-script: npm run test:coverage:ci
+        working-directory: ${{ inputs.working-directory }}
+        skip-step: install
+        annotations: none
+      continue-on-error: FALSE
+
