@@ -24,6 +24,16 @@
     "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
+    "docker:build": "bash bin/run-docker.sh build",
+    "docker:serve": [
+      "@docker:stop",
+      "docker compose up --detach"
+    ],
+    "docker:stop": "docker compose down --volumes",
+    "docker:start": [
+      "@docker:build",
+      "@docker:serve"
+    ],
     "lint": "parallel-lint -e php --no-colors --exclude vendor .",
     "phpcs": "phpcs",
     "phpcs:fix": "phpcbf",
