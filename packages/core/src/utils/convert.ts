@@ -47,6 +47,10 @@ export function base64Decode(str: string): string {
  * @returns
  */
 export function base64Encode(str: string): string {
+  if (!isString(str)) {
+    return '';
+  }
+
   if (isServerSide()) {
     return Buffer.from(str, 'utf8').toString('base64');
   }
