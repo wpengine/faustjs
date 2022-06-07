@@ -7,6 +7,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: tests/_output
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: tests/_output
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
