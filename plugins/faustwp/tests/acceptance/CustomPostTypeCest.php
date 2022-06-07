@@ -34,15 +34,15 @@ class CustomPostTypeCest
 			'post_name' => $cpt_name,
 		]);
 
-		// $I->loginAsAdmin();
-		// $I->amEditingPostWithId($cpt_id);
+		$I->loginAsAdmin();
+		$I->amEditingPostWithId($cpt_id);
 
-		// $I->click('div.components-guide .components-modal__header button.components-button');
-		// $I->click('button.block-editor-post-preview__button-toggle');
-		// $I->wait(4); // Wait for previewlinks.js to modify button href.
-		// $I->seeLink(
-		// 	'Preview in new tab',
-		// 	"${front_end_url}/document/${cpt_name}/?preview=true&p=${cpt_id}&typeName=Document",
-		// );
+		$I->click('div.components-guide .components-modal__header button.components-button');
+		$I->click('button.block-editor-post-preview__button-toggle');
+		$I->wait(4); // Wait for previewlinks.js to modify button href.
+		$I->seeLink(
+			'Preview in new tab',
+			"${front_end_url}/document/${cpt_name}/?preview=true&p=${cpt_id}&typeName=Document",
+		);
 	}
 }
