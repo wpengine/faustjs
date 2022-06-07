@@ -50,19 +50,6 @@ jobs:
       - name: Run test
         working-directory: plugins/faustwp
         run: vendor/bin/codecept run acceptance
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: my-artifact
-          path: plugins/faustwp/tests/_output/*
-      - uses: actions/download-artifact@v3
-        if: always()
-        with:
-          path: plugins/faustwp/tests/_output
-      - name: Display structure of downloaded files
-        if: always()
-        run: ls -R
-        working-directory: plugins/faustwp/tests/_output
       - name: Upload Test Output
         uses: actions/upload-artifact@v2
         if: failure()
