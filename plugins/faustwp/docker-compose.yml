@@ -20,6 +20,7 @@ services:
       COVERAGE: ${COVERAGE:-}
     volumes:
       - wordpress:/var/www/html
+      - ./.docker/plugins:/var/www/html/wp-content/plugins/
       - ./:/var/www/html/wp-content/plugins/faustwp
 
   db:
