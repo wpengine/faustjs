@@ -10,11 +10,11 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: my-artifact
-          path: tests/_output
+          path: plugins/faustwp/tests/_output
 
       - name: Display structure of downloaded files
         run: ls -R
-        working-directory: tests/_output
+        working-directory: plugins/faustwp/tests/_output
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
