@@ -54,14 +54,18 @@ export async function createRootSitemapIndex(
   req: NextRequest,
   normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
+  const { pathname, host, protocol } = new URL(req.url);
+  const reqBaseUrl = `${protocol}//${host}`;
+
   const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
-  const { pathname, origin } = new URL(req.url);
   let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
     sitemaps = [
       ...sitemaps,
-      { loc: `${trimSlashes(origin)}/${trimSlashes(FAUST_PAGES_PATHNAME)}` },
+      {
+        loc: `${trimSlashes(reqBaseUrl)}/${trimSlashes(FAUST_PAGES_PATHNAME)}`,
+      },
     ];
   }
 
@@ -147,7 +151,7 @@ export async function createRootSitemapIndex(
         ...sitemaps,
         {
           ...sitemap,
-          loc: sitemap.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
+          loc: sitemap.loc.replace(trimSlashes(wpUrl), trimSlashes(reqBaseUrl)),
         },
       ];
     });
@@ -169,7 +173,9 @@ export function createPagesSitemap(
   req: NextRequest,
   normalizedConfig: NormalizedConfig,
 ): Response | undefined {
-  const { origin } = new URL(req.url);
+  const { host, protocol } = new URL(req.url);
+  const reqBaseUrl = `${protocol}//${host}`;
+
   const { pages } = normalizedConfig;
 
   if (isUndefined(pages) || !isArray(pages) || !pages.length) {
@@ -182,7 +188,7 @@ export function createPagesSitemap(
     urls = [
       ...urls,
       {
-        loc: `${trimSlashes(origin)}/${trimSlashes(page.path)}`,
+        loc: `${trimSlashes(reqBaseUrl)}/${trimSlashes(page.path)}`,
         lastmod: page?.lastmod,
         changefreq: page?.changefreq,
         priority: page?.priority,
@@ -205,7 +211,8 @@ export async function handleSitemapPath(
   normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
   const { wpUrl, replaceUrls } = normalizedConfig;
-  const { pathname, origin } = new URL(req.url);
+  const { pathname, host, protocol } = new URL(req.url);
+  const reqBaseUrl = `${protocol}//${host}`;
 
   const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
   const res = await fetch(wpSitemapUrl);
@@ -260,7 +267,7 @@ export async function handleSitemapPath(
         ...urls,
         {
           ...url,
-          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
+          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(reqBaseUrl)),
         },
       ];
     });
@@ -282,14 +289,18 @@ export async function handleRobotsTxt(
   req: NextRequest,
   normalizedConfig: NormalizedConfig,
 ): Promise<Response | undefined> {
-  const { origin } = new URL(req.url);
+  const { host, protocol } = new URL(req.url);
+  const reqBaseUrl = `${protocol}//${host}`;
+
   const { sitemapIndexPath, robotsTxt } = normalizedConfig;
 
   if (robotsTxt === undefined || robotsTxt === null) {
     return undefined;
   }
 
-  const sitemapUrl = `${trimSlashes(origin)}/${trimSlashes(sitemapIndexPath)}`;
+  const sitemapUrl = `${trimSlashes(reqBaseUrl)}/${trimSlashes(
+    sitemapIndexPath,
+  )}`;
   let text = await robotsTxt(sitemapUrl);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
