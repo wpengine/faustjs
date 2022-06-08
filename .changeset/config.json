@@ -8,5 +8,5 @@
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
-  "ignore": ["next-headless-getting-started"]
+  "ignore": ["next-headless-getting-started", "faust-nx", "faust-nx-getting-started"]
 }
