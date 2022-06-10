@@ -94,7 +94,7 @@ class GraphQLCallbacksTestCases extends \WP_UnitTestCase {
 		]
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		faustwp_update_setting( 'frontend_uri', 'http://frontend' );

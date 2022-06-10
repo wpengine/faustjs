@@ -25,7 +25,7 @@ class DetectConflictsFunctionsTestCases extends \WP_UnitTestCase {
 		'akismet/akismet.php',
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$user_id = $this->factory->user->create();
@@ -33,7 +33,7 @@ class DetectConflictsFunctionsTestCases extends \WP_UnitTestCase {
 		delete_user_meta( $user_id, DISMISSED_CONFLICTS_META_KEY );
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		deactivate_plugins( $this->conflict_list );
 	}
 

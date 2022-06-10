@@ -18,7 +18,7 @@ use function WPE\FaustWP\Settings\faustwp_update_setting;
 class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 	protected $post_id;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->post_id = wp_insert_post( [

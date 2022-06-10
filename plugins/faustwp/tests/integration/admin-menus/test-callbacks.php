@@ -8,7 +8,7 @@
 namespace WPE\FaustWP\Tests\Admin_Menus;
 
 class AdminMenusCallbacksTestCases extends \WP_UnitTestCase {
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 

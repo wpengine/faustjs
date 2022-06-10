@@ -8,7 +8,7 @@
 namespace WPE\FaustWP\Tests\Detect_Conflicts;
 
 class DetectConflictsCallbacksTestCases extends \WP_UnitTestCase {
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 

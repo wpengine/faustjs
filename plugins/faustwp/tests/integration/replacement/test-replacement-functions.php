@@ -26,7 +26,7 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 		'frontend_uri' => '',
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		update_option( $this->option, $this->init_settings );
 	}
