@@ -5,11 +5,11 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Settings;
+namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Settings\sanitize_faustwp_settings;
 
-class SettingsCallbacksTestCases extends \WP_UnitTestCase {
+class SettingsCallbacksTests extends \WP_UnitTestCase {
 
 	protected $option = 'faustwp_settings';
 

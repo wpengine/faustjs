@@ -41,7 +41,7 @@
       "@phpcs",
       "@test"
     ],
-    "test": "phpunit && phpunit -c phpunit-multisite.xml.dist"
+    "test": "phpunit"
   },
   "config": {
     "preferred-install": "dist",
@@ -49,6 +49,12 @@
     "optimize-autoloader": true,
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WPE\\FaustWP\\Tests\\Unit\\": "tests/unit/",
+      "WPE\\FaustWP\\Tests\\Integration\\": "tests/integration/"
     }
   }
 }

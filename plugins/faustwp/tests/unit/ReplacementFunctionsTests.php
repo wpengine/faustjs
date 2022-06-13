@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Replacement;
+namespace WPE\FaustWP\Tests\Unit;
 
 use function WPE\FaustWP\Replacement\{
 	domain_replacement_enabled,
@@ -15,7 +15,7 @@ use function WPE\FaustWP\Replacement\{
 	normalize_sitemap_entry
 };
 
-class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
+class ReplacementFunctionsTests extends FaustUnitTest {
 	protected $option = 'faustwp_settings';
 
 	protected $init_settings = [

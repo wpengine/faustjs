@@ -5,9 +5,9 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Admin_Menus;
+namespace WPE\FaustWP\Tests\Integration;
 
-class AdminMenusCallbacksTestCases extends \WP_UnitTestCase {
+class AdminMenusCallbacksTests extends \WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 	}

@@ -5,9 +5,9 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Detect_Conflicts;
+namespace WPE\FaustWP\Tests\Integration;
 
-class DetectConflictsCallbacksTestCases extends \WP_UnitTestCase {
+class DetectConflictsCallbacksTests extends \WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 	}

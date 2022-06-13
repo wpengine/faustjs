@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Replacement;
+namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Replacement\{
 	content_replacement,
@@ -15,7 +15,7 @@ use function WPE\FaustWP\Replacement\{
 };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 
-class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
+class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	protected $post_id;
 
 	public function setUp(): void {
