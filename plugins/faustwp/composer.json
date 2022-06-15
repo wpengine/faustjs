@@ -4,6 +4,7 @@
   "type": "project",
   "minimum-stability": "stable",
   "require-dev": {
+    "brain/monkey": "^2.6",
     "codeception/codeception": "^4.1",
     "codeception/module-asserts": "^1.0",
     "codeception/module-cli": "^1.0",
@@ -41,7 +42,7 @@
       "@phpcs",
       "@test"
     ],
-    "test": "phpunit"
+    "test": "phpunit && phpunit -c ./phpunit-multisite.xml.dist"
   },
   "config": {
     "preferred-install": "dist",

@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Unit;
+namespace WPE\FaustWP\Tests\Integration;
 
 use const WPE\FaustWP\Detect_Conflicts\DISMISSED_CONFLICTS_META_KEY;
 use function WPE\FaustWP\Detect_Conflicts\{
@@ -17,7 +17,7 @@ use function WPE\FaustWP\Detect_Conflicts\{
 	dismiss_active_conflicts
 };
 
-class DetectConflictsFunctionsTests extends FaustUnitTest {
+class DetectConflictsFunctionsTests extends \WP_UnitTestCase {
 
 	/** These plugins come installed with WP Unit */
 	protected $conflict_list = [
