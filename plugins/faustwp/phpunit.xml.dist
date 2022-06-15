@@ -14,6 +14,9 @@
     <include>
       <directory suffix=".php">./includes</directory>
     </include>
+    <exclude>
+      <file>./includes/settings/views/headless-settings.php</file>
+    </exclude>
     <report>
       <clover outputFile="coverage/clover.xml"/>
     </report>
