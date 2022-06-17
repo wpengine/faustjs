@@ -11,19 +11,25 @@
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
   <php>
-    <const name="WP_TESTS_MULTISITE" value="1" />
+     <const name="WP_TESTS_MULTISITE" value="1" />
   </php>
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./includes</directory>
     </include>
+    <exclude>
+      <file>./includes/settings/views/headless-settings.php</file>
+    </exclude>
     <report>
       <clover outputFile="coverage/clover.xml"/>
     </report>
   </coverage>
   <testsuites>
+    <testsuite name="unit">
+      <directory suffix=".php">./tests/unit/</directory>
+    </testsuite>
     <testsuite name="integration">
-      <directory prefix="test-" suffix=".php">./tests/integration/</directory>
+      <directory suffix=".php">./tests/integration/</directory>
     </testsuite>
   </testsuites>
   <logging/>
