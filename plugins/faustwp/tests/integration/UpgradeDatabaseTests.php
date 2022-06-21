@@ -3,7 +3,7 @@
  * Tests database upgrades.
  */
 
-namespace WPE\FaustWP\Tests\Updates;
+namespace WPE\FaustWP\Tests\Integration;
 
 use \WP_UnitTestCase;
 use function WPE\FaustWP\Updates\upgrade_database;
@@ -13,7 +13,7 @@ use function WPE\FaustWP\Updates\upgrade_database;
  *
  * @package FaustWP
  */
-class UpdatesTestCases extends WP_UnitTestCase {
+class UpgradeDatabaseTests extends WP_UnitTestCase {
 
 	protected $versions;
 

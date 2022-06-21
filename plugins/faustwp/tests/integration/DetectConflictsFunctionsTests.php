@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Detect_Conflicts;
+namespace WPE\FaustWP\Tests\Integration;
 
 use const WPE\FaustWP\Detect_Conflicts\DISMISSED_CONFLICTS_META_KEY;
 use function WPE\FaustWP\Detect_Conflicts\{
@@ -17,7 +17,7 @@ use function WPE\FaustWP\Detect_Conflicts\{
 	dismiss_active_conflicts
 };
 
-class DetectConflictsFunctionsTestCases extends \WP_UnitTestCase {
+class DetectConflictsFunctionsTests extends \WP_UnitTestCase {
 
 	/** These plugins come installed with WP Unit */
 	protected $conflict_list = [
@@ -25,7 +25,7 @@ class DetectConflictsFunctionsTestCases extends \WP_UnitTestCase {
 		'akismet/akismet.php',
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$user_id = $this->factory->user->create();
@@ -33,7 +33,7 @@ class DetectConflictsFunctionsTestCases extends \WP_UnitTestCase {
 		delete_user_meta( $user_id, DISMISSED_CONFLICTS_META_KEY );
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		deactivate_plugins( $this->conflict_list );
 	}
 

@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Replacement;
+namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Replacement\{
 	content_replacement,
@@ -15,10 +15,10 @@ use function WPE\FaustWP\Replacement\{
 };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 
-class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
+class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	protected $post_id;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->post_id = wp_insert_post( [
@@ -184,6 +184,32 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests get_preview_post_link() returns rewritten value when content replacement is enabled for Custom Post Types
+	 */
+	public function test_custom_post_type_post_preview_link_returns_filtered_link_when_content_replacement_is_enabled()
+	{
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', true );
+		$post_id = $this->getCustomPostType();
+		$this->assertSame( 'http://moo/?document=' . $post_id . '&preview=true&p=' . $post_id . '&typeName=Document', get_preview_post_link( $post_id ) );
+		faustwp_update_setting( 'frontend_uri', null );
+		faustwp_update_setting( 'enable_rewrites', false );
+	}
+
+	/**
+	 * Tests get_permalink() does not modify original value when content replacement is enabled for Custom Post Types
+	 */
+	public function test_custom_post_type_post_link_returns_unfiltered_link_when_content_replacement_is_enabled()
+	{
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', true );
+		$post_id = $this->getCustomPostType();
+		$this->assertSame( 'http://example.org/?document=' . $post_id, get_permalink($post_id) );
+		faustwp_update_setting( 'frontend_uri', null );
+		faustwp_update_setting( 'enable_redirects', false );
+	}
+
+	/**
 	 * Tests get_preview_post_link() filters link for post types that are not registered with WP GraphQL.
 	 */
 	public function test_post_preview_link_filters_link_for_posts_not_registered_with_wpgraphql() {
@@ -221,4 +247,23 @@ class ReplacementCallbacksTestCases extends \WP_UnitTestCase {
 		$term_id = get_terms( [ 'hide_empty' => false, 'fields' => 'ids' ] )[0];
 		$this->assertSame( 'http://moo/?cat=' . $term_id, get_term_link( $term_id ) );
 	}
+
+	private function getCustomPostType() {
+		register_post_type('document', [
+			'public' => true,
+			'show_in_graphql' => true,
+			'graphql_single_name' => 'document',
+			'graphql_plural_name' => 'documents',
+		]);
+
+		$post_id = wp_insert_post( [
+			'title'        => 'Hello world',
+			'post_content' => 'Hi',
+			'post_status'  => 'publish',
+			'post_type'    => 'document',
+		] );
+
+		return $post_id;
+	}
+
 }

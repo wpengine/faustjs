@@ -5,11 +5,11 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Settings;
+namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Settings\sanitize_faustwp_settings;
 
-class SettingsCallbacksTestCases extends \WP_UnitTestCase {
+class SettingsCallbacksTests extends \WP_UnitTestCase {
 
 	protected $option = 'faustwp_settings';
 
@@ -22,7 +22,7 @@ class SettingsCallbacksTestCases extends \WP_UnitTestCase {
 		'disable_theme' => '1',
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		update_option( $this->option, $this->init_settings );
 		// We have to clear this manually since all tests execute in a single "request"
