@@ -11,7 +11,9 @@
       "packages/react",
       "packages/next",
       "examples/next/getting-started",
-      "plugins/faustwp"
+      "plugins/faustwp",
+      "packages/faust-nx",
+      "examples/next/faust-nx"
     ]
   },
   "scripts": {
