@@ -1,5 +1,6 @@
 {
   "name": "faust-nx-getting-started",
+  "private": true,
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
