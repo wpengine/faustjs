@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af6ab2627a6215e6fc14e270d11cb27d",
+    "content-hash": "0d5eaf27ee652dd38cfb7ea9dd4d6a61",
     "packages": [],
     "packages-dev": [
         {
@@ -666,29 +666,32 @@
         },
         {
             "name": "codeception/module-phpbrowser",
-            "version": "1.0.3",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-phpbrowser.git",
-                "reference": "8ba6bede11d0914e74d98691f427fd8f397f192e"
+                "reference": "fda6d97253d0595843adb87ec0b9b7d6d89539ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-phpbrowser/zipball/8ba6bede11d0914e74d98691f427fd8f397f192e",
-                "reference": "8ba6bede11d0914e74d98691f427fd8f397f192e",
+                "url": "https://api.github.com/repos/Codeception/module-phpbrowser/zipball/fda6d97253d0595843adb87ec0b9b7d6d89539ac",
+                "reference": "fda6d97253d0595843adb87ec0b9b7d6d89539ac",
                 "shasum": ""
             },
             "require": {
-                "codeception/codeception": "^4.1",
-                "codeception/lib-innerbrowser": "^1.3",
-                "guzzlehttp/guzzle": "^6.3|^7.0",
-                "php": ">=5.6.0 <9.0"
+                "codeception/codeception": "^4.1 | *@dev",
+                "codeception/lib-innerbrowser": "^2.0 | *@dev",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.4",
+                "php": "^7.4 | ^8.0"
             },
             "conflict": {
-                "codeception/codeception": "<4.0"
+                "codeception/codeception": "<4.1"
             },
             "require-dev": {
-                "codeception/module-rest": "^1.0"
+                "aws/aws-sdk-php": "^3.199",
+                "codeception/module-rest": "^2.0 | *@dev",
+                "ext-curl": "*"
             },
             "suggest": {
                 "codeception/phpbuiltinserver": "Start and stop PHP built-in web server for your tests"
@@ -712,7 +715,7 @@
                 }
             ],
             "description": "Codeception module for testing web application over HTTP",
-            "homepage": "http://codeception.com/",
+            "homepage": "https://codeception.com/",
             "keywords": [
                 "codeception",
                 "functional-testing",
@@ -720,9 +723,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-phpbrowser/issues",
-                "source": "https://github.com/Codeception/module-phpbrowser/tree/1.0.3"
+                "source": "https://github.com/Codeception/module-phpbrowser/tree/2.0.2"
             },
-            "time": "2022-05-21T13:50:41+00:00"
+            "time": "2021-12-21T15:16:28+00:00"
         },
         {
             "name": "codeception/module-webdriver",
@@ -7464,5 +7467,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }
