@@ -33,7 +33,7 @@ This is what a default Next.s middleware looks like. Having it at the root of th
 The middleware above will currently do nothing, as it's an empty function that goes to the "next" middleware via `NextResponse.next()`. Let's add our sitemap handling code:
 
 ```tsx title="src/pages/_middleware.ts"
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
@@ -61,7 +61,7 @@ This is all the configuration you need to get started. As you can see, if you no
 There will be instances in which you don't want to proxy over a specific path. For example, if you have a custom post type that you want to exclude from your sitemap, you can do so by adding it to the `sitemapPathsToIgnore` array.
 
 ```tsx title="src/pages/_middleware.ts" {8}
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
@@ -82,7 +82,7 @@ export default async function _middleware(req: NextRequest) {
 You can additionally use a wildcard to ignore sitemap paths that may be paginated:
 
 ```tsx title="src/pages/_middleware.ts" {8}
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
@@ -105,7 +105,7 @@ export default async function _middleware(req: NextRequest) {
 The above code examples account for adding your WordPress content to your sitemap, but what about the file based pages you've created in Next.js? Say for an example we have `src/pages/about.tsx` and we'd like to include it in our sitemap. That can be done by creating a `pages` property in the `handleSitemapRequests` config object:
 
 ```tsx title="src/pages/_middleware.ts" {8-12}
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
@@ -134,7 +134,7 @@ The `path` property is a relative path to the page you want to include in your s
 There will most likely be instances where you will need to create a `/robots.txt` route. This is a file that tells search engines what to do with your site. We have a handy function that you can define in your `handleSitemapRequests` config object that has an argument of `sitemapUrl` to be used:
 
 ```tsx title="src/pages/_middleware.ts" {8-15}
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
@@ -174,7 +174,7 @@ Be sure to define your `pages` property in your `handleSitemapRequests` config o
 Below is a drop in configuration using default WordPress sitemaps. This assumes you want to ignore the "users" sitemap:
 
 ```tsx title="src/pages/_middleware.ts"
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
@@ -205,7 +205,7 @@ export default async function _middleware(req: NextRequest) {
 Below is a drop in configuration using Yoast's sitemap. This assumes you want to ignore the "author" sitemap:
 
 ```tsx title="src/pages/_middleware.ts"
-import { handleSitemapRequests } from '@faustjs/next';
+import { handleSitemapRequests } from '@faustjs/next/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function _middleware(req: NextRequest) {
