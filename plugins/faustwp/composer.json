@@ -10,7 +10,7 @@
     "codeception/module-cli": "^1.0",
     "codeception/module-db": "^1.0",
     "codeception/module-filesystem": "^1.0",
-    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-phpbrowser": "^2.0",
     "codeception/module-webdriver": "^1.0",
     "codeception/util-universalframework": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
