@@ -45,8 +45,8 @@ import { GetStaticPropsContext } from 'next';
 import { client, PageIdType } from 'client';
 
 export default function Page() {
-  const { usePost } = client;
-  const page = usePost({
+  const { usePage } = client;
+  const page = usePage({
     id: 'hello-world',
     idType: PageIdType.URI,
   });
