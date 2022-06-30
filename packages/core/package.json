@@ -62,6 +62,9 @@
   ],
   "author": "WP Engine",
   "license": "MIT",
+  "resolutions": {
+    "@types/eslint": "8.4.3"
+  },
   "dependencies": {
     "deepmerge": "^4.2.2",
     "gqty": "^2.1.0",
