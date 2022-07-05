@@ -23,7 +23,7 @@ Today we're revisiting this blog primarily as a way to update you on what we're 
 
 ## Where Faust.js is Going
 
-As [WP Engine](https://wpengine.com) has made a significant investment in the future of Faust by increasing the team working on it, it's time to talk to where we're currently spending our time.
+As [WP Engine](https://wpengine.com) has made a significant investment in the future of Faust.js by increasing the team working on it, it's time to talk to where we're currently spending our time.
 
 When Faust.js was first conceived a decision was made to go with [GQty](https://gqty.dev) as our data library as we thought it would be the simplest way for users to pull data from WordPress using [WPGraphQL](https://www.wpgraphql.com). While we largely were able to prove it was indeed simple, that simplicity came with complications. GQty proved a difficult choice for users to scale with as it over-abstracted enough of the data layer that modifying how a user was getting data from WordPress quickly became a difficult process.
 
