@@ -17,7 +17,7 @@ First and foremost, the development of Faust.js is alive and well. When the last
 
 Today the Faust.js team, known internally as Team Merlin, is made of of five engineers and an engineering manager and [we're still looking for one more staff/lead engineer to join our team](https://wpengine.wd1.myworkdayjobs.com/en-US/WP_Engine/job/Software-Engineer-IV--ATLAS---Themes-_JR100226).
 
-While we've expanded we've moved much of our development process out of GitHub projects and into company tools that allow us to be more in tune with the needs of the organization and [Atlas](https://wpengine.com/atlas/) as well as allows us to more easily communicate the story of Faust.js to stakeholders throughout the company.
+While we've expanded, we've moved much of our development process out of GitHub projects and into company tools that allow us to be more in tune with the needs of the organization and [Atlas](https://wpengine.com/atlas/) as well as allows us to more easily communicate the story of Faust.js to stakeholders throughout the company.
 
 Today we're revisiting this blog primarily as a way to update you on what we're doing now that we're currently not working in public. From this point forward we'll be updating the blog at least once every two weeks with the current accomplishments and next steps on our journey to ensure Faust.js is the leading framework for folks looking to develop headless sites with WordPress.
 
