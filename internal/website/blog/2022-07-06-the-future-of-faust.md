@@ -9,7 +9,7 @@ We launched this blog 7 months ago with a goal of keeping you informed of what i
 
 <!--truncate-->
 
-Today's we want to talk about where Faust.js is today and where we're working on taking it in the future. It will be the first of many regular posts designed to tell the story of Faust.js and how it affects developers of all backgrounds.
+Today we want to talk about where Faust.js is and where we're working on taking it in the future. It will be the first of many regular posts designed to tell the story of Faust.js and how it affects developers of all backgrounds.
 
 ## Where Faust.js is Today
 
