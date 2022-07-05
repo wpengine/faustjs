@@ -14,9 +14,6 @@
       "plugins/faustwp"
     ]
   },
-  "resolutions": {
-    "@types/eslint": "8.4.3"
-  },
   "scripts": {
     "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "build:core": "npm run build --workspace=@faustjs/core",

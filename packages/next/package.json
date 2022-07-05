@@ -73,9 +73,6 @@
   ],
   "author": "WP Engine",
   "license": "MIT",
-  "resolutions": {
-    "@types/eslint": "8.4.3"
-  },
   "peerDependencies": {
     "next": ">=11.1.2",
     "react": ">=17.0.2",
