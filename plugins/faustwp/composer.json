@@ -4,20 +4,20 @@
   "type": "project",
   "minimum-stability": "stable",
   "require-dev": {
+    "brain/monkey": "^2.6",
     "codeception/codeception": "^4.1",
     "codeception/module-asserts": "^1.0",
     "codeception/module-cli": "^1.0",
     "codeception/module-db": "^1.0",
     "codeception/module-filesystem": "^1.0",
-    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-phpbrowser": "^2.0",
     "codeception/module-webdriver": "^1.0",
     "codeception/util-universalframework": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "lucatume/wp-browser": "3.0.11",
-    "pcov/clobber": "^2.0",
     "php-parallel-lint/php-parallel-lint": "^1.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
-    "phpunit/phpunit": "~7",
+    "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.5.8",
     "wp-coding-standards/wpcs": "^2.2",
@@ -42,7 +42,7 @@
       "@phpcs",
       "@test"
     ],
-    "test": "phpunit --testdox && phpunit --testdox -c phpunit-multisite.xml.dist"
+    "test": "phpunit && phpunit -c ./phpunit-multisite.xml.dist"
   },
   "config": {
     "preferred-install": "dist",
@@ -50,6 +50,12 @@
     "optimize-autoloader": true,
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WPE\\FaustWP\\Tests\\Unit\\": "tests/unit/",
+      "WPE\\FaustWP\\Tests\\Integration\\": "tests/integration/"
     }
   }
 }

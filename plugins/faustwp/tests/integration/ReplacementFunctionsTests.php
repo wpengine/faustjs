@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Replacement;
+namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Replacement\{
 	domain_replacement_enabled,
@@ -15,7 +15,7 @@ use function WPE\FaustWP\Replacement\{
 	normalize_sitemap_entry
 };
 
-class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
+class ReplacementFunctionsTests extends \WP_UnitTestCase {
 	protected $option = 'faustwp_settings';
 
 	protected $init_settings = [
@@ -26,7 +26,7 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 		'frontend_uri' => '',
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		update_option( $this->option, $this->init_settings );
 	}
@@ -45,28 +45,28 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 		$frontend_url = $this->init_settings['frontend_uri'] . '/posts/hello-world/';
 		$wp_url       = normalize_url( $frontend_url );
 
-		$this->assertContains( get_home_url(), $wp_url );
+		$this->assertStringContainsString( get_home_url(), $wp_url );
 	}
 
 	public function test_normalize_url_replaces_wp_url_with_frontend_uri_when_frontend_arg_is_true() {
 		$wp_url       = get_home_url() . '/posts/hello-world/';
 		$frontend_url = normalize_url( $wp_url, true );
 
-		$this->assertContains( $this->init_settings['frontend_uri'], $frontend_url );
+		$this->assertStringContainsString( $this->init_settings['frontend_uri'], $frontend_url );
 	}
 
 	public function test_equivalent_wp_url_replaces_frontend_uri_with_home_url() {
 		$frontend_url = $this->init_settings['frontend_uri'] . '/posts/hello-world/';
 		$wp_url       = equivalent_wp_url( $frontend_url );
 
-		$this->assertContains( get_home_url(), $wp_url );
+		$this->assertStringContainsString( get_home_url(), $wp_url );
 	}
 
 	public function test_equivalent_frontend_url_replaces_home_url_with_frontend_uri() {
 		$wp_url       = get_home_url() . '/posts/hello-world/';
 		$frontend_url = equivalent_frontend_url( $wp_url );
 
-		$this->assertContains( $this->init_settings['frontend_uri'], $frontend_url );
+		$this->assertStringContainsString( $this->init_settings['frontend_uri'], $frontend_url );
 	}
 
 	public function test_equivalent_frontend_url_does_not_replace_when_frontend_uri_not_set() {
@@ -75,7 +75,7 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 		$wp_url       = get_home_url() . '/posts/hello-world/';
 		$frontend_url = equivalent_frontend_url( $wp_url );
 
-		$this->assertContains( $wp_url, $frontend_url );
+		$this->assertStringContainsString( $wp_url, $frontend_url );
 	}
 
 	public function test_normalize_sitemap_entry_replaces_frontend_uri_with_home_url() {
@@ -88,6 +88,6 @@ class ReplacementFunctionsTestCases extends \WP_UnitTestCase {
 
 		$normalized_sitemap_entry = normalize_sitemap_entry( $sitemap_entry );
 
-		$this->assertContains( get_home_url(), $normalized_sitemap_entry['loc'] );
+		$this->assertStringContainsString( get_home_url(), $normalized_sitemap_entry['loc'] );
 	}
 }

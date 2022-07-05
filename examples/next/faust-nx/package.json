@@ -1,0 +1,17 @@
+{
+  "name": "faust-nx-getting-started",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^12.1.6",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@apollo/client": "^3.6.6",
+    "faust-nx": "file:../../../packages/faust-nx/dist/index.js"
+  }
+}

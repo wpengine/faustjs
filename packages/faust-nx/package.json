@@ -1,0 +1,39 @@
+{
+  "name": "faust-nx",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Experimental next version of Faust.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "next": ">=12.1.6",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2",
+    "@apollo/client": ">=3.6.6"
+  },
+  "devDependencies": {
+    "next": "^12.1.6",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@apollo/client": "^3.6.6"
+  },
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "graphql": "^16.5.0",
+    "lodash": "^4.17.21"
+  },
+  "scripts": {
+    "test": "npm test",
+    "build": "tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpengine/faustjs.git"
+  },
+  "author": "Faust.js Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wpengine/faustjs/issues"
+  },
+  "homepage": "https://github.com/wpengine/faustjs#readme"
+}

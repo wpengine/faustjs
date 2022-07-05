@@ -7,6 +7,7 @@
 	<!-- Exclude composer vendor directory -->
 	<exclude-pattern>/vendor/</exclude-pattern>
 	<exclude-pattern>/tests/</exclude-pattern>
+	<exclude-pattern>/.docker/</exclude-pattern>
 
 	<!-- Exclude CircleCI composer file -->
 	<exclude-pattern>composer-setup.php</exclude-pattern>

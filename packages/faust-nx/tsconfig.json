@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "dist",
+    "module": "esnext",
+    "target": "ES2017",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "declaration": true
+  },
+  "exclude": ["dist", "./*.d.ts"]
+}

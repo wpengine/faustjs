@@ -1,23 +1,33 @@
 <?xml version="1.0"?>
 <phpunit
-	bootstrap="tests/bootstrap.php"
-	backupGlobals="false"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	>
-	<testsuites>
-		<testsuite name="integration">
-			<directory prefix="test-" suffix=".php">./tests/integration/</directory>
-		</testsuite>
-	</testsuites>
-	<filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./includes</directory>
-        </whitelist>
-    </filter>
-	<logging>
-		<log type="coverage-clover" target="coverage/clover.xml"/>
-	</logging>
+  backupGlobals="false"
+  bootstrap="tests/bootstrap.php"
+  colors="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
+  testdox="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./includes</directory>
+    </include>
+    <exclude>
+      <file>./includes/settings/views/headless-settings.php</file>
+    </exclude>
+    <report>
+      <clover outputFile="coverage/clover.xml"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="unit">
+      <directory suffix=".php">./tests/unit/</directory>
+    </testsuite>
+    <testsuite name="integration">
+      <directory suffix=".php">./tests/integration/</directory>
+    </testsuite>
+  </testsuites>
+  <logging/>
 </phpunit>

@@ -5,12 +5,12 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Replacement;
+namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Replacement\{ url_replacement };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 
-class GraphQLCallbacksTestCases extends \WP_UnitTestCase {
+class GraphQLCallbacksTests extends \WP_UnitTestCase {
 
 	private $graphqlResponse;
 
@@ -94,7 +94,7 @@ class GraphQLCallbacksTestCases extends \WP_UnitTestCase {
 		]
 	];
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		faustwp_update_setting( 'frontend_uri', 'http://frontend' );
