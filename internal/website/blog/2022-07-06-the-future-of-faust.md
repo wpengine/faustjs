@@ -13,7 +13,7 @@ Today we want to talk about where Faust.js is and where we're working on taking 
 
 ## Where Faust.js is Today
 
-First and foremost, the development of Faust.js is alive and well. When the last post was written in December we were a rather unorthodox team of two engineers working on understanding what faust should be.
+First and foremost, the development of Faust.js is alive and well. When the last post was written in December we were a rather unorthodox team of two engineers working on understanding what Faust.js should be.
 
 Today the Faust.js team, known internally as Team Merlin, is made of of five engineers and an engineering manager and [we're still looking for one more staff/lead engineer to join our team](https://wpengine.wd1.myworkdayjobs.com/en-US/WP_Engine/job/Software-Engineer-IV--ATLAS---Themes-_JR100226).
 
