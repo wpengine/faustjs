@@ -21,6 +21,15 @@ function is_redirects_enabled() {
 }
 
 /**
+ * Determines if opt-in usage tracking is enabled.
+ *
+ * @return bool True if enabled, false if not.
+ */
+function is_usage_tracking_enabled(): bool {
+	return '1' === faustwp_get_setting( 'enable_usage_tracking' );
+}
+
+/**
  * Determine if rewrites are enabled.
  *
  * @return bool True if rewrites are enabled, false if else.
@@ -129,6 +138,7 @@ function maybe_set_default_settings() {
 		faustwp_update_setting( 'disable_theme', '1' );
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		faustwp_update_setting( 'enable_redirects', '1' );
+		faustwp_update_setting( 'enable_usage_tracking', '0' ); // Opt-out by default.
 
 		// Force WP to regenerate rewrite rules without calling flush_rewrite_rules which breaks
 		// things when used inside of `switch_to_blog()`.
