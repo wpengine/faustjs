@@ -20,7 +20,7 @@ class SettingsCallbacksTests extends \WP_UnitTestCase {
 		'enable_redirects' => '1',
 		'enable_rewrites' => '1',
 		'disable_theme' => '1',
-		'enable_usage_tracking' => '0',
+		'enable_usage_tracking' => '1',
 	];
 
 	public function setUp(): void {

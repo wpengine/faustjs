@@ -1,2 +1,3 @@
-faustwp
-wp-graphql
+*
+!test-cpt
+!.gitignore
