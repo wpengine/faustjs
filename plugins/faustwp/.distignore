@@ -16,6 +16,7 @@ composer.json
 composer.lock
 docker-compose.yml
 phpunit.xml.dist
+phpunit-multisite.xml.dist
 vendor
 package.json
 .wordpress-org
