@@ -333,10 +333,10 @@ function display_frontend_uri_field() {
  * @return void
  */
 function display_enable_disable_fields() {
-	$disable_theme       = is_themes_disabled();
-	$enable_rewrites     = is_rewrites_enabled();
-	$enable_redirects    = is_redirects_enabled();
-	$enable_image_source = is_image_source_replacement_enabled();
+	$disable_theme         = is_themes_disabled();
+	$enable_rewrites       = is_rewrites_enabled();
+	$enable_redirects      = is_redirects_enabled();
+	$enable_image_source   = is_image_source_replacement_enabled();
 	$enable_usage_tracking = is_usage_tracking_enabled();
 
 	?>
