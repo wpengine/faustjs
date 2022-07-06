@@ -22,7 +22,9 @@ add_action( 'parse_request', __NAMESPACE__ . '\\handle_generate_endpoint' );
  * @return void
  */
 function handle_generate_endpoint() {
-	if ( ! preg_match( '/^\/generate/', $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security
+	$search_pattern = ':^' . site_url( '/generate', 'relative' ) . ':';
+
+	if ( ! preg_match( $search_pattern, $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security
 		return;
 	}
 
