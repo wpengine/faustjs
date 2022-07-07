@@ -22,11 +22,12 @@ function show_usage_tracking_prompt() {
 	printf(
 		'<div id="%s" class="notice notice-info notice-alt is-dismissible">
 			<h2 class="notice-title">%s</h2>
-			<p>%s</p>
+			<p>%s&nbsp;<b>%s</b></p>
 		</div>',
 		esc_attr( PROMPT_ID ),
 		esc_html__( 'FaustWP enable usage tracking', 'faustwp' ),
-		esc_html__( 'Opt into anonymous usage tracking to help us make Faust.js better.', 'faustwp' )
+		esc_html__( 'Opt into anonymous usage tracking to help us make Faust.js better.', 'faustwp' ),
+		esc_html__( 'Settings -> Headless -> Enable usage tracking', 'faustwp' ),
 	);
 }
 add_action( 'admin_notices', __NAMESPACE__ . '\\show_usage_tracking_prompt' );

@@ -378,7 +378,7 @@ function display_enable_disable_fields() {
 
 		<label for="enable_usage_tracking">
 			<input type="checkbox" id="enable_usage_tracking" name="faustwp_settings[enable_usage_tracking]" value="1" <?php checked( $enable_usage_tracking ); ?> />
-			<?php esc_html_e( 'Opt into anonymous usage tracking to help us make Faust better', 'faustwp' ); ?>
+			<?php esc_html_e( 'Enable usage tracking', 'faustwp' ); ?>
 		</label>
 	</fieldset>
 	<?php
