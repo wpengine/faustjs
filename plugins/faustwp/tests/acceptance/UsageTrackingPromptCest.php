@@ -29,7 +29,7 @@ class UsageTrackingPromptCest
         $I->amOnPluginsPage();
 
 		$I->click( '#faustwp_plugin_usage_tracking > button' );
-		$I->wait(2);
+		$I->wait(4);
 		$I->dontSeeElementInDOM( '#faustwp_plugin_usage_tracking' );
 		$I->amOnFaustWPSettingsPage();
 
