@@ -31,6 +31,8 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
     if (wordPressNodeParams && Array.isArray(wordPressNodeParams)) {
       resolvedUrl = `/${wordPressNodeParams.join("/")}`;
+    } else {
+      resolvedUrl = '/';
     }
   } else {
     resolvedUrl = ctx.req.url;

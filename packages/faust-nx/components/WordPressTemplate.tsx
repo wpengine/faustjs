@@ -22,14 +22,13 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const { query, variables, Component } = template;
 
   let res;
-  if (query) {
-    res = useQuery(query, {
-      variables: variables ? variables(seedNode) : undefined,
-      ssr: true,
-    });
-  }
+  res = useQuery(query, {
+    variables: variables ? variables(seedNode) : undefined,
+    ssr: true,
+    skip: !query
+  });
 
   const { data, error, loading } = res ?? {};
 
-  return Component({ ...props, data, error, loading });
+  return React.cloneElement(<Component />, { ...props, data, error, loading }, null);
 }
