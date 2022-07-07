@@ -27,7 +27,7 @@ function show_usage_tracking_prompt() {
 		esc_attr( PROMPT_ID ),
 		esc_html__( 'FaustWP enable usage tracking', 'faustwp' ),
 		esc_html__( 'Opt into anonymous usage tracking to help us make Faust.js better.', 'faustwp' ),
-		esc_html__( 'Settings -> Headless -> Enable usage tracking', 'faustwp' ),
+		esc_html__( 'Settings -> Headless -> Enable usage tracking', 'faustwp' )
 	);
 }
 add_action( 'admin_notices', __NAMESPACE__ . '\\show_usage_tracking_prompt' );
