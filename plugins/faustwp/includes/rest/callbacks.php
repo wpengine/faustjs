@@ -15,6 +15,16 @@ use function WPE\FaustWP\Auth\{
 	generate_access_token
 };
 use function WPE\FaustWP\Settings\get_secret_key;
+use function WPE\FaustWP\Telemetry\{
+	get_wp_version,
+	is_wpe,
+	get_active_theme,
+	get_active_theme_version,
+	get_active_plugins,
+	get_active_network_plugins,
+	get_permalink_structure,
+	get_anonymous_faustwp_settings
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -59,6 +69,7 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 /**
  * Callback for WordPress 'rest_api_init' action.
  *
+ * Register the GET /faustwp/v1/telemetry endpoint.
  * Register the POST /faustwp/v1/authorize endpoint.
  *
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
@@ -67,6 +78,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
  * @return void
  */
 function register_rest_routes() {
+	register_rest_route(
+		'faustwp/v1',
+		'/telemetry',
+		array(
+			'methods'             => 'GET',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_permission_callback',
+		)
+	);
+
 	register_rest_route(
 		'faustwp/v1',
 		'/authorize',
@@ -91,6 +112,38 @@ function register_rest_routes() {
 			'permission_callback' => __NAMESPACE__ . '\\wpac_authorize_permission_callback',
 		)
 	);
+}
+
+/**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle GET /faustwp/v1/telemetry response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current WP_REST_Request object.
+ *
+ * @return mixed A WP_REST_Response, array, or WP_Error.
+ */
+function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
+	$data = array(
+		'php_version'            => PHP_VERSION,
+		'wp_version'             => get_wp_version(),
+		'wp_multisite'           => is_multisite(),
+		'wp_theme'               => get_active_theme(),
+		'wp_theme_version'       => get_active_theme_version(),
+		'wp_plugins'             => get_active_plugins(),
+		'wp_permalink_structure' => get_permalink_structure(),
+		'faustwp_settings'       => get_anonymous_faustwp_settings(),
+		'is_wpe'                 => is_wpe(),
+	);
+
+	if ( is_multisite() ) {
+		$data['wp_network_plugins'] = get_active_network_plugins();
+	}
+
+	return new \WP_REST_Response( $data );
 }
 
 /**
@@ -160,6 +213,19 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	}
 
 	return false;
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/telemetry`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_telemetry_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**
