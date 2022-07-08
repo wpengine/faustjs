@@ -101,6 +101,7 @@ Once deployed, the updated packages and plugin will be visible here:
 - https://www.npmjs.com/package/@faustjs/core
 - https://www.npmjs.com/package/@faustjs/react
 - https://www.npmjs.com/package/@faustjs/next
+- https://www.npmjs.com/package/@faustjs/faust-nx
 - https://plugins.trac.wordpress.org/browser/faustwp/tags
 
 ### Update the docs
