@@ -36,10 +36,6 @@ class UsageTrackingPromptCest
 		$I->click(' #enable_usage_tracking ');
 		$I->click( '#submit' );
 		$I->wait(2);
-
-		$I->click(' #enable_usage_tracking ');
-		$I->click( '#submit' );
-		$I->wait(2);
 		$I->dontSeeElementInDOM( '#faustwp_plugin_usage_tracking' );
 	}
 }
