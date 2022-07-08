@@ -5,7 +5,9 @@
  * @package FaustWP
  */
 
-use function WPE\FaustWP\GraphQL\is_wpgraphql_active;
+use function WPE\FaustWP\Settings\{
+	is_wpgraphql_active
+};
 
 ?>
 <div class="wrap">
