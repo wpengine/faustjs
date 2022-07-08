@@ -5,15 +5,20 @@ import Configstore from 'configstore';
 import { spawn } from 'child_process';
 import prompt from 'prompt';
 import { v4 as uuid } from 'uuid';
+import fs from 'fs';
 
 const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/collect';
 const GA_TRACKING_ID = 'GA-xxxx';
 const CONFIG_STORE_NAME = 'faustnx';
+const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 export interface TelemetryPayload {
-  cpuCount: number;
-  platform: string;
-  arch: string;
+  faustNxVersion: string;
+  faustNxCliVersion: string;
+  apolloClientVersion: string;
+  nodeVersion: string;
+  nextJsVersion: string;
+  isDevelopment: boolean;
 }
 
 /**
@@ -109,10 +114,13 @@ const sendTelemetryData = (
   }
 
   // The telemetry data to collect
-  const telemetryData = {
-    cpuCount: os.cpus().length,
-    platform: os.platform(),
-    arch: os.arch(),
+  const telemetryData: TelemetryPayload = {
+    faustNxVersion: packageJson?.dependencies?.['faust-nx'],
+    faustNxCliVersion: packageJson?.dependencies?.['faust-nx-cli'],
+    apolloClientVersion: packageJson?.dependencies?.['@apollo/client'],
+    nodeVersion: process.versions.node,
+    nextJsVersion: packageJson?.dependencies?.['next'],
+    isDevelopment: nextCliArgs[0] === 'dev',
   };
 
   /**
@@ -120,7 +128,7 @@ const sendTelemetryData = (
    * anonymousId exists, send the telemetry data.
    */
   if (
-    nextCliArgs[0] === 'build' &&
+    (nextCliArgs[0] === 'dev' || nextCliArgs[0] === 'build') &&
     config.get('telemetry.enabled') === true &&
     config.get('telemetry.anonymousId')
   ) {
