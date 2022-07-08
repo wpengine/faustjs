@@ -2,9 +2,9 @@
 
 There are many ways to [contribute](../../CONTRIBUTING.md) to this project.
 
-- [Discuss open issues](https://github.com/wpengine/faustnx/issues) to help define the future of the project.
-- [Submit bugs](https://github.com/wpengine/faustnx/issues) and help us verify fixes as they are checked in.
-- Review and discuss the [source code changes](https://github.com/wpengine/faustnx/pulls).
+- [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
+- [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
+- Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
 - [Contribute bug fixes](../../CONTRIBUTING.md)
 
 ## Project Structure
@@ -38,7 +38,7 @@ NEXT_PUBLIC_GRAPHQL_ENDPOINT=http://headless.local/graphql
 We have three notable branches:
 
 - `canary` - This branch has the latest changes
-- `main` - This branch is used to deploy changes to [faustnx.org](https://faustnx.org)
+- `main` - This branch is used to deploy changes to [faustjs.org](https://faustjs.org)
 - `site-dev` - This branch is used to deploy to the staging site
 
 ### Code Changes/Feature Workflow
@@ -65,9 +65,9 @@ When your feature branch includes changes to the documentation website, it's hel
 
 ### Prod Site Deployment
 
-The docs on faustnx.org are automatically built on pushes to `main`. Updating the docs on `main` will update faustnx.org within 10 minutes.
+The docs on faustjs.org are automatically built on pushes to `main`. Updating the docs on `main` will update faustjs.org within 10 minutes.
 
-After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faustnx.org.
+After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faustjs.org.
 
 **Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
 
@@ -79,7 +79,7 @@ Developers with full GitHub repository access can create public releases. We use
 
 When you are ready to release, you should first create the new package and plugin versions.
 
-1. Go to [pull requests](https://github.com/wpengine/faustnx/pulls), and view the "Version Packages" PR.
+1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
 2. Review the PR:
   - [ ] Changelog entries were created in all updated packages or plugins.
   - [ ] Version numbers were appropriately bumped in the relevant package.json files.
@@ -88,9 +88,9 @@ When you are ready to release, you should first create the new package and plugi
   - [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
 3. Approve, then "Squash and merge" the "Version Packages" PR into `canary`.
 
-### Publishing the @faustnx packages
+### Publishing the @faustjs packages
 
-The @faustnx packages are automatically published to NPM through a GitHub action once the "Version Packages" PR is merged.
+The @faustjs packages are automatically published to NPM through a GitHub action once the "Version Packages" PR is merged.
 
 ### Publishing the FaustWP plugin
 
@@ -98,9 +98,9 @@ Once the "Version Packages" PR is merged, create a new release on GitHub with a 
 
 Once deployed, the updated packages and plugin will be visible here:
 
-- https://www.npmjs.com/package/@faustnx/core
-- https://www.npmjs.com/package/@faustnx/react
-- https://www.npmjs.com/package/@faustnx/next
+- https://www.npmjs.com/package/@faustjs/core
+- https://www.npmjs.com/package/@faustjs/react
+- https://www.npmjs.com/package/@faustjs/next
 - https://plugins.trac.wordpress.org/browser/faustwp/tags
 
 ### Update the docs
