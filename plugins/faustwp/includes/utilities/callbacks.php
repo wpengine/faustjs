@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\Utilities;
 
 use function WPE\FaustWP\Detect_Conflicts\delete_conflicts_dismissed;
+use function WPE\FaustWP\Usage_Tracking\delete_usage_tracking_dismissed;
 use function WPE\FaustWP\Settings\{
 	get_secret_key,
 	faustwp_get_settings,
@@ -74,6 +75,7 @@ register_deactivation_hook( FAUSTWP_FILE, __NAMESPACE__ . '\\handle_deactivation
  */
 function handle_deactivation() {
 	delete_conflicts_dismissed();
+	delete_usage_tracking_dismissed();
 	flush_rewrite_rules();
 }
 

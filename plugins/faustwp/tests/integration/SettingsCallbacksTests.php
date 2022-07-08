@@ -20,6 +20,7 @@ class SettingsCallbacksTests extends \WP_UnitTestCase {
 		'enable_redirects' => '1',
 		'enable_rewrites' => '1',
 		'disable_theme' => '1',
+		'enable_usage_tracking' => '1',
 	];
 
 	public function setUp(): void {
@@ -146,6 +147,7 @@ class SettingsCallbacksTests extends \WP_UnitTestCase {
 			'enable_rewrites',
 			'disable_theme',
 			'enable_image_source',
+			'enable_usage_tracking',
 		];
 
 		$truthy = [ 1, '1', true, 'true', 'off', 42 ];

@@ -169,6 +169,7 @@ function sanitize_faustwp_settings( $settings, $option ) {
 			case 'enable_rewrites':
 			case 'disable_theme':
 			case 'enable_image_source':
+			case 'enable_usage_tracking':
 				if ( $value ) {
 					$settings[ $name ] = '1';
 				} else {
@@ -332,10 +333,11 @@ function display_frontend_uri_field() {
  * @return void
  */
 function display_enable_disable_fields() {
-	$disable_theme       = is_themes_disabled();
-	$enable_rewrites     = is_rewrites_enabled();
-	$enable_redirects    = is_redirects_enabled();
-	$enable_image_source = is_image_source_replacement_enabled();
+	$disable_theme         = is_themes_disabled();
+	$enable_rewrites       = is_rewrites_enabled();
+	$enable_redirects      = is_redirects_enabled();
+	$enable_image_source   = is_image_source_replacement_enabled();
+	$enable_usage_tracking = is_usage_tracking_enabled();
 
 	?>
 	<fieldset>
@@ -371,6 +373,12 @@ function display_enable_disable_fields() {
 		<label for="enable_image_source">
 			<input type="checkbox" id="enable_image_source" name="faustwp_settings[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
 			<?php esc_html_e( 'Use the WordPress domain for media URLs in post content', 'faustwp' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_usage_tracking">
+			<input type="checkbox" id="enable_usage_tracking" name="faustwp_settings[enable_usage_tracking]" value="1" <?php checked( $enable_usage_tracking ); ?> />
+			<?php esc_html_e( 'Enable usage tracking', 'faustwp' ); ?>
 		</label>
 	</fieldset>
 	<?php
