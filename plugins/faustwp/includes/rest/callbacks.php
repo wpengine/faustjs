@@ -14,12 +14,14 @@ use function WPE\FaustWP\Auth\{
 	generate_refresh_token,
 	generate_access_token
 };
-use function WPE\FaustWP\Settings\get_secret_key;
+use function WPE\FaustWP\Settings\{
+	get_secret_key,
+	is_usage_tracking_enabled
+};
 use function WPE\FaustWP\Telemetry\{
 	get_wp_version,
 	is_wpe,
-	get_anonymous_faustwp_settings,
-	get_plugin_version
+	get_anonymous_faustwp_data,
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -124,13 +126,11 @@ function register_rest_routes() {
  */
 function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	$data = array(
-		'php_version'            => PHP_VERSION,
-		'wp_version'             => get_wp_version(),
-		'wp_multisite'           => is_multisite(),
-		'faustwp_settings'       => get_anonymous_faustwp_settings(),
-		'is_wpe'                 => is_wpe(),
-		'wpgraphql_version'      => get_plugin_version( 'wpgraphql' ),
-		'faustwp_version'        => get_plugin_version( 'faustwp' )
+		'faustwp'     => get_anonymous_faustwp_data(),
+		'is_wpe'      => is_wpe(),
+		'multisite'   => is_multisite(),
+		'php_version' => PHP_VERSION,
+		'wp_version'  => get_wp_version(),
 	);
 
 	return new \WP_REST_Response( $data );
@@ -195,9 +195,13 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
-	return true;
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
+
+	// Bail if admin has not enabled usage tracking.
+	if ( ! is_usage_tracking_enabled() ) {
+		return false;
+	}
 
 	if ( $secret_key && $header_key ) {
 		return $secret_key === $header_key;

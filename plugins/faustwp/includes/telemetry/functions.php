@@ -14,6 +14,9 @@ use function WPE\FaustWP\Settings\{
 	is_image_source_replacement_enabled,
 	faustwp_get_setting,
 };
+use function WPE\FaustWP\Telemetry\{
+	get_plugin_version,
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -42,8 +45,9 @@ function is_wpe() {
  *
  * @return array
  */
-function get_anonymous_faustwp_settings() {
-	$anonymous_settings = array(
+function get_anonymous_faustwp_data() {
+	$anonymous_data = array(
+		'version'                          => get_plugin_version(),
 		'has_frontend_uri'                 => has_frontend_uri(),
 		'redirects_enabled'                => is_redirects_enabled(),
 		'rewrites_enabled'                 => is_rewrites_enabled(),
@@ -51,7 +55,7 @@ function get_anonymous_faustwp_settings() {
 		'image_source_replacement_enabled' => is_image_source_replacement_enabled(),
 	);
 
-	return $anonymous_settings;
+	return $anonymous_data;
 }
 
 /**
@@ -67,4 +71,16 @@ function has_frontend_uri() {
 	}
 
 	return true;
+}
+
+/**
+ * Returns the FaustWP plugin version.
+ *
+ * @return string
+ */
+function get_plugin_version() {
+	$file_data = get_file_data( FAUSTWP_FILE, array( 'Version' ) );
+	$version   = $file_data[0];
+
+	return $version;
 }
