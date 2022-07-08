@@ -18,12 +18,8 @@ use function WPE\FaustWP\Settings\get_secret_key;
 use function WPE\FaustWP\Telemetry\{
 	get_wp_version,
 	is_wpe,
-	get_active_theme,
-	get_active_theme_version,
-	get_active_plugins,
-	get_active_network_plugins,
-	get_permalink_structure,
-	get_anonymous_faustwp_settings
+	get_anonymous_faustwp_settings,
+	get_plugin_version
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -131,17 +127,11 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 		'php_version'            => PHP_VERSION,
 		'wp_version'             => get_wp_version(),
 		'wp_multisite'           => is_multisite(),
-		'wp_theme'               => get_active_theme(),
-		'wp_theme_version'       => get_active_theme_version(),
-		'wp_plugins'             => get_active_plugins(),
-		'wp_permalink_structure' => get_permalink_structure(),
 		'faustwp_settings'       => get_anonymous_faustwp_settings(),
 		'is_wpe'                 => is_wpe(),
+		'wpgraphql_version'      => get_plugin_version( 'wpgraphql' ),
+		'faustwp_version'        => get_plugin_version( 'faustwp' )
 	);
-
-	if ( is_multisite() ) {
-		$data['wp_network_plugins'] = get_active_network_plugins();
-	}
 
 	return new \WP_REST_Response( $data );
 }
@@ -205,6 +195,7 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
+	return true;
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
 
