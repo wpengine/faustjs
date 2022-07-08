@@ -59,6 +59,7 @@ const sendTelemetryData = (
 };
 
 (async () => {
+  prompt.start();
   const nextCliArgs = process.argv.filter((arg, index) => index > 1);
   const config = new Configstore(CONFIG_STORE_NAME);
 
@@ -69,11 +70,9 @@ const sendTelemetryData = (
    */
   if (
     !config.all?.telemetry ||
-    !config.all?.telemetry?.enabled ||
+    config.all?.telemetry?.enabled === undefined ||
     !config.all?.telemetry?.anonymousId
   ) {
-    prompt.start();
-
     const { isTelemetryEnabled } = await prompt.get({
       properties: {
         isTelemetryEnabled: {
@@ -92,6 +91,23 @@ const sendTelemetryData = (
     });
   }
 
+  if (nextCliArgs[0] === 'faustnx-telemetry') {
+    const { isTelemetryEnabled } = await prompt.get({
+      properties: {
+        isTelemetryEnabled: {
+          description:
+            'Would you like to enable telemetry in FaustNX? This helps us make more informed feature decisions. true/false',
+          required: true,
+          type: 'boolean',
+        },
+      },
+    });
+
+    config.set('telemetry.enabled', isTelemetryEnabled);
+
+    process.exit(0);
+  }
+
   // The telemetry data to collect
   const telemetryData = {
     cpuCount: os.cpus().length,
@@ -106,9 +122,10 @@ const sendTelemetryData = (
   if (
     nextCliArgs[0] === 'build' &&
     config.get('telemetry.enabled') === true &&
-    !config.get('telemetry.anonymousId')
+    config.get('telemetry.anonymousId')
   ) {
     try {
+      console.log('Sending Telemetry event', telemetryData);
       sendTelemetryData(
         'ga-category',
         'ga-action',
@@ -117,7 +134,6 @@ const sendTelemetryData = (
         config.get('telemetry.anonymousId'),
       );
     } catch (err) {
-      console.log('request failed');
       // Fail silently
     }
   }
