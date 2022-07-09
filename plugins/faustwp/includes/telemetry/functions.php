@@ -14,9 +14,6 @@ use function WPE\FaustWP\Settings\{
 	is_image_source_replacement_enabled,
 	faustwp_get_setting,
 };
-use function WPE\FaustWP\Telemetry\{
-	get_plugin_version,
-};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
