@@ -280,5 +280,10 @@ module.exports = {
         },
       ],
     },
+    {
+      type: 'doc',
+      label: 'Telemetry',
+      id: 'telemetry',
+    },
   ],
 };
