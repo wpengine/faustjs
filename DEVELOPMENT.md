@@ -35,7 +35,7 @@ Instead, you can create symlinks to the themes/plugins in this repository. Best 
 **Setup**
 To begin working with the FaustWP WordPress plugin, you will need to symlink the plugin from the monorepo to your WordPress plugin development directory.
 
-```
+```sh
 ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/faustwp
 ```
 
@@ -44,19 +44,19 @@ ln -s /path/to/faustjs/plugins/faustwp /path/to/wordpress/wp-content/plugins/fau
 
 Install the composer packages from within `plugins/faustwp` directory if you haven't already.
 
-```
+```sh
 composer install
 ```
 
 Run the syntax check.
 
-```
+```sh
 composer phpcs
 ```
 
 Use `phpcs` to fix some syntax errors:
 
-```
+```sh
 composer phpcs:fix
 ```
 
@@ -64,37 +64,37 @@ composer phpcs:fix
 
 To run WordPress unit tests, first start the Docker application from the `plugins/faustwp` directory:
 
-```
+```sh
 composer run docker:start
 ```
 
 If desired, you may specify the WP_VERSION you'd like to run tests against:
 
-```
+```sh
 WP_VERSION=5.5 composer run docker:start
 ```
 
 Once the containers are up, set up the test framework. If you want to enable code coverage reporting, make sure you provide the `COVERAGE=1` environment variable as a parameter:
 
-```
+```sh
 docker-compose exec -e COVERAGE=1 wordpress init-testing-environment.sh
 ```
 
 Install and activate WP GraphQL:
 
-```
+```sh
 docker-compose exec --workdir=/var/www/html/wp-content/plugins/faustwp --user=www-data wordpress wp plugin install wp-graphql --activate
 ```
 
 Run the unit tests:
 
-```
+```sh
 docker-compose exec -w /var/www/html/wp-content/plugins/faustwp wordpress composer test
 ```
 
 Finally, to remove the containers:
 
-```
+```sh
 composer run docker:stop
 ```
 
@@ -118,7 +118,7 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 
 1. Create the following `.env.test` in `examples/next/getting-started`.
 
-```
+```sh
 # Your WordPress site URL
 NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 
