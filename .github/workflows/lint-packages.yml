@@ -1,5 +1,10 @@
 name: Lint Packages
-on: pull_request
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
 jobs:
   lint_packages:
     runs-on: ubuntu-latest
