@@ -3,7 +3,7 @@ name: E2E Test Plugin
 on:
   pull_request:
     paths-ignore:
-      - '**.md'
+      - '**/*.md'
 
 jobs:
   e2e_test_plugin:

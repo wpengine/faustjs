@@ -6,7 +6,7 @@ on:
     branches:
       - canary
     paths-ignore:
-      - '**.md'
+      - '**/*.md'
 
 name: SonarQube Scan
 jobs:

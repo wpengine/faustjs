@@ -3,7 +3,7 @@ name: Lint Packages
 on:
   pull_request:
     paths-ignore:
-      - '**.md'
+      - '**/*.md'
 
 jobs:
   lint_packages:

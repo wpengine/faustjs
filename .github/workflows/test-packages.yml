@@ -3,7 +3,7 @@ name: Test Packages
 on:
   pull_request:
     paths-ignore:
-      - '**.md'
+      - '**/*.md'
 
 jobs:
   test_packages:
