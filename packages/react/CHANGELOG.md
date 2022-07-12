@@ -1,5 +1,13 @@
 # @faustjs/react
 
+## 0.15.7
+
+### Patch Changes
+
+- 6ab4e1d: Added support for older versions of iOS
+- Updated dependencies [6ab4e1d]
+  - @faustjs/core@0.15.7
+
 ## 0.15.6
 
 ### Patch Changes

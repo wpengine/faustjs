@@ -1,5 +1,12 @@
 # FaustWP
 
+## 0.7.10
+
+### Patch Changes
+
+- 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
+- 0c757a2: Remove unnecessary config from wordpress.org zip.
+
 ## 0.7.9
 
 ### Patch Changes
