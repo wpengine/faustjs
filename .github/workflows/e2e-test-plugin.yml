@@ -49,7 +49,7 @@ jobs:
         run: cp .env.testing.example .env.testing
       - name: Run test
         working-directory: plugins/faustwp
-        run: vendor/bin/codecept run acceptance
+        run: vendor/bin/codecept run acceptance --debug
       - name: Upload Test Output
         uses: actions/upload-artifact@v2
         if: failure()
