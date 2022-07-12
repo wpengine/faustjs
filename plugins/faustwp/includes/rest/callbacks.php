@@ -198,11 +198,6 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
 
-	// Bail if admin has not enabled usage tracking.
-	if ( ! is_usage_tracking_enabled() ) {
-		return false;
-	}
-
 	if ( $secret_key && $header_key ) {
 		return $secret_key === $header_key;
 	}
@@ -220,6 +215,11 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_telemetry_permission_callback( \WP_REST_Request $request ) {
+	// Bail if admin has not enabled usage tracking.
+	if ( ! is_usage_tracking_enabled() ) {
+		return false;
+	}
+
 	return rest_authorize_permission_callback( $request );
 }
 
