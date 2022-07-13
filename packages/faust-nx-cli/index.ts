@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import os from 'os';
 import Configstore from 'configstore';
 import { spawn } from 'child_process';
 import prompt from 'prompt';
@@ -11,6 +10,7 @@ const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/collect';
 const GA_TRACKING_ID = 'GA-xxxx';
 const CONFIG_STORE_NAME = 'faustnx';
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const config = new Configstore(CONFIG_STORE_NAME);
 
 export interface TelemetryPayload {
   faustNxVersion: string;
@@ -63,10 +63,32 @@ const sendTelemetryData = (
   });
 };
 
+const promptUserForTelemetryPref = async (isInit: boolean) => {
+  const { isTelemetryEnabled } = await prompt.get({
+    properties: {
+      isTelemetryEnabled: {
+        description:
+          'Would you like to enable telemetry in FaustNX? This helps us make more informed feature decisions. true/false',
+        required: true,
+        type: 'boolean',
+      },
+    },
+  });
+
+  if (isInit) {
+    config.set('telemetry', {
+      notifiedAt: new Date().getTime(),
+      anonymousId: uuid(),
+      enabled: isTelemetryEnabled,
+    });
+  } else {
+    config.set('telemetry.enabled', isTelemetryEnabled);
+  }
+};
+
 (async () => {
   prompt.start();
   const nextCliArgs = process.argv.filter((arg, index) => index > 1);
-  const config = new Configstore(CONFIG_STORE_NAME);
 
   /**
    * If there is no config (or a non-valid config), prompt the user for their
@@ -78,37 +100,11 @@ const sendTelemetryData = (
     config.all?.telemetry?.enabled === undefined ||
     !config.all?.telemetry?.anonymousId
   ) {
-    const { isTelemetryEnabled } = await prompt.get({
-      properties: {
-        isTelemetryEnabled: {
-          description:
-            'Would you like to enable telemetry in FaustNX? This helps us make more informed feature decisions. true/false',
-          required: true,
-          type: 'boolean',
-        },
-      },
-    });
-
-    config.set('telemetry', {
-      notifiedAt: new Date().getTime(),
-      anonymousId: uuid(),
-      enabled: isTelemetryEnabled,
-    });
+    await promptUserForTelemetryPref(true);
   }
 
   if (nextCliArgs[0] === 'faustnx-telemetry') {
-    const { isTelemetryEnabled } = await prompt.get({
-      properties: {
-        isTelemetryEnabled: {
-          description:
-            'Would you like to enable telemetry in FaustNX? This helps us make more informed feature decisions. true/false',
-          required: true,
-          type: 'boolean',
-        },
-      },
-    });
-
-    config.set('telemetry.enabled', isTelemetryEnabled);
+    await promptUserForTelemetryPref(false);
 
     process.exit(0);
   }
