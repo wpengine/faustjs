@@ -16,7 +16,6 @@ use function WPE\FaustWP\Auth\{
 };
 use function WPE\FaustWP\Settings\{
 	get_secret_key,
-	is_usage_tracking_enabled
 };
 use function WPE\FaustWP\Telemetry\{
 	get_wp_version,
@@ -215,11 +214,6 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_telemetry_permission_callback( \WP_REST_Request $request ) {
-	// Bail if admin has not enabled usage tracking.
-	if ( ! is_usage_tracking_enabled() ) {
-		return false;
-	}
-
 	return rest_authorize_permission_callback( $request );
 }
 
