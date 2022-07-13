@@ -2,94 +2,22 @@
 
 import Configstore from 'configstore';
 import { spawn } from 'child_process';
-import prompt from 'prompt';
-import { v4 as uuid } from 'uuid';
-import fs from 'fs';
+import dotenv from 'dotenv-flow';
+import {
+  marshallTelemetryData,
+  getCliArgs,
+  validateFaustNXEnvVars,
+  promptUserForTelemetryPref,
+  sendTelemetryData,
+  requestWPTelemetryData,
+  noticeLog,
+} from './utils/index.js';
 
-const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/collect';
-const GA_TRACKING_ID = 'GA-xxxx';
+dotenv.config();
 const CONFIG_STORE_NAME = 'faustnx';
-const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const config = new Configstore(CONFIG_STORE_NAME);
 
-export interface TelemetryPayload {
-  faustNxVersion: string;
-  faustNxCliVersion: string;
-  apolloClientVersion: string;
-  nodeVersion: string;
-  nextJsVersion: string;
-  isDevelopment: boolean;
-}
-
-/**
- * Used to fire Google Analytics requests
- *
- * @param category GA Category
- * @param action GA Action
- * @param label GA Label
- * @param payload The data being sent to GA
- * @param anonymousId The anonymous ID of the machine we captured during init
- */
-const sendTelemetryData = (
-  category: string,
-  action: string,
-  label: string,
-  payload: TelemetryPayload,
-  anonymousId: string,
-) => {
-  const data = {
-    // API Version.
-    v: '1',
-    // Tracking ID / Property ID.
-    tid: GA_TRACKING_ID,
-    // Anonymous Client Identifier. Ideally, this should be a UUID that
-    // is associated with particular user, device, or browser instance.
-    cid: anonymousId,
-    // Event hit type.
-    t: 'event',
-    // Event category.
-    ec: category,
-    // Event action.
-    ea: action,
-    // Event label.
-    el: label,
-    // Event value.
-    ev: payload,
-  };
-
-  return fetch(GA_TRACKING_ENDPOINT, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
-};
-
-const promptUserForTelemetryPref = async (isInit: boolean) => {
-  const { isTelemetryEnabled } = await prompt.get({
-    properties: {
-      isTelemetryEnabled: {
-        description:
-          'Would you like to enable telemetry in FaustNX? This helps us make more informed feature decisions. true/false',
-        required: true,
-        type: 'boolean',
-      },
-    },
-  });
-
-  if (isInit) {
-    config.set('telemetry', {
-      notifiedAt: new Date().getTime(),
-      anonymousId: uuid(),
-      enabled: isTelemetryEnabled,
-    });
-  } else {
-    config.set('telemetry.enabled', isTelemetryEnabled);
-  }
-};
-
 (async () => {
-  prompt.start();
-  const nextCliArgs = process.argv.filter((arg, index) => index > 1);
-
   /**
    * If there is no config (or a non-valid config), prompt the user for their
    * permission to collect anonymous telemetry information and save their
@@ -100,36 +28,34 @@ const promptUserForTelemetryPref = async (isInit: boolean) => {
     config.all?.telemetry?.enabled === undefined ||
     !config.all?.telemetry?.anonymousId
   ) {
-    await promptUserForTelemetryPref(true);
+    await promptUserForTelemetryPref(true, config);
   }
 
-  if (nextCliArgs[0] === 'faustnx-telemetry') {
-    await promptUserForTelemetryPref(false);
+  if (getCliArgs()[0] === 'faustnx-telemetry') {
+    await promptUserForTelemetryPref(false, config);
 
     process.exit(0);
   }
 
-  // The telemetry data to collect
-  const telemetryData: TelemetryPayload = {
-    faustNxVersion: packageJson?.dependencies?.['faust-nx'],
-    faustNxCliVersion: packageJson?.dependencies?.['faust-nx-cli'],
-    apolloClientVersion: packageJson?.dependencies?.['@apollo/client'],
-    nodeVersion: process.versions.node,
-    nextJsVersion: packageJson?.dependencies?.['next'],
-    isDevelopment: nextCliArgs[0] === 'dev',
-  };
+  validateFaustNXEnvVars();
 
-  /**
-   * If the script being ran is "faustnx build", telemetry is enabled, and the
-   * anonymousId exists, send the telemetry data.
-   */
-  if (
-    (nextCliArgs[0] === 'dev' || nextCliArgs[0] === 'build') &&
+  const shouldFireTelemetryEvent =
+    (getCliArgs()[0] === 'dev' || getCliArgs()[0] === 'build') &&
     config.get('telemetry.enabled') === true &&
-    config.get('telemetry.anonymousId')
-  ) {
+    config.get('telemetry.anonymousId') &&
+    process.env.HEADLESS_SECRET_KEY;
+
+  if (shouldFireTelemetryEvent) {
     try {
-      console.log('Sending Telemetry event', telemetryData);
+      const wpTelemetryData = await requestWPTelemetryData(
+        process.env.NEXT_PUBLIC_WORDPRESS_URL!,
+        process.env.HEADLESS_SECRET_KEY!,
+      );
+
+      const telemetryData = await marshallTelemetryData(wpTelemetryData);
+
+      noticeLog('Telemetry event being sent', telemetryData);
+
       sendTelemetryData(
         'ga-category',
         'ga-action',
@@ -138,6 +64,7 @@ const promptUserForTelemetryPref = async (isInit: boolean) => {
         config.get('telemetry.anonymousId'),
       );
     } catch (err) {
+      console.log(err);
       // Fail silently
     }
   }
@@ -146,5 +73,5 @@ const promptUserForTelemetryPref = async (isInit: boolean) => {
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
-  const nextCommand = spawn('next', nextCliArgs, { stdio: 'inherit' });
+  const nextCommand = spawn('next', getCliArgs(), { stdio: 'inherit' });
 })();
