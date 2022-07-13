@@ -38,7 +38,6 @@ class SettingsCest
         $I->seeCheckboxIsChecked('#enable_rewrites');
         $I->seeCheckboxIsChecked('#enable_redirects');
         $I->dontSeeCheckboxIsChecked('#enable_image_source');
-		$I->dontSeeCheckboxIsChecked('#enable_usage_tracking');
     }
 
     /**
@@ -114,7 +113,7 @@ class SettingsCest
     }
 
     /**
-     * Ensure that my secret key will not be regenerated if I click 'cancel' on the confirmation.
+     * Ensure that my secret key will not be regnerated if I click 'cancel' on the confirmation.
      */
     public function i_can_cancel_my_secret_key_from_being_regenerated(AcceptanceTester $I)
     {
