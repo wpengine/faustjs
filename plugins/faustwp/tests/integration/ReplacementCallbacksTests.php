@@ -146,8 +146,6 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	/**
 	 * Tests get_permalink() returns the original value when content replacement is not enabled.
-	 *
-	 * @covers ::post_link() which runs on post_link filter.
 	 */
 	public function test_post_link_returns_unfiltered_link_when_content_replacement_is_not_enabled() {
 		$this->assertSame( 'http://example.org/?p=' . $this->post_id, get_permalink( $this->post_id ) );
@@ -229,8 +227,6 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	/**
 	 * Tests get_term_link() returns original value when term link rewrites are not enabled.
-	 *
-	 * @covers ::term_link(), which runs on term_link filter inside get_term_link().
 	 */
 	public function test_term_link_returns_unfiltered_link_when_rewrite_term_links_is_not_enabled() {
 		$this->assertSame( 'http://example.org/?cat=1', get_term_link( 1 ) );
@@ -238,8 +234,6 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	/**
 	 * Tests get_term_link() returns rewritten value when term link rewrites are enabled.
-	 *
-	 * @covers ::term_link(), which runs on term_link filter inside get_term_link().
 	 */
 	public function test_term_link_returns_filtered_link_when_rewrite_term_links_enabled() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
