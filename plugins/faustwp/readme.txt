@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.0
-Stable tag: 0.7.9
+Stable tag: 0.7.10
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,13 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.10 =
+
+### Patch Changes
+
+- 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
+- 0c757a2: Remove unnecessary config from wordpress.org zip.
+
 = 0.7.9 =
 
 ### Patch Changes
@@ -46,11 +53,5 @@ That's it! For more information on getting started with headless WordPress, see 
 
 - 8942b83: Adds warning when known incompatible plugins are active.
 - 6d3f5de: Fix conflict with PublishPress that caused preview links to fail
-
-= 0.7.7 =
-
-### Patch Changes
-
-- 6a75593: Fixes a PHP 8 warning that occured on post types not registered with WP GraphQL [#812](https://github.com/wpengine/faustjs/pull/812)
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
