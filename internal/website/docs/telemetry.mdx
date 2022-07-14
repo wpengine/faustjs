@@ -8,19 +8,9 @@ Faust.js has opt-in telemetry for both the FaustWP plugin and FaustNX package. T
 
 ## What is being collected?
 
-### FaustWP
-
-The FaustWP plugin collects the following information:
-
-- WordPress version
-- WPGraphQL version
-- FaustWP version
-- PHP version
-- If the site is multisite
+Once you opt-in, faust will collect the following information at build time:
 
 ### FaustNX
-
-The FaustNX package collects the following information:
 
 - FaustNX version
 - Next.js version
@@ -28,26 +18,22 @@ The FaustNX package collects the following information:
 - Apollo Client version
 - If the command is running in a development environment
 
+### FaustWP
+
+- WordPress version
+- FaustWP version
+- PHP version
+- FaustWP settings (excluding any URLs)
+- If the site is multisite
+- If the site is hosted with WP Engine
+
 :::info
-We **do not** collect any personally identifiable information or sensitive information like environment variables or file paths.
+We **do not** collect any personally identifiable information or sensitive information like environment variables, file paths, or any application URLs.
 :::
 
 ## How do I enable/disable telemetry?
 
 Telemetry in Faust.js is opt-in by default, meaning we won't collect any telemetry information unless you explicitly enable it.
-
-### FaustWP
-
-The FaustWP plugin has a setting under WP Admin -> Settings -> Headless, called "Enable usage tracking". Toggling this option will enable/disable telemetry in the plugin.
-
-<a href="/docs/img/telemetry-faustwp.png" target="_blank">
-  <img
-    src="/docs/img/telemetry-faustwp.png"
-    alt="Screenshot of the Telemetry settings in the FaustWP plugin"
-  />
-</a>
-
-### FaustNX
 
 If this is your first time using the `faustnx` cli, you will be prompted for your telemetry preferences:
 
