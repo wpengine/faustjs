@@ -79,7 +79,7 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/telemetry',
 		array(
-			'methods'             => 'GET',
+			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_permission_callback',
 		)
