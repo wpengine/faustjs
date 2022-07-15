@@ -12,7 +12,7 @@ class TelemetryCest
 		$I->haveFaustWPSetting('frontend_uri', 'http://localhost:3000');
 		$I->haveFaustWPSetting('secret_key', $secret_key);
 		$I->haveHttpHeader('x-faustwp-secret', $secret_key);
-		$I->sendGet('/wp-json/faustwp/v1/telemetry');
+		$I->sendPost('/wp-json/faustwp/v1/telemetry');
 		$I->seeResponseCodeIsSuccessful();
 		$I->seeResponseIsJson();
 		$I->seeResponseContains('{"faustwp":{"has_frontend_uri":true}}');
