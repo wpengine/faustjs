@@ -19,7 +19,6 @@
 class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
-    use _generated\ApiTesterActions;
 
     /**
      * Visit the headless site with optional path.
