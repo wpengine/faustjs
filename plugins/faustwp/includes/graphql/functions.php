@@ -141,13 +141,3 @@ function template_hierarchy_types() {
 		'attachment',
 	);
 }
-
-/**
- * Determine if WP GraphQL is an active plugin.
- *
- * @return boolean
- */
-function is_wpgraphql_active() {
-	return function_exists( 'graphql' );
-}
-
