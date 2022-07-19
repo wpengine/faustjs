@@ -11,7 +11,7 @@
     "codeception/module-db": "^1.0",
     "codeception/module-filesystem": "^1.0",
     "codeception/module-phpbrowser": "^2.0",
-    "codeception/module-rest": "2",
+    "codeception/module-rest": "^1.0",
     "codeception/module-webdriver": "^1.0",
     "codeception/util-universalframework": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
