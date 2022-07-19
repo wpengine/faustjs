@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.15.7
+
+### Patch Changes
+
+- 6ab4e1d: Added support for older versions of iOS
+
 ## 0.15.6
 
 ### Patch Changes
