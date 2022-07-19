@@ -47,9 +47,12 @@ jobs:
       - name: Copy env file
         working-directory: plugins/faustwp
         run: cp .env.testing.example .env.testing
-      - name: Run test
+      - name: Run Acceptance tests
         working-directory: plugins/faustwp
-        run: vendor/bin/codecept run acceptance --debug
+        run: vendor/bin/codecept run acceptance
+      - name: Run API tests
+        working-directory: plugins/faustwp
+        run: vendor/bin/codecept run api
       - name: Upload Test Output
         uses: actions/upload-artifact@v2
         if: failure()
