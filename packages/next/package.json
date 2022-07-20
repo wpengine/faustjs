@@ -120,6 +120,6 @@
     "common-tags": "^1.8.2",
     "fast-xml-parser": "^4.0.3",
     "graphql": ">=15.6",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.21"
   }
 }
