@@ -1,6 +1,7 @@
 import type { LoggerOptions } from '@gqty/logger';
 import defaults from 'lodash/defaults.js';
 import type { NextClient } from '../gqty/client.js';
+import { createLogger } from '@gqty/logger';
 
 export async function logQueries(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -8,7 +9,6 @@ export async function logQueries(
   options?: LoggerOptions,
 ): Promise<() => void> {
   try {
-    const { createLogger } = await import('@gqty/logger');
     const logOptions = defaults({}, options, {
       showSelections: false,
       showCache: false,
