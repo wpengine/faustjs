@@ -23,7 +23,7 @@ The big goal of Faust.js was in implementing some basic telemetry into Faust so 
 
 To implement the telemetry we're using [Google Analytics](https://marketingplatform.google.com/about/analytics/), a common analytics partner in WP Engine products, to collect data on version information and other build parameters solely from the JavaScript builds completed with Faust. **All analytics are opt-in only** so new users, once launched, will see a prompt asking you if you're willing to login. This can safely be bypassed, for those interested in doing so, without sending us any data. While we'd love to see you participate in helping us collect build data, and hope you'll do so, failing to opt-in means nothing at all will be transmitted to Google or elsewhere.
 
-You can expect to see this in a new release in the coming months as we first finish completely a comprehensive privacy policy for the feature.
+You can expect to see this in a new release in the coming months as we first finish a comprehensive privacy policy for the feature.
 
 ## What's next
 
