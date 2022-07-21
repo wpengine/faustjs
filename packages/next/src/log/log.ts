@@ -1,9 +1,9 @@
 import type { LoggerOptions } from '@gqty/logger';
 import defaults from 'lodash/defaults.js';
-import type { NextClient } from '../gqty/client.js';
 import { createLogger } from '@gqty/logger';
+import type { NextClient } from '../gqty/client.js';
 
-export async function logQueries(
+export function logQueries(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: NextClient<any>,
   options?: LoggerOptions,
@@ -19,11 +19,11 @@ export async function logQueries(
     const unsubLogger = logger.start();
     const unsubAuthLogger = authLogger.start();
 
-    return () => {
+    return Promise.resolve(() => {
       unsubLogger();
       unsubAuthLogger();
-    };
+    });
   } catch (e) {
-    return () => {};
+    return Promise.resolve(() => {});
   }
 }
