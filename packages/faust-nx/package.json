@@ -26,7 +26,8 @@
   },
   "scripts": {
     "test": "npm test",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch"
   },
   "repository": {
     "type": "git",

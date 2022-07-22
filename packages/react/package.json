@@ -82,7 +82,7 @@
   "dependencies": {
     "@gqty/react": "^2.1.0",
     "@faustjs/core": "^0.15.7",
-    "gqty": "^2.1.0",
+    "gqty": "^2.3.0",
     "graphql": ">=15.6",
     "lodash": "^4.17.21"
   }
