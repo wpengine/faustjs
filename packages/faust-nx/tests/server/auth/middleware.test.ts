@@ -1,38 +1,12 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
-import { config } from '../../../src/config';
-import {
-  authorizeHandler,
-  redirect,
-} from '../../../src/server/auth/middleware';
+import { authorizeHandler } from '../../../src/server/auth/middleware';
+import * as getWpUrl from '../../../src/lib/getWpUrl';
+import * as getWpSecret from '../../../src/lib/getWpSecret';
 
 describe('auth/middleware', () => {
-  test('redirect will write a 302', () => {
-    const res: ServerResponse = {
-      setHeader() {},
-      writeHead() {},
-      end() {},
-    } as any;
-
-    const writeHeadSpy = jest.spyOn(res, 'writeHead');
-    const endSpy = jest.spyOn(res, 'end');
-
-    redirect(res, '/foo');
-    expect(endSpy).toBeCalled();
-    expect(writeHeadSpy).toBeCalledWith(302, {
-      Location: '/foo',
-    });
-  });
-
   test('authorizeHandler will send a 401 when there is no code or refresh token', async () => {
-    config({
-      wpUrl: 'http://headless.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
-
     const req: IncomingMessage = {
       headers: {},
     } as any;
@@ -55,12 +29,6 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will throw an error if the client secret is not defined', async () => {
-    config({
-      wpUrl: 'http://headless.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-    });
-
     const req: IncomingMessage = {
       headers: {},
     } as any;
@@ -82,13 +50,6 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will throw a 401 if the request to WordPress authorize endpoint is not ok', async () => {
-    config({
-      wpUrl: 'http://test.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
-
     const req: IncomingMessage = {
       url: 'https://developers.wpengine.com/?code=code',
       headers: {},
@@ -102,7 +63,11 @@ describe('auth/middleware', () => {
 
     const endSpy = jest.spyOn(res, 'end');
 
-    const { wpUrl } = config();
+    const wpUrl = 'http://my-wp-site.com';
+    const getWpSecretSpy = jest
+      .spyOn(getWpSecret, 'getWpSecret')
+      .mockReturnValue('secret');
+    const getWpUrlSpy = jest.spyOn(getWpUrl, 'getWpUrl').mockReturnValue(wpUrl);
 
     fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
       status: 401,
@@ -120,12 +85,11 @@ describe('auth/middleware', () => {
   });
 
   test('authorizeHandler will fallback to deprecated authorize endpoint if first attempt is 404', async () => {
-    config({
-      wpUrl: 'http://test.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
+    const wpUrl = 'http://my-wp-site.com';
+    const getWpSecretSpy = jest
+      .spyOn(getWpSecret, 'getWpSecret')
+      .mockReturnValue('secret');
+    const getWpUrlSpy = jest.spyOn(getWpUrl, 'getWpUrl').mockReturnValue(wpUrl);
 
     const req: IncomingMessage = {
       url: 'https://developers.wpengine.com/?code=code',
@@ -147,8 +111,6 @@ describe('auth/middleware', () => {
       accessTokenExpiration: 10000,
       refreshTokenExpiration: 10000,
     };
-
-    const { wpUrl } = config();
 
     fetchMock
       .post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {

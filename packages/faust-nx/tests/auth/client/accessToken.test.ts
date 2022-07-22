@@ -6,7 +6,6 @@ import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 
 describe('auth/client/accessToken', () => {
-  let config: any;
   let accessToken: any;
 
   afterEach(() => {
@@ -20,28 +19,15 @@ describe('auth/client/accessToken', () => {
    */
   beforeEach(() => {
     jest.isolateModules(() => {
-      config = require('../../../src/config/config').config;
       accessToken = require('../../../src/auth/client/accessToken');
     });
   });
 
   test('getAccessToken() returns undefined when there is no access token', () => {
-    config({
-      wpUrl: 'test',
-      authType: 'redirect',
-      loginPagePath: '/login',
-    });
-
     expect(accessToken.getAccessToken()).toBeUndefined();
   });
 
   test('getAccessTokenExpiration() returns undefined when there is no expiration', () => {
-    config({
-      wpUrl: 'test',
-      authType: 'redirect',
-      loginPagePath: '/login',
-    });
-
     expect(accessToken.getAccessTokenExpiration()).toBeUndefined();
   });
 
@@ -56,15 +42,7 @@ describe('auth/client/accessToken', () => {
   test('fetchAccessToken() should clear the current access token/expiration upon failure', async () => {
     accessToken.setAccessToken('test', new Date().getTime() + 1000);
 
-    config({
-      wpUrl: 'test',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-      apiBasePath: '/testing',
-    });
-
-    fetchMock.get('/testing/auth/token', {
+    fetchMock.get('/api/faust/auth/token', {
       status: 401,
       ok: false,
       json: { error: 'Unauthorized' },
@@ -78,13 +56,6 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should set the token/expiration upon success', async () => {
-    config({
-      wpUrl: 'http://headless.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
-
     const exp = new Date().getTime() + 1000;
 
     fetchMock.get('/api/faust/auth/token', {
@@ -104,13 +75,6 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should append the code query param to the fetch URL if provided', async () => {
-    config({
-      wpUrl: 'http://headless.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
-
     fetchMock.get('/api/faust/auth/token', {
       status: 401,
       body: JSON.stringify({
@@ -134,13 +98,6 @@ describe('auth/client/accessToken', () => {
   test('A refresh timer is set after calling fetchAccessToken()', async () => {
     jest.spyOn(accessToken, 'getRefreshTimer');
 
-    config({
-      wpUrl: 'http://headless.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
-
     fetchMock.get('/api/faust/auth/token', {
       status: 200,
       body: JSON.stringify({
@@ -159,13 +116,6 @@ describe('auth/client/accessToken', () => {
   test('Refresh timer is called after the refresh time lapses', async () => {
     jest.useFakeTimers();
     const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
-
-    config({
-      wpUrl: 'http://headless.local',
-      authType: 'redirect',
-      loginPagePath: '/login',
-      apiClientSecret: 'secret',
-    });
 
     fetchMock.get('/api/faust/auth/token', {
       status: 200,
