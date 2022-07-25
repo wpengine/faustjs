@@ -7,23 +7,23 @@ export function logQueries(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: NextClient<any>,
   options?: LoggerOptions,
-): Promise<() => void> {
+): () => void {
   try {
     const logOptions = defaults({}, options, {
       showSelections: false,
       showCache: false,
     } as LoggerOptions);
-    const logger = createLogger(client.client, logOptions);
-    const authLogger = createLogger(client.auth.client, logOptions);
+    const logger = /*#__PURE__*/ createLogger(client.client, logOptions);
+    const authLogger = /*#__PURE__*/ createLogger(client.auth.client, logOptions);
 
     const unsubLogger = logger.start();
     const unsubAuthLogger = authLogger.start();
 
-    return Promise.resolve(() => {
+    return /*#__PURE__*/ () => {
       unsubLogger();
       unsubAuthLogger();
-    });
+    };
   } catch (e) {
-    return Promise.resolve(() => {});
+    return () => {};
   }
 }
