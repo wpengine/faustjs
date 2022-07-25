@@ -1,7 +1,7 @@
-import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config/index.js';
-import { isServerSide } from '../../utils/index.js';
 import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
+import { isServerSide } from '../../utils/index.js';
+import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config/index.js';
 
 export interface AccessToken {
   /**

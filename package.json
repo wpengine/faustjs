@@ -40,10 +40,25 @@
     "changeset": "changeset",
     "version": "changeset version && node scripts/versionPlugin.js",
     "version:status": "changeset status",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "lint-testing": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config eslintrc.js"
   },
   "devDependencies": {
     "@changesets/cli": "^2.17.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^8.12.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.4.1",
+    "prettier-linter-helpers": "^1.0.0"
   }
 }

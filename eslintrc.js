@@ -72,12 +72,15 @@ module.exports = {
         },
       },
     ignorePatterns: [
-      'test/**/*',
+      '**/test/*',
+      '**/tests/*',
       '.prettierrc.js',
       'jest.config.js',
       'jest.setup.ts',
       'utils.d.ts',
       'utils.js',
       '.eslintrc.js',
+      '**/dist/*',
+      '**/*.d.ts'
     ],
   };
