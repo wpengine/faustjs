@@ -13,13 +13,16 @@ export function logQueries(
       showSelections: false,
       showCache: false,
     } as LoggerOptions);
-    const logger = /*#__PURE__*/ createLogger(client.client, logOptions);
-    const authLogger = /*#__PURE__*/ createLogger(client.auth.client, logOptions);
+    const logger = /* #__PURE__ */ createLogger(client.client, logOptions);
+    const authLogger = /* #__PURE__ */ createLogger(
+      client.auth.client,
+      logOptions,
+    );
 
     const unsubLogger = logger.start();
     const unsubAuthLogger = authLogger.start();
 
-    return /*#__PURE__*/ () => {
+    return /* #__PURE__ */ () => {
       unsubLogger();
       unsubAuthLogger();
     };
