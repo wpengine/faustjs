@@ -36,3 +36,8 @@ jobs:
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/next
+
+      - name: Code Coverage for FaustNX Package
+        uses: ./.github/actions/run-coverage
+        with:
+          working-directory: packages/faust-nx
