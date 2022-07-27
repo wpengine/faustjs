@@ -22,7 +22,7 @@
     "build:next": "npm run build --workspace=@faustjs/next",
     "build:react": "npm run build --workspace=@faustjs/react",
     "build:faustnx": "npm run build --workspace=faust-nx",
-    "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
+    "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=faust-nx",
     "clean:examples": "rimraf examples/**/node_modules",
     "lint": "npm run lint --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "lint:fix": "npm run lint:fix --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
