@@ -23,7 +23,7 @@ module.exports = {
       ecmaFeatures: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
-        jsx: true, // <--- will this cause issues for core?
+        jsx: true, 
       },
     },
     plugins: ['import', 'simple-import-sort', 'react', 'react-hooks'],
@@ -34,7 +34,7 @@ module.exports = {
       '@typescript-eslint/no-explicit-any': 0,
       'no-void': 0,
       'import/named': 0,
-      'import/no-extraneous-dependencies': [ // <--- will this cause issues for core?
+      'import/no-extraneous-dependencies': [ 
         'error',
         {
           devDependencies: [  
@@ -84,3 +84,5 @@ module.exports = {
       '**/*.d.ts'
     ],
   };
+
+  
