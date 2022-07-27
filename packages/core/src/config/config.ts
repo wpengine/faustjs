@@ -3,9 +3,9 @@ import defaults from 'lodash/defaults.js';
 import trimEnd from 'lodash/trimEnd.js';
 import extend from 'lodash/extend.js';
 import isObject from 'lodash/isObject.js';
-import type { RequestContext } from '../gqty/index.js';
 import isNil from 'lodash/isNil.js';
 import trim from 'lodash/trim.js';
+import type { RequestContext } from '../gqty/index.js';
 import { isValidUrl } from '../utils/index.js';
 
 export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
@@ -186,7 +186,6 @@ export function getGqlUrl(): string {
 
   if (isValidUrl(gqlUrl)) {
     return trimEnd(gqlUrl, '/');
-  } else {
-    return `${wpUrl}/${trim(gqlUrl, '/')}`;
   }
+  return `${wpUrl}/${trim(gqlUrl, '/')}`;
 }

@@ -10,7 +10,9 @@ export interface CookieOptions {
 
 export class Cookies {
   private request: IncomingMessage;
+
   private response?: ServerResponse;
+
   private cookies: Record<string, string> = {};
 
   constructor(req: IncomingMessage, res?: ServerResponse) {

@@ -206,7 +206,7 @@ export function getCookiesFromContext(context?: any): string | undefined {
 export function removeURLParam(url: string, parameter: string): string {
   const parts = url.split('?');
   if (parts.length >= 2) {
-    const prefix = encodeURIComponent(parameter) + '=';
+    const prefix = `${encodeURIComponent(parameter)}=`;
     const pars = parts[1].split(/[&;]/g);
 
     for (let i = pars.length; i-- > 0; ) {
@@ -215,7 +215,7 @@ export function removeURLParam(url: string, parameter: string): string {
       }
     }
 
-    return parts[0] + (pars.length > 0 ? '?' + pars.join('&') : '');
+    return parts[0] + (pars.length > 0 ? `?${pars.join('&')}` : '');
   }
   return url;
 }

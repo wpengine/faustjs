@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useQuery } from '@apollo/client';
-import { PropsWithChildren } from 'react';
 import { getTemplate } from '../getTemplate';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';
@@ -25,10 +24,14 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   res = useQuery(query, {
     variables: variables ? variables(seedNode) : undefined,
     ssr: true,
-    skip: !query
+    skip: !query,
   });
 
   const { data, error, loading } = res ?? {};
 
-  return React.cloneElement(<Component />, { ...props, data, error, loading }, null);
+  return React.cloneElement(
+    <Component />,
+    { ...props, data, error, loading },
+    null,
+  );
 }

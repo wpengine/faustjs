@@ -1,4 +1,3 @@
-export * from './schema.generated.js';
 import {
   ClientOptions,
   createClient,
@@ -15,6 +14,8 @@ import isObject from 'lodash/isObject.js';
 import omit from 'lodash/omit.js';
 import { getAccessToken } from '../auth/index.js';
 import { getGqlUrl } from '../config/config.js';
+
+export * from './schema.generated.js';
 
 export interface GqlClientSchema {
   query: any;
@@ -83,10 +84,10 @@ export function createAuthQueryFetcher(
       token = getAccessToken();
     }
 
-    init.headers = Object.assign(
-      { Authorization: `Bearer ${token as string}` },
-      init.headers,
-    );
+    init.headers = {
+      Authorization: `Bearer ${token as string}`,
+      ...init.headers,
+    };
 
     let requestContext = { url, init };
 

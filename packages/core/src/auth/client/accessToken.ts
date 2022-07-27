@@ -31,7 +31,7 @@ export const TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES = 60;
 /**
  * The setTimeout instance that refreshes the access token.
  */
-let __REFRESH_TIMER: RefreshTimer = undefined;
+let __REFRESH_TIMER: RefreshTimer;
 
 export function getRefreshTimer(): RefreshTimer {
   return __REFRESH_TIMER;
