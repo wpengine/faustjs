@@ -84,10 +84,10 @@ export function createAuthQueryFetcher(
       token = getAccessToken();
     }
 
-    init.headers = {
-      Authorization: `Bearer ${token as string}`,
-      ...init.headers,
-    };
+    init.headers = Object.assign(
+      { Authorization: `Bearer ${token as string}` },
+      init.headers,
+    );
 
     let requestContext = { url, init };
 
