@@ -33,9 +33,13 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json --watch",
-    "clean": "rimraf dist"
+    "build": "npm run ts && npm run ts:cjs && npm run package",
+    "dev": "npm run ts:watch",
+    "clean": "rimraf dist",
+    "package": "node ../../scripts/package.js",
+    "ts": "tsc -p .",
+    "ts:cjs": "tsc -p tsconfig-cjs.json",
+    "ts:watch": "tsc -p . --watch"
   },
   "repository": {
     "type": "git",
