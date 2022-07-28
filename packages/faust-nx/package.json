@@ -32,17 +32,18 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
-    "test": "jest",
-    "build": "npm run ts && npm run ts:cjs && npm run package",
-    "dev": "npm run ts:watch",
+    "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "clean": "rimraf dist",
+    "dev": "npm run ts:watch",
     "package": "node ../../scripts/package.js",
-    "ts": "tsc -p .",
+    "prepublish": "npm run build",
+    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test": "jest",
     "ts:cjs": "tsc -p tsconfig-cjs.json",
     "ts:watch": "tsc -p . --watch",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json"
+    "ts": "tsc -p ."
   },
   "repository": {
     "type": "git",
