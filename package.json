@@ -23,8 +23,6 @@
     "build:react": "npm run build --workspace=@faustjs/react",
     "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "clean:examples": "rimraf examples/**/node_modules",
-    "lint": "npm run lint --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
-    "lint:fix": "npm run lint:fix --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "dev": "npm run build && npm run dev:next:getting-started",
     "dev:next:getting-started": "rimraf examples/next/getting-started/.next && npm run dev ---workspace=examples/next/getting-started",
@@ -41,7 +39,8 @@
     "version": "changeset version && node scripts/versionPlugin.js",
     "version:status": "changeset status",
     "release": "npm run build && changeset publish",
-    "lint-testing": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config eslintrc.js"
+    "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config eslintrc.js",
+    "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config eslintrc.js --fix"
   },
   "devDependencies": {
     "@changesets/cli": "^2.17.0",
