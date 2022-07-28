@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { getTemplate } from '../getTemplate';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';
+import { getConfig } from '../config';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
@@ -10,7 +11,13 @@ export type WordPressTemplateProps = PropsWithChildren<{
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const { __SEED_NODE__: seedNode, templates } = props;
+  const { templates } = getConfig();
+
+  if (!templates) {
+    throw new Error('Templates are required. Please add them to your config.');
+  }
+
+  const { __SEED_NODE__: seedNode } = props;
   const template = getTemplate(seedNode, templates);
 
   if (!template) {

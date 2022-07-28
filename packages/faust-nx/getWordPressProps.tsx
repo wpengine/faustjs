@@ -4,6 +4,7 @@ import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery';
 import { getTemplate } from './getTemplate';
 import { addApolloState } from './client';
+import { getConfig } from './config';
 
 function isSSR(
   ctx: GetServerSidePropsContext | GetStaticPropsContext,
@@ -18,13 +19,23 @@ export interface WordPressTemplate {
 }
 
 export interface getWordPressPropsConfig {
-  client: ApolloClient<NormalizedCacheObject>;
-  templates: { [key: string]: WordPressTemplate };
-  ctx: GetServerSidePropsContext | GetStaticPropsContext;
+    client: ApolloClient<NormalizedCacheObject>;
+    ctx: GetServerSidePropsContext | GetStaticPropsContext
 }
 
 export async function getWordPressProps(options: getWordPressPropsConfig) {
-  const { client, templates, ctx } = options;
+  const {templates} = getConfig()
+
+  if (!templates) {
+    throw new Error('Templates are required. Please add them to your config.');
+  }
+
+  const { client, ctx } = options;
+
+  if(!client) {
+    throw new Error('getWordPressProps: client is required. Please add it as a prop.')
+  }
+
   let resolvedUrl = null;
 
   if (!isSSR(ctx)) {
