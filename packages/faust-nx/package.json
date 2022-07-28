@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "description": "Experimental next version of Faust.js",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "peerDependencies": {
     "@apollo/client": ">=3.6.6",
     "next": ">=12.1.6",
