@@ -37,6 +37,7 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
   }
 
   let resolvedUrl = null;
+  let isPreview = false;
 
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
@@ -47,7 +48,12 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
     }
   } else {
     resolvedUrl = ctx.req.url;
+    if (resolvedUrl) {
+      isPreview = resolvedUrl.includes('preview=true');
+    }
   }
+
+  console.log({isPreview})
 
   if (!resolvedUrl) {
     return {
