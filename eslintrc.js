@@ -81,7 +81,8 @@ module.exports = {
       'utils.js',
       '.eslintrc.js',
       '**/dist/*',
-      '**/*.d.ts'
+      '**/*.d.ts',
+      'packages/faust-nx/**'
     ],
   };
 
