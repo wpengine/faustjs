@@ -2,7 +2,7 @@ import { config as coreConfig } from '@faustjs/core';
 // eslint-disable-next-line import/extensions
 import { LOGOUT_ENDPOINT_PARTIAL_PATH } from '@faustjs/core/config';
 import type { RequiredSchema } from '@faustjs/react';
-import { isNil } from 'lodash';
+import isNil from 'lodash/isNil.js';
 import { useState } from 'react';
 import type { NextClient } from '../client.js';
 

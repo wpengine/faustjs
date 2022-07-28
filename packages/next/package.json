@@ -112,6 +112,10 @@
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4"
   },
+  "sideEffects": [
+    "./dist/mjs/export/log.js",
+    "./dist/cjs/export/log.js"
+  ],
   "dependencies": {
     "@faustjs/core": "^0.15.7",
     "@faustjs/react": "^0.15.7",
