@@ -1,13 +1,12 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
-    "outDir": "dist",
     "module": "esnext",
-    "target": "ES2017",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "jsx": "react",
-    "declaration": true
+    "outDir": "dist/mjs",
+    "target": "es2017",
+    "rootDir": "src",
+    "jsx": "react"
   },
-  "exclude": ["dist", "./*.d.ts"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src"]
 }
