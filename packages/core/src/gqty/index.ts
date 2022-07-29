@@ -83,7 +83,7 @@ export function createAuthQueryFetcher(
     } else {
       token = getAccessToken();
     }
-
+    // eslint-disable-next-line prefer-object-spread
     init.headers = Object.assign(
       { Authorization: `Bearer ${token as string}` },
       init.headers,
