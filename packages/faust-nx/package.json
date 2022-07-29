@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "description": "Experimental next version of Faust.js",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "peerDependencies": {
     "@apollo/client": ">=3.6.6",
     "next": ">=12.1.6",
@@ -32,10 +33,18 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
+    "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
+    "clean": "rimraf dist",
+    "dev": "npm run ts:watch",
+    "package": "node ../../scripts/package.js",
+    "prepublish": "npm run build",
+    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "test": "jest",
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json --watch",
-    "clean": "rimraf dist"
+    "ts:cjs": "tsc -p tsconfig-cjs.json",
+    "ts:watch": "tsc -p . --watch",
+    "ts": "tsc -p ."
   },
   "repository": {
     "type": "git",
