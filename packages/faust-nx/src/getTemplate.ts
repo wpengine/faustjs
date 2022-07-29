@@ -4,6 +4,12 @@ import { SeedNode } from './queries/seedQuery';
 export function getPossibleTemplates(node: SeedNode) {
   const possibleTemplates = [];
 
+  // CPT archive page
+  if (node.__typename === 'ContentType' && node.isPostsPage === false) {
+    possibleTemplates.push(`archive-${node.name}`);
+    possibleTemplates.push('archive');
+  }
+
   // Archive Page
   if (node.isTermNode) {
     const taxonomyName = node.taxonomyName;
@@ -43,6 +49,16 @@ export function getPossibleTemplates(node: SeedNode) {
 
   // Singular page
   if (node.isContentNode) {
+    if (
+      node?.contentType?.node?.name !== 'page' &&
+      node?.contentType?.node?.name !== 'post'
+    ) {
+      possibleTemplates.push(`single-${node.contentType?.node?.name}`);
+      possibleTemplates.push(
+        `single-${node.contentType?.node?.name}-${node.slug}`,
+      );
+    }
+
     if (node?.contentType?.node?.name === 'page') {
       possibleTemplates.push(`page-${node.slug}`);
       possibleTemplates.push(`page-${node.databaseId}`);
