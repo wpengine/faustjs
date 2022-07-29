@@ -2,14 +2,15 @@ import 'isomorphic-fetch';
 import fs from 'fs';
 const GRAPHQL_ENDPOINT = `${process.env.NEXT_PUBLIC_WORDPRESS_URL!}/graphql`;
 
-(async () => {
+export const generatePossibleTypes = async () => {
   const res = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      body: JSON.stringify({
-        variables: {},
-        query: `
+    },
+    body: JSON.stringify({
+      variables: {},
+      query: `
         {
             __schema {
                 types {
@@ -22,18 +23,17 @@ const GRAPHQL_ENDPOINT = `${process.env.NEXT_PUBLIC_WORDPRESS_URL!}/graphql`;
             }
         }
         `,
-      }),
-    },
+    }),
   });
 
   const json = await res.json();
 
-  const possibleTypes = {};
+  const possibleTypes = {} as any;
 
-  json.data.__schema.types.forEach((supertype) => {
+  json.data.__schema.types.forEach((supertype: any) => {
     if (supertype.possibleTypes) {
       possibleTypes[supertype.name] = supertype.possibleTypes.map(
-        (subtype) => subtype.name,
+        (subtype: any) => subtype.name,
       );
     }
   });
@@ -45,4 +45,4 @@ const GRAPHQL_ENDPOINT = `${process.env.NEXT_PUBLIC_WORDPRESS_URL!}/graphql`;
   }
 
   console.log('Possible types successfully generated');
-})();
+};

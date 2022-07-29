@@ -4,6 +4,7 @@ import { getWordPressProps } from './getWordPressProps';
 import { getConfig, setConfig, FaustNXConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
+import { generatePossibleTypes } from './scripts/generatePossibleTypes.js';
 
 export {
   FaustNXProvider,
@@ -16,4 +17,5 @@ export {
   authorizeHandler,
   logoutHandler,
   apiRouter,
+  generatePossibleTypes,
 };
