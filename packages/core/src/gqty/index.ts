@@ -83,7 +83,7 @@ export function createAuthQueryFetcher(
     } else {
       token = getAccessToken();
     }
-    // eslint-disable-next-line prefer-object-spread
+    // eslint-disable-next-line prefer-object-spread, no-param-reassign
     init.headers = Object.assign(
       { Authorization: `Bearer ${token as string}` },
       init.headers,
@@ -219,6 +219,7 @@ export function getClient<
   };
 
   if (isObject(clientConfig.context)) {
+    // eslint-disable-next-line no-param-reassign
     clientConfig.context.apiClient = apiClient;
   }
 
