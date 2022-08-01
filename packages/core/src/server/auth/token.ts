@@ -111,7 +111,7 @@ export class OAuth {
     return result as OAuthTokens;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, class-methods-use-this
   public isOAuthTokens(value: any): value is OAuthTokens {
     const castedValue: OAuthTokens = value;
 
