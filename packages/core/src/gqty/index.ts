@@ -31,6 +31,7 @@ export interface RequestContext {
 export function createQueryFetcher(
   applyRequestContext?: ClientConfig['applyRequestContext'],
 ): QueryFetcher {
+  // eslint-disable-next-line func-names
   return async function (query, variables): Promise<any> {
     const url = getGqlUrl();
     const headers: HeadersInit = {
