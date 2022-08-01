@@ -1,13 +1,13 @@
 import React, { PropsWithChildren } from 'react';
 import { useQuery } from '@apollo/client';
-import { getTemplate } from '../getTemplate';
-import { WordPressTemplate } from '../getWordPressProps';
-import { SeedNode } from '../queries/seedQuery';
-import { getConfig } from '../config';
+import { getTemplate } from '../getTemplate.js';
+import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
+import { SeedNode } from '../queries/seedQuery.js';
+import { getConfig } from '../config/index.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
-  templates: { [key: string]: WordPressTemplate };
+  templates: { [key: string]: WordPressTemplateType };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
@@ -27,8 +27,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
   const { query, variables, Component } = template;
 
-  let res;
-  res = useQuery(query, {
+  const res = useQuery(query, {
     variables: variables ? variables(seedNode) : undefined,
     ssr: true,
     skip: !query,

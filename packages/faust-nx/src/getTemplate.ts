@@ -1,8 +1,12 @@
-import { WordPressTemplate } from './getWordPressProps';
-import { SeedNode } from './queries/seedQuery';
+import { WordPressTemplate } from './getWordPressProps.js';
+import { SeedNode } from './queries/seedQuery.js';
 
 export function getPossibleTemplates(node: SeedNode) {
   const possibleTemplates = [];
+
+  if (!node.slug || !node.databaseId) {
+    throw new Error('The seed query must return a slug and databaseId');
+  }
 
   // Archive Page
   if (node.isTermNode) {
@@ -24,9 +28,12 @@ export function getPossibleTemplates(node: SeedNode) {
         break;
       }
       default: {
-        possibleTemplates.push(`taxonomy-${taxonomyName}-${node.slug}`);
-        possibleTemplates.push(`taxonomy-${taxonomyName}-${node.databaseId}`);
-        possibleTemplates.push(`taxonomy-${taxonomyName}`);
+        if (taxonomyName) {
+          possibleTemplates.push(`taxonomy-${taxonomyName}-${node.slug}`);
+          possibleTemplates.push(`taxonomy-${taxonomyName}-${node.databaseId}`);
+          possibleTemplates.push(`taxonomy-${taxonomyName}`);
+        }
+
         possibleTemplates.push(`taxonomy`);
       }
     }
@@ -35,7 +42,10 @@ export function getPossibleTemplates(node: SeedNode) {
   }
 
   if (node.userId) {
-    possibleTemplates.push(`author-${node.name}`);
+    if (node.name) {
+      possibleTemplates.push(`author-${node.name}`);
+    }
+
     possibleTemplates.push(`author-${node.userId}`);
     possibleTemplates.push(`author`);
     possibleTemplates.push(`archive`);
@@ -70,8 +80,10 @@ export function getTemplate(
   templates: { [key: string]: WordPressTemplate },
 ) {
   const possibleTemplates = getPossibleTemplates(seedNode);
+  // eslint-disable-next-line no-console
   console.log('possible templates: ', possibleTemplates);
 
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < possibleTemplates.length; i++) {
     const possibleTemplate = possibleTemplates[i];
     if (templates[possibleTemplate]) {
