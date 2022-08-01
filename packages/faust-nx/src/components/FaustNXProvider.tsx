@@ -4,8 +4,8 @@ import {
   ApolloProvider,
   NormalizedCacheObject,
 } from '@apollo/client';
-import { useApollo } from '../client';
 import { AppProps } from 'next/app';
+import { useApollo } from '../client';
 
 export function FaustNXProvider(props: {
   client: ApolloClient<NormalizedCacheObject>;

@@ -12,7 +12,7 @@ export function getPossibleTemplates(node: SeedNode) {
 
   // Archive Page
   if (node.isTermNode) {
-    const taxonomyName = node.taxonomyName;
+    const { taxonomyName } = node;
 
     switch (taxonomyName) {
       case 'category': {

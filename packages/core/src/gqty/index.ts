@@ -1,4 +1,3 @@
-export * from './schema.generated.js';
 import {
   ClientOptions,
   createClient,
@@ -16,6 +15,8 @@ import omit from 'lodash/omit.js';
 import { getAccessToken } from '../auth/index.js';
 import { getGqlUrl } from '../config/config.js';
 
+export * from './schema.generated.js';
+
 export interface GqlClientSchema {
   query: any;
   mutation: any;
@@ -30,6 +31,7 @@ export interface RequestContext {
 export function createQueryFetcher(
   applyRequestContext?: ClientConfig['applyRequestContext'],
 ): QueryFetcher {
+  // eslint-disable-next-line func-names
   return async function (query, variables): Promise<any> {
     const url = getGqlUrl();
     const headers: HeadersInit = {
@@ -82,7 +84,7 @@ export function createAuthQueryFetcher(
     } else {
       token = getAccessToken();
     }
-
+    // eslint-disable-next-line prefer-object-spread, no-param-reassign
     init.headers = Object.assign(
       { Authorization: `Bearer ${token as string}` },
       init.headers,
@@ -218,6 +220,7 @@ export function getClient<
   };
 
   if (isObject(clientConfig.context)) {
+    // eslint-disable-next-line no-param-reassign
     clientConfig.context.apiClient = apiClient;
   }
 
