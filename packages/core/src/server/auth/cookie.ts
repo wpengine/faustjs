@@ -39,6 +39,7 @@ export class Cookies {
 
     const valueStr = encoded ? base64Decode(value) : value;
 
+    // eslint-disable-next-line consistent-return
     return isJson ? JSON.parse(valueStr) : valueStr;
   }
 
