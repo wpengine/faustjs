@@ -53,10 +53,10 @@ export function getPossibleTemplates(node: SeedNode) {
       node?.contentType?.node?.name !== 'page' &&
       node?.contentType?.node?.name !== 'post'
     ) {
-      possibleTemplates.push(`single-${node.contentType?.node?.name}`);
       possibleTemplates.push(
         `single-${node.contentType?.node?.name}-${node.slug}`,
       );
+      possibleTemplates.push(`single-${node.contentType?.node?.name}`);
     }
 
     if (node?.contentType?.node?.name === 'page') {
