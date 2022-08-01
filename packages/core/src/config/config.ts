@@ -119,6 +119,7 @@ let configSet = false;
  * @param {Config} config
  * @returns {Config}
  */
+// eslint-disable-next-line @typescript-eslint/no-shadow
 export function normalizeConfig(config: Config): Config {
   const cfg = defaults({}, config, {
     apiBasePath: '/api/faust',
