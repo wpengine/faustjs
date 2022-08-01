@@ -23,6 +23,7 @@ import {
  * @param {IncomingMessage} req
  * @param {ServerResponse} res
  */
+// eslint-disable-next-line consistent-return
 export async function apiRouter(
   req: IncomingMessage,
   res: ServerResponse,

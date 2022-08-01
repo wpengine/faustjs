@@ -10,7 +10,9 @@ export interface CookieOptions {
 
 export class Cookies {
   private request: IncomingMessage;
+
   private response?: ServerResponse;
+
   private cookies: Record<string, string> = {};
 
   constructor(req: IncomingMessage, res?: ServerResponse) {
@@ -37,6 +39,7 @@ export class Cookies {
 
     const valueStr = encoded ? base64Decode(value) : value;
 
+    // eslint-disable-next-line consistent-return
     return isJson ? JSON.parse(valueStr) : valueStr;
   }
 
