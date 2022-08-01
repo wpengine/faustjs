@@ -209,6 +209,7 @@ export function removeURLParam(url: string, parameter: string): string {
     const prefix = `${encodeURIComponent(parameter)}=`;
     const pars = parts[1].split(/[&;]/g);
 
+    // eslint-disable-next-line no-plusplus
     for (let i = pars.length; i-- > 0; ) {
       if (pars[i].lastIndexOf(prefix, 0) !== -1) {
         pars.splice(i, 1);
