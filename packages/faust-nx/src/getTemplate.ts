@@ -4,33 +4,49 @@ import { SeedNode } from './queries/seedQuery.js';
 export function getPossibleTemplates(node: SeedNode) {
   const possibleTemplates = [];
 
-  if (!node.slug || !node.databaseId) {
-    throw new Error('The seed query must return a slug and databaseId');
-  }
-
   // Archive Page
   if (node.isTermNode) {
     const { taxonomyName } = node;
 
     switch (taxonomyName) {
       case 'category': {
-        possibleTemplates.push(`category-${node.slug}`);
-        possibleTemplates.push(`category-${node.databaseId}`);
+        if (node.slug) {
+          possibleTemplates.push(`category-${node.slug}`);
+        }
+
+        if (node.databaseId) {
+          possibleTemplates.push(`category-${node.databaseId}`);
+        }
+
         possibleTemplates.push(`category`);
 
         break;
       }
       case 'post_tag': {
-        possibleTemplates.push(`tag-${node.slug}`);
-        possibleTemplates.push(`tag-${node.databaseId}`);
+        if (node.slug) {
+          possibleTemplates.push(`tag-${node.slug}`);
+        }
+
+        if (node.databaseId) {
+          possibleTemplates.push(`tag-${node.databaseId}`);
+        }
+
         possibleTemplates.push(`tag`);
 
         break;
       }
       default: {
         if (taxonomyName) {
-          possibleTemplates.push(`taxonomy-${taxonomyName}-${node.slug}`);
-          possibleTemplates.push(`taxonomy-${taxonomyName}-${node.databaseId}`);
+          if (node.slug) {
+            possibleTemplates.push(`taxonomy-${taxonomyName}-${node.slug}`);
+          }
+
+          if (node.databaseId) {
+            possibleTemplates.push(
+              `taxonomy-${taxonomyName}-${node.databaseId}`,
+            );
+          }
+
           possibleTemplates.push(`taxonomy-${taxonomyName}`);
         }
 
@@ -54,15 +70,24 @@ export function getPossibleTemplates(node: SeedNode) {
   // Singular page
   if (node.isContentNode) {
     if (node?.contentType?.node?.name === 'page') {
-      possibleTemplates.push(`page-${node.slug}`);
-      possibleTemplates.push(`page-${node.databaseId}`);
+      if (node.slug) {
+        possibleTemplates.push(`page-${node.slug}`);
+      }
+
+      if (node.databaseId) {
+        possibleTemplates.push(`page-${node.databaseId}`);
+      }
+
       possibleTemplates.push(`page`);
     }
 
     if (node?.contentType?.node?.name === 'post') {
-      possibleTemplates.push(
-        `single-${node.contentType.node.name}-${node.slug}`,
-      );
+      if (node.slug) {
+        possibleTemplates.push(
+          `single-${node.contentType.node.name}-${node.slug}`,
+        );
+      }
+
       possibleTemplates.push(`single-${node.contentType.node.name}`);
       possibleTemplates.push(`single`);
     }
