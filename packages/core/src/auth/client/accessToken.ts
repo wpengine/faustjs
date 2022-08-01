@@ -107,6 +107,7 @@ export function setAccessTokenRefreshTimer(): void {
     secondsUntilExpiration - TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES;
 
   setRefreshTimer(
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000),
   );
 }
