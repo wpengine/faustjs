@@ -6,4 +6,5 @@ import templates from './wp-templates';
  **/
 export default setConfig({
   templates,
+  experimentalPlugins: [],
 });
