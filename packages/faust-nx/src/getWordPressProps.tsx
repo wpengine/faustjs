@@ -82,7 +82,7 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
     };
   }
 
-  if (template.query) {
+  if (template.query && !isPreview) {
     await client.query({
       query: template.query,
       variables: template?.variables ? template.variables(seedNode) : undefined,
