@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useQuery } from '@apollo/client';
-import { PropsWithChildren } from 'react';
 import { getTemplate } from '../getTemplate';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';

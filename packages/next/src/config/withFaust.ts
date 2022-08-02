@@ -1,4 +1,4 @@
-import { trim } from 'lodash';
+import trim from 'lodash/trim.js';
 import isFunction from 'lodash/isFunction.js';
 import { NextConfig } from 'next';
 import { Redirect, RouteHas } from 'next/dist/lib/load-custom-routes.js';

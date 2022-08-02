@@ -1,7 +1,7 @@
-import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config/index.js';
-import { isServerSide } from '../../utils/index.js';
 import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
+import { isServerSide } from '../../utils/index.js';
+import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config/index.js';
 
 export interface AccessToken {
   /**
@@ -31,14 +31,14 @@ export const TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES = 60;
 /**
  * The setTimeout instance that refreshes the access token.
  */
-let __REFRESH_TIMER: RefreshTimer = undefined;
+let REFRESH_TIMER: RefreshTimer;
 
 export function getRefreshTimer(): RefreshTimer {
-  return __REFRESH_TIMER;
+  return REFRESH_TIMER;
 }
 
 export function setRefreshTimer(timer: RefreshTimer): void {
-  __REFRESH_TIMER = timer;
+  REFRESH_TIMER = timer;
 }
 
 /**
@@ -107,7 +107,7 @@ export function setAccessTokenRefreshTimer(): void {
     secondsUntilExpiration - TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES;
 
   setRefreshTimer(
-    setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000),
+    setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000), // eslint-disable-line @typescript-eslint/no-use-before-define
   );
 }
 

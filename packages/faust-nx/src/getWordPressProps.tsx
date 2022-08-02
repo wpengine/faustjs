@@ -1,6 +1,6 @@
 import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
-import type { DocumentNode } from 'graphql'
+import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery';
 import { getTemplate } from './getTemplate';
 import { addApolloState } from './client';
@@ -13,9 +13,9 @@ function isSSR(
 }
 
 export interface WordPressTemplate {
-    query: DocumentNode,
-    variables: (seedNode: SeedNode) => {[key: string]: any}
-    Component: React.FC<{[key: string]: any}>;
+  query: DocumentNode;
+  variables: (seedNode: SeedNode) => { [key: string]: any };
+  Component: React.FC<{ [key: string]: any }>;
 }
 
 export interface getWordPressPropsConfig {
@@ -42,7 +42,7 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
     if (wordPressNodeParams && Array.isArray(wordPressNodeParams)) {
-      resolvedUrl = `/${wordPressNodeParams.join("/")}`;
+      resolvedUrl = `/${wordPressNodeParams.join('/')}`;
     } else {
       resolvedUrl = '/';
     }
