@@ -8,10 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.6",
+    "faust-nx": "file:../../../packages/faust-nx/dist/index.js",
     "next": "^12.1.6",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@apollo/client": "^3.6.6",
-    "faust-nx": "file:../../../packages/faust-nx/dist/index.js"
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.3",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.17",
+    "typescript": "^4.7.4"
   }
 }
