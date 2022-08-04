@@ -13,5 +13,11 @@
     "react-dom": "^17.0.2",
     "@apollo/client": "^3.6.6",
     "faust-nx": "file:../../../packages/faust-nx/dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.17",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "typescript": "^4.5.2"
   }
 }
