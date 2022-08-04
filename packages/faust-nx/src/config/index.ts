@@ -1,5 +1,6 @@
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { hooks, Plugin } from '../hooks/index.js';
+import isEqual from 'lodash/isEqual';
 
 export interface FaustNXConfig {
   templates: { [key: string]: WordPressTemplate };
@@ -8,17 +9,15 @@ export interface FaustNXConfig {
   experimentalPlugins: Plugin[];
 }
 
-let config = {};
-
-let serializedConfigObject: string | undefined;
+let config: FaustNXConfig;
 
 export function setConfig(_config: FaustNXConfig) {
-  config = _config;
-
-  if (serializedConfigObject === JSON.stringify(_config)) {
+  // Prevent plugins from being re-initialized.
+  if (isEqual(config, _config)) {
     return;
   }
-  serializedConfigObject = JSON.stringify(_config);
+
+  config = _config;
 
   const { experimentalPlugins: plugins } = _config;
 
