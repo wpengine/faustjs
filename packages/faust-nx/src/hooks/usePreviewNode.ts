@@ -63,6 +63,7 @@ export function usePreviewNode(
     skip: !template?.query,
   });
 
+  console.log({node});
   return notFoundResponse;
 
   // /**
