@@ -24,8 +24,7 @@ export function usePreviewNode(
     query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
   } = useRouter();
   const { isAuthenticated } = useAuth();
-
-  console.log({isAuthenticated});
+  console.log({ isAuthenticated });
 
   const unreadyResponse: UsePreviewNodeResponse = {
     typeName: undefined,
@@ -58,18 +57,12 @@ export function usePreviewNode(
     );
   }
 
-  console.log(
-    'template query'
-  );
-  console.log(template?.query);
-
   const node = useQuery(template?.query as DocumentNode, {
     variables: template?.variables ? template?.variables(seedNode, true) : undefined,
     ssr: false,
     skip: !template?.query,
   });
 
-  console.log({node});
   return notFoundResponse;
 
   // /**
