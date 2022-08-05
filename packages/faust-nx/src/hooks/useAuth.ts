@@ -22,12 +22,6 @@ export interface UseAuthOptions {
    * @memberof UseAuthOptions
    */
   shouldRedirect?: boolean;
-
-  isAuthenticated?: boolean;
-
-  isLoading?: boolean;
-
-  authResult?: AuthResult;
 }
 
 export function useAuth() {

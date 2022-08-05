@@ -5,7 +5,6 @@ import type { DocumentNode } from 'graphql';
 import isNil from 'lodash/isNil.js';
 import isUndefined from 'lodash/isUndefined.js';
 import { useRouter } from 'next/router.js';
-import { ensureAuthorization } from '../auth';
 import { useQuery } from '@apollo/client';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';
@@ -16,10 +15,10 @@ export type UsePreviewNodeResponse = {
   node: Node | null | undefined;
 };
 
-export async function usePreviewNode(
+export function usePreviewNode(
   template: WordPressTemplate,
   seedNode: SeedNode
-): Promise<any> {
+) {
   const {
     isReady,
     query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
