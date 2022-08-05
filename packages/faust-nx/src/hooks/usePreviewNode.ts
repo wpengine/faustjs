@@ -1,22 +1,32 @@
 // eslint-disable-next-line import/extensions
 import { ContentNodeIdTypeEnum } from '@faustjs/core/client';
 import type { Node } from '@faustjs/react';
+import type { DocumentNode } from 'graphql';
 import isNil from 'lodash/isNil.js';
 import isUndefined from 'lodash/isUndefined.js';
 import { useRouter } from 'next/router.js';
 import { ensureAuthorization } from '../auth';
+import { useQuery } from '@apollo/client';
+import { WordPressTemplate } from '../getWordPressProps';
+import { SeedNode } from '../queries/seedQuery';
+import { useAuth } from './useAuth';
 
 export type UsePreviewNodeResponse = {
   typeName: string | null | undefined;
   node: Node | null | undefined;
 };
 
-export function usePreviewNode(): UsePreviewNodeResponse {
+export async function usePreviewNode(
+  template: WordPressTemplate,
+  seedNode: SeedNode
+): Promise<any> {
   const {
     isReady,
     query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
   } = useRouter();
-  const isAuthenticated = ensureAuthorization();
+  const { isAuthenticated } = useAuth();
+
+  console.log({isAuthenticated});
 
   const unreadyResponse: UsePreviewNodeResponse = {
     typeName: undefined,
@@ -32,7 +42,7 @@ export function usePreviewNode(): UsePreviewNodeResponse {
     return unreadyResponse;
   }
 
-  if (!isAuthenticated) {
+  if (isUndefined(isAuthenticated) || isAuthenticated !== true) {
     return unreadyResponse;
   }
 
@@ -49,48 +59,56 @@ export function usePreviewNode(): UsePreviewNodeResponse {
     );
   }
 
-  const node = contentNode({
-    id: postIdQuery,
-    idType: ContentNodeIdTypeEnum.DATABASE_ID,
-    asPreview: true,
+  console.log(
+    'template query'
+  );
+  console.log(template?.query);
+
+  const node = useQuery(template?.query as DocumentNode, {
+    variables: template?.variables ? template?.variables(seedNode, true) : undefined,
+    ssr: false,
+    skip: !template?.query,
   });
 
-  /**
-   * `contentNode` returns null if the post does not exist
-   * or if the preview has not been generated yet
-   *
-   * @link https://github.com/wp-graphql/wp-graphql/issues/2166
-   */
-  if (node === null) {
-    return notFoundResponse;
-  }
+  console.log({node});
+  return notFoundResponse;
 
-  if (!isNil(typeNameQuery) && Array.isArray(typeNameQuery)) {
-    throw new Error(
-      'usePreviewNode() requires the "postType" URL' +
-        'query parameter to be a string',
-    );
-  }
+  // /**
+  //  * `contentNode` returns null if the post does not exist
+  //  * or if the preview has not been generated yet
+  //  *
+  //  * @link https://github.com/wp-graphql/wp-graphql/issues/2166
+  //  */
+  // if (node === null) {
+  //   return notFoundResponse;
+  // }
 
-  // eslint-disable-next-line no-underscore-dangle
-  const previewNodeTypeName = typeNameQuery ?? node?.__typename;
+  // if (!isNil(typeNameQuery) && Array.isArray(typeNameQuery)) {
+  //   throw new Error(
+  //     'usePreviewNode() requires the "postType" URL' +
+  //       'query parameter to be a string',
+  //   );
+  // }
 
-  if (isNil(previewNodeTypeName)) {
-    return notFoundResponse;
-  }
+  // // eslint-disable-next-line no-underscore-dangle
+  // const previewNodeTypeName = typeNameQuery ?? node?.__typename;
 
-  const previewNode: Node = node?.$on?.[previewNodeTypeName];
+  // if (isNil(previewNodeTypeName)) {
+  //   return notFoundResponse;
+  // }
 
-  /**
-   * `previewNodeTypeName` could be `undefined` here if the postType
-   * URL query param is manually specified and it is not valid.
-   */
-  if (isUndefined(previewNode)) {
-    return notFoundResponse;
-  }
+  // const previewNode: Node = node?.$on?.[previewNodeTypeName];
 
-  return {
-    typeName: previewNodeTypeName,
-    node: previewNode,
-  };
+  // /**
+  //  * `previewNodeTypeName` could be `undefined` here if the postType
+  //  * URL query param is manually specified and it is not valid.
+  //  */
+  // if (isUndefined(previewNode)) {
+  //   return notFoundResponse;
+  // }
+
+  // return {
+  //   typeName: previewNodeTypeName,
+  //   node: previewNode,
+  // };
 }

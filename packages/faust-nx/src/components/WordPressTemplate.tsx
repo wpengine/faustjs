@@ -4,20 +4,25 @@ import { getTemplate } from '../getTemplate';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';
 import { getConfig } from '../config';
+import { usePreviewNode } from '../hooks';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
+  __IS_PREVIEW__: boolean;
   templates: { [key: string]: WordPressTemplate };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
+  const {
+    __SEED_NODE__: seedNode,
+    __IS_PREVIEW__: isPreview,
+  } = props;
   const { templates } = getConfig();
 
   if (!templates) {
     throw new Error('Templates are required. Please add them to your config.');
   }
 
-  const { __SEED_NODE__: seedNode } = props;
   const template = getTemplate(seedNode, templates);
 
   if (!template) {
@@ -25,12 +30,15 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     return null;
   }
 
+  const tempResponse = usePreviewNode(template, seedNode);
+  console.log({tempResponse});
+
   const { query, variables, Component } = template;
 
   let res;
   res = useQuery(query, {
-    variables: variables ? variables(seedNode) : undefined,
-    ssr: true,
+    variables: variables ? variables(seedNode, isPreview) : undefined,
+    ssr: !isPreview,
     skip: !query,
   });
 

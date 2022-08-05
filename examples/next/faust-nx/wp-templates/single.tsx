@@ -13,17 +13,18 @@ const Component = (props: any) => {
 
 const query = gql`
   query GetPost($uri: ID!) {
-    post(id: $uri, idType: URI) {
+    post(id: $uri, idType: URI, isPreview: $isPreview) {
       title
       content
     }
   }
 `;
 
-const variables = (seedQuery: any) => {
+const variables = (seedQuery: any, isPreview: boolean) => {
   console.log(seedQuery);
 
   return {
+    isPreview,
     uri: seedQuery.uri,
   };
 };

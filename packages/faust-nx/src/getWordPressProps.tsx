@@ -14,7 +14,7 @@ function isSSR(
 
 export interface WordPressTemplate {
   query: DocumentNode;
-  variables: (seedNode: SeedNode) => { [key: string]: any };
+  variables: (seedNode: SeedNode, isPreview: boolean) => { [key: string]: any };
   Component: React.FC<{ [key: string]: any }>;
 }
 
@@ -53,8 +53,6 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
     }
   }
 
-  console.log({isPreview})
-
   if (!resolvedUrl) {
     return {
       notFound: true,
@@ -85,13 +83,16 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
   if (template.query && !isPreview) {
     await client.query({
       query: template.query,
-      variables: template?.variables ? template.variables(seedNode) : undefined,
+      variables: template?.variables
+        ? template.variables(seedNode, false) // 2nd arg will always be false.
+        : undefined,
     });
   }
 
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
+      __IS_PREVIEW__: isPreview,
     },
   });
 }
