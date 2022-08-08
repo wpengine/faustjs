@@ -1,6 +1,6 @@
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { hooks, Plugin } from '../hooks/index.js';
-import isEqual from 'lodash/isEqual';
+import once from 'lodash/once.js';
 
 export interface FaustNXConfig {
   templates: { [key: string]: WordPressTemplate };
@@ -12,18 +12,15 @@ export interface FaustNXConfig {
 let config: FaustNXConfig;
 
 export function setConfig(_config: FaustNXConfig) {
-  // Prevent plugins from being re-initialized.
-  if (isEqual(config, _config)) {
-    return;
-  }
+  return once(() => {
+    config = _config;
 
-  config = _config;
+    const { experimentalPlugins: plugins } = _config;
 
-  const { experimentalPlugins: plugins } = _config;
-
-  plugins?.forEach((plugin) => {
-    plugin?.apply?.(hooks);
-  });
+    plugins?.forEach((plugin) => {
+      plugin?.apply?.(hooks);
+    });
+  })();
 }
 
 export function getConfig(): Partial<FaustNXConfig> {
