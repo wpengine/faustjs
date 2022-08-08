@@ -1,7 +1,10 @@
 import { gql } from '@apollo/client';
 
 const Component = (props: any) => {
-  const { title, content } = props.data.post;
+  // const { title, content } = props.data?.post;
+
+  const title = 'test';
+  const content = 'Content';
 
   return (
     <>
