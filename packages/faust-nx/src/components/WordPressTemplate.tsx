@@ -1,13 +1,11 @@
 import React, { PropsWithChildren } from 'react';
 import { DocumentNode, useQuery } from '@apollo/client';
 import { getTemplate } from '../getTemplate.js';
-import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
-  templates: { [key: string]: WordPressTemplateType };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
