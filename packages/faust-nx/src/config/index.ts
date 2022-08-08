@@ -1,6 +1,6 @@
+import once from 'lodash/once.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { hooks, Plugin } from '../hooks/index.js';
-import once from 'lodash/once.js';
 
 export interface FaustNXConfig {
   templates: { [key: string]: WordPressTemplate };
