@@ -1,6 +1,6 @@
 import { getConfig } from '../config';
 // eslint-disable-next-line import/extensions
-import { ensureAuthorization } from '@faustjs/core/auth';
+import { ensureAuthorization } from '../auth';
 import defaults from 'lodash/defaults.js';
 import isObject from 'lodash/isObject.js';
 import isUndefined from 'lodash/isUndefined.js';
