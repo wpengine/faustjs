@@ -30,8 +30,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     return null;
   }
 
-  const DEBUG_RESPONSE = usePreviewNode(template, seedNode);
-  console.log({ DEBUG_RESPONSE });
+  const USE_PREVIEW_NODE_RESPONSE = usePreviewNode(template, seedNode);
+  console.log({ USE_PREVIEW_NODE_RESPONSE });
 
   const { query, variables, Component } = template;
 

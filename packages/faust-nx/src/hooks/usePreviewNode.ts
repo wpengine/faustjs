@@ -23,8 +23,10 @@ export function usePreviewNode(
     isReady,
     query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
   } = useRouter();
-  const { isAuthenticated } = useAuth();
-  console.log({ isAuthenticated });
+
+  const USE_AUTH_RESPONSE = useAuth();
+  console.log({ USE_AUTH_RESPONSE });
+  const { isAuthenticated } = USE_AUTH_RESPONSE;
 
   const unreadyResponse: UsePreviewNodeResponse = {
     typeName: undefined,

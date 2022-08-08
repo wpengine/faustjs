@@ -1,4 +1,4 @@
-import { config } from '@faustjs/core';
+import { getConfig } from '../config';
 // eslint-disable-next-line import/extensions
 import { ensureAuthorization } from '@faustjs/core/auth';
 import defaults from 'lodash/defaults.js';
@@ -34,7 +34,8 @@ export function useAuth(useAuthOptions?: UseAuthOptions): UseAuthResponse {
   });
 
   const { shouldRedirect } = options;
-  const { authType, loginPagePath } = config();
+  const { loginPagePath, authType } = getConfig();
+
   const [{ isAuthenticated, isLoading, authResult }, setState] = useState<any>({
     isAuthenticated: undefined,
     isLoading: true,
@@ -48,19 +49,17 @@ export function useAuth(useAuthOptions?: UseAuthOptions): UseAuthResponse {
     }
     let mounted = true;
 
+    console.log('inside useEffect');
+
     /* eslint-disable @typescript-eslint/no-floating-promises */
     (async () => {
       if (!mounted) {
         return;
       }
 
-      const auth = await ensureAuthorization({
-        redirectUri: window.location.href,
-        loginPageUri: `/${trim(
-          loginPagePath,
-          '/',
-        )}/?redirect_uri=${encodeURIComponent(window.location.href)}`,
-      });
+      const auth = await ensureAuthorization();
+
+      console.log({auth});
 
       if (!mounted) {
         return;
@@ -80,6 +79,8 @@ export function useAuth(useAuthOptions?: UseAuthOptions): UseAuthResponse {
 
   // Redirect the user to the login page if they are not authenticated
   useEffect(() => {
+    console.log('useEffect2 start!');
+
     // Do not redirect if specified in UseAuthOptions.
     if (!shouldRedirect) {
       return noop;
