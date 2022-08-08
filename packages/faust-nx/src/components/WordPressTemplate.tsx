@@ -1,13 +1,11 @@
 import React, { PropsWithChildren } from 'react';
-import { useQuery } from '@apollo/client';
-import { getTemplate } from '../getTemplate';
-import { WordPressTemplate } from '../getWordPressProps';
-import { SeedNode } from '../queries/seedQuery';
-import { getConfig } from '../config';
+import { DocumentNode, useQuery } from '@apollo/client';
+import { getTemplate } from '../getTemplate.js';
+import { SeedNode } from '../queries/seedQuery.js';
+import { getConfig } from '../config/index.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
-  templates: { [key: string]: WordPressTemplate };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
@@ -20,19 +18,22 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const { __SEED_NODE__: seedNode } = props;
   const template = getTemplate(seedNode, templates);
 
+  /**
+   * This code block exists above the !template conditional
+   * as React Hooks can not be behind conditionals
+   */
+  const res = useQuery(template?.query as DocumentNode, {
+    variables: template?.variables ? template?.variables(seedNode) : undefined,
+    ssr: true,
+    skip: !template?.query,
+  });
+
   if (!template) {
     console.error('No template found');
     return null;
   }
 
-  const { query, variables, Component } = template;
-
-  let res;
-  res = useQuery(query, {
-    variables: variables ? variables(seedNode) : undefined,
-    ssr: true,
-    skip: !query,
-  });
+  const { Component } = template;
 
   const { data, error, loading } = res ?? {};
 
