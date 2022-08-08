@@ -5,8 +5,12 @@ export function getPossibleTemplates(node: SeedNode) {
   const possibleTemplates = [];
 
   // CPT archive page
+  // eslint-disable-next-line no-underscore-dangle
   if (node.__typename === 'ContentType' && node.isPostsPage === false) {
-    possibleTemplates.push(`archive-${node.name}`);
+    if (node.name) {
+      possibleTemplates.push(`archive-${node.name}`);
+    }
+
     possibleTemplates.push('archive');
   }
 
@@ -79,10 +83,15 @@ export function getPossibleTemplates(node: SeedNode) {
       node?.contentType?.node?.name !== 'page' &&
       node?.contentType?.node?.name !== 'post'
     ) {
-      possibleTemplates.push(
-        `single-${node.contentType?.node?.name}-${node.slug}`,
-      );
-      possibleTemplates.push(`single-${node.contentType?.node?.name}`);
+      if (node.contentType?.node?.name && node.slug) {
+        possibleTemplates.push(
+          `single-${node.contentType?.node?.name}-${node.slug}`,
+        );
+      }
+
+      if (node.contentType?.node?.name) {
+        possibleTemplates.push(`single-${node.contentType?.node?.name}`);
+      }
     }
 
     if (node?.contentType?.node?.name === 'page') {
