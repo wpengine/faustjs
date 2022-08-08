@@ -1,12 +1,16 @@
-import { WordPressTemplate } from './getWordPressProps';
-import { SeedNode } from './queries/seedQuery';
+import { WordPressTemplate } from './getWordPressProps.js';
+import { SeedNode } from './queries/seedQuery.js';
 
 export function getPossibleTemplates(node: SeedNode) {
   const possibleTemplates = [];
 
   // CPT archive page
+  // eslint-disable-next-line no-underscore-dangle
   if (node.__typename === 'ContentType' && node.isPostsPage === false) {
-    possibleTemplates.push(`archive-${node.name}`);
+    if (node.name) {
+      possibleTemplates.push(`archive-${node.name}`);
+    }
+
     possibleTemplates.push('archive');
   }
 
@@ -16,23 +20,46 @@ export function getPossibleTemplates(node: SeedNode) {
 
     switch (taxonomyName) {
       case 'category': {
-        possibleTemplates.push(`category-${node.slug}`);
-        possibleTemplates.push(`category-${node.databaseId}`);
+        if (node.slug) {
+          possibleTemplates.push(`category-${node.slug}`);
+        }
+
+        if (node.databaseId) {
+          possibleTemplates.push(`category-${node.databaseId}`);
+        }
+
         possibleTemplates.push(`category`);
 
         break;
       }
       case 'post_tag': {
-        possibleTemplates.push(`tag-${node.slug}`);
-        possibleTemplates.push(`tag-${node.databaseId}`);
+        if (node.slug) {
+          possibleTemplates.push(`tag-${node.slug}`);
+        }
+
+        if (node.databaseId) {
+          possibleTemplates.push(`tag-${node.databaseId}`);
+        }
+
         possibleTemplates.push(`tag`);
 
         break;
       }
       default: {
-        possibleTemplates.push(`taxonomy-${taxonomyName}-${node.slug}`);
-        possibleTemplates.push(`taxonomy-${taxonomyName}-${node.databaseId}`);
-        possibleTemplates.push(`taxonomy-${taxonomyName}`);
+        if (taxonomyName) {
+          if (node.slug) {
+            possibleTemplates.push(`taxonomy-${taxonomyName}-${node.slug}`);
+          }
+
+          if (node.databaseId) {
+            possibleTemplates.push(
+              `taxonomy-${taxonomyName}-${node.databaseId}`,
+            );
+          }
+
+          possibleTemplates.push(`taxonomy-${taxonomyName}`);
+        }
+
         possibleTemplates.push(`taxonomy`);
       }
     }
@@ -53,22 +80,36 @@ export function getPossibleTemplates(node: SeedNode) {
       node?.contentType?.node?.name !== 'page' &&
       node?.contentType?.node?.name !== 'post'
     ) {
-      possibleTemplates.push(
-        `single-${node.contentType?.node?.name}-${node.slug}`,
-      );
-      possibleTemplates.push(`single-${node.contentType?.node?.name}`);
+      if (node.contentType?.node?.name && node.slug) {
+        possibleTemplates.push(
+          `single-${node.contentType?.node?.name}-${node.slug}`,
+        );
+      }
+
+      if (node.contentType?.node?.name) {
+        possibleTemplates.push(`single-${node.contentType?.node?.name}`);
+      }
     }
 
     if (node?.contentType?.node?.name === 'page') {
-      possibleTemplates.push(`page-${node.slug}`);
-      possibleTemplates.push(`page-${node.databaseId}`);
+      if (node.slug) {
+        possibleTemplates.push(`page-${node.slug}`);
+      }
+
+      if (node.databaseId) {
+        possibleTemplates.push(`page-${node.databaseId}`);
+      }
+
       possibleTemplates.push(`page`);
     }
 
     if (node?.contentType?.node?.name === 'post') {
-      possibleTemplates.push(
-        `single-${node.contentType.node.name}-${node.slug}`,
-      );
+      if (node.slug) {
+        possibleTemplates.push(
+          `single-${node.contentType.node.name}-${node.slug}`,
+        );
+      }
+
       possibleTemplates.push(`single-${node.contentType.node.name}`);
       possibleTemplates.push(`single`);
     }
@@ -86,8 +127,10 @@ export function getTemplate(
   templates: { [key: string]: WordPressTemplate },
 ) {
   const possibleTemplates = getPossibleTemplates(seedNode);
+  // eslint-disable-next-line no-console
   console.log('possible templates: ', possibleTemplates);
 
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < possibleTemplates.length; i++) {
     const possibleTemplate = possibleTemplates[i];
     if (templates[possibleTemplate]) {

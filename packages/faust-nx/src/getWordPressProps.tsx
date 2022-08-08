@@ -1,10 +1,10 @@
-import { ApolloClient, gql, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
-import { SeedNode, SEED_QUERY } from './queries/seedQuery';
-import { getTemplate } from './getTemplate';
-import { addApolloState } from './client';
-import { getConfig } from './config';
+import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
+import { getTemplate } from './getTemplate.js';
+import { addApolloState } from './client.js';
+import { getConfig } from './config/index.js';
 
 function isSSR(
   ctx: GetServerSidePropsContext | GetStaticPropsContext,
@@ -18,13 +18,13 @@ export interface WordPressTemplate {
   Component: React.FC<{ [key: string]: any }>;
 }
 
-export interface getWordPressPropsConfig {
-    client: ApolloClient<NormalizedCacheObject>;
-    ctx: GetServerSidePropsContext | GetStaticPropsContext
+export interface GetWordPressPropsConfig {
+  client: ApolloClient<NormalizedCacheObject>;
+  ctx: GetServerSidePropsContext | GetStaticPropsContext;
 }
 
-export async function getWordPressProps(options: getWordPressPropsConfig) {
-  const {templates} = getConfig()
+export async function getWordPressProps(options: GetWordPressPropsConfig) {
+  const { templates } = getConfig();
 
   if (!templates) {
     throw new Error('Templates are required. Please add them to your config.');
@@ -32,8 +32,10 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
 
   const { client, ctx } = options;
 
-  if(!client) {
-    throw new Error('getWordPressProps: client is required. Please add it as a prop.')
+  if (!client) {
+    throw new Error(
+      'getWordPressProps: client is required. Please add it as a prop.',
+    );
   }
 
   let resolvedUrl = null;
@@ -64,7 +66,7 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
     variables: { uri: resolvedUrl },
   });
 
-  const seedNode = seedQueryRes?.data?.node;
+  const seedNode = seedQueryRes?.data?.node as SeedNode;
 
   if (!seedNode) {
     return {
@@ -89,6 +91,7 @@ export async function getWordPressProps(options: getWordPressPropsConfig) {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
