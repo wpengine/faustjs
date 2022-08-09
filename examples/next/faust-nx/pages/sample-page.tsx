@@ -6,7 +6,11 @@ import client from 'client';
 export default function Page(props: any) {
   const {data} = useQuery(Page.query);
   const title = data?.page?.title;
-  return <div>{title}</div>
+  const content = data?.page?.content;
+  return <div>
+    <h1>{title}</h1>
+    <div dangerouslySetInnerHTML={{ __html: content}} />
+  </div>
 }
 
 Page.query = gql`
