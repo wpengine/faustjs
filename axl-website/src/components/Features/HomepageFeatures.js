@@ -52,6 +52,20 @@ const FeatureList = [
     link: '/docs/next/reference/hooks',
   },
   {
+    title: 'WP Template Hierarchy',
+    description: (
+      <>Use chained requests, resolve custom post type templates, and more.</>
+    ),
+    link: '',
+  },
+  {
+    title: 'Plugin System',
+    description: (
+      <>Use plugins to add quick and flexible functionality to your product.</>
+    ),
+    link: '',
+  },
+  {
     title: 'Custom Post Types',
     description: (
       <>
