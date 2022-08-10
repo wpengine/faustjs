@@ -5,15 +5,15 @@ export default function SitemapIndex() {
 }
 
 // getStaticProps - no context request object
-export const getServerSideProps = (ctx) => {
-    // console.log(ctx.req.url);
+export const getServerSideProps = (ctx: any) => {
+    const paramsIndex = ctx.req.url.indexOf('?');
+    const searchParamString = ctx.req.url.substr(paramsIndex);
+    const urlParams = new URLSearchParams(searchParamString);
 
-    // if(ctx.req.url === '/sitemap.xml') {
-    //     // handlesitemaprequests.createrootsitemapindex()
-    // }
-
-    // if(ctx.req.url.includes('something')) {
-    //     // handlesitemaprequests.handlesitemappath()
+    // if(!urlParams.get('sitemap')) {
+    //     handleSitemapRequests.createRootSitemapIndex();
+    // } else if(urlParams.get('sitemap')) {
+    //     handleSitemapRequests.handleSitemapPath()
     // }
 
     // return getServerSideSitemapIndex(ctx, [
