@@ -2,20 +2,20 @@ import React, { PropsWithChildren } from 'react';
 import { DocumentNode, useQuery } from '@apollo/client';
 import { getTemplate } from '../getTemplate.js';
 import { SeedNode } from '../queries/seedQuery.js';
+import { WordPressTemplate } from '../getWordPressProps.js';
 import { getConfig } from '../config/index.js';
+import { usePreviewNode } from '../hooks/usePreviewNode.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
   __IS_PREVIEW__: boolean;
-  templates: { [key: string]: WordPressTemplate };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const {
-    __SEED_NODE__: seedNode,
-    __IS_PREVIEW__: isPreview,
-  } = props;
+  const { __SEED_NODE__: seedNode, __IS_PREVIEW__: isPreview } = props;
   const { templates } = getConfig();
+
+  console.log({props});
 
   if (!templates) {
     throw new Error('Templates are required. Please add them to your config.');
@@ -27,9 +27,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
    * This code block exists above the !template conditional
    * as React Hooks can not be behind conditionals
    */
-  const res = useQuery(template?.query as DocumentNode, {
-    variables: template?.variables ? template?.variables(seedNode) : undefined,
-    ssr: true,
+  const response = useQuery(template?.query as DocumentNode, {
+    variables: template?.variables ? template?.variables(seedNode, isPreview) : undefined,
+    ssr: !isPreview,
     skip: !template?.query,
   });
 
@@ -38,19 +38,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     return null;
   }
 
-  const USE_PREVIEW_NODE_RESPONSE = usePreviewNode(template, seedNode);
-  console.log({ USE_PREVIEW_NODE_RESPONSE });
-
-  const { query, variables, Component } = template;
-
-  let res;
-  res = useQuery(query, {
-    variables: variables ? variables(seedNode, isPreview) : undefined,
-    ssr: !isPreview,
-    skip: !query,
-  });
-
-  const { data, error, loading } = res ?? {};
+  const { Component } = template;
+  const { data, error, loading } = response ?? {};
 
   return React.cloneElement(
     <Component />,

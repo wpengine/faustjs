@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/extensions
-import { ContentNodeIdTypeEnum } from '@faustjs/core/client';
 import type { Node } from '@faustjs/react';
 import type { DocumentNode } from 'graphql';
 import isNil from 'lodash/isNil.js';
@@ -11,30 +10,25 @@ import { SeedNode } from '../queries/seedQuery';
 import { useAuth } from './useAuth';
 
 export type UsePreviewNodeResponse = {
-  typeName: string | null | undefined;
   node: Node | null | undefined;
 };
 
 export function usePreviewNode(
-  template: WordPressTemplate,
-  seedNode: SeedNode
+  seedNode: SeedNode,
+  template: WordPressTemplate | null
 ) {
   const {
     isReady,
     query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
   } = useRouter();
 
-  const USE_AUTH_RESPONSE = useAuth();
-  console.log({ USE_AUTH_RESPONSE });
-  const { isAuthenticated } = USE_AUTH_RESPONSE;
+  const { isAuthenticated } = useAuth();
 
   const unreadyResponse: UsePreviewNodeResponse = {
-    typeName: undefined,
     node: undefined,
   };
 
   const notFoundResponse: UsePreviewNodeResponse = {
-    typeName: null,
     node: null,
   };
 
@@ -59,51 +53,15 @@ export function usePreviewNode(
     );
   }
 
-  const node = useQuery(template?.query as DocumentNode, {
+  const response = useQuery(template?.query as DocumentNode, {
     variables: template?.variables ? template?.variables(seedNode, true) : undefined,
     ssr: false,
     skip: !template?.query,
   });
 
-  console.log({node});
+  const { data, error, loading } = response ?? {};
+
+  console.log({ response });
+
   return notFoundResponse;
-
-  // /**
-  //  * `contentNode` returns null if the post does not exist
-  //  * or if the preview has not been generated yet
-  //  *
-  //  * @link https://github.com/wp-graphql/wp-graphql/issues/2166
-  //  */
-  // if (node === null) {
-  //   return notFoundResponse;
-  // }
-
-  // if (!isNil(typeNameQuery) && Array.isArray(typeNameQuery)) {
-  //   throw new Error(
-  //     'usePreviewNode() requires the "postType" URL' +
-  //       'query parameter to be a string',
-  //   );
-  // }
-
-  // // eslint-disable-next-line no-underscore-dangle
-  // const previewNodeTypeName = typeNameQuery ?? node?.__typename;
-
-  // if (isNil(previewNodeTypeName)) {
-  //   return notFoundResponse;
-  // }
-
-  // const previewNode: Node = node?.$on?.[previewNodeTypeName];
-
-  // /**
-  //  * `previewNodeTypeName` could be `undefined` here if the postType
-  //  * URL query param is manually specified and it is not valid.
-  //  */
-  // if (isUndefined(previewNode)) {
-  //   return notFoundResponse;
-  // }
-
-  // return {
-  //   typeName: previewNodeTypeName,
-  //   node: previewNode,
-  // };
 }
