@@ -1,8 +1,9 @@
 import { WordPressTemplate } from './getWordPressProps.js';
 import { SeedNode } from './queries/seedQuery.js';
+import { hooks } from './hooks/index.js';
 
 export function getPossibleTemplates(node: SeedNode) {
-  const possibleTemplates = [];
+  let possibleTemplates: string[] = [];
 
   // CPT archive page
   // eslint-disable-next-line no-underscore-dangle
@@ -121,6 +122,12 @@ export function getPossibleTemplates(node: SeedNode) {
   }
 
   possibleTemplates.push('index');
+
+  possibleTemplates = hooks.applyFilters(
+    'possibleTemplatesList',
+    possibleTemplates,
+    node,
+  ) as string[];
 
   return possibleTemplates;
 }
