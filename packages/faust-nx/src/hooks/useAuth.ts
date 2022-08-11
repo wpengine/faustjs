@@ -52,7 +52,7 @@ export function useAuth(useAuthOptions?: UseAuthOptions): UseAuthResponse {
           '/',
         )}/?redirect_uri=${encodeURIComponent(window.location.href)}`,
       });
-      console.log({ authResult });
+
       setAuthStatus({
         authResult,
         isAuthenticated: authResult === true,
