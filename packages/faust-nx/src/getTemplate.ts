@@ -126,7 +126,7 @@ export function getPossibleTemplates(node: SeedNode) {
   possibleTemplates = hooks.applyFilters(
     'possibleTemplatesList',
     possibleTemplates,
-    node,
+    { seedNode: node },
   ) as string[];
 
   return possibleTemplates;
