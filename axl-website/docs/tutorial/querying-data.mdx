@@ -1,0 +1,133 @@
+---
+slug: /tutorial/querying-data
+title: Querying Data From Your Headless WordPress Site
+description: In this tutorial, we'll walk through how to query data from your headless WordPress site using GQty and WPGraphQL
+---
+
+## Introduction
+
+In the previous tutorial, you setup Faust.js and the necessary WordPress plugins.
+
+In this tutorial, we'll use the client we created in the previous tutorial to query data from your headless WordPress site.
+
+## Using The Client Hooks
+
+The client we created in the previous tutorial gives us access to helpful [React Hooks](../next/reference/hooks) for easily querying data from WordPress.
+
+### Get Posts Using `usePosts` Hook
+
+Let's use the [`usePosts`](../next/reference/hooks/usePosts) hook to get the latest posts from your headless WordPress site.
+
+```tsx title=pages/posts.tsx {1,5-6}
+import { client } from 'client';
+import Post from 'components/post';
+
+export default function PostsPage() {
+  const { usePosts } = client;
+  const posts = usePosts()?.nodes;
+
+  return (
+    <div>
+      <h1>My posts</h1>
+      {posts.map((post) => (
+        <Post key={post.id} title={post.title} content={post.content} />
+      ))}
+    </div>
+  );
+}
+```
+
+Let's also update the `Post` component to accept a `post` prop:
+
+```tsx title=components/post.tsx {1,4,8}
+import { Post as PostType } from 'client';
+
+export interface PostProps {
+  post: PostType;
+}
+
+export default function Post(props: PostProps) {
+  const { post } = props;
+
+  return (
+    <article>
+      <h1>{post.title()}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post.content() }} />
+    </article>
+  );
+}
+```
+
+A couple of things to note here: The schema generated in the previous tutorial exports a `Post` type. We're able to use this type to define the `Post` component props.
+
+Additionally, notice the `title` and `content` properties are functions. This is because you are able to specify if you want the rendered content or raw content. For example:
+
+```tsx
+post.title({ format: PostObjectFieldFormatEnum.RAW });
+```
+
+Let's go back to the `pages/posts.tsx` component and hook up the data we're fetching to the `Post` component:
+
+```tsx title=pages/posts.tsx {12}
+import { client } from 'client';
+import Post from 'components/post';
+
+export default function PostsPage() {
+  const { usePosts } = client;
+  const posts = usePosts()?.nodes;
+
+  return (
+    <div>
+      <h1>My posts</h1>
+      {posts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
+    </div>
+  );
+}
+```
+
+Once those changes are made, navigate to [http://localhost:3000/posts](http://localhost:3000/posts) in your browser and you should see your posts.
+
+<img
+  src="/docs/img/tutorial-querying-data-posts.png"
+  alt="Querying posts from headless WordPress"
+/>
+
+### Get Data Using The `useQuery` Hook
+
+While Faust.js provides [custom hooks](../next/reference/hooks) for fetching data like posts, pages, etc, sometimes you need to fetch data outside of the scope of the custom hooks.
+
+That is where the [`useQuery`](../next/reference/hooks/gqty-hooks) hook comes in. This is a GQty hook that gives access to your entire schema.
+
+Let's display the site title and description using the `useQuery` hook.
+
+```tsx title=pages/posts.tsx {5,10,11}
+import { client } from 'client';
+import Post from 'components/post';
+
+export default function PostsPage() {
+  const { usePosts, useQuery } = client;
+  const posts = usePosts()?.nodes;
+
+  return (
+    <div>
+      <h1>{useQuery()?.generalSettings?.title}</h1>
+      <p>{useQuery()?.generalSettings?.description}</p>
+
+      <h2>My posts</h2>
+      {posts.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
+    </div>
+  );
+}
+```
+
+Navigate back to [http://localhost:3000/posts](http://localhost:3000/posts) and you will see the site title and description:
+
+<img src="/docs/img/tutorial-querying-data-useQuery.png" alt="" />
+
+### What's Next?
+
+At this point, you have a fully functional headless WordPress site! We recommend following up with our [Getting Started with Next.js docs](../next/getting-started).

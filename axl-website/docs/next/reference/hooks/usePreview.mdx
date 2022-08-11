@@ -1,0 +1,48 @@
+---
+slug: /next/reference/hooks/usePreview
+title: usePreview Hook
+description: The usePreview hook provides a way to get post preview data from WordPress
+---
+
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+:::caution Deprecation Notice
+
+`usePreview` has been deprecated in favor of [`usePreviewNode`](/docs/next/reference/hooks/usePreviewNode)
+
+:::
+
+The `usePreview` hook provides an abstraction around getting a preview `page` or `post` from the Headless WordPress API. When calling the `usePreview` hook on an appropriate preview page, the hook will determine if the preview is a `page` or `post` and will make a request to retrieve the proper preview content.
+
+The following example shows how to use the `usePreview` hook to render either a `post` or `page` from WordPress:
+
+<BaseUrlNotice />
+
+```tsx title=src/pages/preview.tsx {14-17}
+import { PageComponent } from 'pages/[...pageUri]';
+import { PostComponent } from 'pages/posts/[postSlug]';
+import { client } from 'client';
+
+export default function Preview() {
+  const { usePreview } = client.auth;
+  const result = usePreview();
+
+  if (client.useIsLoading() || !result) {
+    return <p>loading...</p>;
+  }
+
+  if (result.type === 'page') {
+    if (!result.page) {
+      return <>Not Found</>;
+    }
+
+    return <PageComponent page={result.page} />;
+  }
+
+  if (!result.post) {
+    return <>Not Found</>;
+  }
+
+  return <PostComponent post={result.post} />;
+}
+```

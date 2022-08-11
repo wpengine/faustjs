@@ -8,4 +8,5 @@ export default setConfig({
   authType: 'redirect',
   loginPagePath: '/login',
   templates,
+  experimentalPlugins: [],
 });

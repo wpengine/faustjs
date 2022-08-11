@@ -5,6 +5,7 @@ import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
 import { getTemplate } from './getTemplate.js';
 import { addApolloState } from './client.js';
 import { getConfig } from './config/index.js';
+import { hooks } from './hooks/index.js';
 
 function isSSR(
   ctx: GetServerSidePropsContext | GetStaticPropsContext,
@@ -61,8 +62,12 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
+  const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
+    resolvedUrl,
+  }) as DocumentNode;
+
   const seedQueryRes = await client.query({
-    query: SEED_QUERY,
+    query: seedQuery,
     variables: { uri: resolvedUrl },
   });
 
