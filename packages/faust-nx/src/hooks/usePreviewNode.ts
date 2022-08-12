@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/extensions
+import {useState, useEffect} from 'react'
+import { ApolloClient, InMemoryCache, ApolloQueryResult, ApolloError } from '@apollo/client';
 import type { Node } from '@faustjs/react';
 import type { DocumentNode } from 'graphql';
 import isNil from 'lodash/isNil.js';
@@ -8,9 +10,13 @@ import { useQuery } from '@apollo/client';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';
 import { useAuth } from './useAuth';
+import { getAccessToken } from '../auth';
 
 export type UsePreviewNodeResponse = {
   node: Node | null | undefined;
+  data?: any;
+  error?: any;
+  loading?: any;
 };
 
 export function usePreviewNode(
@@ -21,24 +27,36 @@ export function usePreviewNode(
     isReady,
     query: { p: postIdQuery, preview: previewQuery, typeName: typeNameQuery },
   } = useRouter();
+  const [previewResponse, setPreviewResponse] = useState<ApolloQueryResult<any> | {data: undefined; loading: boolean; error: ApolloError | undefined}>({data: undefined, loading: true, error: undefined})
 
   const { isAuthenticated } = useAuth();
 
-  const unreadyResponse: UsePreviewNodeResponse = {
-    node: undefined,
-  };
+  useEffect(() => {
+    if(!isReady || isAuthenticated === undefined || isAuthenticated === false) {
+      return
+    }
 
-  const notFoundResponse: UsePreviewNodeResponse = {
-    node: null,
-  };
+    if(!template?.query) {
+      return
+    }
 
-  if (!isReady) {
-    return unreadyResponse;
-  }
+    (async () => {
+      const authClient = new ApolloClient({
+        uri: `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`,
+        cache: new InMemoryCache(),
+        headers: {
+          'Authorization': `bearer ${getAccessToken()}`
+        }
+      });
 
-  if (isUndefined(isAuthenticated) || isAuthenticated !== true) {
-    return unreadyResponse;
-  }
+      const result = await authClient.query({
+        query: template?.query,
+        variables: template?.variables(seedNode, true),
+      })
+
+      setPreviewResponse(result)
+    })()
+  }, [isReady, isAuthenticated, template])
 
   if (isNil(postIdQuery) || isNil(previewQuery) || previewQuery !== 'true') {
     throw new Error(
@@ -53,15 +71,5 @@ export function usePreviewNode(
     );
   }
 
-  const response = useQuery(template?.query as DocumentNode, {
-    variables: template?.variables ? template?.variables(seedNode, true) : undefined,
-    ssr: false,
-    skip: !template?.query,
-  });
-
-  const { data, error, loading } = response ?? {};
-
-  console.log({ response });
-
-  return notFoundResponse;
+  return previewResponse;
 }

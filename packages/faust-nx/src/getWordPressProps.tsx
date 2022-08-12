@@ -15,7 +15,7 @@ function isSSR(
 
 export interface WordPressTemplate {
   query: DocumentNode;
-  variables: (seedNode: SeedNode, isPreview: boolean) => { [key: string]: any };
+  variables: (seedNode: SeedNode, asPreview: boolean) => { [key: string]: any };
   Component: React.FC<{ [key: string]: any }>;
 }
 
@@ -40,7 +40,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   }
 
   let resolvedUrl = null;
-  let isPreview = false;
+  let asPreview = false;
 
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
@@ -52,7 +52,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   } else {
     resolvedUrl = ctx.req.url;
     if (resolvedUrl) {
-      isPreview = resolvedUrl.includes('preview=true');
+      asPreview = resolvedUrl.includes('preview=true');
     }
   }
 
@@ -65,6 +65,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
     resolvedUrl,
   }) as DocumentNode;
+
 
   const seedQueryRes = await client.query({
     query: seedQuery,
@@ -87,7 +88,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
-  if (template.query && !isPreview) {
+  if (template.query && !asPreview) {
     await client.query({
       query: template.query,
       variables: template?.variables
@@ -100,7 +101,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
-      __IS_PREVIEW__: isPreview,
+      __AS_PREVIEW__: asPreview,
     },
   });
 }

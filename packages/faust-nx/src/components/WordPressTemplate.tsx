@@ -8,14 +8,20 @@ import { usePreviewNode } from '../hooks/usePreviewNode.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
-  __IS_PREVIEW__: boolean;
+  __AS_PREVIEW__: boolean;
 }>;
 
+// export function PreviewNode(seedNode: SeedNode, template: WordPressTemplate) {
+//   const previewNode = usePreviewNode(seedNode, template);
+
+//   return (<></>);
+// }
+
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const { __SEED_NODE__: seedNode, __IS_PREVIEW__: isPreview } = props;
+  const { __SEED_NODE__: seedNode, __AS_PREVIEW__: asPreview } = props;
   const { templates } = getConfig();
 
-  console.log({props});
+  console.log({ props });
 
   if (!templates) {
     throw new Error('Templates are required. Please add them to your config.');
@@ -23,15 +29,22 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
   const template = getTemplate(seedNode, templates);
 
+  // const USE_PREVIEW_NODE_RESPONSE = usePreviewNode(seedNode, template);
+  // console.log({USE_PREVIEW_NODE_RESPONSE});
+
   /**
    * This code block exists above the !template conditional
    * as React Hooks can not be behind conditionals
    */
-  const response = useQuery(template?.query as DocumentNode, {
-    variables: template?.variables ? template?.variables(seedNode, isPreview) : undefined,
-    ssr: !isPreview,
-    skip: !template?.query,
-  });
+  // const response = useQuery(template?.query as DocumentNode, {
+  //   variables: template?.variables ? template?.variables(seedNode, asPreview) : undefined,
+  //   ssr: !asPreview,
+  //   skip: !template?.query,
+  // });
+
+  const USE_PREVIEW_NODE_RESPONSE = usePreviewNode(seedNode, template);
+  console.log({USE_PREVIEW_NODE_RESPONSE});
+
 
   if (!template) {
     console.error('No template found');
@@ -39,7 +52,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   }
 
   const { Component } = template;
-  const { data, error, loading } = response ?? {};
+  const { data, error, loading } = USE_PREVIEW_NODE_RESPONSE;
 
   return React.cloneElement(
     <Component />,
