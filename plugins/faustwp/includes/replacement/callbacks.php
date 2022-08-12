@@ -161,11 +161,6 @@ function post_preview_link( $link, $post ) {
 			$args['typeName'] = $gql_type_name;
 		}
 
-		// Add the full URI of the post/page.
-		if ( ! isset( $args['uri'] ) ) {
-			$args['uri'] = rawurlencode( get_permalink( $post ) );
-		}
-
 		// Add ?p=xx&preview=true to link again.
 		$link = add_query_arg(
 			array(
