@@ -36,6 +36,16 @@ export interface HandleSitemapRequestsConfig {
   wpUrl: string;
 
   /**
+   * The sitemap path for server side
+   */
+  rootSitemapPath: string;
+
+  /**
+   * The headless frontend URL
+   */
+  frontendUrl: string;
+
+  /**
    * The pathname to the sitemap index file.
    *
    * @example /sitemap.xml, /wp-sitemap.xml, /sitemap_index.xml

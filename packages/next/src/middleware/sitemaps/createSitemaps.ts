@@ -1,6 +1,7 @@
 import { stripIndent } from 'common-tags';
 import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
+import { IncomingMessage } from 'http';
 import {
   NormalizedConfig,
   FAUST_PAGES_PATHNAME,
@@ -51,22 +52,49 @@ const parserConfig: Partial<X2jOptions> = {
  * @returns {Response|undefined}
  */
 export async function createRootSitemapIndex(
-  req: NextRequest,
+  req: NextRequest | IncomingMessage,
   normalizedConfig: NormalizedConfig,
+  isMiddleware = true,
 ): Promise<Response | undefined> {
   const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
-  const { pathname, origin } = new URL(req.url);
+
+  if (!req.url) {
+    throw new Error('Request object must have URL');
+  }
+
+  let wpSitemapUrl = '';
+  let frontendUrl = '';
+  if (isMiddleware) {
+    const { pathname, origin } = new URL(req.url);
+    frontendUrl = origin;
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
+  } else {
+    // get rootSitemapPath config param
+    // fetch sitemap from WP
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      normalizedConfig.rootSitemapPath,
+    )}`;
+    frontendUrl = normalizedConfig.frontendUrl;
+    // eslint-disable-next-line no-console
+    console.log(wpSitemapUrl);
+  }
+
   let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
     sitemaps = [
       ...sitemaps,
-      { loc: `${trimSlashes(origin)}/${trimSlashes(FAUST_PAGES_PATHNAME)}` },
+      {
+        loc: `${trimSlashes(frontendUrl)}/${trimSlashes(FAUST_PAGES_PATHNAME)}`,
+      },
     ];
   }
 
-  const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
   const res = await fetch(wpSitemapUrl);
+
+  console.log('sitemap index wp res', res);
 
   // Don't proxy the sitemap index if the response was not ok.
   if (!res.ok) {
@@ -147,7 +175,10 @@ export async function createRootSitemapIndex(
         ...sitemaps,
         {
           ...sitemap,
-          loc: sitemap.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
+          loc: sitemap.loc.replace(
+            trimSlashes(wpUrl),
+            trimSlashes(frontendUrl),
+          ),
         },
       ];
     });

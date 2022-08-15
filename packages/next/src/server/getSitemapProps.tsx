@@ -1,6 +1,11 @@
 import { GetServerSidePropsContext } from 'next';
+import { createRootSitemapIndex } from '../middleware/sitemaps/createSitemaps.js';
+import { HandleSitemapRequestsConfig } from '../middleware/sitemaps/handleSitemapRequests.js';
 
-export function getSitemapProps(ctx: GetServerSidePropsContext) {
+export async function getSitemapProps(
+  ctx: GetServerSidePropsContext,
+  config: any,
+) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const paramsIndex = ctx.req.url.indexOf('?');
@@ -13,6 +18,14 @@ export function getSitemapProps(ctx: GetServerSidePropsContext) {
     // handle Root sitemap
     // eslint-disable-next-line no-console
     console.log('sitemap index');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const response = await createRootSitemapIndex(ctx.req, config, false);
+
+    // ctx.res.setHeader('Content-Type', 'application/xml');
+
+    ctx.res.write(await response?.text());
+
+    ctx.res.end();
   }
 
   if (urlParams.get('sitemap')) {
