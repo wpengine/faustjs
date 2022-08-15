@@ -21,7 +21,7 @@ export async function getSitemapProps(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const response = await createRootSitemapIndex(ctx.req, config, false);
 
-    // ctx.res.setHeader('Content-Type', 'application/xml');
+    ctx.res.setHeader('Content-Type', 'application/xml');
 
     ctx.res.write(await response?.text());
 
