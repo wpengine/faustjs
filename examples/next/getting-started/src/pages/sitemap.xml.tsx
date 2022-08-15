@@ -1,4 +1,6 @@
-import { handleSitemapRequests } from '@faustjs/next';
+import "faust.config";
+import { handleServerSitemapRequests } from "@faustjs/next";
+
 
 export default function SitemapIndex() {
     return <div>Test</div>;
@@ -10,16 +12,12 @@ export const getServerSideProps = (ctx: any) => {
     const searchParamString = ctx.req.url.substr(paramsIndex);
     const urlParams = new URLSearchParams(searchParamString);
 
-    // if(!urlParams.get('sitemap')) {
-    //     handleSitemapRequests.createRootSitemapIndex();
-    // } else if(urlParams.get('sitemap')) {
-    //     handleSitemapRequests.handleSitemapPath()
-    // }
-
-    // return getServerSideSitemapIndex(ctx, [
-    //     'https://example.com/path-1.xml',
-    //     'https://example.com/path-2.xml',
-    // ]);
+    // no robots.txt here
+    if(!urlParams.get('sitemap')) {
+        handleServerSitemapRequests.createRootSitemapIndex();
+    } else if(urlParams.get('sitemap')) {
+        handleServerSitemapRequests(ctx.req);
+    }
 
     return {
         props: {}
