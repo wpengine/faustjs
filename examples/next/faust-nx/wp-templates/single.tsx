@@ -5,7 +5,7 @@ const Component = (props: any) => {
     return <>Loading...</>
   }
 
-  console.log({props});
+  console.log({ props });
   const { title, content } = props.data?.post;
 
   return (

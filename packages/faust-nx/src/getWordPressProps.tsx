@@ -67,6 +67,8 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   }) as DocumentNode;
 
 
+  // setup auth client
+
   const seedQueryRes = await client.query({
     query: seedQuery,
     variables: { uri: resolvedUrl },

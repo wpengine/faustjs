@@ -43,8 +43,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   // });
 
   const USE_PREVIEW_NODE_RESPONSE = usePreviewNode(seedNode, template);
-  console.log({USE_PREVIEW_NODE_RESPONSE});
-
+  console.log({ USE_PREVIEW_NODE_RESPONSE });
 
   if (!template) {
     console.error('No template found');
