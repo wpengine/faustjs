@@ -1,4 +1,4 @@
-export { usePreviewNode } from './usePreviewNode.js';
+export { usePreviewQuery } from './usePreviewQuery.js';
 export { useAuth } from './useAuth.js';
 
 import { createHooks } from '@wordpress/hooks';

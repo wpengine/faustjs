@@ -1,12 +1,11 @@
 import { gql } from '@apollo/client';
 
 const Component = (props: any) => {
-  if(props.loading) {
+  if (props.loading) {
     return <>Loading...</>
   }
 
-  console.log({ props });
-  const { title, content } = props.data?.post;
+  const { title, content } = props.data.post;
 
   return (
     <>
@@ -26,8 +25,6 @@ const query = gql`
 `;
 
 const variables = (seedQuery: any, asPreview: boolean) => {
-  console.log(seedQuery);
-
   return {
     asPreview,
     databaseId: seedQuery.databaseId
