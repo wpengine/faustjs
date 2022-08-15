@@ -48,7 +48,7 @@ export function usePreviewQuery(
 
       const result = await authClient.query({
         query: template?.query,
-        variables: template?.variables(seedNode, true),
+        variables: template?.variables(seedNode, { asPreview: true }),
       })
 
       setPreviewResponse(result)

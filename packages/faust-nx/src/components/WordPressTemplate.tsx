@@ -8,11 +8,11 @@ import { usePreviewQuery } from '../hooks/usePreviewQuery.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
-  __AS_PREVIEW__: boolean;
+  context?: { asPreview?: boolean };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const { __SEED_NODE__: seedNode, __AS_PREVIEW__: asPreview } = props;
+  const { __SEED_NODE__: seedNode, context } = props;
   const { templates } = getConfig();
 
   if (!templates) {
@@ -25,13 +25,17 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
    * This code block exists above the !template conditional
    * as React Hooks can not be behind conditionals
    */
-  // const response = useQuery(template?.query as DocumentNode, {
-  //   variables: template?.variables ? template?.variables(seedNode, asPreview) : undefined,
-  //   ssr: !asPreview,
-  //   skip: !template?.query,
-  // });
+  let response;
 
-  const response = usePreviewQuery(seedNode, template);
+  if (context?.asPreview) {
+    response = usePreviewQuery(seedNode, template);
+  } else {
+    response = useQuery(template?.query as DocumentNode, {
+      variables: template?.variables ? template?.variables(seedNode, context) : undefined,
+      ssr: !context?.asPreview,
+      skip: !template?.query,
+    });
+  }
 
   if (!template) {
     console.error('No template found');

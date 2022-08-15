@@ -15,7 +15,7 @@ function isSSR(
 
 export interface WordPressTemplate {
   query: DocumentNode;
-  variables: (seedNode: SeedNode, asPreview: boolean) => { [key: string]: any };
+  variables: (seedNode: SeedNode, context?: { asPreview?: boolean }) => { [key: string]: any };
   Component: React.FC<{ [key: string]: any }>;
 }
 
@@ -94,7 +94,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     await client.query({
       query: template.query,
       variables: template?.variables
-        ? template.variables(seedNode, false) // 2nd arg will always be false.
+        ? template.variables(seedNode)
         : undefined,
     });
   }
