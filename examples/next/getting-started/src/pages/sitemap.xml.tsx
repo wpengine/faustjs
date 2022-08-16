@@ -11,7 +11,13 @@ export const getServerSideProps = async (ctx: any) => {
     const sitemapConfig = {
         rootSitemapPath: '/wp-sitemap.xml',
         frontendUrl: 'http://localhost:3000',
-        wpUrl: 'http://localhost:10003'
+        wpUrl: 'http://localhost:10003',
+        pages: [
+            {
+                path: '/about'
+            }
+        ],
+        replaceUrls: true,
     };
     return getSitemapProps(ctx, sitemapConfig);
 }

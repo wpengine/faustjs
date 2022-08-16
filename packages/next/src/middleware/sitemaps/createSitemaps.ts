@@ -77,24 +77,30 @@ export async function createRootSitemapIndex(
       normalizedConfig.rootSitemapPath,
     )}`;
     frontendUrl = normalizedConfig.frontendUrl;
-    // eslint-disable-next-line no-console
-    console.log(wpSitemapUrl);
   }
 
   let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
+    let sitemapFaustPagesUrl = '';
+    if (isMiddleware) {
+      sitemapFaustPagesUrl = `${trimSlashes(frontendUrl)}/${trimSlashes(
+        FAUST_PAGES_PATHNAME,
+      )}`;
+    } else {
+      sitemapFaustPagesUrl = `${trimSlashes(
+        frontendUrl,
+      )}/sitemap.xml?sitemap=${trimSlashes(FAUST_PAGES_PATHNAME)}`;
+    }
     sitemaps = [
       ...sitemaps,
       {
-        loc: `${trimSlashes(frontendUrl)}/${trimSlashes(FAUST_PAGES_PATHNAME)}`,
+        loc: sitemapFaustPagesUrl,
       },
     ];
   }
 
   const res = await fetch(wpSitemapUrl);
-
-  console.log('sitemap index wp res', res);
 
   // Don't proxy the sitemap index if the response was not ok.
   if (!res.ok) {
@@ -149,6 +155,11 @@ export async function createRootSitemapIndex(
   wpSitemaps = wpSitemaps.filter((sitemap) => {
     const { pathname: sitemapPathname } = new URL(sitemap.loc);
 
+    // eslint-disable-next-line no-console
+    console.log(new URL(sitemap.loc));
+    // eslint-disable-next-line no-console
+    console.log(sitemap);
+
     let hasWildcard = false;
 
     wildcardPathsToIgnore?.forEach((path) => {
@@ -171,14 +182,23 @@ export async function createRootSitemapIndex(
    */
   if (replaceUrls) {
     wpSitemaps.forEach((sitemap) => {
+      let sitemapUrl = '';
+      if (isMiddleware) {
+        sitemapUrl = sitemap.loc.replace(
+          trimSlashes(wpUrl),
+          trimSlashes(frontendUrl),
+        );
+      } else {
+        const url = new URL(sitemap.loc);
+        sitemapUrl = `${frontendUrl}/sitemap.xml?sitemap=${trimSlashes(
+          url.pathname,
+        )}`;
+      }
       sitemaps = [
         ...sitemaps,
         {
           ...sitemap,
-          loc: sitemap.loc.replace(
-            trimSlashes(wpUrl),
-            trimSlashes(frontendUrl),
-          ),
+          loc: sitemapUrl,
         },
       ];
     });
@@ -197,10 +217,22 @@ export async function createRootSitemapIndex(
  * @returns {Response|undefined}
  */
 export function createPagesSitemap(
-  req: NextRequest,
+  req: NextRequest | IncomingMessage,
   normalizedConfig: NormalizedConfig,
+  isMiddleware = true,
 ): Response | undefined {
-  const { origin } = new URL(req.url);
+  if (!req.url) {
+    throw new Error('Request object must have URL');
+  }
+
+  let frontendUrl = '';
+
+  if (isMiddleware) {
+    const { origin } = new URL(req.url);
+    frontendUrl = origin;
+  } else {
+    frontendUrl = normalizedConfig.frontendUrl;
+  }
   const { pages } = normalizedConfig;
 
   if (isUndefined(pages) || !isArray(pages) || !pages.length) {
@@ -213,7 +245,7 @@ export function createPagesSitemap(
     urls = [
       ...urls,
       {
-        loc: `${trimSlashes(origin)}/${trimSlashes(page.path)}`,
+        loc: `${trimSlashes(frontendUrl)}/${trimSlashes(page.path)}`,
         lastmod: page?.lastmod,
         changefreq: page?.changefreq,
         priority: page?.priority,
@@ -232,13 +264,34 @@ export function createPagesSitemap(
  * @returns {Promise<Response|Undefined>}
  */
 export async function handleSitemapPath(
-  req: NextRequest,
+  req: NextRequest | IncomingMessage,
   normalizedConfig: NormalizedConfig,
+  isMiddleware = true,
 ): Promise<Response | undefined> {
   const { wpUrl, replaceUrls } = normalizedConfig;
-  const { pathname, origin } = new URL(req.url);
 
-  const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
+  if (!req.url) {
+    throw new Error('Request object must have URL');
+  }
+
+  let wpSitemapUrl = '';
+  let frontendUrl = '';
+
+  if (isMiddleware) {
+    const { pathname, origin } = new URL(req.url);
+    frontendUrl = origin;
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
+  } else {
+    const paramsIndex = req.url.indexOf('?');
+    const searchParamString = req.url.substr(paramsIndex);
+    const urlParams = new URLSearchParams(searchParamString);
+
+    const sitemapPath = urlParams.get('sitemap') as string;
+
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(sitemapPath)}`;
+    frontendUrl = normalizedConfig.frontendUrl;
+  }
+
   const res = await fetch(wpSitemapUrl);
 
   // Don't proxy the sitemap if the response was not ok.
@@ -291,7 +344,7 @@ export async function handleSitemapPath(
         ...urls,
         {
           ...url,
-          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
+          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(frontendUrl)),
         },
       ];
     });

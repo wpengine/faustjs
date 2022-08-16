@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { createRootSitemapIndex } from '../middleware/sitemaps/createSitemaps.js';
+import { createPagesSitemap, createRootSitemapIndex, handleSitemapPath } from '../middleware/sitemaps/createSitemaps.js';
 import { HandleSitemapRequestsConfig } from '../middleware/sitemaps/handleSitemapRequests.js';
 
 export async function getSitemapProps(
@@ -28,19 +28,32 @@ export async function getSitemapProps(
     ctx.res.end();
   }
 
-  if (urlParams.get('sitemap')) {
-    // handle sitemap path if query string
-    // eslint-disable-next-line no-console
-    console.log('sitemap path', urlParams.get('sitemap'));
+  if (
+    urlParams.get('sitemap') &&
+    urlParams.get('sitemap') !== 'sitemap-faust-pages.xml'
+  ) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const response = await handleSitemapPath(ctx.req, config, false);
+
+    ctx.res.setHeader('Content-Type', 'application/xml');
+
+    ctx.res.write(await response?.text());
+
+    ctx.res.end();
   }
 
   if (
     urlParams.get('sitemap') &&
     urlParams.get('sitemap') === 'sitemap-faust-pages.xml'
   ) {
-    // handle next.js pages
-    // eslint-disable-next-line no-console
-    console.log('next pages sitemap');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const response = createPagesSitemap(ctx.req, config, false);
+
+    ctx.res.setHeader('Content-Type', 'application/xml');
+
+    ctx.res.write(await response?.text());
+
+    ctx.res.end();
   }
 
   return {
