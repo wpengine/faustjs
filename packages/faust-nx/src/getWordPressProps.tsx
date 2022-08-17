@@ -1,9 +1,8 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
 import { getTemplate } from './getTemplate.js';
-import { addApolloState } from './client.js';
+import { addApolloState, initializeApollo } from './client.js';
 import { getConfig } from './config/index.js';
 import { hooks } from './hooks/index.js';
 
@@ -20,7 +19,6 @@ export interface WordPressTemplate {
 }
 
 export interface GetWordPressPropsConfig {
-  client: ApolloClient<NormalizedCacheObject>;
   ctx: GetServerSidePropsContext | GetStaticPropsContext;
 }
 
@@ -31,13 +29,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     throw new Error('Templates are required. Please add them to your config.');
   }
 
-  const { client, ctx } = options;
+  const { ctx } = options;
 
-  if (!client) {
-    throw new Error(
-      'getWordPressProps: client is required. Please add it as a prop.',
-    );
-  }
+  const client = initializeApollo();
 
   let resolvedUrl = null;
 
