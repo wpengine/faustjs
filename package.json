@@ -13,6 +13,7 @@
       "examples/next/getting-started",
       "plugins/faustwp",
       "packages/faust-nx",
+      "packages/faust-nx-cli",
       "examples/next/faust-nx"
     ]
   },
