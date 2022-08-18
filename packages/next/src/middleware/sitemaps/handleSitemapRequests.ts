@@ -96,6 +96,7 @@ export const FAUST_ROBOTS_PATHNAME = '/robots.txt';
  */
 export function validateConfig(
   config: Partial<HandleSitemapRequestsConfig>,
+  isMiddleware = true,
 ): void {
   if (isUndefined(config?.wpUrl)) {
     throw new Error('wpUrl is required.');
@@ -110,6 +111,31 @@ export function validateConfig(
     const url = new URL(config.wpUrl);
   } catch (e) {
     throw new Error('wpUrl must be a valid URL.');
+  }
+
+  if (!isMiddleware) {
+    if (isUndefined(config?.rootSitemapPath)) {
+      throw new Error('rootSitemapPath is required');
+    }
+
+    if (!isString(config?.rootSitemapPath)) {
+      throw new Error('rootSitemapPath must be a string');
+    }
+
+    if (isUndefined(config?.frontendUrl)) {
+      throw new Error('frontendUrl is required');
+    }
+
+    if (!isString(config?.frontendUrl)) {
+      throw new Error('frontendUrl must be a string');
+    }
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const url = new URL(config.frontendUrl);
+    } catch (e) {
+      throw new Error('frontendUrl must be a valid URL.');
+    }
   }
 
   if (isUndefined(config?.sitemapIndexPath)) {
