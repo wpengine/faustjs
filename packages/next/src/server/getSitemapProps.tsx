@@ -1,3 +1,4 @@
+import { isString, isUndefined } from '../middleware/sitemaps/sitemapUtils.js';
 import { GetServerSidePropsContext } from 'next';
 import { createPagesSitemap, createRootSitemapIndex, handleSitemapPath } from '../middleware/sitemaps/createSitemaps.js';
 import { HandleSitemapRequestsConfig } from '../middleware/sitemaps/handleSitemapRequests.js';
@@ -6,6 +7,31 @@ export async function getSitemapProps(
   ctx: GetServerSidePropsContext,
   config: any,
 ) {
+  // config validation
+  if (isUndefined(config?.wpUrl)) {
+    throw new Error('wpUrl is required.');
+  }
+
+  if (!isString(config?.wpUrl)) {
+    throw new Error('wpUrl is required.');
+  }
+
+  if (isUndefined(config?.rootSitemapPath)) {
+    throw new Error('rootSitemapPath is required.');
+  }
+
+  if (!isString(config?.rootSitemapPath)) {
+    throw new Error('rootSitemapPath is required.');
+  }
+
+  if (isUndefined(config.frontendUrl)) {
+    throw new Error('frontendUrl is required.');
+  }
+
+  if (isUndefined(config.frontendUrl)) {
+    throw new Error('frontendUrl is required.');
+  }
+
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const paramsIndex = ctx.req.url.indexOf('?');
