@@ -20,11 +20,35 @@ describe('validateConfig', () => {
     );
   });
 
-  it('throws an error if wpUrl is not a string', () => {
+  it('throws an error if wpUrl is not a valid url', () => {
     const config: any = { wpUrl: 'testing' };
 
     expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
       'wpUrl must be a valid URL.',
+    );
+  });
+
+  it('throws an error if frontendUrl is missing', () => {
+    const config = {};
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'frontendUrl is required',
+    );
+  });
+
+  it('throws an error if frontendUrl is not a string', () => {
+    const config: any = { frontendUrl: {} };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'frontendUrl must be a string',
+    );
+  });
+
+  it('throws an error if frontendUrl is not a valid url', () => {
+    const config: any = { frontendUrl: 'testing' };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'frontendUrl must be a valid URL.',
     );
   });
 
@@ -57,6 +81,38 @@ describe('validateConfig', () => {
 
     expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
       'sitemapIndexPath must start with a forward slash',
+    );
+  });
+
+  it('throws an error if rootSitemapPath is missing', () => {
+    const config = {
+      wpUrl: 'http://headless.local',
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'rootSitemapPath is required',
+    );
+  });
+
+  it('throws an error if rootSitemapPath is not a string', () => {
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      rootSitemapPath: {},
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'rootSitemapPath must be a string',
+    );
+  });
+
+  it('throws an error if rootSitemapPath does not start with a forward slash', () => {
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      rootSitemapPath: 'sitemap.xml',
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'rootSitemapPath must start with a forward slash',
     );
   });
 
