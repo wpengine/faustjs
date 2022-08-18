@@ -122,6 +122,10 @@ export function validateConfig(
       throw new Error('rootSitemapPath must be a string');
     }
 
+    if (!config?.rootSitemapPath.startsWith('/')) {
+      throw new Error('rootSitemapPath must start with a forward slash');
+    }
+
     if (isUndefined(config?.frontendUrl)) {
       throw new Error('frontendUrl is required');
     }
@@ -138,16 +142,18 @@ export function validateConfig(
     }
   }
 
-  if (isUndefined(config?.sitemapIndexPath)) {
-    throw new Error('sitemapIndexPath is required');
-  }
+  if (isMiddleware) {
+    if (isUndefined(config?.sitemapIndexPath)) {
+      throw new Error('sitemapIndexPath is required');
+    }
 
-  if (!isString(config?.sitemapIndexPath)) {
-    throw new Error('sitemapIndexPath must be a string');
-  }
+    if (!isString(config?.sitemapIndexPath)) {
+      throw new Error('sitemapIndexPath must be a string');
+    }
 
-  if (!config?.sitemapIndexPath.startsWith('/')) {
-    throw new Error('sitemapIndexPath must start with a forward slash');
+    if (!config?.sitemapIndexPath.startsWith('/')) {
+      throw new Error('sitemapIndexPath must start with a forward slash');
+    }
   }
 
   if (!isUndefined(config?.sitemapPathsToIgnore)) {

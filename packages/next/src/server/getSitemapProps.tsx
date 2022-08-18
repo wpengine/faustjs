@@ -1,11 +1,11 @@
 import { isString, isUndefined } from '../middleware/sitemaps/sitemapUtils.js';
 import { GetServerSidePropsContext } from 'next';
 import { createPagesSitemap, createRootSitemapIndex, handleSitemapPath } from '../middleware/sitemaps/createSitemaps.js';
-import { HandleSitemapRequestsConfig, validateConfig } from '../middleware/sitemaps/handleSitemapRequests.js';
+import { HandleSitemapRequestsConfig, NormalizedConfig, validateConfig } from '../middleware/sitemaps/handleSitemapRequests.js';
 
 export async function getSitemapProps(
   ctx: GetServerSidePropsContext,
-  config: Partial<HandleSitemapRequestsConfig>,
+  config: NormalizedConfig,
 ) {
   // config validation with middleware flag
   validateConfig(config, false);
