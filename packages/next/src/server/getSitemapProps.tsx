@@ -25,9 +25,6 @@ export async function getSitemapProps(
   const urlParams = new URLSearchParams(searchParamString);
 
   if (!urlParams.get('sitemap')) {
-    // handle Root sitemap
-    // eslint-disable-next-line no-console
-    console.log('sitemap index');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const response = await createRootSitemapIndex(ctx.req, config, false);
 
