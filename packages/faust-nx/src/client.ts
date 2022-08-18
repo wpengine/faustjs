@@ -64,7 +64,7 @@ function createApolloClient() {
   return new ApolloClient(apolloClientOptions);
 }
 
-export function initializeApollo(initialState = null) {
+export function getApolloClient(initialState = null) {
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
   const _apolloClient = apolloClient ?? createApolloClient();
 
@@ -109,6 +109,6 @@ export function addApolloState(
 export function useApollo(pageProps: AppProps['pageProps']) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const store = useMemo(() => initializeApollo(state), [state]);
+  const store = useMemo(() => getApolloClient(state), [state]);
   return store;
 }

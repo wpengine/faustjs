@@ -2,7 +2,7 @@ import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
 import { getTemplate } from './getTemplate.js';
-import { addApolloState, initializeApollo } from './client.js';
+import { addApolloState, getApolloClient } from './client.js';
 import { getConfig } from './config/index.js';
 import { hooks } from './hooks/index.js';
 
@@ -31,7 +31,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
 
   const { ctx } = options;
 
-  const client = initializeApollo();
+  const client = getApolloClient();
 
   let resolvedUrl = null;
 
