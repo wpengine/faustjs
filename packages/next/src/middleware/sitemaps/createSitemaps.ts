@@ -155,11 +155,6 @@ export async function createRootSitemapIndex(
   wpSitemaps = wpSitemaps.filter((sitemap) => {
     const { pathname: sitemapPathname } = new URL(sitemap.loc);
 
-    // eslint-disable-next-line no-console
-    console.log(new URL(sitemap.loc));
-    // eslint-disable-next-line no-console
-    console.log(sitemap);
-
     let hasWildcard = false;
 
     wildcardPathsToIgnore?.forEach((path) => {
