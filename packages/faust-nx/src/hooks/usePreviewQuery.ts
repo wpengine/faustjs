@@ -1,12 +1,8 @@
 // eslint-disable-next-line import/extensions
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { ApolloClient, InMemoryCache, ApolloQueryResult, ApolloError } from '@apollo/client';
-import type { Node } from '@faustjs/react';
-import type { DocumentNode } from 'graphql';
 import isNil from 'lodash/isNil.js';
-import isUndefined from 'lodash/isUndefined.js';
 import { useRouter } from 'next/router.js';
-import { useQuery } from '@apollo/client';
 import { WordPressTemplate } from '../getWordPressProps';
 import { SeedNode } from '../queries/seedQuery';
 import { useAuth } from './useAuth';
