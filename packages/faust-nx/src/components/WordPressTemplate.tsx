@@ -8,11 +8,16 @@ import { usePreviewQuery } from '../hooks/usePreviewQuery.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
-  context?: { asPreview?: boolean };
+  __FAUST_CONTEXT__?: {
+    asPreview?: boolean;
+  };
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const { __SEED_NODE__: seedNode, context } = props;
+  const {
+    __SEED_NODE__: seedNode,
+    __FAUST_CONTEXT__: ctx,
+  } = props;
   const { templates } = getConfig();
 
   if (!templates) {
@@ -27,12 +32,12 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
    */
   let response;
 
-  if (context?.asPreview) {
+  if (ctx?.asPreview) {
     response = usePreviewQuery(seedNode, template);
   } else {
     response = useQuery(template?.query as DocumentNode, {
-      variables: template?.variables ? template?.variables(seedNode, context) : undefined,
-      ssr: !context?.asPreview,
+      variables: template?.variables ? template?.variables(seedNode, ctx) : undefined,
+      ssr: !ctx?.asPreview,
       skip: !template?.query,
     });
   }

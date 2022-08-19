@@ -102,7 +102,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
-      __AS_PREVIEW__: asPreview,
+      __FAUST_CONTEXT__: {
+        asPreview
+      },
     },
   });
 }
