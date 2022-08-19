@@ -8,7 +8,7 @@ import {
 import type { DocumentNode } from 'graphql';
 import isBoolean from 'lodash/isBoolean.js';
 import isObject from 'lodash/isObject.js';
-import { addApolloState, initializeApollo } from './client.js';
+import { addApolloState, getApolloClient } from './client.js';
 
 export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   client: ApolloClient<NormalizedCacheObject>;
@@ -38,8 +38,8 @@ export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   cfg: GetNextStaticPropsConfig<Props>,
 ) {
-  const { notFound, redirect, client, Page } = cfg;
-  const apolloClient = initializeApollo(client);
+  const { notFound, redirect, Page } = cfg;
+  const apolloClient = getApolloClient();
 
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -74,8 +74,8 @@ export async function getNextServerSideProps<Props>(
   context: GetServerSidePropsContext,
   cfg: GetNextServerSidePropsConfig<Props>,
 ): Promise<GetServerSidePropsResult<Props>> {
-  const { notFound, redirect, client, Page } = cfg;
-  const apolloClient = initializeApollo(client);
+  const { notFound, redirect, Page } = cfg;
+  const apolloClient = getApolloClient();
 
   if (isBoolean(notFound) && notFound === true) {
     return {
