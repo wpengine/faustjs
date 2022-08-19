@@ -13,7 +13,7 @@ import {
 
 export async function getSitemapProps(
   ctx: GetServerSidePropsContext,
-  config: NormalizedConfig,
+  config: Partial<NormalizedConfig>,
 ) {
   // config validation with middleware flag
   validateConfig(config, false);

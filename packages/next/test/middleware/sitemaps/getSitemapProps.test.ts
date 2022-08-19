@@ -1,8 +1,9 @@
-import { getSitemapProps } from '@faustjs/next/server';
 import 'isomorphic-fetch';
 import { NextRequest } from 'next/server';
 import * as createSitemaps from '../../../src/middleware/sitemaps/createSitemaps';
+import * as getSitemapProps from '../../../src/server/getSitemapProps';
 import * as handleSitemapRequests from '../../../src/middleware/sitemaps/handleSitemapRequests';
+import { GetServerSidePropsContext } from 'next';
 
 describe('getSitemapProps', () => {
   it('properly routes to the sitemap root index', async () => {
@@ -12,16 +13,18 @@ describe('getSitemapProps', () => {
 
     let res = {
       url: 'http://localhost:3000/sitemap.xml',
-    } as NextRequest;
+    } as any as NextRequest;
 
-    const config: Partial<handleSitemapRequests.NormalizedConfig> = {
+    let context = { res } as any as GetServerSidePropsContext;
+
+    const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
       frontendUrl: 'http://localhost:3000',
       sitemapIndexPath: '/wp-sitemap.xml',
       replaceUrls: true,
     };
 
-    getSitemapProps({ res }, config);
+    getSitemapProps.getSitemapProps(context, config);
 
     expect(createRootSitemapIndexSpy).not.toHaveBeenCalled();
 
@@ -29,9 +32,12 @@ describe('getSitemapProps', () => {
       url: 'http://localhost:3000/sitemap.xml',
     } as NextRequest;
 
+    context = { res } as any as GetServerSidePropsContext;
+
     await handleSitemapRequests.handleSitemapRequests(res, config);
 
     expect(createRootSitemapIndexSpy).toHaveBeenCalledWith(res, config);
+    expect(createRootSitemapIndexSpy).toHaveBeenCalledTimes(2);
   });
 
   it('properly routes to the Faust pages sitemap', async () => {
@@ -45,6 +51,7 @@ describe('getSitemapProps', () => {
 
     const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
+      frontendUrl: 'http://localhost:3000',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
         {
@@ -78,6 +85,7 @@ describe('getSitemapProps', () => {
 
     const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
+      frontendUrl: 'http://localhost:3000',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
         {
@@ -118,6 +126,7 @@ describe('getSitemapProps', () => {
 
     const config: handleSitemapRequests.NormalizedConfig = {
       wpUrl: 'http://headless.local',
+      frontendUrl: 'http://localhost:3000',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
         {
