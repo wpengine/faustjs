@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+import { getQueryParam } from '@faustjs/core/utils';
 import { GetServerSidePropsContext } from 'next';
 import {
   createPagesSitemap,
@@ -16,18 +18,20 @@ export async function getSitemapProps(
   // config validation with middleware flag
   validateConfig(config, false);
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const paramsIndex = ctx.req.url.indexOf('?');
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const searchParamString = ctx.req.url.substr(paramsIndex);
-  const urlParams = new URLSearchParams(searchParamString);
+  if (!ctx.req.url) {
+    throw new Error('A context url is required.');
+  }
 
-  if (!urlParams.get('sitemap')) {
+  const queryParam = getQueryParam(ctx.req.url, 'sitemap');
+
+  if (queryParam === '') {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const response = await createRootSitemapIndex(ctx.req, config, false);
-
+    if (!response || response?.status === 404) {
+      return {
+        notFound: true,
+      };
+    }
     ctx.res.setHeader('Content-Type', 'application/xml');
 
     ctx.res.write(await response?.text());
@@ -35,24 +39,21 @@ export async function getSitemapProps(
     ctx.res.end();
   }
 
-  if (
-    urlParams.get('sitemap') &&
-    urlParams.get('sitemap') !== 'sitemap-faust-pages.xml'
-  ) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  if (queryParam !== '' && queryParam !== 'sitemap-faust-pages.xml') {
     const response = await handleSitemapPath(ctx.req, config, false);
 
+    if (!response || response?.status === 404) {
+      return {
+        notFound: true,
+      };
+    }
     ctx.res.setHeader('Content-Type', 'application/xml');
 
     ctx.res.write(await response?.text());
-
     ctx.res.end();
   }
 
-  if (
-    urlParams.get('sitemap') &&
-    urlParams.get('sitemap') === 'sitemap-faust-pages.xml'
-  ) {
+  if (queryParam !== '' && queryParam === 'sitemap-faust-pages.xml') {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const response = createPagesSitemap(ctx.req, config, false);
 

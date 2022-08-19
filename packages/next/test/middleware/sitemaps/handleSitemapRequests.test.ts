@@ -84,38 +84,6 @@ describe('validateConfig', () => {
     );
   });
 
-  it('throws an error if rootSitemapPath is missing', () => {
-    const config = {
-      wpUrl: 'http://headless.local',
-    };
-
-    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
-      'rootSitemapPath is required',
-    );
-  });
-
-  it('throws an error if rootSitemapPath is not a string', () => {
-    const config: any = {
-      wpUrl: 'http://headless.local',
-      rootSitemapPath: {},
-    };
-
-    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
-      'rootSitemapPath must be a string',
-    );
-  });
-
-  it('throws an error if rootSitemapPath does not start with a forward slash', () => {
-    const config: any = {
-      wpUrl: 'http://headless.local',
-      rootSitemapPath: 'sitemap.xml',
-    };
-
-    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
-      'rootSitemapPath must start with a forward slash',
-    );
-  });
-
   it('throws an error if sitemapPathsToIgnore is not an array', () => {
     const config: any = {
       wpUrl: 'http://headless.local',

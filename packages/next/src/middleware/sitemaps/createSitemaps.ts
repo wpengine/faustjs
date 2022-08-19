@@ -69,12 +69,12 @@ export async function createRootSitemapIndex(
     frontendUrl = origin;
     wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
   } else {
-    // get rootSitemapPath config param
+    // get sitemapIndexPath config param
     // fetch sitemap from WP
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      normalizedConfig.rootSitemapPath,
+      normalizedConfig.sitemapIndexPath,
     )}`;
     frontendUrl = normalizedConfig.frontendUrl;
   }
@@ -95,7 +95,7 @@ export async function createRootSitemapIndex(
     sitemaps = [
       ...sitemaps,
       {
-        loc: sitemapFaustPagesUrl,
+        loc: encodeURI(sitemapFaustPagesUrl),
       },
     ];
   }

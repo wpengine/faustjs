@@ -38,19 +38,13 @@ export interface HandleSitemapRequestsConfig {
   /**
    * The sitemap path for server side
    */
-  rootSitemapPath: string;
+  sitemapIndexPath: string;
 
   /**
    * The headless frontend URL
    */
   frontendUrl: string;
 
-  /**
-   * The pathname to the sitemap index file.
-   *
-   * @example /sitemap.xml, /wp-sitemap.xml, /sitemap_index.xml
-   */
-  sitemapIndexPath: string;
   /**
    * A list of pathnames to ignore when proxying sitemaps.
    */
@@ -114,18 +108,6 @@ export function validateConfig(
   }
 
   if (!isMiddleware) {
-    if (isUndefined(config?.rootSitemapPath)) {
-      throw new Error('rootSitemapPath is required');
-    }
-
-    if (!isString(config?.rootSitemapPath)) {
-      throw new Error('rootSitemapPath must be a string');
-    }
-
-    if (!config?.rootSitemapPath.startsWith('/')) {
-      throw new Error('rootSitemapPath must start with a forward slash');
-    }
-
     if (isUndefined(config?.frontendUrl)) {
       throw new Error('frontendUrl is required');
     }
@@ -142,18 +124,16 @@ export function validateConfig(
     }
   }
 
-  if (isMiddleware) {
-    if (isUndefined(config?.sitemapIndexPath)) {
-      throw new Error('sitemapIndexPath is required');
-    }
+  if (isUndefined(config?.sitemapIndexPath)) {
+    throw new Error('sitemapIndexPath is required');
+  }
 
-    if (!isString(config?.sitemapIndexPath)) {
-      throw new Error('sitemapIndexPath must be a string');
-    }
+  if (!isString(config?.sitemapIndexPath)) {
+    throw new Error('sitemapIndexPath must be a string');
+  }
 
-    if (!config?.sitemapIndexPath.startsWith('/')) {
-      throw new Error('sitemapIndexPath must start with a forward slash');
-    }
+  if (!config?.sitemapIndexPath.startsWith('/')) {
+    throw new Error('sitemapIndexPath must start with a forward slash');
   }
 
   if (!isUndefined(config?.sitemapPathsToIgnore)) {

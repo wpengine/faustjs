@@ -9,7 +9,7 @@ export default function SitemapIndex() {
 // getStaticProps - no context request object
 export const getServerSideProps = async (ctx: any) => {
     const sitemapConfig = {
-        rootSitemapPath: '/wp-sitemap.xml',
+        sitemapIndexPath: '/wp-sitemap.xml',
         frontendUrl: 'http://localhost:3000',
         wpUrl: 'http://localhost:10003',
         pages: [

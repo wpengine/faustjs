@@ -16,12 +16,12 @@ describe('getSitemapProps', () => {
 
     const config: Partial<handleSitemapRequests.NormalizedConfig> = {
       wpUrl: 'http://headless.local',
-      frontendUrl: 'http://headless.local',
-      rootSitemapPath: '/wp-sitemap.xml',
+      frontendUrl: 'http://localhost:3000',
+      sitemapIndexPath: '/wp-sitemap.xml',
       replaceUrls: true,
     };
 
-    getSitemapProps(res, config);
+    getSitemapProps({ res }, config);
 
     expect(createRootSitemapIndexSpy).not.toHaveBeenCalled();
 
