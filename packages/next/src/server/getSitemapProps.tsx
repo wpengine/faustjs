@@ -13,10 +13,18 @@ import {
 
 export async function getSitemapProps(
   ctx: GetServerSidePropsContext,
-  config: Partial<NormalizedConfig>,
+  config: NormalizedConfig,
 ) {
   // config validation with middleware flag
   validateConfig(config, false);
+
+  // Normalize config if some optional values are missing
+  // eslint-disable-next-line prefer-object-spread
+  const normalizedConfig: NormalizedConfig = Object.assign(
+    {},
+    { replaceUrls: true },
+    config,
+  ) as NormalizedConfig;
 
   if (!ctx.req.url) {
     throw new Error('A context url is required.');
@@ -26,7 +34,11 @@ export async function getSitemapProps(
 
   if (queryParam === '') {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const response = await createRootSitemapIndex(ctx.req, config, false);
+    const response = await createRootSitemapIndex(
+      ctx.req,
+      normalizedConfig,
+      false,
+    );
     if (!response || response?.status === 404) {
       return {
         notFound: true,
@@ -40,7 +52,7 @@ export async function getSitemapProps(
   }
 
   if (queryParam !== '' && queryParam !== 'sitemap-faust-pages.xml') {
-    const response = await handleSitemapPath(ctx.req, config, false);
+    const response = await handleSitemapPath(ctx.req, normalizedConfig, false);
 
     if (!response || response?.status === 404) {
       return {
@@ -55,7 +67,7 @@ export async function getSitemapProps(
 
   if (queryParam !== '' && queryParam === 'sitemap-faust-pages.xml') {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const response = createPagesSitemap(ctx.req, config, false);
+    const response = createPagesSitemap(ctx.req, normalizedConfig, false);
 
     ctx.res.setHeader('Content-Type', 'application/xml');
 
