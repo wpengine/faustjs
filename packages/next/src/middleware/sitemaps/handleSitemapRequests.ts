@@ -1,3 +1,4 @@
+import { handleServerSitemapRequests } from '@faustjs/next';
 import { NextRequest } from 'next/server.js';
 import {
   createPagesSitemap,
@@ -25,6 +26,13 @@ export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
    * @example /about
    */
   path: string;
+}
+
+export interface GetSitemapPropsConfig extends HandleSitemapRequestsConfig {
+  /**
+   * The headless frontend URL
+   */
+  frontendUrl: string;
 }
 
 export interface HandleSitemapRequestsConfig {
@@ -101,8 +109,8 @@ export function validateConfig(
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const url = new URL(config.wpUrl);
+    // eslint-disable-next-line no-new
+    new URL(config.wpUrl);
   } catch (e) {
     throw new Error('wpUrl must be a valid URL.');
   }
@@ -117,8 +125,8 @@ export function validateConfig(
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const url = new URL(config.frontendUrl);
+      // eslint-disable-next-line no-new
+      new URL(config.frontendUrl);
     } catch (e) {
       throw new Error('frontendUrl must be a valid URL.');
     }
