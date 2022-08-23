@@ -73,7 +73,6 @@ export async function createRootSitemapIndex(
     // fetch sitemap from WP
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       normalizedConfig.sitemapIndexPath,
     )}`;
     frontendUrl = normalizedConfig.frontendUrl;
