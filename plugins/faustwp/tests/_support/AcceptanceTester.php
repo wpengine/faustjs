@@ -59,4 +59,12 @@ class AcceptanceTester extends \Codeception\Actor
 
         $this->haveOptionInDatabase('faustwp_settings', $options);
     }
+
+    /**
+     * Visit the main WordPress RSS feed.
+     */
+    public function amOnRootWPFeed()
+    {
+        $this->amOnPage('/feed');
+    }
 }
