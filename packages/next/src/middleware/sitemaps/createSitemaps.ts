@@ -184,7 +184,7 @@ export async function createRootSitemapIndex(
         );
       } else {
         const url = new URL(sitemap.loc);
-        sitemapUrl = `${frontendUrl}/sitemap.xml?sitemap=${trimSlashes(
+        sitemapUrl = `${trimSlashes(frontendUrl)}/sitemap.xml?sitemap=${trimSlashes(
           url.pathname,
         )}`;
       }
