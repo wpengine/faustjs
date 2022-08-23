@@ -27,6 +27,7 @@ function deny_public_access() {
 		! is_redirects_enabled() ||
 		is_customize_preview() ||
 		doing_file_editor_save() ||
+		is_feed() ||
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		isset( $_GET['_wp-find-template'] ) // Allow loading full site editor.
 	) {
