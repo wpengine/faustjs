@@ -19,12 +19,7 @@ export async function getSitemapProps(
   validateConfig(config, false);
 
   // Normalize config if some optional values are missing
-  // eslint-disable-next-line prefer-object-spread
-  const normalizedConfig: NormalizedConfig = Object.assign(
-    {},
-    { replaceUrls: true },
-    config,
-  ) as NormalizedConfig;
+  const normalizedConfig: NormalizedConfig = { ...config, replaceUrls: true };
 
   if (!ctx.req.url) {
     throw new Error('A context url is required.');
