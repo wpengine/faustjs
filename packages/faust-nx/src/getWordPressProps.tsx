@@ -15,7 +15,7 @@ function isSSR(
 
 export interface WordPressTemplate {
   query: DocumentNode;
-  variables: (seedNode: SeedNode) => { [key: string]: any };
+  variables: (seedNode: SeedNode, context?: { asPreview?: boolean }) => { [key: string]: any };
   Component: React.FC<{ [key: string]: any }>;
 }
 
@@ -40,6 +40,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   }
 
   let resolvedUrl = null;
+  let asPreview = false;
 
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
@@ -50,6 +51,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     }
   } else {
     resolvedUrl = ctx.req.url;
+    if (resolvedUrl) {
+      asPreview = resolvedUrl.includes('preview=true');
+    }
   }
 
   if (!resolvedUrl) {
@@ -61,6 +65,8 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
     resolvedUrl,
   }) as DocumentNode;
+
+  // TODO: - setup auth client
 
   const seedQueryRes = await client.query({
     query: seedQuery,
@@ -83,10 +89,12 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
-  if (template.query) {
+  if (template.query && !asPreview) {
     await client.query({
       query: template.query,
-      variables: template?.variables ? template.variables(seedNode) : undefined,
+      variables: template?.variables
+        ? template.variables(seedNode)
+        : undefined,
     });
   }
 
@@ -94,6 +102,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
+      __FAUST_CONTEXT__: {
+        asPreview
+      },
     },
   });
 }

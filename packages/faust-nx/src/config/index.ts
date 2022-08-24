@@ -6,6 +6,7 @@ export interface FaustNXConfig {
   templates: { [key: string]: WordPressTemplate };
   disableLogging: boolean;
   loginPagePath?: string;
+  authType?: 'redirect' | 'local';
   experimentalPlugins: Plugin[];
 }
 

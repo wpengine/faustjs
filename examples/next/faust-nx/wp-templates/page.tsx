@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client';
 
 const Component = (props: any) => {
-  const { title, content } = props?.data?.page;
+  if (props.loading) {
+    return <>Loading...</>
+  }
+
+  const { title, content } = props.data.page;
+
   return (
     <>
       <h1>{title}</h1>
