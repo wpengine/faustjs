@@ -29,7 +29,9 @@ describe('validateConfig', () => {
   });
 
   it('throws an error if frontendUrl is missing', () => {
-    const config = {};
+    const config = {
+      wpUrl: 'http://headless.local',
+    };
 
     expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
       'frontendUrl is required',
@@ -37,7 +39,10 @@ describe('validateConfig', () => {
   });
 
   it('throws an error if frontendUrl is not a string', () => {
-    const config: any = { frontendUrl: {} };
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      frontendUrl: {},
+    };
 
     expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
       'frontendUrl must be a string',
@@ -45,7 +50,10 @@ describe('validateConfig', () => {
   });
 
   it('throws an error if frontendUrl is not a valid url', () => {
-    const config: any = { frontendUrl: 'testing' };
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      frontendUrl: 'testing',
+    };
 
     expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
       'frontendUrl must be a valid URL.',
