@@ -215,7 +215,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -243,7 +243,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -276,7 +276,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/robots.txt',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -296,7 +296,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -331,7 +331,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -371,7 +371,7 @@ describe('handleSitemapRequests', () => {
       'handleSitemapPath',
     );
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
