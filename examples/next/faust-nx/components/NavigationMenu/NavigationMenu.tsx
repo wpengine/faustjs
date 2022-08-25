@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { gql } from '@apollo/client';
 import Link from 'next/link';
 import styles from './NavigationMenu.module.scss';
 
@@ -34,4 +35,19 @@ export default function NavigationMenu({ menuItems, children, className }: Props
       </ul>
     </nav>
   );
+}
+
+NavigationMenu.fragments = {
+  entry: gql`
+    fragment NavigationMenuItemFragment on MenuItem {
+      id
+      path
+      label
+      menu {
+        node {
+          name
+        }
+      }
+    }
+  `
 }
