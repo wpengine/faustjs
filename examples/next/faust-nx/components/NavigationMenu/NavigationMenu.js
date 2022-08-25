@@ -10,13 +10,11 @@ export default function NavigationMenu({ menuItems, children, className }) {
     return null;
   }
 
-  console.log({menuItems});
-
   return (
     <nav
       className={cx('component', className)}
       role="navigation"
-      // aria-label={`${menuItems?.menu.node.name} menu`}
+      aria-label={`${menuItems[0]?.menu.node.name} menu`}
     >
       <ul className={cx('menu')}>
         {menuItems.map((item) => {

@@ -2,3 +2,12 @@
 	display: flex;
 	background-color: var(--wpe--navigation-menu--background-color);
 }
+
+.menu {
+	list-style-type: none;
+	display: flex;
+
+	a {
+		color: var(--wpe--navigation-menu--link-color);
+	}
+}
