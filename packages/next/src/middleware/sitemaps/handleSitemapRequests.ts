@@ -1,4 +1,3 @@
-import { handleServerSitemapRequests } from '@faustjs/next';
 import { NextRequest } from 'next/server.js';
 import {
   createPagesSitemap,
