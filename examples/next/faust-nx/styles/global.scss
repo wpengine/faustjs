@@ -1,0 +1,98 @@
+:root {
+	// Color Definitions.
+	--wpe--color--black: #000;
+	--wpe--color--white: #fff;
+	--wpe--color--gray: #ddd;
+	--wpe--color--blue: #007EEA;
+	--wpe--color--dark-blue: #002838;
+	--wpe--color--glacier: linear-gradient(141deg, #0076dc, #7a1ba6);
+
+	// Color Assignments.
+	--wpe--color--link: var(--wpe--color--blue);
+	--wpe--color--border: var(--wpe--color--gray);
+	--wpe--header--text-color: var(--wpe--color--black);
+	--wpe--header--background-color: var(--wpe--color--white);
+	--wpe--navigation-menu--background-color: lime;
+	--wpe--main--text-color: var(--wpe--color--black);
+	--wpe--main--background-color: var(--wpe--color--gray);
+	--wpe--footer--text-color: var(--wpe--color--white);
+	--wpe--footer--background-color: var(--wpe--color--glacier);
+	--wpe--heading--color: gold;
+	--wpe--featured-image--border-color: gold;
+
+	// Type.
+	--wpe--font-weight--light: 300;
+	--wpe--font-weight--normal: 400;
+	--wpe--font-weight--bold: 700;
+
+	// Spacing.
+	--wpe--content--max-width: 620px;
+	--wpe--breakpoint--xs: 640px;
+	--wpe--breakpoint--sm: 768px;
+	--wpe--breakpoint--md: 1024px;
+	--wpe--section--padding-y: 3rem;
+	--wpe--container--padding-x: 15px;
+	--wpe--container--max-width: 900px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 1rem;
+}
+
+p {
+	margin: 0 0 1rem;
+}
+
+a {
+	color: var(--link-color);
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+
+	&:focus {
+		width: auto;
+		height: auto;
+		margin: 0;
+		overflow: auto;
+		clip: auto;
+	}
+}
