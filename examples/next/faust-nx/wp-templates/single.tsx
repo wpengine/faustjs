@@ -1,12 +1,23 @@
 import { gql } from '@apollo/client';
+import { Header, Footer, Main, Container, EntryHeader, ContentWrapper } from "components";
 
 const Component = (props: any) => {
   const { title, content } = props.data.post;
 
+  console.log({props});
+
   return (
     <>
-      <h1>{title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: content }} />
+      <Header />
+      <Main>
+        <>
+          <EntryHeader title={title} />
+          <Container>
+            <ContentWrapper content={content} />
+          </Container>
+        </>
+      </Main>
+      <Footer />
     </>
   );
 };
