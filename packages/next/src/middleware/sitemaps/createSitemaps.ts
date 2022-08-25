@@ -3,8 +3,9 @@ import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
 import { IncomingMessage } from 'http';
 import {
-  NormalizedConfig,
   FAUST_PAGES_PATHNAME,
+  NormalizedMiddlewareConfig,
+  NormalizedServerConfig,
 } from './handleSitemapRequests.js';
 import {
   createSitemap,
@@ -53,7 +54,7 @@ const parserConfig: Partial<X2jOptions> = {
  */
 export async function createRootSitemapIndex(
   req: NextRequest | IncomingMessage,
-  normalizedConfig: NormalizedConfig,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
   isMiddleware = true,
 ): Promise<Response | undefined> {
   const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
@@ -75,7 +76,7 @@ export async function createRootSitemapIndex(
     wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(
       normalizedConfig.sitemapIndexPath,
     )}`;
-    frontendUrl = normalizedConfig.frontendUrl;
+    frontendUrl = (normalizedConfig as NormalizedServerConfig).frontendUrl;
   }
 
   let sitemaps: SitemapSchemaSitemapElement[] = [];
@@ -184,9 +185,9 @@ export async function createRootSitemapIndex(
         );
       } else {
         const url = new URL(sitemap.loc);
-        sitemapUrl = `${trimSlashes(frontendUrl)}/sitemap.xml?sitemap=${trimSlashes(
-          url.pathname,
-        )}`;
+        sitemapUrl = `${trimSlashes(
+          frontendUrl,
+        )}/sitemap.xml?sitemap=${trimSlashes(url.pathname)}`;
       }
       sitemaps = [
         ...sitemaps,
@@ -212,7 +213,7 @@ export async function createRootSitemapIndex(
  */
 export function createPagesSitemap(
   req: NextRequest | IncomingMessage,
-  normalizedConfig: NormalizedConfig,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
   isMiddleware = true,
 ): Response | undefined {
   if (!req.url) {
@@ -225,7 +226,7 @@ export function createPagesSitemap(
     const { origin } = new URL(req.url);
     frontendUrl = origin;
   } else {
-    frontendUrl = normalizedConfig.frontendUrl;
+    frontendUrl = (normalizedConfig as NormalizedServerConfig).frontendUrl;
   }
   const { pages } = normalizedConfig;
 
@@ -259,7 +260,7 @@ export function createPagesSitemap(
  */
 export async function handleSitemapPath(
   req: NextRequest | IncomingMessage,
-  normalizedConfig: NormalizedConfig,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
   isMiddleware = true,
 ): Promise<Response | undefined> {
   const { wpUrl, replaceUrls } = normalizedConfig;
@@ -283,7 +284,7 @@ export async function handleSitemapPath(
     const sitemapPath = urlParams.get('sitemap') as string;
 
     wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(sitemapPath)}`;
-    frontendUrl = normalizedConfig.frontendUrl;
+    frontendUrl = (normalizedConfig as NormalizedServerConfig).frontendUrl;
   }
 
   const res = await fetch(wpSitemapUrl);
@@ -358,7 +359,7 @@ export async function handleSitemapPath(
  */
 export async function handleRobotsTxt(
   req: NextRequest,
-  normalizedConfig: NormalizedConfig,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
 ): Promise<Response | undefined> {
   const { origin } = new URL(req.url);
   const { sitemapIndexPath, robotsTxt } = normalizedConfig;
