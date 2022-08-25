@@ -1,8 +1,10 @@
+@import 'styles/breakpoints';
+
 .component {
 	margin-bottom: 2rem;
 	color: var(--wpe--color--white);
 
-	@media (min-width: var(--wpe--breakpoint--sm)) {
+	@media (min-width: $breakpoint-small) {
 		margin-bottom: 10rem;
 	}
 }

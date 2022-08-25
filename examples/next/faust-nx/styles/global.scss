@@ -12,7 +12,8 @@
 	--wpe--color--border: var(--wpe--color--gray);
 	--wpe--header--text-color: var(--wpe--color--black);
 	--wpe--header--background-color: var(--wpe--color--white);
-	--wpe--navigation-menu--background-color: lime;
+	--wpe--navigation-menu--link-color: var(--wpe--color--black);
+	--wpe--navigation-menu--background-color: var(--wpe--color--white);
 	--wpe--main--text-color: var(--wpe--color--black);
 	--wpe--main--background-color: var(--wpe--color--white);
 	--wpe--footer--text-color: var(--wpe--color--black);
@@ -27,9 +28,6 @@
 
 	// Spacing.
 	--wpe--content--max-width: 620px;
-	--wpe--breakpoint--xs: 640px;
-	--wpe--breakpoint--sm: 768px;
-	--wpe--breakpoint--md: 1024px;
 	--wpe--section--padding-y: 3rem;
 	--wpe--container--padding-x: 15px;
 	--wpe--container--max-width: 900px;

@@ -1,3 +1,5 @@
+@import 'styles/breakpoints';
+
 .component {
 	color: var(--wpe--header--text-color);
 	background-color: var(--wpe--header-background-color);
@@ -20,7 +22,7 @@
 	align-items: center;
 	background-color: transparent;
 	border: 0.1rem solid var(--wpe--color--white);
-	color: var(--wpe--color--white);
+	color: var(--wpe--color--black);
 	cursor: pointer;
 	display: flex;
 	margin: 0;
@@ -34,20 +36,20 @@
 		color: var(--wpe--color--black);
 	}
 
-	@media (min-width: var(--wpe--breakpoint--sm)) {
-		display: none;
+	@media (min-width: $breakpoint-small) {
+		display: none !important;
 	}
 }
 
 .primary-navigation {
-	// display: none;
+	display: none;
 	width: 100%;
 
 	&.show {
 		display: block;
 	}
 
-	@media (min-width: var(--wpe--breakpoint--sm)) {
+	@media (min-width: $breakpoint-small) {
 		display: block;
 		width: auto;
 	}
@@ -61,7 +63,7 @@
 		font-size: 1.4rem;
 		margin: 0;
 
-		@media (min-width: var(--wpe--breakpoint--sm)) {
+		@media (min-width: $breakpoint-small) {
 			flex-direction: row;
 		}
 
