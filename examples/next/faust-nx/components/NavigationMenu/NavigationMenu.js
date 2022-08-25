@@ -5,28 +5,24 @@ import styles from './NavigationMenu.module.scss';
 
 let cx = classNames.bind(styles);
 
-type Props = {
-  menuItems: any
-  children?: JSX.Element,
-  className?: string
-};
-
-export default function NavigationMenu({ menuItems, children, className }: Props): JSX.Element | null {
+export default function NavigationMenu({ menuItems, children, className }) {
   if (!menuItems) {
     return null;
   }
+
+  console.log({menuItems});
 
   return (
     <nav
       className={cx('component', className)}
       role="navigation"
-      aria-label={`${menuItems[0]?.menu.node.name} menu`}
+      // aria-label={`${menuItems?.menu.node.name} menu`}
     >
       <ul className={cx('menu')}>
-        {menuItems.map((item: any) => {
+        {menuItems.map((item) => {
           const { id, path, label } = item;
           return (
-            <li key={id ?? ''}>
+            <li key={id}>
               <Link href={path ?? ''}>{label ?? ''}</Link>
             </li>
           );

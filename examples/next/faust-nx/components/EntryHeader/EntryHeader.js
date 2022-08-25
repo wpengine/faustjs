@@ -4,16 +4,7 @@ import styles from './EntryHeader.module.scss';
 
 let cx = className.bind(styles);
 
-type Props = {
-  title: string,
-  image?: any,
-  date?: any,
-  author?: any,
-  className?: string,
-  children?: JSX.Element,
-};
-
-export default function EntryHeader({ title, image, date, author, className }: Props): JSX.Element {
+export default function EntryHeader({ title, image, date, author, className }) {
   const hasText = title || date || author;
   const entryHeaderClasses = cx('entry-header', className);
 

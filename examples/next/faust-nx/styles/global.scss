@@ -14,9 +14,9 @@
 	--wpe--header--background-color: var(--wpe--color--white);
 	--wpe--navigation-menu--background-color: lime;
 	--wpe--main--text-color: var(--wpe--color--black);
-	--wpe--main--background-color: var(--wpe--color--gray);
-	--wpe--footer--text-color: var(--wpe--color--white);
-	--wpe--footer--background-color: var(--wpe--color--glacier);
+	--wpe--main--background-color: var(--wpe--color--white);
+	--wpe--footer--text-color: var(--wpe--color--black);
+	--wpe--footer--background-color: var(--wpe--color--white);
 	--wpe--heading--color: gold;
 	--wpe--featured-image--border-color: gold;
 
@@ -95,4 +95,9 @@ img {
 		overflow: auto;
 		clip: auto;
 	}
+}
+
+// Temp
+* > * {
+	box-shadow: 0 0 0 1px magenta;
 }

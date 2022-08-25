@@ -1,12 +1,6 @@
 import { FormatDate } from 'components';
 
-type Props = {
-  date?: string,
-  author?: string,
-  className?: string,
-};
-
-export default function PostInfo({ date, author, className }: Props): JSX.Element | null {
+export default function PostInfo({ date, author, className }) {
   if (!date && !author) {
     return null;
   }

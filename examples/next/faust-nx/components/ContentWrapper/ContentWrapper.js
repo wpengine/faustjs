@@ -3,12 +3,7 @@ import styles from './ContentWrapper.module.scss';
 
 let cx = className.bind(styles);
 
-type Props = {
-  content: string,
-  children?: JSX.Element,
-};
-
-export default function ContentWrapper({ content, children }: Props): JSX.Element {
+export default function ContentWrapper({ content, children }) {
   return (
     <article className={cx('component')}>
       <div dangerouslySetInnerHTML={{ __html: content ?? '' }} />

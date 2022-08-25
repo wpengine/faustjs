@@ -1,6 +1,6 @@
 .component {
 	color: var(--wpe--footer--text-color);
-	background: linear-gradient(141deg, #0076dc, #7a1ba6);
+	background: var(--wpe--footer--background-color);
 	padding-top: var(--wpe--section--padding-y);
 	padding-bottom: var(--wpe--section--padding-y);
 }

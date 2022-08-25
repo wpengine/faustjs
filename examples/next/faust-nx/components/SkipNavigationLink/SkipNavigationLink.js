@@ -4,7 +4,7 @@ import styles from './SkipNavigationLink.module.scss';
 
 let cx = classNames.bind(styles);
 
-export default function SkipNavigationLink(): JSX.Element {
+export default function SkipNavigationLink() {
   return (
     <a
       className={cx('component', 'sr-only')}

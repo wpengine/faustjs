@@ -1,23 +1,16 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
-import { Container } from 'components';
-import { NavigationMenu, SkipNavigationLink } from 'components';
+import { Container, NavigationMenu, SkipNavigationLink } from 'components';
 import styles from './Header.module.scss';
 
 let cx = classNames.bind(styles);
-
-type Props = {
-  title?: string,
-  description?: string,
-  menuItems?: any,
-};
 
 export default function Header({
   title = 'Headless by WP Engine',
   description,
   menuItems
-}: Props): JSX.Element {
+}) {
   const [isNavShown, setIsNavShown] = useState(false);
 
   return (

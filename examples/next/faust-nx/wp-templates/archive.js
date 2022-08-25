@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { gql } from "@apollo/client";
 import { Header, Footer, Main, Container, EntryHeader } from "components";
 
-function Component(props: PropsWithChildren<{ data: any }>) {
+function Component(props) {
   const { name } = props.data.nodeByUri;
 
   return (
@@ -31,7 +31,7 @@ const query = gql`
   }
 `;
 
-const variables = ({ uri }: any) => {
+const variables = ({ uri }) => {
   return { uri };
 };
 

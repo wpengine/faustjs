@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import { Header, Footer, Main, Container, EntryHeader, ContentWrapper } from "components";
 
-const Component = (props: any) => {
+const Component = (props) => {
   const { title, content } = props.data.post;
 
   console.log({props});
@@ -31,7 +31,7 @@ const query = gql`
   }
 `;
 
-const variables = (seedQuery: any) => {
+const variables = (seedQuery) => {
   console.log(seedQuery);
 
   return {

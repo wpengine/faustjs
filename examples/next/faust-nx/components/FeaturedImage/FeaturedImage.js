@@ -1,17 +1,8 @@
 import className from 'classnames';
 import Image from 'next/image';
-
 import styles from './FeaturedImage.module.scss';
 
 let cx = className.bind(styles);
-
-type Props = {
-  image: any,
-  width?: number,
-  height?: number,
-  className?: string,
-  priority?: boolean,
-};
 
 export default function FeaturedImage({
   image,
@@ -20,7 +11,7 @@ export default function FeaturedImage({
   className,
   priority,
   ...props
-}: Props): JSX.Element | null {
+}) {
   let src;
   if (image?.sourceUrl instanceof Function) {
     src = image?.sourceUrl();

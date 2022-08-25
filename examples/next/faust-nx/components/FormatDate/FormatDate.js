@@ -1,8 +1,4 @@
-type Props = {
-  date: string,
-};
-
-export default function FormatDate({ date }: Props): JSX.Element | null {
+export default function FormatDate({ date }) {
   let formattedDate = new Date(date);
 
   if (isNaN(formattedDate.valueOf())) {
@@ -15,7 +11,7 @@ export default function FormatDate({ date }: Props): JSX.Element | null {
     month: 'long',
     day: 'numeric',
     hour12: false
-  } as const;
+  };
 
   return <>{formattedDate.toLocaleDateString('en-US', timeformat)}</>;
 }

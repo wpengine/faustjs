@@ -4,11 +4,7 @@ import styles from './Footer.module.scss';
 
 let cx = classNames.bind(styles);
 
-type Props = {
-  menuItems?: any,
-};
-
-export default function Footer({ menuItems }: Props): JSX.Element {
+export default function Footer({ menuItems }) {
   const year = new Date().getFullYear();
 
   return (
