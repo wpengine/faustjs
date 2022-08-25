@@ -7,19 +7,23 @@ import {
   handleSitemapPath,
 } from '../middleware/sitemaps/createSitemaps.js';
 import {
-  NormalizedConfig,
+  GetSitemapPropsConfig,
+  NormalizedServerConfig,
   validateConfig,
 } from '../middleware/sitemaps/handleSitemapRequests.js';
 
 export async function getSitemapProps(
   ctx: GetServerSidePropsContext,
-  config: NormalizedConfig,
+  config: GetSitemapPropsConfig,
 ) {
   // config validation with middleware flag
   validateConfig(config, false);
 
   // Normalize config if some optional values are missing
-  const normalizedConfig: NormalizedConfig = { ...config, replaceUrls: true };
+  const normalizedConfig: NormalizedServerConfig = {
+    ...config,
+    replaceUrls: true,
+  };
 
   if (!ctx.req.url) {
     throw new Error('A context url is required.');

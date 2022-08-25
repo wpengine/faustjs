@@ -48,11 +48,6 @@ export interface HandleSitemapRequestsConfig {
   sitemapIndexPath: string;
 
   /**
-   * The headless frontend URL
-   */
-  frontendUrl: string;
-
-  /**
    * A list of pathnames to ignore when proxying sitemaps.
    */
   sitemapPathsToIgnore?: string[];
@@ -74,8 +69,13 @@ export interface HandleSitemapRequestsConfig {
   robotsTxt?: (sitemapUrl: string) => Promise<string>;
 }
 
-export interface NormalizedConfig
+export interface NormalizedMiddlewareConfig
   extends Omit<HandleSitemapRequestsConfig, 'replaceUrls'> {
+  replaceUrls: boolean;
+}
+
+export interface NormalizedServerConfig
+  extends Omit<GetSitemapPropsConfig, 'replaceUrls'> {
   replaceUrls: boolean;
 }
 
@@ -96,7 +96,7 @@ export const FAUST_ROBOTS_PATHNAME = '/robots.txt';
  * @param {Partial<HandleSitemapRequestsConfig>} config The user provided config
  */
 export function validateConfig(
-  config: Partial<HandleSitemapRequestsConfig>,
+  config: Partial<HandleSitemapRequestsConfig & GetSitemapPropsConfig>,
   isMiddleware = true,
 ): void {
   if (isUndefined(config?.wpUrl)) {
@@ -216,11 +216,11 @@ export async function handleSitemapRequests(
 
   // Normalize config if some optional values are missing
   // eslint-disable-next-line prefer-object-spread
-  const normalizedConfig: NormalizedConfig = Object.assign(
+  const normalizedConfig: NormalizedMiddlewareConfig = Object.assign(
     {},
     { replaceUrls: true },
     config,
-  ) as NormalizedConfig;
+  ) as NormalizedMiddlewareConfig;
 
   const { pathname } = new URL(req.url);
   const { sitemapIndexPath, pages, robotsTxt } = normalizedConfig;
