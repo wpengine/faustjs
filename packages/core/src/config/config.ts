@@ -3,9 +3,9 @@ import defaults from 'lodash/defaults.js';
 import trimEnd from 'lodash/trimEnd.js';
 import extend from 'lodash/extend.js';
 import isObject from 'lodash/isObject.js';
-import type { RequestContext } from '../gqty/index.js';
 import isNil from 'lodash/isNil.js';
 import trim from 'lodash/trim.js';
+import type { RequestContext } from '../gqty/index.js';
 import { isValidUrl } from '../utils/index.js';
 
 export const TOKEN_ENDPOINT_PARTIAL_PATH = 'auth/token';
@@ -119,6 +119,7 @@ let configSet = false;
  * @param {Config} config
  * @returns {Config}
  */
+// eslint-disable-next-line @typescript-eslint/no-shadow
 export function normalizeConfig(config: Config): Config {
   const cfg = defaults({}, config, {
     apiBasePath: '/api/faust',
@@ -186,7 +187,6 @@ export function getGqlUrl(): string {
 
   if (isValidUrl(gqlUrl)) {
     return trimEnd(gqlUrl, '/');
-  } else {
-    return `${wpUrl}/${trim(gqlUrl, '/')}`;
   }
+  return `${wpUrl}/${trim(gqlUrl, '/')}`;
 }

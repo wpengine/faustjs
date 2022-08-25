@@ -1,9 +1,9 @@
 import 'isomorphic-fetch';
-import { Cookies } from './cookie.js';
-import { config } from '../../config/index.js';
 import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
 import isNumber from 'lodash/isNumber.js';
+import { config } from '../../config/index.js';
+import { Cookies } from './cookie.js';
 import { log } from '../../utils/index.js';
 
 export type OAuthTokenResponse =
@@ -19,6 +19,7 @@ export interface OAuthTokens {
 
 export class OAuth {
   private cookies: Cookies;
+
   private tokenKey: string;
 
   constructor(cookies: Cookies) {
@@ -110,7 +111,7 @@ export class OAuth {
     return result as OAuthTokens;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, class-methods-use-this
   public isOAuthTokens(value: any): value is OAuthTokens {
     const castedValue: OAuthTokens = value;
 

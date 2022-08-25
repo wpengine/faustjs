@@ -1,7 +1,8 @@
 /* eslint-disable react/no-children-prop */
 // eslint-disable-next-line import/extensions
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core/client';
-import { isBoolean, isObject } from 'lodash';
+import isObject from 'lodash/isObject.js';
+import isBoolean from 'lodash/isBoolean.js';
 import isNil from 'lodash/isNil.js';
 import {
   GetServerSidePropsContext,
