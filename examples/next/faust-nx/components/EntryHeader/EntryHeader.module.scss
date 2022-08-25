@@ -1,0 +1,50 @@
+.component {
+	margin-bottom: 2rem;
+	color: var(--wpe--color--white);
+
+	@media (min-width: var(--wpe--breakpoint--sm)) {
+		margin-bottom: 10rem;
+	}
+}
+
+.text,
+.image {
+	margin: auto;
+	text-align: center;
+}
+
+.text {
+	width: 100%;
+	max-width: 82rem;
+	padding: 8.25rem 0;
+}
+
+.title {
+	line-height: 1.25;
+}
+
+.byline {
+	font-weight: var(--wpe--font-weight--bold);
+	font-size: 1.2rem;
+	text-transform: uppercase;
+}
+
+.image {
+	display: block;
+	position: relative;
+
+	&:before {
+		content: ' ';
+		position: absolute;
+		height: 50%;
+		width: 100%;
+		background-color: var(--wpe--color--white);
+		bottom: 0;
+		left: 0;
+		z-index: 0;
+	}
+}
+
+.featured-image {
+	margin: 0;
+}
