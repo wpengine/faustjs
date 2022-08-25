@@ -1,5 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
-import possibleTypes from 'possibleTypes.json';
+import possibleTypes from './possibleTypes.json';
 
 let client = new ApolloClient({
   ssrMode: typeof window === 'undefined',
