@@ -5,7 +5,7 @@ import styles from './Hero.module.scss';
 
 let cx = className.bind(styles);
 
-export default function Hero({ title, level = 'h2', children, className }) {
+export default function Hero({ title, subtitle, level = 'h2', children, className }) {
   return (
     <div className={cx(['component', className])}>
       <Heading level={level}>

@@ -1,11 +1,13 @@
 @import 'styles/breakpoints';
 
 .component {
-	margin-bottom: 2rem;
 	color: var(--wpe--color--white);
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 2rem;
 
 	@media (min-width: $breakpoint-small) {
-		margin-bottom: 10rem;
+		margin-bottom: 5rem;
 	}
 }
 
@@ -17,36 +19,39 @@
 
 .text {
 	width: 100%;
-	max-width: 82rem;
+	max-width: 72rem;
 	padding: 8.25rem 0;
+	position: relative;
+	z-index: 1; // Pull text to the foreground to sit above <FeaturedImage />.
 }
 
 .title {
 	line-height: 1.25;
+	font-size: 5rem;
+	color: var(--wpe--color--white);
 }
 
 .byline {
-	font-weight: var(--wpe--font-weight--bold);
+	font-weight: var(--wpe--font-weight--medium);
 	font-size: 1.2rem;
-	text-transform: uppercase;
 }
 
 .image {
-	display: block;
-	position: relative;
-
-	&:before {
-		content: ' ';
-		position: absolute;
-		height: 50%;
-		width: 100%;
-		background-color: var(--wpe--color--white);
-		bottom: 0;
-		left: 0;
-		z-index: 0;
-	}
-}
-
-.featured-image {
 	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+
+	&::after {
+		content: '';
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.6);
+		position: absolute;
+	}
 }

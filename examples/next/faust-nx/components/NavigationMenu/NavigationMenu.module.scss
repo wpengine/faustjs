@@ -1,11 +1,16 @@
+@import 'styles/breakpoints';
+
 %visible {
 	visibility: visible;
 	opacity: 1;
 }
 
 %hidden {
-	visibility: hidden;
-	opacity: 0;
+	// Always visible for smaller viewports.
+	@media (min-width: $breakpoint-small) {
+		visibility: hidden;
+		opacity: 0;
+	}
 }
 
 .component {
@@ -15,16 +20,24 @@
 .menu {
 	list-style-type: none;
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 	padding: 0;
 	margin: 0;
 	position: relative;
-	gap: .5rem;
+	gap: 0.5rem;
 
 	li {
 		display: flex;
 		align-items: center;
 		position: relative;
 		width: 100%;
+		flex-direction: column;
+
+		@media (min-width: $breakpoint-small) {
+			width: auto;
+			flex-direction: row;
+		}
 
 		&:focus-within ul,
 		a:hover + ul,
@@ -35,32 +48,42 @@
 
 	a {
 		color: var(--wpe--navigation-menu--color);
-		text-decoration: none;
 		padding: 0.5rem;
 		display: block;
 		transition: all 0.2s ease-out;
 		width: inherit;
 		white-space: nowrap;
+		text-align: center;
 
 		&:hover,
 		&:focus {
 			color: var(--wpe--navigation-menu--color--hover);
 		}
+
+		// Remove link underline when component is inside header.
+		header & {
+			text-decoration: none;
+		}
 	}
 
 	li ul {
-		// @extend %hidden;
+		@extend %hidden;
 		background-color: var(--wpe--dropdown--background-color);
-		position: absolute;
-		transition: all 0.2s ease-out;
-		top: 100%;
-		left: -10px;
+		border: var(--wpe--border--extra-light);
 		display: flex;
 		flex-direction: column;
 		gap: 0;
-		padding: 1rem;
-		border-radius: 8px;
-		box-shadow: var(--wpe--shadow--large);
+
+		@media (min-width: $breakpoint-small) {
+			position: absolute;
+			left: -10px;
+			top: 100%;
+			text-align: left;
+			box-shadow: var(--wpe--shadow--large);
+			padding: 1rem;
+			border-radius: 8px;
+			transition: all 0.2s ease-out;
+		}
 
 		&:hover {
 			@extend %visible;

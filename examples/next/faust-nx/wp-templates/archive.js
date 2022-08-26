@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import * as MENUS from 'constants/menus';
+import { BlogInfoFragment } from 'fragments/GeneralSettings';
 import {
   Header,
   Footer,
@@ -10,10 +11,10 @@ import {
 } from "components";
 
 function Component(props) {
-  const { name } = props.data.nodeByUri;
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
+  const { name } = props.data.nodeByUri;
 
   return (
     <>
@@ -36,6 +37,7 @@ function Component(props) {
 }
 
 const query = gql`
+  ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   query GetArchivePage($uri: String!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
     nodeByUri(uri: $uri) {
@@ -44,8 +46,7 @@ const query = gql`
       }
     }
     generalSettings {
-      title
-      description
+      ...BlogInfoFragment
     }
     headerMenuItems: menuItems(where: { location: $headerLocation }) {
       nodes {
@@ -61,7 +62,11 @@ const query = gql`
 `;
 
 const variables = ({ uri }) => {
-  return { uri, headerLocation: MENUS.PRIMARY_LOCATION, footerLocation: MENUS.FOOTER_LOCATION};
+  return {
+    uri,
+    headerLocation: MENUS.PRIMARY_LOCATION,
+    footerLocation: MENUS.FOOTER_LOCATION
+  };
 };
 
 export default { Component, variables, query };

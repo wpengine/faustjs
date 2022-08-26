@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import * as MENUS from 'constants/menus';
+import { BlogInfoFragment } from 'fragments/GeneralSettings';
 import {
   Header,
   Footer,
@@ -7,16 +8,15 @@ import {
   Container,
   ContentWrapper,
   EntryHeader,
-  NavigationMenu
+  NavigationMenu,
+  FeaturedImage
 } from 'components';
 
 const Component = (props) => {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
-  const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-
-  console.log({props});
+  const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
 
   return (
     <>
@@ -27,39 +27,55 @@ const Component = (props) => {
       />
       <Main>
         <>
-          <EntryHeader title={title} image={featuredImage} />
+          <EntryHeader
+            title={title}
+            image={featuredImage.node}
+          />
           <Container>
             <ContentWrapper content={content} />
           </Container>
         </>
       </Main>
-      <Footer title={siteTitle} menuItems={footerMenu} />
+      <Footer
+        title={siteTitle}
+        menuItems={footerMenu}
+      />
     </>
   );
 };
 
+const variables = ({ uri }) => {
+  return {
+    uri,
+    headerLocation: MENUS.PRIMARY_LOCATION,
+    footerLocation: MENUS.FOOTER_LOCATION
+  };
+};
+
 const query = gql`
+  ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
-  query GetPageData($headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
-    generalSettings {
+  ${FeaturedImage.fragments.entry}
+  query GetPageData($uri: ID!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
+    page(id: $uri, idType: URI) {
       title
-      description
+      content
+      ...FeaturedImageFragment
     }
-    headerMenuItems: menuItems(where: { location: $headerLocation }) {
-      nodes {
-        ...NavigationMenuItemFragment
-      }
+    generalSettings {
+      ...BlogInfoFragment
     }
     footerMenuItems: menuItems(where: { location: $footerLocation }) {
       nodes {
         ...NavigationMenuItemFragment
       }
     }
+    headerMenuItems: menuItems(where: { location: $headerLocation }) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
   }
 `;
-
-const variables = () => {
-  return { headerLocation: MENUS.PRIMARY_LOCATION, footerLocation: MENUS.FOOTER_LOCATION};
-};
 
 export default { Component, variables, query };

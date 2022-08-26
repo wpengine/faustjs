@@ -6,7 +6,6 @@ export default function FormatDate({ date }) {
   }
 
   const timeformat = {
-    weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',

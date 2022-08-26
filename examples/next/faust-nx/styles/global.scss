@@ -2,13 +2,16 @@
 	// Definitions.
 	--wpe--color--black: #000;
 	--wpe--color--white: #fff;
-	--wpe--color--gray: #eee;
+	--wpe--color--offwhite: #f7f7f7;
+	--wpe--color--neutral: rgba(175,184,193,0.2);
 	--wpe--color--slate: #0a2540;
 	--wpe--color--accent: #635bff;
 	--wpe--color--accent--dark: #0a2540;
 
 	// Location Assignments.
 	--wpe--link--color: var(--wpe--color--accent);
+	--wpe--code--color: var(--wpe--color--black);
+	--wpe--code--background-color: var(--wpe--color--neutral);
 	--wpe--header--color: var(--wpe--color--slate);
 	--wpe--header--background-color: var(--wpe--color--white);
 	--wpe--navigation-menu--color: var(--wpe--color--black);
@@ -20,7 +23,8 @@
 	--wpe--footer--color: var(--wpe--color--black);
 	--wpe--footer--background-color: var(--wpe--color--white);
 	--wpe--heading--color: var(--wpe--color--accent);
-	--wpe--border--light: 1px solid var(--wpe--color--gray);
+	--wpe--border--light: 1px solid var(--wpe--color--neutral);
+	--wpe--border--extra-light: 1px solid var(--wpe--color--offwhite);
 
 	// Type.
 	--wpe--font-weight--light: 300;
@@ -34,7 +38,7 @@
 	--wpe--container--max-width: 900px;
 
 	// Shadows.
-	--wpe--shadow--large: 0 50px 120px -40px rgba(150, 150, 150, 0.2), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
+	--wpe--shadow--large: 0 50px 120px -40px rgba(150, 150, 150, 0.2), 0 20px 60px -30px rgba(0, 0, 0, 0.5);
 }
 
 *,
@@ -51,6 +55,10 @@ body {
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	background-color: var(--wpe--code--background-color);
+	color: var(--wpe--code--color);
+	padding: 0.25rem 0.5rem;
+	border-radius: 4px;
 }
 
 h1,
@@ -100,7 +108,17 @@ img {
 	}
 }
 
-// @TODO - Remove debugging styles.
-* {
-	box-shadow: 0 0 0 1px pink;
+::-moz-selection {
+	color: var(--wpe--color--white);
+	background-color: var(--wpe--color--accent);
 }
+
+::selection {
+	color: var(--wpe--color--white);
+	background-color: var(--wpe--color--accent);
+}
+
+// @TODO - Remove debugging styles.
+// * {
+// 	box-shadow: 0 0 0 1px pink;
+// }

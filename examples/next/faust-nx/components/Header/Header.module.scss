@@ -3,6 +3,8 @@
 .component {
 	color: var(--wpe--header--color);
 	background-color: var(--wpe--header--background-color);
+	position: relative;
+	z-index: 2; // Pull dropdown menus to the foreground to sit above <Main />.
 }
 
 .navbar {
@@ -39,9 +41,10 @@
 	cursor: pointer;
 	display: flex;
 	margin: 0;
-	padding: .5rem;
+	padding: 0.5rem 1rem;
 	transition: all 0.2s ease-in;
 	user-select: none;
+	font-size: 2rem;
 
 	&:hover,
 	&:focus {

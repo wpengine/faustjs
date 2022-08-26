@@ -1,10 +1,5 @@
 import { gql } from "@apollo/client";
-import className from 'classnames/bind';
 import Image from 'next/image';
-import styles from './FeaturedImage.module.scss';
-
-let cx = className.bind(styles);
-
 export default function FeaturedImage({
   image,
   width,
@@ -25,14 +20,13 @@ export default function FeaturedImage({
   height = height ? height : image?.mediaDetails?.height;
 
   return src && width && height ? (
-    <figure className={cx(['featured-image', className])}>
+    <figure className={className}>
       <Image
         src={src}
         width={width}
         height={height}
         alt={altText}
-        objectFit="cover"
-        layout="responsive"
+        layout="fill"
         priority={priority}
         {...props}
       />

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { Container } from 'components';
+import { Container, Heading, NavigationMenu } from 'components';
 import styles from './Footer.module.scss';
 
 let cx = classNames.bind(styles);
@@ -10,7 +10,8 @@ export default function Footer({ title, menuItems }) {
   return (
     <footer className={cx('component')}>
       <Container>
-        <p>{`${title} © ${year}. All rights reserved.`}</p>
+        <NavigationMenu menuItems={menuItems} />
+        <p className={cx('copyright')}>{`${title} © ${year}. All rights reserved.`}</p>
       </Container>
     </footer>
   );
