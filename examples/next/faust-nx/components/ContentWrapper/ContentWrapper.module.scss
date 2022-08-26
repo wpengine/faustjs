@@ -27,12 +27,12 @@
 		}
 
 		a {
-			color: var(--wpe--color--link);
+			color: var(--wpe--link--color);
 			text-decoration: underline;
 
 			&:hover,
 			&:focus {
-				color: var(--wpe--color--link);
+				color: var(--wpe--link--color);
 				text-decoration: none;
 			}
 		}

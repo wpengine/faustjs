@@ -1,29 +1,30 @@
 :root {
-	// Color Definitions.
+	// Definitions.
 	--wpe--color--black: #000;
 	--wpe--color--white: #fff;
-	--wpe--color--gray: #ddd;
-	--wpe--color--blue: #007EEA;
-	--wpe--color--dark-blue: #002838;
-	--wpe--color--glacier: linear-gradient(141deg, #0076dc, #7a1ba6);
+	--wpe--color--gray: #eee;
+	--wpe--color--slate: #0a2540;
+	--wpe--color--accent: #635bff;
+	--wpe--color--accent--dark: #0a2540;
 
-	// Color Assignments.
-	--wpe--color--link: var(--wpe--color--blue);
-	--wpe--color--border: var(--wpe--color--gray);
-	--wpe--header--text-color: var(--wpe--color--black);
+	// Location Assignments.
+	--wpe--link--color: var(--wpe--color--accent);
+	--wpe--header--color: var(--wpe--color--slate);
 	--wpe--header--background-color: var(--wpe--color--white);
-	--wpe--navigation-menu--link-color: var(--wpe--color--black);
+	--wpe--navigation-menu--color: var(--wpe--color--black);
+	--wpe--navigation-menu--color--hover: var(--wpe--color--accent);
 	--wpe--navigation-menu--background-color: var(--wpe--color--white);
-	--wpe--main--text-color: var(--wpe--color--black);
+	--wpe--dropdown--background-color: var(--wpe--color--white);
+	--wpe--main--color: var(--wpe--color--black);
 	--wpe--main--background-color: var(--wpe--color--white);
-	--wpe--footer--text-color: var(--wpe--color--black);
+	--wpe--footer--color: var(--wpe--color--black);
 	--wpe--footer--background-color: var(--wpe--color--white);
-	--wpe--heading--color: gold;
-	--wpe--featured-image--border-color: gold;
+	--wpe--heading--color: var(--wpe--color--accent);
+	--wpe--border--light: 1px solid var(--wpe--color--gray);
 
 	// Type.
 	--wpe--font-weight--light: 300;
-	--wpe--font-weight--normal: 400;
+	--wpe--font-weight--medium: 400;
 	--wpe--font-weight--bold: 700;
 
 	// Spacing.
@@ -31,6 +32,9 @@
 	--wpe--section--padding-y: 3rem;
 	--wpe--container--padding-x: 15px;
 	--wpe--container--max-width: 900px;
+
+	// Shadows.
+	--wpe--shadow--large: 0 50px 120px -40px rgba(150, 150, 150, 0.2), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
 }
 
 *,
@@ -42,6 +46,7 @@
 body {
 	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	font-weight: var(--wpe--font-weight--medium);
 }
 
 code {
@@ -95,7 +100,7 @@ img {
 	}
 }
 
-// Temp
-* > * {
-	box-shadow: 0 0 0 1px magenta;
+// @TODO - Remove debugging styles.
+* {
+	box-shadow: 0 0 0 1px pink;
 }

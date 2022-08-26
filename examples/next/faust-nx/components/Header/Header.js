@@ -20,7 +20,7 @@ export default function Header({
           <div className={cx('navbar')}>
             <div className={cx('brand')}>
               <Link href="/">
-                <a>{title}</a>
+                <a className={cx('title')}>{title}</a>
               </Link>
               {description && <p className={cx('description')}>{description}</p>}
             </div>
@@ -35,18 +35,9 @@ export default function Header({
               ☰
             </button>
             <NavigationMenu
-              className={cx(
-                'primary-navigation',
-                isNavShown ? 'show' : undefined,
-              )}
+              className={cx(['primary-navigation', isNavShown ? 'show' : undefined])}
               menuItems={menuItems}
-            >
-              <li>
-                <Link href="https://github.com/wpengine/faustjs">
-                  <a>View on GitHub</a>
-                </Link>
-              </li>
-            </NavigationMenu>
+            />
         </div>
       </Container>
     </header>

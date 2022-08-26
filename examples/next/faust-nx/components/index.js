@@ -10,3 +10,4 @@ export { Main } from './Main';
 export { NavigationMenu } from './NavigationMenu';
 export { PostInfo } from './PostInfo';
 export { SkipNavigationLink } from './SkipNavigationLink';
+export { Hero } from './Hero';

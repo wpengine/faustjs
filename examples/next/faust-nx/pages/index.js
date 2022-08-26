@@ -1,18 +1,11 @@
-import { Header, Footer, Container, Main } from "components";
+import 'faustnx.config';
+import { getWordPressProps, WordPressTemplate } from 'faust-nx';
+import client from 'client';
 
-export default function Page() {
-  return (
-    <>
-      <Header />
-      <Main>
-        <Container>
-          <>
-            <h1>Home</h1>
-            <p>This page is a traditional <a href="https://nextjs.org/docs/routing/introduction#index-routes">Next.js file-system based page</a>.</p>
-          </>
-        </Container>
-      </Main>
-      <Footer />
-    </>
-  );
+export default function Page(props) {
+  return <WordPressTemplate {...props} />;
+}
+
+export function getStaticProps(ctx) {
+  return getWordPressProps({ client, ctx });
 }

@@ -1,4 +1,5 @@
-import className from 'classnames';
+import { gql } from "@apollo/client";
+import className from 'classnames/bind';
 import Image from 'next/image';
 import styles from './FeaturedImage.module.scss';
 
@@ -24,7 +25,7 @@ export default function FeaturedImage({
   height = height ? height : image?.mediaDetails?.height;
 
   return src && width && height ? (
-    <figure className={cx('featured-image', className)}>
+    <figure className={cx(['featured-image', className])}>
       <Image
         src={src}
         width={width}
@@ -37,4 +38,21 @@ export default function FeaturedImage({
       />
     </figure>
   ) : null;
+}
+
+FeaturedImage.fragments = {
+  entry: gql`
+    fragment FeaturedImageFragment on NodeWithFeaturedImage {
+      featuredImage {
+        node {
+          id
+          sourceUrl
+          altText
+          mediaDetails {
+            width
+            height
+          }
+        }
+      }
+    }`
 }

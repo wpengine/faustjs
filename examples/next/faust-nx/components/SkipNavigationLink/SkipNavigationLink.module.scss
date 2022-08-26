@@ -2,6 +2,8 @@
 .component {
   color: var(--wpe--color--white);
   background-color: var(--wpe--color--black);
-  padding: 1rem 2rem;
+  padding: 0.5rem 0.8rem !important;
+  position: relative;
+  margin: 0.5rem !important;
   z-index: 1;
 }

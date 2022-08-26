@@ -1,32 +1,49 @@
 import classNames from 'classnames/bind';
 import { gql } from '@apollo/client';
 import Link from 'next/link';
+import flatListToHierarchical from 'utilities/flatListToHierarchical';
 import styles from './NavigationMenu.module.scss';
+import stylesFromWP from './NavigationMenuClassesFromWP.module.scss';
 
 let cx = classNames.bind(styles);
+let cxFromWp = classNames.bind(stylesFromWP);
 
-export default function NavigationMenu({ menuItems, children, className }) {
+export default function NavigationMenu({ menuItems, className }) {
   if (!menuItems) {
     return null;
   }
 
-  return (
-    <nav
-      className={cx('component', className)}
-      role="navigation"
-      aria-label={`${menuItems[0]?.menu.node.name} menu`}
-    >
+  const hierarchicalMenuItems = flatListToHierarchical(menuItems);
+
+  function renderMenu(items) {
+    return (
       <ul className={cx('menu')}>
-        {menuItems.map((item) => {
-          const { id, path, label } = item;
+        {items.map((item) => {
+          const { id, path, label, children, cssClasses } = item;
+
+          // @TODO - Remove guard clause after ghost menu items are no longer appended to array.
+          if (!item.hasOwnProperty('__typename')) {
+            return null
+          }
+
           return (
-            <li key={id}>
+            <li key={id} className={cxFromWp(cssClasses)}>
               <Link href={path ?? ''}>{label ?? ''}</Link>
+              {children.length ? renderMenu(children, true) : null}
             </li>
           );
         })}
-        {children}
       </ul>
+    );
+  }
+
+  return (
+    <nav
+      className={cx(['component', className])}
+      role="navigation"
+      aria-label={`${menuItems[0]?.menu.node.name} menu`}
+    >
+      {renderMenu(hierarchicalMenuItems)}
     </nav>
   );
 }
@@ -37,6 +54,8 @@ NavigationMenu.fragments = {
       id
       path
       label
+      parentId
+      cssClasses
       menu {
         node {
           name

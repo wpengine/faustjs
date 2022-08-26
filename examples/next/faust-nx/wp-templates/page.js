@@ -11,13 +11,20 @@ import {
 } from 'components';
 
 const Component = (props) => {
+  const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
-  const footerMenu = props?.data?.footerMenuItems.nodes ?? [];
+  const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
+
+  console.log({props});
 
   return (
     <>
-      <Header menuItems={primaryMenu} />
+      <Header
+        title={siteTitle}
+        description={siteDescription}
+        menuItems={primaryMenu}
+      />
       <Main>
         <>
           <EntryHeader title={title} image={featuredImage} />
@@ -26,7 +33,7 @@ const Component = (props) => {
           </Container>
         </>
       </Main>
-      <Footer menuItems={footerMenu} />
+      <Footer title={siteTitle} menuItems={footerMenu} />
     </>
   );
 };
@@ -52,9 +59,7 @@ const query = gql`
 `;
 
 const variables = () => {
-  const postsPerPage = 3;
-  return { first: postsPerPage, headerLocation: MENUS.PRIMARY_LOCATION, footerLocation: MENUS.FOOTER_LOCATION};
+  return { headerLocation: MENUS.PRIMARY_LOCATION, footerLocation: MENUS.FOOTER_LOCATION};
 };
-
 
 export default { Component, variables, query };

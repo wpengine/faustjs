@@ -1,13 +1,74 @@
+%visible {
+	visibility: visible;
+	opacity: 1;
+}
+
+%hidden {
+	visibility: hidden;
+	opacity: 0;
+}
+
 .component {
-	display: flex;
 	background-color: var(--wpe--navigation-menu--background-color);
 }
 
 .menu {
 	list-style-type: none;
 	display: flex;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	gap: .5rem;
+
+	li {
+		display: flex;
+		align-items: center;
+		position: relative;
+		width: 100%;
+
+		&:focus-within ul,
+		a:hover + ul,
+		a:focus + ul {
+			@extend %visible;
+		}
+	}
 
 	a {
-		color: var(--wpe--navigation-menu--link-color);
+		color: var(--wpe--navigation-menu--color);
+		text-decoration: none;
+		padding: 0.5rem;
+		display: block;
+		transition: all 0.2s ease-out;
+		width: inherit;
+		white-space: nowrap;
+
+		&:hover,
+		&:focus {
+			color: var(--wpe--navigation-menu--color--hover);
+		}
+	}
+
+	li ul {
+		// @extend %hidden;
+		background-color: var(--wpe--dropdown--background-color);
+		position: absolute;
+		transition: all 0.2s ease-out;
+		top: 100%;
+		left: -10px;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		padding: 1rem;
+		border-radius: 8px;
+		box-shadow: var(--wpe--shadow--large);
+
+		&:hover {
+			@extend %visible;
+		}
+
+		li + li {
+			border-top: var(--wpe--border--light);
+			margin-top: 3px; // Make room for default browser focus styles.
+		}
 	}
 }

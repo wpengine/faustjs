@@ -1,17 +1,18 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 import * as MENUS from 'constants/menus';
 import {
   Header,
   Footer,
   Main,
   Container,
+  ContentWrapper,
   EntryHeader,
   NavigationMenu
-} from "components";
+} from 'components';
 
-function Component(props) {
-  const { name } = props.data.nodeByUri;
+const Component = (props) => {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
+  const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
 
@@ -24,25 +25,20 @@ function Component(props) {
       />
       <Main>
         <>
-          <EntryHeader title={`Category: ${name}`} />
+          <EntryHeader title={title} image={featuredImage} />
           <Container>
-            <>...</>
+            <ContentWrapper content={content} />
           </Container>
         </>
       </Main>
       <Footer title={siteTitle} menuItems={footerMenu} />
     </>
   );
-}
+};
 
 const query = gql`
   ${NavigationMenu.fragments.entry}
-  query GetArchivePage($uri: String!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
-    nodeByUri(uri: $uri) {
-      ... on Category {
-        name
-      }
-    }
+  query GetPageData($headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
     generalSettings {
       title
       description
@@ -60,8 +56,8 @@ const query = gql`
   }
 `;
 
-const variables = ({ uri }) => {
-  return { uri, headerLocation: MENUS.PRIMARY_LOCATION, footerLocation: MENUS.FOOTER_LOCATION};
+const variables = () => {
+  return { headerLocation: MENUS.PRIMARY_LOCATION, footerLocation: MENUS.FOOTER_LOCATION};
 };
 
 export default { Component, variables, query };

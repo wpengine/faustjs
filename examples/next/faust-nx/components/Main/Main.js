@@ -9,7 +9,7 @@ export default function Main({ children, className, ...props }) {
     <main
       id={SELECTORS.MAIN_CONTENT_ID}
       tabIndex={-1}
-      className={cx('component', className)}
+      className={cx(['component', className])}
       {...props}
     >
       {children}

@@ -6,7 +6,7 @@ let cx = className.bind(styles);
 
 export default function EntryHeader({ title, image, date, author, className }) {
   const hasText = title || date || author;
-  const entryHeaderClasses = cx('entry-header', className);
+  const entryHeaderClasses = cx(['entry-header', className]);
 
   return (
     <div className={entryHeaderClasses}>

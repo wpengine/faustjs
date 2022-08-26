@@ -1,8 +1,8 @@
 @import 'styles/breakpoints';
 
 .component {
-	color: var(--wpe--header--text-color);
-	background-color: var(--wpe--header-background-color);
+	color: var(--wpe--header--color);
+	background-color: var(--wpe--header--background-color);
 }
 
 .navbar {
@@ -10,12 +10,25 @@
 	justify-content: space-between;
 	flex-wrap: wrap;
 	padding: 3rem 0;
-	gap: 2rem;
+	gap: 1rem;
 }
 
 .brand {
 	font-weight: var(--wpe--font-weight--bold);
-	font-size: 1.5rem;
+	font-size: 1.6rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.title {
+	text-decoration: none;
+}
+
+.description {
+	margin: .3rem 0 0 0;
+	font-size: 0.8rem;
+	opacity: 0.9;
 }
 
 .nav-toggle {
@@ -27,7 +40,7 @@
 	display: flex;
 	margin: 0;
 	padding: .5rem;
-	transition: color 0.3s ease, background-color 0.3s ease;
+	transition: all 0.2s ease-in;
 	user-select: none;
 
 	&:hover,
@@ -52,39 +65,5 @@
 	@media (min-width: $breakpoint-small) {
 		display: block;
 		width: auto;
-	}
-
-	:global(.menu) {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		list-style: none;
-		text-transform: uppercase;
-		font-size: 1.4rem;
-		margin: 0;
-
-		@media (min-width: $breakpoint-small) {
-			flex-direction: row;
-		}
-
-		li {
-			margin: 0 0.5rem;
-		}
-
-		a {
-			display: inline-flex;
-			align-items: center;
-			height: 100%;
-			padding: 1rem;
-			font-weight: var(--wpe--font-weight--bold);
-			color: var(--wpe--color--white);
-
-			&:hover,
-			&:focus {
-				border: 1px solid var(--wpe--color--white);
-				color: var(--wpe--color--white);
-				padding: 0.9rem;
-			}
-		}
 	}
 }

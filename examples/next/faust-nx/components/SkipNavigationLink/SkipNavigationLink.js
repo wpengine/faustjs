@@ -7,7 +7,7 @@ let cx = classNames.bind(styles);
 export default function SkipNavigationLink() {
   return (
     <a
-      className={cx('component', 'sr-only')}
+      className={cx(['component', 'sr-only'])}
       href={`#${SELECTORS.MAIN_CONTENT_ID}`}
     >
       Skip To Main Content

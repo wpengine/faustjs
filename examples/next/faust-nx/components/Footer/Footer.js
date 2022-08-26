@@ -4,13 +4,13 @@ import styles from './Footer.module.scss';
 
 let cx = classNames.bind(styles);
 
-export default function Footer({ menuItems }) {
+export default function Footer({ title, menuItems }) {
   const year = new Date().getFullYear();
 
   return (
     <footer className={cx('component')}>
       <Container>
-        <p>{`© ${year}. All rights reserved.`}</p>
+        <p>{`${title} © ${year}. All rights reserved.`}</p>
       </Container>
     </footer>
   );
