@@ -7,14 +7,14 @@ import {
   Main,
   Container,
   NavigationMenu,
-  Hero
+  Hero,
+  Heading
 } from 'components';
 
 const Component = (props) => {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
 
   return (
     <>
@@ -24,9 +24,13 @@ const Component = (props) => {
         menuItems={primaryMenu}
       />
       <Main>
-        <>
-          <Hero title={'Powered by WordPress'} />
-        </>
+        <Container>
+          <Hero title={'Home'} />
+          <div className='text-center'>
+            <p>This page is using Faust's WordPress template hierarchy.</p>
+            <p><code>./wp-templates/home.js</code></p>
+          </div>
+        </Container>
       </Main>
       <Footer title={siteTitle} menuItems={footerMenu} />
     </>

@@ -59,6 +59,7 @@ code {
 	color: var(--wpe--code--color);
 	padding: 0.25rem 0.5rem;
 	border-radius: 4px;
+	white-space: nowrap;
 }
 
 h1,
@@ -72,6 +73,7 @@ h6 {
 
 p {
 	margin: 0 0 1rem;
+	line-height: 1.8;
 }
 
 a {
