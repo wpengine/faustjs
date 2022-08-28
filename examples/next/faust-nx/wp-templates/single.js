@@ -18,7 +18,6 @@ const Component = (props) => {
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
   const { title, content, featuredImage, date, author } = props.data.post;
 
-  console.log({author, date});
   return (
     <>
       <Header
