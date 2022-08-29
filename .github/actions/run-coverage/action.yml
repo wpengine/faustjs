@@ -14,6 +14,6 @@ runs:
         test-script: npm run test:coverage:ci
         working-directory: ${{ inputs.working-directory }}
         skip-step: install
-        annotations: none
+        annotations: all
       continue-on-error: FALSE
 
