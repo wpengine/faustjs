@@ -84,7 +84,7 @@ export async function getProps<
             {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
             <FaustContext.Provider value={{ client }}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Page {...(props as Props)} />
+              <Page {...(props as any)} />
             </FaustContext.Provider>
           </RouterContext.Provider>,
         );
