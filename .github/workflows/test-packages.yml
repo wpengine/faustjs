@@ -15,7 +15,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.version }}
-      - run: rm package-lock.json
 
       - name: Install
         run: npm install
