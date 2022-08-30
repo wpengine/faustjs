@@ -1,6 +1,6 @@
 ---
 title: Sprint 17 Update
-description: Updates from the teams work on Sprint 17
+description: Updates from the team's work on Sprint 17
 slug: sprint-17-update
 hide_table_of_contents: true
 ---
