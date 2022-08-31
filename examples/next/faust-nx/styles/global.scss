@@ -1,14 +1,16 @@
 :root {
-	// Definitions.
+	// Color Definitions.
 	--wpe--color--black: #000;
 	--wpe--color--white: #fff;
 	--wpe--color--offwhite: #f7f7f7;
 	--wpe--color--neutral: rgba(175,184,193,0.2);
 	--wpe--color--slate: #0a2540;
-	--wpe--color--accent: #635bff;
-	--wpe--color--accent--dark: #0a2540;
+	--wpe--color--purple: #635bff;
 
-	// Location Assignments.
+	// Color Assignments.
+	--wpe--color--accent: var(--wpe--color--purple);
+	--wpe--color--accent--dark: var(--wpe--color--slate);
+	--wpe--color--title: var(--wpe--color--black);
 	--wpe--link--color: var(--wpe--color--accent);
 	--wpe--code--color: var(--wpe--color--black);
 	--wpe--code--background-color: var(--wpe--color--neutral);
