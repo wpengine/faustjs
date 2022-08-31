@@ -1,4 +1,9 @@
+import { hooks } from '../hooks/index.js';
+
 export function getWpUrl(): string {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return process.env.NEXT_PUBLIC_WORDPRESS_URL!;
+  let wpUrl = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  wpUrl = hooks.applyFilters('wpUrl', wpUrl, {}) as string;
+
+  return wpUrl;
 }
