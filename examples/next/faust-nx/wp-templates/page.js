@@ -29,7 +29,7 @@ const Component = (props) => {
         <>
           <EntryHeader
             title={title}
-            image={featuredImage.node}
+            image={featuredImage?.node}
           />
           <Container>
             <ContentWrapper content={content} />

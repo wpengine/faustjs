@@ -29,9 +29,9 @@ const Component = (props) => {
         <>
           <EntryHeader
             title={title}
-            image={featuredImage.node}
+            image={featuredImage?.node}
             date={date}
-            author={author.node.name}
+            author={author?.node?.name}
           />
           <Container>
             <ContentWrapper content={content} />

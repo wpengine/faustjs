@@ -11,6 +11,10 @@
 	}
 }
 
+.has-image {
+	--wpe--color--title: var(--wpe--color--white);
+}
+
 .text,
 .image {
 	margin: auto;
@@ -28,7 +32,7 @@
 .title {
 	line-height: 1.25;
 	font-size: 5rem;
-	color: var(--wpe--color--white);
+	color: var(--wpe--color--title);
 }
 
 .byline {
