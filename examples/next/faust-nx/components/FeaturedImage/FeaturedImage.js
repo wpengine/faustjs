@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 import Image from 'next/image';
 export default function FeaturedImage({
   image,
@@ -23,8 +23,6 @@ export default function FeaturedImage({
     <figure className={className}>
       <Image
         src={src}
-        width={width}
-        height={height}
         alt={altText}
         layout="fill"
         priority={priority}

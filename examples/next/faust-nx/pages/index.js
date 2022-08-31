@@ -1,6 +1,6 @@
-import 'faustnx.config';
+import '../faustnx.config';
 import { getWordPressProps, WordPressTemplate } from 'faust-nx';
-import client from 'client';
+import client from '../client';
 
 export default function Page(props) {
   return <WordPressTemplate {...props} />;

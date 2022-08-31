@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
-import * as MENUS from 'constants/menus';
-import { BlogInfoFragment } from 'fragments/GeneralSettings';
+import * as MENUS from '../constants/menus';
+import { BlogInfoFragment } from '../fragments/GeneralSettings';
 import {
   Header,
   Footer,
@@ -10,7 +10,7 @@ import {
   EntryHeader,
   NavigationMenu,
   FeaturedImage
-} from 'components';
+} from '../components';
 
 const Component = (props) => {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;

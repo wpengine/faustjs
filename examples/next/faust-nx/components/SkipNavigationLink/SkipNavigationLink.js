@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import * as SELECTORS from 'constants/selectors';
+import * as SELECTORS from '../../constants/selectors';
 import styles from './SkipNavigationLink.module.scss';
 
 let cx = classNames.bind(styles);

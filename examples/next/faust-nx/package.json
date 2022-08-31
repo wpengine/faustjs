@@ -11,7 +11,7 @@
     "@apollo/client": "^3.6.6",
     "classnames": "^2.3.1",
     "faust-nx": "file:../../../packages/faust-nx/dist/index.js",
-    "faust-nx-cli": "file:../../../packages/faust-nx-cli/dist/index.js"
+    "faust-nx-cli": "file:../../../packages/faust-nx-cli/dist/index.js",
     "next": "^12.1.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"

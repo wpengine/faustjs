@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { gql } from '@apollo/client';
 import Link from 'next/link';
-import flatListToHierarchical from 'utilities/flatListToHierarchical';
+import flatListToHierarchical from '../../utilities/flatListToHierarchical';
 import styles from './NavigationMenu.module.scss';
 import stylesFromWP from './NavigationMenuClassesFromWP.module.scss';
 
