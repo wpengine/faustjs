@@ -27,6 +27,13 @@ export interface NextJSPage extends Omit<SitemapSchemaUrlElement, 'loc'> {
   path: string;
 }
 
+export interface GetSitemapPropsConfig extends HandleSitemapRequestsConfig {
+  /**
+   * The headless frontend URL
+   */
+  frontendUrl: string;
+}
+
 export interface HandleSitemapRequestsConfig {
   /**
    * The URL of your WordPress site.
@@ -36,11 +43,10 @@ export interface HandleSitemapRequestsConfig {
   wpUrl: string;
 
   /**
-   * The pathname to the sitemap index file.
-   *
-   * @example /sitemap.xml, /wp-sitemap.xml, /sitemap_index.xml
+   * The sitemap path for server side
    */
   sitemapIndexPath: string;
+
   /**
    * A list of pathnames to ignore when proxying sitemaps.
    */
@@ -63,8 +69,13 @@ export interface HandleSitemapRequestsConfig {
   robotsTxt?: (sitemapUrl: string) => Promise<string>;
 }
 
-export interface NormalizedConfig
+export interface NormalizedMiddlewareConfig
   extends Omit<HandleSitemapRequestsConfig, 'replaceUrls'> {
+  replaceUrls: boolean;
+}
+
+export interface NormalizedServerConfig
+  extends Omit<GetSitemapPropsConfig, 'replaceUrls'> {
   replaceUrls: boolean;
 }
 
@@ -85,7 +96,8 @@ export const FAUST_ROBOTS_PATHNAME = '/robots.txt';
  * @param {Partial<HandleSitemapRequestsConfig>} config The user provided config
  */
 export function validateConfig(
-  config: Partial<HandleSitemapRequestsConfig>,
+  config: Partial<HandleSitemapRequestsConfig & GetSitemapPropsConfig>,
+  isMiddleware = true,
 ): void {
   if (isUndefined(config?.wpUrl)) {
     throw new Error('wpUrl is required.');
@@ -96,10 +108,27 @@ export function validateConfig(
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const url = new URL(config.wpUrl);
+    // eslint-disable-next-line no-new
+    new URL(config.wpUrl);
   } catch (e) {
     throw new Error('wpUrl must be a valid URL.');
+  }
+
+  if (!isMiddleware) {
+    if (isUndefined(config?.frontendUrl)) {
+      throw new Error('frontendUrl is required');
+    }
+
+    if (!isString(config?.frontendUrl)) {
+      throw new Error('frontendUrl must be a string');
+    }
+
+    try {
+      // eslint-disable-next-line no-new
+      new URL(config.frontendUrl);
+    } catch (e) {
+      throw new Error('frontendUrl must be a valid URL.');
+    }
   }
 
   if (isUndefined(config?.sitemapIndexPath)) {
@@ -187,11 +216,11 @@ export async function handleSitemapRequests(
 
   // Normalize config if some optional values are missing
   // eslint-disable-next-line prefer-object-spread
-  const normalizedConfig: NormalizedConfig = Object.assign(
+  const normalizedConfig: NormalizedMiddlewareConfig = Object.assign(
     {},
     { replaceUrls: true },
     config,
-  ) as NormalizedConfig;
+  ) as NormalizedMiddlewareConfig;
 
   const { pathname } = new URL(req.url);
   const { sitemapIndexPath, pages, robotsTxt } = normalizedConfig;

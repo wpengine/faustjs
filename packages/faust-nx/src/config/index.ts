@@ -1,3 +1,4 @@
+import { PossibleTypesMap } from '@apollo/client';
 import once from 'lodash/once.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { hooks, Plugin } from '../hooks/index.js';
@@ -7,6 +8,7 @@ export interface FaustNXConfig {
   disableLogging: boolean;
   loginPagePath?: string;
   experimentalPlugins: Plugin[];
+  possibleTypes: PossibleTypesMap;
 }
 
 let config: FaustNXConfig;
