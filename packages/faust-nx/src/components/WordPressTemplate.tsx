@@ -1,12 +1,22 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import { DocumentNode, useQuery } from '@apollo/client';
 import { getTemplate } from '../getTemplate.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
+import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
 }>;
+
+function cleanTemplate(
+  template: WordPressTemplateType,
+): React.FC<{ [key: string]: any }> {
+  const copy = template;
+  delete copy.query;
+  delete copy.variables;
+  return copy as React.FC<{ [key: string]: any }>;
+}
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
   const { templates } = getConfig();
@@ -32,13 +42,12 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     console.error('No template found');
     return null;
   }
-
-  const { Component } = template;
-
+  // Remove unnecessary properties from component before rendering
+  const Component = cleanTemplate(template);
   const { data, error, loading } = res ?? {};
 
-  return React.cloneElement(
-    <Component />,
+  return React.createElement(
+    Component,
     { ...props, data, error, loading },
     null,
   );

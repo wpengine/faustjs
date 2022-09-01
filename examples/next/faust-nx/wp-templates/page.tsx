@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const Component = (props: any) => {
+export default function Component(props: any) {
   const { title, content } = props?.data?.page;
   return (
     <>
@@ -10,11 +10,11 @@ const Component = (props: any) => {
   );
 };
 
-const variables = ({ uri }: any) => {
+Component.variables = ({ uri }: any) => {
   return { uri };
 };
 
-const query = gql`
+Component.query = gql`
   query GetPage($uri: ID!) {
     page(id: $uri, idType: URI) {
       title
@@ -23,4 +23,3 @@ const query = gql`
   }
 `;
 
-export default { Component, variables, query };

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const Component = (props: any) => {
+export default function Component(props: any) {
   const { title, content } = props.data.post;
 
   return (
@@ -11,7 +11,7 @@ const Component = (props: any) => {
   );
 };
 
-const query = gql`
+Component.query = gql`
   query GetPost($uri: ID!) {
     post(id: $uri, idType: URI) {
       title
@@ -20,12 +20,10 @@ const query = gql`
   }
 `;
 
-const variables = (seedQuery: any) => {
+Component.variables = (seedQuery: any) => {
   console.log(seedQuery);
 
   return {
     uri: seedQuery.uri,
   };
 };
-
-export default { Component, variables, query };
