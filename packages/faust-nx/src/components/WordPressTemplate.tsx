@@ -13,7 +13,7 @@ function cleanTemplate(
   template: WordPressTemplateType,
 ): React.FC<{ [key: string]: any }> {
   const copy = (template as React.FC<{ [key: string]: any }>).bind({});
-  return copy as React.FC<{ [key: string]: any }>;
+  return copy;
 }
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
