@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.0
-Stable tag: 0.7.10
+Stable tag: 0.7.11
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,6 +30,12 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.7.11 =
+
+### Patch Changes
+
+- b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
+
 = 0.7.10 =
 
 ### Patch Changes
@@ -46,12 +52,5 @@ That's it! For more information on getting started with headless WordPress, see 
 - bb59263: The plugin's default settings are now working when activated within a multisite installation.
 - 6c04567: Fixes a conflict between public route redirects and the full site editor
 - d12f938: Updates an icon on the settings page
-
-= 0.7.8 =
-
-### Patch Changes
-
-- 8942b83: Adds warning when known incompatible plugins are active.
-- 6d3f5de: Fix conflict with PublishPress that caused preview links to fail
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
