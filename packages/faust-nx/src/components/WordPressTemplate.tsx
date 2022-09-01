@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { DocumentNode, useQuery } from '@apollo/client';
 import { getTemplate } from '../getTemplate.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
-import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps';
+import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
@@ -12,9 +12,7 @@ export type WordPressTemplateProps = PropsWithChildren<{
 function cleanTemplate(
   template: WordPressTemplateType,
 ): React.FC<{ [key: string]: any }> {
-  const copy = template;
-  delete copy.query;
-  delete copy.variables;
+  const copy = (template as React.FC<{ [key: string]: any }>).bind({});
   return copy as React.FC<{ [key: string]: any }>;
 }
 
