@@ -20,11 +20,43 @@ describe('validateConfig', () => {
     );
   });
 
-  it('throws an error if wpUrl is not a string', () => {
+  it('throws an error if wpUrl is not a valid url', () => {
     const config: any = { wpUrl: 'testing' };
 
     expect(() => handleSitemapRequests.validateConfig(config)).toThrow(
       'wpUrl must be a valid URL.',
+    );
+  });
+
+  it('throws an error if frontendUrl is missing', () => {
+    const config = {
+      wpUrl: 'http://headless.local',
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'frontendUrl is required',
+    );
+  });
+
+  it('throws an error if frontendUrl is not a string', () => {
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      frontendUrl: {},
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'frontendUrl must be a string',
+    );
+  });
+
+  it('throws an error if frontendUrl is not a valid url', () => {
+    const config: any = {
+      wpUrl: 'http://headless.local',
+      frontendUrl: 'testing',
+    };
+
+    expect(() => handleSitemapRequests.validateConfig(config, false)).toThrow(
+      'frontendUrl must be a valid URL.',
     );
   });
 
@@ -191,7 +223,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -219,7 +251,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -252,7 +284,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/robots.txt',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -272,7 +304,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       replaceUrls: true,
@@ -307,7 +339,7 @@ describe('handleSitemapRequests', () => {
       url: 'http://localhost:3000/non-sitemap-route',
     } as NextRequest;
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [
@@ -347,7 +379,7 @@ describe('handleSitemapRequests', () => {
       'handleSitemapPath',
     );
 
-    const config: handleSitemapRequests.NormalizedConfig = {
+    const config: handleSitemapRequests.NormalizedMiddlewareConfig = {
       wpUrl: 'http://headless.local',
       sitemapIndexPath: '/sitemap.xml',
       pages: [

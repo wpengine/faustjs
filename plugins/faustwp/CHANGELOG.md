@@ -1,5 +1,11 @@
 # FaustWP
 
+## 0.7.11
+
+### Patch Changes
+
+- b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
+
 ## 0.7.10
 
 ### Patch Changes

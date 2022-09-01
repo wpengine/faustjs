@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.15.8
+
+### Patch Changes
+
+- de94e46: Added the ability to create a sitemap.xml file for base xml sitemaps and custom pages.
+
 ## 0.15.7
 
 ### Patch Changes
