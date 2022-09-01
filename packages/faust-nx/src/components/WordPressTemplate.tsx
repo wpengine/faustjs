@@ -1,11 +1,13 @@
-import React, { PropsWithChildren } from 'react';
-import { DocumentNode, useQuery } from '@apollo/client';
-import { getTemplate } from '../getTemplate.js';
-import { SeedNode } from '../queries/seedQuery.js';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
+import { getTemplate } from '../getTemplate.js';
+import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
+import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
-  __SEED_NODE__: SeedNode;
+  __SEED_NODE__?: SeedNode;
+  __TEMPLATE_QUERY_DATA__?: any;
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
@@ -15,18 +17,72 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     throw new Error('Templates are required. Please add them to your config.');
   }
 
-  const { __SEED_NODE__: seedNode } = props;
-  const template = getTemplate(seedNode, templates);
+  const [seedNode, setSeedNode] = useState<SeedNode | undefined>(
+    props.__SEED_NODE__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
+  );
+  const [template, setTemplate] = useState<WordPressTemplateType | null>(
+    getTemplate(seedNode, templates),
+  );
+  const [data, setData] = useState<any | undefined>(
+    props.__TEMPLATE_QUERY_DATA__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
+  );
+  const [loading, setLoading] = useState(false);
 
-  /**
-   * This code block exists above the !template conditional
-   * as React Hooks can not be behind conditionals
-   */
-  const res = useQuery(template?.query as DocumentNode, {
-    variables: template?.variables ? template?.variables(seedNode) : undefined,
-    ssr: true,
-    skip: !template?.query,
-  });
+  useEffect(() => {
+    void (async () => {
+      const client = getApolloClient();
+
+      if (!seedNode) {
+        setLoading(true);
+
+        const seedQueryRes = await client.query({
+          query: SEED_QUERY,
+          variables: { uri: window.location.pathname },
+        });
+
+        setLoading(false);
+
+        const node = seedQueryRes?.data?.node as SeedNode;
+
+        setSeedNode(node);
+      }
+    })();
+  }, [seedNode]);
+
+  useEffect(() => {
+    if (!templates || !seedNode) {
+      return;
+    }
+
+    if (!template) {
+      setTemplate(getTemplate(seedNode, templates));
+    }
+  }, [seedNode, templates, template]);
+
+  useEffect(() => {
+    void (async () => {
+      const client = getApolloClient();
+
+      if (!template || !seedNode) {
+        return;
+      }
+
+      if (!data) {
+        setLoading(true);
+
+        const templateQueryRes = await client.query({
+          query: template?.query,
+          variables: template?.variables
+            ? template?.variables(seedNode)
+            : undefined,
+        });
+
+        setLoading(false);
+
+        setData(templateQueryRes.data);
+      }
+    })();
+  }, [data, template, seedNode]);
 
   if (!template) {
     console.error('No template found');
@@ -35,11 +91,5 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
   const { Component } = template;
 
-  const { data, error, loading } = res ?? {};
-
-  return React.cloneElement(
-    <Component />,
-    { ...props, data, error, loading },
-    null,
-  );
+  return React.cloneElement(<Component />, { ...props, data, loading }, null);
 }

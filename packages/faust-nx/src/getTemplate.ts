@@ -133,9 +133,13 @@ export function getPossibleTemplates(node: SeedNode) {
 }
 
 export function getTemplate(
-  seedNode: SeedNode,
+  seedNode: SeedNode | undefined,
   templates: { [key: string]: WordPressTemplate },
 ) {
+  if (!seedNode) {
+    return null;
+  }
+
   const possibleTemplates = getPossibleTemplates(seedNode);
   // eslint-disable-next-line no-console
   console.log('possible templates: ', possibleTemplates);

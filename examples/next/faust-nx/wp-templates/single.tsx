@@ -1,7 +1,13 @@
 import { gql } from '@apollo/client';
 
 const Component = (props: any) => {
-  const { title, content } = props.data.post;
+  console.log('data', props.data);
+
+  if (props.loading) {
+    return <>Loading...</>;
+  }
+
+  const { title, content } = props?.data?.post ?? {};
 
   return (
     <>
@@ -16,6 +22,7 @@ const query = gql`
     post(id: $uri, idType: URI) {
       title
       content
+      date
     }
   }
 `;

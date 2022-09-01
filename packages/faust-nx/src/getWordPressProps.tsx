@@ -77,8 +77,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
+  let templateQueryRes;
   if (template.query) {
-    await client.query({
+    templateQueryRes = await client.query({
       query: template.query,
       variables: template?.variables ? template.variables(seedNode) : undefined,
     });
@@ -88,6 +89,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
+      __TEMPLATE_QUERY_DATA__: templateQueryRes?.data,
     },
   });
 }
