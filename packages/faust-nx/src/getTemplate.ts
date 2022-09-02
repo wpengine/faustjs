@@ -132,7 +132,7 @@ export function getPossibleTemplates(node: SeedNode) {
 export function getTemplate(
   seedNode: SeedNode | undefined,
   templates: { [key: string]: WordPressTemplate },
-) {
+): WordPressTemplate | null {
   if (!seedNode) {
     return null;
   }

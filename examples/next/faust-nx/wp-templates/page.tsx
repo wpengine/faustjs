@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-const Component = (props: any) => {
+export default function Component(props: any) {
   if (props.loading) {
-    return <>Loading...</>
+    return <>Loading...</>;
   }
 
   const { title, content } = props.data.page;
@@ -13,13 +13,13 @@ const Component = (props: any) => {
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </>
   );
-};
+}
 
-const variables = ({ uri }: any) => {
+Component.variables = ({ uri }: any) => {
   return { uri };
 };
 
-const query = gql`
+Component.query = gql`
   query GetPage($uri: ID!) {
     page(id: $uri, idType: URI) {
       title
@@ -27,5 +27,3 @@ const query = gql`
     }
   }
 `;
-
-export default { Component, variables, query };

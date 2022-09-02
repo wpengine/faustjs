@@ -1,5 +1,10 @@
 name: E2E Test - Next Getting Started Example
-on: pull_request
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
 jobs:
   e2e-test-next-getting-started-example:
     runs-on: ubuntu-latest

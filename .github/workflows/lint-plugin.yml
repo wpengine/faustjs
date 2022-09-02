@@ -1,5 +1,10 @@
 name: Lint Plugin
-on: pull_request
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
 jobs:
   lint_plugin:
     runs-on: ubuntu-latest

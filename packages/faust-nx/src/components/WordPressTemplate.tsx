@@ -15,6 +15,13 @@ export type WordPressTemplateProps = PropsWithChildren<{
   __IS_PREVIEW__?: boolean;
 }>;
 
+function cleanTemplate(
+  template: WordPressTemplateType,
+): React.FC<{ [key: string]: any }> {
+  const copy = (template as React.FC<{ [key: string]: any }>).bind({});
+  return copy;
+}
+
 export function WordPressTemplate(props: WordPressTemplateProps) {
   const { __SEED_NODE__: seedNode, __FAUST_CONTEXT__: ctx } = props;
   const { templates } = getConfig();
@@ -176,6 +183,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   }
 
   const { Component } = template;
+  const Component = cleanTemplate(template);
 
-  return React.cloneElement(<Component />, { ...props, data, loading }, null);
+  return React.createElement(Component, { ...props, data, loading }, null);
 }

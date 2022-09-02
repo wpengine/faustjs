@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const Component = (props: any) => {
+export default function Component(props: any) {
   if (props.loading) {
     return <>Loading...</>;
   }
@@ -13,9 +13,9 @@ const Component = (props: any) => {
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </>
   );
-};
+}
 
-const query = gql`
+Component.query = gql`
   query GetPost($databaseId: ID!, $asPreview: Boolean) {
     post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
@@ -25,11 +25,9 @@ const query = gql`
   }
 `;
 
-const variables = (seedQuery: any, asPreview: boolean) => {
+Component.variables = (seedQuery: any, asPreview: boolean) => {
   return {
     asPreview,
     databaseId: seedQuery.databaseId,
   };
 };
-
-export default { Component, variables, query };

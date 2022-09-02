@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
@@ -12,14 +13,13 @@ function isSSR(
   return (ctx as GetServerSidePropsContext).req !== undefined;
 }
 
-export interface WordPressTemplate {
-  query: DocumentNode;
-  variables: (
+export type WordPressTemplate = ReactNode & {
+  query?: DocumentNode;
+  variables?: (
     seedNode: SeedNode,
     context?: { asPreview?: boolean },
   ) => { [key: string]: any };
-  Component: React.FC<{ [key: string]: any }>;
-}
+};
 
 export interface GetWordPressPropsConfig {
   ctx: GetServerSidePropsContext | GetStaticPropsContext;
@@ -90,7 +90,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   if (template.query) {
     templateQueryRes = await client.query({
       query: template.query,
-      variables: template?.variables ? template.variables(seedNode) : undefined,
+      variables: template?.variables
+        ? template?.variables(seedNode)
+        : undefined,
     });
   }
 

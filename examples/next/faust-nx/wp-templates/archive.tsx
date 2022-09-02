@@ -1,15 +1,15 @@
 import { gql } from "@apollo/client";
 import { PropsWithChildren } from "react";
 
-function Component(props: PropsWithChildren<{}>) {
+export default function Component(props: PropsWithChildren<{}>) {
   return <>Archive page</>;
 }
 
-const variables = ({ uri }: any) => {
+Component.variables = ({ uri }: any) => {
   return { uri };
 };
 
-const query = gql`
+Component.query = gql`
   query GetArchivePage($uri: String!) {
     nodeByUri(uri: $uri) {
       ... on Category {
@@ -18,5 +18,3 @@ const query = gql`
     }
   }
 `;
-
-export default { Component, variables, query };
