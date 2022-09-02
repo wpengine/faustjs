@@ -6,6 +6,8 @@ import possibleTypes from './possibleTypes.json';
  * @type {import('faust-nx').FaustNXConfig}
  **/
 export default setConfig({
+  authType: 'redirect',
+  loginPagePath: '/login',
   templates,
   experimentalPlugins: [],
   possibleTypes: possibleTypes,

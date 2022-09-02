@@ -14,7 +14,10 @@ function isSSR(
 
 export interface WordPressTemplate {
   query: DocumentNode;
-  variables: (seedNode: SeedNode) => { [key: string]: any };
+  variables: (
+    seedNode: SeedNode,
+    context?: { asPreview?: boolean },
+  ) => { [key: string]: any };
   Component: React.FC<{ [key: string]: any }>;
 }
 
@@ -34,6 +37,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const client = getApolloClient();
 
   let resolvedUrl = null;
+  let asPreview = false;
 
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
@@ -44,6 +48,9 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     }
   } else {
     resolvedUrl = ctx.req.url;
+    if (resolvedUrl) {
+      asPreview = resolvedUrl.includes('preview=true');
+    }
   }
 
   if (!resolvedUrl) {
@@ -55,6 +62,8 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
     resolvedUrl,
   }) as DocumentNode;
+
+  // TODO: - setup auth client
 
   const seedQueryRes = await client.query({
     query: seedQuery,

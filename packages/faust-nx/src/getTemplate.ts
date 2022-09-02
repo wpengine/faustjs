@@ -69,10 +69,7 @@ export function getPossibleTemplates(node: SeedNode) {
   }
 
   if (node.userId) {
-    if (node.name) {
-      possibleTemplates.push(`author-${node.name}`);
-    }
-
+    possibleTemplates.push(`author-${node.name?.toLocaleLowerCase()}`);
     possibleTemplates.push(`author-${node.userId}`);
     possibleTemplates.push(`author`);
     possibleTemplates.push(`archive`);

@@ -5,7 +5,9 @@ import { getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
 import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
+import { WordPressTemplate } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
+import { usePreviewQuery } from '../hooks/usePreviewQuery.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__?: SeedNode;
@@ -14,6 +16,7 @@ export type WordPressTemplateProps = PropsWithChildren<{
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
+  const { __SEED_NODE__: seedNode, __FAUST_CONTEXT__: ctx } = props;
   const { templates } = getConfig();
 
   if (!templates) {
