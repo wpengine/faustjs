@@ -12,7 +12,7 @@ import {
   FeaturedImage
 } from '../components';
 
-const Component = (props) => {
+export default function Component(props) {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
@@ -46,7 +46,7 @@ const Component = (props) => {
   );
 };
 
-const query = gql`
+Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
@@ -78,12 +78,10 @@ const query = gql`
   }
 `;
 
-const variables = ({ uri }) => {
+Component.variables = ({ uri }) => {
   return {
     uri,
     headerLocation: MENUS.PRIMARY_LOCATION,
     footerLocation: MENUS.FOOTER_LOCATION
   };
 };
-
-export default { Component, variables, query };

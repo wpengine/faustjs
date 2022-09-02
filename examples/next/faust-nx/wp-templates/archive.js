@@ -10,7 +10,7 @@ import {
   NavigationMenu
 } from '../components';
 
-function Component(props) {
+export default function Component(props) {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
@@ -36,7 +36,7 @@ function Component(props) {
   );
 }
 
-const query = gql`
+Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   query GetArchivePage($uri: String!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
@@ -61,12 +61,10 @@ const query = gql`
   }
 `;
 
-const variables = ({ uri }) => {
+Component.variables = ({ uri }) => {
   return {
     uri,
     headerLocation: MENUS.PRIMARY_LOCATION,
     footerLocation: MENUS.FOOTER_LOCATION
   };
 };
-
-export default { Component, variables, query };

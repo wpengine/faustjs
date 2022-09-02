@@ -10,7 +10,7 @@ import {
   Hero
 } from '../components';
 
-const Component = (props) => {
+export default function Component(props) {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
@@ -36,7 +36,7 @@ const Component = (props) => {
   );
 };
 
-const query = gql`
+Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   query GetPageData($headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
@@ -56,11 +56,9 @@ const query = gql`
   }
 `;
 
-const variables = () => {
+Component.variables = () => {
   return {
     headerLocation: MENUS.PRIMARY_LOCATION,
     footerLocation: MENUS.FOOTER_LOCATION
   };
 };
-
-export default { Component, variables, query };
