@@ -3,10 +3,18 @@ import { DocumentNode, useQuery } from '@apollo/client';
 import { getTemplate } from '../getTemplate.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
+import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode;
 }>;
+
+function cleanTemplate(
+  template: WordPressTemplateType,
+): React.FC<{ [key: string]: any }> {
+  const copy = (template as React.FC<{ [key: string]: any }>).bind({});
+  return copy;
+}
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
   const { templates } = getConfig();
@@ -32,13 +40,12 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     console.error('No template found');
     return null;
   }
-
-  const { Component } = template;
-
+  // Remove unnecessary properties from component before rendering
+  const Component = cleanTemplate(template);
   const { data, error, loading } = res ?? {};
 
-  return React.cloneElement(
-    <Component />,
+  return React.createElement(
+    Component,
     { ...props, data, error, loading },
     null,
   );
