@@ -46,6 +46,6 @@ export function normalizeConfig(_config: FaustNXConfig): FaustNXConfig {
   return extend(cfg, {});
 }
 
-export function getConfig(): FaustNXConfig {
+export function getConfig(): Partial<FaustNXConfig> {
   return normalizeConfig(config);
 }

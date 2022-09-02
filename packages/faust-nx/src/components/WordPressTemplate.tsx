@@ -1,4 +1,6 @@
+import { QueryOptions } from '@apollo/client';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { ensureAuthorization, getAccessToken } from '../auth/index.js';
 import { getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
@@ -8,6 +10,7 @@ import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__?: SeedNode;
   __TEMPLATE_QUERY_DATA__?: any;
+  __IS_PREVIEW__?: boolean;
 }>;
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
@@ -26,19 +29,78 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const [data, setData] = useState<any | undefined>(
     props.__TEMPLATE_QUERY_DATA__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(template === null);
+  const [isPreview, setIsPreview] = useState<boolean | null>(
+    props.__IS_PREVIEW__ ?? null, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
+  );
+  const [isAuthenticated, setIsAuthenticated] = useState<
+    | true
+    | {
+        redirect?: string | undefined;
+        login?: string | undefined;
+      }
+    | null
+  >(null);
 
   useEffect(() => {
+    if (!window) {
+      return;
+    }
+
+    setIsPreview(window.location.search.includes('preview=true'));
+  }, []);
+
+  useEffect(() => {
+    if (isPreview === null || isPreview === false) {
+      return;
+    }
+
+    void (async () => {
+      const ensureAuthRes = await ensureAuthorization({
+        redirectUri: window.location.href,
+      });
+
+      if (ensureAuthRes !== true && ensureAuthRes?.redirect) {
+        window.location.replace(ensureAuthRes.redirect);
+      }
+
+      setIsAuthenticated(ensureAuthRes);
+    })();
+  }, [isPreview]);
+
+  useEffect(() => {
+    if (isPreview === null) {
+      return;
+    }
+
+    if (isPreview === true && isAuthenticated !== true) {
+      return;
+    }
+
     void (async () => {
       const client = getApolloClient();
+
+      let queryArgs: QueryOptions = {
+        query: SEED_QUERY,
+        variables: { uri: window.location.pathname },
+      };
+
+      if (isPreview) {
+        queryArgs = {
+          ...queryArgs,
+          context: {
+            headers: {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              Authorization: `bearer ${getAccessToken()!}`,
+            },
+          },
+        };
+      }
 
       if (!seedNode) {
         setLoading(true);
 
-        const seedQueryRes = await client.query({
-          query: SEED_QUERY,
-          variables: { uri: window.location.pathname },
-        });
+        const seedQueryRes = await client.query(queryArgs);
 
         setLoading(false);
 
@@ -47,7 +109,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         setSeedNode(node);
       }
     })();
-  }, [seedNode]);
+  }, [seedNode, isPreview, isAuthenticated]);
 
   useEffect(() => {
     if (!templates || !seedNode) {
@@ -60,6 +122,14 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   }, [seedNode, templates, template]);
 
   useEffect(() => {
+    if (isPreview === null) {
+      return;
+    }
+
+    if (isPreview === true && isAuthenticated !== true) {
+      return;
+    }
+
     void (async () => {
       const client = getApolloClient();
 
@@ -70,22 +140,35 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       if (!data) {
         setLoading(true);
 
-        const templateQueryRes = await client.query({
+        let queryArgs: QueryOptions = {
           query: template?.query,
           variables: template?.variables
             ? template?.variables(seedNode)
             : undefined,
-        });
+        };
+
+        if (isPreview) {
+          queryArgs = {
+            ...queryArgs,
+            context: {
+              headers: {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                Authorization: `bearer ${getAccessToken()!}`,
+              },
+            },
+          };
+        }
+
+        const templateQueryRes = await client.query(queryArgs);
 
         setLoading(false);
 
         setData(templateQueryRes.data);
       }
     })();
-  }, [data, template, seedNode]);
+  }, [data, template, seedNode, isPreview, isAuthenticated]);
 
   if (!template) {
-    console.error('No template found');
     return null;
   }
 
