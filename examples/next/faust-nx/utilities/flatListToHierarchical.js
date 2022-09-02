@@ -4,6 +4,7 @@ export default function flatListToHierarchical(
 ) {
   const tree = [];
   const childrenOf = {};
+
   data.forEach((item) => {
     const newItem = {...item};
     const {
@@ -19,5 +20,8 @@ export default function flatListToHierarchical(
       ).push(newItem)
       : tree.push(newItem);
   });
+
+  console.log({ data, tree });
+
   return tree;
 };
