@@ -135,7 +135,7 @@ export function getPossibleTemplates(node: SeedNode) {
 export function getTemplate(
   seedNode: SeedNode,
   templates: { [key: string]: WordPressTemplate },
-) {
+): WordPressTemplate | null {
   const possibleTemplates = getPossibleTemplates(seedNode);
   // eslint-disable-next-line no-console
   console.log('possible templates: ', possibleTemplates);
