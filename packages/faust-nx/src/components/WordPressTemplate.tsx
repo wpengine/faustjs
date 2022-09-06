@@ -5,7 +5,6 @@ import { getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
 import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
-import { WordPressTemplate } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 import { getQueryParam } from '../utils/convert.js';
 
@@ -144,7 +143,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     if (!isTemplateSet) {
       setIsTemplateSet(true);
     }
-  }, [seedNode, templates, template]);
+  }, [seedNode, templates, template, isTemplateSet]);
 
   useEffect(() => {
     if (isPreview === null) {

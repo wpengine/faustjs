@@ -37,8 +37,6 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const client = getApolloClient();
 
   let resolvedUrl = null;
-  let asPreview = false;
-
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
     if (wordPressNodeParams && Array.isArray(wordPressNodeParams)) {
@@ -48,9 +46,6 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     }
   } else {
     resolvedUrl = ctx.req.url;
-    if (resolvedUrl) {
-      asPreview = resolvedUrl.includes('preview=true');
-    }
   }
 
   if (!resolvedUrl) {
@@ -62,8 +57,6 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
     resolvedUrl,
   }) as DocumentNode;
-
-  // TODO: - setup auth client
 
   const seedQueryRes = await client.query({
     query: seedQuery,
@@ -91,7 +84,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     templateQueryRes = await client.query({
       query: template.query,
       variables: template?.variables
-        ? template?.variables(seedNode)
+        ? template?.variables(seedNode, { asPreview: false })
         : undefined,
     });
   }
