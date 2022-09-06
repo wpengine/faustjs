@@ -31,9 +31,10 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const [seedNode, setSeedNode] = useState<SeedNode | undefined>(
     props.__SEED_NODE__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
   );
-  const [template, setTemplate] = useState<WordPressTemplateType | null>(
-    getTemplate(seedNode, templates),
+  const [isTemplateSet, setIsTemplateSet] = useState(
+    getTemplate(seedNode, templates) !== true,
   );
+  const template = getTemplate(seedNode, templates);
   const [data, setData] = useState<any | undefined>(
     props.__TEMPLATE_QUERY_DATA__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
   );
@@ -114,8 +115,6 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
         const seedQueryRes = await client.query(queryArgs);
 
-        setLoading(false);
-
         const node = seedQueryRes?.data?.node as SeedNode;
 
         setSeedNode(node);
@@ -128,8 +127,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       return;
     }
 
-    if (!template) {
-      setTemplate(getTemplate(seedNode, templates));
+    if (!isTemplateSet) {
+      setIsTemplateSet(true);
     }
   }, [seedNode, templates, template]);
 
@@ -173,9 +172,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
         const templateQueryRes = await client.query(queryArgs);
 
-        setLoading(false);
-
         setData(templateQueryRes.data);
+
+        setLoading(false);
       }
     })();
   }, [data, template, seedNode, isPreview, isAuthenticated]);
