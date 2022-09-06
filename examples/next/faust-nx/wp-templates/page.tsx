@@ -15,14 +15,16 @@ export default function Component(props: any) {
   );
 }
 
-Component.variables = ({ uri }: any, ctx: { asPreview: boolean }) => {
+Component.variables = (seedQuery: any, ctx: { asPreview: boolean }) => {
   const { asPreview } = ctx;
-  return { uri, asPreview };
+  const { databaseId } = seedQuery;
+
+  return { databaseId, asPreview };
 };
 
 Component.query = gql`
-  query GetPage($uri: ID!, $asPreview: Boolean) {
-    page(id: $uri, idType: URI, asPreview: $asPreview) {
+  query GetPage($databaseId: ID!, $asPreview: Boolean) {
+    page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       content
     }

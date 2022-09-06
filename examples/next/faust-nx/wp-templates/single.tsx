@@ -25,9 +25,9 @@ Component.query = gql`
   }
 `;
 
-Component.variables = (seedQuery: any, asPreview: boolean) => {
-  return {
-    asPreview,
-    databaseId: seedQuery.databaseId,
-  };
+Component.variables = (seedQuery: any, ctx: { asPreview: boolean }) => {
+  const { asPreview } = ctx;
+  const { databaseId } = seedQuery;
+
+  return { databaseId, asPreview };
 };
