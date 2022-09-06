@@ -14,14 +14,11 @@ export default function flatListToHierarchical(
 
     childrenOf[id] = childrenOf[id] || [];
     newItem[childrenKey] = childrenOf[id];
+
     parentId
-      ? (
-          childrenOf[parentId] = childrenOf[parentId] || []
-      ).push(newItem)
+      ? (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem)
       : tree.push(newItem);
   });
-
-  console.log({ data, tree });
 
   return tree;
 };
