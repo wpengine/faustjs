@@ -6,7 +6,6 @@ import { getConfig, setConfig, FaustNXConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
 import { withFaust } from './config/withFaust';
-import { usePreviewQuery, useAuth } from './hooks/index.js';
 
 export {
   FaustNXProvider,
@@ -21,6 +20,4 @@ export {
   logoutHandler,
   apiRouter,
   withFaust,
-  usePreviewQuery,
-  useAuth
 };

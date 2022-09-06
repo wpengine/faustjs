@@ -7,7 +7,6 @@ import { getTemplate } from '../getTemplate.js';
 import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
-import { usePreviewQuery } from '../hooks/usePreviewQuery.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__?: SeedNode;
@@ -23,7 +22,6 @@ function cleanTemplate(
 }
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const { __SEED_NODE__: seedNode, __FAUST_CONTEXT__: ctx } = props;
   const { templates } = getConfig();
 
   if (!templates) {
@@ -51,6 +49,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       }
     | null
   >(null);
+
+  console.log('template', template);
 
   useEffect(() => {
     if (!window) {
@@ -92,7 +92,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
       let queryArgs: QueryOptions = {
         query: SEED_QUERY,
-        variables: { uri: window.location.pathname },
+        variables: {
+          uri: window.location.href.replace(window.location.origin, ''),
+        },
       };
 
       if (isPreview) {
@@ -143,7 +145,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     void (async () => {
       const client = getApolloClient();
 
-      if (!template || !seedNode) {
+      if (!template || !template?.query || !seedNode) {
         return;
       }
 
@@ -182,7 +184,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     return null;
   }
 
-  const { Component } = template;
+  // Remove unnecessary properties from component before rendering
   const Component = cleanTemplate(template);
 
   return React.createElement(Component, { ...props, data, loading }, null);
