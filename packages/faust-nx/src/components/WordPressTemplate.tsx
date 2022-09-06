@@ -11,7 +11,6 @@ import { getQueryParam } from '../utils/convert.js';
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__?: SeedNode;
   __TEMPLATE_QUERY_DATA__?: any;
-  __IS_PREVIEW__?: boolean;
 }>;
 
 function cleanTemplate(
@@ -28,19 +27,17 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     throw new Error('Templates are required. Please add them to your config.');
   }
 
-  const [seedNode, setSeedNode] = useState<SeedNode | undefined>(
-    props.__SEED_NODE__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
-  );
-  const [isTemplateSet, setIsTemplateSet] = useState(
-    getTemplate(seedNode, templates) !== true,
-  );
+  const {
+    __SEED_NODE__: seedNodeProp,
+    __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
+  } = props;
+
+  const [seedNode, setSeedNode] = useState<SeedNode | undefined>(seedNodeProp);
   const template = getTemplate(seedNode, templates);
-  const [data, setData] = useState<any | undefined>(
-    props.__TEMPLATE_QUERY_DATA__, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
-  );
+  const [data, setData] = useState<any | undefined>(templateQueryDataProp);
   const [loading, setLoading] = useState(template === null);
   const [isPreview, setIsPreview] = useState<boolean | null>(
-    props.__IS_PREVIEW__ ?? null, // eslint-disable-line no-underscore-dangle, react/destructuring-assignment
+    templateQueryDataProp ? false : null,
   );
   const [isAuthenticated, setIsAuthenticated] = useState<
     | true
@@ -51,6 +48,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     | null
   >(null);
 
+  /**
+   * Determine if the URL we are on is for previews
+   */
   useEffect(() => {
     if (!window) {
       return;
@@ -59,6 +59,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     setIsPreview(window.location.search.includes('preview=true'));
   }, []);
 
+  /**
+   * If the URL we are on is for previews, ensure we are authenticated.
+   */
   useEffect(() => {
     if (isPreview === null || isPreview === false) {
       return;
@@ -77,6 +80,12 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     })();
   }, [isPreview]);
 
+  /**
+   * Execute the seed query.
+   *
+   * If the seed query was not available via a prop, it was not executed on the
+   * server, meaning we are either dealing with a CSR page, or a preview page.
+   */
   useEffect(() => {
     if (isPreview === null) {
       return;
@@ -116,6 +125,10 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
           ...queryArgs,
           context: {
             headers: {
+              /**
+               * We know the access token is available here since we ensured
+               * authorization in the useEffect above
+               */
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               Authorization: `bearer ${getAccessToken()!}`,
             },
@@ -135,21 +148,16 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     })();
   }, [seedNode, isPreview, isAuthenticated]);
 
+  /**
+   * Finally, get the template's query data.
+   */
   useEffect(() => {
-    if (!templates || !seedNode) {
-      return;
-    }
-
-    if (!isTemplateSet) {
-      setIsTemplateSet(true);
-    }
-  }, [seedNode, templates, template, isTemplateSet]);
-
-  useEffect(() => {
+    // We don't know yet if this is a preview route or not
     if (isPreview === null) {
       return;
     }
 
+    // This is a preview route, but we are not authenticated yet.
     if (isPreview === true && isAuthenticated !== true) {
       return;
     }
