@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import { useCheckFaustContext } from "../src/gqty/hooks/useCheckFaustContext";
