@@ -48,7 +48,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
     "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
-    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test": "jest",
