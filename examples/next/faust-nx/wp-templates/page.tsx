@@ -15,13 +15,14 @@ export default function Component(props: any) {
   );
 }
 
-Component.variables = ({ uri }: any) => {
-  return { uri };
+Component.variables = ({ uri }: any, ctx: { asPreview: boolean }) => {
+  const { asPreview } = ctx;
+  return { uri, asPreview };
 };
 
 Component.query = gql`
-  query GetPage($uri: ID!) {
-    page(id: $uri, idType: URI) {
+  query GetPage($uri: ID!, $asPreview: Boolean) {
+    page(id: $uri, idType: URI, asPreview: $asPreview) {
       title
       content
     }

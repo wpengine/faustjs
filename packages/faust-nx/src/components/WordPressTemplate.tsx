@@ -7,6 +7,7 @@ import { getTemplate } from '../getTemplate.js';
 import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
+import { getQueryParam } from '../utils/convert.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__?: SeedNode;
@@ -51,8 +52,6 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     | null
   >(null);
 
-  console.log('template', template);
-
   useEffect(() => {
     if (!window) {
       return;
@@ -91,10 +90,25 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     void (async () => {
       const client = getApolloClient();
 
+      let seedQueryUri = window.location.href.replace(
+        window.location.origin,
+        '',
+      );
+
+      if (isPreview) {
+        seedQueryUri = getQueryParam(window.location.href, 'previewPathname');
+
+        if (seedQueryUri === '') {
+          throw new Error(
+            'The URL must contain the proper "previewPathname" query param for previews.',
+          );
+        }
+      }
+
       let queryArgs: QueryOptions = {
         query: SEED_QUERY,
         variables: {
-          uri: window.location.href.replace(window.location.origin, ''),
+          uri: seedQueryUri,
         },
       };
 
@@ -154,7 +168,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         let queryArgs: QueryOptions = {
           query: template?.query,
           variables: template?.variables
-            ? template?.variables(seedNode)
+            ? template?.variables(seedNode, { asPreview: isPreview })
             : undefined,
         };
 
