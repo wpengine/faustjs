@@ -40,7 +40,7 @@
     "dev": "npm run ts:watch",
     "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
-    "test:coverage:ci": "npx jest@28.1.3 --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test": "jest",
