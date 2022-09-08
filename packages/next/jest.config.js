@@ -31,4 +31,5 @@ module.exports = {
   collectCoverage: true,
   coverageReporters: ['json', 'html'],
   passWithNoTests: true,
+  testEnvironment: "jsdom"
 };
