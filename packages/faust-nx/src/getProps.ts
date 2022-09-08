@@ -1,4 +1,3 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import {
   GetStaticPropsContext,
   GetServerSidePropsResult,
@@ -11,7 +10,6 @@ import isObject from 'lodash/isObject.js';
 import { addApolloState, getApolloClient } from './client.js';
 
 export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
-  client: ApolloClient<NormalizedCacheObject>;
   Page: {
     query?: DocumentNode;
     variables?: (
