@@ -80,6 +80,7 @@
     "@types/webpack-env": "^1.16.3",
     "clean-webpack-plugin": "^4.0.0",
     "jest": "^27.3.1",
+    "jest-environment-jsdom": "^27.3.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
