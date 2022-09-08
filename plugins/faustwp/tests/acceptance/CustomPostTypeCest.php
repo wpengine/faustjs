@@ -42,7 +42,7 @@ class CustomPostTypeCest
 		$I->wait(4); // Wait for previewlinks.js to modify button href.
 		$I->seeLink(
 			'Preview in new tab',
-			"${front_end_url}/document/${cpt_name}/?preview=true&previewPathname=" . rawurlencode( wp_make_link_relative( get_permalink( $cpt_id ) ) ) . "&p=${cpt_id}&typeName=Document",
+			"${front_end_url}/document/${cpt_name}/?preview=true&previewPathname=" . rawurlencode("/cpt-document-preview/") . "&p=${cpt_id}&typeName=Document",
 		);
 	}
 }
