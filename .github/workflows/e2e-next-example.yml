@@ -41,7 +41,6 @@ jobs:
       - name: install and build packages
         working-directory: ./
         run: |
-          rm package-lock.json
           npm install
           npm run build
       # To ensure PR changes are tested accurately, we replace the
