@@ -15,7 +15,10 @@ function isSSR(
 
 export type WordPressTemplate = ReactNode & {
   query?: DocumentNode;
-  variables?: (seedNode: SeedNode) => { [key: string]: any };
+  variables?: (
+    seedNode: SeedNode,
+    context?: { asPreview?: boolean },
+  ) => { [key: string]: any };
 };
 
 export interface GetWordPressPropsConfig {
@@ -34,7 +37,6 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const client = getApolloClient();
 
   let resolvedUrl = null;
-
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
     if (wordPressNodeParams && Array.isArray(wordPressNodeParams)) {
@@ -77,11 +79,12 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
+  let templateQueryRes;
   if (template.query) {
-    await client.query({
+    templateQueryRes = await client.query({
       query: template.query,
       variables: template?.variables
-        ? template?.variables(seedNode)
+        ? template?.variables(seedNode, { asPreview: false })
         : undefined,
     });
   }
@@ -90,6 +93,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   return addApolloState(client, {
     props: {
       __SEED_NODE__: seedNode,
+      __TEMPLATE_QUERY_DATA__: templateQueryRes?.data,
     },
   });
 }

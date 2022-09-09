@@ -1,6 +1,10 @@
 import { gql } from '@apollo/client';
 
 export default function Component(props: any) {
+  if (props.loading) {
+    return <>Loading...</>;
+  }
+
   const { title, content } = props.data.post;
 
   return (
@@ -9,21 +13,21 @@ export default function Component(props: any) {
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </>
   );
-};
+}
 
 Component.query = gql`
-  query GetPost($uri: ID!) {
-    post(id: $uri, idType: URI) {
+  query GetPost($databaseId: ID!, $asPreview: Boolean) {
+    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       content
+      date
     }
   }
 `;
 
-Component.variables = (seedQuery: any) => {
-  console.log(seedQuery);
+Component.variables = (seedQuery: any, ctx: { asPreview: boolean }) => {
+  const { asPreview } = ctx;
+  const { databaseId } = seedQuery;
 
-  return {
-    uri: seedQuery.uri,
-  };
+  return { databaseId, asPreview };
 };

@@ -1,4 +1,3 @@
-import 'faustnx.config';
 import { getWordPressProps, WordPressTemplate } from 'faust-nx';
 import { GetStaticPropsContext } from 'next';
 
