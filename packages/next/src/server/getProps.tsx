@@ -48,8 +48,8 @@ export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
 
 export interface PageProps<Props> {
   props: Props & {
-    [CLIENT_CACHE_PROP]: string | null;
-    [AUTH_CLIENT_CACHE_PROP]: string | null;
+    [CLIENT_CACHE_PROP]?: string | null;
+    [AUTH_CLIENT_CACHE_PROP]?: string | null;
   };
 }
 
