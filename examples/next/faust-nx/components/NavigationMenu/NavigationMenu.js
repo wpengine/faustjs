@@ -13,6 +13,7 @@ export default function NavigationMenu({ menuItems, className }) {
     return null;
   }
 
+  // Based on https://www.wpgraphql.com/docs/menus/#hierarchical-data
   const hierarchicalMenuItems = flatListToHierarchical(menuItems);
 
   function renderMenu(items) {
