@@ -18,7 +18,6 @@ jobs:
           node-version: '16'
       - name: Install NPM Deps
         run: |
-          rm package-lock.json
           npm install
           npm run build
       - name: Setup PHP
