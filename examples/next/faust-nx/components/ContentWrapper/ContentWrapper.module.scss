@@ -4,6 +4,9 @@
 	line-height: 1.6875;
 
 	:global {
+		// Scope WordPress block styles within ContentWrapper.
+		@import 'styles/blocks';
+
 		* {
 			max-width: 100%;
 		}
