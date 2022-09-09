@@ -41,6 +41,7 @@ export const SEED_QUERY = gql`
     ...TermNode
     ...ContentNode
     ...MediaItem
+    ...Page
   }
 
   fragment DatabaseIdentifier on DatabaseIdentifier {
@@ -54,6 +55,15 @@ export const SEED_QUERY = gql`
 
   fragment ContentType on ContentType {
     name
+    isFrontPage
+
+    # This is currently broken. The home page (blog page) can not be
+    # resolved when set to a custom page until the below issue is resolved.
+    # Link: https://github.com/wp-graphql/wp-graphql/issues/2514
+    isPostsPage
+  }
+
+  fragment Page on Page {
     isFrontPage
     isPostsPage
   }

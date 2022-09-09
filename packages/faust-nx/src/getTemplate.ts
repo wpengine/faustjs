@@ -5,6 +5,16 @@ import { hooks } from './hooks/index.js';
 export function getPossibleTemplates(node: SeedNode) {
   let possibleTemplates: string[] = [];
 
+  // Front page
+  if (node.isFrontPage) {
+    possibleTemplates.push('front-page');
+  }
+
+  // Blog page
+  if (node.isPostsPage) {
+    possibleTemplates.push('home');
+  }
+
   // CPT archive page
   // eslint-disable-next-line no-underscore-dangle
   if (node.__typename === 'ContentType' && node.isPostsPage === false) {
@@ -133,7 +143,7 @@ export function getPossibleTemplates(node: SeedNode) {
 }
 
 export function getTemplate(
-  seedNode: SeedNode | undefined,
+  seedNode: SeedNode | null | undefined,
   templates: { [key: string]: WordPressTemplate },
 ): WordPressTemplate | null {
   if (!seedNode) {

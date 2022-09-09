@@ -9,8 +9,8 @@ import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 import { getQueryParam } from '../utils/convert.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
-  __SEED_NODE__?: SeedNode;
-  __TEMPLATE_QUERY_DATA__?: any;
+  __SEED_NODE__: SeedNode | null;
+  __TEMPLATE_QUERY_DATA__: any | null;
 }>;
 
 function cleanTemplate(
@@ -32,9 +32,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
   } = props;
 
-  const [seedNode, setSeedNode] = useState<SeedNode | undefined>(seedNodeProp);
+  const [seedNode, setSeedNode] = useState<SeedNode | null>(seedNodeProp);
   const template = getTemplate(seedNode, templates);
-  const [data, setData] = useState<any | undefined>(templateQueryDataProp);
+  const [data, setData] = useState<any | null>(templateQueryDataProp);
   const [loading, setLoading] = useState(template === null);
   const [isPreview, setIsPreview] = useState<boolean | null>(
     templateQueryDataProp ? false : null,
