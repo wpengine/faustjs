@@ -1,9 +1,9 @@
 import page from './page';
-import archive from './archive';
+import category from './category';
 import single from './single';
 
 export default {
   page,
-  archive,
+  category,
   single
 };
