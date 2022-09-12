@@ -69,7 +69,6 @@
 	li ul {
 		@extend %hidden;
 		background-color: var(--wpe--dropdown--background-color);
-		border: var(--wpe--border--extra-light);
 		display: flex;
 		flex-direction: column;
 		gap: 0;
@@ -85,6 +84,7 @@
 			border-radius: 8px;
 			transition: all 0.2s ease-out;
 			width: inherit;
+			border: var(--wpe--border--extra-light);
 		}
 
 		&:hover {
@@ -92,8 +92,10 @@
 		}
 
 		li + li {
-			border-top: var(--wpe--border--light);
-			margin-top: 3px; // Make room for default browser focus styles.
+			@media (min-width: $breakpoint-small) {
+				border-top: var(--wpe--border--light);
+				margin-top: 3px; // Make room for default browser focus styles.
+			}
 		}
 	}
 }
