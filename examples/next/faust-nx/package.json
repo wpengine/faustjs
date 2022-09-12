@@ -12,12 +12,10 @@
     "@wordpress/base-styles": "^4.7.0",
     "@wordpress/block-library": "^7.13.0",
     "classnames": "^2.3.1",
+    "faust-nx-cli": "file:../../../packages/faust-nx-cli/dist/index.js",
     "faust-nx": "file:../../../packages/faust-nx/dist/index.js",
     "next": "^12.1.6",
     "react-dom": "^17.0.2",
     "react": "^17.0.2"
-  },
-  "devDependencies": {
-    "faust-nx-cli": "file:../../../packages/faust-nx-cli/dist/index.js"
   }
 }
