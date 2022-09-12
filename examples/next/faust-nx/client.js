@@ -5,7 +5,7 @@ let client = new ApolloClient({
   ssrMode: typeof window === 'undefined',
   connectToDevTools: typeof window !== 'undefined',
   link: new HttpLink({
-    uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+    uri: process.env.NEXT_PUBLIC_WORDPRESS_URL,
     fetchOptions: {
       method: 'POST',
     },
