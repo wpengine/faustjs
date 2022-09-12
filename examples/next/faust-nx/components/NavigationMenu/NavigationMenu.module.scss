@@ -26,12 +26,6 @@
 	margin: 0;
 	position: relative;
 	gap: 0.5rem;
-	border-top: 1px solid;
-	border-bottom: 1px solid;
-
-	@media (min-width: $breakpoint-small) {
-		border: 0;
-	}
 
 	li {
 		display: flex;
