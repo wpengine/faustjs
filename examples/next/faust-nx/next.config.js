@@ -1,5 +1,4 @@
-const { withFaust } = require('faust-nx');
-const WP_HOST = new URL(process.env.NEXT_PUBLIC_WORDPRESS_URL).hostname;
+const { withFaust, getWpHostname } = require('faust-nx');
 
 /**
  * @type {import('next').NextConfig}
@@ -10,7 +9,7 @@ module.exports = withFaust({
     includePaths: ['node_modules'],
   },
   images: {
-    domains: [WP_HOST],
+    domains: [getWpHostname()],
   },
   i18n: {
     locales: ['en'],
