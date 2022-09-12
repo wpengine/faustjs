@@ -30,9 +30,10 @@ export default function Component() {
       />
       <Main>
         <Container>
-          <Hero title={'Home'} />
+          <Hero title={'Front Page'} />
           <div className='text-center'>
-            <p>This is a Next.js file-system based page located at <code>./pages/index.js</code></p>
+            <p>This page is utilizing the "front-page" WordPress template.</p>
+            <code>./wp-templates/front-page.js</code>
           </div>
         </Container>
       </Main>

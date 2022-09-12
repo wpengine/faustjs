@@ -14,7 +14,9 @@ export default function Component(props) {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { name } = props.data.nodeByUri;
+  const { name, __typename: archiveType } = props.data.nodeByUri;
+
+  console.log({props});
 
   return (
     <>
@@ -25,7 +27,7 @@ export default function Component(props) {
       />
       <Main>
         <>
-          <EntryHeader title={`Category: ${name}`} />
+          <EntryHeader title={`${archiveType}: ${name}`} />
           <Container>
             <>...</>
           </Container>
