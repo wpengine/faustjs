@@ -8,12 +8,7 @@ export default function FeaturedImage({
   priority,
   ...props
 }) {
-  let src;
-  if (image?.sourceUrl instanceof Function) {
-    src = image?.sourceUrl();
-  } else {
-    src = image?.sourceUrl;
-  }
+  const src = image?.sourceUrl;
   const { altText } = image || '';
 
   width = width ? width : image?.mediaDetails?.width;
