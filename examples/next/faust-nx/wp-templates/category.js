@@ -14,9 +14,7 @@ export default function Component(props) {
   const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { name, __typename: archiveType } = props.data.nodeByUri;
-
-  console.log({props});
+  const { name } = props.data.nodeByUri;
 
   return (
     <>
@@ -27,7 +25,7 @@ export default function Component(props) {
       />
       <Main>
         <>
-          <EntryHeader title={`${archiveType}: ${name}`} />
+          <EntryHeader title={`Category: ${name}`} />
           <Container>
             <>...</>
           </Container>
@@ -41,7 +39,7 @@ export default function Component(props) {
 Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
-  query GetArchivePage($uri: String!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
+  query GetCategoryPage($uri: String!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
     nodeByUri(uri: $uri) {
       ... on Category {
         name
