@@ -6,7 +6,7 @@ export function getWpHostname(): string {
   let wpHostname = new URL(wpUrl).hostname;
 
   wpHostname = hooks.applyFilters('wpHostname', wpHostname, {
-    wpUrl
+    wpUrl,
   }) as string;
 
   return wpHostname;

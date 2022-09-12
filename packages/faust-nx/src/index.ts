@@ -21,5 +21,5 @@ export {
   logoutHandler,
   apiRouter,
   withFaust,
-  getWpHostname
+  getWpHostname,
 };
