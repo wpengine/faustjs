@@ -1,11 +1,10 @@
 import { getWordPressProps, WordPressTemplate } from 'faust-nx';
-import { GetStaticPropsContext } from 'next';
 
-export default function Page(props: any) {
+export default function Page(props) {
   return <WordPressTemplate {...props} />;
 }
 
-export function getStaticProps(ctx: GetStaticPropsContext) {
+export function getStaticProps(ctx) {
   return getWordPressProps({ ctx });
 }
 
