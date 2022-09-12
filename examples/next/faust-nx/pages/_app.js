@@ -5,7 +5,7 @@ import { FaustNXProvider } from 'faust-nx';
 import '../styles/global.scss';
 
 export default function MyApp({ Component, pageProps }) {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <FaustNXProvider pageProps={pageProps}>
