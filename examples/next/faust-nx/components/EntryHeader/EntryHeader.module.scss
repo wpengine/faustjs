@@ -33,6 +33,10 @@
 	line-height: 1.25;
 	font-size: 5rem;
 	color: var(--wpe--color--title);
+
+	@media (max-width: $breakpoint-small) {
+		font-size: 3rem;
+	}
 }
 
 .byline {

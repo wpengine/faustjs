@@ -26,6 +26,12 @@
 	margin: 0;
 	position: relative;
 	gap: 0.5rem;
+	border-top: 1px solid;
+	border-bottom: 1px solid;
+
+	@media (min-width: $breakpoint-small) {
+		border: 0;
+	}
 
 	li {
 		display: flex;
@@ -51,7 +57,7 @@
 		padding: 0.5rem;
 		display: block;
 		transition: all 0.2s ease-out;
-		width: inherit;
+		width: 100%;
 		white-space: nowrap;
 		text-align: center;
 
@@ -73,6 +79,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0;
+		width: 100%;
 
 		@media (min-width: $breakpoint-small) {
 			position: absolute;
@@ -83,6 +90,7 @@
 			padding: 1rem;
 			border-radius: 8px;
 			transition: all 0.2s ease-out;
+			width: inherit;
 		}
 
 		&:hover {
