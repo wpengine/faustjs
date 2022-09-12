@@ -27,7 +27,7 @@ class PostPreviewCest
         $I->wait(4); // Wait for previewlinks.js to modify button href.
         $I->seeLink(
             'Preview in new tab',
-            "${front_end_url}/${post_name}/?preview=true&p=${post_id}&typeName=Post",
+            "${front_end_url}/${post_name}/?preview=true&previewPathname=" . rawurlencode("/post-preview-post/") . "&p=${post_id}&typeName=Post",
         );
 
 		$I->click('Preview in new tab');

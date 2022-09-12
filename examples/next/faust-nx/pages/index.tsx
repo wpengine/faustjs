@@ -8,10 +8,3 @@ export default function Page(props: any) {
 export function getStaticProps(ctx: GetStaticPropsContext) {
   return getWordPressProps({ ctx });
 }
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-}
