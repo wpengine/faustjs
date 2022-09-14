@@ -8,4 +8,5 @@
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
+  "ignore": ["next-headless-getting-started"]
 }
