@@ -13,7 +13,7 @@ module.exports = {
 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 
-  // Fix default switch that came in jest v27.0.0
+  // Fix default switch that came in jest v27.0.0.
   // Link: https://jestjs.io/blog/2021/05/25/jest-27#flipping-defaults
   timers: 'legacy',
 
