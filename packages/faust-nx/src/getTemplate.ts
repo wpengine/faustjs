@@ -5,6 +5,16 @@ import { hooks } from './hooks/index.js';
 export function getPossibleTemplates(node: SeedNode) {
   let possibleTemplates: string[] = [];
 
+  // Front page
+  if (node.isFrontPage) {
+    possibleTemplates.push('front-page');
+  }
+
+  // Blog page
+  if (node.isPostsPage) {
+    possibleTemplates.push('home');
+  }
+
   // CPT archive page
   // eslint-disable-next-line no-underscore-dangle
   if (node.__typename === 'ContentType' && node.isPostsPage === false) {
@@ -70,7 +80,7 @@ export function getPossibleTemplates(node: SeedNode) {
 
   if (node.userId) {
     if (node.name) {
-      possibleTemplates.push(`author-${node.name}`);
+      possibleTemplates.push(`author-${node.name?.toLocaleLowerCase()}`);
     }
 
     possibleTemplates.push(`author-${node.userId}`);
@@ -133,9 +143,13 @@ export function getPossibleTemplates(node: SeedNode) {
 }
 
 export function getTemplate(
-  seedNode: SeedNode,
+  seedNode: SeedNode | null | undefined,
   templates: { [key: string]: WordPressTemplate },
-) {
+): WordPressTemplate | null {
+  if (!seedNode) {
+    return null;
+  }
+
   const possibleTemplates = getPossibleTemplates(seedNode);
   // eslint-disable-next-line no-console
   console.log('possible templates: ', possibleTemplates);

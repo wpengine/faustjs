@@ -10,7 +10,7 @@ export const validateFaustNXEnvVars = () => {
     process.exit(0);
   }
 
-  if (!process.env.HEADLESS_SECRET_KEY) {
+  if (!process.env.FAUSTNX_SECRET_KEY) {
     noticeLog(
       'You do not have a headless secret key specified. Some functionality may be limited.',
     );

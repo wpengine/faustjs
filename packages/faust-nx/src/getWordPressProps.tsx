@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
@@ -12,11 +13,13 @@ function isSSR(
   return (ctx as GetServerSidePropsContext).req !== undefined;
 }
 
-export interface WordPressTemplate {
-  query: DocumentNode;
-  variables: (seedNode: SeedNode) => { [key: string]: any };
-  Component: React.FC<{ [key: string]: any }>;
-}
+export type WordPressTemplate = ReactNode & {
+  query?: DocumentNode;
+  variables?: (
+    seedNode: SeedNode,
+    context?: { asPreview?: boolean },
+  ) => { [key: string]: any };
+};
 
 export interface GetWordPressPropsConfig {
   ctx: GetServerSidePropsContext | GetStaticPropsContext;
@@ -34,7 +37,6 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   const client = getApolloClient();
 
   let resolvedUrl = null;
-
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
     if (wordPressNodeParams && Array.isArray(wordPressNodeParams)) {
@@ -77,17 +79,25 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
+  let templateQueryRes;
   if (template.query) {
-    await client.query({
+    templateQueryRes = await client.query({
       query: template.query,
-      variables: template?.variables ? template.variables(seedNode) : undefined,
+      variables: template?.variables
+        ? template?.variables(seedNode, { asPreview: false })
+        : undefined,
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return addApolloState(client, {
     props: {
-      __SEED_NODE__: seedNode,
+      /**
+       * The following props may be null coalesced as an "undefined"
+       * value is not able to be serialized
+       */
+      __SEED_NODE__: seedNode ?? null,
+      __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
     },
   });
 }

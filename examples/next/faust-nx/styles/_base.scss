@@ -1,0 +1,59 @@
+// Base styles
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+	font-weight: var(--wpe--font-weight--medium);
+	font-size: 1rem;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	background-color: var(--wpe--code--background-color);
+	color: var(--wpe--code--color);
+	padding: 0.25rem 0.5rem;
+	border-radius: 4px;
+	white-space: nowrap;
+	margin: 0 0 1rem;
+	display: inline-block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 1rem;
+}
+
+p {
+	margin: 0 0 1rem;
+	line-height: 1.8;
+}
+
+a {
+	color: var(--link-color);
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+::-moz-selection {
+	color: var(--wpe--color--white);
+	background-color: var(--wpe--color--accent);
+}
+
+::selection {
+	color: var(--wpe--color--white);
+	background-color: var(--wpe--color--accent);
+}

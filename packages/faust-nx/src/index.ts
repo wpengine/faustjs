@@ -5,6 +5,8 @@ import { getNextStaticProps } from './getProps.js';
 import { getConfig, setConfig, FaustNXConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
+import { withFaust } from './config/withFaust.js';
+import { getWpHostname } from './lib/getWpHostname.js';
 
 export {
   FaustNXProvider,
@@ -18,4 +20,6 @@ export {
   authorizeHandler,
   logoutHandler,
   apiRouter,
+  withFaust,
+  getWpHostname,
 };

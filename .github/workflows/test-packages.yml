@@ -1,5 +1,10 @@
 name: Test Packages
-on: pull_request
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
 jobs:
   test_packages:
     strategy:
@@ -15,7 +20,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: rm package-lock.json
 
       - name: Install
         run: npm install
