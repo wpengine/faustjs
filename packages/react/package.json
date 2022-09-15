@@ -22,7 +22,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
     "ts": "tsc -p .",
     "ts:cjs": "tsc -p tsconfig-cjs.json",
     "ts:watch": "tsc -p . --watch",
