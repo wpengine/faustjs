@@ -1,0 +1,25 @@
+// Classes in this file can be optionally added to menu items from within WordPress.
+// Appearance --> Menus --> Screen Options --> CSS Classes
+
+@import 'styles/breakpoints';
+
+.button {
+	a {
+		@media (min-width: $breakpoint-small) {
+			background-color: var(--wpe--color--accent);
+			border-radius: 100px;
+			border: var(--wpe--border--light);
+			color: var(--wpe--color--white);
+			font-size: 92%;
+			padding: 0.5rem 1rem;
+			text-decoration: none;
+			white-space: nowrap;
+
+			&:hover,
+			&:focus {
+				background-color: var(--wpe--color--accent--dark);
+				color: var(--wpe--color--white);
+			}
+		}
+	}
+}
