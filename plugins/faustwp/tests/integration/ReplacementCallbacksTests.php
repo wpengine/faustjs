@@ -167,7 +167,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_post_preview_link_returns_filtered_link() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 
-		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&typeName=Post', get_preview_post_link( $this->post_id ) );
+		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&typeName=Post', get_preview_post_link( $this->post_id ) );
 	}
 
 	/**
@@ -178,7 +178,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
-		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&typeName=Post', $link );
+		$this->assertSame( 'http://moo/?previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&p=' . $this->post_id . '&preview=true&typeName=Post', $link );
 	}
 
 	/**
@@ -189,7 +189,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		faustwp_update_setting( 'enable_rewrites', true );
 		$post_id = $this->getCustomPostType();
-		$this->assertSame( 'http://moo/?document=' . $post_id . '&preview=true&p=' . $post_id . '&typeName=Document', get_preview_post_link( $post_id ) );
+		$this->assertSame( 'http://moo/?document=' . $post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $post_id ) ) ) . '&p=' . $post_id . '&typeName=Document', get_preview_post_link( $post_id ) );
 		faustwp_update_setting( 'frontend_uri', null );
 		faustwp_update_setting( 'enable_rewrites', false );
 	}
@@ -222,7 +222,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 			'post_type'    => 'notgraphql'
 		] );
 
-		$this->assertSame( 'http://moo/?notgraphql=' . $post_id . '&preview=true&p=' . $post_id, get_preview_post_link( $post_id ) );
+		$this->assertSame( 'http://moo/?notgraphql=' . $post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $post_id ) ) ) . '&p=' . $post_id, get_preview_post_link( $post_id ) );
 	}
 
 	/**

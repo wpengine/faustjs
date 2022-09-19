@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "@faustjs/root",
   "private": true,
   "engines": {
     "node": ">=16",
@@ -11,10 +11,7 @@
       "packages/react",
       "packages/next",
       "examples/next/getting-started",
-      "plugins/faustwp",
-      "packages/faust-nx",
-      "packages/faust-nx-cli",
-      "examples/next/faust-nx"
+      "plugins/faustwp"
     ]
   },
   "scripts": {
@@ -24,8 +21,6 @@
     "build:react": "npm run build --workspace=@faustjs/react",
     "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "clean:examples": "rimraf examples/**/node_modules",
-    "lint": "npm run lint --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
-    "lint:fix": "npm run lint:fix --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "dev": "npm run build && npm run dev:next:getting-started",
     "dev:next:getting-started": "rimraf examples/next/getting-started/.next && npm run dev ---workspace=examples/next/getting-started",
@@ -41,10 +36,26 @@
     "changeset": "changeset",
     "version": "changeset version && node scripts/versionPlugin.js",
     "version:status": "changeset status",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config .eslintrc.js",
+    "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config .eslintrc.js --fix"
   },
   "devDependencies": {
     "@changesets/cli": "^2.17.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^8.12.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.4.1",
+    "prettier-linter-helpers": "^1.0.0"
   }
 }

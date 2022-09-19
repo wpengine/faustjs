@@ -1,7 +1,8 @@
 /* eslint-disable react/no-children-prop */
 // eslint-disable-next-line import/extensions
 import { CategoryIdType, PageIdType, PostIdType } from '@faustjs/core/client';
-import { isBoolean, isObject } from 'lodash';
+import isObject from 'lodash/isObject.js';
+import isBoolean from 'lodash/isBoolean.js';
 import isNil from 'lodash/isNil.js';
 import {
   GetServerSidePropsContext,
@@ -47,8 +48,8 @@ export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
 
 export interface PageProps<Props> {
   props: Props & {
-    [CLIENT_CACHE_PROP]: string | null;
-    [AUTH_CLIENT_CACHE_PROP]: string | null;
+    [CLIENT_CACHE_PROP]?: string | null;
+    [AUTH_CLIENT_CACHE_PROP]?: string | null;
   };
 }
 
@@ -83,7 +84,7 @@ export async function getProps<
             {/* eslint-disable-next-line react/jsx-no-constructed-context-values */}
             <FaustContext.Provider value={{ client }}>
               {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Page {...(props as Props)} />
+              <Page {...(props as any)} />
             </FaustContext.Provider>
           </RouterContext.Provider>,
         );

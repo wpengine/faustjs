@@ -1,9 +1,11 @@
 import { stripIndent } from 'common-tags';
 import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
+import { IncomingMessage } from 'http';
 import {
-  NormalizedConfig,
   FAUST_PAGES_PATHNAME,
+  NormalizedMiddlewareConfig,
+  NormalizedServerConfig,
 } from './handleSitemapRequests.js';
 import {
   createSitemap,
@@ -51,21 +53,53 @@ const parserConfig: Partial<X2jOptions> = {
  * @returns {Response|undefined}
  */
 export async function createRootSitemapIndex(
-  req: NextRequest,
-  normalizedConfig: NormalizedConfig,
+  req: NextRequest | IncomingMessage,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
+  isMiddleware = true,
 ): Promise<Response | undefined> {
   const { pages, sitemapPathsToIgnore, replaceUrls, wpUrl } = normalizedConfig;
-  const { pathname, origin } = new URL(req.url);
+
+  if (!req.url) {
+    throw new Error('Request object must have URL');
+  }
+
+  let wpSitemapUrl = '';
+  let frontendUrl = '';
+  if (isMiddleware) {
+    const { pathname, origin } = new URL(req.url);
+    frontendUrl = origin;
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
+  } else {
+    // get sitemapIndexPath config param
+    // fetch sitemap from WP
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(
+      normalizedConfig.sitemapIndexPath,
+    )}`;
+    frontendUrl = (normalizedConfig as NormalizedServerConfig).frontendUrl;
+  }
+
   let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
+    let sitemapFaustPagesUrl = '';
+    if (isMiddleware) {
+      sitemapFaustPagesUrl = `${trimSlashes(frontendUrl)}/${trimSlashes(
+        FAUST_PAGES_PATHNAME,
+      )}`;
+    } else {
+      sitemapFaustPagesUrl = `${trimSlashes(
+        frontendUrl,
+      )}/sitemap.xml?sitemap=${trimSlashes(FAUST_PAGES_PATHNAME)}`;
+    }
     sitemaps = [
       ...sitemaps,
-      { loc: `${trimSlashes(origin)}/${trimSlashes(FAUST_PAGES_PATHNAME)}` },
+      {
+        loc: encodeURI(sitemapFaustPagesUrl),
+      },
     ];
   }
 
-  const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
   const res = await fetch(wpSitemapUrl);
 
   // Don't proxy the sitemap index if the response was not ok.
@@ -143,11 +177,23 @@ export async function createRootSitemapIndex(
    */
   if (replaceUrls) {
     wpSitemaps.forEach((sitemap) => {
+      let sitemapUrl = '';
+      if (isMiddleware) {
+        sitemapUrl = sitemap.loc.replace(
+          trimSlashes(wpUrl),
+          trimSlashes(frontendUrl),
+        );
+      } else {
+        const url = new URL(sitemap.loc);
+        sitemapUrl = `${trimSlashes(
+          frontendUrl,
+        )}/sitemap.xml?sitemap=${trimSlashes(url.pathname)}`;
+      }
       sitemaps = [
         ...sitemaps,
         {
           ...sitemap,
-          loc: sitemap.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
+          loc: sitemapUrl,
         },
       ];
     });
@@ -166,10 +212,22 @@ export async function createRootSitemapIndex(
  * @returns {Response|undefined}
  */
 export function createPagesSitemap(
-  req: NextRequest,
-  normalizedConfig: NormalizedConfig,
+  req: NextRequest | IncomingMessage,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
+  isMiddleware = true,
 ): Response | undefined {
-  const { origin } = new URL(req.url);
+  if (!req.url) {
+    throw new Error('Request object must have URL');
+  }
+
+  let frontendUrl = '';
+
+  if (isMiddleware) {
+    const { origin } = new URL(req.url);
+    frontendUrl = origin;
+  } else {
+    frontendUrl = (normalizedConfig as NormalizedServerConfig).frontendUrl;
+  }
   const { pages } = normalizedConfig;
 
   if (isUndefined(pages) || !isArray(pages) || !pages.length) {
@@ -182,7 +240,7 @@ export function createPagesSitemap(
     urls = [
       ...urls,
       {
-        loc: `${trimSlashes(origin)}/${trimSlashes(page.path)}`,
+        loc: `${trimSlashes(frontendUrl)}/${trimSlashes(page.path)}`,
         lastmod: page?.lastmod,
         changefreq: page?.changefreq,
         priority: page?.priority,
@@ -201,13 +259,34 @@ export function createPagesSitemap(
  * @returns {Promise<Response|Undefined>}
  */
 export async function handleSitemapPath(
-  req: NextRequest,
-  normalizedConfig: NormalizedConfig,
+  req: NextRequest | IncomingMessage,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
+  isMiddleware = true,
 ): Promise<Response | undefined> {
   const { wpUrl, replaceUrls } = normalizedConfig;
-  const { pathname, origin } = new URL(req.url);
 
-  const wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
+  if (!req.url) {
+    throw new Error('Request object must have URL');
+  }
+
+  let wpSitemapUrl = '';
+  let frontendUrl = '';
+
+  if (isMiddleware) {
+    const { pathname, origin } = new URL(req.url);
+    frontendUrl = origin;
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(pathname)}`;
+  } else {
+    const paramsIndex = req.url.indexOf('?');
+    const searchParamString = req.url.substr(paramsIndex);
+    const urlParams = new URLSearchParams(searchParamString);
+
+    const sitemapPath = urlParams.get('sitemap') as string;
+
+    wpSitemapUrl = `${trimSlashes(wpUrl)}/${trimSlashes(sitemapPath)}`;
+    frontendUrl = (normalizedConfig as NormalizedServerConfig).frontendUrl;
+  }
+
   const res = await fetch(wpSitemapUrl);
 
   // Don't proxy the sitemap if the response was not ok.
@@ -260,7 +339,7 @@ export async function handleSitemapPath(
         ...urls,
         {
           ...url,
-          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(origin)),
+          loc: url.loc.replace(trimSlashes(wpUrl), trimSlashes(frontendUrl)),
         },
       ];
     });
@@ -280,7 +359,7 @@ export async function handleSitemapPath(
  */
 export async function handleRobotsTxt(
   req: NextRequest,
-  normalizedConfig: NormalizedConfig,
+  normalizedConfig: NormalizedMiddlewareConfig | NormalizedServerConfig,
 ): Promise<Response | undefined> {
   const { origin } = new URL(req.url);
   const { sitemapIndexPath, robotsTxt } = normalizedConfig;

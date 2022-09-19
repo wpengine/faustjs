@@ -130,6 +130,10 @@ function post_preview_link( $link, $post ) {
 			$link
 		);
 
+		if ( ! isset( $args['previewPathname'] ) ) {
+			$args['previewPathname'] = rawurlencode( wp_make_link_relative( get_permalink( $post ) ) );
+		}
+
 		// Add p=xx if it's missing, which is the case for published posts.
 		if ( ! isset( $args['p'] ) ) {
 			$args['p'] = $preview_id;
