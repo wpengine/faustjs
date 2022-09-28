@@ -41,7 +41,7 @@ jobs:
       - name: install and build packages
         working-directory: ./
         run: |
-          npm install
+          npm ci
           npm run build
       # To ensure PR changes are tested accurately, we replace the
       # faust node_modules downloaded from NPM with the faust packages
