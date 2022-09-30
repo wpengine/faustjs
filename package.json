@@ -13,6 +13,7 @@
       "packages/faustwp-cli",
       "packages/faustwp-core",
       "examples/next/getting-started",
+      "examples/next/faustwp-getting-started",
       "plugins/faustwp"
     ]
   },

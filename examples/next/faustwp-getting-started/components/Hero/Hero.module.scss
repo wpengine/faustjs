@@ -1,0 +1,26 @@
+@import "styles/breakpoints";
+
+.component {
+	text-align: center;
+	padding: 6rem 1rem;
+	line-height: 1.3;
+	margin: 0 auto;
+	max-width: var(--wpe--container--max-width);
+	position: relative;
+}
+
+.title {
+	display: block;
+	font-size: 5rem;
+	z-index: 1;
+	position: relative;
+
+	@media (max-width: $breakpoint-small) {
+		font-size: 3rem;
+	}
+}
+
+.subtitle {
+	display: block;
+	font-size: 3rem;
+}
