@@ -74,11 +74,6 @@ module.exports = {
           id: 'next/getting-started',
         },
         {
-          type: 'doc',
-          label: 'Support Channels',
-          id: 'support-channels',
-        },
-        {
           type: 'category',
           label: 'Guides',
           items: [
@@ -250,6 +245,11 @@ module.exports = {
               id: 'next/reference/getNextStaticProps',
             },
           ],
+        },
+        {
+          type: 'doc',
+          label: 'Support Channels',
+          id: 'support-channels',
         },
       ],
     },
