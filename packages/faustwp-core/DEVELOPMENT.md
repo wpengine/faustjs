@@ -65,7 +65,7 @@ When your feature branch includes changes to the documentation website, it's hel
 
 ### Prod Site Deployment
 
-The docs on faust.org are automatically built on pushes to `main`. Updating the docs on `main` will update faust.org within 10 minutes.
+The docs on faustjs.org are automatically built on pushes to `main`. Updating the docs on `main` will update faustjs.org within 10 minutes.
 
 After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faustjs.org.
 
