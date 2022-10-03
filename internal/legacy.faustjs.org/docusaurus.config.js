@@ -106,8 +106,7 @@ module.exports = {
             },
             {
               label: 'YouTube',
-              href:
-                'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
+              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
             },
           ],
         },
@@ -144,7 +143,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/wpengine/faustjs/edit/site-dev/internal/website/',
+            'https://github.com/wpengine/faustjs/edit/site-dev/internal/legacy.faustjs.org/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
