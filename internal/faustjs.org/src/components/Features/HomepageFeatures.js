@@ -100,12 +100,12 @@ export default function HomepageFeatures() {
     <section className={styles.features}>
       <div className="container">
         <div className={clsx('row', styles.featuresRow)}>
-          <h2>Why AXL.js?</h2>
+          <h2>Why Faust.js?</h2>
         </div>
         <div className={clsx('row', styles.featuresRow)}>
           <p>
-            AXL.js is the <b>first choice</b> for companies that build Headless
-            WordPress sites
+            Faust.js is the <b>first choice</b> for companies that build
+            Headless WordPress sites
           </p>
         </div>
         <div className={clsx('row', styles.featuresRow)}>

@@ -11,7 +11,7 @@ module.exports = {
   },
   url: 'https://faustjs.org',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn', // @TODO Change this to 'throw' when we go to prod.
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
@@ -40,11 +40,6 @@ module.exports = {
           label: 'Docs',
         },
         {
-          to: 'blog',
-          label: 'Blog',
-          position: 'left',
-        },
-        {
           href: 'https://github.com/wpengine/faustjs?ref=faustjs',
           label: 'GitHub',
           position: 'right',
@@ -61,24 +56,7 @@ module.exports = {
       links: [
         {
           title: 'Changelogs',
-          items: [
-            {
-              label: '@faustjs/core',
-              to: '/docs/changelog/core',
-            },
-            {
-              label: '@faustjs/next',
-              to: '/docs/changelog/next',
-            },
-            {
-              label: '@faustjs/react',
-              to: '/docs/changelog/react',
-            },
-            {
-              label: 'FaustWP',
-              to: '/docs/changelog/faustwp',
-            },
-          ],
+          items: [],
         },
         {
           title: 'Docs',
@@ -106,8 +84,7 @@ module.exports = {
             },
             {
               label: 'YouTube',
-              href:
-                'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
+              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
             },
           ],
         },
@@ -144,7 +121,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/wpengine/faustjs/edit/site-dev/internal/website/',
+            'https://github.com/wpengine/faustjs/edit/site-dev/internal/faustjs.org/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },

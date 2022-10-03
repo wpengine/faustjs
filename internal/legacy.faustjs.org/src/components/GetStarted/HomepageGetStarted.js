@@ -8,11 +8,11 @@ export default function HomepageGetStarted() {
     <section className={styles.getStarted}>
       <div className="container padding-vert-lg">
         <div className={clsx('row', styles.getStartedRow)}>
-          <h2>Learn AXL.js</h2>
+          <h2>Learn Faust.js</h2>
         </div>
         <div className={clsx('row', styles.getStartedRow)}>
           <p>
-            Get up and running with AXL.js quickly by downloading our example
+            Get up and running with Faust.js quickly by downloading our example
           </p>
         </div>
         <div className={clsx('row', styles.getStartedRow)}>

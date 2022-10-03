@@ -3,19 +3,19 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: 'AXL.js',
+  title: 'Faust.js',
   tagline: 'The Headless WordPress Framework',
   customFields: {
     description:
-      'AXL.js is the Headless WordPress Framework. AXL.js provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites React/Next.js/etc.',
+      'Faust.js is the Headless WordPress Framework. Faust.js provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites React/Next.js/etc.',
   },
-  url: 'https://faustjs.org', // rename with axl domain
+  url: 'https://faustjs.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
-  projectName: 'faustjs', // Usually your repo name. Rename with axl repo when cloned
+  projectName: 'faustjs', // Usually your repo name.
   themeConfig: {
     algolia: {
       // If Algolia did not provide you any appId, use 'BH4D9OD16A'
@@ -27,7 +27,7 @@ module.exports = {
       indexName: 'faustjs',
     },
     navbar: {
-      title: 'AXL.js™',
+      title: 'Faust.js™',
       // logo: {
       //   alt: 'My Site Logo',
       //   src: 'img/logo.svg',
@@ -40,12 +40,17 @@ module.exports = {
           label: 'Docs',
         },
         {
-          href: 'https://github.com/wpengine/faustjs?ref=faustjs', // rename with new axl repo
+          to: 'blog',
+          label: 'Blog',
+          position: 'left',
+        },
+        {
+          href: 'https://github.com/wpengine/faustjs?ref=faustjs',
           label: 'GitHub',
           position: 'right',
         },
         {
-          href: 'https://wordpress.org/plugins/faustwp', // rename with new axl plugin endpoint
+          href: 'https://wordpress.org/plugins/faustwp',
           label: 'WordPress Plugin',
           position: 'right',
         },
@@ -58,19 +63,19 @@ module.exports = {
           title: 'Changelogs',
           items: [
             {
-              label: '@axl/core',
+              label: '@faustjs/core',
               to: '/docs/changelog/core',
             },
             {
-              label: '@axl/next',
+              label: '@faustjs/next',
               to: '/docs/changelog/next',
             },
             {
-              label: '@axl/react',
+              label: '@faustjs/react',
               to: '/docs/changelog/react',
             },
             {
-              label: 'FaustWP', // rename
+              label: 'FaustWP',
               to: '/docs/changelog/faustwp',
             },
           ],
@@ -93,15 +98,15 @@ module.exports = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/wpengine/faustjs?ref=faustjs', // rename with new axl repo
+              href: 'https://github.com/wpengine/faustjs?ref=faustjs',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/wpedecode?ref=axl',
+              href: 'https://twitter.com/wpedecode?ref=faustjs',
             },
             {
               label: 'YouTube',
-              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs', // rename with new axl youtube ref?
+              href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
             },
           ],
         },
@@ -110,15 +115,15 @@ module.exports = {
           items: [
             {
               label: 'Developers',
-              to: 'https://developers.wpengine.com/?ref=axl',
+              to: 'https://developers.wpengine.com/?ref=faustjs',
             },
             {
               label: "We're Hiring!",
-              to: 'https://wpengine.careers/?ref=axl',
+              to: 'https://wpengine.careers/?ref=faustjs',
             },
             {
               label: 'Headless WordPress Hosting',
-              href: 'https://wpengine.com/atlas?ref=axl',
+              href: 'https://wpengine.com/atlas?ref=faustjs',
             },
           ],
         },
@@ -138,7 +143,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/wpengine/faustjs/edit/site-dev/internal/website/', // rename with new axl repo
+            'https://github.com/wpengine/faustjs/edit/site-dev/internal/legacy.faustjs.org/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
