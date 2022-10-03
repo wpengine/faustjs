@@ -67,7 +67,7 @@ When your feature branch includes changes to the documentation website, it's hel
 
 The docs on faust.org are automatically built on pushes to `main`. Updating the docs on `main` will update faust.org within 10 minutes.
 
-After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faust.org.
+After a successful release, a PR from `canary` to `main` is automatically created. Review and merge this PR to update faustjs.org.
 
 **Important**: Be sure to use the "Create a merge commit" option, and not "Squash and merge", as this can lead to [merge conflicts](https://medium.com/@guilhermerios/the-agony-and-the-ecstasy-of-git-squash-7f91c8da20af).
 
