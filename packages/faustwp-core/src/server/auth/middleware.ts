@@ -86,7 +86,7 @@ export async function authorizeHandler(
  * @param {IncomingMessage} req
  * @param {ServerResponse} res
  *
- * @see https://faust.org/docs/next/guides/auth
+ * @see https://faustjs.org/docs/next/guides/auth
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function logoutHandler(
