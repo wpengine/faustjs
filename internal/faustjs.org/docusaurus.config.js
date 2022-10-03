@@ -11,7 +11,7 @@ module.exports = {
   },
   url: 'https://faustjs.org',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn', // @TODO Change this to 'throw' when we go to prod.
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
