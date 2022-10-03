@@ -105,5 +105,6 @@ export function withFaust(
   const existingHeaders = nextConfig.headers;
   nextConfig.headers = () => addHeaders(nextConfig, existingHeaders);
   nextConfig.poweredByHeader = false;
+
   return nextConfig;
 }
