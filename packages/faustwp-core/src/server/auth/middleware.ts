@@ -19,7 +19,7 @@ export interface AuthorizeResponse {
  * @param {IncomingMessage} req
  * @param {ServerResponse} res
  *
- * @see https://faust.org/docs/next/guides/auth
+ * @see https://faustjs.org/docs/next/guides/auth
  */
 export async function authorizeHandler(
   req: IncomingMessage,
