@@ -38,7 +38,7 @@ NEXT_PUBLIC_WORDPRESS_URL=http://headless.local
 We have three notable branches:
 
 - `canary` - This branch has the latest changes
-- `main` - This branch is used to deploy changes to [faust.org](https://faust.org)
+- `main` - This branch is used to deploy changes to [faustjs.org](https://faustjs.org)
 - `site-dev` - This branch is used to deploy to the staging site
 
 ### Code Changes/Feature Workflow
