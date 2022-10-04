@@ -1,5 +1,3 @@
-import { getNextStaticProps } from '@faustwp/core';
-import client from '../client';
 import { useQuery, gql } from '@apollo/client';
 import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
@@ -15,19 +13,17 @@ import {
 
 export default function Component() {
   const { data } = useQuery(Component.query, {
-    variables: Component.variables()
+    variables: Component.variables(),
   });
 
-  const { title: siteTitle, description: siteDescription } = data?.generalSettings;
+  const { title: siteTitle, description: siteDescription } =
+    data?.generalSettings;
   const primaryMenu = data?.headerMenuItems?.nodes ?? [];
   const footerMenu = data?.footerMenuItems?.nodes ?? [];
 
   return (
     <>
-      <SEO
-        title={siteTitle}
-        description={siteDescription}
-      />
+      <SEO title={siteTitle} description={siteDescription} />
       <Header
         title={siteTitle}
         description={siteDescription}
@@ -36,24 +32,24 @@ export default function Component() {
       <Main>
         <Container>
           <Hero title={'Front Page'} />
-          <div className='text-center'>
+          <div className="text-center">
             <p>This page is utilizing the "front-page" WordPress template.</p>
             <code>./wp-templates/front-page.js</code>
           </div>
         </Container>
       </Main>
-      <Footer
-        title={siteTitle}
-        menuItems={footerMenu}
-      />
+      <Footer title={siteTitle} menuItems={footerMenu} />
     </>
   );
-};
+}
 
 Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
-  query GetPageData($headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
+  query GetPageData(
+    $headerLocation: MenuLocationEnum
+    $footerLocation: MenuLocationEnum
+  ) {
     generalSettings {
       ...BlogInfoFragment
     }
@@ -73,13 +69,6 @@ Component.query = gql`
 Component.variables = () => {
   return {
     headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION
+    footerLocation: MENUS.FOOTER_LOCATION,
   };
 };
-
-export function getStaticProps(ctx) {
-  return getNextStaticProps(ctx, {
-    client,
-    Component
-  });
-}
