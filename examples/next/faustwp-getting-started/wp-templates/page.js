@@ -14,7 +14,13 @@ import {
 } from '../components';
 
 export default function Component(props) {
-  const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
+  // Loading state for previews
+  if (props.loading) {
+    return <>Loading...</>;
+  }
+
+  const { title: siteTitle, description: siteDescription } =
+    props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
   const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
@@ -33,28 +39,23 @@ export default function Component(props) {
       />
       <Main>
         <>
-          <EntryHeader
-            title={title}
-            image={featuredImage?.node}
-          />
+          <EntryHeader title={title} image={featuredImage?.node} />
           <Container>
             <ContentWrapper content={content} />
           </Container>
         </>
       </Main>
-      <Footer
-        title={siteTitle}
-        menuItems={footerMenu}
-      />
+      <Footer title={siteTitle} menuItems={footerMenu} />
     </>
   );
-};
+}
 
-Component.variables = ({ uri }) => {
+Component.variables = ({ databaseId }, ctx) => {
   return {
-    uri,
+    databaseId,
     headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION
+    footerLocation: MENUS.FOOTER_LOCATION,
+    asPreview: ctx?.asPreview,
   };
 };
 
@@ -62,8 +63,13 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
-  query GetPageData($uri: ID!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
-    page(id: $uri, idType: URI) {
+  query GetPageData(
+    $databaseId: ID!
+    $headerLocation: MenuLocationEnum
+    $footerLocation: MenuLocationEnum
+    $asPreview: Boolean = false
+  ) {
+    page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       content
       ...FeaturedImageFragment

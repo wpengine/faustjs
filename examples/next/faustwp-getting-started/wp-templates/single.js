@@ -60,12 +60,12 @@ Component.query = gql`
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
   query GetPost(
-    $uri: ID!
+    $databaseId: ID!
     $headerLocation: MenuLocationEnum
     $footerLocation: MenuLocationEnum
     $asPreview: Boolean = false
   ) {
-    post(id: $uri, idType: URI, asPreview: $asPreview) {
+    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       content
       date
@@ -92,9 +92,9 @@ Component.query = gql`
   }
 `;
 
-Component.variables = ({ uri }, ctx) => {
+Component.variables = ({ databaseId }, ctx) => {
   return {
-    uri,
+    databaseId,
     headerLocation: MENUS.PRIMARY_LOCATION,
     footerLocation: MENUS.FOOTER_LOCATION,
     asPreview: ctx?.asPreview,
