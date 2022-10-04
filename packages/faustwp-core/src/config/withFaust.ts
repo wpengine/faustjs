@@ -76,7 +76,7 @@ export async function addHeaders(
     headers: [
       {
         key: 'x-powered-by',
-        value: 'FaustWP',
+        value: 'Faust',
       },
     ],
   });

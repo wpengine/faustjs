@@ -76,7 +76,7 @@ export async function getNextServerSideProps<Props>(
   const { notFound, redirect, Page } = cfg;
   const apolloClient = getApolloClient();
 
-  res.setHeader('x-powered-by', 'FaustWP');
+  res.setHeader('x-powered-by', 'Faust');
 
   if (isBoolean(notFound) && notFound === true) {
     return {
