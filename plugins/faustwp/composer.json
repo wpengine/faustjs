@@ -11,6 +11,7 @@
     "codeception/module-db": "^1.0",
     "codeception/module-filesystem": "^1.0",
     "codeception/module-phpbrowser": "^2.0",
+    "codeception/module-rest": "^1.0",
     "codeception/module-webdriver": "^1.0",
     "codeception/util-universalframework": "^1.0",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
@@ -42,7 +43,7 @@
       "@phpcs",
       "@test"
     ],
-    "test": "phpunit && phpunit -c ./phpunit-multisite.xml.dist"
+    "test": "./vendor/bin/phpunit && ./vendor/bin/phpunit -c ./phpunit-multisite.xml.dist"
   },
   "config": {
     "preferred-install": "dist",

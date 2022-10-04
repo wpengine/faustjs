@@ -1,0 +1,21 @@
+actor: ApiTester
+modules:
+  enabled:
+    - \Helper\Api
+    - WPDb
+    - REST:
+        depends: PhpBrowser
+        url: '%TEST_SITE_WP_URL%/wp-json'
+        shortDebugResponse: 300
+  config:
+    WPDb:
+      dsn: '%TEST_SITE_DB_DSN%'
+      user: '%TEST_SITE_DB_USER%'
+      password: '%TEST_SITE_DB_PASSWORD%'
+      dump: 'tests/_data/dump.sql'
+      populate: true
+      cleanup: true
+      waitlock: 10
+      url: '%TEST_SITE_WP_URL%'
+      urlReplacement: true #replace the hardcoded dump URL with the one above
+      tablePrefix: '%TEST_SITE_TABLE_PREFIX%'

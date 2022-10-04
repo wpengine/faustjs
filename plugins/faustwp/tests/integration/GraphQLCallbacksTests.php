@@ -7,8 +7,12 @@
 
 namespace WPE\FaustWP\Tests\Integration;
 
-use function WPE\FaustWP\Replacement\{ url_replacement };
-use function WPE\FaustWP\Settings\faustwp_update_setting;
+use function WPE\FaustWP\Replacement\{
+	url_replacement,
+};
+use function WPE\FaustWP\Settings\{
+	faustwp_update_setting,
+};
 
 class GraphQLCallbacksTests extends \WP_UnitTestCase {
 

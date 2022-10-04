@@ -1,0 +1,51 @@
+---
+slug: telemetry
+title: Telemetry
+description: We use Telemetry in Faust.js to help us understand how users use our projects.
+---
+
+Faust.js has opt-in telemetry for both the FaustWP plugin and FaustNX package. The plugin and package both collect information to help us make more informed product decisions.
+
+## What is being collected?
+
+Once you opt-in, faust will collect the following information at build time:
+
+### FaustNX
+
+- FaustNX version
+- Next.js version
+- Node.js version
+- Apollo Client version
+- If the command is running in a development environment
+
+### FaustWP
+
+- WordPress version
+- FaustWP version
+- PHP version
+- FaustWP settings (excluding any URLs)
+- If the site is multisite
+- If the site is hosted with WP Engine
+
+:::info
+We **do not** collect any personally identifiable information or sensitive information like environment variables, file paths, or any application URLs.
+:::
+
+## How do I enable/disable telemetry?
+
+Telemetry in Faust.js is opt-in by default, meaning we won't collect any telemetry information unless you explicitly enable it.
+
+If this is your first time using the `faustnx` cli, you will be prompted for your telemetry preferences:
+
+<a href="/docs/img/telemetry-cli-prompt.png" target="_blank">
+  <img
+    src="/docs/img/telemetry-cli-prompt.png"
+    alt="Screenshot of the Telemetry prompt in the FaustNX package"
+  />
+</a>
+
+Once your preferences have been set, you can run the following command to see the prompt again to change your preferences:
+
+```sh
+npx faustnx faustnx-telemetry
+```
