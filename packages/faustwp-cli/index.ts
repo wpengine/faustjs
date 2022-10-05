@@ -3,13 +3,23 @@
 import { spawn } from 'child_process';
 import dotenv from 'dotenv-flow';
 
-import { getCliArgs, validateFaustEnvVars } from './utils/index.js';
+import { getCliArgs, validateFaustEnvVars, generatePossibleTypes } from './utils/index.js';
 
-dotenv.config();
-validateFaustEnvVars();
+(async function() {
+  dotenv.config();
+  validateFaustEnvVars();
 
-/**
- * Spawn a child process using the args captured in argv and continue the
- * standard i/o for the Next.js CLI.
- */
-spawn('next', getCliArgs(), { stdio: 'inherit' });
+  // Handle custom CLI arguments.
+  switch (getCliArgs()[0]) {
+    case 'generate':
+      await generatePossibleTypes();
+      process.exit(0);
+    default:
+  }
+
+  /**
+   * Spawn a child process using the args captured in argv and continue the
+   * standard i/o for the Next.js CLI.
+   */
+  spawn('next', getCliArgs(), { stdio: 'inherit' });
+})();
