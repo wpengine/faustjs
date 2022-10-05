@@ -5,7 +5,9 @@ import { errorLog, warnLog } from './log.js';
  */
 export const validateFaustEnvVars = () => {
   if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
-    errorLog('Please provide a NEXT_PUBLIC_WORDPRESS_URL environment variable.');
+    errorLog(
+      'Please provide a NEXT_PUBLIC_WORDPRESS_URL environment variable.'
+    );
 
     process.exit(0);
   }

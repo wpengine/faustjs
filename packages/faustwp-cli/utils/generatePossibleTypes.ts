@@ -44,9 +44,9 @@ export async function generatePossibleTypes() {
   try {
     fs.writeFileSync('./possibleTypes.json', JSON.stringify(possibleTypes));
   } catch (err) {
-    errorLog('Unable to update this project\'s possibleTypes schema.', err);
+    errorLog("Unable·to·update·this·project's·possibleTypes·schema.", err);
     process.exit(0);
   }
 
-  infoLog('This project\'s possibleTypes schema has been updated!');
+  infoLog("This·project's·possibleTypes·schema·has·been·updated!");
 }
