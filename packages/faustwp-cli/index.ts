@@ -49,7 +49,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
     try {
       const wpTelemetryData = await requestWPTelemetryData(
         process.env.NEXT_PUBLIC_WORDPRESS_URL!,
-        process.env.HEADLESS_SECRET_KEY!,
+        process.env.FAUSTWP_SECRET_KEY!,
       );
 
       const telemetryData = await marshallTelemetryData(wpTelemetryData);
