@@ -91,6 +91,10 @@ module.exports = {
               label: 'Getting Started',
               to: '/docs/next/getting-started',
             },
+            {
+              label: 'Privacy Policy',
+              to: '/docs/privacy-policy',
+            },
           ],
         },
         {
