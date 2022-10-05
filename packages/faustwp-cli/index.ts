@@ -43,7 +43,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
     (getCliArgs()[0] === 'dev' || getCliArgs()[0] === 'build') &&
     config.get('telemetry.enabled') === true &&
     config.get('telemetry.anonymousId') &&
-    process.env.HEADLESS_SECRET_KEY;
+    process.env.FAUSTWP_SECRET_KEY;
 
   if (shouldFireTelemetryEvent) {
     try {
