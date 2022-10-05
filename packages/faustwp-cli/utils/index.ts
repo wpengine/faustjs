@@ -4,7 +4,7 @@ import { marshallTelemetryData } from './marshallTelemetryData.js';
 import { promptUserForTelemetryPref } from './promptUserForTelemetryPref.js';
 import { requestWPTelemetryData } from './requestWPTelemetryData.js';
 import { sendTelemetryData } from './sendTelemetryData.js';
-import { validateFaustNXEnvVars } from './validateFaustNXEnvVars.js';
+import { validateFaustEnvVars } from './validateFaustEnvVars.js';
 import type { TelemetryData } from './marshallTelemetryData.js';
 
 export {
@@ -14,7 +14,7 @@ export {
   marshallTelemetryData,
   promptUserForTelemetryPref,
   sendTelemetryData,
-  validateFaustNXEnvVars,
+  validateFaustEnvVars,
   requestWPTelemetryData,
   TelemetryData,
 };

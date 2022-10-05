@@ -6,7 +6,7 @@ import dotenv from 'dotenv-flow';
 import {
   marshallTelemetryData,
   getCliArgs,
-  validateFaustNXEnvVars,
+  validateFaustEnvVars,
   promptUserForTelemetryPref,
   sendTelemetryData,
   requestWPTelemetryData,
@@ -37,7 +37,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
     process.exit(0);
   }
 
-  validateFaustNXEnvVars();
+  validateFaustEnvVars();
 
   const shouldFireTelemetryEvent =
     (getCliArgs()[0] === 'dev' || getCliArgs()[0] === 'build') &&
