@@ -1,4 +1,4 @@
-import { errorLog, noticeLog } from './log.js';
+import { errorLog, infoLog } from './log.js';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
@@ -11,7 +11,7 @@ export const validateFaustEnvVars = () => {
   }
 
   if (!process.env.FAUSTWP_SECRET_KEY) {
-    noticeLog(
+    infoLog(
       'You do not have a headless secret key specified. Some functionality may be limited.',
     );
   }
