@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 
 export const log = (
-  logLevel: 'info' | 'error',
+  logLevel: 'info' | 'warn' | 'error',
   message: string,
   ...args: any
 ) => {
@@ -9,7 +9,11 @@ export const log = (
 
   switch (logLevel) {
     case 'info': {
-      logLevelMessage += chalk.yellow('info');
+      logLevelMessage += chalk.blue('info');
+      break;
+    }
+    case 'warn': {
+      logLevelMessage += chalk.yellow('warn');
       break;
     }
     case 'error': {
@@ -27,6 +31,11 @@ export const log = (
 export const infoLog = (message: string, ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('info', message, ...args);
+};
+
+export const warnLog = (message: string, ...args: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  log('warn', message, ...args);
 };
 
 export const errorLog = (message: string, ...args: any) => {
