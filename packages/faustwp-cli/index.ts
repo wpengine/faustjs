@@ -31,7 +31,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
     await promptUserForTelemetryPref(true, config);
   }
 
-  if (getCliArgs()[0] === 'faustnx-telemetry') {
+  if (getCliArgs()[0] === 'faust-telemetry') {
     await promptUserForTelemetryPref(false, config);
 
     process.exit(0);
