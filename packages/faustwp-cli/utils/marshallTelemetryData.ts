@@ -19,7 +19,7 @@ export interface TelemetryData {
   };
   node: {
     faustnx_version?: string;
-    faustnx_cli_version?: string;
+    faust_cli_version?: string;
     apollo_client_version?: string;
     node_version?: string;
     next_version?: string;
