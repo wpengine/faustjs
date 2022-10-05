@@ -251,6 +251,11 @@ module.exports = {
           label: 'Support Channels',
           id: 'support-channels',
         },
+        {
+          type: 'doc',
+          label: 'Privacy Policy',
+          id: 'privacy-policy',
+        },
       ],
     },
     {
