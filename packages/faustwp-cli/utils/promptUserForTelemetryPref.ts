@@ -18,7 +18,7 @@ export const promptUserForTelemetryPref = async (
     properties: {
       isTelemetryEnabled: {
         description:
-          'Would you like to enable telemetry in FaustNX? This helps us make more informed feature decisions. true/false',
+          'Would you like to enable telemetry in Faust? This helps us make more informed feature decisions. true/false',
         required: true,
         type: 'boolean',
       },
