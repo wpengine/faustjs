@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "faustwp dev",
     "build": "faustwp build",
+    "generate": "faustwp generate",
     "start": "faustwp start"
   },
   "dependencies": {
