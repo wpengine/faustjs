@@ -31,12 +31,12 @@ jobs:
         with:
           working-directory: packages/core
 
-      - name: Code Coverage for React Package
-        uses: ./.github/actions/run-coverage
-        with:
-          working-directory: packages/react
-
       - name: Code Coverage for Next Package
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/next
+
+      - name: Code Coverage for FaustWP Core Package
+        uses: ./.github/actions/run-coverage
+        with:
+          working-directory: packages/faustwp-core
