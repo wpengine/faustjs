@@ -18,7 +18,7 @@ export interface TelemetryData {
     wp_version?: string;
   };
   node: {
-    faustnx_version?: string;
+    faust_version?: string;
     faust_cli_version?: string;
     apollo_client_version?: string;
     node_version?: string;
