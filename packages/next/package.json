@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/next",
-  "version": "0.15.8",
+  "version": "0.15.9",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/cjs/export/index.js",
   "module": "dist/mjs/export/index.js",
@@ -48,7 +48,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
     "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
-    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test": "jest",

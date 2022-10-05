@@ -22,7 +22,7 @@ jobs:
           node-version: 16.x
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Create .npmrc
         run: |

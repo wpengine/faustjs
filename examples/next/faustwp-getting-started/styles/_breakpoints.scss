@@ -1,0 +1,7 @@
+// Media query breakpoints
+// Intentionally defined as SCSS variables as CSS variables are not supported by media queries.
+// See `_css-variables.scss` for all other variables.
+
+$breakpoint-extra-small: 640px;
+$breakpoint-small: 768px;
+$breakpoint-medium: 1024px;
