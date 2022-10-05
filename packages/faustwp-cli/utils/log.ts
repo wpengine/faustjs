@@ -5,7 +5,7 @@ export const log = (
   message: string,
   ...args: any
 ) => {
-  let logLevelMessage = chalk.whiteBright('faust: ');
+  let logLevelMessage = chalk.whiteBright('faustwp: ');
 
   switch (logLevel) {
     case 'info': {
