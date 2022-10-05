@@ -1,7 +1,11 @@
 import { trim } from 'lodash';
 import isFunction from 'lodash/isFunction.js';
 import { NextConfig } from 'next';
-import { Redirect, RouteHas } from 'next/dist/lib/load-custom-routes.js';
+import {
+  Redirect,
+  RouteHas,
+  Header,
+} from 'next/dist/lib/load-custom-routes.js';
 
 export interface WithFaustConfig {
   previewDestination?: string;
@@ -58,6 +62,27 @@ export async function createRedirects(
   return redirects;
 }
 
+export async function addHeaders(
+  nextConfig?: NextConfig,
+  existingHeaders?: NextConfig['headers'],
+): Promise<Header[]> {
+  let headers: Header[] = [];
+  if (isFunction(existingHeaders)) {
+    headers = await existingHeaders();
+  }
+
+  headers.push({
+    source: '/(.*?)',
+    headers: [
+      {
+        key: 'x-powered-by',
+        value: 'Faust',
+      },
+    ],
+  });
+  return headers;
+}
+
 /**
  * A helper function to merge Faust related Next.js config with a user defined Next.js config.
  *
@@ -76,6 +101,10 @@ export function withFaust(
   const existingRedirects = nextConfig.redirects;
   nextConfig.redirects = () =>
     createRedirects(nextConfig, existingRedirects, previewDestination);
+
+  const existingHeaders = nextConfig.headers;
+  nextConfig.headers = () => addHeaders(nextConfig, existingHeaders);
+  nextConfig.poweredByHeader = false;
 
   return nextConfig;
 }
