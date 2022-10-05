@@ -14,7 +14,7 @@ import {
 } from './utils/index.js';
 
 dotenv.config();
-const CONFIG_STORE_NAME = 'faustnx';
+const CONFIG_STORE_NAME = 'faust';
 const config = new Configstore(CONFIG_STORE_NAME);
 
 (async () => {
