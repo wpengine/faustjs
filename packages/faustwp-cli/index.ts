@@ -14,7 +14,6 @@ import { getCliArgs, validateFaustEnvVars, generatePossibleTypes } from './utils
     case 'generate':
       await generatePossibleTypes();
       process.exit(0);
-    default:
   }
 
   /**
