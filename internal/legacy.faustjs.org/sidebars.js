@@ -246,6 +246,11 @@ module.exports = {
             },
           ],
         },
+        {
+          type: 'doc',
+          label: 'Support Channels',
+          id: 'support-channels',
+        },
       ],
     },
     {
