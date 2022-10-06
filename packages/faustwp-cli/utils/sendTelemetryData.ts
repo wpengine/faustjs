@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { TelemetryData } from './marshallTelemetryData';
 
 const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/collect';
-const GA_TRACKING_ID = 'GA-xxxx';
+const GA_TRACKING_ID = 'G-KPVSTHK1G4';
 
 /**
  * Send the marshalled telemetry data to GA.
