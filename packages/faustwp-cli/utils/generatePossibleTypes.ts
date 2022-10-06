@@ -63,5 +63,5 @@ export async function generatePossibleTypes(): Promise<void> {
     process.exit(0);
   }
 
-  infoLog("This·project's·possibleTypes·schema·has·been·updated!");
+  infoLog("This project's possibleTypes schema has been updated!");
 }
