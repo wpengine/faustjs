@@ -17,7 +17,7 @@ await (async function () {
   const arg1 = getCliArgs()[0];
 
   // Handle custom CLI arguments.
-  if (arg1 === 'generate') {
+  if (arg1 === 'generatePossibleTypes') {
     await generatePossibleTypes();
     process.exit(0);
   }
