@@ -4,13 +4,13 @@ title: Changelog for FaustWP
 description: A central place for Faust.js changelogs
 ---
 
-import Changelog, {toc as ChangelogTOC} from "@site/../../plugins/faustwp/CHANGELOG.md"
+import Changelog, { toc as ChangelogTOC } from '@site/.changelogs/faustwp.md';
 
 <Changelog />
 
 export const toc = (() => {
-	return ChangelogTOC.map((item) => {
-		item.children = [];
-		return item;
-	});
+  return ChangelogTOC.map((item) => {
+    item.children = [];
+    return item;
+  });
 })();
