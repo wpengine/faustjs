@@ -59,7 +59,7 @@ export async function generatePossibleTypes(): Promise<void> {
   try {
     fs.writeFileSync('./possibleTypes.json', JSON.stringify(possibleTypes));
   } catch (err) {
-    errorLog("Unable·to·update·this·project's·possibleTypes·schema.", err);
+    errorLog("Unable to update this project's possibleTypes schema", err);
     process.exit(0);
   }
 
