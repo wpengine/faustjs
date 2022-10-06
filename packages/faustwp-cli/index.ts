@@ -3,17 +3,23 @@
 import { spawn } from 'child_process';
 import dotenv from 'dotenv-flow';
 
-import { getCliArgs, validateFaustEnvVars, generatePossibleTypes } from './utils/index.js';
+import {
+  getCliArgs,
+  validateFaustEnvVars,
+  generatePossibleTypes,
+} from './utils/index.js';
 
-(async function() {
+// eslint-disable-next-line func-names
+await (async function () {
   dotenv.config();
   validateFaustEnvVars();
 
+  const arg1 = getCliArgs()[0];
+
   // Handle custom CLI arguments.
-  switch (getCliArgs()[0]) {
-    case 'generate':
-      await generatePossibleTypes();
-      process.exit(0);
+  if (arg1 === 'generate') {
+    await generatePossibleTypes();
+    process.exit(0);
   }
 
   /**

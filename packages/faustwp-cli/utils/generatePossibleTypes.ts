@@ -3,10 +3,24 @@ import fs from 'fs';
 
 import { infoLog, errorLog } from './log.js';
 
-export async function generatePossibleTypes() {
+type PossibleTypes = {
+  [key: string]: any;
+};
+
+type Supertype = {
+  possibleTypes: any[];
+  name: string | number;
+};
+
+type Subtype = {
+  name: string | number;
+};
+
+export async function generatePossibleTypes(): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   const GRAPHQL_ENDPOINT = `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`;
 
-  const res = await fetch(GRAPHQL_ENDPOINT, {
+  const response: Response = await fetch(GRAPHQL_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,14 +43,15 @@ export async function generatePossibleTypes() {
     }),
   });
 
-  const json = await res.json();
+  const json: {
+    data: { __schema: { types: [] } };
+  } = await response.json();
+  const possibleTypes = <PossibleTypes>{};
 
-  const possibleTypes: any = {};
-
-  json.data.__schema.types.forEach((supertype: any) => {
+  json.data.__schema.types.forEach((supertype: Supertype) => {
     if (supertype.possibleTypes) {
       possibleTypes[supertype.name] = supertype.possibleTypes.map(
-        (subtype: any) => subtype.name,
+        (subtype: Subtype) => subtype.name,
       );
     }
   });
