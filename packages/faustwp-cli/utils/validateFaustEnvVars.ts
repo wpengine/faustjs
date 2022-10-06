@@ -5,16 +5,13 @@ import { errorLog, warnLog } from './log.js';
  */
 export const validateFaustEnvVars = () => {
   if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
-    errorLog(
-      'Please provide a NEXT_PUBLIC_WORDPRESS_URL environment variable.',
-    );
+    errorLog('Could not find NEXT_PUBLIC_WORDPRESS_URL environment variable.');
 
     process.exit(0);
   }
 
   if (!process.env.FAUSTWP_SECRET_KEY) {
-    warnLog(
-      'You do not have a headless secret key specified. Some functionality may be limited.',
-    );
+    warnLog('Could not find FAUSTWP_SECRET_KEY environment variable.');
+    warnLog('Some functionality may be limited.');
   }
 };

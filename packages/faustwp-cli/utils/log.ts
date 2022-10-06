@@ -1,31 +1,33 @@
-import chalk from 'chalk';
+import { styles } from './styles.js';
 
 export const log = (
   logLevel: 'info' | 'warn' | 'error',
   message: string,
   ...args: any
 ) => {
-  let logLevelMessage = chalk.whiteBright('faustwp: ');
+  const delimeter = styles.dim(' - ');
+  let logLevelMessage = styles.brand('Faust') + delimeter;
 
   switch (logLevel) {
     case 'info': {
-      logLevelMessage += chalk.blue('info');
+      logLevelMessage += styles.info('info');
       break;
     }
     case 'warn': {
-      logLevelMessage += chalk.yellow('warn');
+      logLevelMessage += styles.warn('warn');
       break;
     }
     case 'error': {
-      logLevelMessage += chalk.red('error');
+      logLevelMessage += styles.error('error');
       break;
     }
     default: {
       break;
     }
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, no-console
-  console.log(`${logLevelMessage} - ${message}`, ...args);
+  console.log(`${logLevelMessage}${delimeter}${message}`, ...args);
 };
 
 export const infoLog = (message: string, ...args: any) => {
