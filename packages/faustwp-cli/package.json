@@ -7,7 +7,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "bin": {
-    "faustwp": "dist/index.js"
+    "faust": "dist/index.js"
   },
   "devDependencies": {
     "@types/configstore": "^6.0.0",
