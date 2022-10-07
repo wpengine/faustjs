@@ -64,8 +64,8 @@ export const marshallTelemetryData = (
 
   let telemetryData: TelemetryData = {
     node: {
-      faustnx_version: sanitizePackageJsonVersion(
-        packageJson?.dependencies?.['faust-nx'],
+      faust_core_version: sanitizePackageJsonVersion(
+        packageJson?.dependencies?.['@faustwp/core'],
       ),
       faustnx_cli_version: sanitizePackageJsonVersion(
         packageJson?.dependencies?.['faust-nx-cli'],
