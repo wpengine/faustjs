@@ -67,8 +67,8 @@ export const marshallTelemetryData = (
       faust_core_version: sanitizePackageJsonVersion(
         packageJson?.dependencies?.['@faustwp/core'],
       ),
-      faustnx_cli_version: sanitizePackageJsonVersion(
-        packageJson?.dependencies?.['faust-nx-cli'],
+      faust_cli_version: sanitizePackageJsonVersion(
+        packageJson?.dependencies?.['@faustwp/cli'],
       ),
       apollo_client_version: sanitizePackageJsonVersion(
         packageJson?.dependencies?.['@apollo/client'],
