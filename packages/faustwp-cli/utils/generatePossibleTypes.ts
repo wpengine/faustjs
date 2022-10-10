@@ -70,7 +70,7 @@ export async function generatePossibleTypes(): Promise<void> {
   infoLog(`* ✨This is the new version of Faust ✨.                           *
               * If you are still using the old version, and you wish to migrate,  *
               * take a look at our migration guide at                             *
-              * https://faustjs.org/docs/migrationPath/overview'                  *`);
+              * https://faustjs.org/docs/migrationPath/overview                  *`);
   infoLog(
     '********************************************************************',
   );
