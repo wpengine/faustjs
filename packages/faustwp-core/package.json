@@ -1,8 +1,7 @@
 {
   "name": "@faustwp/core",
-  "version": "0.0.1",
-  "private": true,
-  "description": "Experimental next version of Faust",
+  "version": "0.1.0",
+  "description": "Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/cjs/index.d.ts",
