@@ -62,16 +62,5 @@ export async function generatePossibleTypes(): Promise<void> {
     errorLog("Unable to update this project's possibleTypes schema", err);
     process.exit(0);
   }
-
   infoLog("This project's possibleTypes schema has been updated!");
-  infoLog(
-    '********************************************************************',
-  );
-  infoLog(`* ✨This is the new version of Faust ✨.                           *
-              * If you are still using the old version, and you wish to migrate,  *
-              * take a look at our migration guide at                             *
-              * https://faustjs.org/docs/migrationPath/overview                  *`);
-  infoLog(
-    '********************************************************************',
-  );
 }
