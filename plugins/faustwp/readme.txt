@@ -1,5 +1,5 @@
 === FaustWP ===
-Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, wpengine
+Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.0
