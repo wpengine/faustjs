@@ -25,8 +25,8 @@ add_action( 'admin_menu', __NAMESPACE__ . '\\register_settings_menu' );
 function register_settings_menu() {
 	add_submenu_page(
 		'options-general.php',
-		__( 'Headless', 'faustwp' ),
-		__( 'Headless', 'faustwp' ),
+		__( 'Faust', 'faustwp' ),
+		__( 'Faust', 'faustwp' ),
 		'manage_options',
 		'faustwp-settings',
 		__NAMESPACE__ . '\\display_settings_page'
