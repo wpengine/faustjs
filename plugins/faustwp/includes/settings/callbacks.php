@@ -127,16 +127,16 @@ function register_settings_fields() {
 
 add_filter( 'sanitize_option_faustwp_settings', __NAMESPACE__ . '\\sanitize_faustwp_settings', 10, 2 );
 /**
- * Validates and sanitizes FaustWP settings.
+ * Validates and sanitizes Faust settings.
  *
  * The plugin settings page will display any relevant errors when
- * rejecting invalid settings values. Updates to FaustWP settings that
+ * rejecting invalid settings values. Updates to Faust settings that
  * are not initiated from the plugin settings page will not return or
  * display errors, but will still reject invalid values.
  *
  * Once settings are validated, the sanitized values are returned.
  *
- * @param array  $settings FaustWP settings array to validate and sanitize.
+ * @param array  $settings Faust settings array to validate and sanitize.
  * @param string $option   WP option name where settings are saved.
  * @return array Sanitized settings.
  */
