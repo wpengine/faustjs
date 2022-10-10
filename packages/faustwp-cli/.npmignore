@@ -1,0 +1,9 @@
+utils/**/*
+index.ts
+tests/**/*
+.gitignore
+.eslintignore
+jest.config.js
+jest.setup.ts
+tsconfig.json
+coverage
