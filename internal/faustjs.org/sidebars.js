@@ -69,5 +69,16 @@ module.exports = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'Migration Path from Faust.js < v1.0.0',
+      items: [
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'migrationPath/overview',
+        },
+      ],
+    },
   ],
 };
