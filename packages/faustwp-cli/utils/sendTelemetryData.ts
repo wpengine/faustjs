@@ -3,6 +3,7 @@ import { TelemetryData } from './marshallTelemetryData';
 
 const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/collect';
 const GA_TRACKING_ID = 'G-KPVSTHK1G4';
+const GA_API_SECRET = '-SLuZb8JTbWkWcT5BD032w';
 
 /**
  * Send the marshalled telemetry data to GA.
@@ -40,8 +41,15 @@ export const sendTelemetryData = (
     ev: payload,
   };
 
-  return fetch(GA_TRACKING_ENDPOINT, {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+  return fetch(
+    GA_TRACKING_ENDPOINT +
+      '?' +
+      new URLSearchParams({
+        api_secret: GA_API_SECRET,
+      }),
+    {
+      method: 'POST',
+      body: JSON.stringify(data),
+    },
+  );
 };
