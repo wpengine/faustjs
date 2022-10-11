@@ -18,8 +18,8 @@ export interface TelemetryData {
     wp_version?: string;
   };
   node: {
-    faust_core_version?: string;
-    faust_cli_version?: string;
+    faustwp_core_version?: string;
+    faustwp_cli_version?: string;
     apollo_client_version?: string;
     node_version?: string;
     next_version?: string;
@@ -64,10 +64,10 @@ export const marshallTelemetryData = (
 
   let telemetryData: TelemetryData = {
     node: {
-      faust_core_version: sanitizePackageJsonVersion(
+      faustwp_core_version: sanitizePackageJsonVersion(
         packageJson?.dependencies?.['@faustwp/core'],
       ),
-      faust_cli_version: sanitizePackageJsonVersion(
+      faustwp_cli_version: sanitizePackageJsonVersion(
         packageJson?.dependencies?.['@faustwp/cli'],
       ),
       apollo_client_version: sanitizePackageJsonVersion(
