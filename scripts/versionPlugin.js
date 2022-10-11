@@ -125,7 +125,7 @@ async function generateReadmeChangelog(readmeTxtFile, changelog) {
     changelog     = await readFile(changelog);
 
     changelog = changelog.replace(
-      "# FaustWP",
+      "# Faust",
       "== Changelog =="
     );
 
