@@ -39,7 +39,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * Visit the FaustWP settings page.
+     * Visit the Faust settings page.
      */
     public function amOnFaustWPSettingsPage()
     {

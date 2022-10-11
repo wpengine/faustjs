@@ -58,7 +58,7 @@ function get_secret_key() {
 }
 
 /**
- * Get a FaustWP setting by name.
+ * Get a Faust setting by name.
  *
  * @param string $name    The setting name.
  * @param mixed  $default Optional setting value. Default false.
@@ -84,7 +84,7 @@ function faustwp_get_setting( $name, $default = false ) {
 }
 
 /**
- * Update a FaustWP setting value.
+ * Update a Faust setting value.
  *
  * @link https://developer.wordpress.org/reference/functions/update_option/
  *
@@ -101,7 +101,7 @@ function faustwp_update_setting( $name, $value ) {
 }
 
 /**
- * Get all FaustWP settings.
+ * Get all Faust settings.
  *
  * @return array An array of settings.
  */

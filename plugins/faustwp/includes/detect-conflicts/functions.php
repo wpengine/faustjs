@@ -50,7 +50,7 @@ function get_plugin_conflicts( $conflict_list = null, $include_dismissed = false
 /**
  * Determines whether the plugin conflicts warning should be shown.
  *
- * The warning is only shown on the plugins page and FaustWP settings page
+ * The warning is only shown on the plugins page and Faust settings page
  * when the user has the activate_plugins capability and there are active
  * conflicts.
  *
@@ -119,4 +119,3 @@ function dismiss_active_conflicts( $conflict_list = null ) {
 
 	update_user_meta( get_current_user_id(), DISMISSED_CONFLICTS_META_KEY, $dismissed );
 }
-

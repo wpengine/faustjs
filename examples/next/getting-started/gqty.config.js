@@ -16,5 +16,15 @@ const config = {
 };
 
 console.log(`Using "${config.introspection.endpoint}" to generate schema...`);
+console.log(
+  '**********************************************************************',
+);
+console.log(`* ✨ There is a new version of Faust ✨.                             *
+* If you are still using the this version, and you wish to migrate,  *
+* take a look at our migration guide at                              *
+* https://faustjs.org/docs/migrationPath/overview                    *`);
+console.log(
+  '**********************************************************************',
+);
 
 module.exports = config;

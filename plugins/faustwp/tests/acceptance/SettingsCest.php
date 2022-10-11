@@ -3,17 +3,17 @@
 class SettingsCest
 {
     /**
-     * Ensure the FaustWP settings page is available.
+     * Ensure the Faust settings page is available.
      */
     public function i_can_access_the_settings_page(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
         $I->amOnFaustWPSettingsPage();
-        $I->see('FaustWP by WP Engine');
+        $I->see('Faust by WP Engine');
     }
 
     /**
-     * Ensure the FaustWP default settings are set when the plugin is
+     * Ensure the Faust default settings are set when the plugin is
      * activated for the first time.
      */
     public function i_can_see_the_default_settings(AcceptanceTester $I)
