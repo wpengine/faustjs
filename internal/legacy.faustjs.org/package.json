@@ -21,6 +21,7 @@
     "@mdx-js/react": "^1.6.22",
     "@svgr/webpack": "^6.4.0",
     "clsx": "^1.1.1",
+    "docusaurus": "^1.14.7",
     "file-loader": "^6.2.0",
     "isomorphic-fetch": "^3.0.0",
     "prism-react-renderer": "^1.2.1",
