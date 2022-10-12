@@ -26,6 +26,14 @@ module.exports = {
 
       indexName: 'faustjs',
     },
+    // announcementBar: {
+    //   id: 'depreciation_notice',
+    //   content:
+    //     '⭐️ This version of Faust.js is being deprecated. Visit the new version at <a target="_blank" rel="noopener noreferrer" href="https://faustjs.org/">faustjs.org</a> ⭐️',
+    //   backgroundColor: '#7e5cef',
+    //   textColor: '#FFF',
+    //   isCloseable: false,
+    // },
     navbar: {
       title: 'Faust.js™',
       // logo: {

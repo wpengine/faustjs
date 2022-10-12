@@ -10,14 +10,16 @@ import {
   promptUserForTelemetryPref,
   sendTelemetryData,
   requestWPTelemetryData,
-  noticeLog,
+  generatePossibleTypes,
+  infoLog,
 } from './utils/index.js';
 
 dotenv.config();
 const CONFIG_STORE_NAME = 'faust';
 const config = new Configstore(CONFIG_STORE_NAME);
 
-(async () => {
+await (async () => {
+  validateFaustEnvVars();
   /**
    * If there is no config (or a non-valid config), prompt the user for their
    * permission to collect anonymous telemetry information and save their
@@ -37,7 +39,13 @@ const config = new Configstore(CONFIG_STORE_NAME);
     process.exit(0);
   }
 
-  validateFaustEnvVars();
+  const arg1 = getCliArgs()[0];
+
+  // Handle custom CLI arguments.
+  if (arg1 === 'generatePossibleTypes') {
+    await generatePossibleTypes();
+    process.exit(0);
+  }
 
   const shouldFireTelemetryEvent =
     (getCliArgs()[0] === 'dev' || getCliArgs()[0] === 'build') &&
@@ -52,15 +60,16 @@ const config = new Configstore(CONFIG_STORE_NAME);
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
-      const telemetryData = await marshallTelemetryData(wpTelemetryData);
+      const telemetryData = marshallTelemetryData(wpTelemetryData);
 
-      noticeLog('Telemetry event being sent', telemetryData);
+      infoLog('Telemetry event being sent', telemetryData);
 
       sendTelemetryData(
         'ga-category',
         'ga-action',
         'ga-label',
         telemetryData,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         config.get('telemetry.anonymousId'),
       );
     } catch (err) {
@@ -68,10 +77,4 @@ const config = new Configstore(CONFIG_STORE_NAME);
       // Fail silently
     }
   }
-
-  /**
-   * Spawn a child process using the args captured in argv and continue the
-   * standard i/o for the Next.js CLI.
-   */
-  const nextCommand = spawn('next', getCliArgs(), { stdio: 'inherit' });
 })();

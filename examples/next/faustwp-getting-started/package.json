@@ -1,18 +1,19 @@
 {
-  "name": "@faustwp/next-headless-getting-started",
+  "name": "@faustwp/getting-started-example",
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "faustwp dev",
-    "build": "faustwp build",
-    "start": "faustwp start"
+    "dev": "faust dev",
+    "build": "faust build",
+    "generate": "faust generatePossibleTypes",
+    "start": "faust start"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
     "@wordpress/base-styles": "^4.7.0",
     "@wordpress/block-library": "^7.13.0",
-    "@faustwp/cli": "file:../../../packages/faustwp-cli/dist/index.js",
-    "@faustwp/core": "file:../../../packages/faustwp-core/dist/index.js",
+    "@faustwp/cli": "0.1.0",
+    "@faustwp/core": "0.1.0",
     "classnames": "^2.3.1",
     "next": "^12.1.6",
     "react": "^17.0.2",

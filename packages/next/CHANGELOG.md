@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.15.9
+
+### Patch Changes
+
+- e71a5ce: Fixes the `Type '{}' is missing the following properties from type...` bug some users may experience when building a Faust.js app. #1013
+
 ## 0.15.8
 
 ### Patch Changes

@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: FaustWP
+ * Plugin Name: Faust
  * Plugin URI: https://faustjs.org/
- * Description: Plugin for working with Faust.js, the Headless WordPress Framework.
+ * Description: Plugin for working with Faust, the Headless WordPress Framework.
  * Author: WP Engine
  * Author URI: https://wpengine.com/
  * License: GPLv2 or later

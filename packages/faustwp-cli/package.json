@@ -1,26 +1,26 @@
 {
   "name": "@faustwp/cli",
-  "version": "0.0.1",
-  "private": true,
-  "description": "Faust Cli",
+  "version": "0.1.0",
+  "description": "This modules provides a CLI to develop, build, and serve your Faust apps",
   "main": "dist/index.js",
   "type": "module",
   "types": "dist/index.d.ts",
   "bin": {
-    "faustwp": "dist/index.js"
+    "faust": "dist/index.js"
   },
   "devDependencies": {
     "@types/configstore": "^6.0.0",
+    "@types/cookie": "0.5.1",
     "@types/dotenv-flow": "^3.2.0",
     "@types/prompt": "1.1.2",
     "@types/uuid": "8.3.4",
-    "@types/cookie": "0.5.1",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
     "chalk": "^4.1.2",
     "configstore": "^6.0.0",
     "dotenv-flow": "^3.2.0",
+    "isomorphic-fetch": "^3.0.0",
     "node-fetch": "^2.6.7",
     "prompt": "1.3.0",
     "uuid": "8.3.2"

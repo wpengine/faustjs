@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/next",
-  "version": "0.15.8",
+  "version": "0.15.9",
   "description": "This module helps you use WordPress as a Headless CMS with Next.js",
   "main": "dist/cjs/export/index.js",
   "module": "dist/mjs/export/index.js",

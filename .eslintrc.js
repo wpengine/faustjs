@@ -21,7 +21,7 @@ module.exports = {
       ecmaFeatures: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
-        jsx: true, 
+        jsx: true,
       },
     },
     plugins: ['import', 'simple-import-sort', 'react', 'react-hooks'],
@@ -32,10 +32,10 @@ module.exports = {
       '@typescript-eslint/no-explicit-any': 0,
       'no-void': 0,
       'import/named': 0,
-      'import/no-extraneous-dependencies': [ 
+      'import/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: [  
+          devDependencies: [
             'jest.setup.ts',
             '**/__tests__/*',
             '**/*.test.ts',
@@ -56,6 +56,7 @@ module.exports = {
       '@typescript-eslint/no-unsafe-member-access': 0,
       'jsx-a11y/anchor-is-valid': 0,
       'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
+      'no-underscore-dangle': ['error', { 'allow': ['__schema'] }],
       'import/extensions': ['error', 'always'],
     },
     settings: {
@@ -83,5 +84,3 @@ module.exports = {
       'examples/**/*'
     ],
   };
-
-  

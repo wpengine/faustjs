@@ -14,7 +14,13 @@ import {
 } from '../components';
 
 export default function Component(props) {
-  const { title: siteTitle, description: siteDescription } = props?.data?.generalSettings;
+  // Loading state for previews
+  if (props.loading) {
+    return <>Loading...</>;
+  }
+
+  const { title: siteTitle, description: siteDescription } =
+    props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
   const { title, content, featuredImage, date, author } = props.data.post;
@@ -44,20 +50,22 @@ export default function Component(props) {
           </Container>
         </>
       </Main>
-      <Footer
-        title={siteTitle}
-        menuItems={footerMenu}
-      />
+      <Footer title={siteTitle} menuItems={footerMenu} />
     </>
   );
-};
+}
 
 Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
-  query GetPost($uri: ID!, $headerLocation: MenuLocationEnum, $footerLocation: MenuLocationEnum) {
-    post(id: $uri, idType: URI) {
+  query GetPost(
+    $databaseId: ID!
+    $headerLocation: MenuLocationEnum
+    $footerLocation: MenuLocationEnum
+    $asPreview: Boolean = false
+  ) {
+    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       content
       date
@@ -84,10 +92,11 @@ Component.query = gql`
   }
 `;
 
-Component.variables = ({ uri }) => {
+Component.variables = ({ databaseId }, ctx) => {
   return {
-    uri,
+    databaseId,
     headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION
+    footerLocation: MENUS.FOOTER_LOCATION,
+    asPreview: ctx?.asPreview,
   };
 };

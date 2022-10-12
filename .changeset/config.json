@@ -3,10 +3,11 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "linked": [
-    ["@faustjs/core", "@faustjs/next", "@faustjs/react"]
+    ["@faustjs/core", "@faustjs/next", "@faustjs/react"],
+    ["@faustwp/core", "@faustwp/cli"]
   ],
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
-  "ignore": ["@faustjs/next-headless-getting-started"]
+  "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example"]
 }
