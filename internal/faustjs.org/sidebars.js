@@ -65,7 +65,7 @@ module.exports = {
         {
           type: 'doc',
           label: 'Settings Reference',
-          id: 'faustwp/settingss',
+          id: 'faustwp/settings',
         },
       ],
     },
