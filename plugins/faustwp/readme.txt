@@ -53,3 +53,7 @@ That's it! For more information on getting started with headless WordPress, see 
 - d12f938: Updates an icon on the settings page
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
+
+== Frequently Asked Questions == 
+
+
