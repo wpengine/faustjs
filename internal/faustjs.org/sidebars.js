@@ -71,6 +71,28 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Usage with Next.js',
+      items: [
+        {
+          type: 'category',
+          label: 'Reference',
+          items: [
+            {
+              type: 'doc',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Migration Path from Faust.js < v1.0.0',
       items: [
         {
