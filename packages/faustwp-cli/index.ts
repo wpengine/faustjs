@@ -33,18 +33,20 @@ await (async () => {
     await promptUserForTelemetryPref(true, config);
   }
 
-  if (getCliArgs()[0] === 'faust-telemetry') {
-    await promptUserForTelemetryPref(false, config);
+  // eslint-disable-next-line default-case
+  switch (getCliArgs()[0]) {
+    case 'faust-telemetry': {
+      await promptUserForTelemetryPref(false, config);
+      process.exit(0);
 
-    process.exit(0);
-  }
+      break;
+    }
+    case 'generatePossibleTypes': {
+      await generatePossibleTypes();
+      process.exit(0);
 
-  const arg1 = getCliArgs()[0];
-
-  // Handle custom CLI arguments.
-  if (arg1 === 'generatePossibleTypes') {
-    await generatePossibleTypes();
-    process.exit(0);
+      break;
+    }
   }
 
   const shouldFireTelemetryEvent =
@@ -77,4 +79,10 @@ await (async () => {
       // Fail silently
     }
   }
+
+  /**
+   * Spawn a child process using the args captured in argv and continue the
+   * standard i/o for the Next.js CLI.
+   */
+  const nextCommand = spawn('next', getCliArgs(), { stdio: 'inherit' });
 })();
