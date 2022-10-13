@@ -68,12 +68,10 @@ await (async () => {
 
       infoLog('Telemetry event being sent', telemetryData);
 
-      const res = await sendTelemetryData(
+      void sendTelemetryData(
         telemetryData,
         config.get('telemetry.anonymousId') as string,
       );
-
-      console.log(await res.json());
     } catch (err) {
       // console.log(err);
       // Fail silently
