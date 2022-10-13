@@ -58,7 +58,9 @@ await (async () => {
   if (shouldFireTelemetryEvent) {
     try {
       const wpTelemetryData = await requestWPTelemetryData(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         process.env.NEXT_PUBLIC_WORDPRESS_URL!,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
@@ -66,16 +68,14 @@ await (async () => {
 
       infoLog('Telemetry event being sent', telemetryData);
 
-      sendTelemetryData(
-        'ga-category',
-        'ga-action',
-        'ga-label',
+      const res = await sendTelemetryData(
         telemetryData,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        config.get('telemetry.anonymousId'),
+        config.get('telemetry.anonymousId') as string,
       );
+
+      console.log(await res.json());
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       // Fail silently
     }
   }
