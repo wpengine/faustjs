@@ -1,7 +1,8 @@
-import fetch from 'node-fetch';
-import { TelemetryData } from './marshallTelemetryData';
+import 'isomorphic-fetch';
 
-const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/collect';
+import { TelemetryData } from './marshallTelemetryData.js';
+
+const GA_TRACKING_ENDPOINT = 'http://www.google-analytics.com/debug/mp/collect';
 const GA_TRACKING_ID = 'G-KPVSTHK1G4';
 const GA_API_SECRET = '-SLuZb8JTbWkWcT5BD032w';
 
@@ -42,11 +43,9 @@ export const sendTelemetryData = (
   };
 
   return fetch(
-    GA_TRACKING_ENDPOINT +
-      '?' +
-      new URLSearchParams({
-        api_secret: GA_API_SECRET,
-      }),
+    `${GA_TRACKING_ENDPOINT}?${new URLSearchParams({
+      api_secret: GA_API_SECRET,
+    }).toString()}`,
     {
       method: 'POST',
       body: JSON.stringify(data),
