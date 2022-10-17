@@ -97,13 +97,13 @@ export default function Component(props) {
   // Code to render Single Post template hierachy type
 }
 Component.query = gql`
-	query GetPost(
-    	$databaseId: ID!
-		$asPreview: Boolean = false
-	) {
+  query GetPost(
+    $databaseId: ID!,
+	$asPreview: Boolean = false
+  ) {
     post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
-		...
-	}
+	  ...
+  }
 `;
 Component.variables = ({ databaseId }, ctx) => {
   return {
@@ -113,11 +113,11 @@ Component.variables = ({ databaseId }, ctx) => {
 };
 ```
 
-The `variables` property contains a context  parameter `ctx` that contains the boolean value `asPreview`. This will be `true` when you are previewing a page and `false` otherwise.
+The `variables` property function accepts a context parameter `ctx` that includes the boolean value `asPreview`. This will be `true` when you are previewing a page and `false` otherwise.
 We can leverage this parameter by inserting it in the `query` for requesting post or page previews.
 
-We alson need to consider the case when the component is still loading due to the CSR request.
-In such case we can render a empty or loading component when the post preview data as still in-flight:
+We also need to consider the case when the component is still loading due to the CSR request.
+In such case, we can render an empty or loading component when the post preview data is still in-flight:
 
 ```js
 if (props.loading) {
