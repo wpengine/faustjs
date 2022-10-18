@@ -33,18 +33,20 @@ await (async () => {
     await promptUserForTelemetryPref(true, config);
   }
 
-  if (getCliArgs()[0] === 'faust-telemetry') {
-    await promptUserForTelemetryPref(false, config);
+  // eslint-disable-next-line default-case
+  switch (getCliArgs()[0]) {
+    case 'faust-telemetry': {
+      await promptUserForTelemetryPref(false, config);
+      process.exit(0);
 
-    process.exit(0);
-  }
+      break;
+    }
+    case 'generatePossibleTypes': {
+      await generatePossibleTypes();
+      process.exit(0);
 
-  const arg1 = getCliArgs()[0];
-
-  // Handle custom CLI arguments.
-  if (arg1 === 'generatePossibleTypes') {
-    await generatePossibleTypes();
-    process.exit(0);
+      break;
+    }
   }
 
   const shouldFireTelemetryEvent =
@@ -56,7 +58,9 @@ await (async () => {
   if (shouldFireTelemetryEvent) {
     try {
       const wpTelemetryData = await requestWPTelemetryData(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         process.env.NEXT_PUBLIC_WORDPRESS_URL!,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
@@ -64,17 +68,19 @@ await (async () => {
 
       infoLog('Telemetry event being sent', telemetryData);
 
-      sendTelemetryData(
-        'ga-category',
-        'ga-action',
-        'ga-label',
+      void sendTelemetryData(
         telemetryData,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        config.get('telemetry.anonymousId'),
+        config.get('telemetry.anonymousId') as string,
       );
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       // Fail silently
     }
   }
+
+  /**
+   * Spawn a child process using the args captured in argv and continue the
+   * standard i/o for the Next.js CLI.
+   */
+  spawn('next', getCliArgs(), { stdio: 'inherit' });
 })();

@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import 'isomorphic-fetch';
 
 const WP_TELEMETRY_ENDPOINT = '/wp-json/faustwp/v1/telemetry';
 
