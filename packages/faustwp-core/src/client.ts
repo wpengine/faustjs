@@ -79,7 +79,7 @@ export function getApolloClient(initialState = null) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       arrayMerge: (destination, source) => [
         ...source,
-        destination.filter((d) => source.every((s) => !isEqual(d, s))),
+        ...destination.filter((d) => source.every((s) => !isEqual(d, s))),
       ],
     });
 
