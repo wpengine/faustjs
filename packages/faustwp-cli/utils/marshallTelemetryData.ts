@@ -27,7 +27,9 @@ export interface TelemetryData {
  * @param version The dependency version.
  * @returns A sanitized version or undefined if the version is a path.
  */
-const sanitizePackageJsonVersion = (version: string | undefined) => {
+const sanitizePackageJsonVersion = (_version: string | undefined) => {
+  let version = _version;
+
   if (!version) {
     return undefined;
   }
@@ -56,19 +58,19 @@ export const marshallTelemetryData = (
 ): TelemetryData => {
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
-  let telemetryData: TelemetryData = {
+  const telemetryData: TelemetryData = {
     node_faustwp_core_version: sanitizePackageJsonVersion(
-      packageJson?.dependencies?.['@faustwp/core'],
+      packageJson?.dependencies?.['@faustwp/core'] as string | undefined,
     ),
     node_faustwp_cli_version: sanitizePackageJsonVersion(
-      packageJson?.dependencies?.['@faustwp/cli'],
+      packageJson?.dependencies?.['@faustwp/cli'] as string | undefined,
     ),
     node_apollo_client_version: sanitizePackageJsonVersion(
-      packageJson?.dependencies?.['@apollo/client'],
+      packageJson?.dependencies?.['@apollo/client'] as string | undefined,
     ),
     node_version: process.versions.node,
     node_next_version: sanitizePackageJsonVersion(
-      packageJson?.dependencies?.['next'],
+      packageJson?.dependencies?.next as string | undefined,
     ),
     node_is_development: getCliArgs()[0] === 'dev',
     setting_has_frontend_uri: wpTelemetryData?.faustwp?.has_frontend_uri,

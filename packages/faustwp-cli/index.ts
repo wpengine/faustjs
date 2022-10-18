@@ -82,5 +82,5 @@ await (async () => {
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
-  const nextCommand = spawn('next', getCliArgs(), { stdio: 'inherit' });
+  spawn('next', getCliArgs(), { stdio: 'inherit' });
 })();
