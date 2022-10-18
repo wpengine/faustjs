@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+/vendor/
+
+.env.testing
+!.env.testing.example
+/coverage/
+*.cache
