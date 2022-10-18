@@ -11,14 +11,28 @@ import {
   sendTelemetryData,
   requestWPTelemetryData,
   generatePossibleTypes,
-  infoLog,
 } from './utils/index.js';
 
-dotenv.config();
 const CONFIG_STORE_NAME = 'faust';
 const config = new Configstore(CONFIG_STORE_NAME);
 
-await (async () => {
+// eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
+(async function () {
+  const arg1 = getCliArgs()[0];
+
+  switch (arg1) {
+    case 'build':
+      process.env.NODE_ENV = 'production';
+      break;
+    case 'test':
+      process.env.NODE_ENV = 'test';
+      break;
+    case 'dev':
+    default:
+      process.env.NODE_ENV = 'development';
+      break;
+  }
+  dotenv.config();
   validateFaustEnvVars();
   /**
    * If there is no config (or a non-valid config), prompt the user for their
@@ -34,7 +48,7 @@ await (async () => {
   }
 
   // eslint-disable-next-line default-case
-  switch (getCliArgs()[0]) {
+  switch (arg1) {
     case 'faust-telemetry': {
       await promptUserForTelemetryPref(false, config);
       process.exit(0);
@@ -50,7 +64,7 @@ await (async () => {
   }
 
   const shouldFireTelemetryEvent =
-    (getCliArgs()[0] === 'dev' || getCliArgs()[0] === 'build') &&
+    (arg1 === 'dev' || arg1 === 'build') &&
     config.get('telemetry.enabled') === true &&
     config.get('telemetry.anonymousId') &&
     process.env.FAUSTWP_SECRET_KEY;
@@ -66,7 +80,7 @@ await (async () => {
 
       const telemetryData = marshallTelemetryData(wpTelemetryData);
 
-      infoLog('Telemetry event being sent', telemetryData);
+      // infoLog('Telemetry event being sent', telemetryData);
 
       void sendTelemetryData(
         telemetryData,

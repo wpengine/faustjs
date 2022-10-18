@@ -1,5 +1,12 @@
 # FaustWP
 
+## 0.8.0
+
+### Minor Changes
+
+- b59d6c0: Renamed plugin from `FaustWP` to `Faust`.
+- b59d6c0: Updated settings menu text from _Headless_ to _Faust_.
+
 ## 0.7.11
 
 ### Patch Changes
