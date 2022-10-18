@@ -52,3 +52,9 @@ That's it! For more information on getting started with headless WordPress, see 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
 
 == Frequently Asked Questions == 
+
+Placeholder for FAQs!
+
+FAQ 1?
+FAQ 2?
+FAQ 3?
