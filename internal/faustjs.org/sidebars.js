@@ -60,6 +60,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Usage with Next.js',
+      items: [
+        {
+          type: 'doc',
+          label: 'Previews',
+          id: 'next/guides/post-page-previews',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Companion WordPress Plugin',
       items: [
         {

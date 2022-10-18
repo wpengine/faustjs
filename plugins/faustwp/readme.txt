@@ -2,8 +2,8 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
-Tested up to: 6.0
-Stable tag: 0.7.11
+Tested up to: 6.1
+Stable tag: 0.8.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,13 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Changelog ==
 
+= 0.8.0 =
+
+### Minor Changes
+
+- b59d6c0: Renamed plugin from `FaustWP` to `Faust`.
+- b59d6c0: Updated settings menu text from _Headless_ to _Faust_.
+
 = 0.7.11 =
 
 ### Patch Changes
@@ -42,18 +49,6 @@ That's it! For more information on getting started with headless WordPress, see 
 - 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
 - 0c757a2: Remove unnecessary config from wordpress.org zip.
 
-= 0.7.9 =
-
-### Patch Changes
-
-- 4ab6cdf: Fix menu paths when activated within a multisite using subdirectories.
-- ccb7ff3: Fix page preview links
-- bb59263: The plugin's default settings are now working when activated within a multisite installation.
-- 6c04567: Fixes a conflict between public route redirects and the full site editor
-- d12f938: Updates an icon on the settings page
-
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
 
 == Frequently Asked Questions == 
-
-
