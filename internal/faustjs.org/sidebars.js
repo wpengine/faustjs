@@ -71,6 +71,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Seed Query',
+      items: [
+        {
+          type: 'doc',
+          label: 'Seed Query',
+          id: 'faustwp/seed-query',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Migration Path from Faust.js < v1.0.0',
       items: [
         {
