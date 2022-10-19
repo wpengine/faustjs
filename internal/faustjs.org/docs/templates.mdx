@@ -6,15 +6,15 @@ description: How to use the template hierarchy system in Faust
 
 # Templates Overview
 
-Templates in Faust bring the power of the WordPress Template Hierarchy to your JavaScript frontend application.
+Templates in Faust bring the power of the [WordPress Template Hierarchy](https://wphierarchy.com/) to your JavaScript frontend application.
 
 ## How Templates Are Resolved
 
-The template resolver works by sending a preliminary GraphQL request (called the Seed Query) for the given URI in WordPress. The response includes data like the databaseId, slug, content type, if it's the front page, etc, which is then used to determine what the possible templates are for the given URI.
+The template resolver works by sending a preliminary GraphQL request (called the Seed Query) for the given URI in WordPress. The response includes data like the databaseId, slug, content type, etc, which is then used to determine what the possible templates are for the given URI.
 
-For example, let's say we are visiting the `/sample-page` route on our Faust app, and in WordPress we have a page called "Sample Page" with the same URI. The template resolver will receive the following data as the Seed Query:
+For example, let's say a user visits the `/sample-page` URI on our Faust app, and in WordPress we have a page called "Sample Page" with the same URI. The template resolver will receive the following data as the Seed Query:
 
-```json
+```json title="Seed Query Response"
 {
   "data": {
     "node": {
@@ -39,11 +39,11 @@ For example, let's say we are visiting the `/sample-page` route on our Faust app
 }
 ```
 
-With this data, we then apply a set of rules/logic to get all the possible templates for the given URI.
+With this data, we then apply a set of rules/logic to get all the possible templates for the `/sample-page` route.
 
 ## Setting Up the Template System
 
-To setup your Faust template system, start by creating a directory in your project, it can be named anything, but we typically call it `wp-templates`. Inside this newly created directory, create `index.js` with an empty object as the default export:
+To setup your Faust template system, start by creating a directory in your project (it can be named anything, but we typically call it `wp-templates`). Inside this newly created directory, create `index.js` with an empty object as the default export:
 
 ```js title="wp-templates/index.js"
 export default {
@@ -51,7 +51,7 @@ export default {
 };
 ```
 
-The templates you want used by the template resolver must be placed in this object with the key being the template name, and the value being the default export of the template. For example:
+Templates must be placed in this object with the key being the template name, and the value being the default export of the template. For example:
 
 ```js title="wp-templates/index.js"
 import page from './page';
@@ -63,7 +63,7 @@ export default {
 };
 ```
 
-Finally, you must include the templates in your `faust.config.js` file at your project root:
+Finally, you must include the templates in `faust.config.js` at your project root:
 
 ```js title="faust.config.js"
 import { setConfig } from '@faustwp/core';
@@ -77,13 +77,14 @@ export default setConfig({
 });
 ```
 
-## Shape of a template
+## Template Structure
 
 A faust template has three parts, the component, query, and variables. Here is an example template in its most basic form:
 
 ```js title="wp-templates/single.js"
 import { gql } from '@apollo/client';
 
+// The Component is required
 export default function Component(props) {
   const { title, content } = props?.data?.post;
 
@@ -95,6 +96,7 @@ export default function Component(props) {
   );
 }
 
+// Query is optional
 Component.query = gql`
   query GetPost($databaseId: ID!) {
     post(id: $databaseId, idType: DATABASE_ID) {
@@ -104,6 +106,7 @@ Component.query = gql`
   }
 `;
 
+// Variables is optional
 Component.variables = (seedQuery, ctx) => {
   return {
     databaseId: seedQuery?.databaseId,
@@ -113,28 +116,28 @@ Component.variables = (seedQuery, ctx) => {
 
 ### Component
 
-The `Component` portion of the template serves as the rendering layer. You can compare this to a traditional Next.js file based page, where whatever is in this component, will get rendered to the webpage at this URI.
+The `Component` portion of the template serves as the rendering layer. You can compare this to a traditional Next.js file based page, where the contents of this component will be rendered to the webpage.
 
-Props are exposed to the `Component` as usual in React. There are two props that are specific to a template:
+`props` are exposed to the `Component` as usual in React. There are two props that are specific to a template:
 
-- `props.data`: the response to the template's `query`
+- `props.data`: the response to the [template's `query`](/docs/templates#component-query)
 - `props.loading`: a `boolean` flag to determine if the template's `query` is still being fetched
 
 ### Component Variables
 
-The `Component.variables` portion of the template is a callback function which returns an object of GraphQL variables for the template's GraphQL query.
+The `Component.variables` portion of the template is a callback function which returns an object of GraphQL variables for the [template's GraphQL query.](/docs/templates#component-query)
 
 The `Component.variables()` callback has two parameters: `seedQuery`, and `context`:
 
 ```js
 Component.variables(seedQuery, context) => {
   return {
-
+    // Return GraphQL variables here as needed
   }
 }
 ```
 
-The `seedQuery` parameter is the data resulted from the seed query. You can learn more about the request and response of the seed query here.
+The `seedQuery` parameter is the data resulted from the seed query. You can learn more about the [request and response of the seed query here.](/docs/seed-query)
 
 The `context` of `Component.variables` has the following properties:
 
@@ -144,7 +147,7 @@ interface {
 }
 ```
 
-Finally, what is returned in this function will then be usable in your GraphQL Query.
+Finally, the object returned from this function will be usable in your template's GraphQL Query.
 
 ### Component Query
 
