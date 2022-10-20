@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
-import { trim } from 'lodash';
+import trim from 'lodash/trim.js';
 import * as authorize from '../../src/auth/authorize';
 import * as getWpUrl from '../../src/lib/getWpUrl';
 import * as getWpSecret from '../../src/lib/getWpSecret';
