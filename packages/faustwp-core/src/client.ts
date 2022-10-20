@@ -13,7 +13,6 @@ import { AppProps } from 'next/app';
 import { getConfig } from './config/index.js';
 import { hooks } from './hooks/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
-import { omit } from './utils/helpers.js';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -106,7 +105,6 @@ export function addApolloState(
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
     pageProps.props = {
-      ...omit(pageProps.props, ['__SEED_NODE__', '__TEMPLATE_QUERY_DATA__']),
       [APOLLO_STATE_PROP_NAME]: client.cache.extract(),
     };
   }
