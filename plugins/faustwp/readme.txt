@@ -59,4 +59,10 @@ This is an example answer
 
 == Screenshots == 
 
-1. plugins/faustwp/.wordpress-org/plugin-settings-screenshot.png
+1. The settings page
+2. Portfolio, blog, and basic blueprints for headless sites built with Faust
+3. A code snippet 
+
+plugins/faustwp/.wordpress-org/screenshot-1.png
+plugins/faustwp/.wordpress-org/screenshot-2.png
+plugins/faustwp/.wordpress-org/screenshot-3.png
