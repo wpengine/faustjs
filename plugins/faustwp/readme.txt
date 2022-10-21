@@ -60,7 +60,7 @@ Use one of the channels below to contact the Faust team for support.
 
 = Where can I find more information about development and future features for this plugin? =
 
-The development team posts weekly summaries of sprints related to Faust at https://faustjs.org/blog. 
+Great question! The development team posts weekly summaries of sprints related to Faust, [here](https://faustjs.org/blog). 
 
 = Why the name “Faust”? =
 
