@@ -67,6 +67,11 @@ module.exports = {
           label: 'Previews',
           id: 'next/guides/post-page-previews',
         },
+        {
+          type: 'doc',
+          label: 'Example Project Walkthrough',
+          id: 'next/guides/project-walkthrough',
+        },
       ],
     },
     {
