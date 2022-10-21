@@ -36,7 +36,7 @@ export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   cfg: GetNextStaticPropsConfig<Props>,
 ) {
-  const { notFound, redirect, Page } = cfg;
+  const { notFound, redirect, Page, props } = cfg;
   const apolloClient = getApolloClient();
 
   if (isBoolean(notFound) && notFound === true) {
@@ -59,7 +59,7 @@ export async function getNextStaticProps<Props>(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return addApolloState(apolloClient, { props: {} });
+  return addApolloState(apolloClient, { props: { ...props } });
 }
 
 /**
@@ -73,7 +73,7 @@ export async function getNextServerSideProps<Props>(
   cfg: GetNextServerSidePropsConfig<Props>,
 ): Promise<GetServerSidePropsResult<Props>> {
   const { res } = context;
-  const { notFound, redirect, Page } = cfg;
+  const { notFound, redirect, Page, props } = cfg;
   const apolloClient = getApolloClient();
 
   res.setHeader('x-powered-by', 'Faust');
@@ -99,6 +99,6 @@ export async function getNextServerSideProps<Props>(
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return addApolloState(apolloClient, {
-    props: {},
+    props: { ...props },
   }) as GetServerSidePropsResult<Props>;
 }
