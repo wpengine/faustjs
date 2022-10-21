@@ -60,6 +60,22 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Usage with Next.js',
+      items: [
+        {
+          type: 'doc',
+          label: 'Previews',
+          id: 'next/guides/post-page-previews',
+        },
+        {
+          type: 'doc',
+          label: 'Example Project Walkthrough',
+          id: 'next/guides/project-walkthrough',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Companion WordPress Plugin',
       items: [
         {
@@ -77,6 +93,28 @@ module.exports = {
           type: 'doc',
           label: 'Seed Query',
           id: 'faustwp/seed-query',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Usage with Next.js',
+      items: [
+        {
+          type: 'category',
+          label: 'Reference',
+          items: [
+            {
+              type: 'doc',
+              label: 'getNextServerSideProps',
+              id: 'next/reference/getNextServerSideProps',
+            },
+            {
+              type: 'doc',
+              label: 'getNextStaticProps',
+              id: 'next/reference/getNextStaticProps',
+            },
+          ],
         },
       ],
     },

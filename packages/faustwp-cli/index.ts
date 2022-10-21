@@ -11,10 +11,22 @@ import {
 
 // eslint-disable-next-line func-names
 await (async function () {
+  const arg1 = getCliArgs()[0];
+
+  switch (arg1) {
+    case 'build':
+      process.env.NODE_ENV = 'production';
+      break;
+    case 'test':
+      process.env.NODE_ENV = 'test';
+      break;
+    case 'dev':
+    default:
+      process.env.NODE_ENV = 'development';
+      break;
+  }
   dotenv.config();
   validateFaustEnvVars();
-
-  const arg1 = getCliArgs()[0];
 
   // Handle custom CLI arguments.
   if (arg1 === 'generatePossibleTypes') {

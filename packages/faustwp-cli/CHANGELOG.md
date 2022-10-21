@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.1.2
+
+### Patch Changes
+
+- 4f46f81: Handles .env.production and .env.development in example
+
 ## 0.1.1
 
 ### Patch Changes
