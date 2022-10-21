@@ -53,9 +53,18 @@ That's it! For more information on getting started with headless WordPress, see 
 
 == Frequently Asked Questions == 
 
-= This is an example question? =
+= If I need more support, where should I ask questions? = 
+Use one of the channels below to contact the Faust team for support.
+[GitHub](https://github.com/wpengine/faustjs) - Faust GitHub documentation and codebase.
+[Discord](https://discord.gg/J2khkF9XYK) - Interactive chat support on Discord.
 
-This is an example answer
+= Where can I find more information about development and future features for this plugin? =
+
+The development team posts weekly summaries of sprints related to Faust at https://faustjs.org/blog. 
+
+= Why the name “Faust”? =
+
+Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web. 
 
 == Screenshots == 
 
