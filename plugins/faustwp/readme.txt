@@ -27,7 +27,7 @@ The plugin also provides useful options for headless sites, such as the ability 
 
 That's it! For more information on getting started with headless WordPress, see [Getting Started with Faust](https://faustjs.org/docs/tutorial/dev-env-setup).
 
-== Changelog ==WP
+== Changelog ==
 
 = 0.8.0 =
 
@@ -50,3 +50,28 @@ That's it! For more information on getting started with headless WordPress, see 
 - 0c757a2: Remove unnecessary config from wordpress.org zip.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
+
+== Frequently Asked Questions == 
+
+= If I need more support, where should I ask questions? = 
+Use one of the channels below to contact the Faust team for support.
+[GitHub](https://github.com/wpengine/faustjs) - Faust GitHub documentation and codebase.
+[Discord](https://discord.gg/J2khkF9XYK) - Interactive chat support on Discord.
+
+= Where can I find more information about development and future features for this plugin? =
+
+Great question! The development team posts weekly summaries of sprints related to Faust, [here](https://faustjs.org/blog). 
+
+= Why the name “Faust”? =
+
+Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web. 
+
+== Screenshots == 
+
+1. The settings page
+2. Portfolio, blog, and basic blueprints for headless sites built with Faust
+3. A code snippet 
+
+plugins/faustwp/.wordpress-org/screenshot-1.png
+plugins/faustwp/.wordpress-org/screenshot-2.png
+plugins/faustwp/.wordpress-org/screenshot-3.png
