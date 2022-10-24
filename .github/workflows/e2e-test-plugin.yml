@@ -23,7 +23,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           coverage: pcov
           ini-values: pcov.directory=includes
       - name: Setup Frontend
@@ -51,9 +51,12 @@ jobs:
       - name: Copy env file
         working-directory: plugins/faustwp
         run: cp .env.testing.example .env.testing
-      - name: Run test
+      - name: Run Acceptance tests
         working-directory: plugins/faustwp
         run: vendor/bin/codecept run acceptance
+        name: Run API tests
+        working-directory: plugins/faustwp
+        run: vendor/bin/codecept run api
       - name: Upload Test Output
         uses: actions/upload-artifact@v2
         if: failure()

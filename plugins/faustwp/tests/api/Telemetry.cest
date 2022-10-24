@@ -1,0 +1,56 @@
+<?php
+
+class TelemetryCest
+{
+	protected $secret_key = '00000000-0000-4000-8000-000000000001';
+
+	protected $authenticated_response = [
+		"faustwp" => [
+			"version"                          => "0.7.10",
+			"has_frontend_uri"                 => true,
+			"redirects_enabled"                => true,
+			"rewrites_enabled"                 => true,
+			"themes_disabled"                  => true,
+			"image_source_replacement_enabled" => false
+		],
+		"is_wpe"      => false,
+		"multisite"   => false,
+		"php_version" => "7.4.30",
+		"wp_version"  => "6.0.1"
+	];
+
+	protected $unauthenticated_response = [
+		"code"    => "rest_forbidden",
+		"message" => "Sorry, you are not allowed to do that.",
+		"data"    => [
+			"status" => 401
+		]
+	];
+
+	/**
+	 * Ensure the telemetry endpoint is accessible with the secret key.
+	 */
+	public function i_can_access_the_telemetry_endpoint_with_secret_key(ApiTester $I)
+	{
+		$I->haveFaustWPSetting('frontend_uri', 'http://localhost:3000');
+		$I->haveFaustWPSetting('secret_key', $this->secret_key);
+		$I->haveHttpHeader('x-faustwp-secret', $this->secret_key);
+		$I->sendPost('/faustwp/v1/telemetry', []);
+		$I->seeResponseCodeIsSuccessful();
+		$I->seeResponseIsJson();
+		$I->seeResponseContainsJson($this->authenticated_response);
+	}
+
+		/**
+	 * Ensure the telemetry endpoint is accessible with the secret key.
+	 */
+	public function i_cannot_access_the_telemetry_endpoint_with_invalid_secret_key(ApiTester $I)
+	{
+		$I->haveFaustWPSetting('frontend_uri', 'http://localhost:3000');
+		$I->haveFaustWPSetting('secret_key', $this->secret_key);
+		$I->haveHttpHeader('x-faustwp-secret', 'an-invalid-secret-key');
+		$I->sendPost('/faustwp/v1/telemetry', []);
+		$I->seeResponseIsJson();
+		$I->seeResponseContainsJson($this->unauthenticated_response);
+	}
+}

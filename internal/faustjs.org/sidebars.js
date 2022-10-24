@@ -86,6 +86,11 @@ module.exports = {
       ],
     },
     {
+      type: 'doc',
+      label: 'Telemetry',
+      id: 'telemetry',
+    },
+    {
       type: 'category',
       label: 'Seed Query',
       items: [
