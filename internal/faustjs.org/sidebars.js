@@ -87,6 +87,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Seed Query',
+      items: [
+        {
+          type: 'doc',
+          label: 'Seed Query',
+          id: 'faustwp/seed-query',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Usage with Next.js',
       items: [
         {
