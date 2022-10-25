@@ -1,0 +1,17 @@
+name: 'Compare Lockfiles'
+description: 'Compares package-lock.json between branches'
+inputs:
+  current-lockfile-path:
+    description: 'Current lockfile path'
+    required: true
+    default: ''
+  proposed-lockfile-path:
+    description: 'Proposed lockfile path'
+    required: true
+    default: ''
+outputs:
+  has-regression:
+    description: 'The proposed PR contains a regression'
+runs:
+  using: 'node16'
+  main: compareLockfiles.js

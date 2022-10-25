@@ -1,0 +1,38 @@
+name: Check Dependencies
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  check_depedencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: proposed
+
+      - name: checkout target branch
+        uses: actions/checkout@v3
+        with:
+          ref: canary
+          path: current
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: get package-lock.json from each branch
+        run: |
+          cat proposed/package-lock.json
+          cat current/package-lock.json
+
+      - name: run it
+        uses: ./proposed/.github/actions/compare-lockfiles
+        with:
+          current-lockfile-path: 'current/package-lock.json'
+          proposed-lockfile-path: 'proposed/package-lock.json'
