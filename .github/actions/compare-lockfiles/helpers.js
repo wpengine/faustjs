@@ -20,10 +20,11 @@ function getLockfilePackageVersions({ packages }) {
   let packageVersions = [];
 
   for (let key of Object.keys(packages)) {
-    packageVersions.push({
-      key: key,
-      version: packages[key].version
-    });
+    const version = packages[key].version
+
+    if (version !== undefined) {
+      packageVersions.push({ key, version });
+    }
   }
 
   return packageVersions;
