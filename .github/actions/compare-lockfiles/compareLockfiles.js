@@ -21,8 +21,13 @@ const regressions = proposedPackageVersions.filter(function(proposed) {
     return false;
   }
 
-  const current = currentPackageVersions.find(current => current.key === proposed.key);
-  console.log({current});
+  const current = currentPackageVersions.find(current => {
+    if (current.version === undefined) { // True indicates this is not a real package.
+      return false;
+    }
+    return current.key === proposed.key
+  });
+
   const hasRegression = semverLt(proposed.version, current.version); // proposed.version < current.version.
 
   return hasRegression;
