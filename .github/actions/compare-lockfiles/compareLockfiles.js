@@ -22,6 +22,7 @@ const regressions = proposedPackageVersions.filter(function(proposed) {
   }
 
   const current = currentPackageVersions.find(current => current.key === proposed.key);
+  console.log({current});
   const hasRegression = semverLt(proposed.version, current.version); // proposed.version < current.version.
 
   return hasRegression;
