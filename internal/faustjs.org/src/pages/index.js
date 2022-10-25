@@ -18,8 +18,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--info button--lg"
-            to="/docs/next/getting-started"
-          >
+            to="/docs/getting-started">
             Get Started
           </Link>
         </div>
@@ -61,8 +60,7 @@ export default function Home() {
       </Head>
       <Layout
         title={siteConfig.tagline}
-        description={siteConfig.customFields.description}
-      >
+        description={siteConfig.customFields.description}>
         <HomepageHeader />
         <main>
           <HomepageFeatures />
