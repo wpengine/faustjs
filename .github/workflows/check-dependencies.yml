@@ -9,30 +9,26 @@ jobs:
   check_depedencies:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout pull request branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          path: proposed
-
-      - name: checkout target branch
+      - name: checkout current branch
         uses: actions/checkout@v3
         with:
           ref: canary
           path: current
 
-      - name: setup node
+      - name: checkout proposed branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: proposed
+
+      - name: set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
+      - run: cd proposed && npm ci
 
-      - name: get package-lock.json from each branch
-        run: |
-          cat proposed/package-lock.json
-          cat current/package-lock.json
-
-      - name: run it
+      - name: compare lockfiles
         uses: ./proposed/.github/actions/compare-lockfiles
         with:
-          current-lockfile-path: 'current/package-lock.json'
-          proposed-lockfile-path: 'proposed/package-lock.json'
+          current-lockfile-path: current
+          proposed-lockfile-path: proposed

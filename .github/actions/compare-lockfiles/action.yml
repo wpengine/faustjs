@@ -2,13 +2,9 @@ name: 'Compare Lockfiles'
 description: 'Compares package-lock.json between branches'
 inputs:
   current-lockfile-path:
-    description: 'Current lockfile path'
-    required: true
-    default: ''
+    description: 'The path to the target package-lock.json that the pull request should compare against. e.g. canary'
   proposed-lockfile-path:
-    description: 'Proposed lockfile path'
-    required: true
-    default: ''
+    description: 'The path to the proposed package-lock.json'
 outputs:
   has-regression:
     description: 'The proposed PR contains a regression'
