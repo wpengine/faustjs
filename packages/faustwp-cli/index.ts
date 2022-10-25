@@ -78,7 +78,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
-      const telemetryData = marshallTelemetryData(wpTelemetryData);
+      const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
       // infoLog('Telemetry event being sent', telemetryData);
 
