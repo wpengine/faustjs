@@ -7,8 +7,8 @@ const { parseLockfile, getLockfilePackageVersions } = require('./helpers');
 const currentLockfileInput = core.getInput('current-lockfile-path') || 'current';
 const proposedLockfileInput = core.getInput('proposed-lockfile-path') || 'proposed';
 
-// Exit script if both inputs are the same directory.
-if (currentLockfileInput === proposedLockfileInput) {
+// Exit script if both inputs are the same directory (case insensitive).
+if (currentLockfileInput.toLowerCase() === proposedLockfileInput.toLowerCase()) {
   console.error('current-lockfile-path & proposed-lockfile-path cannot be the same');
   process.exit(1);
 }
