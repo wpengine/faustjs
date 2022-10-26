@@ -26,9 +26,13 @@ const currentPackageVersions = getLockfilePackageVersions(currentLockfile);
 const proposedPackageVersions = getLockfilePackageVersions(proposedLockfile);
 
 const regressions = proposedPackageVersions.filter(function(proposed) {
-  const current = currentPackageVersions.find(current => current.version !== undefined && current.key === proposed.key);
-  const hasRegression = semverLt(proposed.version, current.version); // proposed.version < current.version.
-  return hasRegression;
+  const current = currentPackageVersions.find(current => current.key === proposed.key);
+
+  if (proposed === undefined || current === undefined) {
+    return;
+  }
+
+  return semverLt(proposed.version, current.version); // proposed.version < current.version.
 }).map((r) => {
   return {
     'Key': r.key,
