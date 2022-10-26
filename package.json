@@ -70,6 +70,6 @@
     "semver": "^7.3.8"
   },
   "dependencies": {
-    "docusaurus": "^1.14.7"
+    "docusaurus": "^1.0.11"
   }
 }
