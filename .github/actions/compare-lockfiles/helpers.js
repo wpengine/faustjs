@@ -6,7 +6,16 @@ const fs = require('fs');
  * @returns {object}
  */
 function parseLockfile(path) {
-  let rawdata = fs.readFileSync(`${path}/package-lock.json`);
+  const lockfile = `${path}/package-lock.json`;
+  let rawdata;
+
+  // Exit if lockfile cannot be found.
+  if (!fs.existsSync(lockfile)) {
+    console.error(`could not find ${lockfile}`);
+    process.exit(1);
+  }
+
+  rawdata = fs.readFileSync(lockfile);
 
   return JSON.parse(rawdata);
 }

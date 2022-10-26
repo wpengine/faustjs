@@ -4,12 +4,21 @@ const core = require('@actions/core');
 const semverLt = require('semver/functions/lt');
 const { parseLockfile, getLockfilePackageVersions } = require('./helpers');
 
-const currentLockfile = parseLockfile(core.getInput('current-lockfile-path') || 'current');
-const proposedLockfile = parseLockfile(core.getInput('proposed-lockfile-path') || 'proposed');
+const currentLockfileInput = core.getInput('current-lockfile-path') || 'current';
+const proposedLockfileInput = core.getInput('proposed-lockfile-path') || 'proposed';
+
+// Exit script if both inputs are the same directory.
+if (currentLockfileInput === proposedLockfileInput) {
+  console.error('current-lockfile-path & proposed-lockfile-path cannot be the same');
+  process.exit(1);
+}
+
+const currentLockfile = parseLockfile(currentLockfileInput);
+const proposedLockfile = parseLockfile(proposedLockfileInput);
 
 // Exit script if different package-lock.json schema versions.
 if (proposedLockfile.lockfileVersion !== currentLockfile.lockfileVersion) {
-  console.log('package-lock.json versions do not match');
+  console.error('package-lock.json versions do not match');
   process.exit(1);
 }
 
@@ -36,3 +45,4 @@ if (regressions.length) {
 }
 
 console.log('OK');
+process.exit(0);
