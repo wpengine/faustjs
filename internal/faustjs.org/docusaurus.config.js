@@ -89,7 +89,7 @@ module.exports = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/wpedecode?ref=faustjs',
+              href: 'https://twitter.com/wpengine',
             },
             {
               label: 'YouTube',
