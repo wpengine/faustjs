@@ -66,8 +66,5 @@
     "prettier": "^2.4.1",
     "prettier-linter-helpers": "^1.0.0",
     "rimraf": "^3.0.2"
-  },
-  "dependencies": {
-    "docusaurus": "^1.14.7"
   }
 }
