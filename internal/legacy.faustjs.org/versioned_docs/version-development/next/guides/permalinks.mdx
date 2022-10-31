@@ -1,0 +1,64 @@
+---
+slug: /next/guides/permalinks
+title: Permalinks
+description: Learn how to use WordPress Permalinks in conjunction with Faust.js
+---
+
+Permalinks are "pretty URLs" of your individual blog post or page on your WordPress site. Permalinks can be modified by going to WP Admin -> Settings -> Permalinks. From there, you can modify the options to change the permalink structure to your liking.
+
+<img
+  src="/docs/img/permalinks.png"
+  alt="WordPress Admin Settings Page for Permalinks"
+/>
+
+Faust.js does not require your permalink structure to be anything specific. Instead, your permalinks should map to the structure of your [Next.js pages](https://nextjs.org/docs/basic-features/pages).
+
+For example, your permalink structure might look like this in WordPress:
+
+```
+/posts/%postname%/
+```
+
+Therefore, your Next.js pages structure should look like this:
+
+```bash {5,6}
+my-app/
+  pages/
+    _app.tsx
+    index.tsx
+    posts/
+      [postSlug].tsx
+  next-env.d.ts
+  package-lock.json
+  package.json
+  README.md
+  tsconfig.json
+```
+
+Notice the `posts` directory and the accompanying `[postSlug].tsx` file. Thus, your permalink structure (`/posts/%postname%/`) map to your Faust.js site posts structure (`/posts/[postSlug]`).
+
+As long as these two structures match, your permalink structure will work.
+
+## Example
+
+Lets say you wanted all of your posts to be under `/blog/`. You would modify your permalink structure to:
+
+```
+/blog/%postname%/
+```
+
+Then, in your Faust.js project, you would create a `/blog/` directory and create a `/blog/[postSlug].tsx` file for each of your posts.
+
+```bash {5,6}
+my-app/
+  pages/
+    _app.tsx
+    index.tsx
+    blog/
+      [postSlug].tsx
+  next-env.d.ts
+  package-lock.json
+  package.json
+  README.md
+  tsconfig.json
+```

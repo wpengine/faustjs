@@ -1,0 +1,62 @@
+---
+slug: /next/guides/handle-404s
+title: Handling 404s with is404
+description: Use a built-in Faust.js function to automatically determine if a page is a 404
+---
+
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
+# Handling 404s with is404
+
+With Next.js, you can return `{ notFound: true }` from `getServerSideProps` or `getStaticProps`, which will signal to Next.js that you want to send a `404 Not Found` response. When building a Headless WordPress site, you want to send a 404 in the following conditions:
+
+1. The user visits a `post` route for which no WordPress post exists.
+1. The user visits a `page` route for which no associated WordPress page (or custom frontend page) exists.
+1. The user visits a `category` route for which no associated WordPress category exists.
+
+To determine if you need to send a 404, you need to request WordPress for data and then decide if the response is enough to ensure you can render the page. Given that you will have dynamic Next.js pages for rendering `posts`, `pages`, and `categories` most of the time, you might think you have to do this work yourself. However, Faust.js makes this easy for you.
+
+Faust.js publishes an `is404` function that makes this easy for you. It functions similar to how the `usePost`, `usePage`, and `useCategory` hooks function, so it can determine the query you want to make based on URL params specified in your Next.js pages. The `is404` function has the following logic:
+
+### `is404` Logic for Posts:
+
+1. If `postId` is found in URL params, `is404` makes a request to retrieve a `post` from WordPress by `ID`. If no `post` is returned, `is404` returns `true`.
+1. If `postSlug` is found in URL params, `is404` makes a request to retrieve a `post` from WordPress by `SLUG`. If no `post` is returned, `is404` returns `true`.
+1. If `postUri` is found in URL params, `is404` requests to retrieve a `post` from WordPress by `URI`. If no `post` is returned, `is404` returns `true`.
+
+### `is404` Logic for Pages:
+
+1. If `pageId` is found in URL params, `is404` makes a request to retrieve a `page` from WordPress by `ID`. If no `page` is returned, `is404` returns `true`.
+1. If `pageUri` is found in URL params, `is404` requests to retrieve a `page` from WordPress by `URI`. If no `page` is returned, `is404` returns `true`.
+
+### `is404` Logic for Categories:
+
+1. If `categoryId` is found in URL params, `is404` makes a request to retrieve a `category` from WordPress by `ID`. If no `category` is returned, `is404` returns `true`.
+1. If `categorySlug` is found in URL params, `is404` requests to retrieve a `category` from WordPress by `SLUG`. If no `category` is returned, `is404` returns `true`.
+
+## How to use `is404`
+
+`is404` should be called in either `getStaticProps` or `getServerSideProps`. The reason for this is that these are the server-side functions where you need to tell Next.js to send a `404 Not Found` server response. Below is some code in the a `post` page that utilizes `is404` to return a `{ notFound: true }` if necessary:
+
+```tsx title=src/pages/posts/[postSlug].tsx
+import { getNextStaticProps, is404 } from '@faust/next';
+import { client } from 'client';
+
+export default function Page() {
+  return <></>;
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page,
+    client,
+    notFound: await is404(context, { client }),
+  });
+}
+```
+
+The above file name is `[postSlug].tsx` which will ensure that `postSlug` ends up in the URL params. When `is404` is invoked, it will find the `postSlug` URL param and make a request to WordPress to retrieve the `post` by `SLUG` using the `postSlug` param. If no `post` is returned, `is404` will return `true` and `getStaticProps` will subsequently return `{ notFound: true }`.
+
+> **NOTE:** `is404` does not have any relation to the `404.tsx` page you can define with Next.js. [Customize your 404 page](https://nextjs.org/docs/advanced-features/custom-error-page#404-page) separately.
