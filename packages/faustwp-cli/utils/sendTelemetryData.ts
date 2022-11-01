@@ -2,8 +2,7 @@ import 'isomorphic-fetch';
 
 import { TelemetryData } from './marshallTelemetryData.js';
 
-const GA_TRACKING_ENDPOINT =
-  'https://www.google-analytics.com/debug/mp/collect';
+const GA_TRACKING_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
 const GA_TRACKING_ID = 'G-KPVSTHK1G4';
 const GA_API_SECRET = '-SLuZb8JTbWkWcT5BD032w';
 
