@@ -5,6 +5,15 @@ import Link from '@docusaurus/Link';
 
 const FeatureList = [
   {
+    title: 'Apollo',
+    description: (
+      <>
+        Flexibly perform declarative queries to manipulate and structure data using Apollo.
+      </>
+    ),
+    link: '/blog/the-future-of-faust#where-faustjs-is-going',
+  },
+  {
     title: 'Next.js',
     description: (
       <>
