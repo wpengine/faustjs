@@ -19,6 +19,7 @@ export interface TelemetryData {
   node_version?: string;
   node_next_version?: string;
   node_is_development?: boolean;
+  command?: string;
 }
 
 /**
@@ -55,6 +56,7 @@ const sanitizePackageJsonVersion = (_version: string | undefined) => {
  */
 export const marshallTelemetryData = (
   wpTelemetryData: WPTelemetryResponseData | undefined,
+  command: string,
 ): TelemetryData => {
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -84,6 +86,7 @@ export const marshallTelemetryData = (
     multisite: wpTelemetryData?.multisite,
     php_version: wpTelemetryData?.php_version,
     wp_version: wpTelemetryData?.wp_version,
+    command,
   };
 
   return telemetryData;

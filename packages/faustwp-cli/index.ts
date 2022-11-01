@@ -44,7 +44,14 @@ const config = new Configstore(CONFIG_STORE_NAME);
     config.all?.telemetry?.enabled === undefined ||
     !config.all?.telemetry?.anonymousId
   ) {
-    await promptUserForTelemetryPref(true, config);
+    /**
+     * Do not prompt for telemetry if preferences are not set and the command
+     * that is being ran is build. We do not want to halt the build of a
+     * production site that likely does not have preferences saved.
+     */
+    if (arg1 !== 'build') {
+      await promptUserForTelemetryPref(true, config);
+    }
   }
 
   // eslint-disable-next-line default-case
@@ -78,7 +85,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
-      const telemetryData = marshallTelemetryData(wpTelemetryData);
+      const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
       // infoLog('Telemetry event being sent', telemetryData);
 
