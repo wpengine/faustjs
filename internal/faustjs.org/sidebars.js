@@ -12,40 +12,9 @@
 module.exports = {
   docsSidebar: [
     {
-      type: 'category',
-      label: 'Tutorial for PHP Developers',
-      items: [
-        {
-          type: 'doc',
-          label: 'Development Environment Setup',
-          id: 'tutorial/dev-env-setup',
-        },
-        {
-          type: 'doc',
-          label: 'Introduction to Next.js',
-          id: 'tutorial/nextjs-intro',
-        },
-        {
-          type: 'doc',
-          label: 'Create A Basic Headless WordPress Site',
-          id: 'tutorial/basic-headless-site',
-        },
-        {
-          type: 'doc',
-          label: 'Create Your First React Component',
-          id: 'tutorial/first-react-component',
-        },
-        {
-          type: 'doc',
-          label: 'Setup Faust.js',
-          id: 'tutorial/setup-faustjs',
-        },
-        {
-          type: 'doc',
-          label: 'Querying Data From Your Headless WordPress Site',
-          id: 'tutorial/querying-data',
-        },
-      ],
+      type: 'doc',
+      label: 'Getting Started',
+      id: 'getting-started',
     },
     {
       type: 'category',
