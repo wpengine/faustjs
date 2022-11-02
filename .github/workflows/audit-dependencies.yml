@@ -3,7 +3,7 @@ name: Audit Dependencies
 on: pull_request
 
 jobs:
-  check_depedencies:
+  audit_depedencies:
     runs-on: ubuntu-latest
 
     steps:
