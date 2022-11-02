@@ -1,4 +1,4 @@
-# FaustWP
+# Faust
 
 ## 0.8.0
 
