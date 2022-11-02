@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## 0.1.3
+
+### Patch Changes
+
+- c103fde: Pass props to getNextServerSideProps and getNextStaticProps
+- 48a0715: Trim any leading/ending backslashes in `NEXT_PUBLIC_WORDPRESS_URL`
+
 ## 0.1.2
 
 ### Patch Changes
