@@ -27,30 +27,6 @@ The plugin also provides useful options for headless sites, such as the ability 
 
 That's it! For more information on getting started with headless WordPress, see [Getting Started with Faust](https://faustjs.org/docs/tutorial/dev-env-setup).
 
-== Changelog ==
-
-= 0.8.0 =
-
-### Minor Changes
-
-- b59d6c0: Renamed plugin from `FaustWP` to `Faust`.
-- b59d6c0: Updated settings menu text from _Headless_ to _Faust_.
-
-= 0.7.11 =
-
-### Patch Changes
-
-- b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
-
-= 0.7.10 =
-
-### Patch Changes
-
-- 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
-- 0c757a2: Remove unnecessary config from wordpress.org zip.
-
-[View the full changelog](https://faustjs.org/docs/changelog/faustwp)
-
 == Frequently Asked Questions == 
 
 = If I need more support, where should I ask questions? = 
@@ -75,3 +51,27 @@ Johann Faust was a German printer and was instrumental in the invention of the p
 plugins/faustwp/.wordpress-org/screenshot-1.png
 plugins/faustwp/.wordpress-org/screenshot-2.png
 plugins/faustwp/.wordpress-org/screenshot-3.png
+
+== Changelog ==
+
+= 0.8.0 =
+
+### Minor Changes
+
+- b59d6c0: Renamed plugin from `FaustWP` to `Faust`.
+- b59d6c0: Updated settings menu text from _Headless_ to _Faust_.
+
+= 0.7.11 =
+
+### Patch Changes
+
+- b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
+
+= 0.7.10 =
+
+### Patch Changes
+
+- 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
+- 0c757a2: Remove unnecessary config from wordpress.org zip.
+
+[View the full changelog](https://faustjs.org/docs/changelog/faustwp)
