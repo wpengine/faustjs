@@ -71,6 +71,10 @@ module.exports = {
               to: '/docs/getting-started',
             },
             {
+              label: 'Example Project',
+              to: '/docs/next/guides/project-walkthrough',
+            },
+            {
               label: 'Privacy Policy',
               to: '/docs/privacy-policy',
             },
