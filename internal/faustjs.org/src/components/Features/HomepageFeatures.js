@@ -5,75 +5,50 @@ import Link from '@docusaurus/Link';
 
 const FeatureList = [
   {
-    title: 'Next.js',
+    title: 'Apollo',
     description: (
       <>
-        Built on top of Next.js and React to take advantage of state-of-the-art
-        frontend tools
+        Flexibly perform declarative queries to manipulate and structure data
+        using Apollo.
       </>
     ),
-    link: '/docs/next/getting-started',
-  },
-  {
-    title: 'GraphQL',
-    description: (
-      <>
-        Use GQty to fetch data from the WordPress GraphQL API without writing
-        GraphQL queries.
-      </>
-    ),
-    link: '/docs/next/guides/fetching-data',
+    link: '/blog/the-future-of-faust#where-faustjs-is-going',
   },
   {
     title: 'Previews',
     description: (
       <>
-        Preview your posts and pages before publishing and rewrite WordPress
+        Preview posts and pages before publishing and rewrite WordPress
         preview URLs to your frontend.
       </>
     ),
     link: '/docs/next/guides/post-page-previews',
   },
   {
-    title: 'SSG and SSR',
-    description: (
-      <>
-        Easily render pages on the server, or generate static pages at
-        build-time.
-      </>
-    ),
-    link: '/docs/next/guides/ssr-ssg',
-  },
-  {
-    title: 'React Hooks',
-    description: (
-      <>Fetch posts, categories, pages, and more using standard URL params.</>
-    ),
-    link: '/docs/next/reference/hooks',
-  },
-  {
     title: 'WP Template Hierarchy',
     description: (
       <>Use chained requests, resolve custom post type templates, and more.</>
     ),
-    link: '',
+    link: '/docs/templates',
   },
   {
-    title: 'Plugin System',
-    description: (
-      <>Use plugins to add quick and flexible functionality to your product.</>
-    ),
-    link: '',
-  },
-  {
-    title: 'Custom Post Types',
+    title: 'Seed Query',
     description: (
       <>
-        Add custom post types to your WordPress site and easily fetch them from
-        your frontend.
+        Use a seed query to obtain a list of possible templates for any given
+        route.
       </>
     ),
-    link: '/docs/next/guides/custom-post-types',
+    link: '/docs/faustwp/seed-query',
+  },
+  {
+    title: 'Next.js',
+    description: (
+      <>
+        Build a static site with WordPress data outside the template hierarchy with Next.js file based pages.
+      </>
+    ),
+    link: '/docs/next/reference/getNextStaticProps',
   },
 ];
 

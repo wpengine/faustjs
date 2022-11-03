@@ -1,0 +1,289 @@
+---
+slug: /next/guides/fetching-data
+title: Fetching data from Headless WordPress with Faust.js
+description: Faust.js makes fetching data from Headless WordPress incredibly easy with GQty.
+---
+
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
+> **NOTE**: If you followed the instructions in the [Getting Started with Next.js](../getting-started.mdx) guide, you already have a working instance of the client. The following guide assumes you are setting up a client on an already existing application.
+
+Faust.js uses [GQty](https://gqty.dev/docs/react/fetching-data) as the primary way to fetch data from Headless WordPress. GQty is a [proxy-based](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) GraphQL client. GQty [preforms an invisible or skeleton render](https://gqty.dev/docs/intro/how-it-works) to identify what data is needed.
+
+## Setting Up Your Client
+
+GQty works primarily based on TypeScript typings generated using introspection on your GraphQL API. Using WPGraphQL as your Headless WordPress API, you can enable introspection and then generate typings for GQty. You will need to do the following:
+
+1. Run `npm install -D @gqty/cli dotenv-flow`
+1. Create a `generate` script in your `package.json` that runs `gqty generate`.
+1. Create a `gqty.config.js` file at the root of your project. Use the following example config:
+
+   ```js
+   require('dotenv-flow').config();
+
+   /**
+    * @type {import("@gqty/cli").GQtyConfig}
+    */
+   const config = {
+     react: false,
+     scalarTypes: { DateTime: 'string' },
+     introspection: {
+       endpoint: `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`,
+       headers: {},
+     },
+     destination: './src/client/index.ts',
+     subscriptions: false,
+     javascriptOutput: false,
+   };
+
+   console.log(
+     `Using "${config.introspection.endpoint}" to generate schema...`,
+   );
+
+   module.exports = config;
+   ```
+
+1. Run `npm run generate`.
+
+If everything runs smoothly, you will end up with an `index.ts` and `schema.generated.ts` file in your `src/client` directory. The `index.ts` file contains your client code, and the `schema.generated.ts` file contains the typings for GQty. You can use the client as-is, but you will not get some of the benefits Faust.js provides on top of the standard GQty client. To use Faust.js with your Headless WordPress API, you will need to add some additional functionality. Replace the contents of `index.ts` with the following:
+
+```ts
+/**
+ * GQTY: You can safely modify this file and Query Fetcher based on your needs
+ */
+import type { IncomingMessage } from 'http';
+import { getClient } from '@faustjs/next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+});
+
+export function serverClient(req: IncomingMessage) {
+  return getClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
+    context: req,
+  });
+}
+
+export * from './schema.generated';
+```
+
+The code above is a modified version of the default `index.ts` file that GQty generates. The `getClient` function is a helper function that returns a client configured to work with the Headless WordPress API. Note the additional `serverClient` function used to create a client configured to work with the server by passing in the `IncomingMessage` object. This object allows Faust.js to read cookies on the server and pass them along to the Headless WordPress API.
+
+### Troubleshooting
+
+#### "GraphQL introspection is not allowed"
+
+If you run into the error message `GraphQL introspection is not allowed, but the query contained __schema or __type`, you will have to enable introspection temporarily.
+
+[Introspection is disabled by default in WPGraphQL.](https://www.wpgraphql.com/docs/security/#introspection-disabled-by-default) To enable it, go to WP Admin -> GraphQL -> Enable Public Introspection.
+
+If you are using something other than `WPGraphQL` you will need to refer to the documentation to enable introspection.
+
+Once the schema file has been generated, you can then disable introspection again.
+
+## Updating the GraphQL Schema Typings
+
+If you followed the steps above or started a project using the `examples/next/getting-started` boilerplate, you will have a `schema.generated.ts` file in your `src/client` directory. The typings in this file are generated from the Headless WordPress API. If you are using a different Headless WordPress API or adding additional queries or mutations to your existing Headless WordPress API, you will need to update the typings in this file. Possible reasons you might need to generate a new typings file include:
+
+1. Adding a plugin to your WordPress site that adds additional queries
+1. Using plugins like [`Atlas Content Modeler`](https://github.com/wpengine/atlas-content-modeler) that add additional queries based on custom content types you create
+
+To do this, you will need to run `gqty generate` again. Running `gqty generate` will update the typings in the `schema.generated.ts` file and leave the `index.ts` unchanged.
+
+## Providing the GQty Client to Faust.js
+
+Using the boilerplate client code will provide two different GQty clients that you can use depending upon whether you are on the client or server. However, you will still need to give the client to Faust.js to use to fetch data. To do this, you can use the `FaustProvider` component published by Faust.js, and provide it to the GQty client you want to use. This is done in your `_app.tsx` file as follows:
+
+```tsx title=src/pages/_app.tsx {2,9,11}
+import 'faust.config';
+import { FaustProvider } from '@faustjs/next';
+import { client } from 'client';
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <FaustProvider client={client} pageProps={pageProps}>
+        <Component {...pageProps} />
+      </FaustProvider>
+    </>
+  );
+}
+```
+
+This code ensures Faust.js uses the correct client to make requests on your behalf.
+
+## Using the Client to Make Queries
+
+Assuming you have created a client using the Faust.js `getClient` function, you will be able to take advantage of many of the added features that Faust.js provides and the general features provided by GQty. You can read our [hooks for fetching data reference](../reference/hooks) for examples of using some of the built-in hooks using the Faust.js client, but the client will support any query your Headless WordPress API. Let's look at a few examples of how to use the client to make queries.
+
+### The useQuery Hook
+
+If you cannot use one of the [WordPress-specific hooks](../reference/hooks) you can use the `useQuery` hook to make a query to the Headless WordPress API. This hook helps make any query supported by your Headless WordPress API. It essentially exposes your entire generated GQL schema to you for you to use what you need. For example, say you have a `Header` component, and you want to fetch menu items from your "Primary" menu in WordPress. You could do so as follows:
+
+```tsx title=src/components/Header.tsx {4,12-15,30-36}
+import React from 'react';
+import styles from 'scss/components/Header.module.scss';
+import Link from 'next/link';
+import { client, MenuLocationEnum } from 'client';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+function Header({ title = 'My Site Title', description }: Props): JSX.Element {
+  const { menuItems } = client.useQuery();
+  const links = menuItems({
+    where: { location: MenuLocationEnum.PRIMARY },
+  }).nodes;
+
+  return (
+    <header>
+      <div className={styles.wrap}>
+        <div className={styles['title-wrap']}>
+          <p className={styles['site-title']}>
+            <Link href="/">
+              <a>{title}</a>
+            </Link>
+          </p>
+          {description && <p className={styles.description}>{description}</p>}
+        </div>
+        <div className={styles.menu}>
+          <ul>
+            {links?.map((link) => (
+              <li key={`${link.label}$-menu`}>
+                <Link href={link.url ?? ''}>
+                  <a href={link.url}>{link.label}</a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+```
+
+The code above demonstrates how you can use the `useQuery` hook to make a query to the Headless WordPress API for `menuItems`, filter your `menuItems` to be only those for the `PRIMARY` menu, then use the results to render links in your `Header`. Notice there is no code regarding any server-side data fetching, but if your page [uses SSR or SSG](../guides/ssr-ssg.mdx), you will not have any client-side queries.
+
+### The useMutation Hook
+
+While Faust.js does not provide any WordPress-specific hooks for mutations, it does provide the `useMutation` hook. This hook is useful for making any mutation supported by your Headless WordPress API. For example, if you have a form on your site that admins can use to submit posts, it might look something similar to the following:
+
+```tsx title=src/components/Header.tsx {2,10-21,30-35}
+import React from 'react';
+import { client } from 'client';
+
+export interface FormData {
+  title: string;
+  content: string;
+}
+
+export function PostForm() {
+  const [submit, { isLoading, error }] = client.useMutation(
+    (mutation, { title, content }: FormData) => {
+      const result = mutation.createPost({
+        input: {
+          title: title,
+          content,
+        },
+      });
+
+      return result.post?.id;
+    },
+  );
+  const errorMessage = error?.message;
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const { postTitle, content } = e.currentTarget;
+
+        submit({
+          args: {
+            title: postTitle.value,
+            content: content.value,
+          },
+        });
+      }}
+    >
+      <input type="text" name="postTitle" placeholder="Title" />
+      <textarea name="content" placeholder="Content" />
+      <input disabled={isLoading} type="submit" value="Send" />
+      {errorMessage ? <p>Error: {errorMessage}</p> : null}
+    </form>
+  );
+}
+```
+
+> **NOTE**: The above code is not a complete example of how you would implement form submissions to your Headless WordPress API, and it demonstrates how mutations work using the Faust.js client.
+
+The code above uses `useMutation` combined with a form to create new posts by calling the [WPGraphQL](https://www.wpgraphql.com/) Headless WordPress API.
+
+## Logging Queries
+
+Sometimes you want to understand what GraphQL queries do for debugging purposes. Faust.js provides this for you by exposing a `logQueries` function, and the following code demonstrates how you might use it.
+
+```ts title=src/client/index.ts {2, 21}
+import type { IncomingMessage } from 'http';
+import { getClient, logQueries } from '@faustjs/next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+});
+
+if (process.env.NODE_ENV === 'development') {
+	logQueries(client);
+}
+```
+
+The `logQueries` function returns a function that you can call to turn the log off.
+
+```ts
+if (process.env.NODE_ENV === 'development') {
+  const unsubscribe = logQueries(client);
+
+  // queries are now logging
+  // ...
+
+  unsubscribe();
+
+  // queries no more extended log
+  // ...
+}
+```
+
+> **NOTE**: We recommend that you turn this off in production or write code to use `process.env.NODE_ENV` to log queries safely.

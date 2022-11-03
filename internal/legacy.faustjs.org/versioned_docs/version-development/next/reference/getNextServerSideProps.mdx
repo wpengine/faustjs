@@ -1,0 +1,42 @@
+---
+slug: /next/reference/getNextServerSideProps
+title: getNextServerSideProps
+description: The getNextServerSideProps function lets you server side render your page with WordPress data.
+---
+
+The `getNextServerSideProps` function lets you server side render your page with WordPress data.
+The function should be returned from [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props) which is required by Next.js to perform Server-Side Rendering (SSR):
+
+```tsx
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return getNextServerSideProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+The `getNextServerSideProps` function accepts two arguments: the server side props `context`, and an object (type `GetNextServerSidePropsConfig`) with a `Page` key.
+This should be your Next.js page component.
+
+The reason `MyPage` and `client` are passed to `getNextServerSideProps` is because
+under the hood Faust.js performs a skeleton render of the page component to know what data to fetch and what queries to build.
+This allows the developer to not have to think about batching/constructing queries, or data fetching.
+
+## Context parameter
+
+This is the same object that Next.js provides in the `getServerSideProps`. You can read the [list of parameters here](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter).
+
+## GetNextServerSidePropsConfig parameter
+
+The second argument of `getNextServerSideProps` is of type `GetNextServerSidePropsConfig` and accepts the following parameters:
+
+* `Page`: The current page component. It can be any valid React Element.
+* `client`: The GQty client.
+* `notFound`: The `notFound` boolean allows the page to return a 404 status and 404 Page. This is [used by Next.js](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#notfound) to force a page return a 404 even if there was a successfully generated page before.
+* `redirect`: The `redirect` object allows redirecting to internal and external resources. It should match the shape of `{ destination: string, permanent: boolean }`.
+* `props`: The `props` object is any other key value pairs of properties where each value is received by the `Page` component.
+
+## getNextServerSideProps return values
+
+The `getNextServerSideProps` function returns an object that is required by the `getServerSideProps` function.
