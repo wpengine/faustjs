@@ -30,7 +30,7 @@ export default function HomepageGetStarted() {
         <div className={clsx('row', styles.getStartedRow)}>
           <Link
             className="button button--info button--lg"
-            to="/docs/next/getting-started">
+            to="/docs/getting-started">
             Get Started
           </Link>
         </div>
