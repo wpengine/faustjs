@@ -28,7 +28,7 @@ const FeatureList = [
     description: (
       <>Use chained requests, resolve custom post type templates, and more.</>
     ),
-    link: '',
+    link: '/docs/templates',
   },
   {
     title: 'Plugin System',
