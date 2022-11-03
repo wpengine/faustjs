@@ -8,7 +8,8 @@ const FeatureList = [
     title: 'Apollo',
     description: (
       <>
-        Flexibly perform declarative queries to manipulate and structure data using Apollo.
+        Flexibly perform declarative queries to manipulate and structure data
+        using Apollo.
       </>
     ),
     link: '/blog/the-future-of-faust#where-faustjs-is-going',
@@ -17,7 +18,7 @@ const FeatureList = [
     title: 'Previews',
     description: (
       <>
-        Preview your posts and pages before publishing and rewrite WordPress
+        Preview posts and pages before publishing and rewrite WordPress
         preview URLs to your frontend.
       </>
     ),
@@ -31,11 +32,23 @@ const FeatureList = [
     link: '/docs/templates',
   },
   {
-    title: 'Plugin System',
+    title: 'Seed Query',
     description: (
-      <>Use plugins to add quick and flexible functionality to your product.</>
+      <>
+        Use a seed query to obtain a list of possible templates for any given
+        route.
+      </>
     ),
-    link: '',
+    link: '/docs/faustwp/seed-query',
+  },
+  {
+    title: 'Next.js',
+    description: (
+      <>
+        Build a static site with WordPress data outside the template hierarchy with Next.js file based pages.
+      </>
+    ),
+    link: '/docs/next/reference/getNextStaticProps',
   },
 ];
 
