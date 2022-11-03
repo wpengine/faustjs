@@ -17,29 +17,49 @@ module.exports = {
       id: 'getting-started',
     },
     {
-      type: 'category',
-      label: 'Reference',
-      items: [
-        {
-          type: 'doc',
-          label: 'API Router',
-          id: 'next/reference/api-router',
-        },
-      ],
+      type: 'doc',
+      label: 'Example Project Walkthrough',
+      id: 'next/guides/project-walkthrough',
     },
     {
       type: 'category',
-      label: 'Usage with Next.js',
+      label: 'Guides',
       items: [
         {
           type: 'doc',
           label: 'Previews',
           id: 'next/guides/post-page-previews',
         },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Reference',
+      items: [
         {
           type: 'doc',
-          label: 'Example Project Walkthrough',
-          id: 'next/guides/project-walkthrough',
+          label: 'Templates Overview',
+          id: 'templates',
+        },
+        {
+          type: 'doc',
+          label: 'Seed Query',
+          id: 'faustwp/seed-query',
+        },
+        {
+          type: 'doc',
+          label: 'API Router',
+          id: 'next/reference/api-router',
+        },
+        {
+          type: 'doc',
+          label: 'getNextServerSideProps',
+          id: 'next/reference/getNextServerSideProps',
+        },
+        {
+          type: 'doc',
+          label: 'getNextStaticProps',
+          id: 'next/reference/getNextStaticProps',
         },
       ],
     },
@@ -60,48 +80,9 @@ module.exports = {
       id: 'telemetry',
     },
     {
-      type: 'category',
-      label: 'Seed Query',
-      items: [
-        {
-          type: 'doc',
-          label: 'Seed Query',
-          id: 'faustwp/seed-query',
-        },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Usage with Next.js',
-      items: [
-        {
-          type: 'category',
-          label: 'Reference',
-          items: [
-            {
-              type: 'doc',
-              label: 'getNextServerSideProps',
-              id: 'next/reference/getNextServerSideProps',
-            },
-            {
-              type: 'doc',
-              label: 'getNextStaticProps',
-              id: 'next/reference/getNextStaticProps',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Migration Path from Faust.js < v1.0.0',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'migrationPath/overview',
-        },
-      ],
+      type: 'doc',
+      label: 'Migration from old Faust',
+      id: 'migrationPath/overview',
     },
   ],
 };
