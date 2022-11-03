@@ -7,7 +7,7 @@ module.exports = {
   tagline: 'The Headless WordPress Framework',
   customFields: {
     description:
-      'Faust.js is the Headless WordPress Framework. Faust.js provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites React/Next.js/etc.',
+      'Faust is a JavaScript framework designed to make the development of headless WordPress sites as easy as possible for WordPress and JavaScript developers. The mission of Faust is to reduce the complexity of building headless WordPress frontends for the web, allowing the developer to build production sites with the ease of a monolithic WordPress site.',
   },
   url: 'https://faustjs.org',
   baseUrl: '/',
