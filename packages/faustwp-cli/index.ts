@@ -24,6 +24,9 @@ const config = new Configstore(CONFIG_STORE_NAME);
     case 'build':
       process.env.NODE_ENV = 'production';
       break;
+    case 'start':
+      process.env.NODE_ENV = 'production';
+      break;
     case 'test':
       process.env.NODE_ENV = 'test';
       break;
@@ -46,10 +49,10 @@ const config = new Configstore(CONFIG_STORE_NAME);
   ) {
     /**
      * Do not prompt for telemetry if preferences are not set and the command
-     * that is being ran is build. We do not want to halt the build of a
+     * that is being ran is build or start. We do not want to halt the build of a
      * production site that likely does not have preferences saved.
      */
-    if (arg1 !== 'build') {
+    if (arg1 !== 'build' && arg1 !== 'start') {
       await promptUserForTelemetryPref(true, config);
     }
   }
