@@ -19,7 +19,7 @@ Find your Headless Secret in **WP-Admin -> Settings -> Faust**. Copy this value:
   alt="The Faust plugin admin interface with a red rectangle around the Secret Key field"
 />
 
-### Add your Headless Secret to your `.env.local` File
+### Add Your Headless Secret to Your `.env.local` File
 
 Add the `FAUSTWP_SECRET_KEY` key to your `.env.local` file with the headless secret as the value. Your `.env.local` file should already have a value for `NEXT_PUBLIC_WORDPRESS_URL`. The file should look something like this:
 
@@ -31,7 +31,7 @@ NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 FAUSTWP_SECRET_KEY=xxxx
 ```
 
-### Ensure you've created your `faust.config.js` file and are importing it in your `_app.js`
+### Create Your `faust.config.js` File Import It In `_app.js`
 
 Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/faustwp-getting-started) Faust example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/main/examples/next/faustwp-getting-started/faust.config.js) file.
 
@@ -66,7 +66,7 @@ import { apiRouter } from '@faustwp/core';
 export default apiRouter;
 ```
 
-## Create your Preview Page
+## Create Your Preview Page
 
 With your headless secret set and the `authorizeHandler` ready to handle requests, you can now create a Next.js [page](https://nextjs.org/docs/basic-features/pages) for previews. Create a file at `pages/preview.js` with the following:
 
@@ -127,7 +127,7 @@ if (props.loading) {
 
 If you don't handle the loading state you may find that the post/page data will be undefined.
 
-### What happens if you don't use on the `asPreview` property?
+### Is the `asPreview` Property Necessary?
 
 If you wish to disable post/page previews for a particular template hierarchy page you can simply ignore the `asPreview` parameter.
 

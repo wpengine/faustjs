@@ -4,18 +4,18 @@ title: Understanding the Example project
 description: Understand how the Example project is structured so that you can augment it according to your project’s needs
 ---
 
-# Understanding the Example project
+# Understanding the Example Project
 
 The example project contains a site demonstrating the use of Faust features like WordPress template hierarchy and the plugin system.
 You can use this project for basing your future projects and as a good reference site.
 
-## How to get the example working locally
+## How to Get the Example Working Locally
 
 If you followed the [Getting started guide](/docs/next/getting-started), you will have to create a new app using the template and connect your WordPress site.
 
 Then you can navigate to the `my-app` folder and inspect the code.
 
-## The file structure rationale
+## The File Structure Rationale
 
 The example project follows the typical conventions of the [Next.js file based routing](https://nextjs.org/docs/routing/introduction).
 Here is the output of the `tree` command on this folder:
@@ -93,24 +93,24 @@ They are highly re-usable and for purely presentational purposes.
 
 Now that you have an good picture of the folder structure, let's take a look at which files you should be changing if you wish to customize this theme.
 
-## The areas of example files where you should make changes
+## Changing Example Files
 
 Instead of telling you what you should change, you can follow the below how-to sections that will help you customize the theme for your needs.
 
-### How to change the styling of the site?
+### How do I change the styling of the site?
 
 To change the styling of each `component` you can navigate to the `components` folder and change the CSS styles in the `.module.scss` file. As
 If you want to change the global styling of the site or the style of the pages, you can navigate to the `styles` folder and make your changes there.
 Each `scss` module contains documentation strings for your convenience.
 
-### How to change the pages layout?
+### How do I change the pages layout?
 
 To change each pages layout, you will need to review the `wp-templates` folder and make your changes there.
 For each type of page that correspond to the WordPress template hierarchy, there are different layouts and queries.
 For example the `page.js` represents the ["page type"](https://developer.wordpress.org/themes/basics/template-hierarchy/#single-page) and the `single.js` represents the ["single post type"](https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post).
 You can reuse the existing components or create new ones that fit your requirements.
 
-### How to change the GraphQL queries?
+### How do I change the GraphQL queries?
 
 Most of the queries are located within each `wp-templates` component. If you look after the definitions of each component there is a `query` and `variables` properties:
 
