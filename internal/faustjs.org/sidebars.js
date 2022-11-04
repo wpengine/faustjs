@@ -94,5 +94,10 @@ module.exports = {
       label: 'Migration from old Faust',
       id: 'migrationPath/overview',
     },
+    {
+      type: 'doc',
+      label: 'FAQ',
+      id: 'faq',
+    },
   ],
 };
