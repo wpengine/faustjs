@@ -16,6 +16,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
   projectName: 'faustjs', // Usually your repo name.
+  noIndex: process.env.SITE_NO_INDEX ?? false,
   themeConfig: {
     algolia: {
       // If Algolia did not provide you any appId, use 'BH4D9OD16A'
