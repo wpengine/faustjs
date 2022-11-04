@@ -30,6 +30,16 @@ module.exports = {
           label: 'Previews',
           id: 'next/guides/post-page-previews',
         },
+        {
+          type: 'doc',
+          label: 'Authentication',
+          id: 'authentication',
+        },
+        {
+          type: 'doc',
+          label: 'Sitemaps',
+          id: 'sitemaps',
+        },
       ],
     },
     {
