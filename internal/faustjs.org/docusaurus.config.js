@@ -60,10 +60,10 @@ module.exports = {
     footer: {
       style: 'dark',
       links: [
-        {
-          title: 'Changelogs',
-          items: [],
-        },
+        // {
+        //   title: 'Changelogs',
+        //   items: [],
+        // },
         {
           title: 'Docs',
           items: [
