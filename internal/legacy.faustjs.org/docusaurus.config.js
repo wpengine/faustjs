@@ -16,6 +16,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
   projectName: 'faustjs', // Usually your repo name.
+  noIndex: process.env.SITE_NO_INDEX ?? false,
   themeConfig: {
     algolia: {
       // If Algolia did not provide you any appId, use 'BH4D9OD16A'
@@ -26,14 +27,14 @@ module.exports = {
 
       indexName: 'faustjs',
     },
-    // announcementBar: {
-    //   id: 'depreciation_notice',
-    //   content:
-    //     '⭐️ This version of Faust.js is being deprecated. Visit the new version at <a target="_blank" rel="noopener noreferrer" href="https://faustjs.org/">faustjs.org</a> ⭐️',
-    //   backgroundColor: '#7e5cef',
-    //   textColor: '#FFF',
-    //   isCloseable: false,
-    // },
+    announcementBar: {
+      id: 'depreciation_notice',
+      content:
+        '⭐️ This version of Faust.js is being deprecated. Visit the new version at <a target="_blank" rel="noopener noreferrer" href="https://faustjs.org/">faustjs.org</a> ⭐️',
+      backgroundColor: '#7e5cef',
+      textColor: '#FFF',
+      isCloseable: false,
+    },
     navbar: {
       title: 'Faust.js™',
       // logo: {

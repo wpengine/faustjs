@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.1.4
+
+### Patch Changes
+
+- ede0fc4: Fixed a bug where the `NODE_ENV` was not being set properly when `faust start` was ran. Additionally, fixed a bug that halted the `faust start` command from running in some CI/node environments.
+
 ## 0.1.3
 
 ### Patch Changes

@@ -12,38 +12,33 @@
 module.exports = {
   docsSidebar: [
     {
+      type: 'doc',
+      label: 'Getting Started',
+      id: 'getting-started',
+    },
+    {
+      type: 'doc',
+      label: 'Example Project Walkthrough',
+      id: 'next/guides/project-walkthrough',
+    },
+    {
       type: 'category',
-      label: 'Tutorial for PHP Developers',
+      label: 'Guides',
       items: [
         {
           type: 'doc',
-          label: 'Development Environment Setup',
-          id: 'tutorial/dev-env-setup',
+          label: 'Previews',
+          id: 'next/guides/post-page-previews',
         },
         {
           type: 'doc',
-          label: 'Introduction to Next.js',
-          id: 'tutorial/nextjs-intro',
+          label: 'Authentication',
+          id: 'authentication',
         },
         {
           type: 'doc',
-          label: 'Create A Basic Headless WordPress Site',
-          id: 'tutorial/basic-headless-site',
-        },
-        {
-          type: 'doc',
-          label: 'Create Your First React Component',
-          id: 'tutorial/first-react-component',
-        },
-        {
-          type: 'doc',
-          label: 'Setup Faust.js',
-          id: 'tutorial/setup-faustjs',
-        },
-        {
-          type: 'doc',
-          label: 'Querying Data From Your Headless WordPress Site',
-          id: 'tutorial/querying-data',
+          label: 'Sitemaps',
+          id: 'sitemaps',
         },
       ],
     },
@@ -53,24 +48,28 @@ module.exports = {
       items: [
         {
           type: 'doc',
+          label: 'Templates Overview',
+          id: 'templates',
+        },
+        {
+          type: 'doc',
+          label: 'Seed Query',
+          id: 'faustwp/seed-query',
+        },
+        {
+          type: 'doc',
           label: 'API Router',
           id: 'next/reference/api-router',
         },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Usage with Next.js',
-      items: [
         {
           type: 'doc',
-          label: 'Previews',
-          id: 'next/guides/post-page-previews',
+          label: 'getNextServerSideProps',
+          id: 'next/reference/getNextServerSideProps',
         },
         {
           type: 'doc',
-          label: 'Example Project Walkthrough',
-          id: 'next/guides/project-walkthrough',
+          label: 'getNextStaticProps',
+          id: 'next/reference/getNextStaticProps',
         },
       ],
     },
@@ -91,48 +90,14 @@ module.exports = {
       id: 'telemetry',
     },
     {
-      type: 'category',
-      label: 'Seed Query',
-      items: [
-        {
-          type: 'doc',
-          label: 'Seed Query',
-          id: 'faustwp/seed-query',
-        },
-      ],
+      type: 'doc',
+      label: 'Migration from old Faust',
+      id: 'migrationPath/overview',
     },
     {
-      type: 'category',
-      label: 'Usage with Next.js',
-      items: [
-        {
-          type: 'category',
-          label: 'Reference',
-          items: [
-            {
-              type: 'doc',
-              label: 'getNextServerSideProps',
-              id: 'next/reference/getNextServerSideProps',
-            },
-            {
-              type: 'doc',
-              label: 'getNextStaticProps',
-              id: 'next/reference/getNextStaticProps',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Migration Path from Faust.js < v1.0.0',
-      items: [
-        {
-          type: 'doc',
-          label: 'Overview',
-          id: 'migrationPath/overview',
-        },
-      ],
+      type: 'doc',
+      label: 'FAQ',
+      id: 'faq',
     },
   ],
 };

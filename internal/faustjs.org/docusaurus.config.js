@@ -7,7 +7,7 @@ module.exports = {
   tagline: 'The Headless WordPress Framework',
   customFields: {
     description:
-      'Faust.js is the Headless WordPress Framework. Faust.js provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites React/Next.js/etc.',
+      'Faust is a JavaScript framework designed to make the development of headless WordPress sites as easy as possible for WordPress and JavaScript developers. The mission of Faust is to reduce the complexity of building headless WordPress frontends for the web, allowing the developer to build production sites with the ease of a monolithic WordPress site.',
   },
   url: 'https://faustjs.org',
   baseUrl: '/',
@@ -16,6 +16,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'wpengine', // Usually your GitHub org/user name.
   projectName: 'faustjs', // Usually your repo name.
+  noIndex: process.env.SITE_NO_INDEX ?? false,
   themeConfig: {
     algolia: {
       // If Algolia did not provide you any appId, use 'BH4D9OD16A'
@@ -40,6 +41,11 @@ module.exports = {
           label: 'Docs',
         },
         {
+          to: 'blog',
+          label: 'Blog',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/wpengine/faustjs?ref=faustjs',
           label: 'GitHub',
           position: 'right',
@@ -62,12 +68,12 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/tutorial/dev-env-setup',
+              label: 'Getting Started',
+              to: '/docs/getting-started',
             },
             {
-              label: 'Getting Started',
-              to: '/docs/next/getting-started',
+              label: 'Example Project',
+              to: '/docs/next/guides/project-walkthrough',
             },
             {
               label: 'Privacy Policy',
@@ -84,7 +90,7 @@ module.exports = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/wpedecode?ref=faustjs',
+              href: 'https://twitter.com/wpengine',
             },
             {
               label: 'YouTube',
@@ -123,9 +129,6 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/wpengine/faustjs/edit/site-dev/internal/faustjs.org/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },

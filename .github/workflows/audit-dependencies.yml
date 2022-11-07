@@ -1,0 +1,12 @@
+name: Audit Dependencies
+
+on: pull_request
+
+jobs:
+  audit_depedencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit for vulnerabilities
+        run: npx audit-ci@^6 --config ./audit-ci.jsonc
