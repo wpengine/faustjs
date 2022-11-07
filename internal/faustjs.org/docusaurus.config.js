@@ -62,7 +62,20 @@ module.exports = {
       links: [
         {
           title: 'Changelogs',
-          items: [],
+          items: [
+            {
+              label: '@faustwp/core',
+              to: '/docs/changelog/faustwp-core',
+            },
+            {
+              label: '@faustwp/cli',
+              to: '/docs/changelog/faustwp-cli',
+            },
+            {
+              label: 'FaustWP Plugin',
+              to: '/docs/changelog/faustwp',
+            },
+          ],
         },
         {
           title: 'Docs',
