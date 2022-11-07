@@ -30,6 +30,16 @@ module.exports = {
           label: 'Previews',
           id: 'next/guides/post-page-previews',
         },
+        {
+          type: 'doc',
+          label: 'Authentication',
+          id: 'authentication',
+        },
+        {
+          type: 'doc',
+          label: 'Sitemaps',
+          id: 'sitemaps',
+        },
       ],
     },
     {
@@ -83,6 +93,11 @@ module.exports = {
       type: 'doc',
       label: 'Migration from old Faust',
       id: 'migrationPath/overview',
+    },
+    {
+      type: 'doc',
+      label: 'FAQ',
+      id: 'faq',
     },
   ],
 };
