@@ -12,7 +12,7 @@ const FeatureList = [
         using Apollo.
       </>
     ),
-    link: '/blog/the-future-of-faust#where-faustjs-is-going',
+    link: '/docs/apollo',
   },
   {
     title: 'Previews',
