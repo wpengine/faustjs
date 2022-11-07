@@ -46,6 +46,11 @@ module.exports = {
           position: 'left',
         },
         {
+          href: 'https://legacy.faustjs.org',
+          label: 'Legacy Docs',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/wpengine/faustjs?ref=faustjs',
           label: 'GitHub',
           position: 'right',
