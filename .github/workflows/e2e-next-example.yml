@@ -50,10 +50,10 @@ jobs:
       # writing this they do not function as expected on GH actions
       - name: replace downloaded registry faust packages with local build
         run: |
-          rm -rf e2e-app/node_modules/@faustjs/core
-          rm -rf e2e-app/node_modules/@faustjs/next
-          cp -r packages/core e2e-app/node_modules/@faustjs/core
-          cp -r packages/next e2e-app/node_modules/@faustjs/next
+          rm -rf e2e-app/node_modules/@faustwp/core
+          rm -rf e2e-app/node_modules/@faustwp/cli
+          cp -r packages/core e2e-app/node_modules/@faustwp/core
+          cp -r packages/cli e2e-app/node_modules/@faustwp/cli
       - name: copy env
         working-directory: e2e-app
         run: |
