@@ -37,7 +37,7 @@ Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/
 
 You'll need to import it at the top of your `_app.js` file to ensure the `config` is set, and your Faust app initializes appropriately.
 
-```js title=pages/_app.js {1}
+```js title=pages/_app.js 
 import '../faust.config';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -88,7 +88,7 @@ Now in the `wp-template` pages, Faust will propagate a special boolean property 
 
 Here is an example taken from the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/faustwp-getting-started) Faust example of what you should do in your template hierarchy components if you wish to render previews:
 
-```js title=wp-templates/single.js {20}
+```js title=wp-templates/single.js 
 export default function Component(props) {
   // Loading state for previews
   if (props.loading) {
