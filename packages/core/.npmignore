@@ -1,13 +1,9 @@
 src/**/*
-.eslintignore
-.prettierignore
-.eslintrc.js
-.prettierrc.js
+tests/**/*
 .gitignore
-tsconfig.json
+.eslintignore
 jest.config.js
 jest.setup.ts
-test/**/*
 tsconfig-cjs.json
-gqty.config.js
+tsconfig.json
 coverage

@@ -1,26 +1,24 @@
-# @faustjs/core
+# @faustwp/core
 
 <p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@faustjs/core">
-    <img alt="" src="https://img.shields.io/npm/v/@faustjs/core?color=7e5cef&style=for-the-badge">
+  <a aria-label="NPM version" href="https://www.npmjs.com/package/@faustwp/core">
+    <img alt="" src="https://img.shields.io/npm/v/@faustwp/core?color=7e5cef&style=for-the-badge">
   </a>
 
   <a aria-label="License" href="https://github.com/wpengine/faustjs/blob/canary/LICENSE">
-    <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=7e5cef&style=for-the-badge">
+    <img alt="" src="https://img.shields.io/npm/l/@faustwp/core?color=7e5cef&style=for-the-badge">
   </a>
 </p>
 
 <p align="center">
-  <a aria-label="Faust.js Core Downloads Per Month" href="https://www.npmjs.com/package/@faustjs/core">
-    <img alt="" src="https://img.shields.io/npm/dm/@faustjs/core?color=7e5cef&style=for-the-badge&label=@faustjs/core">
+  <a aria-label="Faust.js Next Downloads Per Month" href="https://www.npmjs.com/package/@faustwp/core">
+    <img alt="" src="https://img.shields.io/npm/dm/@faustwp/core?color=7e5cef&style=for-the-badge&label=@faustwp/core">
   </a>
-  <a aria-label="Faust.js Core Downloads Per Week" href="https://www.npmjs.com/package/@faustjs/core">
-    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/core?color=7e5cef&style=for-the-badge&label=@faustjs/core">
+  <a aria-label="Faust.js Next Downloads Per Week" href="https://www.npmjs.com/package/@faustwp/core">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustwp/core?color=7e5cef&style=for-the-badge&label=@faustwp/core">
   </a>
 </p>
 
-`@faustjs/core` is the core library for the Faust.js framework. It contains the core classes and interfaces that are used by other libraries in the framework.
+🚧 Please note this is prerelease software and breaking changes may occur.
 
-NOTE: This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like authentication and post previews. Be sure to install the [WordPress plugin](https://github.com/wpengine/faustjs) that enables the functionality in this package.
-
-[View Faust.js Documentation](https://github.com/wpengine/faustjs)
+Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers.

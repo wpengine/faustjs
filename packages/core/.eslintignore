@@ -3,4 +3,3 @@ node_modules
 /*.js
 /*.ts
 /*.d.ts
-src/api/client/schema.generated.ts

@@ -1,7 +1,9 @@
-import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
+import {
+  FAUST_API_BASE_PATH,
+  TOKEN_ENDPOINT_PARTIAL_PATH,
+} from '../../lib/constants.js';
 import { isServerSide } from '../../utils/index.js';
-import { config, TOKEN_ENDPOINT_PARTIAL_PATH } from '../../config/index.js';
 
 export interface AccessToken {
   /**
@@ -107,7 +109,8 @@ export function setAccessTokenRefreshTimer(): void {
     secondsUntilExpiration - TIME_UNTIL_REFRESH_BEFORE_TOKEN_EXPIRES;
 
   setRefreshTimer(
-    setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000), // eslint-disable-line @typescript-eslint/no-use-before-define
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setTimeout(() => void fetchAccessToken(), secondsUntilRefresh * 1000),
   );
 }
 
@@ -128,15 +131,7 @@ export function clearAccessTokenRefreshTimer(): void {
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
-  const { apiBasePath } = config();
-
-  if (isNil(apiBasePath)) {
-    throw new Error(
-      'You must provide an apiBasePath value in your Faust.js config in order to use the fetchToken middleware',
-    );
-  }
-
-  let url = `${apiBasePath}/${TOKEN_ENDPOINT_PARTIAL_PATH}`;
+  let url = `${FAUST_API_BASE_PATH}/${TOKEN_ENDPOINT_PARTIAL_PATH}`;
 
   // Add the code to the url if it exists
   if (isString(code) && code.length > 0) {

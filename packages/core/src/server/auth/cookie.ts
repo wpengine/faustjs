@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
 import isString from 'lodash/isString.js';
 import cookie, { CookieSerializeOptions } from 'cookie';

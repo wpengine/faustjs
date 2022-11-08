@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ['<rootDir>/test'],
+  roots: ['<rootDir>/tests'],
 
   // Adds Jest support for TypeScript using ts-jest.
   transform: {
@@ -12,10 +12,6 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
 
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-
-  // Fix default switch that came in jest v27.0.0
-  // Link: https://jestjs.io/blog/2021/05/25/jest-27#flipping-defaults
-  timers: 'legacy',
 
   // ESM Support
   // @link https://kulshekhar.github.io/ts-jest/docs/guides/esm-support/
