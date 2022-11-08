@@ -9,5 +9,5 @@
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
-  "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example"]
+  "ignore": ["@faustwp/getting-started-example"]
 }
