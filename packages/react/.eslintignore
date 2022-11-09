@@ -1,0 +1,7 @@
+dist
+node_modules
+/*.js
+/*.ts
+/*.d.ts
+src/types/wpgraphql.d.ts
+coverage

@@ -4,6 +4,14 @@ import { getQueryParam, log } from '../../utils/index.js';
 import { Cookies } from './cookie.js';
 import { OAuth } from './token.js';
 
+export function redirect(res: ServerResponse, url: string): void {
+  res.writeHead(302, {
+    Location: url,
+  });
+
+  res.end();
+}
+
 export interface AuthorizeResponse {
   accessToken: string;
   accessTokenExpiration: number;

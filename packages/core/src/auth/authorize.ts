@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import isString from 'lodash/isString.js';
-import { getWpUrl } from '../lib/getWpUrl.js';
+import { config } from '../config/index.js';
 import { getQueryParam, removeURLParam } from '../utils/index.js';
 import { fetchAccessToken } from './client/accessToken.js';
 
@@ -23,7 +23,7 @@ export async function ensureAuthorization(
 ): Promise<
   true | { redirect?: string | undefined; login?: string | undefined }
 > {
-  const wpUrl = getWpUrl();
+  const { wpUrl } = config();
   const { redirectUri, loginPageUri } = options || {};
 
   // Get the authorization code from the URL if it exists

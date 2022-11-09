@@ -2,10 +2,9 @@ import 'isomorphic-fetch';
 import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
 import isNumber from 'lodash/isNumber.js';
+import { config } from '../../config/index.js';
 import { Cookies } from './cookie.js';
 import { log } from '../../utils/index.js';
-import { getWpSecret } from '../../lib/getWpSecret.js';
-import { getWpUrl } from '../../lib/getWpUrl.js';
 
 export type OAuthTokenResponse =
   | OAuthTokens
@@ -25,7 +24,7 @@ export class OAuth {
 
   constructor(cookies: Cookies) {
     this.cookies = cookies;
-    this.tokenKey = `${getWpUrl()}-rt`;
+    this.tokenKey = `${config().wpUrl}-rt`;
   }
 
   public getRefreshToken(): string | undefined {
@@ -56,8 +55,7 @@ export class OAuth {
   }
 
   public async fetch(code?: string): Promise<OAuthTokenResponse> {
-    const wpUrl = getWpUrl();
-    const apiClientSecret = getWpSecret();
+    const { wpUrl, apiClientSecret } = config();
 
     if (!apiClientSecret) {
       throw new Error(

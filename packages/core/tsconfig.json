@@ -4,8 +4,7 @@
     "module": "esnext",
     "outDir": "dist/mjs",
     "target": "es2017",
-    "rootDir": "src",
-    "jsx": "react"
+    "rootDir": "src"
   },
   "exclude": ["node_modules", "dist"],
   "include": ["src"]

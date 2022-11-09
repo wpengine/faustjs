@@ -1,7 +1,7 @@
-import { getConfig } from '../config/index.js';
+import { config } from '../config/index.js';
 
 export const log: typeof console.log = (...args) => {
-  if (getConfig().disableLogging) {
+  if (config().disableLogging) {
     return;
   }
 

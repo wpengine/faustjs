@@ -1,0 +1,115 @@
+{
+  "name": "@faustjs/next",
+  "version": "0.15.9",
+  "description": "This module helps you use WordPress as a Headless CMS with Next.js",
+  "main": "dist/cjs/export/index.js",
+  "module": "dist/mjs/export/index.js",
+  "types": "dist/cjs/export/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/export/index.js",
+      "require": "./dist/cjs/export/index.js"
+    },
+    "./client": {
+      "import": "./dist/mjs/export/client.js",
+      "require": "./dist/cjs/export/client.js"
+    },
+    "./components": {
+      "import": "./dist/mjs/export/components.js",
+      "require": "./dist/cjs/export/components.js"
+    },
+    "./config": {
+      "import": "./dist/mjs/export/config.js",
+      "require": "./dist/cjs/export/config.js"
+    },
+    "./log": {
+      "import": "./dist/mjs/export/log.js",
+      "require": "./dist/cjs/export/log.js"
+    },
+    "./server": {
+      "import": "./dist/mjs/export/server.js",
+      "require": "./dist/cjs/export/server.js"
+    },
+    "./middleware": {
+      "import": "./dist/mjs/export/middleware.js",
+      "require": "./dist/cjs/export/middleware.js"
+    },
+    "./utils": {
+      "import": "./dist/mjs/export/utils.js",
+      "require": "./dist/cjs/export/utils.js"
+    }
+  },
+  "scripts": {
+    "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
+    "clean": "rimraf dist",
+    "dev": "npm run ts:watch",
+    "format": "prettier --write .",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json --fix",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --parser-options=project:tsconfig.json",
+    "package": "node ../../scripts/package.js",
+    "prepublish": "npm run build",
+    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test": "jest",
+    "ts:cjs": "tsc -p tsconfig-cjs.json",
+    "ts:watch": "tsc -p . --watch",
+    "ts": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wpengine/faustjs/tree/main/packages/next"
+  },
+  "keywords": [
+    "WordPress",
+    "WP",
+    "Headless",
+    "CMS",
+    "API",
+    "WP Engine",
+    "React",
+    "Next",
+    "Next.js"
+  ],
+  "author": "WP Engine",
+  "license": "MIT",
+  "peerDependencies": {
+    "next": ">=11.1.2",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@types/common-tags": "^1.8.1",
+    "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.176",
+    "@types/node": "^17.0.17",
+    "@types/react": "^17.0.34",
+    "bs-logger": "^0.2.6",
+    "gqty": "^2.3.0",
+    "jest": "^27.3.1",
+    "make-error": "^1.3.6",
+    "next": "^12.2.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.7",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.4.4"
+  },
+  "sideEffects": [
+    "./dist/mjs/export/log.js",
+    "./dist/cjs/export/log.js"
+  ],
+  "dependencies": {
+    "@faustjs/core": "^0.15.7",
+    "@faustjs/react": "^0.15.7",
+    "@gqty/logger": "^2.0.1",
+    "@gqty/react": "^2.1.0",
+    "common-tags": "^1.8.2",
+    "fast-xml-parser": "^4.0.3",
+    "graphql": ">=15.6",
+    "lodash": "^4.17.21"
+  }
+}
