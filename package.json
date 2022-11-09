@@ -7,8 +7,8 @@
   },
   "workspaces": {
     "packages": [
-      "packages/core",
-      "packages/cli",
+      "packages/faustwp-core",
+      "packages/faustwp-cli",
       "examples/next/getting-started",
       "plugins/faustwp"
     ]
