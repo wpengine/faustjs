@@ -5,9 +5,9 @@ slug: sprint-22-update
 hide_table_of_contents: true
 ---
 
-With the end of Sprint 22, Team Merlin is proud to officially announce the re-release of Faust.js, WP Engine’s framework for building headless WordPress sites!
+With the end of Sprint 22, our team is proud to officially announce the re-release of Faust.js, WP Engine’s framework for building headless WordPress sites!
 
-During this sprint, our team launched the rewritten Faust documentation to work with the new version of Faust, which includes a handy [getting started](https://faustjs.org/docs/getting-started) guide, as well as updated references and [examples](https://faustjs.org/docs/next/guides/project-walkthrough). We are so excited for folks to go check out new docs and really dig into these new features, and plan to roll out several new documents in the coming weeks.
+During this sprint, we launched the rewritten Faust documentation to work with the new version of Faust, which includes a handy [getting started](https://faustjs.org/docs/getting-started) guide, as well as updated references and [examples](https://faustjs.org/docs/next/guides/project-walkthrough). We are so excited for folks to go check out new docs and really dig into these new features, and plan to roll out several new documents in the coming weeks.
 
 <!--truncate-->
 
