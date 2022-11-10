@@ -28,7 +28,7 @@ Additionally, it's important to note that the new Faust is a separate “package
 
 ## Blueprints
 
-We really wanted to showcase how Faust.js contains all the features of old Faust.js, but with a new foundation designed for scalability and flexibility- and the [Atlas Portfolio Blueprint]https://github.com/wpengine/atlas-blueprint-portfolio/pull/96) is our showstopper from this sprint. It is one of the first migrated projects from old Faust (GQty) to new Faust (Apollo), and a migration guide for it is on the docket for the next sprint to help make the process of migrating from old to new Faust easier. 
+We really wanted to showcase how Faust.js contains all the features of old Faust.js, but with a new foundation designed for scalability and flexibility- and the [Atlas Portfolio Blueprint](https://github.com/wpengine/atlas-blueprint-portfolio/pull/96) is our showstopper from this sprint. It is one of the first migrated projects from old Faust (GQty) to new Faust (Apollo), and a migration guide for it is on the docket for the next sprint to help make the process of migrating from old to new Faust easier. 
 
 ## New users
 
