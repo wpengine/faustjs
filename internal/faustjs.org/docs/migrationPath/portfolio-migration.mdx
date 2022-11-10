@@ -1,0 +1,67 @@
+---
+slug: /migrationPath/portfolio-migration
+title: Migrating the Portfolio Blueprint to New Faust
+---
+Migrate the portfolio blueprint from the old version of Faust.js to new Faust
+
+### First things First
+
+Screenshots of before and after? Show user where to find new blueprint?
+
+Code snippets, before and after migration patterning
+
+Follow commits as a general guide from here: https://github.com/wpengine/atlas-blueprint-portfolio/pull/92
+
+How to test
+Checkout branch.
+Clean up node_modules and any other residue folders.
+Import blueprint into a fresh WP Site using local.
+npm i and npm run dev
+## Navigate to pages, posts category list and tag lists pages and check if everything works correctly.
+
+* Step1: Add deps
+
+Create an empty `faust.config.js` file.
+Ensure package.json is updated with the following changes: (snip from commit here: https://github.com/wpengine/atlas-blueprint-portfolio/pull/92/commits/fba52607dba1ab3829419fac0789ddcd67a387eb#diff-7ae45ad102eab3b6d7e7896acd08c427a9b25b346470d7bc6507b6481575d519)
+Regenerate package-lock.json (?)
+
+
+* Step2: Add possibleTypes
+
+In the `faust.config.js` file, add the following: (what changes?)
+
+```json title="faust.config.js"
+
+import { setConfig } from '@faustwp/core';
+import templates from './wp-templates';
+import possibleTypes from './possibleTypes.json';
+
+/**
+ * @type {import('@faustwp/core').FaustConfig}
+ **/
+export default setConfig({
+  templates,
+  experimentalPlugins: [],
+  possibleTypes,
+});
+
+```
+
+
+* Chore: Temp copy content from FaustWP example
+
+* Chore: WIP on front-page template
+
+* Chore: page template
+
+* Chore: single template
+
+* Chore: Add posts to front-page
+
+* Style: Apply format
+
+* Chore: Working Category and tag templates
+
+* Docs: Update component READMEs
+
+* Style: Format issues
