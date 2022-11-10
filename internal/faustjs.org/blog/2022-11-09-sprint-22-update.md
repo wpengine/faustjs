@@ -32,7 +32,7 @@ We really wanted to showcase how Faust.js contains all the features of old Faust
 
 ## New users
 
-New Faust’s first [known] user is live: https://www.wpgraphql.com/. Thank you, Jason Bahl for your support through the process of making sure Faust is the right tool for our users!
+New Faust’s first known user is live: https://www.wpgraphql.com/. Thank you, Jason Bahl for your support through the process of making sure Faust is the right tool for our users!
 
 If you're currently using new Faust for your site, please don't hesitate to [drop a link to it.](https://discord.gg/J2khkF9XYK) Our team loves seeing new Faust out in the wild!
 
