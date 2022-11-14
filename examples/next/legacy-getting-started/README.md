@@ -1,14 +1,7 @@
-# Next.js Headless WordPress Getting Started Example
+# [Legacy] Next.js Getting Started Example
 
-## Setup
+This example is for the legacy version of Faust that uses [GQty](https://gqty.dev/).
 
-See the [setup steps](https://github.com/wpengine/faustjs#quick-start).
+We encourage you to look at our latest example project for updated best practices with Faust.
 
-## Run it
-
-```bash
-npm install
-npm run dev
-```
-
-[http://localhost:3000]()
+For more information about this release, [read the announcement post](https://faustjs.org/blog/sprint-22-update)!
