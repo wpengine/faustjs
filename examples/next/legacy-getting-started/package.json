@@ -1,5 +1,5 @@
 {
-  "name": "@faustjs/next-headless-getting-started",
+  "name": "@faustjs/legacy-next-getting-started",
   "version": "0.1.0",
   "private": true,
   "engines": {
