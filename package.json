@@ -7,13 +7,13 @@
   },
   "workspaces": {
     "packages": [
-      "packages/legacy-core",
-      "packages/legacy-react",
-      "packages/legacy-next",
-      "packages/faustwp-cli",
-      "packages/faustwp-core",
       "examples/next/getting-started",
-      "examples/next/faustwp-getting-started",
+      "examples/next/legacy-getting-started",
+      "packages/cli",
+      "packages/core",
+      "packages/legacy-core",
+      "packages/legacy-next",
+      "packages/legacy-react",
       "plugins/faustwp"
     ]
   },
