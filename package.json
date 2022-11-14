@@ -1,5 +1,5 @@
 {
-  "name": "@faustjs/root",
+  "name": "@faustwp/root",
   "private": true,
   "engines": {
     "node": ">=16",
