@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from './HomepageFeatures.module.css';
 import Link from '@docusaurus/Link';
+import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
@@ -49,6 +49,11 @@ const FeatureList = [
       </>
     ),
     link: '/docs/next/reference/getNextStaticProps',
+  },
+  {
+    title: 'Migration Guide from GQty',
+    description: <>Follow this guide to migrate from old Faust.js (GQty) to new Faust (Apollo).</>,
+    link: '/docs/migrationPath/overview',
   },
 ];
 
