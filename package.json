@@ -7,9 +7,9 @@
   },
   "workspaces": {
     "packages": [
-      "packages/core",
-      "packages/react",
-      "packages/next",
+      "packages/legacy-core",
+      "packages/legacy-react",
+      "packages/legacy-next",
       "packages/faustwp-cli",
       "packages/faustwp-core",
       "examples/next/getting-started",
