@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
-import { Container, NavigationMenu, SkipNavigationLink } from '../../components';
+import { Container, NavigationMenu, SkipNavigationLink } from '..';
 import styles from './Header.module.scss';
 
 let cx = classNames.bind(styles);

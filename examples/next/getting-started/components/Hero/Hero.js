@@ -1,6 +1,6 @@
 import React from 'react';
 import className from 'classnames/bind';
-import { Heading } from '../../components';
+import { Heading } from '..';
 import styles from './Hero.module.scss';
 
 let cx = className.bind(styles);
