@@ -6,7 +6,10 @@ import { getConfig, setConfig, FaustConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
 import { withFaust } from './config/withFaust.js';
+import { getWpUrl } from './lib/getWpUrl.js';
+import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getWpHostname } from './lib/getWpHostname.js';
+import { getApolloClient, addApolloState } from './client.js';
 
 export {
   FaustProvider,
@@ -22,4 +25,8 @@ export {
   apiRouter,
   withFaust,
   getWpHostname,
+  getWpUrl,
+  getGraphqlEndpoint,
+  getApolloClient,
+  addApolloState,
 };
