@@ -31,7 +31,7 @@ NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 FAUSTWP_SECRET_KEY=xxxx
 ```
 
-### Create Your `faust.config.js` File Import It In `_app.js`
+### Create Your `faust.config.js` File and Import It In `_app.js`
 
 Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/faustwp-getting-started) Faust example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/main/examples/next/faustwp-getting-started/faust.config.js) file.
 
@@ -82,7 +82,7 @@ Let's break down what is going on here:
 
 We are using the `WordPressTemplate` component from `@faustwp/core` that will determine the correct page or post type to render based on the `wp-templates` hierarchy exports.
 
-> **NOTE**: We don't use the `getWordPressProps` here as opposed in some other `wp-template`` pages as we want to perform post previews in the client using CSRs.
+> **NOTE**: We don't use the `getWordPressProps` here as opposed in some other `wp-template` pages as we want to perform post previews in the client using CSRs.
 
 Now in the `wp-template` pages, Faust will propagate a special boolean property `asPreview=true` so your component needs to pass it on the Page `query` and `variables`.
 
