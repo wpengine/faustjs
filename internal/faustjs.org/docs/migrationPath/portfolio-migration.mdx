@@ -2,66 +2,114 @@
 slug: /migrationPath/portfolio-migration
 title: Migrating the Portfolio Blueprint to New Faust
 ---
-Migrate the portfolio blueprint from the old version of Faust.js to new Faust
+Migrate the [portfolio blueprint](https://github.com/wpengine/atlas-blueprint-portfolio) from the old version of Faust to the new Faust.
 
-### First things First
-
-Screenshots of before and after? Show user where to find new blueprint?
-
-Code snippets, before and after migration patterning
-
-Follow commits as a general guide from here: https://github.com/wpengine/atlas-blueprint-portfolio/pull/92
-
-How to test
-Checkout branch.
-Clean up node_modules and any other residue folders.
-Import blueprint into a fresh WP Site using local.
-npm i and npm run dev
-## Navigate to pages, posts category list and tag lists pages and check if everything works correctly.
-
-* Step1: Add deps
+### Update/Import New Dependencies
 
 Create an empty `faust.config.js` file.
-Ensure package.json is updated with the following changes: (snip from commit here: https://github.com/wpengine/atlas-blueprint-portfolio/pull/92/commits/fba52607dba1ab3829419fac0789ddcd67a387eb#diff-7ae45ad102eab3b6d7e7896acd08c427a9b25b346470d7bc6507b6481575d519)
-Regenerate package-lock.json (?)
+Ensure package.json is updated to match the following scripts and dependencies: 
 
+```json title="package.json"
+{
+  "name": "@faustjs/atlas-blueprint-portfolio",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "dev": "faust dev",
+    "build": "faust build",
+    "generate": "faust generatePossibleTypes",
+    "start": "faust start",
+    "lint": "faust lint",
+    "clean": "rimraf .next node_modules",
+    "wpe-build": "faust build",
+    "format": "prettier --write './**/*.{js,jsx,md,mdx,css,scss}'",
+    "format:check": "prettier --check './**/*.{js,jsx,md,mdx,css,scss}'"
+  },
+  "dependencies": {
+    "@apollo/client": "3.7.0",
+    "@faustwp/cli": "0.1.4",
+    "@faustwp/core": "0.1.3",
+    "classnames": "^2.3.1",
+    "graphql": "^16.6.0",
+    "next": "12.2.4",
+    "normalize.css": "^8.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-icons": "4.6.0",
+    "react-responsive-carousel": "3.2.23",
+    "sharp": "^0.31.1",
+    "use-debounce": "8.0.4"
+  },
+  "devDependencies": {
+    "@wordpress/base-styles": "^4.7.0",
+    "@wordpress/block-library": "^7.13.0",
+    "dotenv-flow": "^3.2.0",
+    "eslint": "8.9.0",
+    "eslint-config-next": "12.0.10",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "sass": "^1.54.9"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}
+```
 
-* Step2: Add possibleTypes
+Delete and regenerate package-lock.json with `npm run dev`
 
-In the `faust.config.js` file, add the following: (what changes?)
+## Generate Possible Types
+
+Create a possibleTypes.json file at the root level. add the following to the file: 
+
+  ```json title="possibleTypes.json"
+{"Node":["Category","EnqueuedScript","EnqueuedStylesheet","ContentType","Taxonomy","User","Comment","MediaItem","Page","Post","PostFormat","Tag","Project","UserRole","Testimonial","Menu","MenuItem","Plugin","Theme","CommentAuthor"],"TermNode":["Category","PostFormat","Tag"],"UniformResourceIdentifiable":["Category","ContentType","User","MediaItem","Page","Post","PostFormat","Tag","Project","Testimonial"],"EnqueuedAsset":["EnqueuedScript","EnqueuedStylesheet"],"DatabaseIdentifier":["Category","User","Comment","MediaItem","Page","Post","PostFormat","Tag","Project","Testimonial","Menu","MenuItem"],"HierarchicalTermNode":["Category"],"MenuItemLinkable":["Category","Page","Post","Tag"],"ContentNode":["MediaItem","Page","Post","Project","Testimonial"],"Commenter":["User","CommentAuthor"],"NodeWithTemplate":["MediaItem","Page","Post","Project","Testimonial"],"ContentTemplate":["DefaultTemplate","Template_Blank","Template_SinglePostNoSeparators","Template_PageNoSeparators","Template_PageLargeHeader"],"NodeWithTitle":["MediaItem","Page","Post","Project","Testimonial"],"NodeWithAuthor":["MediaItem","Page","Post","Project","Testimonial"],"NodeWithComments":["MediaItem","Page","Post"],"HierarchicalContentNode":["MediaItem","Page"],"NodeWithContentEditor":["Page","Post"],"NodeWithFeaturedImage":["Page","Post","Project"],"NodeWithRevisions":["Page","Post"],"NodeWithPageAttributes":["Page"],"NodeWithExcerpt":["Post"],"NodeWithTrackbacks":["Post"],"ContentRevisionUnion":["Post","Page"],"MenuItemObjectUnion":["Post","Page","Category","Tag"]}
+```
+
+### Update Faust Configuration
+
+Add a `faust.config.js` file at the root level of your app.
+In the `faust.config.js` file, incorporate the following: 
 
 ```json title="faust.config.js"
 
+import { ProjectTemplatePlugin } from './plugins/ProjectTemplatePlugin';
+import { RelayStylePaginationPlugin } from './plugins/RelayStylePaginationPlugin';
 import { setConfig } from '@faustwp/core';
-import templates from './wp-templates';
 import possibleTypes from './possibleTypes.json';
+import templates from './wp-templates';
 
 /**
  * @type {import('@faustwp/core').FaustConfig}
  **/
 export default setConfig({
-  templates,
-  experimentalPlugins: [],
+  experimentalPlugins: [
+    new ProjectTemplatePlugin(),
+    new RelayStylePaginationPlugin(),
+  ],
   possibleTypes,
+  templates,
 });
 
 ```
 
+### Migrate Your Next.js Pages to the Template Hierarchy
 
-* Chore: Temp copy content from FaustWP example
+If you decide to use Faust's WP Template Heirarchy, you will need to convert your Next.js pages to components for each template and according to [heirarchy rules](https://developer.wordpress.org/themes/basics/template-hierarchy/).
 
-* Chore: WIP on front-page template
+Take a look at the migration guide detailing these steps [here](https://faustjs.org/docs/migrationPath/overview).
 
-* Chore: page template
+### Update Components to Apollo Syntax Instead of GQty Syntax
 
-* Chore: single template
+Each component in the `components` file in your app that utilizes [GQty specific](https://gqty.dev/docs/intro/how-it-works) syntax will need to be switched to [Apollo](https://www.apollographql.com/docs/react/development-testing/testing)'s syntax in order to work correctly with the new version of Faust.
 
-* Chore: Add posts to front-page
+For more information on how to make the switch, visit the migration guide [here](https://faustjs.org/docs/migrationPath/overview).
 
-* Style: Apply format
+### Remove GQty Related Assets 
 
-* Chore: Working Category and tag templates
+Lastly, remove any unnecessary remnants of GQty's file structure. 
 
-* Docs: Update component READMEs
-
-* Style: Format issues
+For example, in the `src` folder, remove the `client` and the `hooks` folders.
