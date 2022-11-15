@@ -52,7 +52,12 @@ const FeatureList = [
   },
   {
     title: 'Migration Guide from GQty',
-    description: <>Follow this guide to migrate from old Faust.js (GQty) to new Faust (Apollo).</>,
+    description: (
+      <>
+        Follow this guide to migrate from old Faust.js (GQty) to new Faust
+        (Apollo).
+      </>
+    ),
     link: '/docs/migrationPath/overview',
   },
 ];
