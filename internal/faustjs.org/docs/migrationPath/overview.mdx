@@ -2,11 +2,6 @@
 slug: /migrationPath/overview
 title: Migration from Legacy Faust
 ---
-<<<<<<< HEAD
-Migrate from old version of Faust.js to new Faust
-
-### This document is in progress. Check back soon for content!
-=======
 
 ## General Guidelines
 
@@ -121,19 +116,145 @@ Those components will be rendered according to the hierarchy rules, when you vis
 The full list of templates are available at [WordPress Docs](https://developer.wordpress.org/themes/basics/template-hierarchy/#the-template-hierarchy-in-detail).
 Bear in mind that not all types of templates are similated with Faust. You can check the dev console when you visit a page that gives you a hint of the available templates that this route can match:
 
-
+<img
+  src="/docs/img/possible-templates.png"
+  alt="The list of possible templates as shown in the dev console"
+/>
 
 You can see an example of the hierarchy in the [blueprint project](https://github.com/wpengine/atlas-blueprint-portfolio/tree/main/wp-templates) where we provided implementations for the main templates.
 
 ## Overview of the changes needed in to migrate from GQty to Apollo
 
 Given the above information, we can now list an brief overview of the changes needed in to migrate from GQty to Apollo.
+You can also review the code of this [Blueprint Project](https://github.com/wpengine/atlas-blueprint-portfolio/tree/main) that shows how the end result will look like.
 
-1. **Capture and migrate Presentational Components**
+**1. Capture and migrate Presentational Components**
 
-2. **Import Faust Dependencies**
+Create a list of components that can be reused into the new version of Faust and move them into the new projects folder.
 
-## The file structure changes and rationale
+**2. Import Faust Dependencies**
+
+Start by importing the Faust dependencies:
+
+`npm i @faustwp/cli @faustwp/core graphql @apollo/client`
+
+Change the `package.json` scripts to use the new faust cli:
+
+```json title="package.json"
+scripts": {
+    "dev": "faust dev",
+    "build": "faust build",
+    "generate": "faust generatePossibleTypes",
+    "start": "faust start",
+    "lint": "faust lint"
+	...
+}
+```
+
+**3. Use new Faust Configuration**
+
+Replace the `withFaust` configuration function with the new one:
+
+For the `next.config.js`:
+
+```js title="next.config.js"
+// const { withFaust } = require('@faustjs/next');
+const { withFaust, getWpHostname } = require('@faustwp/core');
+```
+
+For the `faust.config.js`:
+
+```js title="faust.config.js"
+import { setConfig } from '@faustwp/core';
+import templates from './wp-templates';
+import possibleTypes from './possibleTypes.json';
+
+/**
+ * @type {import('@faustwp/core').FaustConfig}
+ **/
+export default setConfig({
+  templates,
+  experimentalPlugins: [],
+  possibleTypes,
+});
+```
+
+**4. Use new Faust Imports and Providers**
+Replace old Faust references with the new ones:
+
+For the api route:
+
+```js title="pages/api/faust/[[...route]].js"
+// import { apiRouter } from '@faustjs/core/api';
+import { apiRouter } from '@faustwp/core';
+```
+
+For the `_app.js`:
+
+```js title="_app.js"
+import '../faust.config';
+import React from 'react';
+import { useRouter } from 'next/router';
+import { FaustProvider } from '@faustwp/core';
+import '../styles/main.scss';
+
+export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  return (
+    <>
+      <FaustProvider pageProps={pageProps}>
+        <Component {...pageProps} key={router.asPath} />
+      </FaustProvider>
+    </>
+  );
+}
+```
+
+**5. Create the new wp-templates folder and include an index**
+The blueprint example project showcases how the components are structured and it's a great way to understand what needs to be done.
+You should be using the Apollo Client from now on to prepare queries and mutations.
+
+If you are not using the `wp-templates` system you can take a look a the [search.js](https://github.com/wpengine/atlas-blueprint-portfolio/blob/main/pages/search.js)
+component which uses the next.js `getNextStaticProps` page helpers.
+
+**6. Add the `WordPressTemplate` and `getWordPressProps` when using Template Hierarchy**
+For `pages/index.js` and `pages/[...wordpressNode].js`:
+
+```js title="pages/index.js and pages/[...wordpressNode].js"
+import { getWordPressProps, WordPressTemplate } from '@faustwp/core';
+
+export default function Page(props) {
+  return <WordPressTemplate {...props} />;
+}
+
+export function getStaticProps(ctx) {
+  return getWordPressProps({ ctx });
+}
+```
+
+For `pages/preview.js`:
+```js title="pages/preview.js"
+import { getWordPressProps, WordPressTemplate } from '@faustwp/core';
+
+export default function Page(props) {
+  return <WordPressTemplate {...props} />;
+}
+```
+
+At this point you should be able to run the dev server and inpsect if something is missing or not working properly.
+Fix them, rinse and repeat.
+
+**7. Clean up any references of GQty**
+Once everything is working with the new Faust, you should be able to remove any unused references to the old framework.
+
+These include:
+
+* The `gqty.config.js`.
+* The `client` folder.
+* The `@faustjs/core`, `@faustjs/next` and `gqty` dependencies.
+* Any [skeleton renders](https://gqty.dev/docs/intro/how-it-works#interplay-with-lists--keys) as a result of GQty side effects.
+
 
 ## Any new tools helpful in working with Apollo
 
@@ -144,4 +265,3 @@ We list some of the available tools here that will definitely help:
     This tools is invaluable when trying to migrate existing GQty hooks into Apollo.
     [Link to Download](https://chrome.google.com/webstore/detail/apollo-client-devtools/jdkknkkbebbapilgoeccciglkfbmbnfm)
 * **Apollo Fragments Guide**: Using the new Faust, you will have to write queries manually from now on. Using GraphQL fragments is a recommended way to share pieces of logic between multiple queries and mutations. Read [this guide](https://www.apollographql.com/docs/react/data/fragments/) for best practices and greate techniques to maximize using fragments.
->>>>>>> c44068f (Docs: WIP on Migration guide)
