@@ -114,7 +114,7 @@ Those components will be rendered according to the hierarchy rules, when you vis
 **category.js**: Representing category archive index pages.
 
 The full list of templates are available at [WordPress Docs](https://developer.wordpress.org/themes/basics/template-hierarchy/#the-template-hierarchy-in-detail).
-Bear in mind that not all types of templates are similated with Faust. You can check the dev console when you visit a page that gives you a hint of the available templates that this route can match:
+Bear in mind that not all types of templates are supported within Faust. You can check the dev console when you visit a page that gives you a hint of the available templates that this route will match:
 
 <img
   src="/docs/img/possible-templates.png"
@@ -219,6 +219,7 @@ If you are not using the `wp-templates` system you can take a look a the [search
 component which uses the next.js `getNextStaticProps` page helpers.
 
 **6. Add the `WordPressTemplate` and `getWordPressProps` when using Template Hierarchy**
+
 For `pages/index.js` and `pages/[...wordpressNode].js`:
 
 ```js title="pages/index.js and pages/[...wordpressNode].js"
@@ -234,6 +235,7 @@ export function getStaticProps(ctx) {
 ```
 
 For `pages/preview.js`:
+
 ```js title="pages/preview.js"
 import { getWordPressProps, WordPressTemplate } from '@faustwp/core';
 
@@ -248,7 +250,7 @@ Fix them, rinse and repeat.
 **7. Clean up any references of GQty**
 Once everything is working with the new Faust, you should be able to remove any unused references to the old framework.
 
-These include:
+Those include:
 
 * The `gqty.config.js`.
 * The `client` folder.
@@ -259,7 +261,7 @@ These include:
 ## Any new tools helpful in working with Apollo
 
 While migrating your app from GQty to Apollo, you will find Apollo Ecosystem has plenty of resources and tools to help you work with GraphQL.
-We list some of the available tools here that will definitely help:
+We list some of the available tools here that will definitely help you:
 
 * **Apollo Client DevTools**: DevTools is a debugger toolbar for Chrome that allows you to inspect and perform queries against the GraphQL Endpoint within the browser.
     This tools is invaluable when trying to migrate existing GQty hooks into Apollo.
