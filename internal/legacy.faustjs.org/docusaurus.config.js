@@ -9,7 +9,7 @@ module.exports = {
     description:
       'Faust.js is the Headless WordPress Framework. Faust.js provides a set of tools to make building front-end applications with WordPress as the headless CMS a pleasant experience for both developers and publishers. This framework consists of a WordPress plugin, a set of npm packages, and guides to get you started building headless WordPress sites React/Next.js/etc.',
   },
-  url: 'https://faustjs.org',
+  url: 'https://legacy.faustjs.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -20,12 +20,12 @@ module.exports = {
   themeConfig: {
     algolia: {
       // If Algolia did not provide you any appId, use 'BH4D9OD16A'
-      appId: 'KUERGG39MB',
+      appId: 'AP95JBPOT2',
 
       // Public API key: it is safe to commit it
-      apiKey: '1f3b1850f5442cf1d15033644ff5b1d3',
+      apiKey: 'df5fe1425893234087b2412ee09f39db',
 
-      indexName: 'faustjs',
+      indexName: 'legacy-faustjs',
     },
     announcementBar: {
       id: 'depreciation_notice',
@@ -115,7 +115,7 @@ module.exports = {
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/wpedecode?ref=faustjs',
+              href: 'https://twitter.com/wpengine?ref=faustjs',
             },
             {
               label: 'YouTube',
@@ -156,7 +156,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/wpengine/faustjs/edit/site-dev/internal/legacy.faustjs.org/',
+            'https://github.com/wpengine/faustjs/edit/canary/internal/legacy.faustjs.org/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
