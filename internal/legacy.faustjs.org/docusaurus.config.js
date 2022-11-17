@@ -23,7 +23,7 @@ module.exports = {
       appId: 'AP95JBPOT2',
 
       // Public API key: it is safe to commit it
-      apiKey: 'df5fe1425893234087b2412ee09f39db',
+      apiKey: 'c2ed2e53b4389758921aa98e9fd738cd',
 
       indexName: 'legacy-faustjs',
     },
