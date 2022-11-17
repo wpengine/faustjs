@@ -38,7 +38,7 @@ There is no reference to GQty or Apollo and this component can be safely re-used
 
 On the other hand the following component is harder to migrate as it depends on the GQty client:
 
-```js title="NavigationMenu.js"
+```jsx title="NavigationMenu.js"
 export default function NavigationMenu({ className, menuLocation, children }) {
   const { useQuery } = client;
   const { nodes: menuItems } = useQuery().menuItems({
