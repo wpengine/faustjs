@@ -8,26 +8,16 @@
 </p>
 
 <p align="center">
-  <a aria-label="NPM version" href="https://www.npmjs.com/package/@faustjs/core">
-    <img alt="" src="https://img.shields.io/npm/v/@faustjs/core?color=7e5cef&style=for-the-badge">
-  </a>
-
-  <a aria-label="License" href="https://github.com/wpengine/faustjs/blob/canary/LICENSE">
-    <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=7e5cef&style=for-the-badge">
-  </a>
-</p>
-
-<p align="center">
-  <a aria-label="Faust.js Core Downloads" href="https://www.npmjs.com/package/@faustjs/core">
-    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/core?color=7e5cef&style=for-the-badge&label=@faustjs/core">
+  <a aria-label="@faustwp/core Downloads" href="https://www.npmjs.com/package/@faustwp/core">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustwp/core?color=7e5cef&style=for-the-badge&label=@faustwp/core">
   </a>
 <!--  -->
-  <a aria-label="Faust.js  Downloads" href="https://www.npmjs.com/package/@faustjs/react">
-    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/react?color=7e5cef&style=for-the-badge&label=@faustjs/react">
+  <a aria-label="@faustwp/cli Downloads" href="https://www.npmjs.com/package/@faustwp/cli">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustwp/cli?color=7e5cef&style=for-the-badge&label=@faustwp/cli">
   </a>
-
-  <a aria-label="Faust.js  Downloads" href="https://www.npmjs.com/package/@faustjs/next">
-    <img alt="" src="https://img.shields.io/npm/dw/@faustjs/next?color=7e5cef&style=for-the-badge&label=@faustjs/next">
+<!--  -->
+  <a aria-label="License" href="https://github.com/wpengine/faustjs/blob/canary/LICENSE">
+    <img alt="" src="https://img.shields.io/npm/l/@faustjs/core?color=7e5cef&style=for-the-badge">
   </a>
 </p>
 
@@ -75,5 +65,3 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 All contributions from non-WP Engine employees require that you sign our Contributor License Agreement (CLA).
 
 https://wpeng.in/cla/
-
-
