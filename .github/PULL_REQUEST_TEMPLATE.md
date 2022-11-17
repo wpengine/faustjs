@@ -1,3 +1,7 @@
+## Tasks
+
+- [ ] I've filled out the WP Engine Contributor License Agreement (CLA)
+
 ## Description
 
 <!--
