@@ -39,7 +39,7 @@ export default function Home() {
       <Head>
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self' http://kuergg39mb-dsn.algolia.net data: 'unsafe-inline' 'unsafe-eval'"
+          content="default-src 'self' http://AP95JBPOT2-dsn.algolia.net data: 'unsafe-inline' 'unsafe-eval'"
         />
         <meta name="twitter:card" content="summary" />
         <meta property="og:type" content="website" />
