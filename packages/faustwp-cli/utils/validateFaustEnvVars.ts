@@ -17,6 +17,8 @@ export const validateFaustEnvVars = () => {
   }
 
   if (disableCliInteraction()) {
-    infoLog('FAUST_NO_INTERACTION is set. Specify `false`, `0`, or remove to disable.');
+    infoLog(
+      'FAUST_NO_INTERACTION is set. Specify `false`, `0`, or remove to disable.',
+    );
   }
 };

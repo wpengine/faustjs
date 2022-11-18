@@ -8,4 +8,4 @@ export const disableCliInteraction = () => {
   }
 
   return false;
-}
+};

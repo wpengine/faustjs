@@ -81,20 +81,18 @@ describe('withFaust', () => {
   });
 
   test('preview redirect respects trailingSlash config', async () => {
-    const config = withFaust(
-      {
-        trailingSlash: true,
-        async redirects() {
-          return [
-            {
-              source: '/about',
-              destination: '/',
-              permanent: true,
-            },
-          ];
-        },
-      }
-    );
+    const config = withFaust({
+      trailingSlash: true,
+      async redirects() {
+        return [
+          {
+            source: '/about',
+            destination: '/',
+            permanent: true,
+          },
+        ];
+      },
+    });
 
     const configRedirects = await (config as any).redirects();
 

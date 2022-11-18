@@ -53,11 +53,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
      * that is being ran is build or start. We do not want to halt the build of a
      * production site that likely does not have preferences saved.
      */
-    if (
-      arg1 !== 'build' &&
-      arg1 !== 'start' &&
-      !disableCliInteraction()
-    ) {
+    if (arg1 !== 'build' && arg1 !== 'start' && !disableCliInteraction()) {
       await promptUserForTelemetryPref(true, config);
     }
   }
