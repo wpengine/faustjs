@@ -26,7 +26,7 @@ When switching git branch, run `npm run clean` from the root and then re-run `np
 
 ### 1. Setup
 
-1. Create the following `.env.local` in the `packages/faustwp-core` root and replace the ``NEXT_PUBLIC_GRAPHQL_ENDPOINT`` with your own.
+1. Create the following `.env.local` in the `packages/faustwp-core` root and replace the `NEXT_PUBLIC_GRAPHQL_ENDPOINT` with your own.
 
 ```
 # GraphQL Endpoint
@@ -81,11 +81,13 @@ When you are ready to release, you should first create the new package and plugi
 
 1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
 2. Review the PR:
-  - [ ] Changelog entries were created in all updated packages or plugins.
-  - [ ] Version numbers were appropriately bumped in the relevant package.json files.
-  - [ ] All `.changeset/*.md` files were removed.
-  - [ ] Version number updated in the main plugin file and readme.txt (Plugin versioning only)
-  - [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
+
+- [ ] Changelog entries were created in all updated packages or plugins.
+- [ ] Version numbers were appropriately bumped in the relevant package.json files.
+- [ ] All `.changeset/*.md` files were removed.
+- [ ] Version number updated in the main plugin file and readme.txt (Plugin versioning only)
+- [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
+
 3. Approve, then "Squash and merge" the "Version Packages" PR into `canary`.
 
 ### Publishing the @faustwp packages

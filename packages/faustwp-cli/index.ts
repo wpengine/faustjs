@@ -4,13 +4,14 @@ import Configstore from 'configstore';
 import { spawn } from 'child_process';
 import dotenv from 'dotenv-flow';
 import {
-  marshallTelemetryData,
-  getCliArgs,
-  validateFaustEnvVars,
-  promptUserForTelemetryPref,
-  sendTelemetryData,
-  requestWPTelemetryData,
+  disableCliInteraction,
   generatePossibleTypes,
+  getCliArgs,
+  marshallTelemetryData,
+  promptUserForTelemetryPref,
+  requestWPTelemetryData,
+  sendTelemetryData,
+  validateFaustEnvVars,
 } from './utils/index.js';
 
 const CONFIG_STORE_NAME = 'faust';
@@ -52,7 +53,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
      * that is being ran is build or start. We do not want to halt the build of a
      * production site that likely does not have preferences saved.
      */
-    if (arg1 !== 'build' && arg1 !== 'start') {
+    if (arg1 !== 'build' && arg1 !== 'start' && !disableCliInteraction()) {
       await promptUserForTelemetryPref(true, config);
     }
   }

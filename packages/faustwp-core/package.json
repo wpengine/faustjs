@@ -38,6 +38,7 @@
     "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "clean": "rimraf dist",
     "dev": "npm run ts:watch",
+    "format": "prettier --write .",
     "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
     "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",

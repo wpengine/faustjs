@@ -25,10 +25,11 @@
     "uuid": "8.3.2"
   },
   "scripts": {
-    "test": "npm test",
     "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
     "dev": "tsc -p tsconfig.json --watch",
-    "clean": "rimraf dist"
+    "format": "prettier --write .",
+    "test": "npm test"
   },
   "repository": {
     "type": "git",

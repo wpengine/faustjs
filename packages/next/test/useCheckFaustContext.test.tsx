@@ -3,8 +3,8 @@
  */
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
-import { useCheckFaustContext } from "../src/gqty/hooks/useCheckFaustContext";
-import { FaustContextType } from "../src/gqty";
+import { useCheckFaustContext } from '../src/gqty/hooks/useCheckFaustContext';
+import { FaustContextType } from '../src/gqty';
 
 describe('useCheckFaustContext hook', () => {
   afterEach(() => {
