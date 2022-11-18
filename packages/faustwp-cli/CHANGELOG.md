@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.1.5
+
+### Patch Changes
+
+- f5c5867: Added new `.env` variable, FAUST_NO_INTERACTION, intended for CI environments.
+
 ## 0.1.4
 
 ### Patch Changes

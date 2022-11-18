@@ -1,5 +1,16 @@
 # @faustwp/core
 
+## 0.1.5
+
+### Patch Changes
+
+- 5990bb7: Added the following exports to `@faustwp/core`:
+
+  - `getWpUrl()`
+  - `getGraphqlEndpoint()`
+  - `getApolloClient()`
+  - `addApolloState()`
+
 ## 0.1.3
 
 ### Patch Changes
