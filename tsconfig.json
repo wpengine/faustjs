@@ -19,5 +19,5 @@
     "types": ["node", "jest"],
     "typeRoots": ["node_modules/@types"]
   },
-  "compileOnSave": false
+  "compileOnSave": true
 }
