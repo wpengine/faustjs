@@ -1,4 +1,5 @@
-import { errorLog, warnLog } from './log.js';
+import { errorLog, warnLog, infoLog } from './log.js';
+import { disableCliInteraction } from './disableCliInteraction.js';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
@@ -14,4 +15,12 @@ export const validateFaustEnvVars = () => {
     warnLog('Could not find FAUSTWP_SECRET_KEY environment variable.');
     warnLog('Some functionality may be limited.');
   }
+
+  console.log(process.env.FAUST_NO_INTERACTION)
+  console.log(typeof process.env.FAUST_NO_INTERACTION)
+
+
+  // if (disableCliInteraction()) {
+  //   infoLog('FAUST_NO_INTERACTION is set, specify `false`, `0`, or remove to disable.');
+  // }
 };
