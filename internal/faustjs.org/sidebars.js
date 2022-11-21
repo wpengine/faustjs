@@ -45,6 +45,11 @@ module.exports = {
           label: 'Apollo',
           id: 'apollo',
         },
+        {
+          type: 'doc',
+          label: 'Portfolio Migration',
+          id: 'migrationPath/portfolio-migration',
+        },
       ],
     },
     {
