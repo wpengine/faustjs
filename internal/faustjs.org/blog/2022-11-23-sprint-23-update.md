@@ -1,7 +1,7 @@
 ---
-title: Sprint 22 Update
-description: Updates from the team's work on Sprint 22
-slug: sprint-22-update
+title: Sprint 23 Update
+description: Updates from the team's work on Sprint 23
+slug: sprint-23-update
 hide_table_of_contents: true
 ---
 
