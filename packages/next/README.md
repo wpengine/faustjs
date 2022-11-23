@@ -19,7 +19,7 @@
   </a>
 </p>
 
-⚠️ DEPRECATION NOTICE: We stopped supporting new feature development in favor of the recent version of Faust. We will provide ongoing support for critical bugs and vulnerabilities only. If you are using the old version of Faust will not see an interruption to your existing sites as the new Faust is in a separate “package”. Read the [following announcement](https://faustjs.org/blog/sprint-22-update) that explains the re-release of Faust.js.
+⚠️ DEPRECATION NOTICE: We stopped supporting new feature development in favor of the recent version of Faust. We will provide ongoing support for critical bugs and vulnerabilities only. If you are using the old version of Faust, you will not see an interruption to your existing sites as the new Faust is in a separate “package”. Read the [following announcement](https://faustjs.org/blog/sprint-22-update) that explains the re-release of Faust.js.
 
 `@faustjs/next` is part of the Faust.js framework. It aids in building Headless WordPress websites with Next.js.
 
