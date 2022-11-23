@@ -19,8 +19,8 @@
   </a>
 </p>
 
+⚠️ DEPRECATION NOTICE: We stopped supporting new feature development in favor of the recent version of Faust. We will provide ongoing support for critical bugs and vulnerabilities only. If you are using the old version of Faust will not see an interruption to your existing sites as the new Faust is in a separate “package”. Read the [following announcement](https://faustjs.org/blog/sprint-22-update) that explains the re-release of Faust.js.
+
 `@faustjs/core` is the core library for the Faust.js framework. It contains the core classes and interfaces that are used by other libraries in the framework.
 
-NOTE: This project is in the early stages of development, but it does contain useful functionality for headless WordPress sites like authentication and post previews. Be sure to install the [WordPress plugin](https://github.com/wpengine/faustjs) that enables the functionality in this package.
-
-[View Faust.js Documentation](https://github.com/wpengine/faustjs)
+[View legacy Faust.js Documentation](https://legacy.faustjs.org/)
