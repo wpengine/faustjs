@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import Configstore from 'configstore';
-import { spawn } from 'child_process';
+import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import {
   disableCliInteraction,
@@ -107,5 +107,8 @@ const config = new Configstore(CONFIG_STORE_NAME);
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
-  spawn('next', getCliArgs(), { stdio: 'inherit' });
+  process.exit(
+    spawnSync('next', getCliArgs(), { stdio: 'inherit', encoding: 'utf8' })
+      ?.status as number | undefined,
+  );
 })();
