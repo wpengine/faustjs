@@ -13,10 +13,7 @@ export type WordPressTemplateProps = PropsWithChildren<{
   __TEMPLATE_QUERY_DATA__: any | null;
 }>;
 
-export type FaustTemplateWithProps<
-  Data,
-  Props = Record<string, never>,
-> = Props & {
+export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
   data?: Data;
   loading?: boolean;
   __SEED_NODE__?: SeedNode | null;
