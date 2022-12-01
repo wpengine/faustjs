@@ -17,6 +17,20 @@ module.exports = {
   organizationName: 'wpengine', // Usually your GitHub org/user name.
   projectName: 'faustjs', // Usually your repo name.
   noIndex: process.env.SITE_NO_INDEX ?? false,
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        fromExtensions: ['html', 'mdx'],
+        redirects: [
+          {
+            from: '/docs/next/getting-started',
+            to: '/docs/getting-started',
+          },
+        ],
+      },
+    ],
+  ],
   themeConfig: {
     algolia: {
       // If Algolia did not provide you any appId, use 'BH4D9OD16A'
