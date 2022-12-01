@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.1.6
+
+### Patch Changes
+
+- 0c03272: Fixes: CLI does not return non zero exit code on unsuccessful build
+
 ## 0.1.5
 
 ### Patch Changes
