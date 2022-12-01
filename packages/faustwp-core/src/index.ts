@@ -1,7 +1,7 @@
 import { FaustProvider } from './components/FaustProvider.js';
 import {
   WordPressTemplate,
-  FaustTemplateWithProps,
+  FaustTemplateProps,
 } from './components/WordPressTemplate.js';
 import { getWordPressProps } from './getWordPressProps.js';
 import { getNextStaticProps } from './getProps.js';
@@ -17,7 +17,7 @@ import { getApolloClient, addApolloState } from './client.js';
 export {
   FaustProvider,
   WordPressTemplate,
-  FaustTemplateWithProps,
+  FaustTemplateProps,
   getWordPressProps,
   getNextStaticProps,
   getConfig,
