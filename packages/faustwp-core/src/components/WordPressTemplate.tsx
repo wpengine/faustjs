@@ -17,8 +17,8 @@ export type FaustTemplateWithProps<Data, Props> = Props & {
   data?: Data;
   loading?: boolean;
   __SEED_NODE__?: SeedNode | null;
-  __TEMPLATE_QUERY_DATA__: any | null;
-  __TEMPLATE_VARIABLES__: { [key: string]: any };
+  __TEMPLATE_QUERY_DATA__?: any | null;
+  __TEMPLATE_VARIABLES__?: { [key: string]: any };
 };
 
 function cleanTemplate(
