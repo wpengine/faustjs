@@ -13,6 +13,14 @@ export type WordPressTemplateProps = PropsWithChildren<{
   __TEMPLATE_QUERY_DATA__: any | null;
 }>;
 
+export type FaustTemplateWithProps<Data, Props> = Props & {
+  data?: Data;
+  loading?: boolean;
+  __SEED_NODE__?: SeedNode | null;
+  __TEMPLATE_QUERY_DATA__: any | null;
+  __TEMPLATE_VARIABLES__: { [key: string]: any };
+};
+
 function cleanTemplate(
   template: WordPressTemplateType,
 ): React.FC<{ [key: string]: any }> {
