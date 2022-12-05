@@ -6,6 +6,8 @@ import { addApolloState, getApolloClient } from './client.js';
 import { getConfig } from './config/index.js';
 import { hooks } from './hooks/index.js';
 
+export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
+
 function isSSR(
   ctx: GetServerSidePropsContext | GetStaticPropsContext,
 ): ctx is GetServerSidePropsContext {
@@ -20,8 +22,10 @@ export type WordPressTemplate = React.FC & {
   ) => { [key: string]: any };
 };
 
-export interface GetWordPressPropsConfig {
+export interface GetWordPressPropsConfig<Props = Record<string, unknown>> {
   ctx: GetServerSidePropsContext | GetStaticPropsContext;
+  props?: Props;
+  revalidate?: number | boolean;
 }
 
 export async function getWordPressProps(options: GetWordPressPropsConfig) {
@@ -31,7 +35,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     throw new Error('Templates are required. Please add them to your config.');
   }
 
-  const { ctx } = options;
+  const { ctx, props, revalidate } = options;
 
   const client = getApolloClient();
 
@@ -89,8 +93,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return addApolloState(client, {
+  const appProps = addApolloState(client, {
     props: {
       /**
        * The following props may be null coalesced as an "undefined"
@@ -98,6 +101,13 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
        */
       __SEED_NODE__: seedNode ?? null,
       __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
+      ...props,
     },
   });
+
+  if (!isSSR(ctx)) {
+    appProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
+  }
+
+  return appProps;
 }
