@@ -101,8 +101,13 @@ module.exports = {
     },
     {
       type: 'doc',
-      label: 'Migration from old Faust',
+      label: 'Migration from Old Faust',
       id: 'migrationPath/overview',
+    },
+    {
+      type: 'doc',
+      label: 'Deploy Your Faust.js App',
+      id: 'going-to-production/deployment',
     },
     {
       type: 'doc',
