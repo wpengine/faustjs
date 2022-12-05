@@ -151,8 +151,14 @@ export function getTemplate(
   }
 
   const possibleTemplates = getPossibleTemplates(seedNode);
-  // eslint-disable-next-line no-console
-  console.log('possible templates: ', possibleTemplates);
+
+  // Don't show console logs in PROD
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log('possible templates: ', possibleTemplates);
+    // eslint-disable-next-line no-console
+    console.log('seed data', seedNode);
+  }
 
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < possibleTemplates.length; i++) {
