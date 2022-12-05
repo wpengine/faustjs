@@ -6,7 +6,7 @@ import Head from 'next/head';
  * @param {Props} props The props object.
  * @param {string} props.title Used for the page title, og:title, twitter:title, etc.
  * @param {string} props.description Used for the meta description, og:description, twitter:description, etc.
- * @param {string} props.imageUrl Used for the og:image and twitter:image.
+ * @param {string} props.imageUrl Used for the og:image and twitter:image. NOTE: Must be an absolute url.
  * @param {string} props.url Used for the og:url and twitter:url.
  *
  * @returns {React.ReactElement} The SEO component
