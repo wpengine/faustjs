@@ -80,12 +80,13 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
   }
 
   let templateQueryRes;
+  const templateVariables = template?.variables
+    ? template?.variables(seedNode, { asPreview: false })
+    : undefined;
   if (template.query) {
     templateQueryRes = await client.query({
       query: template.query,
-      variables: template?.variables
-        ? template?.variables(seedNode, { asPreview: false })
-        : undefined,
+      variables: templateVariables,
     });
   }
 
@@ -98,6 +99,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
        */
       __SEED_NODE__: seedNode ?? null,
       __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
+      __TEMPLATE_VARIABLES__: templateVariables ?? null,
     },
   });
 }
