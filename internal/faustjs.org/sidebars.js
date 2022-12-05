@@ -101,7 +101,7 @@ module.exports = {
     },
     {
       type: 'doc',
-      label: 'Migration from Old Faust',
+      label: 'Migration from Legacy Faust',
       id: 'migrationPath/overview',
     },
     {
