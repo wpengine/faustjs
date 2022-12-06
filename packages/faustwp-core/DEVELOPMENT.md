@@ -26,17 +26,11 @@ When switching git branch, run `npm run clean` from the root and then re-run `np
 
 ### 1. Setup
 
-1. Create the following `.env.local` in the `packages/faustwp-core` root and replace the `NEXT_PUBLIC_GRAPHQL_ENDPOINT` with your own. Set `FAUST_DEBUG_TEMPLATES` and `FAUST_DEBUG_SEEDNODE` to `0` to hide logging and to `1` to show them in the console.
+1. Create the following `.env.local` in the `packages/faustwp-core` root and replace the `NEXT_PUBLIC_GRAPHQL_ENDPOINT` with your own.
 
 ```
 # GraphQL Endpoint
 NEXT_PUBLIC_WORDPRESS_URL=http://headless.local
-
-# Log templates in console
-FAUST_DEBUG_TEMPLATES=1
-
-# Log seed data in console
-FAUST_DEBUG_SEEDNODE=1
 ```
 
 ## Git Workflows
