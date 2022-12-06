@@ -152,10 +152,12 @@ export function getTemplate(
 
   const possibleTemplates = getPossibleTemplates(seedNode);
 
-  // Don't show console logs in PROD
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.FAUST_DEBUG_TEMPLATES) {
     // eslint-disable-next-line no-console
     console.log('possible templates: ', possibleTemplates);
+  }
+
+  if (process.env.FAUST_DEBUG_SEEDNODE) {
     // eslint-disable-next-line no-console
     console.log('seed data', seedNode);
   }
