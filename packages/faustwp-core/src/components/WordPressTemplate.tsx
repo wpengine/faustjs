@@ -7,6 +7,7 @@ import { getTemplate } from '../getTemplate.js';
 import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 import { getQueryParam } from '../utils/convert.js';
+import { WPHead } from './WPHead.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode | null;
@@ -215,5 +216,16 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   // Remove unnecessary properties from component before rendering
   const Component = cleanTemplate(template);
 
-  return React.createElement(Component, { ...props, data, loading }, null);
+  const templateComponent = React.createElement(
+    Component,
+    { ...props, data, loading },
+    null,
+  );
+
+  return (
+    <>
+      <WPHead />
+      {templateComponent}
+    </>
+  );
 }
