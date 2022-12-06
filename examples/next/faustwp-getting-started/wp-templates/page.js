@@ -27,11 +27,6 @@ export default function Component(props) {
 
   return (
     <>
-      <SEO
-        title={siteTitle}
-        description={siteDescription}
-        imageUrl={featuredImage?.node?.sourceUrl}
-      />
       <Header
         title={siteTitle}
         description={siteDescription}

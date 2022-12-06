@@ -22,7 +22,6 @@ export default function Component(props) {
 
   return (
     <>
-      <SEO title={siteTitle} description={siteDescription} />
       <Header
         title={siteTitle}
         description={siteDescription}
