@@ -4,18 +4,28 @@ import Configstore from 'configstore';
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import {
-  disableCliInteraction,
   generatePossibleTypes,
   getCliArgs,
+  infoLog,
   marshallTelemetryData,
   promptUserForTelemetryPref,
   requestWPTelemetryData,
   sendTelemetryData,
   validateFaustEnvVars,
 } from './utils/index.js';
+import { TelemetryPrefsExist } from './utils/doTelemetryPrefsExist.js';
 
+export type ConfigStoreType = Omit<Configstore, 'all'> & {
+  all: {
+    telemetry?: {
+      enabled?: boolean;
+      anonymousId?: string;
+      notifiedAt?: number;
+    };
+  };
+};
 const CONFIG_STORE_NAME = 'faust';
-const config = new Configstore(CONFIG_STORE_NAME);
+const config = new Configstore(CONFIG_STORE_NAME) as ConfigStoreType;
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
@@ -38,25 +48,6 @@ const config = new Configstore(CONFIG_STORE_NAME);
   }
   dotenv.config();
   validateFaustEnvVars();
-  /**
-   * If there is no config (or a non-valid config), prompt the user for their
-   * permission to collect anonymous telemetry information and save their
-   * preferences on their machine.
-   */
-  if (
-    !config.all?.telemetry ||
-    config.all?.telemetry?.enabled === undefined ||
-    !config.all?.telemetry?.anonymousId
-  ) {
-    /**
-     * Do not prompt for telemetry if preferences are not set and the command
-     * that is being ran is build or start. We do not want to halt the build of a
-     * production site that likely does not have preferences saved.
-     */
-    if (arg1 !== 'build' && arg1 !== 'start' && !disableCliInteraction()) {
-      await promptUserForTelemetryPref(true, config);
-    }
-  }
 
   // eslint-disable-next-line default-case
   switch (arg1) {
@@ -72,6 +63,12 @@ const config = new Configstore(CONFIG_STORE_NAME);
 
       break;
     }
+  }
+
+  if (!TelemetryPrefsExist(config)) {
+    infoLog(
+      `Faust has completely anonymous, opt-in Telemetry! You can enable it by running "npx faust faust-telemetry"`,
+    );
   }
 
   const shouldFireTelemetryEvent =
