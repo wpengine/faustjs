@@ -18,26 +18,37 @@ const YOAST_SEO_QUERY = gql`
           metaDesc
         }
       }
+      ... on Category {
+        seo {
+          title
+          metaDesc
+        }
+      }
+      ... on Tag {
+        seo {
+          title
+          metaDesc
+        }
+      }
     }
   }
 `;
 
 export class SEOPlugin {
-  async apply({ addFilter }) {
+  apply({ addFilter }) {
     addFilter('templateQueries', 'faust', (queries, { seedNode }) => {
-      console.log('seednode uri', seedNode.uri);
       return [
         ...queries,
         { query: YOAST_SEO_QUERY, variables: { uri: seedNode.uri } },
       ];
     });
 
-    await addFilter('wphead', 'faust', (elements) => {
+    addFilter('wphead', 'faust', (elements, { seedNode }) => {
       const { data } = useQuery(YOAST_SEO_QUERY, {
-        variables: { uri: '/new-page/' },
+        variables: { uri: seedNode.uri },
       });
 
-      console.log(data);
+      console.log('SEO data', data);
 
       const title = <title>{data?.nodeByUri?.seo?.title}</title>;
       const metaDesc = (
