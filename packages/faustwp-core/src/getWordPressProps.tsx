@@ -79,10 +79,22 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     };
   }
 
-  let templateQueryRes;
   const templateVariables = template?.variables
     ? template?.variables(seedNode, { asPreview: false })
     : undefined;
+
+  let templateQueries: any = [];
+  templateQueries = hooks.applyFilters('templateQueries', templateQueries, {
+    seedNode,
+  }) as any;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const query of templateQueries) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    await client.query(query);
+  }
+
+  let templateQueryRes;
   if (template.query) {
     templateQueryRes = await client.query({
       query: template.query,
