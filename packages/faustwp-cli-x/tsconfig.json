@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "dist",
+    "module": "ES2020",
+    "target": "ES2015",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "resolveJsonModule": true
+  },
+  "exclude": ["dist", "./*.d.ts"]
+}

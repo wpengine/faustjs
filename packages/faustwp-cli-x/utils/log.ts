@@ -13,7 +13,7 @@ export const styleMessage = (
   logLevel: 'info' | 'warn' | 'error',
   message: string
 ) => {
-  const delimeter = styles.dim(' - ');
+  const delimeter = ' - ';
   let logLevelMessage = styles.brand('Faust') + delimeter;
 
   switch (logLevel) {

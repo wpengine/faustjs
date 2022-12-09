@@ -66,6 +66,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
 
       break;
     }
+    case 'telemetry':
     case 'generatePossibleTypes': {
       await generatePossibleTypes();
       process.exit(0);
