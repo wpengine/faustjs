@@ -1,6 +1,5 @@
 import chalk from "chalk";
 import { getCliArgs } from "./getCliArgs.js";
-import { errorLog, infoLog } from "./log.js";
 import { userConfig } from "./userConfig.js";
 import { styles } from "./styles.js";
 
