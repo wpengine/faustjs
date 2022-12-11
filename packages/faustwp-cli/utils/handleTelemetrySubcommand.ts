@@ -31,7 +31,7 @@ export const handleTelemetrySubcommand = () => {
 
       userConfig.set(TELEMETRY_ENABLED, false);
       printTelemetryStatus();
-      log("You have opted-out of Next.js' anonymous telemetry program.");
+      log("You have opted-out of Faust.js' anonymous telemetry program.");
       log("No data will be collected from your machine.");
       log('Learn more: https://faustjs.org/docs/telemetry');
       break;
