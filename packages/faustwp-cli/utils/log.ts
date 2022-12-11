@@ -5,8 +5,10 @@ export const log = (
   message: string,
   ...args: any
 ) => {
-  const delimeter = styles.dim(' - ');
-  let logLevelMessage = styles.brand('Faust') + delimeter;
+  const brand = styles.brand('faust');
+  const delimeter = ' - ';
+  const maybeDelimeter = message === '' ? message : delimeter;
+  let logLevelMessage = brand + delimeter;
 
   switch (logLevel) {
     case 'info': {
@@ -27,20 +29,20 @@ export const log = (
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, no-console
-  console.log(`${logLevelMessage}${delimeter}${message}`, ...args);
+  console.log(`${logLevelMessage}${maybeDelimeter}${message}`, ...args);
 };
 
-export const infoLog = (message: string, ...args: any) => {
+export const infoLog = (message: string = '', ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('info', message, ...args);
 };
 
-export const warnLog = (message: string, ...args: any) => {
+export const warnLog = (message: string = '', ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('warn', message, ...args);
 };
 
-export const errorLog = (message: string, ...args: any) => {
+export const errorLog = (message: string = '', ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('error', message, ...args);
 };

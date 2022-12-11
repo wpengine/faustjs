@@ -4,18 +4,19 @@ title: Telemetry
 description: We use Telemetry in Faust to help us understand how users use our projects.
 ---
 
-Faust has opt-in telemetry for both the Faust plugin and Faust packages. The plugin and packages both collect information to help us make more informed product decisions.
+Faust collects completely anonymous telemetry data about general usage. Participation in this anonymous program is optional.
 
-## What is being collected?
+Thank you more informed product decisions.
 
-Once you opt-in, faust will collect the following information at build time:
+## What data do we collect?
 
-- Which settings are enabled/disabled in the Faust plugin
-- Faust plugin version
-- If the WordPress site is hosted on WP Engine
-- If the WordPress site is multisite
-- PHP version of the WordPress site
+### WordPress Environment
 - WordPress version
+- PHP version
+- Faust plugin version & settings (frontend_uri is not collected)
+- WordPress Multisite
+
+### Node Environment
 - `@faustwp/core` version
 - `@faustwp/cli` version
 - `@apollo/client` version
@@ -28,21 +29,26 @@ Once you opt-in, faust will collect the following information at build time:
 We **do not** collect any personally identifiable information or sensitive information like environment variables, file paths, or any application URLs.
 :::
 
-## How do I enable/disable telemetry?
+## How can I participate in this anonymous program?
 
-Telemetry in Faust.js is opt-in by default, meaning we won't collect any telemetry information unless you explicitly enable it.
-
-If this is your first time using the `faust` cli, you will be prompted for your telemetry preferences:
-
-<a href="/docs/img/telemetry-cli-prompt.png" target="_blank">
-  <img
-    src="/docs/img/telemetry-cli-prompt.png"
-    alt="Screenshot of the Telemetry prompt in the Faust package"
-  />
-</a>
-
-Once your preferences have been set, you can run the following command to see the prompt again to change your preferences:
+If you'd like to join the program, you can enable telemetry by running the following in the root of your project:
 
 ```sh
-npx faust faust-telemetry
+npx faust telemetry enable
+```
+
+## How can I disable telemetry?
+
+If you have previously enabled telemetry, you may opt out by running `faust telemetry disable` in the root of your project:
+
+```sh
+npx faust telemetry disable
+```
+
+## Checking status
+
+You may check the status of telemetry collection at any time by running `faust telemetry status` in the root of your project:
+
+```sh
+npx faust telemetry status
 ```
