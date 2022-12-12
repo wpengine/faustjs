@@ -39,7 +39,7 @@ import {
   // eslint-disable-next-line default-case
   switch (arg1) {
     case 'telemetry': {
-      await handleTelemetrySubcommand();
+      handleTelemetrySubcommand();
       process.exit(0);
 
       break;
