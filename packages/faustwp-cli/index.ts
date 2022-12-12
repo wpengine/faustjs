@@ -3,7 +3,6 @@
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import {
-  disableCliInteraction,
   generatePossibleTypes,
   getCliArgs,
   marshallTelemetryData,
