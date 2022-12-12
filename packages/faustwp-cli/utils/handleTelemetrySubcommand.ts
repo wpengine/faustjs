@@ -5,23 +5,35 @@ import { styles } from './styles.js';
 
 const TELEMETRY_ENABLED = 'telemetry.enabled';
 
-function logTelemetryStatus() {
+const logTelemetryStatus = () => {
   const statusSetting = userConfig.get(TELEMETRY_ENABLED);
   const status = statusSetting ? chalk.green('Enabled') : chalk.red('Disabled');
 
   console.log();
   console.log(`Status: ${status}`);
   console.log();
-}
+};
 
-function logTelemetryDocsUrl() {
+const logTelemetryDocsUrl = () => {
   console.log('Learn more: https://faustjs.org/docs/telemetry');
-}
+};
+
+const logUserPrefsHaveBeenSaved = () => {
+  console.log(
+    styles.success(`Your preference has been saved to ${userConfig.path}`),
+  );
+};
+
+const logTelemetryAlreadyDisabled = () => {
+  console.log(
+    styles.warn(`Faust.js' telemetry collection is already disabled.`),
+  );
+};
 
 /**
  * Handles the telemetry subcommand.
  */
-export function handleTelemetrySubcommand() {
+export const handleTelemetrySubcommand = () => {
   const telemetryEnabled = userConfig.get(TELEMETRY_ENABLED);
   const args = getCliArgs();
   const subcommand = args[1];
@@ -40,14 +52,8 @@ export function handleTelemetrySubcommand() {
 
     case 'disable': {
       telemetryEnabled
-        ? console.log(
-            styles.success(
-              `Your preference has been saved to ${userConfig.path}`,
-            ),
-          )
-        : console.log(
-            styles.warn(`Faust.js' telemetry collection is already disabled.`),
-          );
+        ? logUserPrefsHaveBeenSaved()
+        : logTelemetryAlreadyDisabled();
 
       userConfig.set(TELEMETRY_ENABLED, false);
       logTelemetryStatus();
@@ -75,4 +81,4 @@ export function handleTelemetrySubcommand() {
       break;
     }
   }
-}
+};
