@@ -44,7 +44,7 @@ import {
     infoLog('Faust has completely anonymous, opt-in Telemetry!');
     infoLog('You can enable it by running "npx faust telemetry enable"');
 
-    // Hydrate user's telemetry setting.
+    // Create user's telemetry setting.
     userConfig.set('telemetry', {
       notifiedAt: new Date().getTime(),
       anonymousId: uuid(),
