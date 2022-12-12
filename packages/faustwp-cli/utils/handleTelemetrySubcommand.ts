@@ -44,6 +44,7 @@ export function handleTelemetrySubcommand() {
       break;
     }
 
+    case undefined: // faust telemetry (without subcommand)
     case 'status': {
       console.log(styles.brand('Faust.js Telemetry'));
       logTelemetryStatus();
