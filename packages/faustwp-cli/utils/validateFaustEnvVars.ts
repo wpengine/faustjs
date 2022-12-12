@@ -1,4 +1,4 @@
-import { errorLog } from './log.js';
+import { errorLog, warnLog } from './log.js';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
@@ -11,8 +11,7 @@ export const validateFaustEnvVars = () => {
   }
 
   if (!process.env.FAUSTWP_SECRET_KEY) {
-    errorLog('Could not find FAUSTWP_SECRET_KEY environment variable.');
-
-    process.exit(0);
+    warnLog('Could not find FAUSTWP_SECRET_KEY environment variable.');
+    warnLog('Some functionality may be limited.');
   }
 };
