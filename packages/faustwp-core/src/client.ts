@@ -98,9 +98,11 @@ export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
   pageProps: AppProps<{
     props: { [key: string]: any };
+    revalidate?: number | boolean;
   }>['pageProps'],
 ): AppProps<{
   props: { [key: string]: any };
+  revalidate?: number | boolean;
 }>['pageProps'] {
   if (pageProps?.props) {
     // eslint-disable-next-line no-param-reassign
