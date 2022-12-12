@@ -5,7 +5,6 @@ import { styles } from './styles.js';
 
 const TELEMETRY_ENABLED = 'telemetry.enabled';
 
-// eslint-disable no-console
 function logTelemetryStatus() {
   const statusSetting = userConfig.get(TELEMETRY_ENABLED);
   const status = statusSetting ? chalk.green('Enabled') : chalk.red('Disabled');

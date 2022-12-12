@@ -10,11 +10,11 @@ export function shouldFireTelemetryEvent(): boolean {
   const hasTelemetryEnabled = userConfig.get('telemetry.enabled') === true;
   const runningUsingProperCommands = arg1 === 'dev' || arg1 === 'build';
 
-  const shouldFireTelemetryEvent =
+  const shouldFireEvent =
     hasSecretKey &&
     hasAnonymousId &&
     hasTelemetryEnabled &&
     runningUsingProperCommands;
 
-  return shouldFireTelemetryEvent;
+  return shouldFireEvent as boolean;
 }

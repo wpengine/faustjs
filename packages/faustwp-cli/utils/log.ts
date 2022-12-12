@@ -5,7 +5,7 @@ export const log = (
   message: string,
   ...args: any
 ) => {
-  let styledLogLevel;
+  let styledLogLevel = '';
 
   switch (logLevel) {
     case 'info': {
@@ -25,21 +25,21 @@ export const log = (
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, no-console
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   console.log(`${styledLogLevel} - ${message}`, ...args);
 };
 
-export const infoLog = (message: string = '', ...args: any) => {
+export const infoLog = (message: string, ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('info', message, ...args);
 };
 
-export const warnLog = (message: string = '', ...args: any) => {
+export const warnLog = (message: string, ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('warn', message, ...args);
 };
 
-export const errorLog = (message: string = '', ...args: any) => {
+export const errorLog = (message: string, ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('error', message, ...args);
 };
