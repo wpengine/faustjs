@@ -1,7 +1,7 @@
 import { getCliArgs } from './getCliArgs.js';
 import { userConfig } from './userConfig.js';
 
-export function shouldFireTelemetryEvent() {
+export function shouldFireTelemetryEvent(): boolean {
   const args = getCliArgs();
   const arg1 = args[0];
 
