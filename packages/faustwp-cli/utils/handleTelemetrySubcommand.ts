@@ -1,4 +1,3 @@
-/* eslint no-console: "error" */
 import chalk from 'chalk';
 import { getCliArgs } from './getCliArgs.js';
 import { userConfig } from './userConfig.js';
@@ -6,6 +5,7 @@ import { styles } from './styles.js';
 
 const TELEMETRY_ENABLED = 'telemetry.enabled';
 
+// eslint-disable no-console
 function logTelemetryStatus() {
   const statusSetting = userConfig.get(TELEMETRY_ENABLED);
   const status = statusSetting ? chalk.green('Enabled') : chalk.red('Disabled');
