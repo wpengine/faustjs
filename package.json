@@ -46,8 +46,8 @@
     "version": "changeset version && node scripts/versionPlugin.js",
     "version:status": "changeset status",
     "release": "npm run build && changeset publish",
-    "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config .eslintrc.js",
-    "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --config .eslintrc.js --fix"
+    "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",
+    "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
   },
   "devDependencies": {
     "@changesets/cli": "^2.17.0",
