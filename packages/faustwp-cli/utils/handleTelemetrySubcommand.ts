@@ -6,6 +6,19 @@ import { styles } from './styles.js';
 
 const TELEMETRY_ENABLED = 'telemetry.enabled';
 
+function logTelemetryStatus() {
+  const statusSetting = userConfig.get(TELEMETRY_ENABLED);
+  const status = statusSetting ? chalk.green('Enabled') : chalk.red('Disabled');
+
+  console.log();
+  console.log(`Status: ${status}`);
+  console.log();
+}
+
+function logTelemetryDocsUrl() {
+  console.log('Learn more: https://faustjs.org/docs/telemetry');
+}
+
 /**
  * Handles the telemetry subcommand.
  */
@@ -63,17 +76,4 @@ export function handleTelemetrySubcommand() {
       break;
     }
   }
-}
-
-function logTelemetryStatus() {
-  const statusSetting = userConfig.get(TELEMETRY_ENABLED);
-  const status = statusSetting ? chalk.green('Enabled') : chalk.red('Disabled');
-
-  console.log();
-  console.log(`Status: ${status}`);
-  console.log();
-}
-
-function logTelemetryDocsUrl() {
-  console.log('Learn more: https://faustjs.org/docs/telemetry');
 }
