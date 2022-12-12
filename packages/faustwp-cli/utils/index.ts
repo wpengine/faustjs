@@ -8,6 +8,7 @@ import { sendTelemetryData } from './sendTelemetryData.js';
 import type { TelemetryData } from './marshallTelemetryData.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { userConfig } from './userConfig.js';
+import { telemetryPrefsExist } from './doTelemetryPrefsExist.js';
 import { validateFaustEnvVars } from './validateFaustEnvVars.js';
 
 export {
@@ -21,6 +22,7 @@ export {
   shouldFireTelemetryEvent,
   sendTelemetryData,
   TelemetryData,
+  telemetryPrefsExist,
   userConfig,
   validateFaustEnvVars,
 };

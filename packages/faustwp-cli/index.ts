@@ -10,8 +10,10 @@ import {
   requestWPTelemetryData,
   sendTelemetryData,
   shouldFireTelemetryEvent,
+  telemetryPrefsExist,
   validateFaustEnvVars,
   userConfig,
+  infoLog,
 } from './utils/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
@@ -50,6 +52,11 @@ import {
 
       break;
     }
+  }
+
+  if (!telemetryPrefsExist()) {
+    infoLog('Faust has completely anonymous, opt-in Telemetry!');
+    infoLog('You can enable it by running "npx faust telemetry enable"');
   }
 
   if (shouldFireTelemetryEvent()) {
