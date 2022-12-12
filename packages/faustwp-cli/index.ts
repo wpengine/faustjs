@@ -2,6 +2,7 @@
 
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
+import { v4 as uuid } from 'uuid';
 import {
   generatePossibleTypes,
   getCliArgs,
@@ -38,6 +39,19 @@ import {
   dotenv.config();
   validateFaustEnvVars();
 
+  // Inform user of telemetry program.
+  if (!telemetryPrefsExist()) {
+    infoLog('Faust has completely anonymous, opt-in Telemetry!');
+    infoLog('You can enable it by running "npx faust telemetry enable"');
+
+    // Hydrate user's telemetry setting.
+    userConfig.set('telemetry', {
+      notifiedAt: new Date().getTime(),
+      anonymousId: uuid(),
+      enabled: false,
+    });
+  }
+
   // eslint-disable-next-line default-case
   switch (arg1) {
     case 'telemetry': {
@@ -52,11 +66,6 @@ import {
 
       break;
     }
-  }
-
-  if (!telemetryPrefsExist()) {
-    infoLog('Faust has completely anonymous, opt-in Telemetry!');
-    infoLog('You can enable it by running "npx faust telemetry enable"');
   }
 
   if (shouldFireTelemetryEvent()) {
