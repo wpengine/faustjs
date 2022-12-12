@@ -3,6 +3,7 @@ import { errorLog, infoLog } from './log.js';
 import { marshallTelemetryData } from './marshallTelemetryData.js';
 import { handleTelemetrySubcommand } from './handleTelemetrySubcommand.js';
 import { requestWPTelemetryData } from './requestWPTelemetryData.js';
+import { shouldFireTelemetryEvent } from './shouldFireTelemetryEvent.js';
 import { sendTelemetryData } from './sendTelemetryData.js';
 import type { TelemetryData } from './marshallTelemetryData.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
@@ -17,6 +18,7 @@ export {
   marshallTelemetryData,
   handleTelemetrySubcommand,
   requestWPTelemetryData,
+  shouldFireTelemetryEvent,
   sendTelemetryData,
   TelemetryData,
   userConfig,
