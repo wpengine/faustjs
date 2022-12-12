@@ -1,3 +1,4 @@
+// eslint-disable no-console
 import chalk from 'chalk';
 import { getCliArgs } from './getCliArgs.js';
 import { userConfig } from './userConfig.js';
