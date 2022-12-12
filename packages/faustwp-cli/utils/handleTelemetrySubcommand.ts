@@ -39,7 +39,9 @@ export function handleTelemetrySubcommand() {
 
       userConfig.set(TELEMETRY_ENABLED, false);
       logTelemetryStatus();
-      console.log("You have opted-out of Faust.js' anonymous telemetry program.");
+      console.log(
+        "You have opted-out of Faust.js' anonymous telemetry program.",
+      );
       console.log('No data will be collected from your machine.');
       logTelemetryDocsUrl();
       break;
@@ -55,7 +57,9 @@ export function handleTelemetrySubcommand() {
     }
 
     default: {
-      console.log(styles.error(`"${subcommand}" is not a valid telemetry subcommand`));
+      console.log(
+        styles.error(`"${subcommand}" is not a valid telemetry subcommand`),
+      );
       break;
     }
   }
