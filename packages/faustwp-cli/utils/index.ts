@@ -1,4 +1,3 @@
-import { disableCliInteraction } from './disableCliInteraction.js';
 import { getCliArgs } from './getCliArgs.js';
 import { errorLog, infoLog } from './log.js';
 import { marshallTelemetryData } from './marshallTelemetryData.js';
@@ -11,7 +10,6 @@ import { userConfig } from './userConfig.js';
 import { validateFaustEnvVars } from './validateFaustEnvVars.js';
 
 export {
-  disableCliInteraction,
   errorLog,
   generatePossibleTypes,
   getCliArgs,
