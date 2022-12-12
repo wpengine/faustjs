@@ -9,6 +9,7 @@ import {
   handleTelemetrySubcommand,
   requestWPTelemetryData,
   sendTelemetryData,
+  shouldFireTelemetryEvent,
   validateFaustEnvVars,
   userConfig,
 } from './utils/index.js';
@@ -51,13 +52,7 @@ import {
     }
   }
 
-  const shouldFireTelemetryEvent =
-    (arg1 === 'dev' || arg1 === 'build') &&
-    userConfig.get('telemetry.enabled') === true &&
-    userConfig.get('telemetry.anonymousId') &&
-    process.env.FAUSTWP_SECRET_KEY;
-
-  if (shouldFireTelemetryEvent) {
+  if (shouldFireTelemetryEvent()) {
     try {
       const wpTelemetryData = await requestWPTelemetryData(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
