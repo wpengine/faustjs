@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
-import Configstore from 'configstore';
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
+import { v4 as uuid } from 'uuid';
 import {
-  disableCliInteraction,
   generatePossibleTypes,
   getCliArgs,
   marshallTelemetryData,
-  promptUserForTelemetryPref,
+  handleTelemetrySubcommand,
   requestWPTelemetryData,
   sendTelemetryData,
+  shouldFireTelemetryEvent,
+  telemetryPrefsExist,
   validateFaustEnvVars,
+  userConfig,
+  infoLog,
 } from './utils/index.js';
-
-const CONFIG_STORE_NAME = 'faust';
-const config = new Configstore(CONFIG_STORE_NAME);
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
@@ -38,30 +38,24 @@ const config = new Configstore(CONFIG_STORE_NAME);
   }
   dotenv.config();
   validateFaustEnvVars();
-  /**
-   * If there is no config (or a non-valid config), prompt the user for their
-   * permission to collect anonymous telemetry information and save their
-   * preferences on their machine.
-   */
-  if (
-    !config.all?.telemetry ||
-    config.all?.telemetry?.enabled === undefined ||
-    !config.all?.telemetry?.anonymousId
-  ) {
-    /**
-     * Do not prompt for telemetry if preferences are not set and the command
-     * that is being ran is build or start. We do not want to halt the build of a
-     * production site that likely does not have preferences saved.
-     */
-    if (arg1 !== 'build' && arg1 !== 'start' && !disableCliInteraction()) {
-      await promptUserForTelemetryPref(true, config);
-    }
+
+  // Inform user of telemetry program.
+  if (!telemetryPrefsExist()) {
+    infoLog('Faust has completely anonymous, opt-in Telemetry!');
+    infoLog('You can enable it by running "npx faust telemetry enable"');
+
+    // Create user's telemetry setting.
+    userConfig.set('telemetry', {
+      notifiedAt: new Date().getTime(),
+      anonymousId: uuid(),
+      enabled: false,
+    });
   }
 
   // eslint-disable-next-line default-case
   switch (arg1) {
-    case 'faust-telemetry': {
-      await promptUserForTelemetryPref(false, config);
+    case 'telemetry': {
+      handleTelemetrySubcommand();
       process.exit(0);
 
       break;
@@ -74,13 +68,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
     }
   }
 
-  const shouldFireTelemetryEvent =
-    (arg1 === 'dev' || arg1 === 'build') &&
-    config.get('telemetry.enabled') === true &&
-    config.get('telemetry.anonymousId') &&
-    process.env.FAUSTWP_SECRET_KEY;
-
-  if (shouldFireTelemetryEvent) {
+  if (shouldFireTelemetryEvent()) {
     try {
       const wpTelemetryData = await requestWPTelemetryData(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -95,7 +83,7 @@ const config = new Configstore(CONFIG_STORE_NAME);
 
       void sendTelemetryData(
         telemetryData,
-        config.get('telemetry.anonymousId') as string,
+        userConfig.get('telemetry.anonymousId') as string,
       );
     } catch (err) {
       // console.log(err);
