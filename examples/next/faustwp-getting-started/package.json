@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
+    "@faustwp/blocks": "file:../../../packages/blocks/dist/index.js",
     "@faustwp/cli": "0.1.6",
     "@faustwp/core": "0.1.5",
     "@wordpress/base-styles": "^4.7.0",

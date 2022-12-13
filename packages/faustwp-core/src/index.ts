@@ -13,6 +13,7 @@ import { getWpUrl } from './lib/getWpUrl.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getWpHostname } from './lib/getWpHostname.js';
 import { getApolloClient, addApolloState } from './client.js';
+import { hooks } from './hooks/index.js';
 
 export {
   FaustProvider,
@@ -33,4 +34,5 @@ export {
   getGraphqlEndpoint,
   getApolloClient,
   addApolloState,
+  hooks,
 };

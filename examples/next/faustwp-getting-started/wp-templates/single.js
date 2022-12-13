@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import * as MENUS from '../constants/menus';
+import { WordPressBlocksViewer } from '@faustwp/blocks';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
 import {
   Header,
@@ -12,6 +13,7 @@ import {
   FeaturedImage,
   SEO,
 } from '../components';
+import components from '../wp-blocks';
 
 export default function Component(props) {
   // Loading state for previews
@@ -23,7 +25,8 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author } = props.data.post;
+  const { title, content, featuredImage, date, author, contentBlocks } =
+    props.data.post;
 
   return (
     <>
@@ -47,6 +50,7 @@ export default function Component(props) {
           />
           <Container>
             <ContentWrapper content={content} />
+            <WordPressBlocksViewer contentBlocks={contentBlocks} />
           </Container>
         </>
       </Main>
@@ -59,6 +63,7 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
+  ${components.CoreParagraph.fragments.entry}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -75,6 +80,25 @@ Component.query = gql`
         }
       }
       ...FeaturedImageFragment
+      contentBlocks {
+        __typename
+        renderedHtml
+        name
+        id: nodeId
+        parentId
+        ...CoreParagraphFragment
+        ... on CoreImage {
+          attributes {
+            alt
+            url
+            caption
+            className
+            sizeSlug
+            width
+            height
+          }
+        }
+      }
     }
     generalSettings {
       ...BlogInfoFragment
