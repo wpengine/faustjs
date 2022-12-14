@@ -6,6 +6,10 @@
     ["@faustjs/core", "@faustjs/next", "@faustjs/react"],
     ["@faustwp/core", "@faustwp/cli"]
   ],
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  },
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",

@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.1
-Stable tag: 0.8.0
+Stable tag: 0.8.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,32 +27,38 @@ The plugin also provides useful options for headless sites, such as the ability 
 
 That's it! For more information on getting started with headless WordPress, see [Getting Started with Faust](https://faustjs.org/docs/tutorial/dev-env-setup).
 
-== Frequently Asked Questions == 
+== Frequently Asked Questions ==
 
-= If I need more support, where should I ask questions? = 
+= If I need more support, where should I ask questions? =
 Use one of the channels below to contact the Faust team for support.
 [GitHub](https://github.com/wpengine/faustjs) - Faust GitHub documentation and codebase.
 [Discord](https://discord.gg/J2khkF9XYK) - Interactive chat support on Discord.
 
 = Where can I find more information about development and future features for this plugin? =
 
-Great question! The development team posts weekly summaries of sprints related to Faust, [here](https://faustjs.org/blog). 
+Great question! The development team posts weekly summaries of sprints related to Faust, [here](https://faustjs.org/blog).
 
 = Why the name “Faust”? =
 
-Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web. 
+Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web.
 
-== Screenshots == 
+== Screenshots ==
 
 1. The settings page
 2. Portfolio, blog, and basic blueprints for headless sites built with Faust
-3. A code snippet 
+3. A code snippet
 
 plugins/faustwp/.wordpress-org/screenshot-1.png
 plugins/faustwp/.wordpress-org/screenshot-2.png
 plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
+
+= 0.8.1 =
+
+### Patch Changes
+
+- c016c9f: Update plugin title in changelog
 
 = 0.8.0 =
 
@@ -66,12 +72,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
-
-= 0.7.10 =
-
-### Patch Changes
-
-- 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
-- 0c757a2: Remove unnecessary config from wordpress.org zip.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
