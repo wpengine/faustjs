@@ -5,20 +5,19 @@ export const log = (
   message: string,
   ...args: any
 ) => {
-  const delimeter = styles.dim(' - ');
-  let logLevelMessage = styles.brand('Faust') + delimeter;
+  let styledLogLevel = '';
 
   switch (logLevel) {
     case 'info': {
-      logLevelMessage += styles.info('info');
+      styledLogLevel = styles.info('info');
       break;
     }
     case 'warn': {
-      logLevelMessage += styles.warn('warn');
+      styledLogLevel = styles.warn('warn');
       break;
     }
     case 'error': {
-      logLevelMessage += styles.error('error');
+      styledLogLevel = styles.error('error');
       break;
     }
     default: {
@@ -26,8 +25,8 @@ export const log = (
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, no-console
-  console.log(`${logLevelMessage}${delimeter}${message}`, ...args);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  console.log(`${styledLogLevel} - ${message}`, ...args);
 };
 
 export const infoLog = (message: string, ...args: any) => {

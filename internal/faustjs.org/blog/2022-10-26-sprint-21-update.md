@@ -7,7 +7,7 @@ hide_table_of_contents: true
 
 Documentation, documentation, documentation.
 
-The theme of our last sprint was documentation and it showed. We're super close to launching new documentation for new Faust. You'll see the updates on [https://faustjs.org] in the coming weeks.
+The theme of our last sprint was documentation and it showed. We're super close to launching new documentation for new Faust. You'll see the updates on [https://faustjs.org](https://faustjs.org) in the coming weeks.
 
 <!--truncate-->
 
