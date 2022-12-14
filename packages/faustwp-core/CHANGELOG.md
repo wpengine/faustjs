@@ -1,5 +1,14 @@
 # @faustwp/core
 
+## 0.2.0
+
+### Patch Changes
+
+- be61b71: Added: Template variables are now being returned to the client via the `__TEMPLATE_VARIABLES__` prop.
+- d1f5cc4: Added: `FaustTemplateProps<TemplateDataType, AdditionalProps>` TypeScript type so you can type your incoming props from Faust Templates
+- be61b71: `getWordPressProps` now sets a smart default `revalidate` of `900` (15 minutes) when using `getStaticProps`
+- be61b71: `getWordPressProps()` now accepts `props` and `revalidate` as apart of its `options` object parameter.
+
 ## 0.1.5
 
 ### Patch Changes
