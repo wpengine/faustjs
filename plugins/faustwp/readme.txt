@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.1
-Stable tag: 0.8.0
+Stable tag: 0.8.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 0.8.1 =
+
+### Patch Changes
+
+- 9b0ed99: Update changelog plugin title
+
 = 0.8.0 =
 
 ### Minor Changes
@@ -66,12 +72,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
-
-= 0.7.10 =
-
-### Patch Changes
-
-- 88ce018: Fix generate endpoint when WordPress is installed within a subdirectory. Props to @kermage for the fix!
-- 0c757a2: Remove unnecessary config from wordpress.org zip.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)

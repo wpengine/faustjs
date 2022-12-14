@@ -1,5 +1,13 @@
 # @faustwp/cli
 
+## 0.2.0
+
+### Minor Changes
+
+- fa2009f: Added new telemetry commands: `faust telemetry status`, `faust telemetry enable`, & `faust telemetry disable`.
+  These new commands replace `faust faust-telemetry`, which previously required additional user interaction.
+  Removed `FAUST_NO_INTERACTION` as the CLI no longer requires interaction.
+
 ## 0.1.6
 
 ### Patch Changes
