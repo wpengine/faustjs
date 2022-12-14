@@ -1,5 +1,11 @@
 # Faust
 
+## 0.8.1
+
+### Patch Changes
+
+- c016c9f: Update plugin title in changelog
+
 ## 0.8.0
 
 ### Minor Changes
