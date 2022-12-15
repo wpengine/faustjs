@@ -9,7 +9,7 @@ module.exports = withFaust({
     includePaths: ['node_modules'],
   },
   images: {
-    domains: [getWpHostname()],
+    domains: ['localhost', getWpHostname()],
   },
   i18n: {
     locales: ['en'],

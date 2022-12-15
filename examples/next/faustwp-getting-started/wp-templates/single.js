@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import * as MENUS from '../constants/menus';
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import flatListToHierarchical from '../utilities/flatListToHierarchical';
 import {
   Header,
   Footer,
@@ -27,6 +28,7 @@ export default function Component(props) {
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
   const { title, content, featuredImage, date, author, contentBlocks } =
     props.data.post;
+  const blocks = flatListToHierarchical(contentBlocks);
 
   return (
     <>
@@ -49,8 +51,9 @@ export default function Component(props) {
             author={author?.node?.name}
           />
           <Container>
-            <ContentWrapper content={content} />
-            <WordPressBlocksViewer contentBlocks={contentBlocks} />
+            <ContentWrapper>
+              <WordPressBlocksViewer contentBlocks={blocks} />
+            </ContentWrapper>
           </Container>
         </>
       </Main>
@@ -87,10 +90,20 @@ Component.query = gql`
         id: nodeId
         parentId
         ...CoreParagraphFragment
+        ... on CoreColumns {
+          attributes {
+            cssClassName
+          }
+        }
+        ... on CoreColumn {
+           attributes {
+            cssClassName
+          }
+        }
         ... on CoreImage {
           attributes {
             alt
-            url
+            src
             caption
             className
             sizeSlug

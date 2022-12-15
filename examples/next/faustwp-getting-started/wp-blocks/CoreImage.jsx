@@ -12,7 +12,7 @@ export default function CoreImage(props) {
     <figure
       style={{...style, cursor: 'pointer'}}
       className={attributes?.className}
-      onClick={ () => openImageViewer() }>
+      >
       <Image
         alt={attributes.alt}
         src={attributes.src}
