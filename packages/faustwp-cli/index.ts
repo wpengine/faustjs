@@ -16,6 +16,7 @@ import {
   userConfig,
   infoLog,
 } from './utils/index.js';
+import { debugLog } from './utils/log.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
@@ -79,14 +80,16 @@ import {
 
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
-      // infoLog('Telemetry event being sent', telemetryData);
+      debugLog(
+        'Telemetry is enabled. Sending the following telemetry event:',
+        telemetryData,
+      );
 
       void sendTelemetryData(
         telemetryData,
         userConfig.get('telemetry.anonymousId') as string,
       );
     } catch (err) {
-      // console.log(err);
       // Fail silently
     }
   }

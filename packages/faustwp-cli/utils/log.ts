@@ -1,7 +1,8 @@
+import { isDebug } from './isDebug.js';
 import { styles } from './styles.js';
 
 export const log = (
-  logLevel: 'info' | 'warn' | 'error',
+  logLevel: 'info' | 'warn' | 'error' | 'debug',
   message: string,
   ...args: any
 ) => {
@@ -18,6 +19,10 @@ export const log = (
     }
     case 'error': {
       styledLogLevel = styles.error('error');
+      break;
+    }
+    case 'debug': {
+      styledLogLevel = styles.debug('debug');
       break;
     }
     default: {
@@ -42,4 +47,12 @@ export const warnLog = (message: string, ...args: any) => {
 export const errorLog = (message: string, ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('error', message, ...args);
+};
+
+export const debugLog = (message: string, ...args: any) => {
+  if (!isDebug()) {
+    return;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  log('debug', message, ...args);
 };

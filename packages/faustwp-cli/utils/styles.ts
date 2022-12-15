@@ -5,5 +5,6 @@ export const styles = {
   info: chalk.cyan,
   warn: chalk.yellow,
   error: chalk.red,
+  debug: chalk.magenta,
   success: chalk.blueBright,
 };
