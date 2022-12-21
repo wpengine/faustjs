@@ -48,3 +48,4 @@ require FAUSTWP_DIR . '/includes/settings/callbacks.php';
 require FAUSTWP_DIR . '/includes/updates/upgrade-database.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
 require FAUSTWP_DIR . '/includes/detect-conflicts/callbacks.php';
+require FAUSTWP_DIR . '/includes/admin-bar/callbacks.php';

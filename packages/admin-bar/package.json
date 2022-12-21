@@ -1,0 +1,46 @@
+{
+  "name": "@faustwp/admin-bar",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sass": "src/styles/admin-bar.scss",
+  "style": "dist/css/admin-bar.css",
+  "dependencies": {
+    "@apollo/client": "^3.6.6",
+    "@wordpress/hooks": "^3.14.0"
+  },
+  "devDependencies": {
+    "@wordpress/icons": "^9.14.0",
+    "concurrently": "^7.6.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.56.2",
+    "typescript": "^4.4.4"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
+    "build": "concurrently \"npm:build-*\" --prefix-colors \"auto\"",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run package",
+    "clean": "rimraf dist",
+    "format": "prettier --write .",
+    "package": "node ../../scripts/package.js",
+    "prepublish": "npm run build",
+    "build-js": "tsc -p .",
+    "build-cjs": "tsc -p tsconfig-cjs.json",
+    "build-styles": "sass src/styles/admin-bar.scss dist/css/admin-bar.css --embed-sources",
+    "watch-styles": "sass src/styles/admin-bar.scss dist/css/admin-bar.css --embed-sources --watch",
+    "watch-js": "tsc -p . --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpengine/faustjs.git"
+  },
+  "author": "Faust Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wpengine/faustjs/issues"
+  },
+  "homepage": "https://github.com/wpengine/faustjs#readme"
+}
