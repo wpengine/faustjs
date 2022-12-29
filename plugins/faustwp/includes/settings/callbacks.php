@@ -20,13 +20,12 @@ add_action( 'admin_notices', 'wpe_headless_frontend_url_missing' );
  * @return void
  */
 function wpe_headless_frontend_url_missing() {
-	# need settings for frontend url to see if it's empty
 	$frontend_url_setting = faustwp_get_setting( 'frontend_uri' );
-	
+
 	if ( ! isset( $frontend_url_setting ) ) {
 		?>
 			<div class="notice notice-warning is_dismissable">
-				<p><?php __( "Front-end site URL is required to utilize url rewrites and previews.", "faustwp" ); ?></p>
+				<p><?php __( 'Front-end site URL is required to utilize url rewrites and previews.', 'faustwp' ); ?></p>
 			</div>';
 		<?php
 	}
