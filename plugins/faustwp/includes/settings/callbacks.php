@@ -11,6 +11,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+add_action( 'admin_notices', 'wpe_headless_frontend_url_missing' );
+/**
+ * Callback for WordPress 'admin_notices' action.
+ *
+ * Show frontend url missing error if it doesn't exist.
+ *
+ * @return void
+ */
+function wpe_headless_frontend_url_missing() {
+	# need settings for frontend url to see if it's empty
+	$frontend_url_setting = faustwp_get_setting( 'frontend_uri' );
+	
+	if ( ! isset( $frontend_url_setting ) ) {
+		?>
+			<div class="notice notice-warning is_dismissable">
+				<p><?php __( "Front-end site URL is required to utilize url rewrites and previews.", "faustwp" ); ?></p>
+			</div>';
+		<?php
+	}
+}
+
 add_action( 'admin_menu', __NAMESPACE__ . '\\register_settings_menu' );
 /**
  * Callback for WordPress 'admin_menu' action.
