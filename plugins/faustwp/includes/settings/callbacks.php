@@ -25,7 +25,7 @@ function frontend_url_notice() {
 	if ( empty( $frontend_url_setting ) ) {
 		?>
 			<div class="notice notice-error is-dismissible" style="background-color: #FFEAE9;">
-				<p><?php esc_html_e( 'Front-end site URL is required to utilize url rewrites and previews. It is highly recommended that you update it below.', 'faustwp' ); ?></p>
+				<p><?php esc_html_e( 'Front-end site URL is required to utilize url rewrites and previews. It is highly recommended that you update it below to avoid unexpected behavior. See the ', 'faustwp' ); ?><a href="https://faustjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Getting Started Documentation', 'faustwp' ) ?></a> <?php esc_html_e( 'for more details.', 'faustwp' ) ?></p>
 			</div>
 		<?php
 	}
