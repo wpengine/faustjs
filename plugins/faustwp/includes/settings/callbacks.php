@@ -24,8 +24,8 @@ function frontend_url_notice() {
 
 	if ( empty( $frontend_url_setting ) ) {
 		?>
-			<div class="notice notice-error is_dismissable">
-				<p><?php esc_html_e( 'Front-end site URL is required to utilize url rewrites and previews.', 'faustwp' ); ?></p>
+			<div class="notice notice-error is-dismissible" style="background-color: #FFEAE9;">
+				<p><?php esc_html_e( 'Front-end site URL is required to utilize url rewrites and previews. It is highly recommended that you update it below.', 'faustwp' ); ?></p>
 			</div>
 		<?php
 	}
