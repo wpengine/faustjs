@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_notices', 'wpe_headless_frontend_url_missing' );
+add_action( 'admin_notices', __NAMESPACE__ . '\\frontend_url_notice' );
 /**
  * Callback for WordPress 'admin_notices' action.
  *
@@ -19,7 +19,7 @@ add_action( 'admin_notices', 'wpe_headless_frontend_url_missing' );
  *
  * @return void
  */
-function wpe_headless_frontend_url_missing() {
+function frontend_url_notice() {
 	$frontend_url_setting = faustwp_get_setting( 'frontend_uri' );
 
 	if ( ! isset( $frontend_url_setting ) ) {
