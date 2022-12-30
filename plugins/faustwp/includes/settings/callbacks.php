@@ -15,18 +15,18 @@ add_action( 'admin_notices', __NAMESPACE__ . '\\frontend_url_notice' );
 /**
  * Callback for WordPress 'admin_notices' action.
  *
- * Show frontend url missing error if it doesn't exist.
+ * Show frontend_url missing error if it doesn't exist.
  *
  * @return void
  */
 function frontend_url_notice() {
 	$frontend_url_setting = faustwp_get_setting( 'frontend_uri' );
 
-	if ( ! isset( $frontend_url_setting ) ) {
+	if ( empty( $frontend_url_setting ) ) {
 		?>
-			<div class="notice notice-warning is_dismissable">
-				<p><?php __( 'Front-end site URL is required to utilize url rewrites and previews.', 'faustwp' ); ?></p>
-			</div>';
+			<div class="notice notice-error is_dismissable">
+				<p><?php esc_html_e( 'Front-end site URL is required to utilize url rewrites and previews.', 'faustwp' ); ?></p>
+			</div>
 		<?php
 	}
 }
