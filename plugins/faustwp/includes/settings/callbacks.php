@@ -37,7 +37,7 @@ function frontend_url_notice() {
 				<p>
 					<?php
 					printf(
-						esc_html_e( 'See the %1$s Getting Started Documentation%2$s for more details.', 'faustwp' ),
+						__( 'See the %1$s Getting Started Documentation%2$s for more details.', 'faustwp' ),
 						'<a href="https://faustjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer">',
 						'</a>'
 					);
