@@ -34,13 +34,15 @@ function frontend_url_notice() {
 			<div class="notice notice-error is-dismissible" style="background-color: #FFEAE9;">
 				<p><?php esc_html_e( 'Front-end site URL is required to utilize url rewrites and previews.', 'faustwp' ); ?></p>
 				<p><?php esc_html_e( 'It is highly recommended that you update it below to avoid unexpected behavior.', 'faustwp' ); ?></p>
-				<p><?php
+				<p>
+					<?php
 					printf(
-						__( 'See the %1$s Getting Started Documentation%2$s for more details.', 'faustwp' ),
+						esc_html_e( 'See the %1$s Getting Started Documentation%2$s for more details.', 'faustwp' ),
 						'<a href="https://faustjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer">',
 						'</a>'
-					);
-				?></p>
+						);
+					?>
+				</p>
 			</div>
 		<?php
 	}
