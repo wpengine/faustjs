@@ -23,7 +23,7 @@ function frontend_url_notice() {
 	$screen = get_current_screen();
 
 	// Exit if not this plugin's settings page.
-	if ( $screen->id !== 'settings_page_faustwp-settings' ) {
+	if ( 'settings_page_faustwp-settings' !== $screen->id ) {
 		return;
 	}
 
