@@ -20,6 +20,13 @@ add_action( 'admin_notices', __NAMESPACE__ . '\\frontend_url_notice' );
  * @return void
  */
 function frontend_url_notice() {
+	$screen = get_current_screen();
+
+	// Exit if not this plugin's settings page.
+	if ( $screen->id !== 'settings_page_faustwp-settings' ) {
+		return;
+	}
+
 	$frontend_url_setting = faustwp_get_setting( 'frontend_uri' );
 
 	if ( empty( $frontend_url_setting ) ) {
