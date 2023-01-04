@@ -1,6 +1,6 @@
 ## Tasks
 
-- [ ] I've filled out the WP Engine Contributor License Agreement (CLA)
+- [ ] I have signed a [Contributor License Agreement (CLA)](https://github.com/wpengine/faustjs#contributor-license-agreement) with WP Engine.
 
 ## Description
 
