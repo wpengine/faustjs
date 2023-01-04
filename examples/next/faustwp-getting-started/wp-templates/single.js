@@ -67,6 +67,8 @@ Component.query = gql`
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
   ${components.CoreParagraph.fragments.entry}
+  ${components.UbCallToActionBlock.fragments.entry}
+  ${components.UbStarRatingBlock.fragments.entry}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -90,6 +92,8 @@ Component.query = gql`
         id: nodeId
         parentId
         ...CoreParagraphFragment
+        ...${components.UbCallToActionBlock.fragments.key}
+        ...${components.UbStarRatingBlock.fragments.key}
         ... on CoreColumns {
           attributes {
             cssClassName
