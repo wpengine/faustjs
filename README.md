@@ -68,4 +68,4 @@ All external contributors to WP Engine products must have a signed Contributor L
 2. 📝 Sign the CLA emailed to you
 3. 📥 Receive copy of signed CLA
 
-❤️ Thank you for helping us fufill our legal obligations in order to continue empowering builders through headless WordPress.
+❤️ Thank you for helping us fulfill our legal obligations in order to continue empowering builders through headless WordPress.
