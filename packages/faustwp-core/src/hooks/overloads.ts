@@ -63,13 +63,6 @@ type FaustCoreFilters = {
   ): void;
 
   addFilter(
-    hookName: 'wpHostname',
-    namespace: string,
-    callback: (wpHostname: string, context: { wpUrl: string }) => string,
-    priority?: number | undefined,
-  ): void;
-
-  addFilter(
     hookName: 'wpUrl',
     namespace: string,
     callback: (wpUrl: string, context: Record<string, never>) => string,

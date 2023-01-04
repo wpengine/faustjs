@@ -18,8 +18,8 @@ const FeatureList = [
     title: 'Previews',
     description: (
       <>
-        Preview posts and pages before publishing and rewrite WordPress
-        preview URLs to your frontend.
+        Preview posts and pages before publishing and rewrite WordPress preview
+        URLs to your frontend.
       </>
     ),
     link: '/docs/next/guides/post-page-previews',
@@ -32,20 +32,21 @@ const FeatureList = [
     link: '/docs/templates',
   },
   {
-    title: 'Seed Query',
+    title: 'Plugin System',
     description: (
       <>
-        Use a seed query to obtain a list of possible templates for any given
-        route.
+        Faust has a robust, built-in, plugin system that allows practically
+        every part of the framework to be configurable.
       </>
     ),
-    link: '/docs/faustwp/seed-query',
+    link: '/docs/plugin-system/creating-a-plugin',
   },
   {
     title: 'Next.js',
     description: (
       <>
-        Build a static site with WordPress data outside the template hierarchy with Next.js file based pages.
+        Build a static site with WordPress data outside the template hierarchy
+        with Next.js file based pages.
       </>
     ),
     link: '/docs/next/reference/getNextStaticProps',
