@@ -56,7 +56,6 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
       block,
       {},
     ) as EditorBlock;
-    console.debug(blockProps);
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={block} key={idx}>
