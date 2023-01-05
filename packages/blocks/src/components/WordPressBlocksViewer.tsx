@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { hooks } from '@faustwp/core';
 import resolveBlockTemplate from '../resolveBlockTemplate.js';
 import { WordPressBlocksContext } from './WordPressBlocksProvider.js';
 
@@ -49,16 +48,11 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
   }
 
   const { contentBlocks } = props;
-  const renderedBlocks = contentBlocks.map((block, idx) => {
-    const BlockTemplate = resolveBlockTemplate(block, blocks);
-    const blockProps = hooks.applyFilters(
-      `resolve_block_${BlockTemplate.name}`,
-      block,
-      {},
-    ) as EditorBlock;
+  const renderedBlocks = contentBlocks.map((blockProps, idx) => {
+    const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
     return (
       // eslint-disable-next-line react/no-array-index-key
-      <BlockDataProvider data={block} key={idx}>
+      <BlockDataProvider data={blockProps} key={idx}>
         <>{React.createElement(BlockTemplate as any, { ...blockProps })}</>
       </BlockDataProvider>
     );
