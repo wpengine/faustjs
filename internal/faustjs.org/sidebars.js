@@ -95,6 +95,22 @@ module.exports = {
       ],
     },
     {
+      type: 'category',
+      label: 'Faust Plugin System',
+      items: [
+        {
+          type: 'doc',
+          label: 'Creating a Plugin',
+          id: 'plugin-system/creating-a-plugin',
+        },
+        {
+          type: 'doc',
+          label: 'Filters',
+          id: 'plugin-system/filters',
+        },
+      ],
+    },
+    {
       type: 'doc',
       label: 'Telemetry',
       id: 'telemetry',

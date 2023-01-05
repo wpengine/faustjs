@@ -1,9 +1,8 @@
 import { createHooks } from '@wordpress/hooks';
-// eslint-disable-next-line import/extensions
-import { _Hooks } from '@wordpress/hooks/build-types/createHooks';
+import { FaustHooks } from './overloads.js';
 
-export interface Plugin {
-  apply?: (hooks: _Hooks) => void;
-}
+export type FaustPlugin = {
+  apply: (hooks: FaustHooks) => void;
+};
 
 export const hooks = createHooks();
