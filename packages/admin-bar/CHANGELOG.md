@@ -1,1 +1,0 @@
-# @faustwp/admin-bar
