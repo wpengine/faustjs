@@ -37,7 +37,7 @@ export interface ContentBlock {
   renderedHtml?: string;
 }
 /**
- * WordPressBlocksViewer is the main component that renders blocks taken from WordPress as a list of EditorBlock[] data.
+ * WordPressBlocksViewer is the main component that renders blocks taken from WordPress as a list of ContentBlock[] data.
  * @param props WordpressBlocksViewerProps
  * @returns JSX.Component that renders the block tree.
  */

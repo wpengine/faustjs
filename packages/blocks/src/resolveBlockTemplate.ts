@@ -4,12 +4,12 @@ import { WordPressBlock } from './components/WordPressBlocksProvider.js';
 import DefaultBlock from './components/DefaultBlock.js';
 
 /**
- * This function contains the main resolve logic for matching a provided editorBlock instance with the list of
+ * This function contains the main resolve logic for matching a provided contentBlock instance with the list of
  * available WordPressBlock components.
  *
  * @param contentBlock An instance of a block as retrieved from the API
- * @param blocks A list of available WordPressBlock components to match with the provided editorBlock
- * @returns An instance of the WordPressBlock component that matches the the provided editorBlock or a DefaultBlock if no such match exists.
+ * @param blocks A list of available WordPressBlock components to match with the provided contentBlock
+ * @returns An instance of the WordPressBlock component that matches the the provided contentBlock or a DefaultBlock if no such match exists.
  */
 export default function resolveBlockTemplate(
   contentBlock: ContentBlock,
