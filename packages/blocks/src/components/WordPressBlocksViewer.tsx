@@ -24,14 +24,14 @@ export function BlockDataProvider(
 }
 
 export interface WordpressBlocksViewerProps {
-  contentBlocks: EditorBlock[];
+  contentBlocks: ContentBlock[];
 }
 
-export interface EditorBlock {
+export interface ContentBlock {
   __typename?: string;
   apiVersion?: number;
   cssClassNames?: string;
-  innerBlocks?: EditorBlock[];
+  innerBlocks?: ContentBlock[];
   isDynamic?: boolean;
   name?: string;
   renderedHtml?: string;
@@ -53,7 +53,7 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={blockProps} key={idx}>
-        <>{React.createElement<EditorBlock>(BlockTemplate, { ...blockProps })}</>
+        <>{React.createElement<ContentBlock>(BlockTemplate, { ...blockProps })}</>
       </BlockDataProvider>
     );
   });
