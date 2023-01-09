@@ -12,7 +12,6 @@ export function FaustProvider(props: {
   const { pageProps, children } = props;
   const apolloClient = useApollo(pageProps);
 
-  console.log({pageProps});
   return (
     <ApolloProvider client={apolloClient}>
       <FaustAdminBar />

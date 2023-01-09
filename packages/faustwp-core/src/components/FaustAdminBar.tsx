@@ -18,8 +18,6 @@ export function FaustAdminBar(props: any) {
     };
   }, [data]);
 
-  console.log({ data, props });
-
   const siteName = data?.generalSettings.title;
   const commentsInModeration = data?.comments.edges.length;
 
