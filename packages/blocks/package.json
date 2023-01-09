@@ -1,7 +1,6 @@
 {
   "name": "@faustwp/blocks",
   "version": "0.0.1",
-  "private": true,
   "description": "Faust Blocks",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
