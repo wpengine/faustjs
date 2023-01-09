@@ -1,4 +1,5 @@
 import { FaustProvider } from './components/FaustProvider.js';
+import { FaustAdminBar } from './components/FaustAdminBar.js';
 import {
   WordPressTemplate,
   FaustTemplateProps,
@@ -16,6 +17,7 @@ import { getApolloClient, addApolloState } from './client.js';
 
 export {
   FaustProvider,
+  FaustAdminBar,
   WordPressTemplate,
   FaustTemplateProps,
   getWordPressProps,

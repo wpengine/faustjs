@@ -1,17 +1,23 @@
-import React from "react";
-import { Icon, wordpress as defaultIcon } from '@wordpress/icons';
-import { adminUrl } from "../../utils/adminUrl";
+import React, { useState } from "react";
+import { adminUrl } from "../../utils/adminUrl.js";
 
 const defaultUrl = adminUrl('about.php');
 
 export function Brand({
   url = defaultUrl,
-  icon = defaultIcon
 }) {
+  const [hover, setHover] = useState(false);
+
   return (
-    <li id="wp-admin-bar-wp-logo" className="menupop">
+    <li
+      id="wp-admin-bar-wp-logo"
+      className={`${ hover ? 'hover' : '' } menupop`}
+      onMouseEnter={() => {setHover(true)}}
+      onMouseLeave={() => {setHover(false)}}
+    >
       <a className="ab-item" aria-haspopup="true" href={url}>
-        <Icon icon={icon} style={{ position: 'relative', top: '3px' }} />
+        <span className="ab-icon" aria-hidden="true"></span>
+        <span className="screen-reader-text">About WordPress</span>
       </a>
       <div className="ab-sub-wrapper">
         <ul id="wp-admin-bar-wp-logo-default" className="ab-submenu">
