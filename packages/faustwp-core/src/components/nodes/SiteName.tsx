@@ -20,7 +20,7 @@ export function SiteName({
       <div className="ab-sub-wrapper">
         <ul id="wp-admin-bar-site-name-default" className="ab-submenu">
           <li id="wp-admin-bar-view-site">
-            <a className="ab-item" href="http://faustwp-symlink.local/">Visit Site</a>
+            <a className="ab-item" href={url}>Visit Site</a>
           </li>
         </ul>
       </div>
