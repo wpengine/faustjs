@@ -3,7 +3,7 @@ export function adminUrl(path: string): string {
 
   const sanitizedBaseUrl = removeTrailingSlash(baseUrl);
 
-  return sanitizedBaseUrl + '/' + path;
+  return sanitizedBaseUrl + '/wp-admin/' + path;
 }
 
 function removeTrailingSlash(str: string): string {
