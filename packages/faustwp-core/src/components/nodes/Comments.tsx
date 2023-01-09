@@ -11,7 +11,7 @@ export function Comments({ url = defaultUrl, commentsInModeration = 0 }) {
       <a className="ab-item" href={url}>
         <span className="ab-icon" aria-hidden="true" />
         <span
-          className={`ab-label awaiting-mod pending-count${maybeCount0Class}`}
+          className={`ab-label awaiting-mod pending-count ${maybeCount0Class}`}
           aria-hidden="true">
           {commentsInModeration}
         </span>
