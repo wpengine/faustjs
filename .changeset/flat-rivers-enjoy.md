@@ -1,5 +1,5 @@
 ---
-'@faustwp/blocks': patch
+'@faustwp/blocks': minor
 ---
 
 Initial Blocks package
