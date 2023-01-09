@@ -80,7 +80,7 @@ function register_admin_bar_menu_item_field () {
 		'resolve' => __NAMESPACE__ . '/resolve_admin_bar_menu_nodes',
 	]);
 
-	register_graphql_field('RootQueryToContentNodeConnection', $admin_bar_menu_items_field_name, [
+	register_graphql_field( 'RootQueryToContentNodeConnection', $admin_bar_menu_items_field_name, [
 		'type'    => [ 'list_of' => $admin_bar_menu_item_type ],
 		'resolve' => __NAMESPACE__ . '/resolve_admin_bar_menu_nodes',
 	]);
