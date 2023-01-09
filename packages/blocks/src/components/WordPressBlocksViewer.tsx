@@ -53,7 +53,7 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={blockProps} key={idx}>
-        <>{React.createElement(BlockTemplate as any, { ...blockProps })}</>
+        <>{React.createElement<EditorBlock>(BlockTemplate, { ...blockProps })}</>
       </BlockDataProvider>
     );
   });
