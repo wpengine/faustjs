@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { EmptyStar, FullStar } from './icons';
+import { Star } from './icons';
 import styles from './UbStarRatingBlock.module.scss';
 
 export default function UbStarRatingBlock({ attributes } = {}) {
@@ -12,6 +12,7 @@ export default function UbStarRatingBlock({ attributes } = {}) {
     reviewTextAlign,
     reviewTextColor,
     starAlign,
+    blockID
   } = attributes;
   return (
     <div className="ub-star-rating">
@@ -27,9 +28,21 @@ export default function UbStarRatingBlock({ attributes } = {}) {
           {[...Array(starCount)].map((e, i) => (
             <div key={i}>
               {i < selectedStars ? (
-                <FullStar size={starSize} fillColor={starColor} />
+                <Star
+								id={blockID}
+								index={i}
+								size={starSize}
+								value={1}
+								displayColor={starColor}
+							/>
               ) : (
-                <EmptyStar size={starSize} />
+                <Star
+								id={blockID}
+								index={i}
+								size={starSize}
+								value={0}
+								displayColor={starColor}
+							/>
               )}
             </div>
           ))}

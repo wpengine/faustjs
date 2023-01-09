@@ -1,6 +1,6 @@
 export const colorsMap = {
-  'primary': '#1a4548',
-  'secondary': '#ffe2c7',
+  'primary': '#9DFF20',
+  'secondary': '#345C00',
   'tertiary': '#f6f6f6',
   'foreground': '#000000',
   'background': '#ffffff',

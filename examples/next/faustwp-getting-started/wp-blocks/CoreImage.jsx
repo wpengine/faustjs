@@ -10,7 +10,7 @@ export default function CoreImage(props) {
 
   return (
     <figure
-      style={{...style, cursor: 'pointer'}}
+      style={{...style}}
       className={attributes?.className}
       >
       <Image

@@ -10,7 +10,7 @@ export default function CoreParagraph(props) {
     <p
       style={style}
       className={attributes?.className}
-    >{attributes.content}</p>
+      dangerouslySetInnerHTML={{ __html: attributes.content }}></p>
   );
 }
 

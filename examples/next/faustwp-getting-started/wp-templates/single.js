@@ -51,6 +51,7 @@ export default function Component(props) {
             author={author?.node?.name}
           />
           <Container>
+          {/* <ContentWrapper content={content} /> */}
             <ContentWrapper>
               <WordPressBlocksViewer contentBlocks={blocks} />
             </ContentWrapper>
@@ -102,6 +103,7 @@ Component.query = gql`
         ... on CoreColumn {
            attributes {
             cssClassName
+            style
           }
         }
         ... on CoreImage {
