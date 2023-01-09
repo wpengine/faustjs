@@ -11,10 +11,10 @@
 </p>
 
 <p align="center">
-  <a aria-label="Faust.js Next Downloads Per Month" href="https://www.npmjs.com/package/@faustwp/blocks">
+  <a aria-label="Faust.js Blocks Downloads Per Month" href="https://www.npmjs.com/package/@faustwp/blocks">
     <img alt="" src="https://img.shields.io/npm/dm/@faustwp/blocks?color=7e5cef&style=for-the-badge&label=@faustwp/blocks">
   </a>
-  <a aria-label="Faust.js Next Downloads Per Week" href="https://www.npmjs.com/package/@faustwp/blocks">
+  <a aria-label="Faust.js Blocks Downloads Per Week" href="https://www.npmjs.com/package/@faustwp/blocks">
     <img alt="" src="https://img.shields.io/npm/dw/@faustwp/blocks?color=7e5cef&style=for-the-badge&label=@faustwp/blocks">
   </a>
 </p>
