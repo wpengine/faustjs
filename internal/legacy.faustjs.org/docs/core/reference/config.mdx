@@ -22,7 +22,7 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
  */
 export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: process.env.FAUSTWP_SECRET_KEY,
+  apiClientSecret: process.env.FAUST_SECRET_KEY,
 });
 ```
 
@@ -44,7 +44,7 @@ type: `string`
 
 Required: `true`
 
-This is your Headless Secret key that can be retrieved from the FaustWP settings Dashboard. This is typically defined in your `.env` file as `FAUSTWP_SECRET_KEY`.
+This is your Headless Secret key that can be retrieved from the FaustWP settings Dashboard. This is typically defined in your `.env` file as `FAUST_SECRET_KEY`.
 
 ### `gqlUrl`
 
