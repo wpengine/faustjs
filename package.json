@@ -10,6 +10,7 @@
       "packages/core",
       "packages/react",
       "packages/next",
+      "packages/blocks",
       "packages/faustwp-cli",
       "packages/faustwp-core",
       "examples/next/getting-started",
@@ -18,12 +19,13 @@
     ]
   },
   "scripts": {
-    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core",
+    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks",
     "build:core": "npm run build --workspace=@faustjs/core",
     "build:next": "npm run build --workspace=@faustjs/next",
     "build:react": "npm run build --workspace=@faustjs/react",
     "build:faust-cli": "npm run build --workspace=@faustwp/cli",
     "build:faust-core": "npm run build --workspace=@faustwp/core",
+    "build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
     "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core",
     "clean:examples": "rimraf examples/**/node_modules",
     "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core",
