@@ -26,4 +26,5 @@ CoreParagraph.fragments = {
       }
     }
   `,
+  key: `CoreParagraphFragment`,
 };

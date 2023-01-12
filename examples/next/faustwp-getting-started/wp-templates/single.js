@@ -16,6 +16,27 @@ import {
 } from '../components';
 import components from '../wp-blocks';
 
+function queryData(blocks) {
+  const fragments = Object.keys(blocks).map(key => {
+    return blocks[key]?.fragments?.entry ? blocks[key]?.fragments?.entry : null;
+  }).filter(Boolean);
+  const blockKeys = Object.keys(components).map(key => {
+    return components[key]?.fragments?.key ? components[key]?.fragments?.key : null;
+  }).filter(Boolean);
+  return {
+    fragments: fragments.map(fragment => `${getGqlString(fragment)}\n`).join('\n'),
+    keys: blockKeys.map(key => `...${key}\n`).join('\n')
+  }
+}
+
+function normalize(string) {
+  return string.replace(/[\s,]+/g, ' ').trim();
+}
+
+function getGqlString(doc) {
+  return doc.loc && normalize(doc.loc.source.body);
+}
+
 export default function Component(props) {
   // Loading state for previews
   if (props.loading) {
@@ -67,9 +88,7 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
-  ${components.CoreParagraph.fragments.entry}
-  ${components.UbCallToActionBlock.fragments.entry}
-  ${components.UbStarRatingBlock.fragments.entry}
+  ${queryData(components).fragments}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -89,34 +108,9 @@ Component.query = gql`
       contentBlocks {
         __typename
         renderedHtml
-        name
         id: nodeId
         parentId
-        ...CoreParagraphFragment
-        ...${components.UbCallToActionBlock.fragments.key}
-        ...${components.UbStarRatingBlock.fragments.key}
-        ... on CoreColumns {
-          attributes {
-            cssClassName
-          }
-        }
-        ... on CoreColumn {
-           attributes {
-            cssClassName
-            style
-          }
-        }
-        ... on CoreImage {
-          attributes {
-            alt
-            src
-            caption
-            className
-            sizeSlug
-            width
-            height
-          }
-        }
+        ${queryData(components).keys}
       }
     }
     generalSettings {
