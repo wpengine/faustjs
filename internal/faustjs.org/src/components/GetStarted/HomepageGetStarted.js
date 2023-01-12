@@ -18,6 +18,7 @@ export default function HomepageGetStarted() {
         <div className={clsx('row', styles.getStartedRow)}>
           <p>
             <video
+              aira-hidden="true"
               src="/docs/video/next/getting-started-next-example.mp4"
               muted
               autoPlay
