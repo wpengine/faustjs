@@ -36,6 +36,7 @@
     "lodash": "^4.17.21"
   },
   "scripts": {
+    "prebuild": "node scripts/prebuild.js",
     "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
     "clean": "rimraf dist",
     "dev": "npm run ts:watch",

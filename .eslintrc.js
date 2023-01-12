@@ -81,6 +81,8 @@ module.exports = {
       '.eslintrc.js',
       '**/dist/*',
       '**/*.d.ts',
-      'examples/**/*'
+      'examples/**/*',
+      'version.ts',
+      '**/scripts/*'
     ],
   };
