@@ -2,7 +2,6 @@ const fs = require('fs/promises');
 const path = require('path');
 
 function storeVersion() {
-  console.log();
   const version = require(path.join(
     path.resolve(process.cwd()),
     'package.json',
