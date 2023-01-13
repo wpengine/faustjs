@@ -194,15 +194,20 @@ The `useLogout` hook exports an object with the following properties:
 - `isLoading`: a boolean that indicates whether the logout request is in progress.
 - `isLoggedOut`: a boolean that indicates whether the logout request was successful.
 
-<video
-  width="100%"
-  src="/docs/video/next/local-auth-flow-previews.mp4"
-  muted
-  autoPlay
-  playsInline
-  controls
-  loop
-/>
+<div aria-describedby="auth-flow-clip-desc">
+  <video
+    width="100%"
+    src="/docs/video/next/local-auth-flow-previews.mp4"
+    muted
+    autoPlay
+    playsInline
+    controls
+    loop
+  />
+  <p id="auth-flow-clip-desc">
+    In this clip, the user clicks on the 'Preview' button in the top right-hand corner of the WordPress site editor. They then select ‘Preview in new tab,’ from a dropdown menu, which takes them to an admin login and password prompt. After entering the login and password, the user can now see a preview of any site edits.
+  </p>
+</div>
 
 ## Making Authenticated Requests
 
