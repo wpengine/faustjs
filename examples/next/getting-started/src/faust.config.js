@@ -6,14 +6,12 @@ if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
   );
 }
 
-function getSecretKey() {
-  return process.env.FAUST_SECRET_KEY || process.env.FAUSTWP_SECRET_KEY;
-}
-
 /**
  * @type {import("@faustjs/core").Config}
  */
+const secretKey = process.env.FAUST_SECRET_KEY || process.env.FAUSTWP_SECRET_KEY;
+
 export default coreConfig({
   wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: getSecretKey(),
+  apiClientSecret: secretKey,
 });
