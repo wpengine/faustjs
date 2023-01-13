@@ -16,15 +16,15 @@ import {
 } from '../components';
 import components from '../wp-blocks';
 
-function queryData(blocks) {
-  const fragments = Object.keys(blocks).map(key => {
+function fragmentData(blocks) {
+  const entries = Object.keys(blocks).map(key => {
     return blocks[key]?.fragments?.entry ? blocks[key]?.fragments?.entry : null;
   }).filter(Boolean);
   const blockKeys = Object.keys(components).map(key => {
     return components[key]?.fragments?.key ? components[key]?.fragments?.key : null;
   }).filter(Boolean);
   return {
-    fragments: fragments.map(fragment => `${getGqlString(fragment)}\n`).join('\n'),
+    entries: entries.map(fragment => `${getGqlString(fragment)}\n`).join('\n'),
     keys: blockKeys.map(key => `...${key}\n`).join('\n')
   }
 }
@@ -88,7 +88,7 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
-  ${queryData(components).fragments}
+  ${fragmentData(components).entries}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -110,7 +110,7 @@ Component.query = gql`
         renderedHtml
         id: nodeId
         parentId
-        ${queryData(components).keys}
+        ${fragmentData(components).keys}
       }
     }
     generalSettings {

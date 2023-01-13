@@ -9,7 +9,7 @@ export default function CoreParagraph(props) {
   return (
     <p
       style={style}
-      className={attributes?.className}
+      className={attributes?.cssClassName}
       dangerouslySetInnerHTML={{ __html: attributes.content }}></p>
   );
 }
@@ -22,7 +22,7 @@ CoreParagraph.fragments = {
         fontSize
         textColor
         backgroundColor
-        className
+        cssClassName
       }
     }
   `,
