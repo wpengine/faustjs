@@ -3,3 +3,4 @@ dist
 jest.setup.js
 jest.setup.d.ts
 coverage
+src/version.ts
