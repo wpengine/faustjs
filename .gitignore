@@ -13,3 +13,4 @@ process.yml
 build/
 examples/next/getting-started/package-lock.json
 faustjs.code-workspace
+packages/faustwp-core/src/version.ts

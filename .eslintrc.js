@@ -82,7 +82,6 @@ module.exports = {
       '**/dist/*',
       '**/*.d.ts',
       'examples/**/*',
-      'version.ts',
       '**/scripts/*'
     ],
   };
