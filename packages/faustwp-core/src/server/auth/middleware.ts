@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
-import { getQueryParam, log } from '../../utils/index.js';
+import { errorLog, getQueryParam } from '../../utils/index.js';
 import { Cookies } from './cookie.js';
 import { OAuth } from './token.js';
 
@@ -71,7 +71,7 @@ export async function authorizeHandler(
       res.end(JSON.stringify(result.result));
     }
   } catch (e) {
-    log(e);
+    errorLog(e);
 
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');

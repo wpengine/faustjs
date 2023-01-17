@@ -1,7 +1,7 @@
 import { styles } from './styles.js';
 
 export const log = (
-  logLevel: 'info' | 'warn' | 'error',
+  logLevel: 'info' | 'warn' | 'error' | 'verbose',
   message: string,
   ...args: any
 ) => {
@@ -18,6 +18,10 @@ export const log = (
     }
     case 'error': {
       styledLogLevel = styles.error('error');
+      break;
+    }
+    case 'verbose': {
+      styledLogLevel = styles.verbose('verbose');
       break;
     }
     default: {
@@ -42,4 +46,9 @@ export const warnLog = (message: string, ...args: any) => {
 export const errorLog = (message: string, ...args: any) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('error', message, ...args);
+};
+
+export const verboseLog = (message: string, ...args: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  log('verbose', message, ...args);
 };
