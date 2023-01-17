@@ -1,5 +1,5 @@
 import { FaustProvider } from './components/FaustProvider.js';
-import { FaustAdminBar } from './components/FaustAdminBar.js';
+import { FaustAdminBar } from './components/FaustAdminBar/index.js';
 import {
   WordPressTemplate,
   FaustTemplateProps,

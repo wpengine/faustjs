@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { adminUrl } from '../../utils/adminUrl.js';
+import { adminUrl } from '../../../utils/adminUrl.js';
 
 const profileUrl = adminUrl('profile.php');
 

@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { ADMIN_BAR_QUERY } from '../queries/adminBarQuery.js';
+import { useAuth } from '../../auth/hooks/useAuth.js';
+import { ADMIN_BAR_QUERY } from '../../queries/adminBarQuery.js';
 import * as AdminBarNode from './nodes/index.js';
 
 export function FaustAdminBar() {
+  const { accessToken, isAuthenticated } = useAuth();
   const { loading, data } = useQuery(ADMIN_BAR_QUERY);
 
+  console.log({ accessToken, isAuthenticated, loading, data });
+
+  /**
+   * Handle body class.
+   */
   useEffect(() => {
     if (data) {
       document?.body.classList.add('admin-bar');
