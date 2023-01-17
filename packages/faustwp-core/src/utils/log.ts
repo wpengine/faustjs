@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { isVerbose } from './isVerbose';
+import { isVerbose } from './isVerbose.js';
 
 export const styles = {
   brand: chalk.bold.whiteBright,
