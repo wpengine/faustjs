@@ -71,7 +71,7 @@ export async function authorizeHandler(
       res.end(JSON.stringify(result.result));
     }
   } catch (e) {
-    errorLog(e);
+    errorLog('Invalid response for authorize handler:', e);
 
     res.statusCode = 500;
     res.setHeader('Content-Type', 'application/json');

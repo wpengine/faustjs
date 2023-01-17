@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { isVerbose } from './isVerbose';
 
 export const styles = {
   brand: chalk.bold.whiteBright,
@@ -58,6 +59,10 @@ export const errorLog = (message: string, ...args: any) => {
 };
 
 export const verboseLog = (message: string, ...args: any) => {
+  if (!isVerbose()) {
+    return;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   log('verbose', message, ...args);
 };
