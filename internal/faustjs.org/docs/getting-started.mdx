@@ -32,6 +32,7 @@ You can now visit [http://localhost:3000](http://localhost:3000) to see your new
 
 <p align="center">
   <video
+    aria-hidden="true"
     src="/docs/video/next/getting-started-next-example.mp4"
     muted
     autoPlay
@@ -71,6 +72,12 @@ Additionally, update the `FAUSTWP_SECRET_KEY` value with the secret key found in
   alt="The FaustWP WordPress admin interface with a red rectangle around the Secret Key field"
 />
 
+:::note
+
+**Note for Atlas Users**: if deploying from the Atlas portal using your own repository without beginning with a blueprint, you will need to set your environment variables manually. Learn how by taking a look at our [FAQs](/docs/faq).
+
+:::
+
 ## Set your Front-end Site URL
 
 To ensure certain features of Faust function as expected, such as previews, be sure to set the Front-end Site URL in the Faust WordPress Plugin Settings. It is the URL to your headless front-end. This is used for authenticated post previews and for rewriting links to point to your front-end site.
@@ -84,6 +91,7 @@ To ensure certain features of Faust function as expected, such as previews, be s
 />
 
 3. Click `Save Changes`
+
 
 ## Check Your Permalinks
 

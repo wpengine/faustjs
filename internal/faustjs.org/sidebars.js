@@ -37,11 +37,6 @@ module.exports = {
         },
         {
           type: 'doc',
-          label: 'Sitemaps',
-          id: 'sitemaps',
-        },
-        {
-          type: 'doc',
           label: 'Apollo',
           id: 'apollo',
         },
@@ -91,6 +86,22 @@ module.exports = {
           type: 'doc',
           label: 'Settings Reference',
           id: 'faustwp/settings',
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Faust Plugin System',
+      items: [
+        {
+          type: 'doc',
+          label: 'Creating a Plugin',
+          id: 'plugin-system/creating-a-plugin',
+        },
+        {
+          type: 'doc',
+          label: 'Filters',
+          id: 'plugin-system/filters',
         },
       ],
     },
