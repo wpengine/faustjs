@@ -85,7 +85,7 @@ import {
 
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
-      infoLog('Telemetry event being sent', telemetryData);
+      // infoLog('Telemetry event being sent', telemetryData);
 
       void sendTelemetryData(
         telemetryData,
