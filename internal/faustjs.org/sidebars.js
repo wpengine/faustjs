@@ -37,11 +37,6 @@ module.exports = {
         },
         {
           type: 'doc',
-          label: 'Sitemaps',
-          id: 'sitemaps',
-        },
-        {
-          type: 'doc',
           label: 'Apollo',
           id: 'apollo',
         },
