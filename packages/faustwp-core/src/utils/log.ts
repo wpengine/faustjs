@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { isVerbose } from './isVerbose.js';
+import { isDebug } from './isDebug.js';
 
 export const styles = {
   brand: chalk.bold.whiteBright,
@@ -7,11 +7,11 @@ export const styles = {
   warn: chalk.yellow,
   error: chalk.red,
   success: chalk.blueBright,
-  verbose: chalk.magenta.italic,
+  debug: chalk.magenta.italic,
 };
 
 export const log = (
-  logLevel: 'info' | 'warn' | 'error' | 'verbose',
+  logLevel: 'info' | 'warn' | 'error' | 'debug',
   message: string,
   ...args: any
 ) => {
@@ -30,8 +30,8 @@ export const log = (
       styledLogLevel = styles.error('error');
       break;
     }
-    case 'verbose': {
-      styledLogLevel = styles.verbose('verbose');
+    case 'debug': {
+      styledLogLevel = styles.debug('debug');
       break;
     }
     default: {
@@ -58,11 +58,11 @@ export const errorLog = (message: string, ...args: any) => {
   log('error', message, ...args);
 };
 
-export const verboseLog = (message: string, ...args: any) => {
-  if (!isVerbose()) {
+export const debugLog = (message: string, ...args: any) => {
+  if (!isDebug()) {
     return;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  log('verbose', message, ...args);
+  log('debug', message, ...args);
 };

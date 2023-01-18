@@ -1,8 +1,8 @@
-import { isVerbose } from './isVerbose.js';
+import { isDebug } from './isDebug.js';
 import { styles } from './styles.js';
 
 export const log = (
-  logLevel: 'info' | 'warn' | 'error' | 'verbose',
+  logLevel: 'info' | 'warn' | 'error' | 'debug',
   message: string,
   ...args: any
 ) => {
@@ -21,8 +21,8 @@ export const log = (
       styledLogLevel = styles.error('error');
       break;
     }
-    case 'verbose': {
-      styledLogLevel = styles.verbose('verbose');
+    case 'debug': {
+      styledLogLevel = styles.debug('debug');
       break;
     }
     default: {
@@ -49,11 +49,11 @@ export const errorLog = (message: string, ...args: any) => {
   log('error', message, ...args);
 };
 
-export const verboseLog = (message: string, ...args: any) => {
-  if (!isVerbose()) {
+export const debugLog = (message: string, ...args: any) => {
+  if (!isDebug()) {
     return;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  log('verbose', message, ...args);
+  log('debug', message, ...args);
 };

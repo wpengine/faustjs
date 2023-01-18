@@ -15,8 +15,8 @@ import {
   validateFaustEnvVars,
   userConfig,
   infoLog,
-  verboseLog,
-  isVerbose,
+  isDebug,
+  debugLog,
 } from './utils/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
@@ -25,8 +25,8 @@ import {
 
   dotenv.config();
 
-  if (isVerbose()) {
-    verboseLog('Faust is running in verbose mode');
+  if (isDebug()) {
+    debugLog('Faust is running in debug mode');
   }
 
   if (!process.env.NODE_ENV) {
@@ -89,7 +89,7 @@ import {
 
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
-      verboseLog('Telemetry event: ', telemetryData);
+      debugLog('Telemetry event: ', telemetryData);
 
       void sendTelemetryData(
         telemetryData,
