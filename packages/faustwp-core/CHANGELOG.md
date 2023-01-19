@@ -1,5 +1,19 @@
 # @faustwp/core
 
+## 0.2.1
+
+### Patch Changes
+
+- d0c1395: Created two new TypeScript types (`FaustPlugin` and `FaustHooks`) which can be used to type check Faust plugins:
+
+  ```tsx
+  import { FaustHooks, FaustPlugin } from '@faustwp/core';
+
+  export class MyPlugin implements FaustPlugin {
+    apply(hooks: FaustHooks) {}
+  }
+  ```
+
 ## 0.2.0
 
 ### Patch Changes
