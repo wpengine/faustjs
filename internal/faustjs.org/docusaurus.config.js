@@ -74,6 +74,11 @@ module.exports = {
           label: 'WordPress Plugin',
           position: 'right',
         },
+        {
+          href: 'https://discord.gg/J2khkF9XYK',
+          label: 'Discord',
+          position: 'right',
+        },
       ],
     },
     footer: {
@@ -127,6 +132,10 @@ module.exports = {
             {
               label: 'YouTube',
               href: 'https://www.youtube.com/channel/UCh1WuL54XFb9ZI6m6goFv1g?ref=faustjs',
+            },
+            {
+              label: 'Headless WordPress Discord',
+              href: 'https://discord.gg/J2khkF9XYK',
             },
           ],
         },
