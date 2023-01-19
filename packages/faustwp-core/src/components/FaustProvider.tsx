@@ -3,7 +3,7 @@ import React from 'react';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { useApollo } from '../client.js';
-import { FaustAdminBar } from './FaustAdminBar/FaustAdminBar.js';
+import { FaustAdminBar } from './FaustAdminBar/index.js';
 
 export function FaustProvider(props: {
   children: React.ReactNode;
