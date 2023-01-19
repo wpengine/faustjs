@@ -10,8 +10,7 @@ export function shouldFireTelemetryEvent(): boolean {
   const shouldFireEvent =
     getWpSecret() &&
     hasAnonymousId &&
-    hasTelemetryEnabled &&
-    runningUsingProperCommands;
+    hasTelemetryEnabled;
 
   return shouldFireEvent as boolean;
 }
