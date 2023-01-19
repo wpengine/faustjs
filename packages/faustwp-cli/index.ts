@@ -16,6 +16,7 @@ import {
   userConfig,
   infoLog,
 } from './utils/index.js';
+import { getWpSecret } from '../faustwp-core/src/lib/getWpSecret.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
@@ -70,14 +71,11 @@ import {
 
   if (shouldFireTelemetryEvent()) {
     try {
-      const secretKey =
-        process.env.FAUST_SECRET_KEY || process.env.FAUSTWP_SECRET_KEY;
-
       const wpTelemetryData = await requestWPTelemetryData(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         process.env.NEXT_PUBLIC_WORDPRESS_URL!,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        secretKey!,
+        getWpSecret()!,
       );
 
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
