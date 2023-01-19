@@ -4,7 +4,7 @@ on:
       - canary
   pull_request:
     branches:
-      - canary
+      - main
     paths-ignore:
       - '**/*.md'
 

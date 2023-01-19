@@ -1,0 +1,37 @@
+{
+  "name": "@faustwp/blocks",
+  "version": "0.1.0",
+  "description": "Faust Blocks",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "peerDependencies": {
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.6",
+    "@types/react": "^17.0.34",
+    "@testing-library/jest-dom": "^5.15.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "scripts": {
+    "test": "npm test",
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpengine/faustjs.git"
+  },
+  "author": "Faust.js Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wpengine/faustjs/issues"
+  },
+  "homepage": "https://github.com/wpengine/faustjs#readme"
+}
