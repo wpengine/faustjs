@@ -21,8 +21,8 @@ Authentication can be a cumbersome process when building headless WordPress site
 Before you get started with implementing an authentication strategy, you'll need to setup the API Router. You can do this by creating a file, `src/pages/api/faust/[[...route]].ts`, with the following code:
 
 ```ts title=src/pages/api/faust/[[...route]].ts
-import 'faust.config';
-import { apiRouter } from '@faustjs/core/api';
+import '../../../faust.config';
+import { apiRouter } from '@faustwp/core';
 
 export default apiRouter;
 ```
