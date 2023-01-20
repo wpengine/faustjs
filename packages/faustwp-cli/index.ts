@@ -15,28 +15,38 @@ import {
   validateFaustEnvVars,
   userConfig,
   infoLog,
+  isDebug,
+  debugLog,
 } from './utils/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
   const arg1 = getCliArgs()[0];
 
-  switch (arg1) {
-    case 'build':
-      process.env.NODE_ENV = 'production';
-      break;
-    case 'start':
-      process.env.NODE_ENV = 'production';
-      break;
-    case 'test':
-      process.env.NODE_ENV = 'test';
-      break;
-    case 'dev':
-    default:
-      process.env.NODE_ENV = 'development';
-      break;
-  }
   dotenv.config();
+
+  if (isDebug()) {
+    debugLog('Faust is running in debug mode');
+  }
+
+  if (!process.env.NODE_ENV) {
+    switch (arg1) {
+      case 'build':
+        process.env.NODE_ENV = 'production';
+        break;
+      case 'start':
+        process.env.NODE_ENV = 'production';
+        break;
+      case 'test':
+        process.env.NODE_ENV = 'test';
+        break;
+      case 'dev':
+      default:
+        process.env.NODE_ENV = 'development';
+        break;
+    }
+  }
+
   validateFaustEnvVars();
 
   // Inform user of telemetry program.
@@ -85,7 +95,7 @@ import {
 
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
-      // infoLog('Telemetry event being sent', telemetryData);
+      debugLog('Telemetry event: ', telemetryData);
 
       void sendTelemetryData(
         telemetryData,

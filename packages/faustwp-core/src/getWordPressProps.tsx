@@ -1,10 +1,11 @@
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
-import { getTemplate } from './getTemplate.js';
+import { getPossibleTemplates, getTemplate } from './getTemplate.js';
 import { addApolloState, getApolloClient } from './client.js';
 import { getConfig } from './config/index.js';
 import { hooks } from './hooks/index.js';
+import { infoLog, debugLog } from './utils/log.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
@@ -69,11 +70,18 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
 
   const seedNode = seedQueryRes?.data?.node as SeedNode;
 
+  debugLog(`Seed Node for resolved url: "${resolvedUrl}": `, seedNode);
+
   if (!seedNode) {
     return {
       notFound: true,
     };
   }
+
+  infoLog(
+    `Possible templates for resolved url: "${resolvedUrl}":`,
+    getPossibleTemplates(seedNode),
+  );
 
   const template = getTemplate(seedNode, templates);
 
