@@ -77,6 +77,12 @@ import {
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
+      if (!wpTelemetryData) {
+        throw new Error(
+          'There was a problem retrieving telemetry data from the WordPress instance',
+        );
+      }
+
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
       // infoLog('Telemetry event being sent', telemetryData);
