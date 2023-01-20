@@ -211,43 +211,4 @@ The `useLogout` hook exports an object with the following properties:
 
 ## Making Authenticated Requests
 
-In the Faust.js client, you can use `useQuery`, `usePost`, `usePage`, etc., to request the WordPress backend.
-
-These are exported from the `client` like so:
-
-```tsx {1,4}
-import { client } from 'client';
-
-export default function Page() {
-  const { useQuery } = client;
-
-  return(
-    ...
-  )
-}
-```
-
-Requests using the above methodology will be un-authenticated.
-
-To make authenticated requests, use the `auth` property exported from the `client`. This property is essentially a replica of the `client`, except every request gets called with an access token:
-
-```TSX {1,4,5}
-import { client } from 'client';
-
-export default function Page() {
-  const { useMutation, usePreview, useAuth } = client.auth;
-  const { isLoading, isAuthenticated } = useAuth();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!isAuthenticated) {
-    return <div>You are not authenticated!</div>;
-  }
-
-  return <div>Authenticated content</div>;
-}
-```
-
-**Note:** The [`useAuth`](/docs/next/reference/hooks/useAuth) hook fetches the applicable tokens and ensures that the user is authenticated. Therefore, you should check for `isAuthenticated` before making authenticated requests, as doing so too early will result in a request without a valid access token.
+A new <FaustAuthProvider> is currently in development and can be expected next release.
