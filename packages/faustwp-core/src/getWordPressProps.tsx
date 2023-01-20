@@ -18,7 +18,7 @@ export type WordPressTemplate = React.FC & {
   query?: DocumentNode;
   variables?: (
     seedNode: SeedNode,
-    context?: { asPreview?: boolean },
+    context?: { asPreview?: boolean; locale?: string },
   ) => { [key: string]: any };
 };
 
@@ -85,7 +85,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
 
   let templateQueryRes;
   const templateVariables = template?.variables
-    ? template?.variables(seedNode, { asPreview: false })
+    ? template?.variables(seedNode, { asPreview: false, locale: ctx.locale })
     : undefined;
 
   if (template.query) {
