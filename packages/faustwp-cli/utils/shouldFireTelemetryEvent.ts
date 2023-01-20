@@ -1,5 +1,5 @@
+import { getWpSecret } from './getWpSecret.js';
 import { userConfig } from './userConfig.js';
-import { getWpSecret } from '../../faustwp-core/src/lib/getWpSecret.js';
 
 export function shouldFireTelemetryEvent(): boolean {
   const hasAnonymousId = userConfig.get('telemetry.anonymousId');

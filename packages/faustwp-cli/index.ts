@@ -3,6 +3,7 @@
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
+import { getWpSecret } from './utils/getWpSecret.js';
 import {
   generatePossibleTypes,
   getCliArgs,
@@ -16,7 +17,6 @@ import {
   userConfig,
   infoLog,
 } from './utils/index.js';
-import { getWpSecret } from '../faustwp-core/src/lib/getWpSecret.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {

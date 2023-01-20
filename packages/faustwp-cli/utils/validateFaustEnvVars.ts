@@ -1,5 +1,5 @@
+import { getWpSecret } from './getWpSecret.js';
 import { errorLog, warnLog } from './log.js';
-import { getWpSecret } from '../../faustwp-core/src/lib/getWpSecret.js';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
