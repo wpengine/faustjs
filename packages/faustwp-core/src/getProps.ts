@@ -8,7 +8,6 @@ import type { DocumentNode } from 'graphql';
 import isBoolean from 'lodash/isBoolean.js';
 import isObject from 'lodash/isObject.js';
 import { addApolloState, getApolloClient } from './client.js';
-import { getVersion } from './lib/getVersion.js';
 
 export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
   Page: {
@@ -77,7 +76,7 @@ export async function getNextServerSideProps<Props>(
   const { notFound, redirect, Page, props } = cfg;
   const apolloClient = getApolloClient();
 
-  res.setHeader('x-faust-version', getVersion());
+  res.setHeader('x-using', 'faust');
 
   if (isBoolean(notFound) && notFound === true) {
     return {

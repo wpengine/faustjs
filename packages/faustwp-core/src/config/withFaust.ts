@@ -6,7 +6,6 @@ import {
   RouteHas,
   Header,
 } from 'next/dist/lib/load-custom-routes.js';
-import { getVersion } from '../lib/getVersion.js';
 
 export interface WithFaustConfig {
   previewDestination?: string;
@@ -76,8 +75,8 @@ export async function addHeaders(
     source: '/(.*?)',
     headers: [
       {
-        key: 'x-faust-version',
-        value: getVersion(),
+        key: 'x-using',
+        value: 'faust',
       },
     ],
   });
