@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execa } from 'execa';
+import spawn from 'cross-spawn';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
 import {
@@ -111,12 +111,17 @@ import {
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
-  try {
-    const { exitCode } = await execa('next', getCliArgs());
-    process.exit(exitCode);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
+  if (process.platform === 'win32') {
+    process.exit(
+      spawn.sync('next.cmd', getCliArgs(), {
+        stdio: 'inherit',
+      })?.status as number | undefined,
+    );
+  } else {
+    process.exit(
+      spawn.sync('next', getCliArgs(), {
+        stdio: 'inherit',
+      })?.status as number | undefined,
+    );
   }
-
 })();
