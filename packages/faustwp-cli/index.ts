@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execaSync } from 'execa';
+import { execa } from 'execa';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
 import {
@@ -112,7 +112,7 @@ import {
    * standard i/o for the Next.js CLI.
    */
   try {
-    const { exitCode } = execaSync('next', getCliArgs());
+    const { exitCode } = await execa('next', getCliArgs());
     process.exit(exitCode);
   } catch (error) {
     console.log(error);
