@@ -50,7 +50,7 @@ export async function getWordPressProps(options: GetWordPressPropsConfig) {
     }
   } else {
     resolvedUrl = ctx.req.url;
-    ctx.res.setHeader('x-powered-by', 'Faust');
+    ctx.res.setHeader('x-using', 'faust');
   }
 
   if (!resolvedUrl) {
