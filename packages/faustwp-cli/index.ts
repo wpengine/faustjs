@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { spawnSync } from 'child_process';
+import { execaSync } from 'execa';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
 import {
@@ -111,8 +111,12 @@ import {
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
-  process.exit(
-    spawnSync('next', getCliArgs(), { stdio: 'inherit', encoding: 'utf8' })
-      ?.status as number | undefined,
-  );
+  try {
+    const { exitCode } = execaSync('next', getCliArgs());
+    process.exit(exitCode);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+
 })();

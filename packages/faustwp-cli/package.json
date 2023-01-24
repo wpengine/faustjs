@@ -20,6 +20,7 @@
     "chalk": "^4.1.2",
     "configstore": "^6.0.0",
     "dotenv-flow": "^3.2.0",
+    "execa": "^6.1.0",
     "isomorphic-fetch": "^3.0.0",
     "uuid": "8.3.2"
   },
