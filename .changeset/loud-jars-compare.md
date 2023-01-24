@@ -2,4 +2,4 @@
 '@faustwp/core': patch
 ---
 
-Add x-faust-version which replaces x-using header
+Added new header, `x-using: faust`. This replaces the previous header, `x-powered-by: Faust`, as it was being overwritten by various server hosts.
