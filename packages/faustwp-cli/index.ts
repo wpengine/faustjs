@@ -111,17 +111,11 @@ import {
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
-  if (process.platform === 'win32') {
-    process.exit(
-      spawnSync('next.cmd', getCliArgs(), {
-        stdio: 'inherit',
-      })?.status as number | undefined,
-    );
-  } else {
-    process.exit(
-      spawnSync('next', getCliArgs(), {
-        stdio: 'inherit',
-      })?.status as number | undefined,
-    );
-  }
+  const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
+
+  process.exit(
+    spawnSync(nextjsCommand, getCliArgs(), {
+      stdio: 'inherit',
+    })?.status as number | undefined,
+  );
 })();
