@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { sync as spawnSync } from 'cross-spawn';
+import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
 import {
@@ -114,8 +114,7 @@ import {
   const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
 
   process.exit(
-    spawnSync(nextjsCommand, getCliArgs(), {
-      stdio: 'inherit',
-    })?.status as number | undefined,
+    spawnSync(nextjsCommand, getCliArgs(), { stdio: 'inherit', encoding: 'utf8' })
+      ?.status as number | undefined,
   );
 })();

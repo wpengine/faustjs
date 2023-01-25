@@ -11,7 +11,6 @@
   "devDependencies": {
     "@types/configstore": "^6.0.0",
     "@types/cookie": "0.5.1",
-    "@types/cross-spawn": "^6.0.2",
     "@types/dotenv-flow": "^3.2.0",
     "@types/prompt": "1.1.2",
     "@types/uuid": "8.3.4",
@@ -20,7 +19,6 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "configstore": "^6.0.0",
-    "cross-spawn": "^7.0.3",
     "dotenv-flow": "^3.2.0",
     "isomorphic-fetch": "^3.0.0",
     "uuid": "8.3.2"
