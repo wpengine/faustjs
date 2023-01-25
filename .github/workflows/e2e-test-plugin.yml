@@ -54,7 +54,7 @@ jobs:
       - name: Run Acceptance tests
         working-directory: plugins/faustwp
         run: vendor/bin/codecept run acceptance
-        name: Run API tests
+      - name: Run API tests
         working-directory: plugins/faustwp
         run: vendor/bin/codecept run api
       - name: Upload Test Output
