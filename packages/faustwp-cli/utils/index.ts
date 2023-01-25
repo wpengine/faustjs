@@ -1,5 +1,5 @@
 import { getCliArgs } from './getCliArgs.js';
-import { errorLog, infoLog } from './log.js';
+import { errorLog, infoLog, debugLog } from './log.js';
 import { marshallTelemetryData } from './marshallTelemetryData.js';
 import { handleTelemetrySubcommand } from './handleTelemetrySubcommand.js';
 import { requestWPTelemetryData } from './requestWPTelemetryData.js';
@@ -10,12 +10,14 @@ import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { userConfig } from './userConfig.js';
 import { telemetryPrefsExist } from './doTelemetryPrefsExist.js';
 import { validateFaustEnvVars } from './validateFaustEnvVars.js';
+import { isDebug } from './isDebug.js';
 
 export {
   errorLog,
   generatePossibleTypes,
   getCliArgs,
   infoLog,
+  debugLog,
   marshallTelemetryData,
   handleTelemetrySubcommand,
   requestWPTelemetryData,
@@ -25,4 +27,5 @@ export {
   telemetryPrefsExist,
   userConfig,
   validateFaustEnvVars,
+  isDebug,
 };

@@ -1,4 +1,5 @@
 import { Hooks } from '@wordpress/hooks/build-types';
+import { FaustPlugin } from '../../src';
 import { setConfig } from '../../src/config/index';
 
 class HelloWorldTestPlugin {
@@ -36,7 +37,10 @@ describe('config', () => {
       setConfig({
         // @ts-ignore
         templates: [],
-        experimentalPlugins: [new HelloWorldTestPlugin(), new InvalidPlugin()],
+        experimentalPlugins: [
+          new HelloWorldTestPlugin(),
+          new InvalidPlugin() as FaustPlugin,
+        ],
       }),
     ).not.toThrowError();
   });

@@ -55,7 +55,7 @@ const sanitizePackageJsonVersion = (_version: string | undefined) => {
  * @param wpTelemetryData
  */
 export const marshallTelemetryData = (
-  wpTelemetryData: WPTelemetryResponseData | undefined,
+  wpTelemetryData: WPTelemetryResponseData,
   command: string,
 ): TelemetryData => {
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));

@@ -60,8 +60,12 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 - Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
 - [Contribute bug fixes](/CONTRIBUTING.md)
 
-### Pull Request Notice
+### Contributor License Agreement
 
-All contributions from non-WP Engine employees require that you sign our Contributor License Agreement (CLA).
+All external contributors to WP Engine products must have a signed Contributor License Agreement (CLA) in place before the contribution may be accepted into any WP Engine codebase.
 
-https://wpeng.in/cla/
+1. [Submit your name and email](https://wpeng.in/cla/)
+2. 📝 Sign the CLA emailed to you
+3. 📥 Receive copy of signed CLA
+
+❤️ Thank you for helping us fulfill our legal obligations in order to continue empowering builders through headless WordPress.

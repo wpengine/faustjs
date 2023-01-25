@@ -3,7 +3,7 @@ import isNil from 'lodash/isNil.js';
 import isString from 'lodash/isString.js';
 import isNumber from 'lodash/isNumber.js';
 import { Cookies } from './cookie.js';
-import { log } from '../../utils/index.js';
+import { warnLog } from '../../utils/index.js';
 import { getWpSecret } from '../../lib/getWpSecret.js';
 import { getWpUrl } from '../../lib/getWpUrl.js';
 
@@ -92,7 +92,7 @@ export class OAuth {
       });
 
       if (response.status !== 404) {
-        log(
+        warnLog(
           'Authentication and post previews will soon be incompatible with ' +
             'your version of the FaustWP plugin. Please update to the latest' +
             ' version.',

@@ -21,3 +21,24 @@ Great question! The development team posts weekly summaries of sprints related t
 ### Why the name “Faust”?
 
 Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web. 
+
+### Do I need Atlas in order to use Faust?
+
+No, you do not need to use Atlas in order to use Faust. Faust is an open source JavaScript framework sponsored by WP Engine, but it can be used with other providers.
+
+### Do I need Faust in order to use Atlas?
+
+No, you do not need Faust in order to use Atlas, but we sponsor Faust specifically as it is optimized for WP Engine and Atlas. You can use any Node.js frontend framework to your Atlas deployment.
+
+### I am using Atlas to deploy my Faust app, but I am not using a blueprint. How do I manually set my environment variables?
+
+After obtaining your secret Faust key (described in our [Getting Started Guide](https://faustjs.org/docs/getting-started#:~:text=Additionally%2C%20update%20the%20FAUSTWP_SECRET_KEY%20value%20with%20the%20secret%20key%20found%20in%20Settings%20%E2%86%92%20Faust%20in%20your%20WordPress%20admin%20area%20to%20support%20previews)), go to your [Atlas portal](https://my.wpengine.com/atlas#/). 
+
+Click on your app instance. Then, click on `Manage variables` under Atlas environment variables.
+
+In the variables, add your key with the name `FAUSTWP_SECRET_KEY` with the alphanumeric generated key from Faust's plugin settings page (learn more about how to obtain the key [here](https://faustjs.org/docs/getting-started#:~:text=Additionally%2C%20update%20the%20FAUSTWP_SECRET_KEY%20value%20with%20the%20secret%20key%20found%20in%20Settings%20%E2%86%92%20Faust%20in%20your%20WordPress%20admin%20area%20to%20support%20previews)).
+
+<img
+  src="/docs/img/adding-the-env-manually.png"
+  alt="The variable for the Faust plugin being set with a key and value pair in the Atlas portal."
+/>

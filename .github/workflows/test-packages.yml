@@ -7,20 +7,21 @@ on:
 
 jobs:
   test_packages:
+    name: "Test packages on Node.js ${{ matrix.node }} ${{ matrix.os }}"
     strategy:
       matrix:
         os: ['ubuntu-latest']
-        version: [16, 18]
+        node: ['16', '18' ]
     permissions:
       checks: write
       pull-requests: write
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
-
+          node-version: ${{ matrix.node }}
       - name: Install
         run: npm ci
 

@@ -15,28 +15,38 @@ import {
   validateFaustEnvVars,
   userConfig,
   infoLog,
+  isDebug,
+  debugLog,
 } from './utils/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
   const arg1 = getCliArgs()[0];
 
-  switch (arg1) {
-    case 'build':
-      process.env.NODE_ENV = 'production';
-      break;
-    case 'start':
-      process.env.NODE_ENV = 'production';
-      break;
-    case 'test':
-      process.env.NODE_ENV = 'test';
-      break;
-    case 'dev':
-    default:
-      process.env.NODE_ENV = 'development';
-      break;
-  }
   dotenv.config();
+
+  if (isDebug()) {
+    debugLog('Faust is running in debug mode');
+  }
+
+  if (!process.env.NODE_ENV) {
+    switch (arg1) {
+      case 'build':
+        process.env.NODE_ENV = 'production';
+        break;
+      case 'start':
+        process.env.NODE_ENV = 'production';
+        break;
+      case 'test':
+        process.env.NODE_ENV = 'test';
+        break;
+      case 'dev':
+      default:
+        process.env.NODE_ENV = 'development';
+        break;
+    }
+  }
+
   validateFaustEnvVars();
 
   // Inform user of telemetry program.
@@ -77,9 +87,15 @@ import {
         process.env.FAUSTWP_SECRET_KEY!,
       );
 
+      if (!wpTelemetryData) {
+        throw new Error(
+          'There was a problem retrieving telemetry data from the WordPress instance',
+        );
+      }
+
       const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
 
-      // infoLog('Telemetry event being sent', telemetryData);
+      debugLog('Telemetry event: ', telemetryData);
 
       void sendTelemetryData(
         telemetryData,
@@ -95,8 +111,12 @@ import {
    * Spawn a child process using the args captured in argv and continue the
    * standard i/o for the Next.js CLI.
    */
+  const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
+
   process.exit(
-    spawnSync('next', getCliArgs(), { stdio: 'inherit', encoding: 'utf8' })
-      ?.status as number | undefined,
+    spawnSync(nextjsCommand, getCliArgs(), {
+      stdio: 'inherit',
+      encoding: 'utf8',
+    })?.status as number | undefined,
   );
 })();
