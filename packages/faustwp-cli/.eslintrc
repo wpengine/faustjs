@@ -1,6 +1,9 @@
 {
-    "rules": {
-        "no-console": "off",
-        "@typescript-eslint/no-unused-expressions": ["error", { "allowTernary": true }]
-    }
+  "rules": {
+    "no-console": "off",
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      { "allowTernary": true }
+    ]
+  }
 }
