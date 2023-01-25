@@ -7,7 +7,7 @@ on:
 
 jobs:
   test_packages:
-    name: "Test packages on Node.js ${{ matrix.node-version }} ${{ matrix.os }}"
+    name: "Test packages on Node.js ${{ matrix.node }} ${{ matrix.os }}"
     strategy:
       matrix:
         os: ['ubuntu-latest']
@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - name: setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
