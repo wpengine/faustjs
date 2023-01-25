@@ -114,7 +114,9 @@ import {
   const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
 
   process.exit(
-    spawnSync(nextjsCommand, getCliArgs(), { stdio: 'inherit', encoding: 'utf8' })
-      ?.status as number | undefined,
+    spawnSync(nextjsCommand, getCliArgs(), {
+      stdio: 'inherit',
+      encoding: 'utf8',
+    })?.status as number | undefined,
   );
 })();
