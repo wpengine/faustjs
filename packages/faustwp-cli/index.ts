@@ -3,6 +3,7 @@
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
+import { getWpSecret } from './utils/getWpSecret.js';
 import {
   generatePossibleTypes,
   getCliArgs,
@@ -84,7 +85,7 @@ import {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         process.env.NEXT_PUBLIC_WORDPRESS_URL!,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        process.env.FAUSTWP_SECRET_KEY!,
+        getWpSecret()!,
       );
 
       if (!wpTelemetryData) {

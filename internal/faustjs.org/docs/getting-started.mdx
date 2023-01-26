@@ -60,12 +60,18 @@ Once the necessary plugins have been installed, open the `.env.local` file you c
 NEXT_PUBLIC_WORDPRESS_URL=https://faustexample.wpengine.com
 
 # Plugin secret found in WordPress Settings->Headless
-# FAUSTWP_SECRET_KEY=YOUR_PLUGIN_SECRET
+FAUST_SECRET_KEY=YOUR_PLUGIN_SECRET
 ```
+
+:::note
+
+If you are using a version of Faust previous to 0.2.1, use `FAUSTWP_SECRET_KEY` instead of `FAUST_SECRET_KEY`.
+
+:::
 
 Update the `NEXT_PUBLIC_WORDPRESS_URL` value with your WordPress site URL (be sure to include `http://` or `https://`).
 
-Additionally, update the `FAUSTWP_SECRET_KEY` value with the secret key found in Settings → Faust in your WordPress admin area to support previews.
+Additionally, update the `FAUST_SECRET_KEY` value with the secret key found in Settings → Faust in your WordPress admin area to support previews.
 
 <img
   src="/docs/img/headless-admin-secret.png"
