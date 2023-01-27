@@ -1,3 +1,4 @@
+import { getWpSecret } from './getWpSecret.js';
 import { errorLog, warnLog } from './log.js';
 
 /**
@@ -10,8 +11,8 @@ export const validateFaustEnvVars = () => {
     process.exit(0);
   }
 
-  if (!process.env.FAUSTWP_SECRET_KEY) {
-    warnLog('Could not find FAUSTWP_SECRET_KEY environment variable.');
+  if (!getWpSecret()) {
+    warnLog('Could not find FAUST_SECRET_KEY environment variable.');
     warnLog('Some functionality may be limited.');
   }
 };
