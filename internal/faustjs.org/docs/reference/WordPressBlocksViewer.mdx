@@ -1,0 +1,60 @@
+---
+slug: /reference/WordPressBlocksViewer
+title: WordPressBlocksViewer Reference
+description: Reference docs for the WordPressBlocksViewer Component in Faust.
+---
+
+`WordPressBlocksViewer` is a component used to render blocks received from WordPress. This is useful for blocks that want to render additional blocks as children as a part of their design, i.e. `CoreColumn`.
+
+## Usage
+
+The below example shows how a `CoreColumn` can be built, using `WordPressBlocksViewer`, to properly return blocks as children.
+
+```jsx {2,8} title="wp-blocks/CoreColumn.jsx"
+import { gql } from '@apollo/client';
+import { WordPressBlocksViewer } from '@faustwp/blocks';
+
+export default function CoreColumn(props) {
+  const attributes = props.attributes;
+  return (
+    <div className={attributes?.cssClassName}>
+      <WordPressBlocksViewer contentBlocks={props?.children ?? []} />
+    </div>
+  );
+}
+
+CoreColumn.fragments = {
+  entry: gql`
+    fragment CoreColumnFragment on CoreColumn {
+      # Data requirements for the block go here...
+    }
+  `,
+  key: `CoreColumnFragment`,
+};
+```
+
+## Props
+
+Below is `WordPressBlocksViewer`'s props defined as a TypeScript interface:
+
+:::note
+
+The `contentBlocks` type defined below is data received from WPGraphQL and the [WPGraphQL Content Blocks](https://github.com/wpengine/wp-graphql-content-blocks) companion plugin.
+
+:::
+
+```ts
+export interface ContentBlock {
+  __typename?: string;
+  apiVersion?: number;
+  cssClassNames?: string;
+  innerBlocks?: ContentBlock[];
+  isDynamic?: boolean;
+  name?: string;
+  renderedHtml?: string;
+}
+
+export interface WordpressBlocksViewerProps {
+  contentBlocks: ContentBlock[];
+}
+```
