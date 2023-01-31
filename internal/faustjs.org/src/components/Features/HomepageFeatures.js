@@ -5,6 +5,13 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
+    title: 'Gutenberg Blocks Provider',
+    description: (
+      <>Get started with using Gutenberg Blocks Provider and Viewer in Faust.</>
+    ),
+    link: '/docs/blocks/gutenberg-blocks-provider',
+  },
+  {
     title: 'Apollo',
     description: (
       <>
