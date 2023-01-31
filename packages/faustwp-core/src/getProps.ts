@@ -76,7 +76,7 @@ export async function getNextServerSideProps<Props>(
   const { notFound, redirect, Page, props } = cfg;
   const apolloClient = getApolloClient();
 
-  res.setHeader('x-powered-by', 'Faust');
+  res.setHeader('x-using', 'faust');
 
   if (isBoolean(notFound) && notFound === true) {
     return {

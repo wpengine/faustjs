@@ -75,8 +75,8 @@ export async function addHeaders(
     source: '/(.*?)',
     headers: [
       {
-        key: 'x-powered-by',
-        value: 'Faust',
+        key: 'x-using',
+        value: 'faust',
       },
     ],
   });
