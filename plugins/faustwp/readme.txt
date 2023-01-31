@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.1
-Stable tag: 0.8.1
+Stable tag: 0.8.2
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 0.8.2 =
+
+### Patch Changes
+
+- 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
+
 = 0.8.1 =
 
 ### Patch Changes
@@ -66,11 +72,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 - b59d6c0: Renamed plugin from `FaustWP` to `Faust`.
 - b59d6c0: Updated settings menu text from _Headless_ to _Faust_.
-
-= 0.7.11 =
-
-### Patch Changes
-
-- b3c70a4: Prevent WordPress RSS feeds from redirecting to the front-end application.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)

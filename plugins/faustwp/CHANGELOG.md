@@ -1,5 +1,11 @@
 # Faust
 
+## 0.8.2
+
+### Patch Changes
+
+- 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
+
 ## 0.8.1
 
 ### Patch Changes
