@@ -1,5 +1,13 @@
 # @faustwp/core
 
+## 0.2.2
+
+### Patch Changes
+
+- 0fa846a: Added new header, `x-using: faust`. This replaces the previous header, `x-powered-by: Faust`, as it was being overwritten by various server hosts.
+- c545b11: Added a debug mode by setting the `FAUST_DEBUG` environment variable to either `true` or `1`
+- 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
+
 ## 0.2.1
 
 ### Patch Changes
