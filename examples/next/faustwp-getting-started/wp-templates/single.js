@@ -105,7 +105,7 @@ Component.query = gql`
         }
       }
       ...FeaturedImageFragment
-      contentBlocks {
+      contentBlocks(flat: true) {
         __typename
         renderedHtml
         id: nodeId
