@@ -2,6 +2,11 @@
 title: Upgrading to FaustWP
 description: All you need to know about upgrading to FaustWP.
 slug: upgrading-to-faustwp
+authors:
+  - name: Andrew Matthews
+    title: Senior Software Engineer
+    url: https://github.com/apmatthews
+    image_url: https://avatars.githubusercontent.com/u/4661832?v=4
 hide_table_of_contents: true
 ---
 

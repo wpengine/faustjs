@@ -2,6 +2,11 @@
 title: Sprint 16 Update
 description: Updates from the teams work on Sprint 16
 slug: sprint-16-update
+authors:
+  - name: Teresa Gobble
+    title: Associate Software Engineer
+    url: https://github.com/TeresaGobble
+    image_url: https://avatars.githubusercontent.com/u/50935135?v=4
 hide_table_of_contents: true
 ---
 
