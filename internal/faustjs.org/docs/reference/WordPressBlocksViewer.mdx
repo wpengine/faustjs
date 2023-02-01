@@ -4,32 +4,44 @@ title: WordPressBlocksViewer Reference
 description: Reference docs for the WordPressBlocksViewer Component in Faust.
 ---
 
-`WordPressBlocksViewer` is a component used to render blocks received from WordPress. This is useful for blocks that want to render additional blocks as children as a part of their design, i.e. `CoreColumn`.
+`WordPressBlocksViewer` is a component used to render blocks received from WordPress. It uses the react components passed to the `WordPressBlocksProvider` and matches them to the appropriate blocks received in the [`contentBlocks`](#props) prop.
 
 ## Usage
 
-The below example shows how a `CoreColumn` can be built, using `WordPressBlocksViewer`, to properly return blocks as children.
+The below example shows how a [Faust Template](/docs/templates) can use the requested `contentBlocks` from WPGraphQL and render them using the `WordPressBlocksViewer` component.
 
-```jsx {2,8} title="wp-blocks/CoreColumn.jsx"
-import { gql } from '@apollo/client';
+```jsx {1,9,13} title="wp-blocks/CoreColumn.jsx"
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 
-export default function CoreColumn(props) {
-  const attributes = props.attributes;
+export default function Component(props) {
+  const { contentBlocks } = props.data.post;
+
   return (
-    <div className={attributes?.cssClassName}>
-      <WordPressBlocksViewer contentBlocks={props?.children ?? []} />
-    </div>
+    <>
+      <WordPressBlocksViewer contentBlocks={contentBlocks} />
+    </>
   );
 }
 
-CoreColumn.fragments = {
-  entry: gql`
-    fragment CoreColumnFragment on CoreColumn {
-      # Data requirements for the block go here...
+Component.query = gql`
+  query GetPost(
+    $databaseId: ID!
+  ) {
+    post(id: $databaseId, idType: DATABASE_ID) {
+      contentBlocks() {
+        __typename
+        renderedHtml
+        id: nodeId
+        parentId
+      }
     }
-  `,
-  key: `CoreColumnFragment`,
+  }
+`;
+
+Component.variables = ({ databaseId }, ctx) => {
+  return {
+    databaseId,
+  };
 };
 ```
 
