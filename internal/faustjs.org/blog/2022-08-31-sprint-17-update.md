@@ -2,6 +2,11 @@
 title: Sprint 17 Update
 description: Updates from the team's work on Sprint 17
 slug: sprint-17-update
+authors:
+  - name: Chris Wiegman
+    title: Engineering Manager
+    url: https://github.com/ChrisWiegman
+    image_url: https://avatars.githubusercontent.com/u/394675?v=4
 hide_table_of_contents: true
 ---
 
