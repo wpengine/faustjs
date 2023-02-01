@@ -5,7 +5,7 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: 'Gutenberg Blocks Provider',
+    title: 'Gutenberg Blocks Support',
     description: (
       <>Get started with using Gutenberg Blocks Provider and Viewer in Faust.</>
     ),

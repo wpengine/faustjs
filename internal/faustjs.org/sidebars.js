@@ -45,6 +45,11 @@ module.exports = {
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
+        {
+          type: 'doc',
+          label: 'Gutenberg Support',
+          id: 'gutenberg/getting-started',
+        },
       ],
     },
     {
