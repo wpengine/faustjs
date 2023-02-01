@@ -20,6 +20,7 @@
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",
     "@types/node": "^17.0.17",
+    "concurrently": "^7.6.0",
     "fetch-mock": "9.11.0",
     "jest": "^27.3.1",
     "rimraf": "^3.0.2",

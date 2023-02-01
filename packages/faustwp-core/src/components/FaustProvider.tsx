@@ -11,5 +11,10 @@ export function FaustProvider(props: {
   const { pageProps, children } = props;
   const apolloClient = useApollo(pageProps);
 
-  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
+  return (
+    <ApolloProvider client={apolloClient}>
+      <h1>Hello World</h1>
+      {children}
+    </ApolloProvider>
+  );
 }
