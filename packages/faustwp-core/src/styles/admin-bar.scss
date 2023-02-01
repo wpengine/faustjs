@@ -1,0 +1,7 @@
+@import "wpcore/admin-bar";
+@import "wpcore/dashicons";
+
+// Make room for the admin bar.
+body.admin-bar {
+	margin-top: var(--wp-admin--admin-bar--height);
+}

@@ -5,6 +5,8 @@
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/cjs/index.d.ts",
+  "sass": "src/styles/admin-bar.scss",
+  "style": "dist/css/admin-bar.css",
   "peerDependencies": {
     "@apollo/client": ">=3.6.6",
     "next": ">=12.1.6",
@@ -37,9 +39,11 @@
     "lodash": "^4.17.21"
   },
   "scripts": {
-    "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
+    "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
+    "build": "concurrently \"npm:build-*\" --prefix-colors \"auto\"",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run package",
     "clean": "rimraf dist",
-    "dev": "npm run ts:watch",
     "format": "prettier --write .",
     "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
@@ -47,9 +51,11 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test": "jest",
-    "ts:cjs": "tsc -p tsconfig-cjs.json",
-    "ts:watch": "tsc -p . --watch",
-    "ts": "tsc -p ."
+    "build-cjs": "tsc -p tsconfig-cjs.json",
+    "build-js": "tsc -p .",
+    "build-styles": "sass src/styles/admin-bar.scss dist/css/admin-bar.css --embed-sources",
+    "watch-styles": "sass src/styles/admin-bar.scss dist/css/admin-bar.css --embed-sources --watch",
+    "watch-js": "tsc -p . --watch"
   },
   "repository": {
     "type": "git",
