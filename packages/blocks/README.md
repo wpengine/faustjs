@@ -22,3 +22,5 @@
 🚧 Please note this is prerelease software and breaking changes may occur.
 
 `@faustwp/blocks` provides conventional connector components for rendering WordPress blocks.
+
+Please see [https://faustjs.org/docs/gutenberg/getting-started](https://faustjs.org/docs/gutenberg/getting-started) for the Getting Started Guide.
