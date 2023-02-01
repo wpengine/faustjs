@@ -76,6 +76,16 @@ module.exports = {
           label: 'getNextStaticProps',
           id: 'next/reference/getNextStaticProps',
         },
+        {
+          type: 'doc',
+          label: 'WordPressBlocksViewer',
+          id: 'reference/WordPressBlocksViewer',
+        },
+        {
+          type: 'doc',
+          label: 'WordPressBlocksProvider',
+          id: 'reference/WordPressBlocksProvider',
+        },
       ],
     },
     {
