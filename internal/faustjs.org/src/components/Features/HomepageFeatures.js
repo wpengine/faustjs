@@ -9,7 +9,7 @@ const FeatureList = [
     description: (
       <>Get started with using Gutenberg Blocks Provider and Viewer in Faust.</>
     ),
-    link: '/docs/blocks/gutenberg-blocks-provider',
+    link: '/docs/gutenberg/getting-started',
   },
   {
     title: 'Apollo',
