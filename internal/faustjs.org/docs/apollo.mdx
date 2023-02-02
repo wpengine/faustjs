@@ -4,4 +4,83 @@ title: Apollo
 description: Perform declarative queries with Apollo to manipulate and structure data
 ---
 
-### This document is in progress. Check back soon for content!
+### Using Apollo in Faust
+
+Faust.js uses `@apollo/client` under the hood for its GraphQL client.
+
+You can use the client as usual in your components and pages. Take the following example:
+
+Your app queries the `title` and `description` from `generalSettings`:
+
+```jsx title="Your App"
+import { gql, useQuery } from '@apollo/client';
+
+export default function Page(props) {
+  const { data } = useQuery(Page.query);
+  const { title, description } = data.generalSettings;
+  return(
+    <h1>{title}</h1>
+    <p>{description}</p>
+  )
+}
+
+Page.query = gql`
+  query {
+    generalSettings {
+      title
+      description
+    }
+  }
+`
+```
+
+It co-locates the GraphQL query within the same file. You can also import and use queries from a file.
+
+The benefit with Faust is that you don't have to create the client object in your codebase. It is automatically created when you first import the
+`@faustwp-core` package. Instead you can customize it by using a [plugin filter](https://faustjs.org/docs/plugin-system/filters).
+
+## Generating Possible types JSON
+
+Apollo Client v3 requires you to provide a `possibleTypes object` that maps interfaces to all their possible types.
+With Faust, we provide a cli command you can use on your package.json scripts that generates this  file for you.
+Just make sure to enable [WPGraphQL introspection](https://www.wpgraphql.com/docs/security#introspection-disabled-by-default) before you run it.
+
+```json title="package.json"
+{
+  "scripts": {
+    ...
+	"generate": "faust generatePossibleTypes",
+  }
+}
+```
+
+Running the command will create the following file: `possibleTypes.json`. You can commit this file to your version control system.
+Now make sure you import this file to the `faust.config.js`:
+
+```json title="faust.config.js" {11}
+import { setConfig } from '@faustwp/core';
+import templates from './wp-templates';
+import possibleTypes from './possibleTypes.json';
+
+/**
+ * @type {import('@faustwp/core').FaustConfig}
+ **/
+export default setConfig({
+  templates,
+  experimentalPlugins: [],
+  possibleTypes,
+});
+````
+
+You don't have to run the command each time you build the application,
+but only when you update something in the schema (by adding a new CPT for example).
+
+# Further Reading
+
+We recommend reading the [queries](https://www.apollographql.com/docs/react/data/queries) and [fragments](https://www.apollographql.com/docs/react/data/fragments) docs to get a better picture of how the Apollo Client works.
+
+Additionally, the following docs may be helpful:
+
+* [Mutations](https://www.apollographql.com/docs/react/data/mutations)
+* [Refetching](https://www.apollographql.com/docs/react/data/refetching)
+* [Best practices](https://www.apollographql.com/docs/react/data/operation-best-practices)

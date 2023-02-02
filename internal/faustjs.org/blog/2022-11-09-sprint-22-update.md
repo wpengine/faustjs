@@ -2,6 +2,11 @@
 title: Sprint 22 Update
 description: Updates from the team's work on Sprint 22
 slug: sprint-22-update
+authors:
+  - name: Teresa Gobble
+    title: Associate Software Engineer
+    url: https://github.com/TeresaGobble
+    image_url: https://avatars.githubusercontent.com/u/50935135?v=4
 hide_table_of_contents: true
 ---
 
@@ -22,13 +27,13 @@ For those who have been using the new version for a while, we're confident that 
 
 ## Continued support for the old version of Faust
 
-We want to be clear that folks using the old version of Faust will not see an interruption to their sites this year with the new version's launch. Find the legacy site [here](https://legacy.faustjs.org/) to review documentation for the old version of Faust, and rest assured that old Faust.js will continue to be supported as long as needed in 2022 with security and other fixes. 
+We want to be clear that folks using the old version of Faust will not see an interruption to their sites this year with the new version's launch. Find the legacy site [here](https://legacy.faustjs.org/) to review documentation for the old version of Faust, and rest assured that old Faust.js will continue to be supported as long as needed in 2022 with security and other fixes.
 
 Additionally, it's important to note that the new Faust is a separate “package” so folks won’t inadvertently break their sites. This means that developers will have to explicitly update their project dependencies to use new Faust!
 
 ## Blueprints
 
-We really wanted to showcase how Faust.js contains all the features of old Faust.js, but with a new foundation designed for scalability and flexibility- and the [Atlas Portfolio Blueprint](https://github.com/wpengine/atlas-blueprint-portfolio/pull/96) is our showstopper from this sprint. It is one of the first migrated projects from old Faust (GQty) to new Faust (Apollo), and a migration guide for it is on the docket for the next sprint to help make the process of migrating from old to new Faust easier. 
+We really wanted to showcase how Faust.js contains all the features of old Faust.js, but with a new foundation designed for scalability and flexibility- and the [Atlas Portfolio Blueprint](https://github.com/wpengine/atlas-blueprint-portfolio/pull/96) is our showstopper from this sprint. It is one of the first migrated projects from old Faust (GQty) to new Faust (Apollo), and a migration guide for it is on the docket for the next sprint to help make the process of migrating from old to new Faust easier.
 
 ## New users
 
@@ -39,4 +44,3 @@ If you're currently using new Faust for your site, please don't hesitate to [dro
 ## Coming up next
 
 We have a new Scaffold Blueprint in the works, which will be created to allow experienced developers to easily start a new project using a complete tool set and all best practices. This will replace Atlas' “basic” Blueprint, based on research indicating that folks want a much less opinionated starting point once they know what they are doing. Next sprint, the team also plans on digging deeper into the latest version of Next.js, to better understand what v13 changes we can incorporate into future Faust features. Lastly, keep an eye out for more migration documentation as we continue to improve our site resources.
-
