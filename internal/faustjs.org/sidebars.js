@@ -111,6 +111,17 @@ module.exports = {
       id: 'telemetry',
     },
     {
+      type: 'category',
+      label: 'Gutenberg Support',
+      items: [
+        {
+          type: 'doc',
+          label: 'Using wp-graphql-content-blocks plugin',
+          id: 'gutenberg/wp-graphql-content-blocks',
+        },
+      ],
+    },
+    {
       type: 'doc',
       label: 'Migration from Legacy Faust',
       id: 'migrationPath/overview',
