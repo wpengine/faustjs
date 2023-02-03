@@ -23,6 +23,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Gutenberg Support',
+      items: [
+        {
+          type: 'doc',
+          label: 'Getting Started',
+          id: 'gutenberg/getting-started',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Guides',
       items: [
         {
@@ -44,11 +55,6 @@ module.exports = {
           type: 'doc',
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
-        },
-        {
-          type: 'doc',
-          label: 'Gutenberg Support',
-          id: 'gutenberg/getting-started',
         },
       ],
     },
