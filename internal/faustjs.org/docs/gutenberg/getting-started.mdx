@@ -49,6 +49,8 @@ contentBlocks(flat: true) {
 ## A Simple Block
 This is a simple block called ``CoreParagraph``. The block is a ``p`` tag that sets its content to ``attributes.content`` which is passed in from the props.
 
+``CoreParagraph.fragments`` does a WPGraphQL query for the ``content`` and ``cssClassName`` and sets it as the fragment ``CoreParagraphFragment``.
+
 ```js
 import { gql } from '@apollo/client';
 import React from 'react';
