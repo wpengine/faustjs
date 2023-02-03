@@ -3,6 +3,7 @@ import React from 'react';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { useApollo } from '../client.js';
+import { Toolbar } from './Toolbar';
 
 export function FaustProvider(props: {
   children: React.ReactNode;
@@ -13,7 +14,7 @@ export function FaustProvider(props: {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <h1>Hello World</h1>
+      <Toolbar client={apolloClient} />
       {children}
     </ApolloProvider>
   );
