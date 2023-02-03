@@ -7,6 +7,7 @@ import {
 import type { DocumentNode } from 'graphql';
 import isBoolean from 'lodash/isBoolean.js';
 import isObject from 'lodash/isObject.js';
+import { DEFAULT_ISR_REVALIDATE } from './getWordPressProps.js';
 import { addApolloState, getApolloClient } from './client.js';
 
 export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
@@ -36,9 +37,8 @@ export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   cfg: GetNextStaticPropsConfig<Props>,
 ) {
-  const { notFound, redirect, Page, props } = cfg;
+  const { notFound, redirect, Page, revalidate, props } = cfg;
   const apolloClient = getApolloClient();
-
   if (isBoolean(notFound) && notFound === true) {
     return {
       notFound,
@@ -58,8 +58,9 @@ export async function getNextStaticProps<Props>(
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return addApolloState(apolloClient, { props: { ...props } });
+  const pageProps = addApolloState(apolloClient, { props: { ...props } });
+  pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
+  return pageProps;
 }
 
 /**
