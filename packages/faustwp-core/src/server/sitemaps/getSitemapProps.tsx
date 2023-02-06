@@ -56,6 +56,21 @@ export type GetSitemapPropsConfig = {
  * @param {Partial<HandleSitemapRequestsConfig>} config The user provided config
  */
 export function validateConfig(config: Partial<GetSitemapPropsConfig>): void {
+  if (!isString(config?.frontendUrl)) {
+    throw new Error('frontendUrl must be a string');
+  }
+
+  try {
+    // eslint-disable-next-line no-new
+    const url = new URL(config.frontendUrl);
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      throw new Error('URL must have protocol');
+    }
+  } catch (e) {
+    throw new Error('frontendUrl must be a valid URL.');
+  }
+
   if (!isUndefined(config?.sitemapPathsToIgnore)) {
     if (!isArray(config.sitemapPathsToIgnore)) {
       throw new Error('sitemapPathsToIgnore must be an array');

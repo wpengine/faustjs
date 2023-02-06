@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createSitemap() returns a sitemap with no links 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+    <urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+      
+    </urlset>"
+`;
+
+exports[`createSitemap() returns a sitemap with specified urls 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+    <urlset xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+      <url>
+              <loc>http://localhost:3000/</loc>
+              <lastmod>2022-01-01</lastmod>
+              <changefreq>daily</changefreq>
+              <priority>0.9</priority>
+          </url><url>
+              <loc>http://localhost:3000/about</loc>
+              <lastmod>2022-01-01</lastmod>
+              
+              
+          </url><url>
+              <loc>http://localhost:3000/contact</loc>
+              
+              
+              <priority>0.4</priority>
+          </url><url>
+              <loc>http://localhost:3000/team</loc>
+              
+              <changefreq>monthly</changefreq>
+              
+          </url><url>
+              <loc>http://localhost:3000/blog</loc>
+              
+              
+              
+          </url>
+    </urlset>"
+`;
+
+exports[`createSitemapIndex() returns a sitemap index with no sitemaps 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+      <sitemapindex xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+      
+      </sitemapindex>"
+`;
+
+exports[`createSitemapIndex() returns a sitemap index with specified sitemaps 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+      <sitemapindex xmlns=\\"http://www.sitemaps.org/schemas/sitemap/0.9\\">
+      <sitemap>
+            <loc>http://localhost:3000/post-sitemap.xml</loc>
+            <lastmod>2022-01-01</lastmod>
+          </sitemap><sitemap>
+            <loc>http://localhost:3000/page-sitemap.xml</loc>
+            
+          </sitemap>
+      </sitemapindex>"
+`;

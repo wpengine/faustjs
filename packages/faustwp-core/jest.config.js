@@ -15,7 +15,7 @@ module.exports = {
 
   // ESM Support
   // @link https://kulshekhar.github.io/ts-jest/docs/guides/esm-support/
-  extensionsToTreatAsEsm: ['.ts'],
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   globals: {
     'ts-jest': {
       useESM: true,

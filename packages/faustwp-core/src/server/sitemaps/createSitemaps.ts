@@ -65,6 +65,7 @@ export async function createRootSitemapIndex(
   // get sitemapIndexPath config param
   // fetch sitemap from WP
   const trimmedWpUrl = trim(getWpUrl(), '/');
+  const trimmedFrontendUrl = trim(frontendUrl, '/');
   const trimmedSitemapIndexPath = trim(SITEMAP_INDEX_PATH, '/');
   const wpSitemapUrl = `${trimmedWpUrl}/${trimmedSitemapIndexPath}`;
 
@@ -75,7 +76,7 @@ export async function createRootSitemapIndex(
       SITEMAP_INDEX_PATH,
       '/',
     )}?sitemap=${trim(FAUST_PAGES_PATHNAME, '/')}`;
-    const sitemapFaustPagesUrl = `${trimmedWpUrl}/${trimmedFaustPagesPart}`;
+    const sitemapFaustPagesUrl = `${trimmedFrontendUrl}/${trimmedFaustPagesPart}`;
 
     sitemaps = [
       ...sitemaps,
