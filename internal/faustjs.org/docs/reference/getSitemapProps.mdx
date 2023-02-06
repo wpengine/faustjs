@@ -35,6 +35,7 @@ type GetSitemapPropsConfig = {
    * @example https://my-site.com
    */
   frontendUrl: string;
+
   /**
    * A list of relative URLs to ignore when proxying sitemaps.
    * Wild cards can be used to exclude certain types of sitemaps.
@@ -43,6 +44,7 @@ type GetSitemapPropsConfig = {
    * @example ["/sitemap-tags-*"]
    */
   sitemapPathsToIgnore?: string[];
+
   /**
    * Next.js pages you want included in you sitemap. When provided, an index
    * will be created specifically for these pages.
@@ -51,7 +53,11 @@ type GetSitemapPropsConfig = {
    */
   pages?: NextJSPage[];
 };
+```
 
+And the shape of a `NextJSPage`:
+
+```ts
 type NextJSPage = {
   /**
    * The relative URL of the Next.js page.
@@ -59,7 +65,9 @@ type NextJSPage = {
    * @example /about
    */
   path: string;
+
   lastmod?: string;
+
   changefreq?:
     | 'always'
     | 'hourly'
@@ -68,6 +76,7 @@ type NextJSPage = {
     | 'monthly'
     | 'yearly'
     | 'never';
+
   priority?: number;
 };
 ```
