@@ -31,19 +31,17 @@
 
 Make sure you have completed the initial setup for Faust at [Getting Started](https://faustjs.org/docs/getting-started).
 
-Faust Getting Started with Blocks Guide [Getting Started with Blocks](https://faustjs.org/docs/gutenberg/getting-started).
-
 :::
 
-Install the blocks:
+Install the blocks package:
 
 ```bash
 npm i @faustwp/blocks
 ```
 
-Open ``_app.js`` and import the blocks provider:
+Open `_app.js` and import the blocks provider:
 
-```js
+```jsx
 import { WordPressBlocksProvider } from '@faustwp/blocks';
 
 <FaustProvider pageProps={pageProps}>
@@ -56,7 +54,7 @@ import { WordPressBlocksProvider } from '@faustwp/blocks';
 </FaustProvider>
 ```
 
-Then, inside your templates you need to pass on the ``contentBlocks`` data in your ``WordPressBlocksViewer``. The helper function ``flatListToHierarchical`` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
+Then, inside your templates you need to pass on the `contentBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
 
 ```js
 import { WordPressBlocksViewer } from '@faustwp/blocks';
@@ -65,8 +63,9 @@ const { contentBlocks } = props.data.post;
 const blocks = flatListToHierarchical(contentBlocks);
 ```
 
-Example ``contentBlock`` GraphQL query fragment. Setting ``flat: true`` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
-```
+Example `contentBlock` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
+
+```graphql
 ${components.CoreParagraph.fragments.entry}
 contentBlocks(flat: true) {
   __typename
@@ -77,12 +76,12 @@ contentBlocks(flat: true) {
 }
 ```
 
-## A Simple Block
-This is a simple block called ``CoreParagraph``. The block is a ``p`` tag that sets its content to ``attributes.content`` which is passed in from the props.
+## A Simple Block Example
+This is a simple block called `CoreParagraph`. The block is a `p` tag that sets its content to `attributes.content` which is passed in from the props.
 
-``CoreParagraph.fragments`` does a WPGraphQL query for the ``content`` and ``cssClassName`` and sets it as the fragment ``CoreParagraphFragment``.
+`CoreParagraph.fragments` does a WPGraphQL query for the `content` and `cssClassName` and sets it as the fragment `CoreParagraphFragment`.
 
-```js
+```jsx
 import { gql } from '@apollo/client';
 import React from 'react';
 
@@ -108,7 +107,7 @@ CoreParagraph.fragments = {
 };
 ```
 
-``Import`` and ``export default`` the CoreParagraph Block in ``index.js``:
+`Import` and `export default` the CoreParagraph Block in `index.js`:
 ```js
 import CoreParagraph from './CoreParagraph';
 export default {
@@ -118,6 +117,10 @@ export default {
 
 ## Further Learning
 
+More details on the [WordPressBlocksProvider](https://faustjs.org/docs/reference/WordPressBlockProvider).
+
+More details on the [WordPressBlocksViewer](https://faustjs.org/docs/reference/WordPressBlockViewer).
+
 Continue learning about the project structure, how to change styles, layout, etc. by referencing the [Example Project Walkthrough Structure.](https://faustjs.org/docs/next/guides/project-walkthrough)
 
-Please see [https://faustjs.org/docs/gutenberg/getting-started](https://faustjs.org/docs/gutenberg/getting-started) for the Getting Started Guide.
+Please see [https://faustjs.org/docs/gutenberg/getting-started](https://faustjs.org/docs/gutenberg/getting-started) for the Getting Started Guide for Gutenberg Blocks.
