@@ -120,5 +120,4 @@ export default {
 
 Continue learning about the project structure, how to change styles, layout, etc. by referencing the [Example Project Walkthrough Structure.](https://faustjs.org/docs/next/guides/project-walkthrough)
 
-
 Please see [https://faustjs.org/docs/gutenberg/getting-started](https://faustjs.org/docs/gutenberg/getting-started) for the Getting Started Guide.
