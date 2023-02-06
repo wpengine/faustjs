@@ -28,7 +28,10 @@
     "clean": "rimraf dist",
     "dev": "tsc -p tsconfig.json --watch",
     "format": "prettier --write .",
-    "test": "npm test"
+    "test": "jest",
+    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
