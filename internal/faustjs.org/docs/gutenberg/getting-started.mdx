@@ -44,7 +44,7 @@ const blocks = flatListToHierarchical(contentBlocks);
 ```
 
 Example ``contentBlock`` GraphQL query fragment. Setting ``flat: true`` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
-```
+```graphql
 ${components.CoreParagraph.fragments.entry}
 contentBlocks(flat: true) {
   __typename
