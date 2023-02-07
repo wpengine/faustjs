@@ -212,7 +212,7 @@ contentBlocks {
 ```
 
 This clearly becomes a scalability issue as we don't really know how many levels deep we must traverse for those types. It could be two levels or it could be 50. Using [block patterns](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-patterns/) for example, poses a real issue.
-In each case we would have to copy the whole fragment list again and again. This is one of the shorfalls of `wp-graphql-gutenberg` plugin but with this plugin we have a more elegant solution.
+In each case we would have to copy the whole fragment list again and again. This is one of the limitations of the `wp-graphql-gutenberg` plugin, but with this plugin we have a more elegant solution.
 
 This is how you request all blocks as a flat list:
 
