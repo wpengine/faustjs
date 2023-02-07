@@ -15,6 +15,10 @@ import { getWpHostname } from './lib/getWpHostname.js';
 import { getApolloClient, addApolloState } from './client.js';
 import { FaustPlugin } from './hooks/index.js';
 import { FaustHooks } from './hooks/overloads.js';
+import {
+  getSitemapProps,
+  GetSitemapPropsConfig,
+} from './server/sitemaps/getSitemapProps.js';
 
 export {
   FaustProvider,
@@ -37,4 +41,6 @@ export {
   addApolloState,
   FaustPlugin,
   FaustHooks,
+  getSitemapProps,
+  GetSitemapPropsConfig,
 };

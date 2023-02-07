@@ -42,6 +42,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Sitemaps',
+          id: 'guides/sitemaps',
+        },
+        {
+          type: 'doc',
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
@@ -86,6 +91,11 @@ module.exports = {
           label: 'WordPressBlocksProvider',
           id: 'reference/WordPressBlocksProvider',
         },
+        {
+          type: 'doc',
+          label: 'getSitemapProps',
+          id: 'reference/getSitemapProps',
+        },
       ],
     },
     {
@@ -119,6 +129,17 @@ module.exports = {
       type: 'doc',
       label: 'Telemetry',
       id: 'telemetry',
+    },
+    {
+      type: 'category',
+      label: 'Gutenberg Support',
+      items: [
+        {
+          type: 'doc',
+          label: 'Using wp-graphql-content-blocks plugin',
+          id: 'gutenberg/wp-graphql-content-blocks',
+        },
+      ],
     },
     {
       type: 'doc',
