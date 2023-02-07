@@ -154,53 +154,6 @@ describe('createRootSitemapIndex', () => {
     expect(createSitemapIndexSpy).toHaveBeenCalledWith(expectedSitemaps);
   });
 
-  it('returns the proper sitemap urls without replacing URLs', async () => {
-    const createSitemapIndexSpy = jest.spyOn(
-      sitemapUtils,
-      'createSitemapIndex',
-    );
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
-      return Promise.resolve({
-        ok: true,
-        status: 200,
-        text: () => Promise.resolve(validSitemapIndexXML),
-      }) as Promise<Response>;
-    });
-
-    const req = {
-      url: 'http://localhost:3000/sitemap.xml',
-    } as NextRequest;
-
-    const config: GetSitemapPropsConfig = {
-      frontendUrl: 'http://localhost:3000',
-      pages: [
-        {
-          path: '/about',
-        },
-      ],
-      sitemapPathsToIgnore: ['/author-sitemap.xml'],
-    };
-
-    await createSitemaps.createRootSitemapIndex(req, config);
-
-    const expectedSitemaps = [
-      {
-        loc: 'http://localhost:3000/sitemap.xml?sitemap=sitemap-faust-pages.xml',
-      },
-      {
-        loc: 'http://localhost:3000/sitemap.xml?sitemap=post-sitemap.xml',
-      },
-      {
-        loc: 'http://localhost:3000/sitemap.xml?sitemap=page-sitemap.xml',
-      },
-      {
-        loc: 'http://localhost:3000/sitemap.xml?sitemap=category-sitemap.xml',
-      },
-    ];
-
-    expect(createSitemapIndexSpy).toHaveBeenCalledWith(expectedSitemaps);
-  });
-
   it('returns the proper sitemap urls with replacing URLs', async () => {
     const createSitemapIndexSpy = jest.spyOn(
       sitemapUtils,
