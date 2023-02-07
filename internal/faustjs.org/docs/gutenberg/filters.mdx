@@ -32,7 +32,7 @@ function custom_graphql_editor_block_init($class_name, $block, $self) {
 class MyFirstBlock extends WPGraphQL\ContentBlocks\Blocks\Block {}
 ```
 
-The class `MyFirstBlock` needs to inherit from `WPGraphQL\ContentBlocks\Blocks\Block` as the parent class performs certain background work to register this block with include_once plugin_dir_path( __DIR__ ) . 'wp-graphql-content-blocks/includes/Blocks/Block.php';
+The class `MyFirstBlock` needs to inherit from `WPGraphQL\ContentBlocks\Blocks\Block` as the parent class performs certain background work to register this block with WPGraphQL.
 
 The parent class currently offers two ways to customize it:
 
