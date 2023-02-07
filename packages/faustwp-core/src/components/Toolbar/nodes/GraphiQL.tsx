@@ -1,5 +1,6 @@
 import React from 'react';
 import { adminUrl } from '../../../utils/adminUrl.js';
+import { ToolbarLink } from '../index.js';
 
 const styles = {
   backgroundImage:
@@ -16,11 +17,9 @@ const defaultUrl = adminUrl('admin.php?page=graphiql-ide');
 
 export function GraphiQL({ url = defaultUrl, title = 'GraphiQL IDE' }) {
   return (
-    <li id="wp-admin-bar-graphiql-ide">
-      <a className="ab-item" href={url}>
-        <span className="custom-icon" style={styles} />
-        {title}
-      </a>
-    </li>
+    <ToolbarLink url={url}>
+      <span className="custom-icon" style={styles} />
+      {title}
+    </ToolbarLink>
   );
 }
