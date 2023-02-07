@@ -212,6 +212,10 @@ function decrypt( $value ) {
  * @return string The default key.
  */
 function get_default_key() {
+	if ( defined( 'FAUST_SECRET_KEY' ) && FAUST_SECRET_KEY ) {
+		return FAUST_SECRET_KEY;
+	}
+
 	if ( defined( 'FAUSTWP_SECRET_KEY' ) && FAUSTWP_SECRET_KEY ) {
 		return FAUSTWP_SECRET_KEY;
 	}

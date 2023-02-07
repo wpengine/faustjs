@@ -1,5 +1,16 @@
 # @faustwp/cli
 
+## 0.2.2
+
+### Patch Changes
+
+- 0111d9c: Fixed issue where the child process for Next.js CLI was preventing the node server from starting up in a Windows environment.
+- c545b11: Fixed a bug where the CLI was overriding the NODE_ENV environment variable if it was predefined
+- 15603a9: Telemetry events will now be send for any Faust command. Previously, telemetry events were only being sent for the `faust dev` and `faust build` commands.
+- 5c15889: Fixed an issue where telemetry data could be incomplete. Now, if the request to get telemetry data from WordPress fails, we will not continue on with the telemetry request.
+- c545b11: Added a debug mode by setting the `FAUST_DEBUG` environment variable to either `true` or `1`
+- 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
+
 ## 0.2.0
 
 ### Minor Changes

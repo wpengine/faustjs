@@ -2,6 +2,11 @@
 title: The Future of Faust.js
 description: An update on Faust.js, where it is and where it is going
 slug: the-future-of-faust
+authors:
+  - name: Chris Wiegman
+    title: Engineering Manager
+    url: https://github.com/ChrisWiegman
+    image_url: https://avatars.githubusercontent.com/u/394675?v=4
 hide_table_of_contents: true
 ---
 
