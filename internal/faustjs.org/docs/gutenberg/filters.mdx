@@ -76,7 +76,7 @@ If you done everything alright, then you will be able to query that field in Gra
 }
 ```
 
-* **Using the `additional_block_attributes` property**: Using the `register_fields` method is bit cumbersome and lengthy. There is another simpler way to register additional block attributes for that block by defining a property `additional_block_attributes` on that class. This property is of type `array` and you can assign the list of attributes as key-value pairs similar to the `block.json` attributes spec:
+* **Using the `additional_block_attributes` property**: Using the `register_fields` method is a bit cumbersome and lengthy. There is another simpler way to register additional block attributes for that block by defining a property `additional_block_attributes` on that class. This property is of type `array` and you can assign the list of attributes as key-value pairs similar to the `block.json` attributes spec:
 
 ```php
 class MyFirstBlock extends WPGraphQL\ContentBlocks\Blocks\Block
