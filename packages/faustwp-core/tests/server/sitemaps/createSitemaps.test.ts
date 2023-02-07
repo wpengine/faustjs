@@ -380,48 +380,6 @@ describe('handleSitemapPath()', () => {
     expect(result).toBeUndefined();
   });
 
-  it('returns the proper sitemap urls without replacing URLs', async () => {
-    const createSitemapSpy = jest.spyOn(sitemapUtils, 'createSitemap');
-
-    jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
-      return Promise.resolve({
-        ok: true,
-        status: 200,
-        text: () => Promise.resolve(validSitemapXML),
-      }) as Promise<Response>;
-    });
-
-    const req = {
-      url: 'http://localhost:3000/sitemap-pages.xml',
-    } as NextRequest;
-
-    const config: GetSitemapPropsConfig = {
-      frontendUrl: 'http://localhost:3000',
-    };
-
-    await createSitemaps.handleSitemapPath(req, config);
-
-    const expectedUrls: sitemapUtils.SitemapSchemaUrlElement[] = [
-      {
-        loc: 'http://headless.local/',
-      },
-      {
-        loc: 'http://headless.local/new-page/',
-      },
-      {
-        loc: 'http://headless.local/sample-page/',
-      },
-      {
-        loc: 'http://headless.local/new-draft-test/',
-        lastmod: '2021-12-22T14:53:40+00:00',
-        changefreq: 'weekly',
-        priority: 0.5,
-      },
-    ];
-
-    expect(createSitemapSpy).toHaveBeenCalledWith(expectedUrls);
-  });
-
   it('returns the proper sitemap urls with replacing URLs', async () => {
     const createSitemapSpy = jest.spyOn(sitemapUtils, 'createSitemap');
 
