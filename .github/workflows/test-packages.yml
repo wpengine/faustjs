@@ -22,22 +22,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+
       - name: Install
         run: npm ci
 
-      - run: npm run build
+      - name: Build
+        run: npm run build
 
-      - name: Code Coverage for Core Package
-        uses: ./.github/actions/run-coverage
-        with:
-          working-directory: packages/core
-
-      - name: Code Coverage for Next Package
-        uses: ./.github/actions/run-coverage
-        with:
-          working-directory: packages/next
+      - name: Tests
+        run: npm run test
 
       - name: Code Coverage for FaustWP Core Package
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/faustwp-core
+
+      - name: Code Coverage for FaustWP CLI Package
+        uses: ./.github/actions/run-coverage
+        with:
+          working-directory: packages/faustwp-cli
