@@ -83,6 +83,16 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'WordPressBlocksViewer',
+          id: 'reference/WordPressBlocksViewer',
+        },
+        {
+          type: 'doc',
+          label: 'WordPressBlocksProvider',
+          id: 'reference/WordPressBlocksProvider',
+        },
+        {
+          type: 'doc',
           label: 'getSitemapProps',
           id: 'reference/getSitemapProps',
         },
