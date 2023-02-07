@@ -28,7 +28,7 @@ Component.query = gql`
     $databaseId: ID!
   ) {
     post(id: $databaseId, idType: DATABASE_ID) {
-      contentBlocks() {
+      contentBlocks {
         __typename
         renderedHtml
         id: nodeId
