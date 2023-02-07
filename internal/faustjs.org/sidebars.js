@@ -111,6 +111,17 @@ module.exports = {
       id: 'telemetry',
     },
     {
+      type: 'category',
+      label: 'Gutenberg Support',
+      items: [
+        {
+          type: 'doc',
+          label: 'Plugin filters',
+          id: 'gutenberg/filters',
+        },
+      ],
+    },
+    {
       type: 'doc',
       label: 'Migration from Legacy Faust',
       id: 'migrationPath/overview',
