@@ -42,6 +42,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Sitemaps',
+          id: 'guides/sitemaps',
+        },
+        {
+          type: 'doc',
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
@@ -75,6 +80,11 @@ module.exports = {
           type: 'doc',
           label: 'getNextStaticProps',
           id: 'next/reference/getNextStaticProps',
+        },
+        {
+          type: 'doc',
+          label: 'getSitemapProps',
+          id: 'reference/getSitemapProps',
         },
       ],
     },
