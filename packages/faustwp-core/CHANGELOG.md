@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 0.2.3
+
+### Patch Changes
+
+- f3a2d9e: Bug Fix: Propagate `revalidate` property in getNextStaticProps.
+
 ## 0.2.2
 
 ### Patch Changes
