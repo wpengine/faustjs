@@ -56,7 +56,7 @@ class MyFirstBlock extends WPGraphQL\ContentBlocks\Blocks\Block {
 }
 ```
 
-It uses the `block_registry` instance variable inherited from the parent `Block` type. The `block_registry` is the WPGraphQL registry that holds all the types available the system. We use it to add a new field (in our case the `align` property) for the current block type as specified in the `type_name` property. Other properties that are inherited are the `block` which is the actual block data and the `block_attributes` which are the attributes of that blocks taken from the `block.json`.
+It uses the `block_registry` instance variable inherited from the parent `Block` type. The `block_registry` is the WPGraphQL registry that holds all the types available to the system. We use it to add a new field (in our case the `align` property) for the current block type as specified in the `type_name` property. Other properties that are inherited are the `block` which is the actual block data and the `block_attributes` which are the attributes of that blocks taken from the `block.json`.
 
 In that case also we need to provide the value in the `resolve` callback. We use the `$block` parameter which represents the actual block data and return the value or any other value we wish to return.
 
