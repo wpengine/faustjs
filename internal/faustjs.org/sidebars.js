@@ -23,6 +23,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Gutenberg Support',
+      items: [
+        {
+          type: 'doc',
+          label: 'Getting Started',
+          id: 'gutenberg/getting-started',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Guides',
       items: [
         {
