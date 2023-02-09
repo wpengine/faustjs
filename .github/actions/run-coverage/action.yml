@@ -9,7 +9,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: ArtiomTr/jest-coverage-report-action@v2
+    # We are currently fixed at 2.1.2 since 2.2 was throwing errors
+    # Remove this when the issue has been resolved.
+    - uses: ArtiomTr/jest-coverage-report-action@v2.1.2
       with:
         test-script: npm run test:coverage:ci
         working-directory: ${{ inputs.working-directory }}

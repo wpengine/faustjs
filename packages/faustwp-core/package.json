@@ -1,6 +1,6 @@
 {
   "name": "@faustwp/core",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
@@ -32,6 +32,7 @@
     "chalk": "^4.1.2",
     "cookie": "^0.5.0",
     "deepmerge": "^4.2.2",
+    "fast-xml-parser": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21"
   },
