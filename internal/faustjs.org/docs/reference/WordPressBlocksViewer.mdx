@@ -1,0 +1,72 @@
+---
+slug: /reference/WordPressBlocksViewer
+title: WordPressBlocksViewer Reference
+description: Reference docs for the WordPressBlocksViewer Component in Faust.
+---
+
+`WordPressBlocksViewer` is a component used to render blocks received from WordPress. It uses the react components passed to the `WordPressBlocksProvider` and matches them to the appropriate blocks received in the [`contentBlocks`](#props) prop.
+
+## Usage
+
+The below example shows how a [Faust Template](/docs/templates) can use the requested `contentBlocks` from WPGraphQL and render them using the `WordPressBlocksViewer` component.
+
+```jsx {1,9,13} title="wp-blocks/CoreColumn.jsx"
+import { WordPressBlocksViewer } from '@faustwp/blocks';
+
+export default function Component(props) {
+  const { contentBlocks } = props.data.post;
+
+  return (
+    <>
+      <WordPressBlocksViewer contentBlocks={contentBlocks} />
+    </>
+  );
+}
+
+Component.query = gql`
+  query GetPost(
+    $databaseId: ID!
+  ) {
+    post(id: $databaseId, idType: DATABASE_ID) {
+      contentBlocks {
+        __typename
+        renderedHtml
+        id: nodeId
+        parentId
+      }
+    }
+  }
+`;
+
+Component.variables = ({ databaseId }, ctx) => {
+  return {
+    databaseId,
+  };
+};
+```
+
+## Props
+
+Below is `WordPressBlocksViewer`'s props defined as a TypeScript interface:
+
+:::note
+
+The `contentBlocks` type defined below is data received from WPGraphQL and the [WPGraphQL Content Blocks](https://github.com/wpengine/wp-graphql-content-blocks) companion plugin.
+
+:::
+
+```ts
+export interface ContentBlock {
+  __typename?: string;
+  apiVersion?: number;
+  cssClassNames?: string;
+  innerBlocks?: ContentBlock[];
+  isDynamic?: boolean;
+  name?: string;
+  renderedHtml?: string;
+}
+
+export interface WordpressBlocksViewerProps {
+  contentBlocks: ContentBlock[];
+}
+```

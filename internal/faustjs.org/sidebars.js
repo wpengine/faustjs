@@ -23,6 +23,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Gutenberg Support',
+      items: [
+        {
+          type: 'doc',
+          label: 'Getting Started',
+          id: 'gutenberg/getting-started',
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Guides',
       items: [
         {
@@ -39,6 +50,11 @@ module.exports = {
           type: 'doc',
           label: 'Apollo',
           id: 'apollo',
+        },
+        {
+          type: 'doc',
+          label: 'Sitemaps',
+          id: 'guides/sitemaps',
         },
         {
           type: 'doc',
@@ -75,6 +91,21 @@ module.exports = {
           type: 'doc',
           label: 'getNextStaticProps',
           id: 'next/reference/getNextStaticProps',
+        },
+        {
+          type: 'doc',
+          label: 'WordPressBlocksViewer',
+          id: 'reference/WordPressBlocksViewer',
+        },
+        {
+          type: 'doc',
+          label: 'WordPressBlocksProvider',
+          id: 'reference/WordPressBlocksProvider',
+        },
+        {
+          type: 'doc',
+          label: 'getSitemapProps',
+          id: 'reference/getSitemapProps',
         },
       ],
     },
@@ -114,6 +145,11 @@ module.exports = {
       type: 'category',
       label: 'Gutenberg Support',
       items: [
+        {
+          type: 'doc',
+          label: 'Using wp-graphql-content-blocks plugin',
+          id: 'gutenberg/wp-graphql-content-blocks',
+        },
         {
           type: 'doc',
           label: 'Plugin filters',
