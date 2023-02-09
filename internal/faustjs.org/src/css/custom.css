@@ -82,6 +82,14 @@ body {
   padding: 0 var(--ifm-pre-padding);
 }
 
+html .theme-code-block-highlighted-line {
+  background-color: rgb(230, 232, 234);
+}
+
+html[data-theme='dark'] .theme-code-block-highlighted-line {
+  background-color: rgb(28, 30, 40);
+}
+
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
