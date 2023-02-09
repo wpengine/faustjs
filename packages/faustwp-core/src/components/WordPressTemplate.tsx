@@ -4,7 +4,6 @@ import { ensureAuthorization, getAccessToken } from '../auth/index.js';
 import { getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
-import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 import { getQueryParam } from '../utils/convert.js';
 
