@@ -21,13 +21,6 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
   __TEMPLATE_VARIABLES__?: { [key: string]: any };
 };
 
-function cleanTemplate(
-  template: WordPressTemplateType,
-): React.FC<{ [key: string]: any }> {
-  const copy = (template as React.FC<{ [key: string]: any }>).bind({});
-  return copy;
-}
-
 export function WordPressTemplate(props: WordPressTemplateProps) {
   const { templates } = getConfig();
 
@@ -212,8 +205,6 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     return null;
   }
 
-  // Remove unnecessary properties from component before rendering
-  const Component = cleanTemplate(template);
-
+  const Component = template as React.FC<{ [key: string]: any }>;
   return React.createElement(Component, { ...props, data, loading }, null);
 }
