@@ -26,9 +26,6 @@ export function Brand({ url = defaultUrl }) {
           <ToolbarItem id="wp-admin-bar-support-forums">
             <ToolbarLink url={'https://github.com/wpengine/faustjs'}>GitHub</ToolbarLink>
           </ToolbarItem>
-          <ToolbarItem id="wp-admin-bar-atlas">
-            <ToolbarLink url={'https://wpengine.com/atlas/'}>Atlas</ToolbarLink>
-          </ToolbarItem>
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>
     </>
