@@ -150,6 +150,11 @@ module.exports = {
           label: 'Using wp-graphql-content-blocks plugin',
           id: 'gutenberg/wp-graphql-content-blocks',
         },
+        {
+          type: 'doc',
+          label: 'Plugin filters',
+          id: 'gutenberg/filters',
+        },
       ],
     },
     {
