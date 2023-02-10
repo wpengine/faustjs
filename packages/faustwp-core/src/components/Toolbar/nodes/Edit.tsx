@@ -8,6 +8,10 @@ export type EditProps = {
 };
 
 export function Edit({ seedNode }: EditProps) {
+  if (seedNode.isFrontPage) {
+    return <></>;
+  }
+
   const postType = seedNode.__typename || '';
   const postId = seedNode.databaseId || '';
 
