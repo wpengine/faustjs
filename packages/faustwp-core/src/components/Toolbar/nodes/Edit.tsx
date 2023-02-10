@@ -15,5 +15,3 @@ export function Edit({ seedNode }: EditProps) {
 
   return <ToolbarLink url={editPostUrl}>Edit {postType}</ToolbarLink>;
 }
-
-Edit.id = 'edit';
