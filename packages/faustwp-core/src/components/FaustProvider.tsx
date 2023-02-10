@@ -4,17 +4,32 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import { useApollo } from '../client.js';
 import { Toolbar } from './Toolbar';
+import { SeedNode } from '../queries/seedQuery.js';
+import { getConfig } from '../config/index.js';
+import { useRouter } from 'next/router';
+
+export type FaustPageProps = AppProps['pageProps'] & {
+  __SEED_NODE__: SeedNode;
+};
 
 export function FaustProvider(props: {
   children: React.ReactNode;
-  pageProps: AppProps['pageProps'];
+  pageProps: FaustPageProps;
 }) {
   const { pageProps, children } = props;
+  const { disableToolbar } = getConfig();
+  const router = useRouter();
   const apolloClient = useApollo(pageProps);
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Toolbar client={apolloClient} />
+      {!disableToolbar && (
+        <Toolbar
+          key={router.asPath} // Required in order to load each route's own seed node.
+          client={apolloClient}
+          seedNode={pageProps.__SEED_NODE__}
+        />
+      )}
       {children}
     </ApolloProvider>
   );

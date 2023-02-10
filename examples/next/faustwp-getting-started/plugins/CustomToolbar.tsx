@@ -3,10 +3,11 @@ import {
   FaustHooks,
   FaustPlugin,
   FaustToolbarNodes,
+  FaustToolbarContext,
   ToolbarItem,
   ToolbarLink,
   ToolbarSubmenu,
-  ToolbarSubmenuWrapper
+  ToolbarSubmenuWrapper,
 } from '@faustwp/core';
 
 /**
@@ -18,7 +19,7 @@ export class CustomToolbar implements FaustPlugin {
      * This example demonstrates how to filter on the core Toolbar nodes
      * in order to add your own custom nodes!
      */
-    hooks.addFilter('toolbarNodes', 'faust', (toolbarNodes: FaustToolbarNodes) => {
+    hooks.addFilter('toolbarNodes', 'faust', (toolbarNodes: FaustToolbarNodes, context: FaustToolbarContext) => {
       const customToolbarNodes = [
         /**
          * A simple link.
@@ -27,8 +28,10 @@ export class CustomToolbar implements FaustPlugin {
         /**
          * A simple link with a submenu that displays on hover.
          */
-        <CustomNodeWithSubmenu/>
+        <CustomNodeWithSubmenu />,
       ];
+
+      console.log({ toolbarNodes, context });
 
       return [...toolbarNodes, ...customToolbarNodes];
     });
@@ -42,6 +45,7 @@ export function CustomNode() {
     </ToolbarLink>
   );
 }
+
 
 export function CustomNodeWithSubmenu() {
   return (

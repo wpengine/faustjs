@@ -1,54 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { getConfig } from '../../config/index.js';
-import { Brand, GraphiQL } from './nodes';
+import { Faust, Edit, GraphiQL } from './nodes';
 import { hooks } from '../../hooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
+import { SeedNode } from '../../queries/seedQuery.js';
+
+type ToolbarProps = {
+  client: React.ReactNode;
+  seedNode: SeedNode;
+};
 
 export type ToolbarNodes = React.ReactElement[];
+export type ToolbarContext = {
+  seedNode: SeedNode;
+};
 
 /**
  * Renders a Toolbar that is based on WordPress' own toolbar.
  */
-export function Toolbar(props: { client: React.ReactNode }) {
-  const { disableToolbar } = getConfig();
+export function Toolbar({ client, seedNode }: ToolbarProps) {
+  /**
+   * Define Toolbar Nodes that should be included by default.
+   */
+  const coreToolbarNodes = [
+    <Faust />,
+    <Edit seedNode={seedNode} />,
+    <GraphiQL />,
+  ];
 
-  if (disableToolbar) {
-    return <></>;
-  }
-
-  const { client } = props;
-
-  const defaultToolbarNodes = [<Brand />, <GraphiQL />];
-
-  const [toolbarNodes, setToolbarNodes] = useState(defaultToolbarNodes);
+  const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
   const [loading, setLoading] = useState(null);
-
-  // @TODO REMOVE
-  const data = {};
 
   /**
    * Handle Toolbar nodes.
    */
   useEffect(() => {
-    const filteredNodes = hooks.applyFilters(
-      'toolbarNodes',
-      defaultToolbarNodes,
-    ) as ToolbarNodes;
+    const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
+      seedNode,
+    }) as ToolbarNodes;
 
     setToolbarNodes(filteredNodes);
   }, []);
 
   /**
-   * Handle Toolbar nodes.
+   * Handle adding `admin-bar` body class on render.
+   *
+   * This could eventually be handled with a Faust bodyClass hook
+   * @link https://developer.wordpress.org/reference/hooks/body_class/
    */
   useEffect(() => {
-    /**
-     * Add admin-bar body class on render.
-     *
-     * This could eventually be handled with a Faust bodyClass hook
-     * @link https://developer.wordpress.org/reference/hooks/body_class/
-     */
     document?.body.classList.add('admin-bar');
+
+    // Cleanup body class when this component unmounts.
+    return () => {
+      document?.body.classList.remove('admin-bar');
+    };
   }, []);
 
   return (

@@ -33,5 +33,3 @@ export function Faust() {
     </>
   );
 }
-
-Faust.id = 'faust';
