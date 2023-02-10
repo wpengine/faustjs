@@ -8,7 +8,7 @@ export type EditProps = {
 };
 
 export function Edit({ seedNode }: EditProps) {
-  if (seedNode.isFrontPage) {
+  if (seedNode.isFrontPage || seedNode.isPostsPage) {
     return <></>;
   }
 
