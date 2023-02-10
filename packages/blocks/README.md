@@ -117,9 +117,9 @@ export default {
 
 ## Further Learning
 
-More details on the [WordPressBlocksProvider](https://faustjs.org/docs/reference/WordPressBlockProvider).
+More details on the [WordPressBlocksProvider](https://faustjs.org/docs/reference/WordPressBlocksProvider).
 
-More details on the [WordPressBlocksViewer](https://faustjs.org/docs/reference/WordPressBlockViewer).
+More details on the [WordPressBlocksViewer](https://faustjs.org/docs/reference/WordPressBlocksViewer).
 
 Continue learning about the project structure, how to change styles, layout, etc. by referencing the [Example Project Walkthrough Structure.](https://faustjs.org/docs/next/guides/project-walkthrough)
 
