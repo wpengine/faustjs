@@ -15,7 +15,12 @@ import { getWpHostname } from './lib/getWpHostname.js';
 import { getApolloClient, addApolloState } from './client.js';
 import { FaustPlugin } from './hooks/index.js';
 import { FaustHooks, FaustToolbarNodes } from './hooks/overloads.js';
-import { ToolbarItem, ToolbarLink, ToolbarSubmenu, ToolbarSubmenuWrapper } from './components/Toolbar';
+import {
+  ToolbarItem,
+  ToolbarLink,
+  ToolbarSubmenu,
+  ToolbarSubmenuWrapper,
+} from './components/Toolbar';
 import {
   getSitemapProps,
   GetSitemapPropsConfig,
@@ -43,7 +48,10 @@ export {
   FaustPlugin,
   FaustHooks,
   FaustToolbarNodes,
+  ToolbarItem,
   ToolbarLink,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
+  getSitemapProps,
+  GetSitemapPropsConfig,
 };

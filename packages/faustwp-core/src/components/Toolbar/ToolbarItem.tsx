@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export function ToolbarItem(props: {
-  id: string;
+  id?: string;
   url?: string;
   children: React.ReactNode | undefined;
 }) {
@@ -10,12 +10,14 @@ export function ToolbarItem(props: {
 
   return (
     <li
-      key={id}
       id={id}
       className={`${hover ? 'hover' : ''} menupop`}
-      onMouseEnter={() => {setHover(true)}}
-      onMouseLeave={() => {setHover(false)}}
-    >
+      onMouseEnter={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}>
       {children}
     </li>
   );

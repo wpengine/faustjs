@@ -73,7 +73,10 @@ type FaustCoreFilters = {
   addFilter(
     hookName: 'toolbarNodes',
     namespace: string,
-    callback: (toolbarNodes: ToolbarNodes, context: Record<string, never>) => string,
+    callback: (
+      toolbarNodes: ToolbarNodes,
+      context: Record<string, never>,
+    ) => string,
     priority?: number | undefined,
   ): void;
 };

@@ -5,9 +5,5 @@ export function ToolbarSubmenuWrapper(props: {
 }) {
   const { children } = props;
 
-  return (
-    <div className="ab-sub-wrapper">
-      {children}
-    </div>
-  );
+  return <div className="ab-sub-wrapper">{children}</div>;
 }

@@ -7,24 +7,28 @@ import {
   ToolbarItem,
 } from '../index.js';
 
-const defaultUrl = adminUrl('about.php');
+const url = adminUrl('about.php');
 
-export function Brand({ url = defaultUrl }) {
+export function Brand() {
   return (
     <>
-      <ToolbarLink url='https://faustjs.org'>
-        Faust.js™
-      </ToolbarLink>
+      <ToolbarLink url="https://faustjs.org">Faust.js™</ToolbarLink>
       <ToolbarSubmenuWrapper>
-        <ToolbarSubmenu id="wp-admin-bar-wp-logo-default">
-          <ToolbarItem id="wp-admin-bar-about">
-            <ToolbarLink url={url}>About Faust</ToolbarLink>
-          </ToolbarItem>
-          <ToolbarItem id="wp-admin-bar-documentation">
-            <ToolbarLink url={'https://faustjs.org/docs/getting-started'}>Documentation</ToolbarLink>
+        <ToolbarSubmenu>
+          <ToolbarItem>
+            <ToolbarLink url={'https://faustjs.org/docs/getting-started'}>
+              Documentation
+            </ToolbarLink>
           </ToolbarItem>
           <ToolbarItem id="wp-admin-bar-support-forums">
-            <ToolbarLink url={'https://github.com/wpengine/faustjs'}>GitHub</ToolbarLink>
+            <ToolbarLink url={'https://github.com/wpengine/faustjs/issues/new/choose'}>
+              Report an Issue on GitHub
+            </ToolbarLink>
+          </ToolbarItem>
+          <ToolbarItem>
+            <ToolbarLink url={'https://discord.gg/J2khkF9XYK'}>
+              Headless WordPress Discord
+            </ToolbarLink>
           </ToolbarItem>
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>

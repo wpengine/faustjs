@@ -6,9 +6,10 @@ import { ToolbarItem } from './ToolbarItem.js';
 
 export type ToolbarNodes = React.ReactElement[];
 
-export function Toolbar(props: {
-  client: React.ReactNode;
-}) {
+/**
+ * Renders a Toolbar that is based on WordPress' own toolbar.
+ */
+export function Toolbar(props: { client: React.ReactNode }) {
   const { disableToolbar } = getConfig();
 
   if (disableToolbar) {
@@ -17,37 +18,38 @@ export function Toolbar(props: {
 
   const { client } = props;
 
+  const defaultToolbarNodes = [<Brand />, <GraphiQL />];
+
+  const [toolbarNodes, setToolbarNodes] = useState(defaultToolbarNodes);
+  const [loading, setLoading] = useState(null);
+
   // @TODO REMOVE
-  const loading = false;
   const data = {};
 
-  const defaultToolbarNodes = [
-    <Brand />,
-    <GraphiQL />,
-  ];
-
-  const toolbarNodes = hooks.applyFilters('toolbarNodes', defaultToolbarNodes) as ToolbarNodes;
-
   /**
-   * Handle body class.
+   * Handle Toolbar nodes.
    */
   useEffect(() => {
-    if (data) {
-      document?.body.classList.add('admin-bar');
-    } else {
-      document?.body.classList.remove('admin-bar');
-    }
+    const filteredNodes = hooks.applyFilters(
+      'toolbarNodes',
+      defaultToolbarNodes,
+    ) as ToolbarNodes;
 
-    return () => document?.body.classList.remove('admin-bar');
-  }, [data]);
+    setToolbarNodes(filteredNodes);
+  }, []);
 
+  /**
+   * Handle Toolbar nodes.
+   */
   useEffect(() => {
-    if (!window) {
-      return;
-    }
-
-  }, [toolbarNodes])
-
+    /**
+     * Add admin-bar body class on render.
+     *
+     * This could eventually be handled with a Faust bodyClass hook
+     * @link https://developer.wordpress.org/reference/hooks/body_class/
+     */
+    document?.body.classList.add('admin-bar');
+  }, []);
 
   return (
     <div id="wpadminbar" className={`${loading ? 'loading' : ''} nojq`}>
@@ -55,19 +57,19 @@ export function Toolbar(props: {
         id="wp-toolbar"
         className="quicklinks"
         role="navigation"
-        aria-label="Toolbar"
-      >
+        aria-label="Toolbar">
         <ul id="wp-admin-bar-root-default" className="ab-top-menu">
           {toolbarNodes.map((item, i) => {
             return (
-              <ToolbarItem key={i} id={`${i}`}>{item}</ToolbarItem>
-            )
+              <ToolbarItem key={i} id={`${i}`}>
+                {item}
+              </ToolbarItem>
+            );
           })}
         </ul>
         <ul
           id="wp-admin-bar-top-secondary"
-          className="ab-top-secondary ab-top-menu">
-        </ul>
+          className="ab-top-secondary ab-top-menu"></ul>
       </div>
     </div>
   );
