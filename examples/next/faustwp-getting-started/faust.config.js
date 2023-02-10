@@ -10,4 +10,5 @@ export default setConfig({
   templates,
   experimentalPlugins: [new CustomToolbar()],
   possibleTypes,
+  // disableToolbar: true,
 });
