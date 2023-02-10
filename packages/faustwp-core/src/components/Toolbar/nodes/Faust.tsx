@@ -1,5 +1,4 @@
 import React from 'react';
-import { adminUrl } from '../../../utils/adminUrl.js';
 import {
   ToolbarLink,
   ToolbarSubmenuWrapper,
@@ -7,9 +6,7 @@ import {
   ToolbarItem,
 } from '../index.js';
 
-const url = adminUrl('about.php');
-
-export function Brand() {
+export function Faust() {
   return (
     <>
       <ToolbarLink url="https://faustjs.org">Faust.js™</ToolbarLink>
@@ -21,7 +18,8 @@ export function Brand() {
             </ToolbarLink>
           </ToolbarItem>
           <ToolbarItem id="wp-admin-bar-support-forums">
-            <ToolbarLink url={'https://github.com/wpengine/faustjs/issues/new/choose'}>
+            <ToolbarLink
+              url={'https://github.com/wpengine/faustjs/issues/new/choose'}>
               Report an Issue on GitHub
             </ToolbarLink>
           </ToolbarItem>
@@ -35,3 +33,5 @@ export function Brand() {
     </>
   );
 }
+
+Faust.id = 'faust';
