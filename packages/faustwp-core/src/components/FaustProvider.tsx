@@ -25,7 +25,7 @@ export function FaustProvider(props: {
     <ApolloProvider client={apolloClient}>
       {!disableToolbar && (
         <Toolbar
-          key={router.asPath} // Required in order to load each route's own seed node.
+          key={`faust-toolbar-${router.asPath}`} // Required in order to load each route's own seed node.
           client={apolloClient}
           seedNode={pageProps.__SEED_NODE__}
         />
