@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Faust, Edit, GraphiQL } from './nodes';
+import { Faust, Edit, GraphiQL } from './nodes/index.js';
 import { hooks } from '../../hooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
 import { SeedNode } from '../../queries/seedQuery.js';

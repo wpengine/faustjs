@@ -1,12 +1,12 @@
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';
+import { useRouter } from 'next/router';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { useApollo } from '../client.js';
-import { Toolbar } from './Toolbar';
+import { Toolbar } from './Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
-import { useRouter } from 'next/router';
 
 export type FaustPageProps = AppProps['pageProps'] & {
   __SEED_NODE__: SeedNode;

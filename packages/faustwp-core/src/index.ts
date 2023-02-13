@@ -24,7 +24,7 @@ import {
   ToolbarLink,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
-} from './components/Toolbar';
+} from './components/Toolbar/index.js';
 import {
   getSitemapProps,
   GetSitemapPropsConfig,
