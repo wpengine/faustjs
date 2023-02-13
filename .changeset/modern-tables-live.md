@@ -2,4 +2,4 @@
 '@faustwp/core': patch
 ---
 
-Bug fix: Fixes HMR issue with wp-templates
+Bug fix: Fixes Hot Module Reload (HMR) issue within wp-templates
