@@ -8,12 +8,16 @@ export type EditProps = {
 };
 
 export function Edit({ seedNode }: EditProps) {
-  if (seedNode.isFrontPage || seedNode.isPostsPage) {
+  if (
+    seedNode === undefined ||
+    seedNode?.isFrontPage ||
+    seedNode?.isPostsPage
+  ) {
     return <></>;
   }
 
-  const postType = seedNode.__typename || '';
-  const postId = seedNode.databaseId || '';
+  const postType = seedNode?.__typename || '';
+  const postId = seedNode?.databaseId || '';
 
   const editPostUrl = adminUrl(`post.php?post=${postId}&action=edit`);
 

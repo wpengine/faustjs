@@ -20,24 +20,27 @@ export class CustomToolbar implements FaustPlugin {
      * in order to add your own custom nodes!
      */
     hooks.addFilter('toolbarNodes', 'faust', (toolbarNodes: FaustToolbarNodes, context: FaustToolbarContext) => {
-      const customToolbarNodes = [
-        /**
-         * A simple link.
-         */
-        <CustomNode />,
-        /**
-         * A simple link with a submenu that displays on hover.
-         */
-        <CustomNodeWithSubmenu />,
+      const customToolbarNodes: FaustToolbarNodes = [
+        {
+          key: 'custom-node',
+          location: 'primary',
+          component: <CustomNode />,
+        },
+        {
+          key: 'custom-node-with-submenu',
+          location: 'primary',
+          component: <CustomNodeWithSubmenu />
+        },
       ];
-
-      console.log({ toolbarNodes, context });
 
       return [...toolbarNodes, ...customToolbarNodes];
     });
   }
 }
 
+/**
+ * A simple link.
+ */
 export function CustomNode() {
   return (
     <ToolbarLink url='https://wpengine.com' rel='nofollow'>
@@ -46,7 +49,9 @@ export function CustomNode() {
   );
 }
 
-
+/**
+ * A simple link with a submenu that displays on hover.
+ */
 export function CustomNodeWithSubmenu() {
   return (
     <>
