@@ -1,6 +1,6 @@
 import { WordPressTemplate } from './getWordPressProps.js';
 import { SeedNode } from './queries/seedQuery.js';
-import { hooks } from './hooks/index.js';
+import { hooks } from './wpHooks/index.js';
 
 export function getPossibleTemplates(node: SeedNode) {
   let possibleTemplates: string[] = [];

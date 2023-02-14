@@ -13,8 +13,8 @@ import { getWpUrl } from './lib/getWpUrl.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getWpHostname } from './lib/getWpHostname.js';
 import { getApolloClient, addApolloState } from './client.js';
-import { FaustPlugin } from './hooks/index.js';
-import { FaustHooks } from './hooks/overloads.js';
+import { FaustPlugin } from './wpHooks/index.js';
+import { FaustHooks } from './wpHooks/overloads.js';
 import {
   getSitemapProps,
   GetSitemapPropsConfig,

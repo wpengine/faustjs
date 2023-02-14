@@ -11,7 +11,7 @@ import {
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { getConfig } from './config/index.js';
-import { hooks } from './hooks/index.js';
+import { hooks } from './wpHooks/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
