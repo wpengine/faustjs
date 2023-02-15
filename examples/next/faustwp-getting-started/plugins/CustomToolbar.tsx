@@ -2,13 +2,15 @@ import React from 'react';
 import {
   FaustHooks,
   FaustPlugin,
+} from '@faustwp/core';
+import {
   FaustToolbarNodes,
   FaustToolbarContext,
   ToolbarItem,
   ToolbarLink,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
-} from '@faustwp/core';
+} from '@faustwp/core/toolbar';
 
 /**
  * Example Custom Toolbar Plugin.

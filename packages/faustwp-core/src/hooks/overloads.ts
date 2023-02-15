@@ -5,7 +5,7 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client';
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
-import { ToolbarNodes, ToolbarContext } from '../components/Toolbar/index.js';
+import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
 
 type FaustCoreFilters = {
@@ -74,7 +74,7 @@ type FaustCoreFilters = {
     hookName: 'toolbarNodes',
     namespace: string,
     callback: (
-      toolbarNodes: ToolbarNodes,
+      toolbarNodes: FaustToolbarNodes,
       context: Record<string, never>,
     ) => string,
     priority?: number | undefined,
@@ -82,5 +82,3 @@ type FaustCoreFilters = {
 };
 
 export type FaustHooks = _Hooks & FaustCoreFilters;
-export type FaustToolbarNodes = ToolbarNodes;
-export type FaustToolbarContext = ToolbarContext;

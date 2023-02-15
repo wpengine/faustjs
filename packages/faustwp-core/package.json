@@ -2,11 +2,22 @@
   "name": "@faustwp/core",
   "version": "0.2.4",
   "description": "Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers",
-  "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
-  "types": "dist/cjs/index.d.ts",
-  "sass": "src/styles/admin-bar.scss",
-  "style": "dist/css/admin-bar.css",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/mjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "sass": "./src/styles/admin-bar.scss",
+  "style": "./dist/css/admin-bar.css",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/index.js"
+    },
+    "./toolbar": {
+      "require": "./dist/cjs/components/Toolbar/index.js",
+      "import": "./dist/mjs/components/Toolbar/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "peerDependencies": {
     "@apollo/client": ">=3.6.6",
     "next": ">=12.1.6",
