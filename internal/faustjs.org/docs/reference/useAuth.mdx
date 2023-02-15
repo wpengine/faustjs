@@ -1,0 +1,72 @@
+---
+slug: /reference/useAuth
+title: useAuth Reference
+description: Reference docs for the useAuth hook in Faust
+---
+
+`useAuth` is a React hook that facilitates authentication from your WordPress site.
+
+## Usage
+
+Below is the config object for `useAuth` defined as a TypeScript type:
+
+```ts
+type UseAuthOptions = {
+  /**
+   * Default is "redirect". Learn more about these two strategies
+   * @link https://faustjs.org/docs/auth#strategies
+   */
+  strategy?: 'redirect' | 'local';
+
+  /**
+   * The login page Uri. Only applicable/required when strategy is "local".
+   */
+  loginPageUri?: string;
+
+  /**
+   * If useAuth should automatically redirect to the login page
+   * if there is no authenticated user.
+   */
+  shouldRedirect: boolean;
+};
+```
+
+```jsx
+const { isAuthenticated, redirectUri, user, login, logout } = useAuth(useAuthOptions?);
+```
+
+Below is the `useAuth` exports defined as a TypeScript type:
+
+```ts
+type UseAuth = {
+  /**
+   * A way to determine if a user is authenticated or not. The value is `null` by default, and then changes to a boolean once the state is determined.
+   */
+  isAuthenticated: boolean | null;
+
+  /**
+   * a boolean to determine the loading state of the user's authentication state.
+   */
+  loading: boolean;
+
+  /**
+   * The uri of the login page. This may either be a Next.js file based page or a login page on the WordPress backend based on your strategy.
+   */
+  loginUri: string | null;
+
+  /**
+   * The user object. Null if useAuth is still loading or there is not an authenticated user.
+   */
+  user: User | null;
+
+  /**
+   * A callable function to login a user from your Faust app. Accepts a parameter of either username/email, and password.
+   */
+  login: (usernameEmail: string, password: string) => void;
+
+  /**
+   * A callable function to logout a user from your Faust app. Accepts an optional uri parameter to redirect after logout.
+   */
+  logout: (redirectUri?: string) => void;
+};
+```
