@@ -6,7 +6,7 @@ description: Reference docs for the useAuth hook in Faust
 
 `useAuth` is a React hook that facilitates authentication from your WordPress site.
 
-## Usage
+## API
 
 Below is the config object for `useAuth` defined as a TypeScript type:
 
@@ -31,11 +31,7 @@ type UseAuthOptions = {
 };
 ```
 
-```jsx
-const { isAuthenticated, redirectUri, user, login, logout } = useAuth(useAuthOptions?);
-```
-
-Below is the `useAuth` exports defined as a TypeScript type:
+Additionally, the `useAuth` exports defined as a TypeScript type:
 
 ```ts
 type UseAuth = {
@@ -69,4 +65,75 @@ type UseAuth = {
    */
   logout: (redirectUri?: string) => void;
 };
+```
+
+## Usage
+
+Below is a full example of login/logout and showing/hiding authenticated content. This below example uses the "redirect" strategy:
+
+```jsx
+import { gql, useQuery } from '@apollo/client';
+import { getApolloAuthClient, useAuth } from '@faustwp/core';
+
+function AuthenticatedView() {
+  const client = getApolloAuthClient();
+  const { user, logout } = useAuth();
+
+  const { data } = useQuery(
+    gql`
+      {
+        viewer {
+          posts {
+            nodes {
+              id
+              title
+            }
+          }
+        }
+      }
+    `,
+    { client },
+  );
+
+  console.log(data);
+
+  return (
+    <>
+      <p>Welcome {user?.name}!</p>
+
+      <p>My posts</p>
+
+      <ul>
+        {data?.viewer?.posts?.nodes.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+
+      <button onClick={logout}>Logout</button>
+    </>
+  );
+}
+
+export default function Page(props) {
+  const useAuthConfig = {
+    strategy: 'redirect',
+  };
+
+  const { isAuthenticated, isReady, redirectUrl } = useAuth(useAuthConfig);
+
+  if (!loading) {
+    return <>Loading...</>;
+  }
+
+  if (isAuthenticated === true) {
+    return <AuthenticatedView />;
+  }
+
+  return (
+    <>
+      <p>Welcome anonymous!</p>
+      <a href={loginUri}>Login</a>
+    </>
+  );
+}
 ```
