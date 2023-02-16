@@ -4,7 +4,6 @@ import { ensureAuthorization, getAccessToken } from '../auth/index.js';
 import { getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
-import { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
 import { getQueryParam } from '../utils/convert.js';
 
@@ -20,13 +19,6 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
   __TEMPLATE_QUERY_DATA__?: any | null;
   __TEMPLATE_VARIABLES__?: { [key: string]: any };
 };
-
-function cleanTemplate(
-  template: WordPressTemplateType,
-): React.FC<{ [key: string]: any }> {
-  const copy = (template as React.FC<{ [key: string]: any }>).bind({});
-  return copy;
-}
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
   const { templates } = getConfig();
@@ -212,8 +204,6 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     return null;
   }
 
-  // Remove unnecessary properties from component before rendering
-  const Component = cleanTemplate(template);
-
+  const Component = template as React.FC<{ [key: string]: any }>;
   return React.createElement(Component, { ...props, data, loading }, null);
 }

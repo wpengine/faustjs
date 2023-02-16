@@ -9,7 +9,7 @@ import { hooks, FaustPlugin } from '../hooks/index.js';
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
   disableLogging: boolean;
-  disableToolbar: boolean;
+  experimentalToolbar: boolean;
   loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
@@ -33,7 +33,7 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
     loginPagePath: '/login',
     disableLogging: false,
-    disableToolbar: false,
+    experimentalToolbar: false,
   });
 
   Object.keys(cfg).forEach((key) => {

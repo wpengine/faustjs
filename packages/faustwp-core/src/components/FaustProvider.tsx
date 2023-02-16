@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';
+// eslint-disable-next-line import/extensions
 import { useRouter } from 'next/router';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
@@ -17,16 +18,17 @@ export function FaustProvider(props: {
   pageProps: FaustPageProps;
 }) {
   const { pageProps, children } = props;
-  const { disableToolbar } = getConfig();
+  const { experimentalToolbar } = getConfig();
   const router = useRouter();
   const apolloClient = useApollo(pageProps);
 
   return (
     <ApolloProvider client={apolloClient}>
-      {!disableToolbar && (
+      {experimentalToolbar && (
         <Toolbar
           key={`faust-toolbar-${router.asPath}`} // Required in order to load each route's own seed node.
           client={apolloClient}
+          // eslint-disable-next-line no-underscore-dangle
           seedNode={pageProps.__SEED_NODE__}
         />
       )}
