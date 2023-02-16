@@ -23,17 +23,6 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Gutenberg Support',
-      items: [
-        {
-          type: 'doc',
-          label: 'Getting Started',
-          id: 'gutenberg/getting-started',
-        },
-      ],
-    },
-    {
-      type: 'category',
       label: 'Guides',
       items: [
         {
@@ -147,8 +136,18 @@ module.exports = {
       items: [
         {
           type: 'doc',
+          label: 'Getting Started',
+          id: 'gutenberg/getting-started',
+        },
+        {
+          type: 'doc',
           label: 'Using wp-graphql-content-blocks plugin',
           id: 'gutenberg/wp-graphql-content-blocks',
+        },
+        {
+          type: 'doc',
+          label: 'Plugin filters',
+          id: 'gutenberg/filters',
         },
       ],
     },

@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Faust, Edit, GraphiQL } from './nodes/index.js';
 import { hooks } from '../../hooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
 import { SeedNode } from '../../queries/seedQuery.js';
-
-export type ToolbarProps = {
-  client: React.ReactNode;
-  seedNode: SeedNode;
-};
 
 /**
  * The available menu locations that nodes can be added to.
@@ -47,38 +42,48 @@ export type ToolbarContext = {
 };
 
 /**
+ * Toolbar props.
+ */
+export type ToolbarProps = {
+  client: React.ReactNode;
+  seedNode: SeedNode;
+};
+
+/**
  * Renders a Toolbar that is based on WordPress' own toolbar.
  */
 export function Toolbar({ client, seedNode }: ToolbarProps) {
   /**
    * Define Toolbar Nodes that should be included by default.
    */
-  const coreToolbarNodes: ToolbarNodes = [
-    {
-      key: 'faust',
-      location: 'primary',
-      component: <Faust />,
-    },
-    {
-      key: 'edit',
-      location: 'primary',
-      component: <Edit seedNode={seedNode} />,
-    },
-    {
-      key: 'graphiql',
-      location: 'primary',
-      component: <GraphiQL />,
-    },
-  ];
+  const coreToolbarNodes: ToolbarNodes = useMemo(() => {
+    return [
+      {
+        key: 'faust',
+        location: 'primary',
+        component: <Faust />,
+      },
+      {
+        key: 'edit',
+        location: 'primary',
+        component: <Edit seedNode={seedNode} />,
+      },
+      {
+        key: 'graphiql',
+        location: 'primary',
+        component: <GraphiQL />,
+      },
+    ];
+  }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
-  const [loading, setLoading] = useState(null);
 
   /**
    * Handle Toolbar nodes.
    */
   useEffect(() => {
     const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
+      client,
       seedNode,
     }) as ToolbarNodes;
 
@@ -89,7 +94,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
     }
 
     setToolbarNodes(filteredNodes);
-  }, []);
+  }, [coreToolbarNodes, client, seedNode]);
 
   /**
    * Handle adding `admin-bar` body class on render.
@@ -114,7 +119,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   );
 
   return (
-    <div id="wpadminbar" className={`${loading ? 'loading' : ''} nojq`}>
+    <div id="wpadminbar" className="nojq">
       <div
         id="wp-toolbar"
         className="quicklinks"
