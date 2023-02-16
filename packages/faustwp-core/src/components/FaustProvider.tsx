@@ -18,7 +18,7 @@ export function FaustProvider(props: {
   pageProps: FaustPageProps;
 }) {
   const { pageProps, children } = props;
-  const { enableExperimentalToolbar } = getConfig();
+  const { experimentalToolbar } = getConfig();
   const router = useRouter();
   const apolloClient = useApollo(pageProps);
 
