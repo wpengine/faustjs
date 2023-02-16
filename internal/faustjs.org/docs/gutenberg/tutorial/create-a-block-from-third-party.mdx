@@ -410,7 +410,7 @@ class UbCallToActionBlock extends WPGraphQL\ContentBlocks\Blocks\Block
 :::note
 
 If you include those extensions in a custom plugin, it means also that your Decoupled application
-is dependent on the inclusion of this plugin. You need to make sure you bundle them together otherwise the queries you do in the Decoupled Application will fail.
+is dependent on the inclusion of this plugin. You need to make sure you bundle them together otherwise the queries you do in the application will fail.
 :::
 
 ### Can I style the block differently?
@@ -426,10 +426,10 @@ Since React is not normally bundled as a dependency in the browser, the JavaScri
 
 In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
 
-* **Just include them in your code:** This is not recommended as React does not play well with plain JavaScript and jQuery so you can expect lots of problems.
+* **Include them in your code:** This is not recommended as React does not play well with plain JavaScript and jQuery so you can expect lots of problems.
 
 * **Rewrite them as React components:** You can attempt to rewrite the code into React. If the bundled code can be understood and rewritten with low effort then you can make that commitment.
 
-* **Just use a third party equivalent React Component:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
+* **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
 
 Innevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
