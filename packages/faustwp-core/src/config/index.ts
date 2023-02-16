@@ -9,7 +9,7 @@ import { hooks, FaustPlugin } from '../hooks/index.js';
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
   disableLogging: boolean;
-  enableExperimentalToolbar: boolean;
+  experimentalToolbar: boolean;
   loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
