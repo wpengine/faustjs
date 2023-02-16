@@ -4,11 +4,6 @@ import { hooks } from '../../hooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
 import { SeedNode } from '../../queries/seedQuery.js';
 
-export type ToolbarProps = {
-  client: React.ReactNode;
-  seedNode: SeedNode;
-};
-
 /**
  * The available menu locations that nodes can be added to.
  */
@@ -47,6 +42,14 @@ export type ToolbarContext = {
 };
 
 /**
+ * Toolbar props.
+ */
+export type ToolbarProps = {
+  client: React.ReactNode;
+  seedNode: SeedNode;
+};
+
+/**
  * Renders a Toolbar that is based on WordPress' own toolbar.
  */
 export function Toolbar({ client, seedNode }: ToolbarProps) {
@@ -72,13 +75,13 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   ];
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
-  const [loading, setLoading] = useState(null);
 
   /**
    * Handle Toolbar nodes.
    */
   useEffect(() => {
     const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
+      client,
       seedNode,
     }) as ToolbarNodes;
 
@@ -114,7 +117,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   );
 
   return (
-    <div id="wpadminbar" className={`${loading ? 'loading' : ''} nojq`}>
+    <div id="wpadminbar" className="nojq">
       <div
         id="wp-toolbar"
         className="quicklinks"
