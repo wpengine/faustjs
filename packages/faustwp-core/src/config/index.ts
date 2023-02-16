@@ -33,7 +33,7 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
     loginPagePath: '/login',
     disableLogging: false,
-    enableExperimentalToolbar: false,
+    experimentalToolbar: false,
   });
 
   Object.keys(cfg).forEach((key) => {
