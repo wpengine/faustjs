@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Faust, Edit, GraphiQL } from './nodes/index.js';
 import { hooks } from '../../hooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
@@ -56,23 +56,25 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   /**
    * Define Toolbar Nodes that should be included by default.
    */
-  const coreToolbarNodes: ToolbarNodes = [
-    {
-      key: 'faust',
-      location: 'primary',
-      component: <Faust />,
-    },
-    {
-      key: 'edit',
-      location: 'primary',
-      component: <Edit seedNode={seedNode} />,
-    },
-    {
-      key: 'graphiql',
-      location: 'primary',
-      component: <GraphiQL />,
-    },
-  ];
+  const coreToolbarNodes: ToolbarNodes = useMemo(() => {
+    return [
+      {
+        key: 'faust',
+        location: 'primary',
+        component: <Faust />,
+      },
+      {
+        key: 'edit',
+        location: 'primary',
+        component: <Edit seedNode={seedNode} />,
+      },
+      {
+        key: 'graphiql',
+        location: 'primary',
+        component: <GraphiQL />,
+      },
+    ];
+  }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
 
@@ -92,7 +94,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
     }
 
     setToolbarNodes(filteredNodes);
-  }, []);
+  }, [coreToolbarNodes, client, seedNode]);
 
   /**
    * Handle adding `admin-bar` body class on render.
