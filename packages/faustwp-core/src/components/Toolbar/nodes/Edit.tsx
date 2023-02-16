@@ -13,9 +13,11 @@ export function Edit({ seedNode }: EditProps) {
     seedNode?.isFrontPage ||
     seedNode?.isPostsPage
   ) {
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <></>;
   }
 
+  // eslint-disable-next-line no-underscore-dangle
   const postType = seedNode?.__typename || '';
   const postId = seedNode?.databaseId || '';
 
