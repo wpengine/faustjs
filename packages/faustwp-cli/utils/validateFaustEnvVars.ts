@@ -15,4 +15,13 @@ export const validateFaustEnvVars = () => {
     warnLog('Could not find FAUST_SECRET_KEY environment variable.');
     warnLog('Some functionality may be limited.');
   }
+
+  if (
+    process.env.NEXT_PUBLIC_WORDPRESS_URL.startsWith('http://') &&
+    getWpSecret()
+  ) {
+    warnLog(
+      'Your WordPress site is not running on https! This is a security concern as all traffic with your secret key is in plain text. Please make sure your production Faust app runs with a WordPress instance on https!',
+    );
+  }
 };
