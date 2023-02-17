@@ -2,11 +2,9 @@
   "name": "@faustwp/core",
   "version": "0.2.4",
   "description": "Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/mjs/index.js",
-  "types": "./dist/cjs/index.d.ts",
-  "sass": "./src/styles/admin-bar.scss",
-  "style": "./dist/css/admin-bar.css",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/cjs/index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/cjs/index.js",
@@ -16,6 +14,7 @@
       "require": "./dist/cjs/components/Toolbar/index.js",
       "import": "./dist/mjs/components/Toolbar/index.js"
     },
+    "./dist/css/toolbar.css": "./dist/css/toolbar.css",
     "./package.json": "./package.json"
   },
   "peerDependencies": {
@@ -37,6 +36,7 @@
     "fetch-mock": "9.11.0",
     "jest": "^27.3.1",
     "rimraf": "^3.0.2",
+    "shx": "^0.3.4",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4"
@@ -65,8 +65,9 @@
     "test": "jest",
     "build-cjs": "tsc -p tsconfig-cjs.json",
     "build-js": "tsc -p .",
-    "build-styles": "sass src/styles/admin-bar.scss dist/css/admin-bar.css --embed-sources",
-    "watch-styles": "sass src/styles/admin-bar.scss dist/css/admin-bar.css --embed-sources --watch",
+    "build-fonts": "mkdir -p dist/fonts && shx cp src/fonts/* dist/fonts",
+    "build-styles": "sass src/styles/toolbar.scss dist/css/toolbar.css --embed-sources",
+    "watch-styles": "sass src/styles/toolbar.scss dist/css/toolbar.css --embed-sources --watch",
     "watch-js": "tsc -p . --watch"
   },
   "repository": {
