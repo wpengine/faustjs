@@ -1,64 +1,79 @@
 import { gql, useQuery } from '@apollo/client';
-import { useLogin } from '@faustwp/core';
-import { getApolloAuthClient, useAuth } from '@faustwp/core';
-import { useLogout } from '@faustwp/core/dist/mjs';
+import * as MENUS from '../constants/menus';
+import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import {
+  Header,
+  Hero,
+  Footer,
+  Main,
+  Container,
+  NavigationMenu,
+  SEO,
+} from '../components';
+import { getNextStaticProps } from '@faustwp/core';
 
-function AuthenticatedView() {
-  const client = getApolloAuthClient();
-  const { logout } = useLogout();
+export default function Page(props) {
+  const { data } = useQuery(Page.query, {
+    variables: Page.variables(),
+  });
+  const title = props.title;
 
-  const { data } = useQuery(
-    gql`
-      {
-        viewer {
-          posts {
-            nodes {
-              id
-              title
-            }
-          }
-          name
-        }
-      }
-    `,
-    { client },
-  );
+  const { title: siteTitle, description: siteDescription } = data?.generalSettings;
+  const primaryMenu = data?.headerMenuItems?.nodes ?? [];
+  const footerMenu = data?.footerMenuItems?.nodes ?? [];
 
   return (
     <>
-      <p>Welcome {data?.viewer?.name}!</p>
-
-      <p>My posts</p>
-
-      <ul>
-        {data?.viewer?.posts?.nodes.map((post) => (
-          <li key={post.id}>{post.title}</li>
-        ))}
-      </ul>
-
-      <button onClick={() => logout()}>Logout</button>
+      <SEO title={siteTitle} description={siteDescription} />
+      <Header
+        title={siteTitle}
+        description={siteDescription}
+        menuItems={primaryMenu}
+      />
+      <Main>
+        <Container>
+          <Hero title={title} />
+          <div className="text-center">
+            <p>This page is utilizing the Next.js File based routes.</p>
+            <code>pages/example.js</code>
+          </div>
+        </Container>
+      </Main>
+      <Footer title={siteTitle} menuItems={footerMenu} />
     </>
   );
 }
 
-export default function Page(props) {
-  const { isAuthenticated, isReady, loginUrl } = useAuth({
-    shouldRedirect: false,
-  });
-  const { login } = useLogin();
-
-  if (!isReady) {
-    return <>Loading...</>;
+Page.query = gql`
+  ${BlogInfoFragment}
+  ${NavigationMenu.fragments.entry}
+  query GetPageData(
+    $headerLocation: MenuLocationEnum
+    $footerLocation: MenuLocationEnum
+  ) {
+    generalSettings {
+      ...BlogInfoFragment
+    }
+    headerMenuItems: menuItems(where: { location: $headerLocation }) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
+    footerMenuItems: menuItems(where: { location: $footerLocation }) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
   }
+`;
 
-  if (isAuthenticated === true) {
-    return <AuthenticatedView />;
-  }
+Page.variables = () => {
+  return {
+    headerLocation: MENUS.PRIMARY_LOCATION,
+    footerLocation: MENUS.FOOTER_LOCATION
+  };
+};
 
-  return (
-    <>
-      <p>Welcome anonymous!</p>
-      <a href={loginUrl}>Login</a>
-    </>
-  );
+export function getStaticProps(ctx) {
+  return getNextStaticProps(ctx, {Page, props: {title: 'File Page Example'}});
 }
