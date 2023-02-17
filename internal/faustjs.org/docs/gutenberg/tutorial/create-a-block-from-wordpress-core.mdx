@@ -1,6 +1,6 @@
 ---
 slug: /gutenberg/tutorial/create-a-block-from-wordpress-core
-title: Creating a Block from WordPress Blocks list
+title: Creating a Block from the WordPress Blocks list
 description: This tutorial will give you some simple steps to follow to create a Block from the official WordPress Blocks list
 ---
 
@@ -16,7 +16,7 @@ All of the official blocks include a `block.json` with defined attributes, so th
 
 For this tutorial, we are going to implement the [Code Block](https://wordpress.com/support/wordpress-editor/blocks/code-block/) that renders a formated block of code:
 
-## 4. Review the Block design in the Editor
+## 3. Review the Block design in the Editor
 
 Before you try to implement the block, it's usefull to get an ideal of how the block is configured within the editor.
 You want to create a few sample blocks and test their options.
@@ -34,7 +34,7 @@ You can expand the block sidebar options to change some of its styling.
 For example you can configure the Color, Dimentions, Border and Size settings for that block.
 Once you get familiar with the block look and feel, let's explore its attributes from the GraphQL IDE.
 
-## 5. Review the Block data and attributes in the GraphQL IDE
+## 4. Review the Block data and attributes in the GraphQL IDE
 
 Within the GraphQL IDE, use the Docs to find the type of the block to display its type and properties.
 There should be a `CoreCode` that contains all the important fields we can query.
@@ -97,12 +97,12 @@ Notice that with some of the attributes like backgroundColor, the editor used th
 It also stored the custom hardcoded styles in the `style` fields as a JSON string. We will have to handle them appropriately when developing the associated block.
 Once you get familiar with how to query the necessary data from that block, let's see now how to implement the block in the Decoupled site.
 
-## 6. Create the initial block
+## 5. Create the initial block
 
 Inside the codebase of your application, create the basic block structure that simply prints the blocks attributes.
 The steps required to achive that are the following:
 
-### 6.1 Create the block and save it inside the `wp-blocks` folder
+### 5.1 Create the block and save it inside the `wp-blocks` folder
 
 ```jsx title="wp-blocks/CoreCode.js"
 export default function CoreCode(props) {
@@ -113,7 +113,7 @@ export default function CoreCode(props) {
 
 This component prints the block attributes via the props passed as a parameter.
 
-### 6.2 Export the block in the `index.js`
+### 5.2 Export the block in the `index.js`
 
 ```jsx title="wp-blocks/index.js"
 import CoreCode from './CoreCode';
@@ -134,7 +134,7 @@ export default {
 }
 ```
 
-### 6.3 Create the block fragment
+### 5.3 Create the block fragment
 
 You want to create a fragment that describes the request block fields and attributes. Ideally you want to include all the relevant fields for the implementation part:
 
@@ -160,7 +160,7 @@ CoreCode.fragments = {
 ```
 We chose to attach the fragment as a property of the function component itself. This follows a good practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
 
-### 6.4 Include the block fragment into the page query string
+### 5.4 Include the block fragment into the page query string
 
 You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload would include the data from that block.
 
@@ -200,7 +200,7 @@ If you navigate to the page that contains this block, you should be able to insp
 
 Now you are ready to design the block based on the original block's look and feel.
 
-## 7. Implement the Block using the provided block attributes and the Editor view
+## 6. Implement the Block using the provided block attributes and the Editor view
 
 The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
 
