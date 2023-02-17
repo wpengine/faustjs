@@ -27,7 +27,7 @@ type UseAuthOptions = {
    * If useAuth should automatically redirect to the login page
    * if there is no authenticated user.
    */
-  shouldRedirect: boolean;
+  shouldRedirect?: boolean;
 };
 ```
 
@@ -41,29 +41,29 @@ type UseAuth = {
   isAuthenticated: boolean | null;
 
   /**
-   * a boolean to determine the loading state of the user's authentication state.
+   * A boolean to determine if the useAuth exports are ready to be used.
    */
-  loading: boolean;
+  isReady: boolean;
 
   /**
-   * The uri of the login page. This may either be a Next.js file based page or a login page on the WordPress backend based on your strategy.
+   * The url of the login page. This may either be a Next.js file based page or
+   * the login page on the WordPress backend based on your strategy.
    */
-  loginUri: string | null;
+  loginUrl: string | null;
 
   /**
-   * The user object. Null if useAuth is still loading or there is not an authenticated user.
+   * A callable function to login a user from your Faust app. Accepts a parameter of either username/email, password, and an optional url to redirect the user to after a successful login.
    */
-  user: User | null;
-
-  /**
-   * A callable function to login a user from your Faust app. Accepts a parameter of either username/email, and password.
-   */
-  login: (usernameEmail: string, password: string) => void;
+  login: (
+    usernameEmail: string,
+    password: string,
+    redirectUrl?: string,
+  ) => void;
 
   /**
    * A callable function to logout a user from your Faust app. Accepts an optional uri parameter to redirect after logout.
    */
-  logout: (redirectUri?: string) => void;
+  logout: (redirectUrl?: string) => void;
 };
 ```
 
@@ -74,12 +74,13 @@ Below is a full example of login/logout and showing/hiding authenticated content
 ```jsx
 import { gql, useQuery } from '@apollo/client';
 import { getApolloAuthClient, useAuth } from '@faustwp/core';
+import { useLogout } from '@faustwp/core/dist/mjs';
 
 function AuthenticatedView() {
   const client = getApolloAuthClient();
-  const { user, logout } = useAuth();
+  const { logout } = useLogout();
 
-  const { data } = useQuery(
+  const { data, loading } = useQuery(
     gql`
       {
         viewer {
@@ -89,17 +90,20 @@ function AuthenticatedView() {
               title
             }
           }
+          name
         }
       }
     `,
     { client },
   );
 
-  console.log(data);
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>
-      <p>Welcome {user?.name}!</p>
+      <p>Welcome {data?.viewer?.name}!</p>
 
       <p>My posts</p>
 
@@ -109,19 +113,18 @@ function AuthenticatedView() {
         ))}
       </ul>
 
-      <button onClick={logout}>Logout</button>
+      <button onClick={() => logout()}>Logout</button>
     </>
   );
 }
 
 export default function Page(props) {
-  const useAuthConfig = {
+  const { isAuthenticated, isReady, loginUrl } = useAuth({
     strategy: 'redirect',
-  };
+    shouldRedirect: false,
+  });
 
-  const { isAuthenticated, isReady, redirectUrl } = useAuth(useAuthConfig);
-
-  if (!loading) {
+  if (!isReady) {
     return <>Loading...</>;
   }
 
@@ -131,8 +134,8 @@ export default function Page(props) {
 
   return (
     <>
-      <p>Welcome anonymous!</p>
-      <a href={loginUri}>Login</a>
+      <p>Welcome!</p>
+      <a href={loginUrl}>Login</a>
     </>
   );
 }
