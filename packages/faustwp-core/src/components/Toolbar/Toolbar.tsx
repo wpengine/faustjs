@@ -56,7 +56,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   /**
    * Define Toolbar Nodes that should be included by default.
    */
-  const coreToolbarNodes: ToolbarNodes = useMemo(() => {
+  const coreToolbarNodes: FaustToolbarNodes = useMemo(() => {
     return [
       {
         key: 'faust',
