@@ -91,7 +91,7 @@ They are highly re-usable and for purely presentational purposes.
 
 `wp-templates`: This folder contains a list of WordPress templates that are used to render the site pages based on a system that mimics the [WordPress template hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/).
 
-Now that you have an good picture of the folder structure, let's take a look at which files you should be changing if you wish to customize this theme.
+Now that you have a good picture of the folder structure, let's take a look at which files you should be changing if you wish to customize this theme.
 
 ## Changing Example Files
 
@@ -99,20 +99,20 @@ Instead of telling you what you should change, you can follow the below how-to s
 
 ### How do I change the styling of the site?
 
-To change the styling of each `component` you can navigate to the `components` folder and change the CSS styles in the `.module.scss` file. As
+To change the styling of each `component` you can navigate to the `components` folder and change the CSS styles in the `.module.scss` file.
 If you want to change the global styling of the site or the style of the pages, you can navigate to the `styles` folder and make your changes there.
 Each `scss` module contains documentation strings for your convenience.
 
 ### How do I change the pages layout?
 
-To change each pages layout, you will need to review the `wp-templates` folder and make your changes there.
-For each type of page that correspond to the WordPress template hierarchy, there are different layouts and queries.
-For example the `page.js` represents the ["page type"](https://developer.wordpress.org/themes/basics/template-hierarchy/#single-page) and the `single.js` represents the ["single post type"](https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post).
+To change each page's layout, you will need to review the `wp-templates` folder and make your changes there.
+For each type of page that corresponds to the WordPress template hierarchy, there are different layouts and queries.
+For example, the `page.js` represents the ["page type"](https://developer.wordpress.org/themes/basics/template-hierarchy/#single-page) and the `single.js` represents the ["single post type"](https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post).
 You can reuse the existing components or create new ones that fit your requirements.
 
 ### How do I change the GraphQL queries?
 
-Most of the queries are located within each `wp-templates` component. If you look after the definitions of each component there is a `query` and `variables` properties:
+Most of the queries are located within each `wp-templates` component. If you look at the definitions of each component, there are `query` and `variables` properties:
 
 ```js title="wp-templates/front-page.js"
 ...
@@ -147,7 +147,7 @@ Component.variables = () => {
 };
 ```
 
-It reuses fragments from each imported Components by using the [Colocating Fragments pattern](https://www.apollographql.com/docs/react/data/fragments/#colocating-fragments).
+It reuses fragments from each imported Component by using the [Colocating Fragments pattern](https://www.apollographql.com/docs/react/data/fragments/#colocating-fragments).
 In that case we have fragments from the `BlogInfo` and `NavigationMenu` because the component queries data for the general settings and each of the two navigation menu sections in the page.js.
 Currently the site uses two navigation menus which have to match the `Header` and `Footer` locations as denoted from the `MENUS.PRIMARY_LOCATION` and `MENUS.FOOTER_LOCATION` constants.
 You can do that via the WordPress admin page:
