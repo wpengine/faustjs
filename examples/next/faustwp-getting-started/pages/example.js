@@ -1,9 +1,11 @@
 import { gql, useQuery } from '@apollo/client';
+import { useLogin } from '@faustwp/core';
 import { getApolloAuthClient, useAuth } from '@faustwp/core';
+import { useLogout } from '@faustwp/core/dist/mjs';
 
 function AuthenticatedView() {
   const client = getApolloAuthClient();
-  const { user, logout } = useAuth();
+  const { logout } = useLogout();
 
   const { data } = useQuery(
     gql`
@@ -15,17 +17,16 @@ function AuthenticatedView() {
               title
             }
           }
+          name
         }
       }
     `,
     { client },
   );
 
-  console.log(data);
-
   return (
     <>
-      <p>Welcome {user?.name}!</p>
+      <p>Welcome {data?.viewer?.name}!</p>
 
       <p>My posts</p>
 
@@ -35,23 +36,18 @@ function AuthenticatedView() {
         ))}
       </ul>
 
-      <button onClick={logout}>Logout</button>
+      <button onClick={() => logout()}>Logout</button>
     </>
   );
 }
 
 export default function Page(props) {
-  const useAuthConfig = {
-    strategy: 'redirect',
-  };
+  const { isAuthenticated, isReady, loginUrl } = useAuth({
+    shouldRedirect: false,
+  });
+  const { login } = useLogin();
 
-  const {
-    isAuthenticated,
-    isReady: loading,
-    redirectUrl: loginUri,
-  } = useAuth(useAuthConfig);
-
-  if (!loading) {
+  if (!isReady) {
     return <>Loading...</>;
   }
 
@@ -62,7 +58,7 @@ export default function Page(props) {
   return (
     <>
       <p>Welcome anonymous!</p>
-      <a href={loginUri}>Login</a>
+      <a href={loginUrl}>Login</a>
     </>
   );
 }

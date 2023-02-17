@@ -1,15 +1,10 @@
-import { gql } from '@apollo/client';
 import trim from 'lodash/trim.js';
+import defaults from 'lodash/defaults.js';
 import { useEffect, useState } from 'react';
 import {
   ensureAuthorization,
   EnsureAuthorizationOptions,
 } from '../auth/index.js';
-import {
-  FAUST_API_BASE_PATH,
-  LOGOUT_ENDPOINT_PARTIAL_PATH,
-} from '../lib/constants.js';
-import { getApolloAuthClient } from '../client.js';
 
 type RedirectStrategyConfig = {
   strategy: 'redirect';
@@ -18,42 +13,36 @@ type RedirectStrategyConfig = {
 
 type LocalStrategyConfig = {
   strategy: 'local';
-  loginPageUri: string;
+  loginPageUrl: string;
   shouldRedirect?: boolean;
 };
 
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
 
-export type User = {
-  id: string;
-  name: string;
-  roles: {
-    edges: [
-      {
-        node: {
-          id: string;
-          name: string;
-        };
-      }[],
-    ];
-  };
-};
+export function useAuth(_config?: UseAuthConfig) {
+  const config = defaults(_config, {
+    strategy: 'redirect',
+    shouldRedirect: false,
+  }) as UseAuthConfig;
 
-export function useAuth(config?: RedirectStrategyConfig | LocalStrategyConfig) {
-  const { strategy = 'redirect', shouldRedirect = false } = config ?? {};
+  if (config.strategy === 'local' && !config.loginPageUrl) {
+    throw new Error(
+      'useAuth: Local strategies must specify the "loginPageUrl"',
+    );
+  }
+
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [user, setUser] = useState<User | null>(null);
   const [isReady, setIsReady] = useState<boolean>(false);
-  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
+  const [loginUrl, setLoginUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const ensureAuthorizationConfig: EnsureAuthorizationOptions = {
       redirectUri: window.location.href,
     };
 
-    if (config?.strategy === 'local' && config.loginPageUri) {
+    if (config.strategy === 'local') {
       ensureAuthorizationConfig.loginPageUri = `/${trim(
-        config.loginPageUri,
+        config.loginPageUrl,
         '/',
       )}?redirect_uri=${encodeURIComponent(window.location.href)}`;
     }
@@ -64,90 +53,52 @@ export function useAuth(config?: RedirectStrategyConfig | LocalStrategyConfig) {
 
       setIsAuthenticated(authResult === true);
 
-      if (authResult !== true && authResult?.login && strategy === 'local') {
-        setRedirectUrl(authResult.login);
+      if (
+        authResult !== true &&
+        authResult?.login &&
+        config.strategy === 'local'
+      ) {
+        setLoginUrl(authResult.login);
       }
 
       if (
         authResult !== true &&
         authResult?.redirect &&
-        strategy === 'redirect'
+        config.strategy === 'redirect'
       ) {
-        setRedirectUrl(authResult.redirect);
+        setLoginUrl(authResult.redirect);
       }
 
       setIsReady(true);
     })();
-  }, [strategy, config]);
+  }, [config]);
 
+  /**
+   * Automatically redirect the user to the login page if the
+   * shouldRedirect option is set to true.
+   */
   useEffect(() => {
     if (
-      !shouldRedirect ||
+      !config.shouldRedirect ||
       !isReady ||
       isAuthenticated !== false ||
-      !redirectUrl
+      !loginUrl
     ) {
       return;
     }
 
+    /**
+     * Using a setTimeout here because the page transition
+     * is a little too fast and makes for bad UX.
+     */
     setTimeout(() => {
-      window.location.replace(redirectUrl);
+      window.location.href = loginUrl;
     }, 200);
-  }, [isReady, isAuthenticated, redirectUrl, shouldRedirect]);
-
-  useEffect(() => {
-    if (isAuthenticated !== true) {
-      return;
-    }
-
-    const client = getApolloAuthClient();
-
-    (async () => {
-      const { data } = await client.query({
-        query: gql`
-          {
-            viewer {
-              id
-              name
-              roles {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-            }
-          }
-        `,
-      });
-
-      setUser(data?.viewer as User);
-    })();
-  }, [isAuthenticated]);
-
-  async function logout() {
-    const logoutUrl = `${FAUST_API_BASE_PATH}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`;
-
-    const res = await fetch(logoutUrl, {
-      method: 'POST',
-    });
-
-    if (!res.ok) {
-      throw new Error('There was an error logging out the user');
-    }
-
-    window.location.reload();
-  }
-
-  async function login(usernameEmail: string, password: string) {}
+  }, [isReady, isAuthenticated, loginUrl, config]);
 
   return {
     isAuthenticated,
     isReady,
-    user,
-    redirectUrl,
-    logout,
-    login,
+    loginUrl,
   };
 }

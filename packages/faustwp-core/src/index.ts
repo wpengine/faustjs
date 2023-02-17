@@ -24,6 +24,8 @@ import {
   GetSitemapPropsConfig,
 } from './server/sitemaps/getSitemapProps.js';
 import { useAuth } from './hooks/useAuth.js';
+import { useLogin } from './hooks/useLogin.js';
+import { useLogout } from './hooks/useLogout.js';
 
 export {
   FaustProvider,
@@ -50,4 +52,6 @@ export {
   getSitemapProps,
   GetSitemapPropsConfig,
   useAuth,
+  useLogin,
+  useLogout,
 };
