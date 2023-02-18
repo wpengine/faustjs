@@ -93,14 +93,14 @@ This will resolve into:
       ]
     }
 ```
-Notice that with some of the attributes like backgroundColor, the editor used the theme.json palette slug name instead of the actual value.
+Notice that with some of the attributes like `backgroundColor`, the editor used the `theme.json` palette slug name instead of the actual value.
 It also stored the custom hardcoded styles in the `style` fields as a JSON string. We will have to handle them appropriately when developing the associated block.
 Once you get familiar with how to query the necessary data from that block, let's see now how to implement the block in the Decoupled site.
 
 ## 5. Create the initial block
 
 Inside the codebase of your application, create the basic block structure that simply prints the blocks attributes.
-The steps required to achive that are the following:
+The steps required to achieve that are the following:
 
 ### 5.1 Create the block and save it inside the `wp-blocks` folder
 
@@ -360,7 +360,7 @@ export const cssToReactStyle = (css) => {
 };
 ```
 
-If you don't want to include the `@wordpress/style-engine` package in your final bundle you can still map the JSON object manually into the associated styles.
+If you don't want to include the `@wordpress/style-engine` package in your final bundle, you can still map the JSON object manually into the associated styles.
 If you take a look at this style object after the style is parsed:
 
 ```jsx title="JSON.parse(style)"
@@ -377,10 +377,10 @@ If you take a look at this style object after the style is parsed:
 Mapping into React styles object would then be:
 
 ```jsx
-    const parsed = JSON.parse(style);
+  const parsed = JSON.parse(style);
 	return {
 		borderColor: parsed?.border?.color
-    	color: parsed?.text?.color,
+    color: parsed?.text?.color,
 	}
 ```
 
@@ -393,7 +393,7 @@ You can create a new folder for block styles inside the `styles` folder and impo
 @import './blocks/CoreCode' // import block styles here
 ```
 
-Not that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styles with the editor view:
+Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styles with the editor view:
 
 <img
     src="/docs/img/core-code-block-decoupled-preview.png"
@@ -405,7 +405,7 @@ Make sure to tweak the block in the editor and verify that the changes are being
 
 :::note
 
-Next.js won't allow you to import the styles.scss directly into the component since it requires all
+Next.js won't allow you to import the `styles.scss` directly into the component since it requires all
 global CSS to be imported from the pages directory only. See the [related error](https://nextjs.org/docs/messages/css-global) message.
 So you need to either import the styles from a global module or translate the styles to use Component-Level CSS.
 
@@ -429,12 +429,12 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
 :::note
 
 If you include those extensions in a custom plugin, it means also that your Decoupled application
-is dependent on the inclusion of this plugin. You need to make sure you bundle them together otherwise the queries you do in the application will fail.
+is dependent on the inclusion of this plugin. You need to make sure you bundle them together otherwise the queries you perform in the application will fail.
 :::
 
 ### Can I style the block differently?
 
-Yes, you can style the block in many ways, chosing to ignore some of the attributes altogether.
+Yes, you can style the block in many ways, choosing to ignore some of the attributes altogether.
 You can also use an external React Library to style the block. For example, use Material UI or ChakraUI.
 Bear in mind that this will almost always result in degraded user editing experience as the styles of the Editor view won't match the styles of the rendered page.
 
