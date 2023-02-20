@@ -13,14 +13,14 @@ export function useLogout() {
 
     const logoutUrl = `${FAUST_API_BASE_PATH}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`;
 
+    // Clear the refresh token from the cookie.
     const res = await fetch(logoutUrl, {
       method: 'POST',
     });
 
-    setLoading(false);
-
     if (!res.ok) {
       setError(res);
+      setLoading(false);
 
       return;
     }
@@ -30,6 +30,8 @@ export function useLogout() {
     } else {
       window.location.reload();
     }
+
+    setLoading(false);
   }
 
   return {
