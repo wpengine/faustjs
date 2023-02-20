@@ -1,5 +1,5 @@
 import trim from 'lodash/trim.js';
-import { hooks } from '../hooks/index.js';
+import { hooks } from '../wpHooks/index.js';
 
 export function getWpUrl(): string {
   let wpUrl = trim(process.env.NEXT_PUBLIC_WORDPRESS_URL, '/');

@@ -4,7 +4,7 @@ import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
 import { getPossibleTemplates, getTemplate } from './getTemplate.js';
 import { addApolloState, getApolloClient } from './client.js';
 import { getConfig } from './config/index.js';
-import { hooks } from './hooks/index.js';
+import { hooks } from './wpHooks/index.js';
 import { infoLog, debugLog } from './utils/log.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
