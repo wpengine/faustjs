@@ -1,4 +1,4 @@
-import { hooks } from '../hooks/index.js';
+import { hooks } from '../wpHooks/index.js';
 import { getWpUrl } from './getWpUrl.js';
 
 export function getGraphqlEndpoint(): string {

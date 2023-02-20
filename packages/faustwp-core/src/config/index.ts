@@ -4,7 +4,7 @@ import extend from 'lodash/extend.js';
 import isString from 'lodash/isString.js';
 import once from 'lodash/once.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
-import { hooks, FaustPlugin } from '../hooks/index.js';
+import { hooks, FaustPlugin } from '../wpHooks/index.js';
 
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
