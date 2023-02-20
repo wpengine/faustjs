@@ -14,6 +14,7 @@
     "@faustwp/core": "0.2.9",
     "@wordpress/base-styles": "^4.7.0",
     "@wordpress/block-library": "^7.13.0",
+    "@wordpress/style-engine": "^1.10.0",
     "classnames": "^2.3.1",
     "graphql": "^16.6.0",
     "next": "^12.1.6",

@@ -10,3 +10,6 @@
 @import '@wordpress/base-styles/variables';
 @import '@wordpress/base-styles/breakpoints';
 @import '@wordpress/block-library/src/style';
+
+@import './blocks/UbCallToActionBlock';
+@import './blocks/CoreCode';

@@ -1,0 +1,92 @@
+/**
+ * #.# Styles
+ *
+ * CSS for both Frontend+Backend.
+ */
+
+.wp-block-ub-block-call-to-action {
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.ub_call_to_action {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 60px;
+    margin: 30px 0 60px 0;
+    border-style: solid;
+    border-radius: 3px;
+    .ub_call_to_action_button {
+        display: flex;
+        align-items: center;
+        .ub_cta_button a,
+        a.ub_cta_button {
+            text-decoration: none;
+        }
+    }
+}
+
+.ub_call_to_action_headline {
+    width: 100%;
+    padding: 20px 20px 10px 20px;
+    p,
+    h2 {
+        text-align: center;
+        margin: 0;
+        padding: 20px 20px 0 20px;
+    }
+}
+
+.ub_call_to_action_content {
+    width: 100%;
+    padding: 0 0 15px 0;
+    p {
+        text-align: justify;
+    }
+}
+
+.ub_cta_button {
+    margin-bottom: -31px !important;
+    padding: 20px !important;
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3px;
+}
+
+.ub_cta_button_text {
+    margin: 0 !important;
+    text-align: center;
+}
+
+@media (max-width: 1199.98px) {
+    .ub_call_to_action {
+        padding: 0 30px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .ub_call_to_action {
+        padding: 0 20px;
+        margin-bottom: 60px !important;
+    }
+    .ub_call_to_action_headline {
+        padding: 20px 0 0 0;
+    }
+    .ub_call_to_action_headline p {
+        line-height: 1.3;
+        padding: 20px 0;
+    }
+}
+
+@media (max-width: 320px) {
+    .ub_call_to_action_button .ub_cta_button_text {
+        font-size: 14px !important;
+        font-weight: 600;
+    }
+    .ub_call_to_action {
+        padding: 0 10px;
+    }
+}

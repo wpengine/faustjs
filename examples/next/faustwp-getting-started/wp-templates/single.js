@@ -1,6 +1,9 @@
 import { gql } from '@apollo/client';
 import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import flatListToHierarchical from '../utilities/flatListToHierarchical';
+import {WordPressBlocksViewer} from '@faustwp/blocks';
+
 import {
   Header,
   Footer,
@@ -8,10 +11,10 @@ import {
   Container,
   EntryHeader,
   NavigationMenu,
-  ContentWrapper,
   FeaturedImage,
   SEO,
 } from '../components';
+import blocks from '../wp-blocks';
 
 export default function Component(props) {
   // Loading state for previews
@@ -23,7 +26,8 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author } = props.data.post;
+  const { title, contentBlocks, featuredImage, date, author } = props.data.post;
+  const blocks = flatListToHierarchical(contentBlocks);
 
   return (
     <>
@@ -46,7 +50,7 @@ export default function Component(props) {
             author={author?.node?.name}
           />
           <Container>
-            <ContentWrapper content={content} />
+            <WordPressBlocksViewer contentBlocks={blocks} />
           </Container>
         </>
       </Main>
@@ -59,6 +63,8 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
+  ${blocks.CoreCode.fragments.entry}
+  ${blocks.CoreCode.fragments.entry}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -75,6 +81,15 @@ Component.query = gql`
         }
       }
       ...FeaturedImageFragment
+      contentBlocks {
+        name
+        __typename
+        renderedHtml
+        id: nodeId
+        parentId
+        ...${blocks.CoreCode.fragments.key}
+        ...${blocks.UbCallToActionBlock.fragments.key}
+      }
     }
     generalSettings {
       ...BlogInfoFragment
