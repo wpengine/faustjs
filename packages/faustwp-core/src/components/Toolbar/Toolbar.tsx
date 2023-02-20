@@ -18,10 +18,12 @@ export type FaustToolbarNode = {
    * Used to create each Toolbar Node's id. `#wp-admin-bar-{key}`
    */
   key: string;
+
   /**
    * The available menu locations that nodes can be added to.
    */
   location: MenuLocation;
+
   /**
    * The JSX component to load.
    * This will ultimately be rendered inside of an `<li>`.
