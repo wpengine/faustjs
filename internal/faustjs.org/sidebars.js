@@ -164,6 +164,17 @@ module.exports = {
           label: 'Plugin filters',
           id: 'gutenberg/filters',
         },
+        {
+          type: 'category',
+          label: 'How to Create a Block',
+          items: [
+            {
+              type: 'doc',
+              label: 'Creating a Block from WordPress Core Blocks',
+              id: 'gutenberg/tutorial/create-a-block-from-wordpress-core',
+            },
+          ],
+        },
       ],
     },
     {
