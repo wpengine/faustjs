@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchAccessToken } from '../auth/client/accessToken.js';
 import { isValidEmail } from '../utils/index.js';
 
@@ -18,14 +18,18 @@ export const GENERATE_AUTHORIZATION_CODE = gql`
   }
 `;
 
-type GenerateAuthCodeMutationRes =
+export type GenerateAuthCodeMutationRes =
   | {
-      code: string;
-      error: null;
+      generateAuthorizationCode: {
+        code: string;
+        error: null;
+      };
     }
   | {
-      code: null;
-      error: string;
+      generateAuthorizationCode: {
+        code: null;
+        error: string;
+      };
     };
 
 export function useLogin() {
@@ -37,7 +41,9 @@ export function useLogin() {
   const [data, setData] = useState<
     GenerateAuthCodeMutationRes | null | undefined
   >(undefined);
-
+  const [redirectUrlAfterLogin, setRedirectUrlAfterLogin] = useState<
+    string | undefined
+  >(undefined);
   const [loginMutation, { data: mutationData, loading, error }] =
     useMutation<GenerateAuthCodeMutationRes>(GENERATE_AUTHORIZATION_CODE);
 
@@ -48,11 +54,15 @@ export function useLogin() {
    * @param password The user's password
    * @param redirectUrl An optional URL to redirect to after successful login.
    */
-  async function login(
+  function login(
     usernameEmail: string,
     password: string,
     redirectUrl?: string,
   ) {
+    // Clear states if there was a previous login attempt.
+    setData(undefined);
+    setRedirectUrlAfterLogin(redirectUrl);
+
     const mutationArgs: {
       username?: string;
       email?: string;
@@ -65,25 +75,34 @@ export function useLogin() {
       mutationArgs.username = usernameEmail;
     }
 
-    await loginMutation({ variables: mutationArgs });
-
-    if (!mutationData) {
-      return;
-    }
-
-    if (mutationData.error !== null) {
-      setData(mutationData);
-      return;
-    }
-
-    await fetchAccessToken(mutationData.code);
-
-    setData(mutationData);
-
-    if (redirectUrl) {
-      window.location.href = redirectUrl;
-    }
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    loginMutation({ variables: mutationArgs });
   }
+
+  // Handle after mutation has recieved data
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      if (!mutationData) {
+        return;
+      }
+
+      if (mutationData.generateAuthorizationCode.error !== null) {
+        setData(mutationData);
+        return;
+      }
+
+      // Fetch our access token with our authorization code
+      await fetchAccessToken(mutationData.generateAuthorizationCode.code);
+
+      // User has been successfully logged in.
+      setData(mutationData);
+
+      if (redirectUrlAfterLogin) {
+        window.location.href = redirectUrlAfterLogin;
+      }
+    })();
+  }, [mutationData, redirectUrlAfterLogin]);
 
   return {
     login,
