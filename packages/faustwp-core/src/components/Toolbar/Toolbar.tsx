@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Faust, Edit, GraphiQL } from './nodes/index.js';
-import { hooks } from '../../hooks/index.js';
+import { hooks } from '../../wpHooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
 import { SeedNode } from '../../queries/seedQuery.js';
 
