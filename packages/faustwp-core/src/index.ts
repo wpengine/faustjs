@@ -14,17 +14,7 @@ import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getWpHostname } from './lib/getWpHostname.js';
 import { getApolloClient, addApolloState } from './client.js';
 import { FaustPlugin } from './hooks/index.js';
-import {
-  FaustHooks,
-  FaustToolbarNodes,
-  FaustToolbarContext,
-} from './hooks/overloads.js';
-import {
-  ToolbarItem,
-  ToolbarLink,
-  ToolbarSubmenu,
-  ToolbarSubmenuWrapper,
-} from './components/Toolbar/index.js';
+import { FaustHooks } from './hooks/overloads.js';
 import {
   getSitemapProps,
   GetSitemapPropsConfig,
@@ -51,12 +41,6 @@ export {
   addApolloState,
   FaustPlugin,
   FaustHooks,
-  FaustToolbarNodes,
-  FaustToolbarContext,
-  ToolbarItem,
-  ToolbarLink,
-  ToolbarSubmenu,
-  ToolbarSubmenuWrapper,
   getSitemapProps,
   GetSitemapPropsConfig,
 };

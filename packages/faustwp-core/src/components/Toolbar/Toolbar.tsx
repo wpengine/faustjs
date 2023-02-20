@@ -12,7 +12,7 @@ export type MenuLocation = 'primary' | 'secondary';
 /**
  * A single Faust Toolbar node.
  */
-export type ToolbarNode = {
+export type FaustToolbarNode = {
   /**
    * The key identifier for this Toolbar Node.
    * Used to create each Toolbar Node's id. `#wp-admin-bar-{key}`
@@ -32,12 +32,12 @@ export type ToolbarNode = {
 /**
  * An array of toolbar nodes.
  */
-export type ToolbarNodes = ToolbarNode[];
+export type FaustToolbarNodes = FaustToolbarNode[];
 
 /**
  * Toolbar context.
  */
-export type ToolbarContext = {
+export type FaustToolbarContext = {
   seedNode: SeedNode;
 };
 
@@ -56,7 +56,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   /**
    * Define Toolbar Nodes that should be included by default.
    */
-  const coreToolbarNodes: ToolbarNodes = useMemo(() => {
+  const coreToolbarNodes: FaustToolbarNodes = useMemo(() => {
     return [
       {
         key: 'faust',
@@ -85,7 +85,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
     const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
       client,
       seedNode,
-    }) as ToolbarNodes;
+    }) as FaustToolbarNodes;
 
     const uniqueKeys = new Set(filteredNodes.map((nodes) => nodes.key));
 
