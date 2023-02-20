@@ -9,6 +9,6 @@ import { CustomToolbar } from './plugins/CustomToolbar.tsx';
 export default setConfig({
   templates,
   experimentalPlugins: [new CustomToolbar()],
-  experimentalToolbar: true,
+  experimentalToolbar: false,
   possibleTypes,
 });
