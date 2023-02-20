@@ -5,6 +5,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import fetchMock from 'fetch-mock';
 import { useLogout } from '../../src/hooks/useLogout';
+import { act } from 'react-dom/test-utils';
 
 describe('useLogout hook', () => {
   const windowBackup = window.location;
@@ -35,9 +36,9 @@ describe('useLogout hook', () => {
       status: 205,
     });
 
-    const { result } = renderHook(() => useLogout());
+    const { result, waitForNextUpdate } = renderHook(() => useLogout());
 
-    await result.current.logout();
+    await act(() => result.current.logout());
 
     expect(result.current.error).toStrictEqual(undefined);
     expect(fetchMock.called()).toBeTruthy();
@@ -52,7 +53,7 @@ describe('useLogout hook', () => {
 
     const { result } = renderHook(() => useLogout());
 
-    await result.current.logout();
+    await act(() => result.current.logout());
 
     expect(window.location.reload).toBeCalled();
 
@@ -66,7 +67,7 @@ describe('useLogout hook', () => {
 
     const { result } = renderHook(() => useLogout());
 
-    await result.current.logout('/');
+    await act(() => result.current.logout('/'));
 
     expect(window.location.assign).toBeCalledWith('/');
 
@@ -80,7 +81,7 @@ describe('useLogout hook', () => {
 
     const { result } = renderHook(() => useLogout());
 
-    await result.current.logout();
+    await act(() => result.current.logout());
 
     expect(result.current.error).not.toBeUndefined();
 
