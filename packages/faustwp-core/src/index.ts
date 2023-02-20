@@ -12,13 +12,20 @@ import { withFaust } from './config/withFaust.js';
 import { getWpUrl } from './lib/getWpUrl.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getWpHostname } from './lib/getWpHostname.js';
-import { getApolloClient, addApolloState } from './client.js';
-import { FaustPlugin } from './hooks/index.js';
-import { FaustHooks } from './hooks/overloads.js';
+import {
+  getApolloClient,
+  getApolloAuthClient,
+  addApolloState,
+} from './client.js';
+import { FaustPlugin } from './wpHooks/index.js';
+import { FaustHooks } from './wpHooks/overloads.js';
 import {
   getSitemapProps,
   GetSitemapPropsConfig,
 } from './server/sitemaps/getSitemapProps.js';
+import { useAuth } from './hooks/useAuth.js';
+import { useLogin } from './hooks/useLogin.js';
+import { useLogout } from './hooks/useLogout.js';
 
 export {
   FaustProvider,
@@ -38,9 +45,13 @@ export {
   getWpUrl,
   getGraphqlEndpoint,
   getApolloClient,
+  getApolloAuthClient,
   addApolloState,
   FaustPlugin,
   FaustHooks,
   getSitemapProps,
   GetSitemapPropsConfig,
+  useAuth,
+  useLogin,
+  useLogout,
 };

@@ -4,15 +4,19 @@ import isEqual from 'lodash/isEqual.js';
 import {
   ApolloClient,
   ApolloClientOptions,
+  createHttpLink,
   InMemoryCache,
   InMemoryCacheConfig,
   NormalizedCacheObject,
 } from '@apollo/client';
 // eslint-disable-next-line import/extensions
+import { setContext } from '@apollo/client/link/context';
+// eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { getConfig } from './config/index.js';
-import { hooks } from './hooks/index.js';
+import { hooks } from './wpHooks/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
+import { getAccessToken } from './auth/index.js';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -26,8 +30,9 @@ const windowApolloState =
   typeof window !== 'undefined' ? window[APOLLO_STATE_PROP_NAME] : {};
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
+let apolloAuthClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient() {
+function createApolloClient(authenticated = false) {
   const { possibleTypes } = getConfig();
 
   let inMemoryCacheObject: InMemoryCacheConfig = {
@@ -48,10 +53,28 @@ function createApolloClient() {
     {},
   ) as InMemoryCacheConfig;
 
+  const httpLink = createHttpLink({
+    uri: getGraphqlEndpoint(),
+  });
+
+  const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = getAccessToken();
+
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  });
+
   let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
     ssrMode: typeof window === 'undefined',
     connectToDevTools: typeof window !== 'undefined',
-    uri: getGraphqlEndpoint(),
+    // uri: getGraphqlEndpoint(),
+    link: authenticated ? authLink.concat(httpLink) : httpLink,
     cache: new InMemoryCache(inMemoryCacheObject).restore(windowApolloState),
   };
 
@@ -92,6 +115,15 @@ export function getApolloClient(initialState = null) {
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
+}
+
+export function getApolloAuthClient() {
+  // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
+  const _apolloAuthClient = apolloAuthClient ?? createApolloClient(true);
+
+  if (!apolloAuthClient) apolloAuthClient = _apolloAuthClient;
+
+  return _apolloAuthClient;
 }
 
 export function addApolloState(
