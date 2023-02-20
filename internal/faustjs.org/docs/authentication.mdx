@@ -66,6 +66,86 @@ Local Based Authentication is the second strategy available in Faust.js. This st
 
 This strategy is excellent for use cases where you want to support a more "white label" login/register experience. This strategy routes un-authenticated requests to your specified Next.js login page. In addition, users who wish to login/register will not have to interact with WordPress or the WordPress backend at all, giving you the flexibility to implement and fine-tune your user flow.
 
-## FaustAuthProvider
+## Ensuring Authentication
 
-A new component, `<FaustAuthProvider>`, is currently in development and can be expected in a coming release.
+To determine if a user is logged in or not, you'll want to leverage the `useAuth` hook. More specifically, the `isReady` and `isAuthenticated` properties exported from the hook. `isReady` is first used to make sure the hook is setup and can accurately make a determination if there is a user logged in or not. Once `isReady` is returning a `boolean`, `isAuthenticated` will return a `boolean` as well:
+
+```jsx
+import { useAuth } from '@faustwp/core';
+
+export function AuthenticatedView() {
+  return <>My authenticated content</>;
+}
+
+export default function Page(props) {
+  const { isAuthenticated, isReady, loginUrl } = useAuth();
+
+  if (!isReady) {
+    return <>Loading...</>;
+  }
+
+  if (isAuthenticated === true) {
+    return <AuthenticatedView />;
+  }
+
+  return (
+    <>
+      <p>Welcome!</p>
+      <a href={loginUrl}>Login</a>
+    </>
+  );
+}
+```
+
+## Making Authenticated Requests
+
+The `getApolloAuthClient()` function returns an instantiated client with the proper access token attached to it. With this client, you can make authenticated requests either by calling `client.query`, or passing the client into Apollo's `useQuery` hook:
+
+```jsx
+function AuthenticatedView() {
+  const client = getApolloAuthClient();
+
+  const { data, loading } = useQuery(
+    gql`
+      {
+        viewer {
+          posts {
+            nodes {
+              id
+              title
+            }
+          }
+          name
+        }
+      }
+    `,
+    { client },
+  );
+
+  if (loading) {
+    return <>Loading...</>;
+  }
+
+  return (
+    <>
+      <p>Welcome {data?.viewer?.name}!</p>
+
+      <p>My posts</p>
+
+      <ul>
+        {data?.viewer?.posts?.nodes.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+## Learn more
+
+To learn more about the authentication system and how to login users, logout users, etc. take a look at the following reference docs:
+
+- [`useAuth` hook reference doc](https://faustjs.org/docs/reference/useAuth)
+- [`useLogin` hook reference doc](https://faustjs.org/docs/reference/useLogin)
+- [`useLogout` hook reference doc](https://faustjs.org/docs/reference/useLogout)
