@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 
-export function ToolbarItem(props: {
-  id?: string;
-  children: React.ReactNode | undefined;
-}) {
-  const [hover, setHover] = useState(false);
-  const { id, children } = props;
+type Props = PropsWithChildren<{
+  href?: string;
+  tabIndex?: number;
+  handleClick?: React.MouseEventHandler<HTMLAnchorElement>;
+}>;
 
+export function ToolbarItem({ children, handleClick, ...props }: Props) {
   return (
-    <li
-      id={id}
-      className={`${hover ? 'hover' : ''} menupop`}
-      onMouseEnter={() => {
-        setHover(true);
-      }}
-      onMouseLeave={() => {
-        setHover(false);
-      }}>
+    <a className="ab-item" onClick={handleClick} {...props}>
       {children}
-    </li>
+    </a>
   );
 }

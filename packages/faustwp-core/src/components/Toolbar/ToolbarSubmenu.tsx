@@ -1,14 +1,16 @@
 import React, { PropsWithChildren } from 'react';
+import classNames from 'classnames';
 
-interface Props extends PropsWithChildren<any> {
+type Props = PropsWithChildren<{
   id?: string;
-  children: React.ReactNode | undefined;
   secondary?: boolean;
-}
+}>;
 
-export function ToolbarSubmenu({ id, secondary = false, children }: Props) {
+export function ToolbarSubmenu({ secondary, children, ...props }: Props) {
   return (
-    <ul className={`ab-submenu ${secondary ? 'ab-sub-secondary' : ''}`} id={id}>
+    <ul
+      className={classNames('ab-submenu', { 'ab-sub-secondary': secondary })}
+      {...props}>
       {children}
     </ul>
   );

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   FaustHooks,
   FaustPlugin,
@@ -7,7 +6,6 @@ import {
   FaustToolbarNodes,
   FaustToolbarContext,
   ToolbarItem,
-  ToolbarLink,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
 } from '@faustwp/core/toolbar';
@@ -24,12 +22,12 @@ export class CustomToolbar implements FaustPlugin {
     hooks.addFilter('toolbarNodes', 'faust', (toolbarNodes: FaustToolbarNodes, context: FaustToolbarContext) => {
       const customToolbarNodes: FaustToolbarNodes = [
         {
-          key: 'custom-node',
+          id: 'custom-node',
           location: 'primary',
           component: <CustomNode />,
         },
         {
-          key: 'custom-node-with-submenu',
+          id: 'custom-node-with-submenu',
           location: 'primary',
           component: <CustomNodeWithSubmenu />
         },
@@ -45,9 +43,9 @@ export class CustomToolbar implements FaustPlugin {
  */
 export function CustomNode() {
   return (
-    <ToolbarLink url='https://wpengine.com' rel='nofollow'>
+    <ToolbarItem href='https://wpengine.com' rel='nofollow'>
       Custom Node
-    </ToolbarLink>
+    </ToolbarItem>
   );
 }
 
@@ -57,20 +55,20 @@ export function CustomNode() {
 export function CustomNodeWithSubmenu() {
   return (
     <>
-      <ToolbarLink url='https://wpengine.com' rel='nofollow'>
+      <ToolbarItem href='https://wpengine.com' rel='nofollow'>
         Custom Node w/ Submenu
-      </ToolbarLink>
+      </ToolbarItem>
       <ToolbarSubmenuWrapper>
         <ToolbarSubmenu>
-          <ToolbarItem>
-            <ToolbarLink url='https://wpengine.com' rel='nofollow'>Link</ToolbarLink>
-          </ToolbarItem>
-          <ToolbarItem>
-            <ToolbarLink url='https://wpengine.com' rel='nofollow'>Link</ToolbarLink>
-          </ToolbarItem>
-          <ToolbarItem>
-            <ToolbarLink url='https://wpengine.com' rel='nofollow'>Link</ToolbarLink>
-          </ToolbarItem>
+          <li>
+            <ToolbarItem href='https://wpengine.com' rel='nofollow'>Link</ToolbarItem>
+          </li>
+          <li>
+            <ToolbarItem href='https://wpengine.com' rel='nofollow'>Link</ToolbarItem>
+          </li>
+          <li>
+            <ToolbarItem href='https://wpengine.com' rel='nofollow'>Link</ToolbarItem>
+          </li>
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>
     </>
