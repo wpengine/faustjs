@@ -3,7 +3,6 @@ import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
 import flatListToHierarchical from '../utilities/flatListToHierarchical';
 import {WordPressBlocksViewer} from '@faustwp/blocks';
-
 import {
   Header,
   Footer,
@@ -15,6 +14,29 @@ import {
   SEO,
 } from '../components';
 import blocks from '../wp-blocks';
+
+function fragmentData(blocks) {
+  const entries = Object.keys(blocks).map(key => {
+    return blocks[key]?.fragments?.entry ? blocks[key]?.fragments?.entry : null;
+  }).filter(Boolean);
+  const blockKeys = Object.keys(blocks).map(key => {
+    return blocks[key]?.fragments?.key ? blocks[key]?.fragments?.key : null;
+  }).filter(Boolean);
+  return {
+    entries: entries.map(fragment => `${getGqlString(fragment)}\n`).join('\n'),
+    keys: blockKeys.map(key => `...${key}\n`).join('\n')
+  }
+}
+
+function normalize(string) {
+  return string.replace(/[\s,]+/g, ' ').trim();
+}
+
+function getGqlString(doc) {
+  return doc.loc && normalize(doc.loc.source.body);
+}
+
+
 
 export default function Component(props) {
   // Loading state for previews
@@ -63,8 +85,7 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
-  ${blocks.CoreCode.fragments.entry}
-  ${blocks.CoreCode.fragments.entry}
+  ${fragmentData(blocks).entries}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -87,8 +108,7 @@ Component.query = gql`
         renderedHtml
         id: nodeId
         parentId
-        ...${blocks.CoreCode.fragments.key}
-        ...${blocks.UbCallToActionBlock.fragments.key}
+        ${fragmentData(blocks).keys}
       }
     }
     generalSettings {

@@ -1,0 +1,13 @@
+.ub-star-outer-container {
+	display: flex;
+}
+
+.ub-star-inner-container,
+.ub-star-container {
+	display: flex;
+	flex-direction: row;
+	margin: 20px 0;
+}
+.ub-star-inner-container svg {
+	margin-top: initial;
+}

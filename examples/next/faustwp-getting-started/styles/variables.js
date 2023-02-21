@@ -3,6 +3,7 @@ export const colorsMap = {
   'primary': '#9DFF20',
   'secondary': '#345C00',
   'tertiary': '#f6f6f6',
+  'contrast': '#000000',
   'foreground': '#000000',
   'background': '#ffffff',
   'cyan-bluish-gray': '#abb8c3',
