@@ -158,6 +158,11 @@ module.exports = {
               label: 'Creating a Block from WordPress Core Blocks',
               id: 'gutenberg/tutorial/create-a-block-from-wordpress-core',
             },
+            {
+              type: 'doc',
+              label: 'Creating a Block from a third party plugin',
+              id: 'gutenberg/tutorial/create-a-block-from-third-party',
+            },
           ],
         },
       ],
