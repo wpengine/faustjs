@@ -7,7 +7,7 @@ import { untrailingslashit } from './untrailingslashit.js';
  */
 export function adminUrl(path = ''): string {
   const baseUrl: string = process.env.NEXT_PUBLIC_WORDPRESS_URL || '';
-  const sanitizedBaseUrl = untrailingslashit(baseUrl);
+  const sanitizedBaseUrl = trim(baseUrl, '/');
 
   return `${sanitizedBaseUrl}/wp-admin/${path}`;
 }
