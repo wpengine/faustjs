@@ -92,7 +92,7 @@ export function useAuth(_config?: UseAuthConfig) {
      * is a little too fast and makes for bad UX.
      */
     setTimeout(() => {
-      window.location.href = loginUrl;
+      window.location.assign(loginUrl);
     }, 200);
   }, [isReady, isAuthenticated, loginUrl, config]);
 

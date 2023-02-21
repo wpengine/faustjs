@@ -99,7 +99,7 @@ export function useLogin() {
       setData(mutationData);
 
       if (redirectUrlAfterLogin) {
-        window.location.href = redirectUrlAfterLogin;
+        window.location.assign(redirectUrlAfterLogin);
       }
     })();
   }, [mutationData, redirectUrlAfterLogin]);

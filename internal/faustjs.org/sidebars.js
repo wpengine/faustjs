@@ -96,6 +96,21 @@ module.exports = {
           label: 'getSitemapProps',
           id: 'reference/getSitemapProps',
         },
+        {
+          type: 'doc',
+          label: 'useAuth',
+          id: 'reference/useAuth',
+        },
+        {
+          type: 'doc',
+          label: 'useLogin',
+          id: 'reference/useLogin',
+        },
+        {
+          type: 'doc',
+          label: 'useLogout',
+          id: 'reference/useLogout',
+        },
       ],
     },
     {

@@ -26,7 +26,7 @@ export function useLogout() {
     }
 
     if (redirectUrl) {
-      window.location.href = redirectUrl;
+      window.location.assign(redirectUrl);
     } else {
       window.location.reload();
     }
