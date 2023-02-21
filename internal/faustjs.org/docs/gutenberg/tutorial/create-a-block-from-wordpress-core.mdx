@@ -95,7 +95,7 @@ This will resolve into:
 ```
 Notice that with some of the attributes like `backgroundColor`, the editor used the `theme.json` palette slug name instead of the actual value.
 It also stored the custom hardcoded styles in the `style` fields as a JSON string. We will have to handle them appropriately when developing the associated block.
-Once you get familiar with how to query the necessary data from that block, let's see now how to implement the block in the decoupled site.
+Once you get familiar with how to query the necessary data from that block, let's see now how to implement the block in the Decoupled site.
 
 ## 5. Create the initial block
 
@@ -239,7 +239,7 @@ Most of the time, the `save` function contains the actual implementation of the 
 
 :::note
 
-Since the block is static most of the times the save.js should be provided. Some times the `save` function is not provided or it returns `null`. The component is considered then to be `dynamic`, aka it renders in the server.
+Since the block is static most of the time, the save.js should be provided. Sometimes the `save` function is not provided or it returns `null`. When this happens, the component is considered `dynamic`, aka it renders in the server.
 So you want to check if the [register_block_type](https://developer.wordpress.org/reference/functions/register_block_type/) provides an implementation for rendering the block.
 In that case, the `render_callback` will provide the markup for the block using PHP. You can take this implementation and translate it to React.
 
@@ -292,7 +292,7 @@ This function takes the blocks attributes and maps them into inline React styles
 
 * `colorsMap, fontSizesMap`: Map the slug color and font values to associated colors and font sizes based on the current `theme.json`.
 * `compileCSS`: A helper function from the [@wordpress/style-engine](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-style-engine/) package that parses the JSON object containing the block styles and returns an inline style string.
-* `cssToReactStyle`: Another helper function that translates the inline style string into React inline styles object.
+* `cssToReactStyle`: Another helper function that translates the inline style string into a React inline styles object.
 
 Below is the implementation of those functions in order:
 
@@ -374,7 +374,7 @@ If you take a look at this style object after the style is parsed:
 }
 ```
 
-Mapping into React styles object would then be:
+Mapping into the React styles object would then be:
 
 ```jsx
   const parsed = JSON.parse(style);
@@ -384,7 +384,7 @@ Mapping into React styles object would then be:
 	}
 ```
 
-On final detail. Don't forget to include the global scss for the block so that the right styles are applied.
+One final detail: don't forget to include the global scss for the block so that the right styles are applied.
 You can create a new folder for block styles inside the `styles` folder and import it there:
 
 ```scss title="styles/blocks.scss"
@@ -428,8 +428,7 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
 ```
 :::note
 
-If you include those extensions in a custom plugin, it means also that your Decoupled application
-is dependent on the inclusion of this plugin. You need to make sure you bundle them together otherwise the queries you perform in the application will fail.
+If you include those extensions in a custom plugin, your Decoupled application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
 :::
 
 ### Can I style the block differently?
@@ -438,9 +437,9 @@ Yes, you can style the block in many ways, choosing to ignore some of the attrib
 You can also use an external React Library to style the block. For example, use Material UI or ChakraUI.
 Bear in mind that this will almost always result in degraded user editing experience as the styles of the Editor view won't match the styles of the rendered page.
 
-### What if the block contains custom js assets?
+### What if the block contains custom JavaScript assets?
 
-Some Core blocks, include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
+Some Core blocks include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
 Since React is not normally bundled as a dependency in the browser, the JavaScript code usually consists of good old jQuery and document selectors.
 
 In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
