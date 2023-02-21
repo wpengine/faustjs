@@ -27,7 +27,6 @@ export function FaustProvider(props: {
       {experimentalToolbar && (
         <Toolbar
           key={`faust-toolbar-${router.asPath}`} // Required in order to load each route's own seed node.
-          client={apolloClient}
           // eslint-disable-next-line no-underscore-dangle
           seedNode={pageProps.__SEED_NODE__}
         />
