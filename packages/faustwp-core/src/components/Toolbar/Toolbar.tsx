@@ -108,9 +108,9 @@ export function Toolbar({ seedNode }: ToolbarProps) {
       seedNode,
     }) as FaustToolbarNodes;
 
-    const uniqueKeys = new Set(filteredNodes.map((nodes) => nodes.id));
+    const uniqueIds = new Set(filteredNodes.map((nodes) => nodes.id));
 
-    if (uniqueKeys.size < filteredNodes.length) {
+    if (uniqueIds.size < filteredNodes.length) {
       throw new Error('Toolbar Nodes must have unique keys.');
     }
 
