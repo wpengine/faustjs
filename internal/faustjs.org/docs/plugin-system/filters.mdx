@@ -151,3 +151,32 @@ addFilter(
     priority?: number | undefined,
   ): void;
 ```
+
+## toolbarNodes
+
+:::caution
+
+This filter is part of an experimental feature.
+You can opt-in to using this feature by setting `experimentalToolbar: true` within your project's faust.config.js.
+
+:::
+
+Allows you to modify Faust's Toolbar nodes.
+
+### Context Object
+
+- `seedNode: SeedNode`: The seed node requested from the seed query
+
+### Signature
+
+```tsx
+  addFilter(
+    hookName: 'toolbarNodes',
+    namespace: string,
+    callback: (
+      toolbarNodes: FaustToolbarNodes,
+      context: { seedNode: SeedNode },
+    ) => FaustToolbarNodes,
+    priority?: number | undefined,
+  ): void;
+```
