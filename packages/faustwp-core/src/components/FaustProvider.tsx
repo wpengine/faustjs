@@ -10,7 +10,7 @@ import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
 
 export type FaustPageProps = AppProps['pageProps'] & {
-  __SEED_NODE__: SeedNode;
+  __SEED_NODE__?: SeedNode;
 };
 
 export function FaustProvider(props: {
@@ -28,7 +28,7 @@ export function FaustProvider(props: {
         <Toolbar
           key={`faust-toolbar-${router.asPath}`} // Required in order to load each route's own seed node.
           // eslint-disable-next-line no-underscore-dangle
-          seedNode={pageProps.__SEED_NODE__}
+          seedNode={pageProps.__SEED_NODE__ as SeedNode}
         />
       )}
       {children}
