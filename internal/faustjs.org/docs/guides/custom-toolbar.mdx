@@ -100,7 +100,7 @@ export function CustomNodeWithSubmenu() {
 
 ## Register The Plugin
 
-Import the new plugin and register it with your project's `faust.config.js`.
+Import and register your new plugin in `faust.config.js`.
 
 ```JavaScript
 import { setConfig } from '@faustwp/core';
@@ -108,9 +108,6 @@ import templates from './wp-templates';
 import possibleTypes from './possibleTypes.json';
 import { CustomToolbar } from './plugins/CustomToolbar.tsx';
 
-/**
- * @type {import('@faustwp/core').FaustConfig}
- **/
 export default setConfig({
   templates,
   experimentalToolbar: true, // Enable experimental toolbar
