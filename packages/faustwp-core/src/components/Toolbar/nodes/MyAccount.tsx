@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import { getApolloAuthClient } from '../../../client.js';
 import { useLogout } from '../../../hooks/useLogout.js';
 import { useAuth } from '../../../hooks/useAuth.js';
-import { getWpAdminUrl } from '../../../lib/getAdminUrl.js';
+import { getAdminUrl } from '../../../lib/getAdminUrl.js';
 import {
   ToolbarItem,
   ToolbarSubmenu,
@@ -43,7 +43,7 @@ export function AuthenticatedAccount() {
 
   return (
     <>
-      <ToolbarItem aria-haspopup="true" href={getWpAdminUrl('profile.php')}>
+      <ToolbarItem aria-haspopup="true" href={getAdminUrl('profile.php')}>
         Howdy, <span className="display-name">{data?.viewer?.name}</span>
         <img
           alt=""
@@ -59,7 +59,7 @@ export function AuthenticatedAccount() {
       <ToolbarSubmenuWrapper>
         <ToolbarSubmenu id="wp-admin-bar-user-actions">
           <li id="wp-admin-bar-user-info">
-            <ToolbarItem tabIndex={-1} href={getWpAdminUrl('profile.php')}>
+            <ToolbarItem tabIndex={-1} href={getAdminUrl('profile.php')}>
               <img
                 alt=""
                 src={data?.viewer?.avatar64.url}
@@ -75,7 +75,7 @@ export function AuthenticatedAccount() {
             </ToolbarItem>
           </li>
           <li id="wp-admin-bar-edit-profile">
-            <ToolbarItem href={getWpAdminUrl('profile.php')}>
+            <ToolbarItem href={getAdminUrl('profile.php')}>
               Edit Profile
             </ToolbarItem>
           </li>
