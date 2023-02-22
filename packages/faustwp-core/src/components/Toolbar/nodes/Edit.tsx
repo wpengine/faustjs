@@ -13,8 +13,7 @@ export function Edit({ seedNode }: Props) {
     seedNode?.isFrontPage ||
     seedNode?.isPostsPage
   ) {
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <></>;
+    return null;
   }
 
   // eslint-disable-next-line no-underscore-dangle
