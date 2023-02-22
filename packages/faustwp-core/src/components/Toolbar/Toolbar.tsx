@@ -5,6 +5,7 @@ import { MyAccount } from './nodes/MyAccount.js';
 import { hooks } from '../../wpHooks/index.js';
 import { ToolbarNode } from './ToolbarNode.js';
 import { SeedNode } from '../../queries/seedQuery.js';
+import { useAuth } from '../../hooks/useAuth.js';
 import { SiteName } from './nodes/SiteName.js';
 
 /**
@@ -93,6 +94,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
   }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
+  const { isAuthenticated } = useAuth();
 
   /**
    * Handle Toolbar nodes.
@@ -132,6 +134,10 @@ export function Toolbar({ seedNode }: ToolbarProps) {
   const secondaryNodes = toolbarNodes.filter(
     ({ location }) => location === 'secondary',
   );
+
+  if (isAuthenticated !== true) {
+    return null;
+  }
 
   return (
     <div id="wpadminbar" className="nojq">
