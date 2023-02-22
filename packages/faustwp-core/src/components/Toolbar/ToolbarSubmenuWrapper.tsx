@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-type Props = {
-  children: React.ReactNode | string;
-};
+type Props = PropsWithChildren<{}>;
 
 export function ToolbarSubmenuWrapper({ children, ...props }: Props) {
   return (
