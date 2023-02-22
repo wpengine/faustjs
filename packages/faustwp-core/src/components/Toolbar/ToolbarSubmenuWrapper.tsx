@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 
-type Props = PropsWithChildren<Record<string, never>>;
+// eslint-disable-next-line @typescript-eslint/ban-types
+type Props = PropsWithChildren<{}>;
 
 export function ToolbarSubmenuWrapper({ children, ...props }: Props) {
   return (
