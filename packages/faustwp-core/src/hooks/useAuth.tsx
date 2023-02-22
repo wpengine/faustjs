@@ -71,7 +71,11 @@ export function useAuth(_config?: UseAuthConfig) {
 
       setIsReady(true);
     })();
-  }, [config]);
+
+    // NOTE: This effect should only be ran once on mount, so we are not
+    // providing the exhaustive deps to useEffect.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Automatically redirect the user to the login page if the
