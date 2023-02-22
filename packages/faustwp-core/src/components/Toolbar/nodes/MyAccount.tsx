@@ -48,7 +48,7 @@ export function AuthenticatedAccount() {
         <img
           alt=""
           src={data?.viewer?.avatar26.url}
-          srcSet={`${data?.viewer?.avatar52.url} 2x`}
+          srcSet={`${data?.viewer?.avatar52.url as string} 2x`}
           className="avatar avatar-26 photo"
           height="26"
           width="26"
@@ -63,7 +63,7 @@ export function AuthenticatedAccount() {
               <img
                 alt=""
                 src={data?.viewer?.avatar64.url}
-                srcSet={`${data?.viewer?.avatar128.url} 2x`}
+                srcSet={`${data?.viewer?.avatar128.url as string} 2x`}
                 className="avatar avatar-64 photo"
                 height="64"
                 width="64"
@@ -80,7 +80,9 @@ export function AuthenticatedAccount() {
             </ToolbarItem>
           </li>
           <li id="wp-admin-bar-logout">
-            <ToolbarItem href="javascript:void(0);" handleClick={() => logout()}>Log Out</ToolbarItem>
+            <ToolbarItem href="" handleClick={() => logout()}>
+              Log Out
+            </ToolbarItem>
           </li>
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>

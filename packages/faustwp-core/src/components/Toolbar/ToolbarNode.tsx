@@ -17,7 +17,12 @@ export function wpAdminBar(id?: string): string {
 /**
  * The outermost element for a FaustToolbarNode.
  */
-export function ToolbarNode({ id = '', children, additionalClassNames = '', ...props }: Props) {
+export function ToolbarNode({
+  id = '',
+  children,
+  additionalClassNames = '',
+  ...props
+}: Props) {
   const [hover, setHover] = useState(false);
 
   return (

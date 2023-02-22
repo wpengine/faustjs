@@ -1,4 +1,4 @@
-import { getWpUrl } from "./getWpUrl";
+import { getWpUrl } from './getWpUrl.js';
 
 /**
  * Retrieves the URL to the admin area for the current site.
@@ -7,8 +7,8 @@ import { getWpUrl } from "./getWpUrl";
  *
  * @param {string} path Path relative to the admin URL.
  */
-export function getAdminUrl(path: string = ''): string {
-  let adminUrl = getWpUrl('wp-admin');
+export function getAdminUrl(path = ''): string {
+  const adminUrl = getWpUrl('wp-admin');
 
   if (!path) {
     return adminUrl;

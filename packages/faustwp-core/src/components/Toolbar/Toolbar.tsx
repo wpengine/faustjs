@@ -125,7 +125,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
    */
   useEffect(() => {
     if (!isAuthenticated) {
-      return;
+      return undefined;
     }
 
     document?.body.classList.add('admin-bar');
@@ -133,6 +133,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
     // Cleanup body class when this component unmounts.
     return () => {
       document?.body.classList.remove('admin-bar');
+      return undefined;
     };
   }, [isAuthenticated]);
 
@@ -156,6 +157,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
         aria-label="Toolbar">
         <ul id="wp-admin-bar-root-default" className="ab-top-menu">
           {primaryNodes.map(({ component, id, ...props }: FaustToolbarNode) => (
+            // eslint-disable-next-line react/jsx-props-no-spreading
             <ToolbarNode key={id} id={id} {...props}>
               {component}
             </ToolbarNode>
@@ -164,11 +166,14 @@ export function Toolbar({ seedNode }: ToolbarProps) {
         <ul
           id="wp-admin-bar-top-secondary"
           className="ab-top-secondary ab-top-menu">
-          {secondaryNodes.map(({ component, id, ...props }: FaustToolbarNode) => (
-            <ToolbarNode key={id} id={id} {...props}>
-              {component}
-            </ToolbarNode>
-          ))}
+          {secondaryNodes.map(
+            ({ component, id, ...props }: FaustToolbarNode) => (
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              <ToolbarNode key={id} id={id} {...props}>
+                {component}
+              </ToolbarNode>
+            ),
+          )}
         </ul>
       </div>
     </div>
