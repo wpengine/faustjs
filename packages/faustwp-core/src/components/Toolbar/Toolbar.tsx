@@ -94,7 +94,9 @@ export function Toolbar({ seedNode }: ToolbarProps) {
   }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
-  const { isAuthenticated } = useAuth();
+  let { isAuthenticated } = useAuth();
+
+  isAuthenticated = true;
 
   /**
    * Handle Toolbar nodes.
@@ -131,9 +133,9 @@ export function Toolbar({ seedNode }: ToolbarProps) {
     document?.body.classList.add('admin-bar');
 
     // Cleanup body class when this component unmounts.
+    // eslint-disable-next-line consistent-return
     return () => {
       document?.body.classList.remove('admin-bar');
-      return undefined;
     };
   }, [isAuthenticated]);
 

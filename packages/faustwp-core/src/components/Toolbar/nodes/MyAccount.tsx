@@ -91,7 +91,7 @@ export function AuthenticatedAccount() {
 }
 
 export function MyAccount() {
-  const { isAuthenticated, isReady, loginUrl } = useAuth({
+  const { isAuthenticated, isReady } = useAuth({
     strategy: 'redirect',
     shouldRedirect: false,
   });
@@ -104,5 +104,5 @@ export function MyAccount() {
     return <AuthenticatedAccount />;
   }
 
-  return <a href={loginUrl as string}>Login</a>;
+  return null;
 }
