@@ -100,6 +100,10 @@ export function Toolbar({ seedNode }: ToolbarProps) {
    * Handle Toolbar nodes.
    */
   useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
       seedNode,
     }) as FaustToolbarNodes;
@@ -111,7 +115,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
     }
 
     setToolbarNodes(filteredNodes);
-  }, [coreToolbarNodes, seedNode]);
+  }, [coreToolbarNodes, seedNode, isAuthenticated]);
 
   /**
    * Handle adding `admin-bar` body class on render.
@@ -120,13 +124,17 @@ export function Toolbar({ seedNode }: ToolbarProps) {
    * @link https://developer.wordpress.org/reference/hooks/body_class/
    */
   useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     document?.body.classList.add('admin-bar');
 
     // Cleanup body class when this component unmounts.
     return () => {
       document?.body.classList.remove('admin-bar');
     };
-  }, []);
+  }, [isAuthenticated]);
 
   const primaryNodes = toolbarNodes.filter(
     ({ location }) => location === 'primary',
