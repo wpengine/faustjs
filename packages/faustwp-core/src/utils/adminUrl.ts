@@ -1,4 +1,4 @@
-import { untrailingslashit } from './untrailingslashit.js';
+import trim from 'lodash/trim.js';
 
 /**
  * Retrieves the URL to the admin area for the current site.
