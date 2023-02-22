@@ -125,7 +125,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
    */
   useEffect(() => {
     if (!isAuthenticated) {
-      return undefined;
+      return;
     }
 
     document?.body.classList.add('admin-bar');
