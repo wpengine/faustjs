@@ -4,7 +4,7 @@ type Props = PropsWithChildren<{
   href?: string;
   tabIndex?: number;
   handleClick?: React.MouseEventHandler<HTMLAnchorElement>;
-}>;
+}> & {[key: string]: unknown};
 
 export function ToolbarItem({ children, handleClick, ...props }: Props) {
   return (
