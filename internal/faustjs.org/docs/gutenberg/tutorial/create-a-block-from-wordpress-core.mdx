@@ -8,7 +8,7 @@ In this tutorial you will install and create a block using `@faustwp/blocks` tha
 It assumes you have already installed both the `@faustwp/blocks` and `wp-graphql-content-blocks` plugin.
 
 ## 1. Set up a `@faustwp/blocks`
-If you have not already done so, you will need to follow the [Getting Started](/docs/gutenberg/getting-started) so that you are ready to create new blocks.
+If you have not already done so, you will need to follow the [Getting Started](/docs/gutenberg/getting-started) guide so that you are ready to create new blocks.
 
 ## 2. Pick a block that you want to implement
 The Core Editor Blocks contain a list of useful blocks for editing and publishing content.
@@ -18,7 +18,7 @@ For this tutorial, we are going to implement the [Code Block](https://wordpress.
 
 ## 3. Review the Block design in the Editor
 
-Before you try to implement the block, it's usefull to get an ideal of how the block is configured within the editor.
+Before you try to implement the block, it's useful to get an idea of how the block is configured within the editor.
 You want to create a few sample blocks and test their options.
 
 Navigate to the editor by creating a new Post and insert the Block into the page:
@@ -31,12 +31,12 @@ Navigate to the editor by creating a new Post and insert the Block into the page
 </a>
 
 You can expand the block sidebar options to change some of its styling.
-For example you can configure the Color, Dimentions, Border and Size settings for that block.
-Once you get familiar with the block look and feel, let's explore its attributes from the GraphQL IDE.
+For example, you can configure the Color, Dimensions, Border, and Size settings for that block.
+Once you get familiar with the block's look and feel, let's explore its attributes from the GraphQL IDE.
 
 ## 4. Review the Block data and attributes in the GraphQL IDE
 
-Within the GraphQL IDE, use the Docs to find the type of the block to display its type and properties.
+Within the GraphQL IDE, use the Docs to find the type of block to display its type and properties.
 There should be a `CoreCode` that contains all the important fields we can query.
 
 <img
@@ -99,7 +99,7 @@ Once you get familiar with how to query the necessary data from that block, let'
 
 ## 5. Create the initial block
 
-Inside the codebase of your application, create the basic block structure that simply prints the blocks attributes.
+Inside the codebase of your application, create the basic block structure that simply prints the block's attributes.
 The steps required to achieve that are the following:
 
 ### 5.1 Create the block and save it inside the `wp-blocks` folder
@@ -122,7 +122,7 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js` we make it available in the `WordrPressBlocksProvider`.
+By exporting the block in the `index.js` we make it available in the `WordPressBlocksProvider`.
 You can also use a different name as long as it matches either the Block `name` or the `__typename` fields.
 
 This also works:
@@ -158,11 +158,11 @@ CoreCode.fragments = {
   `,
 };
 ```
-We chose to attach the fragment as a property of the function component itself. This follows a good practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
+We chose to attach the fragment as a property of the function component itself. This follows best practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
 
 ### 5.4 Include the block fragment into the page query string
 
-You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload would include the data from that block.
+You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload includes the data from that block.
 
 In our example we use it in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates):
 
@@ -207,11 +207,11 @@ The last part is to implement the Block by using the block attributes and the vi
 Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implmentation of this block and try to port the parts that render the block
 the block in the frontend.
 
-In fact the implementation is found in the official Gutenberg `@wordpress/block-library` package. If you take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code)
+This implementation is found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code).
 
 You are interested in the following files:
 
-`style.scss`: Contains the front-end block styles. You can definatelly include those into our global styles.
+`style.scss`: Contains the front-end block styles. You can definitely include those in our global styles:
 
 ```scss title="style.scss"
 .wp-block-code {
@@ -233,13 +233,13 @@ You are interested in the following files:
 `block.js`: Contains the block attributes specification.
 
 `save.js`: According to [the docs](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save),
-the `save` function is used  defines the way in which the different attributes should be combined into the final markup, which is then serialized into `post_content`.
+the `save` function defines the way in which the different attributes should be combined into the final markup, which is then serialized into `post_content`.
 
-Most of the times the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way the design of the block in the editor will match the design in the Decoupled site.
+Most of the time, the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way, the design of the block in the editor will match the design in the Decoupled site.
 
 :::note
 
-Since the block is static most of the times the save.js should be provided. Some times the `save` function is not provided or it returns `null`. The component is considered then to be `dynamic`, aka it renders in the server.
+Since the block is static most of the time, the save.js should be provided. Sometimes the `save` function is not provided or it returns `null`. When this happens, the component is considered `dynamic`, aka it renders in the server.
 So you want to check if the [register_block_type](https://developer.wordpress.org/reference/functions/register_block_type/) provides an implementation for rendering the block.
 In that case, the `render_callback` will provide the markup for the block using PHP. You can take this implementation and translate it to React.
 
@@ -292,7 +292,7 @@ This function takes the blocks attributes and maps them into inline React styles
 
 * `colorsMap, fontSizesMap`: Map the slug color and font values to associated colors and font sizes based on the current `theme.json`.
 * `compileCSS`: A helper function from the [@wordpress/style-engine](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-style-engine/) package that parses the JSON object containing the block styles and returns an inline style string.
-* `cssToReactStyle`: Another helper function that translates the inline style string into React inline styles object.
+* `cssToReactStyle`: Another helper function that translates the inline style string into a React inline styles object.
 
 Below is the implementation of those functions in order:
 
@@ -374,7 +374,7 @@ If you take a look at this style object after the style is parsed:
 }
 ```
 
-Mapping into React styles object would then be:
+Mapping into the React styles object would then be:
 
 ```jsx
   const parsed = JSON.parse(style);
@@ -384,7 +384,7 @@ Mapping into React styles object would then be:
 	}
 ```
 
-On final detail. Don't forget to include the global scss for the block so that the right styles are applied.
+One final detail: don't forget to include the global scss for the block so that the right styles are applied.
 You can create a new folder for block styles inside the `styles` folder and import it there:
 
 ```scss title="styles/blocks.scss"
@@ -428,8 +428,7 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
 ```
 :::note
 
-If you include those extensions in a custom plugin, it means also that your Decoupled application
-is dependent on the inclusion of this plugin. You need to make sure you bundle them together otherwise the queries you perform in the application will fail.
+If you include those extensions in a custom plugin, your Decoupled application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
 :::
 
 ### Can I style the block differently?
@@ -438,9 +437,9 @@ Yes, you can style the block in many ways, choosing to ignore some of the attrib
 You can also use an external React Library to style the block. For example, use Material UI or ChakraUI.
 Bear in mind that this will almost always result in degraded user editing experience as the styles of the Editor view won't match the styles of the rendered page.
 
-### What if the block contains custom js assets?
+### What if the block contains custom JavaScript assets?
 
-Some Core blocks, include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
+Some Core blocks include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
 Since React is not normally bundled as a dependency in the browser, the JavaScript code usually consists of good old jQuery and document selectors.
 
 In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
