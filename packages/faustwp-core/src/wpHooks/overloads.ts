@@ -75,7 +75,7 @@ type FaustCoreFilters = {
     namespace: string,
     callback: (
       toolbarNodes: FaustToolbarNodes,
-      context: { seedNode: SeedNode },
+      context: { seedNode?: SeedNode },
     ) => string,
     priority?: number | undefined,
   ): void;
