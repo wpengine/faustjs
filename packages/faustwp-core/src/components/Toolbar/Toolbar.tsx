@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Faust, Edit, GraphiQL } from './nodes/index.js';
+import { Edit } from './nodes/Edit.js';
+import { GraphiQL } from './nodes/GraphiQL.js';
+import { MyAccount } from './nodes/MyAccount.js';
 import { hooks } from '../../wpHooks/index.js';
-import { ToolbarItem } from './ToolbarItem.js';
+import { ToolbarNode } from './ToolbarNode.js';
 import { SeedNode } from '../../queries/seedQuery.js';
 import { useAuth } from '../../hooks/useAuth.js';
+import { SiteName } from './nodes/SiteName.js';
 
 /**
  * The available menu locations that nodes can be added to.
@@ -15,10 +18,10 @@ export type MenuLocation = 'primary' | 'secondary';
  */
 export type FaustToolbarNode = {
   /**
-   * The key identifier for this Toolbar Node.
-   * Used to create each Toolbar Node's id. `#wp-admin-bar-{key}`
+   * The identifier for this Toolbar Node.
+   * Used to create each Toolbar Node's id. `#wp-admin-bar-{id}`
    */
-  key: string;
+  id: string;
 
   /**
    * The available menu locations that nodes can be added to.
@@ -27,9 +30,15 @@ export type FaustToolbarNode = {
 
   /**
    * The JSX component to load.
-   * This will ultimately be rendered inside of an `<li>`.
+   * This will be rendered inside of an `<li>`.
+   * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li
    */
   component: React.ReactElement;
+
+  /**
+   * Additional classNames for the Toolbar Node `<li></li>`.
+   */
+  additionalClassNames?: string;
 };
 
 /**
@@ -48,33 +57,38 @@ export type FaustToolbarContext = {
  * Toolbar props.
  */
 export type ToolbarProps = {
-  client: React.ReactNode;
   seedNode: SeedNode;
 };
 
 /**
  * Renders a Toolbar that is based on WordPress' own toolbar.
  */
-export function Toolbar({ client, seedNode }: ToolbarProps) {
+export function Toolbar({ seedNode }: ToolbarProps) {
   /**
    * Define Toolbar Nodes that should be included by default.
    */
   const coreToolbarNodes: FaustToolbarNodes = useMemo(() => {
     return [
       {
-        key: 'faust',
+        id: 'site-name',
         location: 'primary',
-        component: <Faust />,
+        component: <SiteName />,
       },
       {
-        key: 'edit',
+        id: 'edit',
         location: 'primary',
         component: <Edit seedNode={seedNode} />,
       },
       {
-        key: 'graphiql',
+        id: 'graphiql',
         location: 'primary',
         component: <GraphiQL />,
+      },
+      {
+        id: 'my-account',
+        location: 'secondary',
+        component: <MyAccount />,
+        additionalClassNames: 'with-avatar',
       },
     ];
   }, [seedNode]);
@@ -87,18 +101,17 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
    */
   useEffect(() => {
     const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
-      client,
       seedNode,
     }) as FaustToolbarNodes;
 
-    const uniqueKeys = new Set(filteredNodes.map((nodes) => nodes.key));
+    const uniqueKeys = new Set(filteredNodes.map((nodes) => nodes.id));
 
     if (uniqueKeys.size < filteredNodes.length) {
       throw new Error('Toolbar Nodes must have unique keys.');
     }
 
     setToolbarNodes(filteredNodes);
-  }, [coreToolbarNodes, client, seedNode]);
+  }, [coreToolbarNodes, seedNode]);
 
   /**
    * Handle adding `admin-bar` body class on render.
@@ -134,19 +147,19 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
         role="navigation"
         aria-label="Toolbar">
         <ul id="wp-admin-bar-root-default" className="ab-top-menu">
-          {primaryNodes.map(({ key, component }) => (
-            <ToolbarItem key={key} id={`wp-admin-bar-${key}`}>
+          {primaryNodes.map(({ component, id, ...props }: FaustToolbarNode) => (
+            <ToolbarNode key={id} id={id} {...props}>
               {component}
-            </ToolbarItem>
+            </ToolbarNode>
           ))}
         </ul>
         <ul
           id="wp-admin-bar-top-secondary"
           className="ab-top-secondary ab-top-menu">
-          {secondaryNodes.map(({ key, component }) => (
-            <ToolbarItem key={key} id={`wp-admin-bar-${key}`}>
+          {secondaryNodes.map(({ component, id, ...props }: FaustToolbarNode) => (
+            <ToolbarNode key={id} id={id} {...props}>
               {component}
-            </ToolbarItem>
+            </ToolbarNode>
           ))}
         </ul>
       </div>

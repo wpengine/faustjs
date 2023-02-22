@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-export function ToolbarSubmenuWrapper(props: {
-  children: React.ReactNode | undefined;
-}) {
-  const { children } = props;
+type Props = {
+  children: React.ReactNode | string;
+};
 
-  return <div className="ab-sub-wrapper">{children}</div>;
+export function ToolbarSubmenuWrapper({ children, ...props }: Props) {
+  return (
+    <div className="ab-sub-wrapper" {...props}>
+      {children}
+    </div>
+  );
 }

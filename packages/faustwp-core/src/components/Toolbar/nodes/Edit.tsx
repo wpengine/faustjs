@@ -1,13 +1,13 @@
 import React from 'react';
 import { SeedNode } from '../../../queries/seedQuery.js';
-import { adminUrl } from '../../../utils/adminUrl.js';
-import { ToolbarLink } from '../index.js';
+import { getAdminUrl } from '../../../lib/getAdminUrl.js';
+import { ToolbarItem } from '../index.js';
 
-export type EditProps = {
+type Props = {
   seedNode: SeedNode;
 };
 
-export function Edit({ seedNode }: EditProps) {
+export function Edit({ seedNode }: Props) {
   if (
     seedNode === undefined ||
     seedNode?.isFrontPage ||
@@ -21,7 +21,7 @@ export function Edit({ seedNode }: EditProps) {
   const postType = seedNode?.__typename || '';
   const postId = seedNode?.databaseId || '';
 
-  const editPostUrl = adminUrl(`post.php?post=${postId}&action=edit`);
+  const editPostUrl = getAdminUrl(`post.php?post=${postId}&action=edit`);
 
-  return <ToolbarLink url={editPostUrl}>Edit {postType}</ToolbarLink>;
+  return <ToolbarItem href={editPostUrl}>Edit {postType}</ToolbarItem>;
 }

@@ -44,6 +44,7 @@
   "dependencies": {
     "@wordpress/hooks": "^3.14.0",
     "chalk": "^4.1.2",
+    "classnames": "^2.3.2",
     "cookie": "^0.5.0",
     "deepmerge": "^4.2.2",
     "fast-xml-parser": "^4.1.1",
