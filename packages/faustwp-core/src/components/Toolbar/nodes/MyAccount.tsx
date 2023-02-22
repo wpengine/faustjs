@@ -57,8 +57,8 @@ export function AuthenticatedAccount() {
         />
       </ToolbarItem>
       <ToolbarSubmenuWrapper>
-        <ToolbarSubmenu>
-          <li>
+        <ToolbarSubmenu id="wp-admin-bar-user-actions">
+          <li id="wp-admin-bar-user-info">
             <ToolbarItem tabIndex={-1} href={adminUrl('profile.php')}>
               <img
                 alt=""
@@ -74,13 +74,13 @@ export function AuthenticatedAccount() {
               <span className="username">{data?.viewer?.username}</span>
             </ToolbarItem>
           </li>
-          <li>
+          <li id="wp-admin-bar-edit-profile">
             <ToolbarItem href={adminUrl('profile.php')}>
               Edit Profile
             </ToolbarItem>
           </li>
-          <li>
-            <ToolbarItem handleClick={() => logout()}>Log Out</ToolbarItem>
+          <li id="wp-admin-bar-logout">
+            <ToolbarItem href="javascript:void(0);" handleClick={() => logout()}>Log Out</ToolbarItem>
           </li>
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>
