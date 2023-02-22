@@ -3,6 +3,7 @@ import { Faust, Edit, GraphiQL } from './nodes/index.js';
 import { hooks } from '../../wpHooks/index.js';
 import { ToolbarItem } from './ToolbarItem.js';
 import { SeedNode } from '../../queries/seedQuery.js';
+import { useAuth } from '../../hooks/useAuth.js';
 
 /**
  * The available menu locations that nodes can be added to.
@@ -79,6 +80,7 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
+  const { isAuthenticated } = useAuth();
 
   /**
    * Handle Toolbar nodes.
@@ -119,6 +121,10 @@ export function Toolbar({ client, seedNode }: ToolbarProps) {
   const secondaryNodes = toolbarNodes.filter(
     ({ location }) => location === 'secondary',
   );
+
+  if (isAuthenticated !== true) {
+    return null;
+  }
 
   return (
     <div id="wpadminbar" className="nojq">

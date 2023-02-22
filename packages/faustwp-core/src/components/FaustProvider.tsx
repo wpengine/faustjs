@@ -8,7 +8,6 @@ import { useApollo } from '../client.js';
 import { Toolbar } from './Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
-import { useAuth } from '../hooks/useAuth.js';
 
 export type FaustPageProps = AppProps['pageProps'] & {
   __SEED_NODE__: SeedNode;
@@ -22,11 +21,10 @@ export function FaustProvider(props: {
   const { experimentalToolbar } = getConfig();
   const router = useRouter();
   const apolloClient = useApollo(pageProps);
-  const { isAuthenticated } = useAuth();
 
   return (
     <ApolloProvider client={apolloClient}>
-      {experimentalToolbar && isAuthenticated && (
+      {experimentalToolbar && (
         <Toolbar
           key={`faust-toolbar-${router.asPath}`} // Required in order to load each route's own seed node.
           client={apolloClient}
