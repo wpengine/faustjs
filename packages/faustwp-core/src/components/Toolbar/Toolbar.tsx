@@ -50,7 +50,7 @@ export type FaustToolbarNodes = FaustToolbarNode[];
  * Toolbar context.
  */
 export type FaustToolbarContext = {
-  seedNode: SeedNode;
+  seedNode?: SeedNode;
 };
 
 /**
