@@ -1,6 +1,6 @@
 import React from 'react';
 import { SeedNode } from '../../../queries/seedQuery.js';
-import { adminUrl } from '../../../utils/adminUrl.js';
+import { getAdminUrl } from '../../../lib/getAdminUrl.js';
 import { ToolbarItem } from '../index.js';
 
 type Props = {
@@ -21,7 +21,7 @@ export function Edit({ seedNode }: Props) {
   const postType = seedNode?.__typename || '';
   const postId = seedNode?.databaseId || '';
 
-  const editPostUrl = adminUrl(`post.php?post=${postId}&action=edit`);
+  const editPostUrl = getAdminUrl(`post.php?post=${postId}&action=edit`);
 
   return <ToolbarItem href={editPostUrl}>Edit {postType}</ToolbarItem>;
 }

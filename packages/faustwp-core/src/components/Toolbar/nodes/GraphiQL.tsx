@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminUrl } from '../../../utils/adminUrl.js';
+import { getAdminUrl } from '../../../lib/getAdminUrl.js';
 import { ToolbarItem } from '../index.js';
 
 // Taken from WP GraphQL's WordPress plugin toolbar styles.
@@ -15,7 +15,7 @@ const styles = {
 } as const;
 
 export function GraphiQL({
-  url = adminUrl('admin.php?page=graphiql-ide'),
+  url = getAdminUrl('admin.php?page=graphiql-ide'),
   title = 'GraphiQL IDE',
 }) {
   return (

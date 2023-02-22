@@ -1,7 +1,7 @@
 import React from 'react';
-import { adminUrl } from '../../../utils/adminUrl.js';
+import { getAdminUrl } from '../../../lib/getAdminUrl.js';
 import { ToolbarItem } from '../index.js';
 
-export function SiteName({ url = adminUrl(), title = 'WordPress' }) {
+export function SiteName({ url = getAdminUrl(), title = 'WordPress' }) {
   return <ToolbarItem href={url}>{title}</ToolbarItem>;
 }
