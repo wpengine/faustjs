@@ -47,6 +47,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Customizing the Toolbar',
+          id: 'guides/custom-toolbar',
+        },
+        {
+          type: 'doc',
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },

@@ -5,6 +5,7 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client';
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
+import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
 
 type FaustCoreFilters = {
@@ -66,6 +67,16 @@ type FaustCoreFilters = {
     hookName: 'wpUrl',
     namespace: string,
     callback: (wpUrl: string, context: Record<string, never>) => string,
+    priority?: number | undefined,
+  ): void;
+
+  addFilter(
+    hookName: 'toolbarNodes',
+    namespace: string,
+    callback: (
+      toolbarNodes: FaustToolbarNodes,
+      context: { seedNode?: SeedNode },
+    ) => string,
     priority?: number | undefined,
   ): void;
 };

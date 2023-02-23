@@ -10,6 +10,7 @@ import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
 import { withFaust } from './config/withFaust.js';
 import { getWpUrl } from './lib/getWpUrl.js';
+import { getAdminUrl } from './lib/getAdminUrl.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getWpHostname } from './lib/getWpHostname.js';
 import {
@@ -44,6 +45,7 @@ export {
   withFaust,
   getWpHostname,
   getWpUrl,
+  getAdminUrl,
   getGraphqlEndpoint,
   getApolloClient,
   getApolloAuthClient,

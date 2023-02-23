@@ -5,6 +5,18 @@
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/mjs/index.js"
+    },
+    "./toolbar": {
+      "require": "./dist/cjs/components/Toolbar/index.js",
+      "import": "./dist/mjs/components/Toolbar/index.js"
+    },
+    "./dist/css/toolbar.css": "./dist/css/toolbar.css",
+    "./package.json": "./package.json"
+  },
   "peerDependencies": {
     "@apollo/client": ">=3.6.6",
     "next": ">=12.1.6",
@@ -20,9 +32,11 @@
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",
     "@types/node": "^17.0.17",
+    "concurrently": "^7.6.0",
     "fetch-mock": "9.11.0",
     "jest": "^27.3.1",
     "rimraf": "^3.0.2",
+    "shx": "^0.3.4",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4"
@@ -30,6 +44,7 @@
   "dependencies": {
     "@wordpress/hooks": "^3.14.0",
     "chalk": "^4.1.2",
+    "classnames": "^2.3.2",
     "cookie": "^0.5.0",
     "deepmerge": "^4.2.2",
     "fast-xml-parser": "^4.1.1",
@@ -37,9 +52,11 @@
     "lodash": "^4.17.21"
   },
   "scripts": {
-    "build": "npm run clean && npm run ts && npm run ts:cjs && npm run package",
+    "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
+    "build": "concurrently \"npm:build-*\" --prefix-colors \"auto\"",
+    "prebuild": "npm run clean",
+    "postbuild": "npm run package",
     "clean": "rimraf dist",
-    "dev": "npm run ts:watch",
     "format": "prettier --write .",
     "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
@@ -47,9 +64,12 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test": "jest",
-    "ts:cjs": "tsc -p tsconfig-cjs.json",
-    "ts:watch": "tsc -p . --watch",
-    "ts": "tsc -p ."
+    "build-cjs": "tsc -p tsconfig-cjs.json",
+    "build-js": "tsc -p .",
+    "build-fonts": "mkdir -p dist/fonts && shx cp src/fonts/* dist/fonts",
+    "build-styles": "sass src/styles/toolbar.scss dist/css/toolbar.css --embed-sources",
+    "watch-styles": "sass src/styles/toolbar.scss dist/css/toolbar.css --embed-sources --watch",
+    "watch-js": "tsc -p . --watch"
   },
   "repository": {
     "type": "git",
