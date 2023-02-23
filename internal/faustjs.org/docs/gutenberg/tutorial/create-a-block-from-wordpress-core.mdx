@@ -14,7 +14,7 @@ If you have not already done so, you will need to follow the [Getting Started](/
 The Core Editor Blocks contain a list of useful blocks for editing and publishing content.
 All of the official blocks include a `block.json` with defined attributes, so the `wp-graphql-content-blocks` plugin will automatically expose those as GraphQL fields.
 
-For this tutorial, we are going to implement the [Code Block](https://wordpress.com/support/wordpress-editor/blocks/code-block/) that renders a formated block of code:
+For this tutorial, we are going to implement the [Code Block](https://wordpress.com/support/wordpress-editor/blocks/code-block/) that renders a formatted block of code:
 
 ## 3. Review the Block design in the Editor
 
@@ -204,7 +204,7 @@ Now you are ready to design the block based on the original block's look and fee
 
 The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
 
-Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implmentation of this block and try to port the parts that render the block in the frontend.
+Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block in the frontend.
 
 This implementation is found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code).
 
@@ -244,7 +244,7 @@ In that case, the `render_callback` will provide the markup for the block using 
 
 :::
 
-Since the `save` function is provided with that block we have a viable stategy that will save us time without having to figure out the actual implementation.
+Since the `save` function is provided with that block we have a viable strategy that will save us time without having to figure out the actual implementation.
 
 So go ahead and provide the implementation of the Block based on the `save` function. You will need to remove the references of the `RichText` and  `useBlockProps` imports as you won't be needing those.
 
@@ -410,7 +410,7 @@ So you need to either import the styles from a global module or translate the st
 
 :::
 
-## Futher Considerations
+## Further Considerations
 
 ### What if the block is missing some attributes?
 
@@ -449,4 +449,4 @@ In that case you want to be able to review the bundled JavaScript assets and cho
 
 * **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
 
-Innevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
+Inevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
