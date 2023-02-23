@@ -94,9 +94,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
   }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
-  let { isAuthenticated } = useAuth();
-
-  isAuthenticated = true;
+  const { isAuthenticated } = useAuth();
 
   /**
    * Handle Toolbar nodes.
