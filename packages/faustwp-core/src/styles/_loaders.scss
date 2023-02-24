@@ -1,0 +1,40 @@
+#wpadminbar .toolbar-node-skeleton-wrapper {
+  --toolbar-node-skeleton-gradient--dark: rgba(240, 246, 252, 0.2);
+  --toolbar-node-skeleton-gradient--light: rgba(240, 246, 252, 0.5);
+
+  box-sizing: border-box;
+  min-width: 100px;
+  padding: 6px;
+  height: var(--wp-admin--admin-bar--height);
+  cursor: progress;
+}
+
+#wpadminbar .toolbar-node-skeleton {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(
+    -90deg,
+    var(--toolbar-node-skeleton-gradient--dark) 0%,
+    var(--toolbar-node-skeleton-gradient--light) 50%,
+    var(--toolbar-node-skeleton-gradient--dark) 100%
+  );
+  background-size: 400% 400%;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+// Tone down the animation to avoid vestibular motion triggers like scaling or panning large objects.
+@media (prefers-reduced-motion) {
+  #wpadminbar .toolbar-node-skeleton {
+    animation: none;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -135% 0%;
+  }
+}
