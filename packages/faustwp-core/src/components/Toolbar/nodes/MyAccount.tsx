@@ -6,6 +6,7 @@ import { useAuth } from '../../../hooks/useAuth.js';
 import { getAdminUrl } from '../../../lib/getAdminUrl.js';
 import {
   ToolbarItem,
+  ToolbarNodeSkeleton,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
 } from '../index.js';
@@ -38,7 +39,7 @@ export function AuthenticatedAccount() {
   );
 
   if (loading) {
-    return <>Loading...</>;
+    return <ToolbarNodeSkeleton />;
   }
 
   return (
@@ -97,7 +98,7 @@ export function MyAccount() {
   });
 
   if (!isReady) {
-    return <>Loading...</>;
+    return <ToolbarNodeSkeleton />;
   }
 
   if (isAuthenticated === true) {
