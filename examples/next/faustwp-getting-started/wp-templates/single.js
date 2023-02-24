@@ -52,7 +52,7 @@ export default function Component(props) {
   const blocks = flatListToHierarchical(contentBlocks);
 
   return (
-    <>
+    <div className="wp-site-blocks">
       <SEO
         title={siteTitle}
         description={siteDescription}
@@ -71,13 +71,13 @@ export default function Component(props) {
             date={date}
             author={author?.node?.name}
           />
-          <Container>
+          <Container className="is-layout-constrained wp-block-post-content">
             <WordPressBlocksViewer contentBlocks={blocks} />
           </Container>
         </>
       </Main>
       <Footer title={siteTitle} menuItems={footerMenu} />
-    </>
+    </div>
   );
 }
 

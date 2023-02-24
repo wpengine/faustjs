@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import getStyles from '../utilities/getStyles.js';
 
-export default function CoreColumn(props) {
+export default function CoreColumns(props) {
   const attributes = props.attributes;
   const style = getStyles(attributes);
   return (
@@ -14,7 +14,7 @@ export default function CoreColumn(props) {
 
 CoreColumn.fragments = {
   entry: gql`
-    fragment CoreColumnFragment on CoreColumn {
+    fragment CoreColumnsFragment on CoreColumns {
       attributes {
         cssClassName
         style

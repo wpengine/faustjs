@@ -1,8 +1,11 @@
 import styles from './Container.module.scss';
+import className from 'classnames/bind';
 
-export default function Container({ children }) {
+let cx = className.bind(styles);
+
+export default function Container({ children, className }) {
   return (
-    <div className={styles.component}>
+    <div className={cx('component', className)}>
       {children}
     </div>
   );
