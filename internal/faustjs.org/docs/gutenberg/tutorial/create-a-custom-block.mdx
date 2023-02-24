@@ -19,13 +19,15 @@ This tutorial assumes that you begin your block creation from nothing at all, wh
 
 :::tip 
 
-Check out all the components that are available to you through the @wordpress/components library as you think about what you want your custom block to do and look like. 
+Check out all the components that are available to you through the [@wordpress/components](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-components/) library as you think about what you want your custom block to do and look like. 
 
 :::
 
 ## 3. Creating your block using the WordPress block boilerplate code
 
 The [@wordpress/create-block](https://www.npmjs.com/package/@wordpress/create-block) package exists to create the necessary block scaffolding to get you started. See the WordPress basic block [tutorial](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/) documentation for a step-by-step guide.
+
+For this step, we will make a simple block named MyCoolBlock, which has a RichText attribute and a radial button attribute from the @wordpress/components library.
 
 ## 4. Create the initial block
 
@@ -53,16 +55,6 @@ export default {
 ```
 
 By exporting the block in the `index.js` we make it available in the `WordPressBlocksProvider`.
-You can also use a different name as long as it matches either the Block `name` or the `__typename` fields.
-
-This also works:
-
-```javascript title="wp-blocks/index.js"
-import MyCoolBlock from './MyCoolBlock';
-export default {
-  'core/code': MyCoolBlock
-}
-```
 
 ### 4.3 Create the block fragment
 
@@ -76,7 +68,9 @@ MyCoolBlock.fragments = {
   entry: gql`
     fragment MyCoolBlockBlockFragment on MyCoolBlock {
       attributes {
+        class
         content
+        message
       }
     }
   `,
@@ -122,26 +116,21 @@ If you navigate to the page that contains this block, you should be able to insp
     alt="Code Code preview of the block attributes in the console"
   />
 
-Now you are ready to design the block based on the original block's look and feel.
-
 ## 5. Implement the Block using the provided block attributes and the Editor view
 
 Let's look at the following files you generated during your custom block creation:
 
-`style.scss`: Contains the front-end block styles. You can definitely include those in our global styles:
+`style.scss`: Contains the front-end block styles. You can definitely include those in the global styles section of your app, if you wish:
 
 ```scss title="style.scss"
-.wp-block-code {
+.my-block-code {
 	// This block has customizable padding, border-box makes that more predictable.
 	box-sizing: border-box;
 
 	// Provide a minimum of overflow handling and ensure the code markup inherits
 	// the font-family set on pre.
 	code {
-		display: block;
 		font-family: inherit;
-		overflow-wrap: break-word;
-		white-space: pre-wrap;
 	}
 }
 ...
@@ -152,26 +141,16 @@ Let's look at the following files you generated during your custom block creatio
 `save.js`: According to [the docs](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save),
 the `save` function defines the way in which the different attributes should be combined into the final markup, which is then serialized into `post_content`.
 
-Most of the time, the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way, the design of the block in the editor will match the design in the Decoupled site.
+Most of the time, the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way, the design of the block in the editor will match the design we make in the Decoupled site.
 
-:::note
-
-Since the block is static most of the time, the save.js should be provided. Sometimes the `save` function is not provided or it returns `null`. When this happens, the component is considered `dynamic`, aka it renders in the server.
-So you want to check if the [register_block_type](https://developer.wordpress.org/reference/functions/register_block_type/) provides an implementation for rendering the block.
-In that case, the `render_callback` will provide the markup for the block using PHP. You can take this implementation and translate it to React.
-
-:::
-
-Since the `save` function is provided with that block we have a viable strategy that will save us time without having to figure out the actual implementation.
-
-So go ahead and provide the implementation of the Block based on the `save` function. You will need to remove the references of the `RichText` and  `useBlockProps` imports as you won't be needing those.
+So go ahead and provide the implementation of the Block based on the `save` function. 
 
 ```jsx title="wp-blocks/MyCoolBlock.js" {6}
 import { gql } from '@apollo/client';
 import getStyles from '../utilities/getStyles.js';
 
 export default function MyCoolBlock(props) {
-  const className = 'wp-block-code';
+  const className = 'my-block-code';
   const styles = getStyles(props.attributes)
   return (
     <pre className={className} style={styles}>
@@ -183,7 +162,7 @@ export default function MyCoolBlock(props) {
 
 A few important things to consider here:
 
- - First we assign the same className `wp-block-code` for the block so that we can apply the same styles as the Editor.
+ - First we assign the same className `my-block-code` for the block so that we can apply the same styles as the Editor.
  - Then we use a helper `getStyles` that creates the final inline styles for that block based on the block attributes.
  - Finally we pass on the `props.attributes?.content` as a string to the `code` element.
 
@@ -310,15 +289,7 @@ You can create a new folder for block styles inside the `styles` folder and impo
 @import './blocks/MyCoolBlock' // import block styles here
 ```
 
-Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styles with the editor view:
-
-<img
-    src="/docs/img/core-code-block-decoupled-preview.png"
-    alt="Code block demo of the block rendered in the Decoupled Website"
-  />
-
-
-Make sure to tweak the block in the editor and verify that the changes are being reflected in the website.
+Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styling you wish. Make sure to tweak the block in the editor and verify that the changes are being reflected in the website.
 
 :::note
 
