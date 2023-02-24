@@ -32,12 +32,12 @@ The [@wordpress/create-block](https://www.npmjs.com/package/@wordpress/create-bl
 Inside the codebase of your application, create the basic block structure that simply prints the block's attributes.
 The steps required to achieve that are the following:
 
-### 4.1 Create the block and save it inside the `wp-blocks` folder
+### 4.1 Save it inside the `wp-blocks` folder
 
-```jsx title="wp-blocks/CoreCode.js"
-export default function CoreCode(props) {
+```jsx title="wp-blocks/DnDBlock.js"
+export default function MyCoolBlock(props) {
   console.log(props.attributes);
-  return <div>CoreCode</div>
+  return <div>MyCoolBlock</div>
 }
 ```
 
@@ -46,9 +46,9 @@ This component prints the block attributes via the props passed as a parameter.
 ### 4.2 Export the block in the `index.js`
 
 ```jsx title="wp-blocks/index.js"
-import CoreCode from './CoreCode';
+import MyCoolBlock from './MyCoolBlock';
 export default {
-  CoreCode
+  MyCoolBlock
 }
 ```
 
@@ -58,9 +58,9 @@ You can also use a different name as long as it matches either the Block `name` 
 This also works:
 
 ```javascript title="wp-blocks/index.js"
-import CoreCode from './CoreCode';
+import MyCoolBlock from './MyCoolBlock';
 export default {
-  'core/code': CoreCode
+  'core/code': MyCoolBlock
 }
 ```
 
@@ -68,21 +68,15 @@ export default {
 
 You want to create a fragment that describes the request block fields and attributes. Ideally you want to include all the relevant fields for the implementation part:
 
-```jsx title="wp-blocks/CoreCode.js" {1}
+```jsx title="wp-blocks/MyCoolBlock.js" {1}
 import {gql} from '@apollo/client';
 ...
-CoreCode.fragments = {
-  key: `CoreCodeBlockFragment`,
+MyCoolBlock.fragments = {
+  key: `MyCoolBlockBlockFragment`,
   entry: gql`
-    fragment CoreCodeBlockFragment on CoreCode {
+    fragment MyCoolBlockBlockFragment on MyCoolBlock {
       attributes {
-        borderColor
-        backgroundColor
         content
-        style
-        textColor
-        fontSize
-        fontFamily
       }
     }
   `,
@@ -103,7 +97,7 @@ export default function Component(props) {
 }
 Component.query = gql`
 ...
-${blocks.CoreCode.fragments.entry}
+${blocks.MyCoolBlock.fragments.entry}
 query GetPost(
 ...
 	post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
@@ -114,7 +108,7 @@ query GetPost(
 			renderedHtml
 			id: nodeId
 			parentId
-			${blocks.CoreCode.fragments.key}
+			${blocks.MyCoolBlock.fragments.key}
       	}
 	}
 ...
@@ -132,13 +126,7 @@ Now you are ready to design the block based on the original block's look and fee
 
 ## 5. Implement the Block using the provided block attributes and the Editor view
 
-The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
-
-Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block in the frontend.
-
-This implementation is found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code).
-
-You are interested in the following files:
+Let's look at the following files you generated during your custom block creation:
 
 `style.scss`: Contains the front-end block styles. You can definitely include those in our global styles:
 
@@ -178,11 +166,11 @@ Since the `save` function is provided with that block we have a viable strategy 
 
 So go ahead and provide the implementation of the Block based on the `save` function. You will need to remove the references of the `RichText` and  `useBlockProps` imports as you won't be needing those.
 
-```jsx title="wp-blocks/CoreCode.js" {6}
+```jsx title="wp-blocks/MyCoolBlock.js" {6}
 import { gql } from '@apollo/client';
 import getStyles from '../utilities/getStyles.js';
 
-export default function CoreCode(props) {
+export default function MyCoolBlock(props) {
   const className = 'wp-block-code';
   const styles = getStyles(props.attributes)
   return (
@@ -319,7 +307,7 @@ You can create a new folder for block styles inside the `styles` folder and impo
 ```scss title="styles/blocks.scss"
 // WordPress block styles.
 ...
-@import './blocks/CoreCode' // import block styles here
+@import './blocks/MyCoolBlock' // import block styles here
 ```
 
 Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styles with the editor view:
@@ -342,44 +330,13 @@ So you need to either import the styles from a global module or translate the st
 
 ## Further Considerations
 
-### What if the block is missing some attributes?
-
-If the block does not have any attributes or has only a few of them declared in the block.json, you can still try to extend the block API by declaring additional attributes for that block.
-Follow the [filters reference guide](gutenberg/filters), to create a block that uses the `additional_block_attributes` property. The attributes will be available to query from that block.
-
-```php
-class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
-{
-    protected ?array $additional_block_attributes = array(
-      // Write your attributes here
-    );
-}
-```
-:::note
-
-If you include those extensions in a custom plugin, your Decoupled application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
-:::
-
 ### Can I style the block differently?
 
 Yes, you can style the block in many ways, choosing to ignore some of the attributes altogether.
 You can also use an external React Library to style the block. For example, use Material UI or ChakraUI.
 Bear in mind that this will almost always result in degraded user editing experience as the styles of the Editor view won't match the styles of the rendered page.
 
-### What if the block contains custom JavaScript assets?
 
-Some Core blocks include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
-Since React is not normally bundled as a dependency in the browser, the JavaScript code usually consists of good old jQuery and document selectors.
-
-In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
-
-* **Include them in your code:** This is not recommended as React does not play well with plain JavaScript and jQuery so you can expect lots of problems.
-
-* **Rewrite them as React components:** You can attempt to rewrite the code into React. If the bundled code can be understood and rewritten with low effort then you can make that commitment.
-
-* **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
-
-Inevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
 
 
 
