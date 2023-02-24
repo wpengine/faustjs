@@ -5,8 +5,8 @@ import React from 'react';
  */
 export function ToolbarNodeSkeleton() {
   return (
-    <div className='toolbar-node-skeleton-wrapper'>
-      <div aria-hidden="true" className='toolbar-node-skeleton' />
+    <div className="toolbar-node-skeleton-wrapper">
+      <div aria-hidden="true" className="toolbar-node-skeleton" />
     </div>
   );
 }
