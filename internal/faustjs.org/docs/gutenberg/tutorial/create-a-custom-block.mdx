@@ -68,7 +68,7 @@ MyCoolBlock.fragments = {
   entry: gql`
     fragment MyCoolBlockBlockFragment on MyCoolBlock {
       attributes {
-        class
+        color
         content
         message
       }
@@ -112,8 +112,8 @@ query GetPost(
 If you navigate to the page that contains this block, you should be able to inspect the properties in the console:
 
 <img
-    src="/docs/img/core-code-block-console.png"
-    alt="Code Code preview of the block attributes in the console"
+    src="/docs/img/mycoolblock-attributes.png"
+    alt="Preview of the MyCoolBlock attributes in the console"
   />
 
 ## 5. Implement the Block using the provided block attributes and the Editor view
@@ -123,16 +123,8 @@ Let's look at the following files you generated during your custom block creatio
 `style.scss`: Contains the front-end block styles. You can definitely include those in the global styles section of your app, if you wish:
 
 ```scss title="style.scss"
-.my-block-code {
-	// This block has customizable padding, border-box makes that more predictable.
-	box-sizing: border-box;
 
-	// Provide a minimum of overflow handling and ensure the code markup inherits
-	// the font-family set on pre.
-	code {
-		font-family: inherit;
-	}
-}
+
 ...
 ```
 
@@ -147,147 +139,18 @@ So go ahead and provide the implementation of the Block based on the `save` func
 
 ```jsx title="wp-blocks/MyCoolBlock.js" {6}
 import { gql } from '@apollo/client';
-import getStyles from '../utilities/getStyles.js';
 
 export default function MyCoolBlock(props) {
   const className = 'my-block-code';
-  const styles = getStyles(props.attributes)
   return (
-    <pre className={className} style={styles}>
+    <p className={className}>{props?.content}</p>
       <code>{`${props.attributes?.content}`}</code>
     </pre>
   );
 }
 ```
 
-A few important things to consider here:
 
- - First we assign the same className `my-block-code` for the block so that we can apply the same styles as the Editor.
- - Then we use a helper `getStyles` that creates the final inline styles for that block based on the block attributes.
- - Finally we pass on the `props.attributes?.content` as a string to the `code` element.
-
-Let's delve into the `getStyles` helper function and see what it does:
-
-```jsx {1-3} title="utilities/getStyles.js"
-import { colorsMap, fontSizesMap } from '../styles/variables.js';
-import { cssToReactStyle } from './cssToReactStyle.js';
-import { compileCSS } from '@wordpress/style-engine';
-
-export default function getStyles(attributes) {
-  return {
-    backgroundColor: colorsMap[attributes?.backgroundColor],
-    color: colorsMap[attributes?.textColor],
-    fontSize: fontSizesMap[attributes?.fontSize],
-    borderColor: colorsMap[attributes?.borderColor],
-    ...(attributes?.style && cssToReactStyle(compileCSS(JSON.parse(attributes.style)))),
-  };
-}
-```
-
-This function takes the blocks attributes and maps them into inline React styles using the following helpers:
-
-* `colorsMap, fontSizesMap`: Map the slug color and font values to associated colors and font sizes based on the current `theme.json`.
-* `compileCSS`: A helper function from the [@wordpress/style-engine](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-style-engine/) package that parses the JSON object containing the block styles and returns an inline style string.
-* `cssToReactStyle`: Another helper function that translates the inline style string into a React inline styles object.
-
-Below is the implementation of those functions in order:
-
-```jsx title="styles/variables.js"
-// Contains the Theme.js palette colors
-export const colorsMap = {
-  'primary': '#9DFF20',
-  'secondary': '#345C00',
-  'tertiary': '#f6f6f6',
-  'foreground': '#000000',
-  'background': '#ffffff',
-  'cyan-bluish-gray': '#abb8c3',
-  'pale-pink': '#f78da7',
-  'luminous-vivid-amber': '#fcb900',
-  'pale-cyan-blue': '#8ed1fc',
-  'vivid-cyan-blue': '#0693e3',
-  'vivid-purple': '#9b51e0',
-  'vivid-red': '#cf2e2e',
-  'light-green-cyan': '#7bdcb5',
-}
-
-export const fontSizesMap = {
-  'small': '1rem',
-  'normal': '1.5rem',
-  'large': '1.75rem'
-}
-```
-
-```jsx title="utilities/cssToReactStyle.js"
-import isObject from 'lodash/isObject';
-import map from 'lodash/map';
-import camelCase from 'lodash/camelCase';
-
-export const cssToReactStyle = (css) => {
-  // If object is given, return object (could be react style object mistakenly provided)
-  if (isObject(css)) {
-    return css;
-  }
-
-  // If falsy, then probably empty string or null, nothing to be done there
-  if (!css) {
-    return {};
-  }
-
-  // Only accepts strings
-  if (typeof css !== 'string') {
-    console.error(`Unexpected type "${typeof css}" when expecting string, with value "${css}"`);
-    return {};
-  }
-
-  const style = {};
-  const rules = css.split(';');
-  map(rules, (rule) => {
-    let [key, value] = rule.split(':');
-
-    if (key && value) {
-      key = key.trim();
-      value = value.trim();
-
-      style[camelCase(key)] = value;
-    }
-  });
-
-  return style;
-};
-```
-
-If you don't want to include the `@wordpress/style-engine` package in your final bundle, you can still map the JSON object manually into the associated styles.
-If you take a look at this style object after the style is parsed:
-
-```jsx title="JSON.parse(style)"
-{
-	border: {
-		color: "#000"
-	},
-	color: {
-		text: "#333"
-	}
-}
-```
-
-Mapping into the React styles object would then be:
-
-```jsx
-  const parsed = JSON.parse(style);
-	return {
-		borderColor: parsed?.border?.color
-    color: parsed?.text?.color,
-	}
-```
-
-One final detail: don't forget to include the global scss for the block so that the right styles are applied.
-You can create a new folder for block styles inside the `styles` folder and import it there:
-
-```scss title="styles/blocks.scss"
-// WordPress block styles.
-...
-@import './blocks/MyCoolBlock' // import block styles here
-```
 
 Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styling you wish. Make sure to tweak the block in the editor and verify that the changes are being reflected in the website.
 
