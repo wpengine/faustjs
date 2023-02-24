@@ -5,7 +5,9 @@ description: This tutorial will give you some simple steps to follow in order to
 ---
 
 In this tutorial, you will install and create a block using `@faustwp/blocks`.
-This tutorial assumes you have already installed both the `@faustwp/blocks` and `wp-graphql-content-blocks` plugin. If you aren't sure how, head to the [Getting Started](/docs/gutenberg/getting-started) guide for step-by-step instructions.
+This tutorial assumes you have already manually installed both the `@faustwp/blocks` and `wp-graphql-content-blocks` plugin. If you aren't sure how, head to the [Getting Started](/docs/gutenberg/getting-started) guide for step-by-step instructions.
+
+This tutorial also utilizes the [Faust Scaffold](http://localhost:3000/blog/sprint-24-update#faustjs-scaffold) as its repository. Feel free to [clone](https://github.com/wpengine/faust-scaffold) this repository to follow along.
 
 ## 1. Do I have everything I need to create a custom block?
 
@@ -13,9 +15,9 @@ Before beginning, take stock of your activated plugins in your WordPress instanc
 
 ## 2. Defining your custom block
 
-In this tutorial, we will assume that you do not have a preexisting block in mind to use with your Decoupled site. If you have a block you want to emulate from the WordPress core blocks library, head to our [tutorial](/docs/gutenberg/tutorial/create-a-block-from-wordpress-core.mdx) detailing how to do exactly that. Likewise, if you seek to recreate a block used by a third party plugin, we have a [tutorial](/docs/gutenberg/tutorial/create-a-block-from-third-party.mdx) tailored for that process, too.
+In this tutorial, we will assume that you do not have a preexisting block in mind to use with your Decoupled site. If you have a block you want to emulate from the WordPress core blocks library, head to our [tutorial](/docs/gutenberg/tutorial/create-a-block-from-wordpress-core.mdx) to learn how to do exactly that. Likewise, if you need to recreate a block used by a third party plugin, we have a [tutorial](/docs/gutenberg/tutorial/create-a-block-from-third-party.mdx) tailored for that process, too.
 
-This tutorial assumes that you begin your block creation from nothing at all, which will therefore require a few extra steps to work. 
+This tutorial assumes that you begin your block creation from nothing at all, which will therefore require a slightly different set of steps. 
 
 :::tip 
 
@@ -27,25 +29,42 @@ Check out all the components that are available to you through the [@wordpress/c
 
 The [@wordpress/create-block](https://www.npmjs.com/package/@wordpress/create-block) package exists to create the necessary block scaffolding to get you started. See the WordPress basic block [tutorial](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/) documentation for a step-by-step guide.
 
-For this step, we will make a simple block named MyCoolBlock, which has a RichText attribute and a radial button attribute from the @wordpress/components library.
+For this step, we will make a simple block named MyCoolBlock, which has a message that takes text, a radio control input attribute from the [@wordpress/components](https://wordpress.github.io/gutenberg/?path=/story/components-radiocontrol--default) library, and a RichText attribute from the [@wordpress/block-editor](https://developer.wordpress.org/block-editor/reference-guides/richtext/) toolkit applied to another text field. This block should closely match your boilerplate code's styling:
+
+
+<a href="/docs/img/custom-block-in-editor.png" target="_blank">
+  <img
+    src="/docs/img/custom-block-in-editor.png"
+    alt="The custom block as seen in the editor window"
+  />
+</a>
 
 ## 4. Create the initial block
 
 Inside the codebase of your application, create the basic block structure that simply prints the block's attributes.
 The steps required to achieve that are the following:
 
-### 4.1 Save it inside the `wp-blocks` folder
+### 4.1 Save the block inside a folder called `wp-blocks`
 
-```jsx title="wp-blocks/DnDBlock.js"
+<a href="/docs/img/creating-wp-blocks-folder.png" target="_blank">
+  <img
+    src="/docs/img/creating-wp-blocks-folder.png"
+    alt="The file structure of the project, showing the newly created wp-blocks folder at the root level of the Faust Scaffold app and containing a newly created folder called MyCoolBlock.js."
+  />
+</a>
+
+```jsx title="wp-blocks/MyCoolBlock.js"
 export default function MyCoolBlock(props) {
   console.log(props.attributes);
   return <div>MyCoolBlock</div>
 }
 ```
 
-This component prints the block attributes via the props passed as a parameter.
+This component prints the block attributes via the props passed as a parameter. This will help us understand what is happening a little later on.
 
 ### 4.2 Export the block in the `index.js`
+
+Make another file in `wp-blocks`, called `index.js`, and place the following inside:
 
 ```jsx title="wp-blocks/index.js"
 import MyCoolBlock from './MyCoolBlock';
@@ -54,7 +73,7 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js` we make it available in the `WordPressBlocksProvider`.
+By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`.
 
 ### 4.3 Create the block fragment
 
