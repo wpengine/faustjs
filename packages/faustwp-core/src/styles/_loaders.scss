@@ -1,10 +1,10 @@
 #wpadminbar .toolbar-node-skeleton-wrapper {
-  --toolbar-node-skeleton-gradient--dark: rgba(240, 246, 252, 0.2);
-  --toolbar-node-skeleton-gradient--light: rgba(240, 246, 252, 0.5);
+  --toolbar-node-skeleton-gradient--dark: rgba(240, 246, 252, 0.1);
+  --toolbar-node-skeleton-gradient--light: rgba(240, 246, 252, 0.3);
 
   box-sizing: border-box;
   min-width: 100px;
-  padding: 6px;
+  padding: 7px;
   height: var(--wp-admin--admin-bar--height);
   cursor: progress;
 }
