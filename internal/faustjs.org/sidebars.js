@@ -180,8 +180,13 @@ module.exports = {
             },
             {
               type: 'doc',
-              label: 'Creating a Block from a third party plugin',
+              label: 'Creating a Block from a Third Party Plugin',
               id: 'gutenberg/tutorial/create-a-block-from-third-party',
+            },
+            {
+              type: 'doc',
+              label: 'Creating a Custom Block',
+              id: 'gutenberg/tutorial/create-a-custom-block',
             },
           ],
         },
