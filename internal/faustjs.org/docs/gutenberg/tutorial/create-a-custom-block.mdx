@@ -73,7 +73,7 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`.
+By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`, which gives the proper context (i.e., which blocks have been defined as apart of your Faust app) to the `WordPressBlocksViewer` component. Read more about this component [here](http://localhost:3000/docs/reference/WordPressBlocksProvider). 
 
 ### 4.3 Create the block fragment
 
