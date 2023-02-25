@@ -73,11 +73,11 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`, which gives the proper context (i.e., which blocks have been defined as apart of your Faust app) to the `WordPressBlocksViewer` component. Read more about this component [here](http://localhost:3000/docs/reference/WordPressBlocksProvider). 
+By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`, which gives the proper context (i.e., which blocks have been defined as apart of your Faust app) to the `WordPressBlocksViewer` component. Read more about the WordPressBlocksProvider [here](http://localhost:3000/docs/reference/WordPressBlocksProvider). 
 
 ### 4.3 Create the block fragment
 
-You want to create a fragment that describes the request block fields and attributes. Ideally you want to include all the relevant fields for the implementation part:
+Next, you want to create a fragment that describes the request block fields and attributes. Ideally you want to include all the relevant attributes that this backend block function will need to call to your frontend block:
 
 ```jsx title="wp-blocks/MyCoolBlock.js" {1}
 import {gql} from '@apollo/client';
@@ -101,7 +101,7 @@ We chose to attach the fragment as a property of the function component itself. 
 
 You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload includes the data from that block.
 
-In our example we use it in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates):
+In this example we will use it in the single page template provided in the Faust Scaffold. You can learn more about the Faust Template Hierarchy [here](/docs/templates).
 
 ```jsx {1,7,18} title="wp-templates/single.js"
 import blocks from '../wp-blocks';
