@@ -97,6 +97,15 @@ MyCoolBlock.fragments = {
 ```
 We chose to attach the fragment as a property of the function component itself. This follows best practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
 
+Before moving forward, check to ensure your block is being queried correctly in the GraphiQL IDE. You may need to use your browser's search and find method to search all the possible names under contentBlocks.
+
+<a href="/docs/img/graphiql-query-composer.png" target="_blank">
+  <img
+    src="/docs/img/graphiql-query-composer.png"
+    alt="The GraphiQL IDE is open to the Query Composer, which shows under posts, then nodes, then contentBlocks that the CreateMycoolblock is present, with a selection of attributes visible such as color, content, and message."
+  />
+</a>
+
 ### 4.4 Include the block fragment into the page query string
 
 You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload includes the data from that block.
