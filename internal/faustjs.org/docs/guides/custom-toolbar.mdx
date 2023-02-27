@@ -52,14 +52,15 @@ Add the following code to `plugins/CustomPlugin.tsx`.
 
 ```js title="plugins/CustomPlugin.tsx"
 import React from 'react';
-import { FaustHooks, FaustPlugin } from '@faustwp/core';
 import {
+  FaustHooks,
+  FaustPlugin,
   FaustToolbarNodes,
   FaustToolbarContext,
   ToolbarItem,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
-} from '@faustwp/core/toolbar';
+} from '@faustwp/core';
 
 /**
  * Example Custom Toolbar Plugin.
@@ -145,7 +146,7 @@ Import and register your new plugin in `faust.config.js`.
 import { setConfig } from '@faustwp/core';
 import templates from './wp-templates';
 import possibleTypes from './possibleTypes.json';
-import { CustomToolbar } from './plugins/CustomToolbar.tsx';
+import { CustomToolbar } from './plugins/CustomToolbar.js';
 
 export default setConfig({
   templates,
