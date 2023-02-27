@@ -5,18 +5,6 @@
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/cjs/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/mjs/index.js"
-    },
-    "./toolbar": {
-      "require": "./dist/cjs/components/Toolbar/index.js",
-      "import": "./dist/mjs/components/Toolbar/index.js"
-    },
-    "./dist/css/toolbar.css": "./dist/css/toolbar.css",
-    "./package.json": "./package.json"
-  },
   "peerDependencies": {
     "@apollo/client": ">=3.6.6",
     "next": ">=12.1.6",

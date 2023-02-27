@@ -27,6 +27,7 @@ import {
 import { useAuth } from './hooks/useAuth.js';
 import { useLogin } from './hooks/useLogin.js';
 import { useLogout } from './hooks/useLogout.js';
+import * as Toolbar from './components/Toolbar';
 
 export {
   FaustProvider,
@@ -57,4 +58,5 @@ export {
   useAuth,
   useLogin,
   useLogout,
+  Toolbar,
 };
