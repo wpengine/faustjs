@@ -6,6 +6,38 @@ description: How to customize the Toolbar for your Faust.js site
 
 This guide covers how to customize your site's Toolbar utilizing the `toolbarNodes` filter.
 
+## Enable the Toolbar
+
+:::caution
+
+The Toolbar is currently an experimental feature. You can opt-in to using this feature by setting experimentalToolbar: true within your project's faust.config.js.
+
+:::
+
+### Import Styles
+
+The (Faust) Toolbar shares mostly the the same HTML as the WordPress core Toolbar. This enables the use of the same styles that exist in WordPress core, and have been converiently provided for you to import within `@faustwp/core`.
+
+```js title="pages/_app.js"
+import '@faustwp/core/dist/css/toolbar.css';
+```
+
+### Enable Experiment Toolbar
+
+Import and register your new plugin in `faust.config.js`.
+
+```js title="faust.config.js"
+import { setConfig } from '@faustwp/core';
+import templates from './wp-templates';
+import possibleTypes from './possibleTypes.json';
+
+export default setConfig({
+  experimentalToolbar: true, // Enable experimental toolbar
+  templates,
+  possibleTypes,
+});
+```
+
 ## Create the plugin
 
 Create a new file in your Faust project: `plugins/CustomPlugin.tsx`.
@@ -105,14 +137,6 @@ export function CustomNodeWithSubmenu() {
 }
 ```
 
-## Import Styles
-
-The (Faust) Toolbar shares mostly the the same HTML as the WordPress core Toolbar. This enables the use of the same styles that exist in WordPress core, and have been converiently provided for you to import within `@faustwp/core`.
-
-```js title="pages/_app.js"
-import '@faustwp/core/dist/css/toolbar.css';
-```
-
 ## Register The Plugin
 
 Import and register your new plugin in `faust.config.js`.
@@ -125,7 +149,7 @@ import { CustomToolbar } from './plugins/CustomToolbar.tsx';
 
 export default setConfig({
   templates,
-  experimentalToolbar: true, // Enable experimental toolbar
+  experimentalToolbar: true,
   experimentalPlugins: [new CustomToolbar()], // Register plugin
   possibleTypes,
 });
