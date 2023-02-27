@@ -1,4 +1,4 @@
-import { PossibleTypesMap } from '@apollo/client';
+import { PossibleTypesMap } from '@apollo/client/index.js';
 import defaults from 'lodash/defaults.js';
 import extend from 'lodash/extend.js';
 import isString from 'lodash/isString.js';

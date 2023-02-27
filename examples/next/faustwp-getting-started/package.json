@@ -2,6 +2,7 @@
   "name": "@faustwp/getting-started-example",
   "private": true,
   "version": "0.1.0",
+  "type": "module",
   "scripts": {
     "dev": "faust dev",
     "build": "faust build",

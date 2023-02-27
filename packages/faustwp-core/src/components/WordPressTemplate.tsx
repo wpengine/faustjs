@@ -1,4 +1,4 @@
-import { QueryOptions } from '@apollo/client';
+import { QueryOptions } from '@apollo/client/index.js';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { ensureAuthorization, getAccessToken } from '../auth/index.js';
 import { getApolloClient } from '../client.js';

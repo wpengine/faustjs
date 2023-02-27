@@ -1,9 +1,9 @@
-const { withFaust, getWpHostname } = require('@faustwp/core');
+import { withFaust, getWpHostname } from '@faustwp/core';
 
 /**
  * @type {import('next').NextConfig}
  **/
-module.exports = withFaust({
+export default withFaust({
   reactStrictMode: true,
   sassOptions: {
     includePaths: ['node_modules'],

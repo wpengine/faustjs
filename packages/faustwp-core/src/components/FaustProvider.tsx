@@ -1,9 +1,9 @@
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/index.js';
 import React from 'react';
 // eslint-disable-next-line import/extensions
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router.js';
 // eslint-disable-next-line import/extensions
-import { AppProps } from 'next/app';
+import { AppProps } from 'next/app.js';
 import { useApollo } from '../client.js';
 import { Toolbar } from './Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';

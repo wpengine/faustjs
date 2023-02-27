@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client/index.js';
 import { useEffect, useState } from 'react';
 import { fetchAccessToken } from '../auth/client/accessToken.js';
 import { isValidEmail } from '../utils/index.js';

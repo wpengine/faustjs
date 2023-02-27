@@ -1,5 +1,5 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client/index.js';
 import { getApolloAuthClient } from '../../../client.js';
 import { useLogout } from '../../../hooks/useLogout.js';
 import { useAuth } from '../../../hooks/useAuth.js';

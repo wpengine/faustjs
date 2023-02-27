@@ -1,4 +1,4 @@
-import '../faust.config';
+import '../faust.config.mjs';
 import React from 'react';
 import { useRouter } from 'next/router';
 import { FaustProvider } from '@faustwp/core';

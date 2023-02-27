@@ -8,9 +8,9 @@ import {
   InMemoryCache,
   InMemoryCacheConfig,
   NormalizedCacheObject,
-} from '@apollo/client';
+} from '@apollo/client/index.js';
 // eslint-disable-next-line import/extensions
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from '@apollo/client/link/context/index.js';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { getConfig } from './config/index.js';

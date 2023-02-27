@@ -3,7 +3,7 @@ import {
   DocumentNode,
   InMemoryCacheConfig,
   NormalizedCacheObject,
-} from '@apollo/client';
+} from '@apollo/client/index.js';
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
 import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
