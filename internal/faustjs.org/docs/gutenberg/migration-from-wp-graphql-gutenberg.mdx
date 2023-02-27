@@ -76,7 +76,7 @@ CoreCode.fragments = {
 };
 ```
 
-When the `WordPressBlocksViewer`, renders the component, it passes the the whole block data as a property of that block. If your block is desinged to accept different properties for attributes and for children you may have create a wrapper to forward the properties into the right slots:
+When the `WordPressBlocksViewer`, renders the component, it passes the the whole block data as a property of that block. If your block is designed to accept different properties for attributes and for innerBlocks you may have create a wrapper to forward the properties into the right slots:
 
 ```jsx
 export default function CoreCode({attributes, children}) {
@@ -85,7 +85,7 @@ export default function CoreCode({attributes, children}) {
 }
 ```
 
-If you are not satisfied by the way `WordPressBlocksViewer` passes on the properties, you can open a please open a [new Feature Request](https://github.com/wpengine/wp-graphql-content-blocks/issues/new) so that the Faust team can review it.
+If you are not satisfied by the way `WordPressBlocksViewer` passes on the properties, you can open a [new Feature Request](https://github.com/wpengine/wp-graphql-content-blocks/issues/new) so that the Faust team can review it.
 
 ### You used the `block` field with GraphQL types and fragments:
 
