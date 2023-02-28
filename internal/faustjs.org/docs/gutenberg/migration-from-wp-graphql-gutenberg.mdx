@@ -16,7 +16,7 @@ However there are some key differences that you need to be aware of:
 
 * WPGraphQL Gutenberg gets the blocks registry and sends it in a network request to the WordPress PHP application. So it needs to be synced from time to time.
 
-* It also allows the blocks to be served as JSON using the `blocksJSON` field. If requesting data this way, the data are not typechecked and you may overfetch data as a side effect.
+* It also allows the blocks to be served as JSON using the `blocksJSON` field. If requesting data this way, the data is not typechecked and you may overfetch data as a side effect.
 
 * Block attributes are using their own types, containing different type for deprecated versions. For example:
 ```
