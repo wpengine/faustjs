@@ -170,6 +170,11 @@ module.exports = {
           id: 'gutenberg/filters',
         },
         {
+          type: 'doc',
+          label: 'Migration from WPGraphQL Gutenberg',
+          id: 'gutenberg/migration-from-wp-graphql-gutenberg',
+        },
+        {
           type: 'category',
           label: 'How to Create a Block',
           items: [

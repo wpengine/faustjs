@@ -19,10 +19,17 @@ Install the blocks package:
 npm i @faustwp/blocks
 ```
 
-Open `_app.js` and import the blocks provider:
+Create a new folder inside your application root that you will place all the blocks. For conventional reasons, we name it `wp-blocks`.
+
+```js title="wp-blocks/index.js"
+export default {};
+``
+
+Open `_app.js` and import the blocks provider, passing the list of blocks in the `config` property:
 
 ```jsx
 import { WordPressBlocksProvider } from '@faustwp/blocks';
+import blocks from '../wp-blocks';
 
 <FaustProvider pageProps={pageProps}>
   <WordPressBlocksProvider
@@ -36,8 +43,9 @@ import { WordPressBlocksProvider } from '@faustwp/blocks';
 
 Then, inside your templates you need to pass on the `contentBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
 
-```js
+```js title="wp-templates/single.js"
 import { WordPressBlocksViewer } from '@faustwp/blocks';
+import components from '../wp-blocks';
 
 const { contentBlocks } = props.data.post;
 const blocks = flatListToHierarchical(contentBlocks);
@@ -87,7 +95,7 @@ CoreParagraph.fragments = {
 };
 ```
 
-`Import` and `export default` the CoreParagraph Block in `index.js`:
+`import` and `export default` the `CoreParagraph` Block in `wp-blocks/index.js`:
 ```js
 import CoreParagraph from './CoreParagraph';
 export default {
