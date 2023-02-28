@@ -19,7 +19,7 @@ However there are some key differences that you need to be aware of:
 * It also allows the blocks to be served as JSON using the `blocksJSON` field. If requesting data this way, the data is not typechecked and you may overfetch data as a side effect.
 
 * Block attributes are using their own types, containing different type for deprecated versions. For example:
-```
+```graphql
 ...on CoreParagraphBlock {
     attributes {
         ...on CoreParagraphBlockAttributes {
