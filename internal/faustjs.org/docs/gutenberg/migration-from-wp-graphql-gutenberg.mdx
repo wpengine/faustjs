@@ -44,7 +44,7 @@ It mainly depends on the way that you queried the blocks using `wp-graphql-guten
 
 `wp-graphql-content-blocks` does not expose the `blocksJSON` fields because it is problematic to do so.
 Getting the data as plain JSON directly from the database completely overrides the principles of GraphQL and ignores the type safety of the system.
-If one of the properties is altered then, you have no guarantees that the GraphQL server with catch them.
+If one of the properties is altered, you have no guarantee that the GraphQL server will catch them.
 Plus most of the times you will over fetch data leading to slower queries especially if you have lots of content in the screen.
 
 So due to the lack of Introspection and unpredictability and in order to promote best practices, we do not expose the block data as plain JSON.
