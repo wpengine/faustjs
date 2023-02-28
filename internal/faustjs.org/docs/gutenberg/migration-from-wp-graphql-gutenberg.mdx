@@ -81,7 +81,7 @@ When the `WordPressBlocksViewer`, renders the component, it passes the the whole
 ```jsx
 export default function CoreCode({attributes, children}) {
 	const BlockCode = dynamic(() => import('@/components/blocks/core/BlockCode'))
-	return <BlockCode {...attributes} innerBlocks={children} >
+	return <BlockCode {...attributes} innerBlocks={children}>
 }
 ```
 
