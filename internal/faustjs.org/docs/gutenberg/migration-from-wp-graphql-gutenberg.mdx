@@ -40,7 +40,7 @@ However there are some key differences that you need to be aware of:
 
 It mainly depends on the way that you queried the blocks using `wp-graphql-gutenberg`. There are two different cases that you have to consider here:
 
-### You used the `blocksJSON` to get the blocks data:
+### You used the `blocksJSON` property to get the blocks data:
 
 `wp-graphql-content-blocks` does not expose the `blocksJSON` fields because it is problematic to do so.
 Getting the data as plain JSON directly from the database completely overrides the principles of GraphQL and ignores the type safety of the system.
