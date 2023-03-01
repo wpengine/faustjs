@@ -207,8 +207,8 @@ query GetPost(
 			name
 			__typename
 			renderedHtml
-			id: nodeId
-			parentId
+			id: clientId
+			parentClientId
 			...${blocks.UbCallToActionBlock.fragments.key}
       	}
 	}
