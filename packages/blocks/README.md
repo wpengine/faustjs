@@ -70,8 +70,8 @@ ${components.CoreParagraph.fragments.entry}
 contentBlocks(flat: true) {
   __typename
   renderedHtml
-  id: nodeId
-  parentId
+  id: clientId
+  parentClientId
   ...${components.CoreParagraph.fragments.key}
 }
 ```
