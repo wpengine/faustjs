@@ -41,21 +41,23 @@ import blocks from '../wp-blocks';
 </FaustProvider>
 ```
 
-Then, inside your templates you need to pass on the `contentBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
+Then, inside your templates you need to pass on the `editorBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
 
 ```js title="wp-templates/single.js"
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import components from '../wp-blocks';
 
-const { contentBlocks } = props.data.post;
-const blocks = flatListToHierarchical(contentBlocks);
+const { editorBlocks } = props.data.post;
+const blocks = flatListToHierarchical(editorBlocks);
+
+return <WordPressBlocksViewer blocks={blocks}/>
 ```
 
-Example `contentBlock` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
+Example `editorBlocks` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
 
 ```graphql
 ${components.CoreParagraph.fragments.entry}
-contentBlocks(flat: true) {
+editorBlocks(flat: true) {
   __typename
   renderedHtml
   id: clientId

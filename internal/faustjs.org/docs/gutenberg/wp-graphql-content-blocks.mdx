@@ -30,15 +30,15 @@ There is no other configuration needed once you install the plugin.
 ## Getting started
 
 Once the plugin is installed, head over to the GraphiQL IDE and you should be able to perform queries for the block data (This plugin is an extension of [wp-graphql](https://www.wpgraphql.com/), so make sure you have it installed first.).
-There is a new field added in the Post and Page models called `contentBlocks`.
+There is a new field added in the Post and Page models called `editorBlocks`.
 This represents a list of available blocks for that content type:
 
 <img
   src="/docs/img/querying-with-content-blocks.png"
-  alt="Example query for contentBlocks using GraphiQL IDE"
+  alt="Example query for editorBlocks using GraphiQL IDE"
 />
 
-If you search in GraphiQL's documentation explorer tab for the `contentBlocks` type you will be able to see the available block fields.
+If you search in GraphiQL's documentation explorer tab for the `editorBlocks` type you will be able to see the available block fields.
 The most important ones are:
 
 * `renderedHTML`: It's the HTML of the block as rendered by the [render_block](https://developer.wordpress.org/reference/functions/render_block/) function.
@@ -116,7 +116,7 @@ For example, to use `CoreParagraph` attributes you need to use the following que
 {
   posts {
     nodes {
-      contentBlocks {
+      editorBlocks {
         __typename
         name
         ...on CoreParagraph {
@@ -146,7 +146,7 @@ If the resolved block has values for those fields, it will return them, otherwis
 
 ## What about innerBlocks?
 
-In order to facilitate querying `innerBlocks` fields more efficiently you want to use `contentBlocks(flat: true)` instead of `contentBlocks`.
+In order to facilitate querying `innerBlocks` fields more efficiently you want to use `editorBlocks(flat: true)` instead of `editorBlocks`.
 By passing this argument, all the blocks available (both blocks and innerBlocks) will be returned all flattened in the same list.
 
 For example, given the following HTML Content:
@@ -192,7 +192,7 @@ The `CoreColumns` contains one or more `CoreColumn` block, and each `CoreColumn`
 If we were to create a query to resolve this hierarchy, we would have to use:
 
 ```graphql
-contentBlocks {
+editorBlocks {
     __typename
     name
     ...on CoreColumns {
@@ -216,7 +216,7 @@ In each case we would have to copy the whole fragment list again and again. This
 This is how you request all blocks as a flat list:
 
 ```graphql
-contentBlocks(flat:true) {
+editorBlocks(flat:true) {
     __typename
     name
 	id: clientId
@@ -254,10 +254,10 @@ This way you can reconstruct the block tree as before and pass it on to the `Wor
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import flatListToHierarchical from '../utilities/flatListToHierarchical';
 ...
-const { contentBlocks } = props.data.post;
-const blocks = flatListToHierarchical(contentBlocks);
+const { editorBlocks } = props.data.post;
+const blocks = flatListToHierarchical(editorBlocks);
 
-<WordPressBlocksViewer contentBlocks={blocks} />
+<WordPressBlocksViewer blocks={blocks} />
 ...
 ```
 :::note
