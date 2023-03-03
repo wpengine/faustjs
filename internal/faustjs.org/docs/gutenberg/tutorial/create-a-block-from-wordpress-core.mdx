@@ -4,61 +4,66 @@ title: Creating a Block from the WordPress Blocks list
 description: This tutorial will give you some simple steps to follow to create a Block from the official WordPress Blocks list
 ---
 
-In this tutorial you will install and create a block using `@faustwp/blocks` that is using data from the official Blocks that are available in the block editor of your WordPress site.
-It assumes you have already installed both the `@faustwp/blocks` and `wp-graphql-content-blocks` plugin.
+In this tutorial you will install and create a block using `@faustwp/blocks`. It will use data from the official Blocks that are available in the block editor of your WordPress site.
 
-## 1. Set up a `@faustwp/blocks`
-If you have not already done so, you will need to follow the [Getting Started](/docs/gutenberg/getting-started) guide so that you are ready to create new blocks.
+## Prerequisites
 
-## 2. Pick a block that you want to implement
-The Core Editor Blocks contain a list of useful blocks for editing and publishing content.
-All of the official blocks include a `block.json` with defined attributes, so the `wp-graphql-content-blocks` plugin will automatically expose those as GraphQL fields.
+You will need to complete both of these guides before you can create blocks with this tutorial. Make sure you have the latest version of `Faust` and `@faustwp/blocks` installed if you have already completed these guides in the past.
 
-For this tutorial, we are going to implement the [Code Block](https://wordpress.com/support/wordpress-editor/blocks/code-block/) that renders a formatted block of code:
+1. [Faust Getting Started Guide](/docs/getting-started)
+2. [Blocks Getting Started Guide](/docs/gutenberg/getting-started)
 
-## 3. Review the Block design in the Editor
+## 1. Choose a block to implement
 
-Before you try to implement the block, it's useful to get an idea of how the block is configured within the editor.
-You want to create a few sample blocks and test their options.
+:::note
+The Core Editor Blocks contain a list of useful blocks for editing and publishing content. All of the official blocks include a `block.json` with defined attributes, so the `wp-graphql-content-blocks` plugin will automatically expose those as GraphQL fields.
+:::
 
-Navigate to the editor by creating a new Post and insert the Block into the page:
+For this tutorial, we are going to implement the [Code Block](https://wordpress.com/support/wordpress-editor/blocks/code-block/) that renders a formatted block of code.
+
+## 2. Review the Code Block in the Editor
+
+Before you try to implement the block, it's useful to get an idea of how the block is configured within the editor. You want to create a few sample blocks and test their options.
+
+Navigate to your WordPress instance and create a New Post. Add a Block into the Post. For this tutorial it will be the Code Block shown below:
 
 <a href="/docs/img/core-code-block-preview.png" target="_blank">
-  <img
-    src="/docs/img/core-code-block-preview.png"
-    alt="Code BLock Preview"
-  />
+  <img src="/docs/img/core-code-block-preview.png" alt="Code Block Preview" />
 </a>
 
-You can expand the block sidebar options to change some of its styling.
-For example, you can configure the Color, Dimensions, Border, and Size settings for that block.
-Once you get familiar with the block's look and feel, let's explore its attributes from the GraphQL IDE.
+:::note
+You can expand the block sidebar options to change some of its styling. For example, you can configure the Color, Dimensions, Border, and Size settings for the Code Block.
 
-## 4. Review the Block data and attributes in the GraphQL IDE
+Once you get familiar with the block's look and feel, let's explore its attributes from the GraphiQL IDE.
+:::
 
-Within the GraphQL IDE, use the Docs to find the type of block to display its type and properties.
-There should be a `CoreCode` that contains all the important fields we can query.
+## 3. Review the Block data and attributes in the GraphiQL IDE
+
+:::note
+
+<img src="/docs/img/graphiql-ide.png" alt="GraphiQL IDE" />
+
+The GraphiQL IDE link will show in the Admin Bar of your WordPress instance if you
+have properly installed WPGraphQL from the [Getting Started Guide](/docs/getting-started).
+:::
+
+Within the GraphiQL IDE, use the Docs to find the `CoreCode` Block to display its type and properties. If you chose a different Block, then search for that type instead.
+
+After searching the Docs for `CoreCode` and clicking on `CoreCodeAttributes`, you will see the following:
 
 <img
-    src="/docs/img/core-code-block-ide.png"
-    alt="Code Block Block documentation in GraphQL IDE"
-  />
+  src="/docs/img/core-code-block-ide-attributes.png"
+  alt="Code Block Block attributes documentation in GraphiQL IDE"
+/>
 
-Expand the `CoreCode` to see the block attributes as well:
-
-<img
-    src="/docs/img/core-code-block-ide-attributes.png"
-    alt="Code Block Block attributes documentation in GraphQL IDE"
-  />
-
-There are a lot of attributes associated with that block. You can use the following query to inspect the block data:
+You can use the following query in the GraphiQL IDE to inspect the block data. Replace `/posts/testing` with the path to your post.
 
 ```graphql
 {
   post(id: "/posts/testing", idType: URI) {
     contentBlocks {
       renderedHtml
-      ...on CoreCode {
+      ... on CoreCode {
         attributes {
           borderColor
           backgroundColor
@@ -93,6 +98,7 @@ This will resolve into:
       ]
     }
 ```
+
 Notice that with some of the attributes like `backgroundColor`, the editor used the `theme.json` palette slug name instead of the actual value.
 It also stored the custom hardcoded styles in the `style` fields as a JSON string. We will have to handle them appropriately when developing the associated block.
 Once you get familiar with how to query the necessary data from that block, let's see now how to implement the block in the Decoupled site.
@@ -107,7 +113,7 @@ The steps required to achieve that are the following:
 ```jsx title="wp-blocks/CoreCode.js"
 export default function CoreCode(props) {
   console.log(props.attributes);
-  return <div>CoreCode</div>
+  return <div>CoreCode</div>;
 }
 ```
 
@@ -118,8 +124,8 @@ This component prints the block attributes via the props passed as a parameter.
 ```jsx title="wp-blocks/index.js"
 import CoreCode from './CoreCode';
 export default {
-  CoreCode
-}
+  CoreCode,
+};
 ```
 
 By exporting the block in the `index.js` we make it available in the `WordPressBlocksProvider`.
@@ -130,8 +136,8 @@ This also works:
 ```javascript title="wp-blocks/index.js"
 import CoreCode from './CoreCode';
 export default {
-  'core/code': CoreCode
-}
+  'core/code': CoreCode,
+};
 ```
 
 ### 5.3 Create the block fragment
@@ -158,6 +164,7 @@ CoreCode.fragments = {
   `,
 };
 ```
+
 We chose to attach the fragment as a property of the function component itself. This follows best practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
 
 ### 5.4 Include the block fragment into the page query string
@@ -194,9 +201,9 @@ query GetPost(
 If you navigate to the page that contains this block, you should be able to inspect the properties in the console:
 
 <img
-    src="/docs/img/core-code-block-console.png"
-    alt="Code Code preview of the block attributes in the console"
-  />
+  src="/docs/img/core-code-block-console.png"
+  alt="Code Code preview of the block attributes in the console"
+/>
 
 Now you are ready to design the block based on the original block's look and feel.
 
@@ -246,7 +253,7 @@ In that case, the `render_callback` will provide the markup for the block using 
 
 Since the `save` function is provided with that block we have a viable strategy that will save us time without having to figure out the actual implementation.
 
-So go ahead and provide the implementation of the Block based on the `save` function. You will need to remove the references of the `RichText` and  `useBlockProps` imports as you won't be needing those.
+So go ahead and provide the implementation of the Block based on the `save` function. You will need to remove the references of the `RichText` and `useBlockProps` imports as you won't be needing those.
 
 ```jsx title="wp-blocks/CoreCode.js" {6}
 import { gql } from '@apollo/client';
@@ -254,7 +261,7 @@ import getStyles from '../utilities/getStyles.js';
 
 export default function CoreCode(props) {
   const className = 'wp-block-code';
-  const styles = getStyles(props.attributes)
+  const styles = getStyles(props.attributes);
   return (
     <pre className={className} style={styles}>
       <code>{`${props.attributes?.content}`}</code>
@@ -265,9 +272,9 @@ export default function CoreCode(props) {
 
 A few important things to consider here:
 
- - First we assign the same className `wp-block-code` for the block so that we can apply the same styles as the Editor.
- - Then we use a helper `getStyles` that creates the final inline styles for that block based on the block attributes.
- - Finally we pass on the `props.attributes?.content` as a string to the `code` element.
+- First we assign the same className `wp-block-code` for the block so that we can apply the same styles as the Editor.
+- Then we use a helper `getStyles` that creates the final inline styles for that block based on the block attributes.
+- Finally we pass on the `props.attributes?.content` as a string to the `code` element.
 
 Let's delve into the `getStyles` helper function and see what it does:
 
@@ -282,27 +289,28 @@ export default function getStyles(attributes) {
     color: colorsMap[attributes?.textColor],
     fontSize: fontSizesMap[attributes?.fontSize],
     borderColor: colorsMap[attributes?.borderColor],
-    ...(attributes?.style && cssToReactStyle(compileCSS(JSON.parse(attributes.style)))),
+    ...(attributes?.style &&
+      cssToReactStyle(compileCSS(JSON.parse(attributes.style)))),
   };
 }
 ```
 
 This function takes the blocks attributes and maps them into inline React styles using the following helpers:
 
-* `colorsMap, fontSizesMap`: Map the slug color and font values to associated colors and font sizes based on the current `theme.json`.
-* `compileCSS`: A helper function from the [@wordpress/style-engine](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-style-engine/) package that parses the JSON object containing the block styles and returns an inline style string.
-* `cssToReactStyle`: Another helper function that translates the inline style string into a React inline styles object.
+- `colorsMap, fontSizesMap`: Map the slug color and font values to associated colors and font sizes based on the current `theme.json`.
+- `compileCSS`: A helper function from the [@wordpress/style-engine](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-style-engine/) package that parses the JSON object containing the block styles and returns an inline style string.
+- `cssToReactStyle`: Another helper function that translates the inline style string into a React inline styles object.
 
 Below is the implementation of those functions in order:
 
 ```jsx title="styles/variables.js"
 // Contains the Theme.js palette colors
 export const colorsMap = {
-  'primary': '#9DFF20',
-  'secondary': '#345C00',
-  'tertiary': '#f6f6f6',
-  'foreground': '#000000',
-  'background': '#ffffff',
+  primary: '#9DFF20',
+  secondary: '#345C00',
+  tertiary: '#f6f6f6',
+  foreground: '#000000',
+  background: '#ffffff',
   'cyan-bluish-gray': '#abb8c3',
   'pale-pink': '#f78da7',
   'luminous-vivid-amber': '#fcb900',
@@ -311,13 +319,13 @@ export const colorsMap = {
   'vivid-purple': '#9b51e0',
   'vivid-red': '#cf2e2e',
   'light-green-cyan': '#7bdcb5',
-}
+};
 
 export const fontSizesMap = {
-  'small': '1rem',
-  'normal': '1.5rem',
-  'large': '1.75rem'
-}
+  small: '1rem',
+  normal: '1.5rem',
+  large: '1.75rem',
+};
 ```
 
 ```jsx title="utilities/cssToReactStyle.js"
@@ -338,7 +346,9 @@ export const cssToReactStyle = (css) => {
 
   // Only accepts strings
   if (typeof css !== 'string') {
-    console.error(`Unexpected type "${typeof css}" when expecting string, with value "${css}"`);
+    console.error(
+      `Unexpected type "${typeof css}" when expecting string, with value "${css}"`,
+    );
     return {};
   }
 
@@ -395,10 +405,9 @@ You can create a new folder for block styles inside the `styles` folder and impo
 Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styles with the editor view:
 
 <img
-    src="/docs/img/core-code-block-decoupled-preview.png"
-    alt="Code block demo of the block rendered in the Decoupled Website"
-  />
-
+  src="/docs/img/core-code-block-decoupled-preview.png"
+  alt="Code block demo of the block rendered in the Decoupled Website"
+/>
 
 Make sure to tweak the block in the editor and verify that the changes are being reflected in the website.
 
@@ -425,6 +434,7 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
     );
 }
 ```
+
 :::note
 
 If you include those extensions in a custom plugin, your Decoupled application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
@@ -443,10 +453,10 @@ Since React is not normally bundled as a dependency in the browser, the JavaScri
 
 In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
 
-* **Include them in your code:** This is not recommended as React does not play well with plain JavaScript and jQuery so you can expect lots of problems.
+- **Include them in your code:** This is not recommended as React does not play well with plain JavaScript and jQuery so you can expect lots of problems.
 
-* **Rewrite them as React components:** You can attempt to rewrite the code into React. If the bundled code can be understood and rewritten with low effort then you can make that commitment.
+- **Rewrite them as React components:** You can attempt to rewrite the code into React. If the bundled code can be understood and rewritten with low effort then you can make that commitment.
 
-* **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
+- **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
 
 Inevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
