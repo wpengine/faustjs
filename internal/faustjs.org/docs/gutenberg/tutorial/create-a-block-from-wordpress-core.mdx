@@ -113,46 +113,50 @@ Follow the steps below to create a `CoreCode` block that logs its attributes in 
 
 <img src="/docs/img/wp-blocks-folder.png" alt="wp-blocks folder" />
 
-### 4.2 Create the block file inside the `wp-blocks` folder
+### 4.2 Create the `CoreCode.js` inside the `wp-blocks` folder
 
 ```jsx title="wp-blocks/CoreCode.js"
+// import react
+import React from 'react';
+// create CoreCode component
 export default function CoreCode(props) {
   console.log(props.attributes);
   return <div>CoreCode</div>;
 }
 ```
 
-This component prints the block attributes via the props passed as a parameter.
+This component logs the block attributes to the console via the `attributes` prop passed through the `props` parameter.
 
-### 4.3 Create an `index.js` file inside the `wp-blocks` folder that imports and then exports the `CoreCode` block. You will use this same file for other blocks as well.
+### 4.3 Create an `index.js` file inside the `wp-blocks` folder that imports and then exports the `CoreCode` block. You will use this same file to export other blocks as well.
 
 ```jsx title="wp-blocks/index.js"
+// import CoreCode
 import CoreCode from './CoreCode';
-
+// export blocks
 export default {
   CoreCode,
 };
 ```
 
-By exporting the block in the `index.js` we make it available in the `WordPressBlocksProvider`.
-You can also use a different name as long as it matches either the Block `name` or the `__typename` fields.
+:::note
+By exporting the block in `index.js` we make it available to the `WordPressBlocksProvider`.
+:::
 
-This also works:
+### 4.4 Create the `CoreCode` block fragment
 
-```javascript title="wp-blocks/index.js"
-import CoreCode from './CoreCode';
-export default {
-  'core/code': CoreCode,
-};
-```
+You want to create a fragment that describes the request block fields and attributes. Include all relevant fields for your implementation. The `CoreCode` file so far should look like this:
 
-### 4.3 Create the block fragment
-
-You want to create a fragment that describes the request block fields and attributes. Ideally you want to include all the relevant fields for the implementation part:
-
-```jsx title="wp-blocks/CoreCode.js" {1}
-import {gql} from '@apollo/client';
-...
+```jsx title="wp-blocks/CoreCode.js" {4,11-26}
+// import react
+import React from 'react';
+// import graphql from apollo/client
+import { gql } from '@apollo/client';
+// create CoreCode component
+export default function CoreCode(props) {
+  console.log(props.attributes);
+  return <div>CoreCode</div>;
+}
+// add fragment
 CoreCode.fragments = {
   key: `CoreCodeBlockFragment`,
   entry: gql`
@@ -171,9 +175,11 @@ CoreCode.fragments = {
 };
 ```
 
+:::note
 We chose to attach the fragment as a property of the function component itself. This follows best practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
+:::
 
-### 4.4 Include the block fragment into the page query string
+### 4.5 Include the block fragment into the page query string
 
 You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload includes the data from that block.
 
