@@ -158,7 +158,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
         <ul
           id="wp-admin-bar-root-default"
           className="ab-top-menu"
-          aria-label="primary-toolbar-nodes">
+          aria-label="primary toolbar menu items">
           {primaryNodes.map(({ component, id, ...props }: FaustToolbarNode) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <ToolbarNode key={id} id={id} {...props}>
