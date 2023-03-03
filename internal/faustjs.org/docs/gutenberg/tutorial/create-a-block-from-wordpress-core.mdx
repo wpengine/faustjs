@@ -251,11 +251,11 @@ So go ahead and provide the implementation of the Block based on the `save` func
 ```jsx title="wp-blocks/CoreCode.js" {6}
 import { gql } from "@apollo/client";
 
-export default function MyCoolBlock(props) {
+export default function CoreBlock(props) {
   const className = 'wp-block-code';
   return (
-    <pre className={className}>
-      <p>{`${props.attributes?.content}`}</p>
+    <pre className={className} style={styles}>
+      <code>{`${props.attributes?.content}`}</code>
     </pre>
   );
 }
