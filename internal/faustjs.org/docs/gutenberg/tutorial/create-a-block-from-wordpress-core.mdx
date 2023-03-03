@@ -56,7 +56,7 @@ There are a lot of attributes associated with that block. You can use the follow
 ```graphql
 {
   post(id: "/posts/testing", idType: URI) {
-    contentBlocks {
+    editorBlocks {
       renderedHtml
       ...on CoreCode {
         attributes {
@@ -78,7 +78,7 @@ This will resolve into:
 ```
 "data": {
     "post": {
-      "contentBlocks": [
+      "editorBlocks": [
         {
           "renderedHtml": "\n<pre class=\"wp-block-code has-border-color has-tertiary-background-color has-text-color has-background has-small-font-size\" style=\"border-color:#333333;border-width:2px;color:#333333\"><code>// Computes the nth Fibonacci number\nfunction fib(n) {\n    var a = 0, b = 1, c;\n    if (n &lt; 3) {\n        if (n &lt; 0) return fib(-n);\n        if (n === 0) return 0;\n        return 1;\n    }\n    while (--n)\n        c = a + b, a = b, b = c;\n    return c;\n}</code></pre>\n",
           "attributes": {
@@ -178,7 +178,7 @@ query GetPost(
 ...
 	post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
 		...
-		contentBlocks {
+		editorBlocks {
 			name
 			__typename
 			renderedHtml

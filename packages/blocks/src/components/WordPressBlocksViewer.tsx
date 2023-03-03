@@ -24,7 +24,7 @@ export function BlockDataProvider(
 }
 
 export interface WordpressBlocksViewerProps {
-  contentBlocks: ContentBlock[];
+  blocks: ContentBlock[];
 }
 
 export interface ContentBlock {
@@ -47,8 +47,8 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { contentBlocks } = props;
-  const renderedBlocks = contentBlocks.map((blockProps, idx) => {
+  const { blocks: editorBlocks } = props;
+  const renderedBlocks = editorBlocks.map((blockProps, idx) => {
     const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
     return (
       // eslint-disable-next-line react/no-array-index-key
