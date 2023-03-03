@@ -164,7 +164,6 @@ function testToolBarNode(
   expectedLen: number,
   expectedContent: string,
 ) {
-  // Tests for primary node
   const { getAllByRole } = within(toolBar);
   const items = getAllByRole('listitem');
   expect(items.length).toBe(expectedLen);
