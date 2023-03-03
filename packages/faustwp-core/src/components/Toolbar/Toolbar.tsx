@@ -169,7 +169,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
         <ul
           id="wp-admin-bar-top-secondary"
           className="ab-top-secondary ab-top-menu"
-          aria-label="secondary-toolbar-nodes">
+          aria-label="secondary toolbar menu items">
           {secondaryNodes.map(
             ({ component, id, ...props }: FaustToolbarNode) => (
               // eslint-disable-next-line react/jsx-props-no-spreading
