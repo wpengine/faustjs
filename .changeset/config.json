@@ -1,17 +1,27 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@1.6.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
-  "linked": [
-    ["@faustjs/core", "@faustjs/next", "@faustjs/react"],
-    ["@faustwp/core", "@faustwp/cli"]
-  ],
-  "privatePackages": {
-    "version": true,
-    "tag": true
-  },
-  "access": "public",
-  "baseBranch": "canary",
-  "updateInternalDependencies": "patch",
-  "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example"]
+	"$schema": "https://unpkg.com/@changesets/config@1.6.1/schema.json",
+	"changelog": "@changesets/cli/changelog",
+	"commit": false,
+	"linked": [
+		[
+			"@faustjs/core",
+			"@faustjs/next",
+			"@faustjs/react"
+		],
+		[
+			"@faustwp/core",
+			"@faustwp/cli"
+		]
+	],
+	"privatePackages": {
+		"version": true,
+		"tag": true
+	},
+	"access": "public",
+	"baseBranch": "canary",
+	"updateInternalDependencies": "patch",
+	"ignore": [
+		"@faustjs/legacy-getting-started-example",
+		"@faustwp/getting-started-example"
+	]
 }
