@@ -206,13 +206,13 @@ query GetPost(
 			id: clientId
 			parentClientId
 			...${blocks.CoreCode.fragments.key}
-      	}
+        }
 	}
 ...
 }
 ```
 
-Notice that in this template example we first `import blocks from '../wp-blocks'`. Then inside the templates gql `Component.query`, we include the fragment entry with `${blocks.CoreCode.fragments.entry}`. Then we use the key `${blocks.CoreCode.fragments.key}` inside the `GetPost`. In this case it is inside the `editorBlocks` which is inside the `post`.
+Notice that in this template example we first `import blocks from '../wp-blocks'`. Then inside the templates gql `Component.query`, we include the fragment entry with `${blocks.CoreCode.fragments.entry}`. Then we use the key `${blocks.CoreCode.fragments.key}` inside the `GetPost`.
 
 If you navigate to the page that contains this block, you should be able to inspect the properties in the console and see your block attributes that were logged by `console.log(props.attributes)` in `CoreCode.js`. In this case, we will see the `CoreCode` block attributes.
 
