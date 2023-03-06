@@ -56,7 +56,8 @@ The GraphiQL IDE link will show in the Admin Bar of your WordPress instance if y
 have properly installed WPGraphQL from the [Getting Started Guide](/docs/getting-started).
 :::
 
-### 3.1. Search GraphiQL IDE Docs for `CoreCode` 
+### 3.1. Search GraphiQL IDE Docs for `CoreCode`
+
 Within the GraphiQL IDE, use the Docs to find the `CoreCode` Block to display its type and properties. If you chose a different Block, then search for that type instead.
 
 After searching the Docs for `CoreCode` and clicking on `CoreCodeAttributes`, you will see the following:
@@ -67,6 +68,7 @@ After searching the Docs for `CoreCode` and clicking on `CoreCodeAttributes`, yo
 />
 
 ### 3.2. Inspect the block data via the GraphiQL IDE
+
 You can use the following query in the GraphiQL IDE to inspect the Block data. Replace `/posts/testing` with the path to your post.
 
 ```graphql
@@ -427,11 +429,6 @@ So you need to either import the styles from a global module or translate the st
 @import './blocks/CoreCode' // import CoreCode block styles here
 ```
 
-<img
-  src="/docs/img/core-code-block-decoupled-preview.png"
-  alt="Code block demo of the block rendered in the Faust Headless Website"
-/>
-
 #### 3. Finish the `CoreCode.js` component.
 
 Import `getStyles` from `utilities`. Create and set `className` to `wp-block-code`. Create and set `styles` to `getStyles(props.attributes)` to get the proper formatting of the attributes. Add in the HTML markup for your block and use the `className` and `styles` variables for proper styling.
@@ -477,6 +474,11 @@ CoreCode.fragments = {
   `,
 };
 ```
+
+<img
+  src="/docs/img/core-code-block-decoupled-preview.png"
+  alt="Code block demo of the block rendered in the Faust Headless Website"
+/>
 
 :::note
 
