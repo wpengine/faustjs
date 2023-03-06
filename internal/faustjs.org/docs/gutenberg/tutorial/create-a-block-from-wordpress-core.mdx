@@ -163,7 +163,7 @@ By exporting the block in `index.js` we make it available to the `WordPressBlock
 
 ### 4.4 Create the `CoreCode` block fragment
 
-You want to create a fragment that describes the request block fields and attributes. Include all relevant fields for your implementation. The `CoreCode` file so far should look like this:
+You want to create a fragment that describes the request block fields and attributes. First, `import { gql } from @apollo/client`. Then add the `CoreCode.fragments` code block. Include all relevant fields for your implementation.  The `CoreCode` file so far should look like this:
 
 ```jsx title="wp-blocks/CoreCode.js" {2,9-24}
 import React from 'react';
