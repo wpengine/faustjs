@@ -176,14 +176,16 @@ CoreCode.fragments = {
 ```
 
 :::note
-We chose to attach the fragment as a property of the function component itself. This follows best practice for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
+We chose to attach the fragment as a property of the function component itself. This follows the best practices for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
 :::
 
-### 4.5 Include the block fragment into the page query string
+### 4.5 Include the block fragment in your Faust template `query` string
 
-You want to include the fragment in the page query string and reference the block fragment key so that when the page resolves, the payload includes the data from that block.
+You want to include the fragment in your Faust templates `query` string and reference the block fragment `key` so that when the page resolves, the payload includes the data from that block.
 
-In our example we use it in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates):
+:::note
+In our example, we use the block in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates):
+:::
 
 ```jsx {1,7,18} title="wp-templates/single.js"
 import blocks from '../wp-blocks';
@@ -210,18 +212,16 @@ query GetPost(
 }
 ```
 
-If you navigate to the page that contains this block, you should be able to inspect the properties in the console:
+If you navigate to the page that contains this block, you should be able to inspect the properties in the console and see your block attributes that were logged by `console.log(props.attributes)` in `CoreCode.js`. In this case, we will see the CoreCode block attributes.
 
 <img
   src="/docs/img/core-code-block-console.png"
-  alt="Code Code preview of the block attributes in the console"
+  alt="CoreCode preview of the block attributes in the console"
 />
-
-Now you are ready to design the block based on the original block's look and feel.
 
 ## 5. Implement the Block using the provided block attributes and the Editor view
 
-The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
+Now you are ready to design the block based on the original block's look and feel. The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
 
 Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block in the frontend.
 
