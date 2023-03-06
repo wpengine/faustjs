@@ -10,7 +10,8 @@
 		],
 		[
 			"@faustwp/core",
-			"@faustwp/cli"
+			"@faustwp/cli",
+			"@faustwp/blocks"
 		]
 	],
 	"privatePackages": {
