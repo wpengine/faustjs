@@ -132,7 +132,9 @@ export default function CoreCode(props) {
 
 This component logs the block attributes to the console via the `attributes` prop passed through the `props` parameter.
 
-### 4.3 Create an `index.js` file inside the `wp-blocks` folder that imports and then exports the `CoreCode` block
+### 4.3 Create an `index.js` file inside the `wp-blocks` folder
+
+This file will be used to import all your blocks and then make them available as the default export.
 
 ```jsx title="wp-blocks/index.js"
 // import CoreCode
