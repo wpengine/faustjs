@@ -64,7 +64,7 @@ There are a lot of attributes associated with that block. You can use the follow
 ```graphql
 {
   post(id: "/posts/test", idType: URI) {
-    contentBlocks {
+    editorBlocks {
       renderedHtml
       ...on UbCallToActionBlock {
         attributes {
@@ -86,7 +86,7 @@ This will resolve into:
 ```
 "data": {
     "post": {
-      "contentBlocks": [
+      "editorBlocks": [
         {
           "renderedHtml": "<div class=\"ub_call_to_action\" id=\"ub_call_to_action_37aa7f1a-5d3a-4077-9c2b-a29b3672896c\">\n                <div class=\"ub_call_to_action_headline\">\n                    <p class=\"ub_call_to_action_headline_text\">Call To Action</p></div>\n                <div class=\"ub_call_to_action_content\">\n                    <p class=\"ub_cta_content_text\">Help us achieve our goals</p></div>\n                <div class=\"ub_call_to_action_button\">\n                    <a href=\"http://locahost:3000/donate\" target=\"_self\" rel=\"noopener noreferrer\"\n                        class=\"ub_cta_button\">\n                        <p class=\"ub_cta_button_text\">Donate Now</p></a></div></div>",
           "attributes": {
@@ -203,7 +203,7 @@ query GetPost(
 ...
 	post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
 		...
-		contentBlocks {
+		editorBlocks {
 			name
 			__typename
 			renderedHtml

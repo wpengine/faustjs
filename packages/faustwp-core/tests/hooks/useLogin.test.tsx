@@ -31,7 +31,7 @@ describe('useLogin hook', () => {
   );
 
   it('has the proper initial state', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useLogin(), {
+    const { result } = renderHook(() => useLogin(), {
       wrapper,
     });
 
