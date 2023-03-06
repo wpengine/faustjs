@@ -15,7 +15,7 @@ You will need to complete both of these guides before you can create blocks with
 
 ## 1. Choose a block to implement
 
-:::note
+:::info
 
 The Core Editor Blocks contain a list of useful blocks for editing and publishing content. All of the official blocks include a `block.json` with defined attributes, so the `wp-graphql-content-blocks` plugin will automatically expose those as GraphQL fields.
 
@@ -38,7 +38,7 @@ Navigate to your WordPress instance and create a New Post. Add a Block into the 
   <img src="/docs/img/core-code-block-preview.png" alt="Code Block Preview" />
 </a>
 
-:::note
+:::info
 
 You can expand the block sidebar options to change some of its styling. For example, you can configure the Color, Dimensions, Border, and Size settings for the Code Block.
 
@@ -48,7 +48,7 @@ Once you get familiar with the block's look and feel, let's explore its attribut
 
 ## 3. Review the Block data and attributes in the GraphiQL IDE
 
-:::note
+:::info
 
 <img src="/docs/img/graphiql-ide.png" alt="GraphiQL IDE" />
 
@@ -112,7 +112,7 @@ This will resolve into:
     }
 ```
 
-:::note
+:::info
 
 Notice that with some of the attributes like `backgroundColor`, the editor used the `theme.json` palette slug name instead of the actual value, i.e. `tertiary`. It also stored the custom hardcoded styles in the `style` fields as a JSON string. We will have to handle them appropriately when developing the associated block.
 
@@ -155,7 +155,7 @@ export default {
 };
 ```
 
-:::note
+:::info
 
 By exporting the block in `index.js` we make it available to the `WordPressBlocksProvider`.
 
@@ -163,7 +163,7 @@ By exporting the block in `index.js` we make it available to the `WordPressBlock
 
 ### 4.4 Create the `CoreCode` block fragment
 
-You want to create a fragment that describes the request block fields and attributes. First, `import { gql } from @apollo/client`. Then add the `CoreCode.fragments` code block. Include all relevant fields for your implementation.  The `CoreCode` file so far should look like this:
+You want to create a fragment that describes the request block fields and attributes. First, `import { gql } from @apollo/client`. Then add the `CoreCode.fragments` code block. Include all relevant fields for your implementation. The `CoreCode` file so far should look like this:
 
 ```jsx title="wp-blocks/CoreCode.js" {2,9-24}
 import React from 'react';
@@ -192,7 +192,7 @@ CoreCode.fragments = {
 };
 ```
 
-:::note
+:::info
 
 We chose to attach the fragment as a property of the function component itself. This follows the best practices for creating [colocated fragments](https://www.apollographql.com/docs/react/data/fragments/#creating-colocated-fragments).
 
@@ -200,7 +200,7 @@ We chose to attach the fragment as a property of the function component itself. 
 
 ### 4.5 Include the block fragment in your Faust template `query` string
 
-:::note
+:::info
 
 In our example, we use the block in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates).
 
@@ -248,7 +248,7 @@ Now you are ready to design the block based on the original block's look and fee
 
 Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block in the frontend.
 
-:::note
+:::info
 
 This implementation can be found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code) to view the file structure and contents.
 
@@ -328,7 +328,7 @@ export const cssToReactStyle = (css) => {
 
 This `cssToReactStyle` function translates the inline style string into a React inline styles object.
 
-:::note
+:::info
 
 If you don't want to include the `@wordpress/style-engine` package in your final bundle, you can still map the JSON object manually into the associated styles.
 If you take a look at this style object after the style is parsed:
@@ -385,7 +385,7 @@ export const fontSizesMap = {
 
 ### 5.2 Create and import block styles
 
-:::note
+:::info
 
 A few important things to consider here:
 
@@ -415,7 +415,7 @@ A few important things to consider here:
 
 #### 2. Include the `CoreCode.scss` file inside the `styles/_blocks.scss` file:
 
-:::note
+:::info
 
 Next.js won't allow you to import the `scss` file directly into the component since it requires all global CSS to be imported from the pages directory only. See the [related error](https://nextjs.org/docs/messages/css-global) message.
 
@@ -480,7 +480,7 @@ CoreCode.fragments = {
   alt="Code block demo of the block rendered in the Faust Headless Website"
 />
 
-:::note
+:::info
 
 Now that you have the styles configured correctly, you can navigate to your Headless Website and check that the block matches the styles in the WordPress editor. Make sure to tweak the block in the WordPress Editor and verify that the changes are being reflected in the Headless Website.
 
@@ -505,7 +505,7 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
 }
 ```
 
-:::note
+:::info
 
 If you include those extensions in a custom plugin, your Headless Website application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
 
