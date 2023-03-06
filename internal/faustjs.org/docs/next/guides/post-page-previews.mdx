@@ -38,11 +38,11 @@ FAUST_SECRET_KEY=xxxx
 
 ### Create Your `faust.config.js` File and Import It In `_app.js`
 
-Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/faustwp-getting-started) Faust example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/main/examples/next/faustwp-getting-started/faust.config.js) file.
+Like the [`next/getting-started`](https://github.com/wpengine/faustjs/tree/main/examples/next/getting-started) Faust example, your [`faust.config.js`](https://github.com/wpengine/faustjs/blob/main/examples/next/getting-started/faust.config.js) file.
 
 You'll need to import it at the top of your `_app.js` file to ensure the `config` is set, and your Faust app initializes appropriately.
 
-```js title=pages/_app.js 
+```js title=pages/_app.js
 import '../faust.config';
 import React from 'react';
 import { useRouter } from 'next/router';
