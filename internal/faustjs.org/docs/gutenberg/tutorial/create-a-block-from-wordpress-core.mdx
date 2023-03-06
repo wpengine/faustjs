@@ -181,11 +181,11 @@ We chose to attach the fragment as a property of the function component itself. 
 
 ### 4.5 Include the block fragment in your Faust template `query` string
 
-You want to include the fragment in your Faust templates `query` string and reference the block fragment `key` so that when the page resolves, the payload includes the data from that block.
-
 :::note
-In our example, we use the block in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates):
+In our example, we use the block in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates).
 :::
+
+You want to include the fragment in your Faust template `query` string and reference the block fragment `key` so that when the page resolves, the payload includes the data from that block. In this example, `single.js` is the template. You would implement this in whatever template you are working on.
 
 ```jsx {1,7,18} title="wp-templates/single.js"
 import blocks from '../wp-blocks';
@@ -212,7 +212,7 @@ query GetPost(
 }
 ```
 
-If you navigate to the page that contains this block, you should be able to inspect the properties in the console and see your block attributes that were logged by `console.log(props.attributes)` in `CoreCode.js`. In this case, we will see the CoreCode block attributes.
+If you navigate to the page that contains this block, you should be able to inspect the properties in the console and see your block attributes that were logged by `console.log(props.attributes)` in `CoreCode.js`. In this case, we will see the `CoreCode` block attributes.
 
 <img
   src="/docs/img/core-code-block-console.png"
