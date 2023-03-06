@@ -221,76 +221,21 @@ If you navigate to the page that contains this block, you should be able to insp
 
 ## 5. Implement the Block using the provided block attributes and the Editor view
 
-Now you are ready to design the block based on the original block's look and feel. The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
+Now you are ready to design the block based on the original block's look and feel.
 
 Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block in the frontend.
 
-This implementation is found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code).
-
-You are interested in the following files:
-
-`style.scss`: Contains the front-end block styles. You can definitely include those in our global styles:
-
-```scss title="style.scss"
-.wp-block-code {
-	// This block has customizable padding, border-box makes that more predictable.
-	box-sizing: border-box;
-
-	// Provide a minimum of overflow handling and ensure the code markup inherits
-	// the font-family set on pre.
-	code {
-		display: block;
-		font-family: inherit;
-		overflow-wrap: break-word;
-		white-space: pre-wrap;
-	}
-}
-...
-```
-
-`block.js`: Contains the block attributes specification.
-
-`save.js`: According to [the docs](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save),
-the `save` function defines the way in which the different attributes should be combined into the final markup, which is then serialized into `post_content`.
-
-Most of the time, the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way, the design of the block in the editor will match the design in the Decoupled site.
-
 :::note
-
-Since the block is static most of the time, the save.js should be provided. Sometimes the `save` function is not provided or it returns `null`. When this happens, the component is considered `dynamic`, aka it renders in the server.
-So you want to check if the [register_block_type](https://developer.wordpress.org/reference/functions/register_block_type/) provides an implementation for rendering the block.
-In that case, the `render_callback` will provide the markup for the block using PHP. You can take this implementation and translate it to React.
-
+This implementation can be found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code) to view the file structure and contents.
 :::
 
-Since the `save` function is provided with that block we have a viable strategy that will save us time without having to figure out the actual implementation.
+### 5.1 Create required utility helper files and functions
 
-So go ahead and provide the implementation of the Block based on the `save` function. You will need to remove the references of the `RichText` and `useBlockProps` imports as you won't be needing those.
+There are 3 required utility files. Create these files in your project in the specified locations:
 
-```jsx title="wp-blocks/CoreCode.js" {6}
-import { gql } from '@apollo/client';
-import getStyles from '../utilities/getStyles.js';
+#### 1. `utilities/getStyles.js`
 
-export default function CoreCode(props) {
-  const className = 'wp-block-code';
-  const styles = getStyles(props.attributes);
-  return (
-    <pre className={className} style={styles}>
-      <code>{`${props.attributes?.content}`}</code>
-    </pre>
-  );
-}
-```
-
-A few important things to consider here:
-
-- First we assign the same className `wp-block-code` for the block so that we can apply the same styles as the Editor.
-- Then we use a helper `getStyles` that creates the final inline styles for that block based on the block attributes.
-- Finally we pass on the `props.attributes?.content` as a string to the `code` element.
-
-Let's delve into the `getStyles` helper function and see what it does:
-
-```jsx {1-3} title="utilities/getStyles.js"
+```js title="utilities/getStyles.js"
 import { colorsMap, fontSizesMap } from '../styles/variables.js';
 import { cssToReactStyle } from './cssToReactStyle.js';
 import { compileCSS } from '@wordpress/style-engine';
@@ -307,40 +252,15 @@ export default function getStyles(attributes) {
 }
 ```
 
-This function takes the blocks attributes and maps them into inline React styles using the following helpers:
+This `getStyles` function takes the blocks attributes and maps them into inline React styles using the following helpers:
 
 - `colorsMap, fontSizesMap`: Map the slug color and font values to associated colors and font sizes based on the current `theme.json`.
 - `compileCSS`: A helper function from the [@wordpress/style-engine](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-style-engine/) package that parses the JSON object containing the block styles and returns an inline style string.
 - `cssToReactStyle`: Another helper function that translates the inline style string into a React inline styles object.
 
-Below is the implementation of those functions in order:
+#### 2. `utilities/cssToReactStyle.js`
 
-```jsx title="styles/variables.js"
-// Contains the Theme.js palette colors
-export const colorsMap = {
-  primary: '#9DFF20',
-  secondary: '#345C00',
-  tertiary: '#f6f6f6',
-  foreground: '#000000',
-  background: '#ffffff',
-  'cyan-bluish-gray': '#abb8c3',
-  'pale-pink': '#f78da7',
-  'luminous-vivid-amber': '#fcb900',
-  'pale-cyan-blue': '#8ed1fc',
-  'vivid-cyan-blue': '#0693e3',
-  'vivid-purple': '#9b51e0',
-  'vivid-red': '#cf2e2e',
-  'light-green-cyan': '#7bdcb5',
-};
-
-export const fontSizesMap = {
-  small: '1rem',
-  normal: '1.5rem',
-  large: '1.75rem',
-};
-```
-
-```jsx title="utilities/cssToReactStyle.js"
+```js title="utilities/cssToReactStyle.js"
 import isObject from 'lodash/isObject';
 import map from 'lodash/map';
 import camelCase from 'lodash/camelCase';
@@ -381,6 +301,9 @@ export const cssToReactStyle = (css) => {
 };
 ```
 
+This `cssToReactStyle` function translates the inline style string into a React inline styles object.
+
+:::note
 If you don't want to include the `@wordpress/style-engine` package in your final bundle, you can still map the JSON object manually into the associated styles.
 If you take a look at this style object after the style is parsed:
 
@@ -405,31 +328,133 @@ Mapping into the React styles object would then be:
 	}
 ```
 
-One final detail: don't forget to include the global scss for the block so that the right styles are applied.
-You can create a new folder for block styles inside the `styles` folder and import it there:
+:::
 
-```scss title="styles/blocks.scss"
-// WordPress block styles.
-...
-@import './blocks/CoreCode' // import block styles here
+#### 3. `styles/variables.js`
+
+```jsx title="styles/variables.js"
+// Contains the Theme.js palette colors
+export const colorsMap = {
+  primary: '#9DFF20',
+  secondary: '#345C00',
+  tertiary: '#f6f6f6',
+  foreground: '#000000',
+  background: '#ffffff',
+  'cyan-bluish-gray': '#abb8c3',
+  'pale-pink': '#f78da7',
+  'luminous-vivid-amber': '#fcb900',
+  'pale-cyan-blue': '#8ed1fc',
+  'vivid-cyan-blue': '#0693e3',
+  'vivid-purple': '#9b51e0',
+  'vivid-red': '#cf2e2e',
+  'light-green-cyan': '#7bdcb5',
+};
+
+export const fontSizesMap = {
+  small: '1rem',
+  normal: '1.5rem',
+  large: '1.75rem',
+};
 ```
 
-Now that you have the styles configured correctly, you can navigate into the Headless site's page and check that the block matches the styles with the editor view:
+### 5.2 Create and import block styles
+
+:::note
+A few important things to consider here:
+
+- First we assign the same className `wp-block-code` for the block so that we can apply the same styles as the Editor.
+- Then we use our helper `getStyles` that creates the final inline styles for that block based on the block attributes.
+- Finally we pass on the `props.attributes?.content` as a string to the `code` element.
+  :::
+
+#### 1. Create `CoreCode.scss` and put it in `styles/blocks/CoreCode/`. It will contain the front-end block styles for this CoreCode block. If you are doing a different block or a custom block, you will create an `scss` file in `styles/blocks/` for that specific block.
+
+```scss title="styles/blocks/CoreCode/CoreCode.scss"
+.wp-block-code {
+  // This block has customizable padding, border-box makes that more predictable.
+  box-sizing: border-box;
+
+  // Provide a minimum of overflow handling and ensure the code markup inherits
+  // the font-family set on pre.
+  code {
+    display: block;
+    font-family: inherit;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
+}
+```
+
+#### 2. Include the `CoreCode.scss` file inside the `styles/_blocks.scss` file:
+
+:::note
+Next.js won't allow you to import the `scss` file directly into the component since it requires all global CSS to be imported from the pages directory only. See the [related error](https://nextjs.org/docs/messages/css-global) message.
+
+So you need to either import the styles from a global module or translate the styles to use Component-Level CSS.
+:::
+
+```scss title="styles/_blocks.scss"
+// WordPress block styles.
+...
+@import './blocks/CoreCode' // import CoreCode block styles here
+```
 
 <img
   src="/docs/img/core-code-block-decoupled-preview.png"
-  alt="Code block demo of the block rendered in the Decoupled Website"
+  alt="Code block demo of the block rendered in the Faust Headless Website"
 />
 
-Make sure to tweak the block in the editor and verify that the changes are being reflected in the website.
+#### 3. Finish the `CoreCode.js` component.
+
+Import `getStyles` from `utilities`. Create and set `className` to `wp-block-code`. Create and set `styles` to `getStyles(props.attributes)` to get the proper formatting of the attributes. Add in the HTML markup for your block and use the `className` and `styles` variables for proper styling.
+
+In this case for the `CoreCode` block, we added the `pre` and `code` markup from WordPress Core and output the contents of the block using `${props.attributes?.content}`. If you chose to complete the `CoreCode` block with us, your file should match what we have here:
+
+```jsx title="wp-blocks/CoreCode.js"
+// import react
+import React from 'react';
+// import graphql and our getStyles utility
+import { gql } from '@apollo/client';
+import getStyles from '../utilities/getStyles.js';
+
+export default function CoreCode(props) {
+  // set wp-block-code style for the markup to match core WordPress styling
+  const className = 'wp-block-code';
+  // use getStyles utility to process the props.attributes properly
+  const styles = getStyles(props.attributes);
+  return (
+    // This markup is from the WordPress CoreCode block
+    // add the className and styles to the markup
+    // add props.attributes?.content to the markup
+    <pre className={className} style={styles}>
+      <code>{`${props.attributes?.content}`}</code>
+    </pre>
+  );
+}
+// add fragment
+CoreCode.fragments = {
+  key: `CoreCodeBlockFragment`,
+  entry: gql`
+    fragment CoreCodeBlockFragment on CoreCode {
+      attributes {
+        borderColor
+        backgroundColor
+        content
+        style
+        textColor
+        fontSize
+        fontFamily
+      }
+    }
+  `,
+};
+```
 
 :::note
-
-Next.js won't allow you to import the `styles.scss` directly into the component since it requires all
-global CSS to be imported from the pages directory only. See the [related error](https://nextjs.org/docs/messages/css-global) message.
-So you need to either import the styles from a global module or translate the styles to use Component-Level CSS.
-
+Now that you have the styles configured correctly, you can navigate to your Headless Website and check that the block matches the styles in the WordPress editor. Make sure to tweak the block in the WordPress Editor and verify that the changes are being reflected in the Headless Website.
 :::
+
+---
 
 ## Further Considerations
 
