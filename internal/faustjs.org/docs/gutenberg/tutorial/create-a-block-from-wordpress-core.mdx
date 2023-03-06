@@ -16,7 +16,9 @@ You will need to complete both of these guides before you can create blocks with
 ## 1. Choose a block to implement
 
 :::note
+
 The Core Editor Blocks contain a list of useful blocks for editing and publishing content. All of the official blocks include a `block.json` with defined attributes, so the `wp-graphql-content-blocks` plugin will automatically expose those as GraphQL fields.
+
 :::
 
 For this tutorial, we are going to implement the [Code Block](https://developer.wordpress.org/block-editor/reference-guides/core-blocks/#code) that renders a formatted block of code.
@@ -37,9 +39,11 @@ Navigate to your WordPress instance and create a New Post. Add a Block into the 
 </a>
 
 :::note
+
 You can expand the block sidebar options to change some of its styling. For example, you can configure the Color, Dimensions, Border, and Size settings for the Code Block.
 
 Once you get familiar with the block's look and feel, let's explore its attributes from the GraphiQL IDE.
+
 :::
 
 ## 3. Review the Block data and attributes in the GraphiQL IDE
@@ -107,9 +111,11 @@ This will resolve into:
 ```
 
 :::note
+
 Notice that with some of the attributes like `backgroundColor`, the editor used the `theme.json` palette slug name instead of the actual value, i.e. `tertiary`. It also stored the custom hardcoded styles in the `style` fields as a JSON string. We will have to handle them appropriately when developing the associated block.
 
 Once you get familiar with how to query the necessary data from that block, let's see how to implement the block in your Faust Headless site.
+
 :::
 
 ## 4. Create the initial block and log the attributes
@@ -193,7 +199,9 @@ We chose to attach the fragment as a property of the function component itself. 
 ### 4.5 Include the block fragment in your Faust template `query` string
 
 :::note
+
 In our example, we use the block in both the Posts and Pages templates when using the [Faust Template Hierarchy](/docs/templates).
+
 :::
 
 You want to include the fragment in your Faust template `query` string and reference the block fragment `key` so that when the page resolves, the payload includes the data from that block. In this example, `single.js` is the template. You would implement this in whatever template you are working on.
@@ -239,7 +247,9 @@ Now you are ready to design the block based on the original block's look and fee
 Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block in the frontend.
 
 :::note
+
 This implementation can be found in the official Gutenberg `@wordpress/block-library` package. Take a look at [this folder](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/code) to view the file structure and contents.
+
 :::
 
 ### 5.1 Create required utility helper files and functions
@@ -317,6 +327,7 @@ export const cssToReactStyle = (css) => {
 This `cssToReactStyle` function translates the inline style string into a React inline styles object.
 
 :::note
+
 If you don't want to include the `@wordpress/style-engine` package in your final bundle, you can still map the JSON object manually into the associated styles.
 If you take a look at this style object after the style is parsed:
 
@@ -373,12 +384,14 @@ export const fontSizesMap = {
 ### 5.2 Create and import block styles
 
 :::note
+
 A few important things to consider here:
 
 - First we assign the same className `wp-block-code` for the block so that we can apply the same styles as the Editor.
 - Then we use our helper `getStyles` that creates the final inline styles for that block based on the block attributes.
 - Finally we pass on the `props.attributes?.content` as a string to the `code` element.
-  :::
+
+:::
 
 #### 1. Create `CoreCode.scss` and put it in `styles/blocks/CoreCode/`. It will contain the front-end block styles for this CoreCode block. If you are doing a different block or a custom block, you will create an `scss` file in `styles/blocks/` for that specific block.
 
@@ -401,9 +414,11 @@ A few important things to consider here:
 #### 2. Include the `CoreCode.scss` file inside the `styles/_blocks.scss` file:
 
 :::note
+
 Next.js won't allow you to import the `scss` file directly into the component since it requires all global CSS to be imported from the pages directory only. See the [related error](https://nextjs.org/docs/messages/css-global) message.
 
 So you need to either import the styles from a global module or translate the styles to use Component-Level CSS.
+
 :::
 
 ```scss title="styles/_blocks.scss"
@@ -489,7 +504,9 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
 ```
 
 :::note
+
 If you include those extensions in a custom plugin, your Headless Website application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
+
 :::
 
 ### Can I style the block differently?
