@@ -460,8 +460,9 @@ Now that you have the styles configured correctly, you can navigate to your Head
 
 ### What if the block is missing some attributes?
 
-If the block does not have any attributes or has only a few of them declared in the block.json, you can still try to extend the block API by declaring additional attributes for that block.
-Follow the [filters reference guide](gutenberg/filters), to create a block that uses the `additional_block_attributes` property. The attributes will be available to query from that block.
+If the block does not have any attributes or has only a few of them declared in the `block.json`, you can still try to extend the block API by declaring additional attributes for that block.
+
+Follow the [filters reference guide](gutenberg/filters) to create a block that uses the `additional_block_attributes` property. The attributes will be available to query from that block.
 
 ```php
 class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
@@ -473,22 +474,20 @@ class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block
 ```
 
 :::note
-
-If you include those extensions in a custom plugin, your Decoupled application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
+If you include those extensions in a custom plugin, your Headless Website application is dependent on the inclusion of this plugin. You need to make sure you bundle them together, otherwise the queries you perform in the application will fail.
 :::
 
 ### Can I style the block differently?
 
-Yes, you can style the block in many ways, choosing to ignore some of the attributes altogether.
-You can also use an external React Library to style the block. For example, use Material UI or ChakraUI.
-Bear in mind that this will almost always result in degraded user editing experience as the styles of the Editor view won't match the styles of the rendered page.
+Yes, you can style the block in many ways, choosing to ignore some of the attributes altogether. You can also use an external React Library to style the block, i.e. Material UI or ChakraUI.
+
+Bear in mind that this will almost always result in degraded user editing experience as the styles of the WordPress Editor view won't match the styles of the rendered headless page.
 
 ### What if the block contains custom JavaScript assets?
 
-Some Core blocks include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
-Since React is not normally bundled as a dependency in the browser, the JavaScript code usually consists of good old jQuery and document selectors.
+Some Core blocks include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity. Since React is not normally bundled as a dependency in the browser, the JavaScript code usually consists of good old jQuery and document selectors.
 
-In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
+To be able to review the bundled JavaScript assets, choose one of the following options:
 
 - **Include them in your code:** This is not recommended as React does not play well with plain JavaScript and jQuery so you can expect lots of problems.
 
@@ -496,4 +495,4 @@ In that case you want to be able to review the bundled JavaScript assets and cho
 
 - **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
 
-Inevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
+Inevitably this is a common pain point when trying to leverage the power of Blocks in the Headless Website so it's up to you how you want to handle the pros and cons of each approach.
