@@ -103,6 +103,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'getWordPressProps',
+          id: 'reference/getWordPressProps',
+        },
+        {
+          type: 'doc',
           label: 'useAuth',
           id: 'reference/useAuth',
         },
