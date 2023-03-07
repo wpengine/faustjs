@@ -227,7 +227,7 @@ While creating your custom block using `@wordpress/create-block`, the `style.scs
 
 ## 6. Implementation of the block
 
-Next, we want to implemtn the Block based on the `save` function you created for your custom block. You will need to remove the references of the `RichText` and  `useBlockProps` imports as you won't be needing those, but beyond this, it should look similar to what you have in your plugin folder's `save.js` file:
+Next, we want to implement the Block based on the `save` function you created for your custom block. You will need to remove the references of the `RichText` and  `useBlockProps` imports as you won't be needing those, but beyond this, it should look similar to what you have in your plugin folder's `save.js` file:
 
 ```jsx title="wp-blocks/MyCoolBlock.js" {6}
 import { gql } from '@apollo/client';
