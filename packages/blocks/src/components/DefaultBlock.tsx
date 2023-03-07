@@ -9,7 +9,7 @@ import { ContentBlock } from './WordPressBlocksViewer.js';
  */
 export default function DefaultBlock({ renderedHtml }: ContentBlock) {
   // eslint-disable-next-line react/no-danger
-  return <span dangerouslySetInnerHTML={{ __html: renderedHtml ?? '' }} />;
+  return <div dangerouslySetInnerHTML={{ __html: renderedHtml ?? '' }} />;
 }
 
 DefaultBlock.displayName = 'DefaultBlock';

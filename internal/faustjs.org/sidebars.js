@@ -103,6 +103,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'getWordPressProps',
+          id: 'reference/getWordPressProps',
+        },
+        {
+          type: 'doc',
           label: 'useAuth',
           id: 'reference/useAuth',
         },
@@ -168,6 +173,11 @@ module.exports = {
           type: 'doc',
           label: 'Plugin filters',
           id: 'gutenberg/filters',
+        },
+        {
+          type: 'doc',
+          label: 'Migration from WPGraphQL Gutenberg',
+          id: 'gutenberg/migration-from-wp-graphql-gutenberg',
         },
         {
           type: 'category',

@@ -1,5 +1,50 @@
 # @faustwp/core
 
+## 0.2.6
+
+### Patch Changes
+
+- 64e4227: Fixed issue "Cannot find module"
+
+## 0.2.5
+
+### Patch Changes
+
+- 8c48faa: Remove `disableLogging` property from `FaustConfig` TypeScript type, as this was only a property in old Faust.
+- 681197e: Added an experimental toolbar in order to create a familiar experience for WordPress publishers & developers. Faust users can opt-in to displaying the Toolbar by defining `experimentalToolbar: true` within their project's faust.config.js.
+- fcc4c49: Introduced the `useLogin` hook to handle logging into your Faust app without being redirected to WordPress:
+
+  ```js
+  import { useLogin } from '@faustwp/core';
+
+  const { login, loading, data, error } = useLogin();
+  ```
+
+  Please visit the [reference docs](https://faustjs.org/docs/reference/useLogin) for more information on the API.
+
+- 8ad77cb: Bug fix: Fixes Hot Module Reload (HMR) issue within wp-templates
+- 56b7a8f: Added a new skeleton component for toolbar nodes. Users can leverage this new component to handle loading states within custom toolbar nodes.
+- f28f912: Exports `getNextServerSideProps` in `core` index.
+- fcc4c49: Introduced the `useLogout` hook to handle logging out in your Faust app:
+
+  ```js
+  import { useLogout } from '@faustwp/core';
+
+  const { error, logout, loading } = useLogin();
+  ```
+
+  Please visit the [reference docs](https://faustjs.org/docs/reference/useLogout) for more information on the API.
+
+- fcc4c49: Re-introduced the `useAuth` hook to handle authentication in your Faust app:
+
+  ```js
+  import {useAuth} from '@faustwp/core'
+
+  const {isAuthenticated, isReady, loginUrl} = useAuth(options?);
+  ```
+
+  Please visit the [reference docs](https://faustjs.org/docs/reference/useAuth) for more information on the API.
+
 ## 0.2.4
 
 ### Patch Changes

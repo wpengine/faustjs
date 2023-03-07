@@ -4,21 +4,21 @@ title: WordPressBlocksViewer Reference
 description: Reference docs for the WordPressBlocksViewer Component in Faust.
 ---
 
-`WordPressBlocksViewer` is a component used to render blocks received from WordPress. It uses the react components passed to the `WordPressBlocksProvider` and matches them to the appropriate blocks received in the [`contentBlocks`](#props) prop.
+`WordPressBlocksViewer` is a component used to render blocks received from WordPress. It uses the react components passed to the `WordPressBlocksProvider` and matches them to the appropriate blocks received in the [`editorBlocks`](#props) prop.
 
 ## Usage
 
-The below example shows how a [Faust Template](/docs/templates) can use the requested `contentBlocks` from WPGraphQL and render them using the `WordPressBlocksViewer` component.
+The below example shows how a [Faust Template](/docs/templates) can use the requested `editorBlocks` from WPGraphQL and render them using the `WordPressBlocksViewer` component.
 
 ```jsx {1,9,13} title="wp-blocks/CoreColumn.jsx"
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 
 export default function Component(props) {
-  const { contentBlocks } = props.data.post;
+  const { editorBlocks } = props.data.post;
 
   return (
     <>
-      <WordPressBlocksViewer contentBlocks={contentBlocks} />
+      <WordPressBlocksViewer blocks={editorBlocks} />
     </>
   );
 }
@@ -28,11 +28,11 @@ Component.query = gql`
     $databaseId: ID!
   ) {
     post(id: $databaseId, idType: DATABASE_ID) {
-      contentBlocks {
+      editorBlocks {
         __typename
         renderedHtml
-        id: nodeId
-        parentId
+        id: clientId
+        parentClientId
       }
     }
   }
@@ -51,7 +51,7 @@ Below is `WordPressBlocksViewer`'s props defined as a TypeScript interface:
 
 :::note
 
-The `contentBlocks` type defined below is data received from WPGraphQL and the [WPGraphQL Content Blocks](https://github.com/wpengine/wp-graphql-content-blocks) companion plugin.
+The `editorBlocks` type defined below is data received from WPGraphQL and the [WPGraphQL Content Blocks](https://github.com/wpengine/wp-graphql-content-blocks) companion plugin.
 
 :::
 
@@ -67,6 +67,6 @@ export interface ContentBlock {
 }
 
 export interface WordpressBlocksViewerProps {
-  contentBlocks: ContentBlock[];
+  blocks: ContentBlock[];
 }
 ```
