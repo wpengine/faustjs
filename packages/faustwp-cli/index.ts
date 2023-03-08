@@ -7,12 +7,7 @@ import { debugLog, infoLog } from './lib/stdout/index.js';
 import { healthCheck } from './lib/healthCheck/index.js';
 import { generatePossibleTypes } from './lib/generatePossibleTypes.js';
 import { userConfig } from './lib/userConfig.js';
-import {
-  getCliArgs,
-  getWpSecret,
-  getWpUrl,
-  isDebug,
-} from './utils/index.js';
+import { getCliArgs, getWpSecret, getWpUrl, isDebug } from './utils/index.js';
 import {
   telemetryPrefsExist,
   marshallTelemetryData,

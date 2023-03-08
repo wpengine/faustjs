@@ -21,7 +21,11 @@ export const validateFaustEnvVars = () => {
     getWpSecret()
   ) {
     warnLog('Your WordPress site is not running on https!');
-    warnLog('This is a security concern as all traffic with your secret key is in plain text.');
-    warnLog('Please make sure your production Faust app runs with a WordPress instance on https!');
+    warnLog(
+      'This is a security concern as all traffic with your secret key is in plain text.',
+    );
+    warnLog(
+      'Please make sure your production Faust app runs with a WordPress instance on https!',
+    );
   }
 };

@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 
 import { infoLog, errorLog } from '../stdout/index.js';
-import { getGraphqlEndpoint, getWpUrl } from '../../utils/index.js';
+import { getGraphqlEndpoint } from '../../utils/index.js';
 
 /**
  * Checks if the WordPress GraphQL endpoint is available to use.
@@ -9,7 +9,6 @@ import { getGraphqlEndpoint, getWpUrl } from '../../utils/index.js';
  */
 export async function verifyGraphQLEndpoint() {
   const graphqlEndpoint = getGraphqlEndpoint();
-  const wpUrl = getWpUrl();
 
   try {
     const response: Response = await fetch(graphqlEndpoint, {
@@ -22,13 +21,13 @@ export async function verifyGraphQLEndpoint() {
 
     const json: {
       data: {
-        __typename: 'string'
-      }
+        __typename: 'string';
+      };
     } = await response.json();
 
-    // If __typename exists in the response then our GraphQL was successful.
+    // eslint-disable-next-line no-underscore-dangle
     if (json.data.__typename) {
-      infoLog('Discovered WPGraphQL endpoint');
+      infoLog('Discovered WPGraphQL endpoint!');
       return;
     }
   } catch (err) {
@@ -40,7 +39,7 @@ export async function verifyGraphQLEndpoint() {
 
       ● Your WordPress site is unavailable
       ● WPGraphQL is not active
-      ● WPGraphQL\'s default endpoint (/graphql) was changed in the plugin\'s settings
+      ● WPGraphQL's default endpoint (/graphql) was changed in the plugin's settings
     `);
 
     process.exit(0);
