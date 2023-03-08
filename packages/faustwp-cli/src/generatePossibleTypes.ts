@@ -2,7 +2,7 @@ import 'isomorphic-fetch';
 import fs from 'fs';
 
 import { infoLog, errorLog } from './stdout/index.js';
-import { getGraphqlEndpoint } from '../utils/index.js';
+import { getGraphqlEndpoint } from './utils/index.js';
 
 type PossibleTypes = {
   [key: string]: any;

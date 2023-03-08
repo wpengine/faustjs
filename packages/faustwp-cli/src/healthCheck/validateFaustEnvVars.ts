@@ -1,4 +1,4 @@
-import { getWpSecret } from '../../utils/index.js';
+import { getWpSecret } from '../utils/index.js';
 import { errorLog, warnLog } from '../stdout/index.js';
 
 /**

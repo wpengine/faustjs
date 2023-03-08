@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { getCliArgs } from '../../utils/index.js';
+import { getCliArgs } from '../utils/index.js';
 import { userConfig } from '../userConfig.js';
 import { styles } from '../stdout/index.js';
 

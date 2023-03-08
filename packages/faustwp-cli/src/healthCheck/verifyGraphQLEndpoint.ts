@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 
 import { infoLog, errorLog } from '../stdout/index.js';
-import { getGraphqlEndpoint } from '../../utils/index.js';
+import { getGraphqlEndpoint } from '../utils/index.js';
 
 /**
  * Checks if the WordPress GraphQL endpoint is available to use.

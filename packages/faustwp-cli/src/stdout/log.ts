@@ -1,4 +1,4 @@
-import { isDebug } from '../../utils/index.js';
+import { isDebug } from '../utils/index.js';
 import { styles } from './styles.js';
 
 export const log = (

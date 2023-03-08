@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { getCliArgs } from '../../utils/index.js';
+import { getCliArgs } from '../utils/index.js';
 import { WPTelemetryResponseData } from './requestWPTelemetryData.js';
 
 export interface TelemetryData {
