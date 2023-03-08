@@ -3,22 +3,24 @@
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import { v4 as uuid } from 'uuid';
-import { getWpSecret } from './utils/getWpSecret.js';
+import { debugLog, infoLog } from './lib/stdout/index.js';
+import { healthCheck } from './lib/healthCheck/index.js';
+import { generatePossibleTypes } from './lib/generatePossibleTypes.js';
+import { userConfig } from './lib/userConfig.js';
 import {
-  generatePossibleTypes,
   getCliArgs,
+  getWpSecret,
+  getWpUrl,
+  isDebug,
+} from './utils/index.js';
+import {
+  telemetryPrefsExist,
   marshallTelemetryData,
   handleTelemetrySubcommand,
   requestWPTelemetryData,
-  sendTelemetryData,
   shouldFireTelemetryEvent,
-  telemetryPrefsExist,
-  validateFaustEnvVars,
-  userConfig,
-  infoLog,
-  isDebug,
-  debugLog,
-} from './utils/index.js';
+  sendTelemetryData,
+} from './lib/telemetry/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
@@ -48,7 +50,11 @@ import {
     }
   }
 
-  validateFaustEnvVars();
+  /**
+   * Ensure that everything Faust requires to run
+   * is available before continuing.
+   */
+  await healthCheck();
 
   // Inform user of telemetry program.
   if (!telemetryPrefsExist()) {
@@ -83,7 +89,7 @@ import {
     try {
       const wpTelemetryData = await requestWPTelemetryData(
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        process.env.NEXT_PUBLIC_WORDPRESS_URL!,
+        getWpUrl()!,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         getWpSecret()!,
       );

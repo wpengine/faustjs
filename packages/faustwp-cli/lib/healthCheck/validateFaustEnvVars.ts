@@ -1,5 +1,5 @@
-import { getWpSecret } from './getWpSecret.js';
-import { errorLog, warnLog } from './log.js';
+import { getWpSecret } from '../../utils/index.js';
+import { errorLog, warnLog } from '../stdout/index.js';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
@@ -20,8 +20,8 @@ export const validateFaustEnvVars = () => {
     process.env.NEXT_PUBLIC_WORDPRESS_URL.startsWith('http://') &&
     getWpSecret()
   ) {
-    warnLog(
-      'Your WordPress site is not running on https! This is a security concern as all traffic with your secret key is in plain text. Please make sure your production Faust app runs with a WordPress instance on https!',
-    );
+    warnLog('Your WordPress site is not running on https!');
+    warnLog('This is a security concern as all traffic with your secret key is in plain text.');
+    warnLog('Please make sure your production Faust app runs with a WordPress instance on https!');
   }
 };

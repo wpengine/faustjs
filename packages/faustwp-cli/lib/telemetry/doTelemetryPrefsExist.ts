@@ -1,4 +1,4 @@
-import { userConfig } from './userConfig.js';
+import { userConfig } from '../userConfig.js';
 
 export function telemetryPrefsExist(): boolean {
   return (
