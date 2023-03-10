@@ -46,19 +46,15 @@ Say for example, you want to mount the API router at `/api/headless`. You would 
 
 ```js title="faust.config.js" {15}
 import { config as coreConfig } from '@faustjs/core';
-
-if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
-  console.error(
-    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
-  );
-}
+import templates from './wp-templates';
+import possibleTypes from './possibleTypes.json';
 
 /**
  * @type {import("@faustjs/core").Config}
  */
 export default coreConfig({
-  wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  apiClientSecret: process.env.FAUST_SECRET_KEY,
+  templates,
+  possibleTypes,
   apiBasePath: '/api/headless',
 });
 ```

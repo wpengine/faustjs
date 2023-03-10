@@ -1,3 +1,4 @@
+import getNextConfig from 'next/config.js';
 import { PossibleTypesMap } from '@apollo/client';
 import defaults from 'lodash/defaults.js';
 import extend from 'lodash/extend.js';
@@ -9,9 +10,11 @@ import { hooks, FaustPlugin } from '../wpHooks/index.js';
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
   experimentalToolbar?: boolean;
-  loginPagePath?: string;
+  loginPagePath: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
+  apiBasePath: string;
+  basePath: string;
 }
 
 let config: FaustConfig;
@@ -30,6 +33,8 @@ export function setConfig(_config: FaustConfig) {
 
 export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
+    basePath: getNextConfig()?.basePath,
+    apiBasePath: '/api/faust',
     loginPagePath: '/login',
     experimentalToolbar: false,
   });
@@ -46,6 +51,6 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
   return extend(cfg, {});
 }
 
-export function getConfig(): Partial<FaustConfig> {
+export function getConfig(): FaustConfig {
   return normalizeConfig(config);
 }

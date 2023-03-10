@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import {
-  FAUST_API_BASE_PATH,
-  LOGOUT_ENDPOINT_PARTIAL_PATH,
-} from '../lib/constants.js';
+import { LOGOUT_ENDPOINT_PARTIAL_PATH } from '../lib/constants.js';
+import { getConfig } from '../config/index.js';
+
+const { apiBasePath } = getConfig();
 
 export function useLogout() {
   const [error, setError] = useState<Response | undefined>(undefined);
@@ -11,7 +11,7 @@ export function useLogout() {
   async function logout(redirectUrl?: string) {
     setLoading(true);
 
-    const logoutUrl = `${FAUST_API_BASE_PATH}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`;
+    const logoutUrl = `${apiBasePath}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`;
 
     // Clear the refresh token from the cookie.
     const res = await fetch(logoutUrl, {
