@@ -10,5 +10,5 @@ export function getWpUrl(path = ''): string {
     return wpUrl;
   }
 
-  return `${wpUrl}/${path}`;
+  return `${wpUrl}/${trim(path, '/')}`;
 }
