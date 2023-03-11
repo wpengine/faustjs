@@ -50,7 +50,7 @@ function deny_public_access() {
 	 */
 	$excluded_routes = apply_filters( 'faustwp_exclude_from_public_redirect', array() );
 
-	if ( in_array( basename( add_query_arg( null, null ) ), $excluded_routes ) ) {
+	if ( in_array( basename( add_query_arg( null, null ) ), $excluded_routes, true ) ) {
 		return;
 	}
 
