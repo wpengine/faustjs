@@ -7,7 +7,6 @@ description: This section describes the various WordPress Plugin Settings.
 The `Faust` page of the Faust WordPress Plugin (located within the WP Admin `Settings` Sidebar)
 allows you to customize the behavior of the plugin by configuring certain features. We explain those features in detail:
 
-
 ## Features Explained
 
 The following options are available to enable/disabled based on your requirements:
@@ -18,10 +17,10 @@ This option is controlled by the `Disable WordPress theme admin pages` checkbox.
 When enabled it removes certain wp-admin menu items that aren't supported in a headless environment.
 For example, it will remove the following menu items:
 
-* `Appearance > Themes`
-* `Appearance > Theme Editor`
-* `Appearance > Widgets`
-* `Appearance > Customize`
+- `Appearance > Themes`
+- `Appearance > Theme Editor`
+- `Appearance > Widgets`
+- `Appearance > Customize`
 
 It will also remove any features that require the `Customizer` which means that the
 `Appearance` tab will only contain the menu options.
@@ -57,7 +56,6 @@ then if you visit any page on your `WordPress URL` will be redirected to the hea
 
 If you don't want this redirect to happen then you can disable this option which allows you to access the original WP site.
 
-
 ### Using the WordPress Domain for Media URLs in Post Content
 
 This option is controlled by the `Use the WordPress domain for media URLs in post content` checkbox and is disabled by default.
@@ -81,4 +79,4 @@ WP site a root domain and when you switch the live domain to headless,
 you should disable the option to replace those links worrying about missing media.
 
 > **NOTE:** When moving your site to a new domain it is recommended to perform a search/replace on your website’s database.
-This is to ensure all hard-coded references of the old domain in your database point to your live production domain instead. [Read more about search/replace](https://wpengine.com/support/move-domain-new-environment/#Optional_Perform_a_search_and_replace)
+> This is to ensure all hard-coded references of the old domain in your database point to your live production domain instead. [Read more about search/replace](https://wpengine.com/support/move-domain-new-environment/#Optional_Perform_a_search_and_replace)
