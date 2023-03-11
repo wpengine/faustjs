@@ -6,13 +6,11 @@ import { getWpSecret } from '../../src/utils';
 
 describe('utils/getWpSecret', () => {
   const envBackup = process.env;
-  const mockWordPressUrl = 'http://headless.local';
-  const mockSecretKey = 'fAuST-sup3r-s3cr3t-k3y';
 
   beforeAll(() => {
-    process.env.NEXT_PUBLIC_WORDPRESS_URL = mockWordPressUrl;
-    process.env.FAUST_SECRET_KEY = mockSecretKey;
-    process.env.FAUSTWP_SECRET_KEY = mockSecretKey;
+    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
+    process.env.FAUST_SECRET_KEY   = 'fAuST-sup3r-s3cr3t-k3y';
+    process.env.FAUSTWP_SECRET_KEY = 'fAuST-sup3r-s3cr3t-k3y'; // deprecated
   });
 
   afterAll(() => {

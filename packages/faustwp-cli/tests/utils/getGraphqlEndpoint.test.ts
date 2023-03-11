@@ -6,10 +6,9 @@ import { getGraphqlEndpoint } from '../../src/utils';
 
 describe('utils/getGraphqlEndpoint', () => {
   const envBackup = process.env;
-  const mockWordPressUrl = 'http://headless.local';
 
   beforeAll(() => {
-    process.env.NEXT_PUBLIC_WORDPRESS_URL = mockWordPressUrl;
+    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
   });
 
   afterAll(() => {
