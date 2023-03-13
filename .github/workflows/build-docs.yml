@@ -1,4 +1,4 @@
-name: Build Docs Site
+name: Documentation
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   build_docs:
+    name: Build Site
     runs-on: ubuntu-latest
     defaults:
       run:

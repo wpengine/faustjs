@@ -1,4 +1,4 @@
-name: E2E Test Plugin
+name: WordPress Plugin End-to-End Tests
 
 on:
   pull_request:
@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
       - name: Install NPM Deps
         run: |
           npm ci
@@ -28,7 +28,7 @@ jobs:
           ini-values: pcov.directory=includes
       - name: Setup Frontend
         run: |
-          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
+          NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUST_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
       - name: Composer install
         working-directory: plugins/faustwp
         run: composer install

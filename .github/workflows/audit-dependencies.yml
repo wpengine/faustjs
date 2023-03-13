@@ -1,9 +1,10 @@
-name: Audit Dependencies
+name: Project Dependencies
 
 on: pull_request
 
 jobs:
   audit_depedencies:
+    name: Audit
     runs-on: ubuntu-latest
 
     steps:

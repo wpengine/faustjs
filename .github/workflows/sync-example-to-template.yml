@@ -1,4 +1,4 @@
-name: Sync example project to Atlas template
+name: Examples
 on:
   push:
     branches:
@@ -7,6 +7,7 @@ on:
       - 'examples/next/getting-started/**'
 jobs:
   sync_example_project_to_atlas_template:
+    name: Sync to Atlas template
     runs-on: ubuntu-latest
     env:
       CHECKOUT_DIR_NAME: ${{ github.event.repository.name }}

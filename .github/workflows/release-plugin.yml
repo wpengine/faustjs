@@ -1,10 +1,11 @@
-name: Deploy to WordPress.org
+name: WordPress Plugin
 on:
   push:
     tags:
-    - "@faustwp/wordpress-plugin@*"
+      - '@faustwp/wordpress-plugin@*'
 jobs:
   release_plugin:
+    name: Deploy to WordPress.org
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

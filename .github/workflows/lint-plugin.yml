@@ -1,4 +1,4 @@
-name: Lint Plugin
+name: WordPress Plugin
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   lint_plugin:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

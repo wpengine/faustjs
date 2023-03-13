@@ -1,4 +1,4 @@
-name: Test Packages
+name: Package Tests
 
 on:
   pull_request:
@@ -7,11 +7,16 @@ on:
 
 jobs:
   test_packages:
-    name: "Test packages on Node.js ${{ matrix.node }} ${{ matrix.os }}"
+    name: '${{ matrix.package.name }} on Node ${{ matrix.node }}'
     strategy:
       matrix:
         os: ['ubuntu-latest']
-        node: ['16', '18' ]
+        node: ['16', '18']
+        package:
+          [
+            { name: '@faustwp/cli', directory: 'packages/faustwp-cli' },
+            { name: '@faustwp/core', directory: 'packages/faustwp-core' },
+          ]
     permissions:
       checks: write
       pull-requests: write
@@ -32,12 +37,7 @@ jobs:
       - name: Tests
         run: npm run test
 
-      - name: Code Coverage for FaustWP Core Package
+      - name: Code Coverage for ${{ matrix.package.name }}
         uses: ./.github/actions/run-coverage
         with:
-          working-directory: packages/faustwp-core
-
-      - name: Code Coverage for FaustWP CLI Package
-        uses: ./.github/actions/run-coverage
-        with:
-          working-directory: packages/faustwp-cli
+          working-directory: ${{ matrix.package.directory }}

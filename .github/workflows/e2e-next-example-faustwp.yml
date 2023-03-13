@@ -1,4 +1,4 @@
-name: E2E Test - Next Getting Started Example
+name: Examples End-to-End Tests
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   e2e-test-next-getting-started-example:
+    name: faustwp-getting-started on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     env:
       PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
