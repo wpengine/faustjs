@@ -214,6 +214,11 @@ module.exports = {
     },
     {
       type: 'doc',
+      label: 'Debugging',
+      id: 'debugging',
+    },
+    {
+      type: 'doc',
       label: 'FAQ',
       id: 'faq',
     },
