@@ -137,6 +137,11 @@ module.exports = {
           label: 'Settings Reference',
           id: 'faustwp/settings',
         },
+        {
+          type: 'doc',
+          label: 'Filters',
+          id: 'faustwp/filters',
+        },
       ],
     },
     {
