@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { platform } from 'node:process';
 import { getCliArgs } from './getCliArgs.js';
 import { WPTelemetryResponseData } from './requestWPTelemetryData.js';
 
@@ -13,6 +14,7 @@ export interface TelemetryData {
   multisite?: boolean;
   php_version?: string;
   wp_version?: string;
+  platform?: string;
   node_faustwp_core_version?: string;
   node_faustwp_cli_version?: string;
   node_apollo_client_version?: string;
@@ -75,6 +77,7 @@ export const marshallTelemetryData = (
       packageJson?.dependencies?.next as string | undefined,
     ),
     node_is_development: getCliArgs()[0] === 'dev',
+    platform,
     setting_has_frontend_uri: wpTelemetryData?.faustwp?.has_frontend_uri,
     setting_redirects_enabled: wpTelemetryData?.faustwp?.redirects_enabled,
     setting_rewrites_enabled: wpTelemetryData?.faustwp?.rewrites_enabled,
