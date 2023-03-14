@@ -1,4 +1,4 @@
-name: 🚀
+name: Plugin
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '@faustwp/wordpress-plugin@*'
 jobs:
   release_plugin:
-    name: Deploy Plugin to WordPress.org
+    name: Deploy faustwp to WordPress.org 🚀
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -1,4 +1,4 @@
-name: Lint
+name: Packages
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint_packages:
-    name: Packages
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -1,4 +1,4 @@
-name: Lint
+name: Plugin
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint_plugin:
-    name: Plugin
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

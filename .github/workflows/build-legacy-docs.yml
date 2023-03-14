@@ -1,4 +1,4 @@
-name: 📦
+name: legacy.faustjs.org
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_legacy_docs:
-    name: Build legacy.faustjs.org
+    name: Build site
     runs-on: ubuntu-latest
     defaults:
       run:
