@@ -55,6 +55,11 @@ module.exports = {
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
+        {
+          type: 'doc',
+          label: 'Custom Post Types',
+          id: 'guides/custom-post-types',
+        },
       ],
     },
     {
