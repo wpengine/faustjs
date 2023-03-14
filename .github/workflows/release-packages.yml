@@ -1,5 +1,3 @@
-name: Packages
-
 on:
   push:
     branches:
@@ -7,7 +5,7 @@ on:
 
 jobs:
   release_packages:
-    name: Release
+    name: Release Packages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo

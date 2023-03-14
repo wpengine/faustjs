@@ -1,5 +1,3 @@
-name: Legacy Documentation
-
 on:
   pull_request:
     paths:
@@ -7,7 +5,7 @@ on:
 
 jobs:
   build_legacy_docs:
-    name: Build Site
+    name: Build legacy.faustjs.org
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -1,4 +1,4 @@
-name: WordPress Plugin End-to-End Tests
+name: E2E Tests
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   e2e_test_plugin:
+    name: WordPress Plugin
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
