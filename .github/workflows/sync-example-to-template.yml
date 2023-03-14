@@ -1,3 +1,5 @@
+name: 🚀
+
 on:
   push:
     branches:

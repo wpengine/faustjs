@@ -1,3 +1,5 @@
+name: 🔒
+
 on: pull_request
 
 jobs:

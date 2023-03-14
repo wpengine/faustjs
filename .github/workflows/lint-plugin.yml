@@ -1,3 +1,5 @@
+name: Lint
+
 on:
   pull_request:
     paths-ignore:
@@ -5,7 +7,7 @@ on:
 
 jobs:
   lint_plugin:
-    name: Lint WordPress Plugin
+    name: Plugin
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

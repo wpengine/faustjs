@@ -1,3 +1,5 @@
+name: Test Plugin
+
 on:
   pull_request:
     paths-ignore:
@@ -5,7 +7,7 @@ on:
 
 jobs:
   test_plugin:
-    name: Test WordPress Plugin
+    name: Test Plugin
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

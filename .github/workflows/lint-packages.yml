@@ -1,3 +1,5 @@
+name: Lint
+
 on:
   pull_request:
     paths-ignore:
@@ -5,7 +7,7 @@ on:
 
 jobs:
   lint_packages:
-    name: Lint Packages
+    name: Packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
