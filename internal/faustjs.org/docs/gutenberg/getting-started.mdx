@@ -53,11 +53,11 @@ const blocks = flatListToHierarchical(editorBlocks);
 return <WordPressBlocksViewer blocks={blocks}/>
 ```
 
-Example `editorBlocks` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
+Example `editorBlocks` GraphQL query fragment. 
 
 ```graphql
 ${components.CoreParagraph.fragments.entry}
-editorBlocks(flat: true) {
+editorBlocks(flat: false) {
   __typename
   renderedHtml
   id: clientId
@@ -65,6 +65,11 @@ editorBlocks(flat: true) {
   ...${components.CoreParagraph.fragments.key}
 }
 ```
+:::note
+
+Setting `flat: false` above returns separate nodes with their own arrays. By default, editorBlocks brings all the nodes back in one array instead.
+
+:::
 
 ## A Simple Block Example
 This is a simple block called `CoreParagraph`. The block is a `p` tag that sets its content to `attributes.content` which is passed in from the props.
