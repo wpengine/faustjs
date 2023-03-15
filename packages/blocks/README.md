@@ -19,19 +19,13 @@
   </a>
 </p>
 
-🚧 Please note this is prerelease software and breaking changes may occur.
-
 `@faustwp/blocks` provides conventional connector components for rendering WordPress blocks.
 
 # Getting Started with Gutenberg Blocks Provider and Viewer
 
 ## Quick Start
 
-:::note
-
 Make sure you have completed the initial setup for Faust at [Getting Started](https://faustjs.org/docs/getting-started).
-
-:::
 
 Install the blocks package:
 
