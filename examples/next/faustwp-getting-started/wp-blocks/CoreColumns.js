@@ -7,7 +7,7 @@ export default function CoreColumns(props) {
   const style = getStyles(attributes);
   return (
     <div className={attributes?.cssClassName} style={style}>
-      <WordPressBlocksViewer contentBlocks={props?.children ?? []} />
+      <WordPressBlocksViewer blocks={props?.children ?? []} />
     </div>
   );
 }

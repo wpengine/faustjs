@@ -48,8 +48,8 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, contentBlocks, featuredImage, date, author } = props.data.post;
-  const blocks = flatListToHierarchical(contentBlocks);
+  const { title, editorBlocks, featuredImage, date, author } = props.data.post;
+  const blocks = flatListToHierarchical(editorBlocks);
 
   return (
     <div className="wp-site-blocks">
@@ -72,7 +72,7 @@ export default function Component(props) {
             author={author?.node?.name}
           />
           <Container className="is-layout-constrained wp-block-post-content">
-            <WordPressBlocksViewer contentBlocks={blocks} />
+            <WordPressBlocksViewer blocks={blocks} />
           </Container>
         </>
       </Main>
@@ -102,12 +102,12 @@ Component.query = gql`
         }
       }
       ...FeaturedImageFragment
-      contentBlocks {
+      editorBlocks {
         name
         __typename
         renderedHtml
-        id: nodeId
-        parentId
+        id: clientId
+        parentId: parentClientId
         ${fragmentData(blocks).keys}
       }
     }
