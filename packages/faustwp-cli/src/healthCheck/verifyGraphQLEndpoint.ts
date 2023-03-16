@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 
-import { infoLog, errorLog } from '../stdout/index.js';
+import { infoLog, warnLog } from '../stdout/index.js';
 import { getGraphqlEndpoint } from '../utils/index.js';
 
 /**
@@ -31,17 +31,15 @@ export async function verifyGraphQLEndpoint() {
       return;
     }
   } catch (err) {
-    errorLog(`
+    warnLog(`
 
     Unable to find a GraphQL endpoint at ${graphqlEndpoint}
 
-    Potential reasons you are experiencing this error:
+    Potential reasons you are experiencing this warning:
 
       ● Your WordPress site is unavailable
       ● WPGraphQL is not active
       ● WPGraphQL's default endpoint (/graphql) was changed in the plugin's settings
     `);
-
-    process.exit(0);
   }
 }
