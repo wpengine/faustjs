@@ -1,12 +1,14 @@
+import { gql, useQuery } from '@apollo/client';
 import React, { useEffect, useMemo, useState } from 'react';
+import { getApolloAuthClient } from '../../client.js';
+import { useAuth } from '../../hooks/useAuth.js';
+import { SeedNode } from '../../queries/seedQuery.js';
+import { hooks } from '../../wpHooks/index.js';
 import { Edit } from './nodes/Edit.js';
 import { GraphiQL } from './nodes/GraphiQL.js';
 import { MyAccount } from './nodes/MyAccount.js';
-import { hooks } from '../../wpHooks/index.js';
-import { ToolbarNode } from './ToolbarNode.js';
-import { SeedNode } from '../../queries/seedQuery.js';
-import { useAuth } from '../../hooks/useAuth.js';
 import { SiteName } from './nodes/SiteName.js';
+import { ToolbarNode } from './ToolbarNode.js';
 
 /**
  * The available menu locations that nodes can be added to.
@@ -59,11 +61,11 @@ export type FaustToolbarContext = {
 export type ToolbarProps = {
   seedNode?: SeedNode;
 };
-
 /**
- * Renders a Toolbar that is based on WordPress' own toolbar.
+ * The component to actually render the toolbar. At this point we can assume
+ * there is a proper authenticated user.
  */
-export function Toolbar({ seedNode }: ToolbarProps) {
+export function AuthenticatedToolbar({ seedNode }: ToolbarProps) {
   /**
    * Define Toolbar Nodes that should be included by default.
    */
@@ -94,16 +96,11 @@ export function Toolbar({ seedNode }: ToolbarProps) {
   }, [seedNode]);
 
   const [toolbarNodes, setToolbarNodes] = useState(coreToolbarNodes);
-  const { isAuthenticated } = useAuth();
 
   /**
    * Handle Toolbar nodes.
    */
   useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-
     const filteredNodes = hooks.applyFilters('toolbarNodes', coreToolbarNodes, {
       seedNode,
     }) as FaustToolbarNodes;
@@ -115,7 +112,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
     }
 
     setToolbarNodes(filteredNodes);
-  }, [coreToolbarNodes, seedNode, isAuthenticated]);
+  }, [coreToolbarNodes, seedNode]);
 
   /**
    * Handle adding `admin-bar` body class on render.
@@ -124,10 +121,6 @@ export function Toolbar({ seedNode }: ToolbarProps) {
    * @link https://developer.wordpress.org/reference/hooks/body_class/
    */
   useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-
     document?.body.classList.add('admin-bar');
 
     // Cleanup body class when this component unmounts.
@@ -135,7 +128,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
     return () => {
       document?.body.classList.remove('admin-bar');
     };
-  }, [isAuthenticated]);
+  }, []);
 
   const primaryNodes = toolbarNodes.filter(
     ({ location }) => location === 'primary',
@@ -143,10 +136,6 @@ export function Toolbar({ seedNode }: ToolbarProps) {
   const secondaryNodes = toolbarNodes.filter(
     ({ location }) => location === 'secondary',
   );
-
-  if (isAuthenticated !== true) {
-    return null;
-  }
 
   return (
     <div id="wpadminbar" className="nojq">
@@ -182,4 +171,49 @@ export function Toolbar({ seedNode }: ToolbarProps) {
       </div>
     </div>
   );
+}
+
+/**
+ * With an authenticated user, make a request for the viewer in WPGraphQL and
+ * get the user' preference whether to display the toolbar.
+ */
+export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
+  const client = getApolloAuthClient();
+  const { data, error } = useQuery(
+    gql`
+      {
+        viewer {
+          isToolbarVisible
+        }
+      }
+    `,
+    { client },
+  );
+
+  if (error) {
+    return <AuthenticatedToolbar seedNode={seedNode} />;
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  if (data.viewer.isToolbarVisible === false) {
+    return null;
+  }
+
+  return <AuthenticatedToolbar seedNode={seedNode} />;
+}
+
+/**
+ * Renders a Toolbar that is based on WordPress' own toolbar.
+ */
+export function Toolbar({ seedNode }: ToolbarProps) {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated !== true) {
+    return null;
+  }
+
+  return <ToolbarAwaitUser seedNode={seedNode} />;
 }
