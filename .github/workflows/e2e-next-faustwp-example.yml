@@ -59,8 +59,6 @@ jobs:
           cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
           cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
           chmod +x e2e-app/node_modules/.bin/faust
-          pwd
-          ls -la
       - name: copy env
         working-directory: e2e-app
         run: |
