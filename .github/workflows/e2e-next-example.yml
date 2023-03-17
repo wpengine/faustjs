@@ -7,7 +7,7 @@ on:
 
 jobs:
   e2e-test-next-getting-started-example:
-    name: (legacy) Next Getting Started Example
+    name: (legacy) Next Getting Started Example on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     env:
       PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
