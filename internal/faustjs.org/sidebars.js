@@ -55,6 +55,11 @@ module.exports = {
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
+        {
+          type: 'doc',
+          label: 'Custom Post Types',
+          id: 'guides/custom-post-types',
+        },
       ],
     },
     {
@@ -132,6 +137,11 @@ module.exports = {
           label: 'Settings Reference',
           id: 'faustwp/settings',
         },
+        {
+          type: 'doc',
+          label: 'Filters',
+          id: 'faustwp/filters',
+        },
       ],
     },
     {
@@ -190,8 +200,13 @@ module.exports = {
             },
             {
               type: 'doc',
-              label: 'Creating a Block from a third party plugin',
+              label: 'Creating a Block from a Third Party Plugin',
               id: 'gutenberg/tutorial/create-a-block-from-third-party',
+            },
+            {
+              type: 'doc',
+              label: 'Creating a Custom Block',
+              id: 'gutenberg/tutorial/create-a-custom-block',
             },
           ],
         },
@@ -206,6 +221,11 @@ module.exports = {
       type: 'doc',
       label: 'Deploy Your Faust.js App',
       id: 'going-to-production/deployment',
+    },
+    {
+      type: 'doc',
+      label: 'Debugging',
+      id: 'debugging',
     },
     {
       type: 'doc',

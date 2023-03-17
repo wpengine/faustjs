@@ -1,6 +1,10 @@
 import fs from 'fs';
+<<<<<<< HEAD:packages/faustwp-cli/src/telemetry/marshallTelemetryData.ts
+import { getCliArgs } from '../utils/index.js';
+=======
 import { platform } from 'node:process';
 import { getCliArgs } from './getCliArgs.js';
+>>>>>>> canary:packages/faustwp-cli/utils/marshallTelemetryData.ts
 import { WPTelemetryResponseData } from './requestWPTelemetryData.js';
 
 export interface TelemetryData {

@@ -19,6 +19,4 @@
   </a>
 </p>
 
-🚧 Please note this is prerelease software and breaking changes may occur.
-
 Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers.
