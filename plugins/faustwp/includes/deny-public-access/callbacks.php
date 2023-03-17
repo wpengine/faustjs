@@ -40,6 +40,20 @@ function deny_public_access() {
 		return;
 	}
 
+	/**
+	 * Filter 'faustwp_exclude_from_public_redirect'.
+	 *
+	 * Used to exclude certain routes from being redirected
+	 * when enable public route redirects is active.
+	 *
+	 * @param array $excluded_routes The array of routes to exclude from redirect.
+	 */
+	$excluded_routes = apply_filters( 'faustwp_exclude_from_public_redirect', array() );
+
+	if ( in_array( basename( add_query_arg( null, null ) ), $excluded_routes, true ) ) {
+		return;
+	}
+
 	$frontend_uri = trailingslashit( $frontend_uri );
 
 	// Get the request uri with query params.

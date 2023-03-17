@@ -55,6 +55,11 @@ module.exports = {
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
+        {
+          type: 'doc',
+          label: 'Custom Post Types',
+          id: 'guides/custom-post-types',
+        },
       ],
     },
     {
@@ -131,6 +136,11 @@ module.exports = {
           type: 'doc',
           label: 'Settings Reference',
           id: 'faustwp/settings',
+        },
+        {
+          type: 'doc',
+          label: 'Filters',
+          id: 'faustwp/filters',
         },
       ],
     },
@@ -211,6 +221,11 @@ module.exports = {
       type: 'doc',
       label: 'Deploy Your Faust.js App',
       id: 'going-to-production/deployment',
+    },
+    {
+      type: 'doc',
+      label: 'Debugging',
+      id: 'debugging',
     },
     {
       type: 'doc',

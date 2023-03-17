@@ -19,6 +19,4 @@
   </a>
 </p>
 
-🚧 Please note this is prerelease software and breaking changes may occur.
-
 `@faustwp/cli` provides a CLI to develop, build, and serve your Faust apps.
