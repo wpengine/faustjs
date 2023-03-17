@@ -56,8 +56,8 @@ jobs:
         run: |
           rm -rf e2e-app/node_modules/@faustwp/cli
           rm -rf e2e-app/node_modules/@faustwp/core
-          cp -r packages/cli e2e-app/node_modules/@faustwp/cli
-          cp -r packages/core e2e-app/node_modules/@faustwp/core
+          cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
+          cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
       - name: copy env
         working-directory: e2e-app
         run: |
