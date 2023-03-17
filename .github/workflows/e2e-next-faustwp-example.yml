@@ -46,6 +46,7 @@ jobs:
         working-directory: ./
         run: |
           npm ci
+          npm run build
       # To ensure PR changes are tested accurately, we replace the
       # faust node_modules downloaded from NPM with the faust packages
       # built in the previous step
@@ -62,10 +63,6 @@ jobs:
         run: |
           cp .env.local.sample .env.local
       # Generate the schema to ensure no type collisions
-      - name: Build
-        working-directory: e2e-app
-        run: |
-          npm run build
       - name: Generate Schema
         working-directory: e2e-app
         run: |
