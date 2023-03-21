@@ -24,7 +24,7 @@ export function BlockDataProvider(
 }
 
 export interface WordpressBlocksViewerProps {
-  blocks: ContentBlock[];
+  blocks: Array<ContentBlock | null>;
   className?: string;
 }
 
@@ -32,7 +32,7 @@ export interface ContentBlock {
   __typename?: string;
   apiVersion?: number;
   cssClassNames?: string;
-  innerBlocks?: ContentBlock[];
+  innerBlocks?: Array<ContentBlock | null>;
   isDynamic?: boolean;
   name?: string;
   renderedHtml?: string;
