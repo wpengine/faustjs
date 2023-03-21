@@ -86,17 +86,16 @@ export async function addHeaders(
 /**
  * A helper function to merge Faust related Next.js config with a user defined Next.js config.
  *
- * @param {NextConfig} config
- * @param {WithFaustConfig} withFaustConfig
- * @returns {NextConfig}
+ * @param {NextConfig} exportedUserNextConfig The existing config to be exported prior to adding Faust
+ * @param {WithFaustConfig} withFaustConfig The Configuration for Faust
+ * @returns {NextConfig} The modified config to be exported
  */
 export function withFaust(
-  config?: NextConfig,
+  exportedUserNextConfig?: NextConfig,
   withFaustConfig?: WithFaustConfig,
 ): NextConfig {
+  const nextConfig = exportedUserNextConfig ?? {};
   const { previewDestination } = withFaustConfig || {};
-
-  const nextConfig = config ?? {};
 
   const existingRedirects = nextConfig.redirects;
   nextConfig.redirects = () =>
