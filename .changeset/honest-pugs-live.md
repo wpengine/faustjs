@@ -2,4 +2,4 @@
 '@faustwp/blocks': minor
 ---
 
-Changes `contentBlocks` field to `blocks` in WordpressBlocksViewer
+**[BREAKING]** Renamed `contentBlocks` field to `blocks` in WordpressBlocksViewer
