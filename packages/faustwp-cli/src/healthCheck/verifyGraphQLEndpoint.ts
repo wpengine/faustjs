@@ -5,7 +5,6 @@ import { getGraphqlEndpoint } from '../utils/index.js';
 
 /**
  * Checks if the WordPress GraphQL endpoint is available to use.
- * Exits on failure.
  */
 export async function verifyGraphQLEndpoint() {
   const graphqlEndpoint = getGraphqlEndpoint();
