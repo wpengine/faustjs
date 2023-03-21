@@ -18,7 +18,7 @@ export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
     ) => { [key: string]: any };
   };
   props?: Props;
-  notFound?: boolean;
+  notFound?: true;
   redirect?: Redirect;
 }
 
@@ -36,7 +36,7 @@ export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   cfg: GetNextStaticPropsConfig<Props>,
-) {
+): Promise<GetServerSidePropsResult<Props>> {
   const { notFound, redirect, Page, revalidate, props } = cfg;
   const apolloClient = getApolloClient();
   if (isBoolean(notFound) && notFound === true) {
@@ -60,7 +60,7 @@ export async function getNextStaticProps<Props>(
 
   const pageProps = addApolloState(apolloClient, { props: { ...props } });
   pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
-  return pageProps;
+  return pageProps as GetServerSidePropsResult<Props>;
 }
 
 /**

@@ -28,8 +28,19 @@ export interface GetWordPressPropsConfig<Props = Record<string, unknown>> {
   props?: Props;
   revalidate?: number | boolean;
 }
-
-export async function getWordPressProps(options: GetWordPressPropsConfig) {
+export async function getWordPressProps(
+  options: GetWordPressPropsConfig,
+): Promise<
+  | {
+      props: {
+        [key: string]: any;
+      };
+      revalidate?: number | boolean | undefined;
+    }
+  | {
+      notFound: true;
+    }
+> {
   const { templates } = getConfig();
 
   if (!templates) {
