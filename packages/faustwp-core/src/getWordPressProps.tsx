@@ -2,6 +2,7 @@ import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import type { DocumentNode } from 'graphql';
 import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
 import { getPossibleTemplates, getTemplate } from './getTemplate.js';
+import { FaustTemplateProps } from './components/WordPressTemplate.js';
 import { addApolloState, getApolloClient } from './client.js';
 import { getConfig } from './config/index.js';
 import { hooks } from './wpHooks/index.js';
@@ -22,6 +23,12 @@ export type WordPressTemplate = React.FC & {
     context?: { asPreview?: boolean; locale?: string },
   ) => { [key: string]: any };
 };
+
+export interface FaustTemplate<Data>
+  extends React.FC<FaustTemplateProps<Data>> {
+  query?: WordPressTemplate['query'];
+  variables?: WordPressTemplate['variables'];
+}
 
 export interface GetWordPressPropsConfig<Props = Record<string, unknown>> {
   ctx: GetServerSidePropsContext | GetStaticPropsContext;

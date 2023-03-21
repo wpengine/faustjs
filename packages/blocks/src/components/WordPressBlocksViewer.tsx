@@ -25,6 +25,7 @@ export function BlockDataProvider(
 
 export interface WordpressBlocksViewerProps {
   blocks: ContentBlock[];
+  className?: string;
 }
 
 export interface ContentBlock {
@@ -47,7 +48,7 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { blocks: editorBlocks } = props;
+  const { blocks: editorBlocks, className } = props;
   const renderedBlocks = editorBlocks.map((blockProps, idx) => {
     const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
     return (
@@ -58,5 +59,5 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     );
   });
 
-  return renderedBlocks;
+  return <div className={className}>{renderedBlocks}</div>;
 }
