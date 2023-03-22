@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 0.2.6
+
+### Patch Changes
+
+- 64e4227: Fixed issue "Cannot find module"
+
 ## 0.2.5
 
 ### Patch Changes

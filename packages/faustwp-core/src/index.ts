@@ -28,6 +28,16 @@ import { useAuth } from './hooks/useAuth.js';
 import { useLogin } from './hooks/useLogin.js';
 import { useLogout } from './hooks/useLogout.js';
 
+import {
+  FaustToolbarNodes,
+  FaustToolbarContext,
+  ToolbarNode,
+  ToolbarItem,
+  ToolbarNodeSkeleton,
+  ToolbarSubmenu,
+  ToolbarSubmenuWrapper,
+} from './components/Toolbar/index.js';
+
 export {
   FaustProvider,
   WordPressTemplate,
@@ -57,4 +67,11 @@ export {
   useAuth,
   useLogin,
   useLogout,
+  FaustToolbarNodes,
+  FaustToolbarContext,
+  ToolbarNode,
+  ToolbarItem,
+  ToolbarNodeSkeleton,
+  ToolbarSubmenu,
+  ToolbarSubmenuWrapper,
 };

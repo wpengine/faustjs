@@ -66,7 +66,7 @@ If you've done everything right, you will be able to query that field in GraphQL
 {
   posts {
     nodes {
-      contentBlocks {
+      editorBlocks {
         ... on CreateBlockMyFirstBlock {
           align
         }
@@ -95,7 +95,7 @@ If the structure is correct you will be able to query the new `align` attribute:
 {
   posts {
     nodes {
-      contentBlocks {
+      editorBlocks {
         ... on CreateBlockMyFirstBlock {
           name
           attributes {

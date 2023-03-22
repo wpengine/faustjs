@@ -1,13 +1,6 @@
 ![Faust.js](https://user-images.githubusercontent.com/5306336/152221545-53087444-b3ad-477d-90a9-606785854656.jpg)
 
 <p align="center">
-  <strong>
-    NOTE: This is prerelease software. As we work towards our first release, we
-    will 💯 introduce breaking changes.
-  </strong>
-</p>
-
-<p align="center">
   <a aria-label="@faustwp/core Downloads" href="https://www.npmjs.com/package/@faustwp/core">
     <img alt="" src="https://img.shields.io/npm/dw/@faustwp/core?color=7e5cef&style=for-the-badge&label=@faustwp/core">
   </a>

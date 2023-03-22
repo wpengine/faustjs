@@ -30,15 +30,15 @@ There is no other configuration needed once you install the plugin.
 ## Getting started
 
 Once the plugin is installed, head over to the GraphiQL IDE and you should be able to perform queries for the block data (This plugin is an extension of [wp-graphql](https://www.wpgraphql.com/), so make sure you have it installed first.).
-There is a new field added in the Post and Page models called `contentBlocks`.
+There is a new field added in the Post and Page models called `editorBlocks`.
 This represents a list of available blocks for that content type:
 
 <img
   src="/docs/img/querying-with-content-blocks.png"
-  alt="Example query for contentBlocks using GraphiQL IDE"
+  alt="Example query for editorBlocks using GraphiQL IDE"
 />
 
-If you search in GraphiQL's documentation explorer tab for the `contentBlocks` type you will be able to see the available block fields.
+If you search in GraphiQL's documentation explorer tab for the `editorBlocks` type you will be able to see the available block fields.
 The most important ones are:
 
 * `renderedHTML`: It's the HTML of the block as rendered by the [render_block](https://developer.wordpress.org/reference/functions/render_block/) function.
@@ -47,7 +47,7 @@ The most important ones are:
 * `apiVersion`: The apiVersion of the block taken from its `block.json` spec.
 * `innerBlocks`: The innerblock list of that block.
 * `isDynamic`: Whether the block is dynamic or not, taken from its `block.json` spec.
-* `nodeId`, `parentId`: Unique identifiers for the block and the parent of the block. We will explain their usage later.
+* `clientId`, `parentClientId`: Unique identifiers for the block and the parent of the block. We will explain their usage later.
 
 
 ## How does the plugin work?
@@ -102,6 +102,7 @@ Currently the plugin handles the following attribute types taken from the [refer
 * number
 * integer
 * string
+* object
 
 :::note
 If you see a specific attribute missing that you need for your project, please open a [new Feature Request](https://github.com/wpengine/wp-graphql-content-blocks/issues/new) so that the Faust team can make it available for you.
@@ -116,7 +117,7 @@ For example, to use `CoreParagraph` attributes you need to use the following que
 {
   posts {
     nodes {
-      contentBlocks {
+      editorBlocks {
         __typename
         name
         ...on CoreParagraph {
@@ -146,7 +147,7 @@ If the resolved block has values for those fields, it will return them, otherwis
 
 ## What about innerBlocks?
 
-In order to facilitate querying `innerBlocks` fields more efficiently you want to use `contentBlocks(flat: true)` instead of `contentBlocks`.
+In order to facilitate querying `innerBlocks` fields more efficiently you want to use `editorBlocks(flat: true)` instead of `editorBlocks`.
 By passing this argument, all the blocks available (both blocks and innerBlocks) will be returned all flattened in the same list.
 
 For example, given the following HTML Content:
@@ -192,7 +193,7 @@ The `CoreColumns` contains one or more `CoreColumn` block, and each `CoreColumn`
 If we were to create a query to resolve this hierarchy, we would have to use:
 
 ```graphql
-contentBlocks {
+editorBlocks {
     __typename
     name
     ...on CoreColumns {
@@ -216,11 +217,11 @@ In each case we would have to copy the whole fragment list again and again. This
 This is how you request all blocks as a flat list:
 
 ```graphql
-contentBlocks(flat:true) {
+editorBlocks(flat:true) {
     __typename
     name
-	id: nodeId
-	parentId
+	id: clientId
+	parentClientId
     ... on CoreColumns {
         attributes {
         	className
@@ -241,10 +242,10 @@ contentBlocks(flat:true) {
 ```
 
 Given the flattened list of blocks though, how can you put it back? Well that's where you use the
-`nodeId` and `parentId` fields to assign temporary unique ids for each block.
+`clientId` and `parentClientId` fields to assign temporary unique ids for each block.
 
-The `nodeId` field assigns a temporary unique id for a specific block and the `parentId` will
-be assigned only if the current block has a parent. If the current block does have a parent, it will get the parent's `nodeId` value.
+The `clientId` field assigns a temporary unique id for a specific block and the `parentClientId` will
+be assigned only if the current block has a parent. If the current block does have a parent, it will get the parent's `clientId` value.
 
 So in order to put everything back in the Headless site, you want to use the `flatListToHierarchical` function as mentioned in the [WPGraphQL docs](https://www.wpgraphql.com/docs/menus#hierarchical-data).
 
@@ -254,12 +255,12 @@ This way you can reconstruct the block tree as before and pass it on to the `Wor
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import flatListToHierarchical from '../utilities/flatListToHierarchical';
 ...
-const { contentBlocks } = props.data.post;
-const blocks = flatListToHierarchical(contentBlocks);
+const { editorBlocks } = props.data.post;
+const blocks = flatListToHierarchical(editorBlocks);
 
-<WordPressBlocksViewer contentBlocks={blocks} />
+<WordPressBlocksViewer blocks={blocks} />
 ...
 ```
 :::note
-Currently the `nodeId` field is only unique per request and is not persisted anywhere. If you perform another request each block will be assigned a new `nodeId` each time.
+Currently the `clientId` field is only unique per request and is not persisted anywhere. If you perform another request each block will be assigned a new `nodeId` each time.
 :::
