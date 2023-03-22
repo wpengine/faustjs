@@ -27,7 +27,7 @@ export async function verifyGraphQLEndpoint() {
     // eslint-disable-next-line no-underscore-dangle
     if (json.data.__typename) {
       infoLog('Discovered WPGraphQL endpoint!');
-      return;
+      return true;
     }
   } catch (err) {
     warnLog(`
