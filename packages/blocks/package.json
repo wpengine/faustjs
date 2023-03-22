@@ -10,18 +10,25 @@
     "react-dom": ">=17.0.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.0",
     "@types/node": "^18.0.6",
     "@types/react": "^17.0.34",
-    "@testing-library/jest-dom": "^5.15.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "rimraf": "^4.4.0"
   },
   "dependencies": {
     "lodash": "^4.17.21"
   },
   "scripts": {
+    "prebuild": "npm run clean",
+    "postbuild": "npm run package",
+    "clean": "rimraf dist",
+    "package": "node ../../scripts/package.js",
     "test": "npm test",
-    "build": "tsc -p tsconfig.json",
+    "build": "npm run build-esm && npm run build-cjs",
+    "build-esm": "tsc -p .",
+    "build-cjs": "tsc -p tsconfig.cjs.json",
     "dev": "tsc -p tsconfig.json --watch"
   },
   "repository": {
