@@ -33,6 +33,20 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
     expect(result).toEqual(true);
   });
 
+  it('returns false when test GraphQL query fails', async () => {
+    const graphqlEndpoint = getGraphqlEndpoint();
+
+    // Request could still be a successful 200 if a regular WordPress page exists.
+    fetchMock.post(graphqlEndpoint, {
+      status: 200,
+      body: '<html><head></head><body>Regular HTML Page</body></html>',
+    }, { overwriteRoutes: true });
+
+    const result = await verifyGraphQLEndpoint();
+
+    expect(result).toEqual(false);
+  });
+
   it('prints a warning when GraphQL endpoint cannot be verified', async () => {
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
     const graphqlEndpoint = getGraphqlEndpoint();
@@ -42,9 +56,8 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
       body: '<html><head></head><body>Regular HTML Page</body></html>',
     }, { overwriteRoutes: true });
 
-    const result = await verifyGraphQLEndpoint();
+    await verifyGraphQLEndpoint();
 
-    expect(result).toBeUndefined();
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`));
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("Your WordPress site is unavailable"));
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("WPGraphQL is not active"));

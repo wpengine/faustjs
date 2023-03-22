@@ -29,6 +29,8 @@ export async function verifyGraphQLEndpoint() {
       infoLog('Discovered WPGraphQL endpoint!');
       return true;
     }
+
+    return false;
   } catch (err) {
     warnLog(`
 
@@ -40,5 +42,7 @@ export async function verifyGraphQLEndpoint() {
       ● WPGraphQL is not active
       ● WPGraphQL's default endpoint (/graphql) was changed in the plugin's settings
     `);
+
+    return false;
   }
 }
