@@ -46,6 +46,25 @@ Next, we have an `apply` method with the `hooks` parameter which is an object th
 
 The `addFilter` hook is taken and calls the memory cache function options. The options are coming from the Apollo Client Cache configuration. These options allow for configuring the cache for  pagination. The faust namespace follows that.
 
+## Register the Plugin for Pagination
+
+Import and register your plugin for pagination in `faust.config.js`
+
+```
+import { setConfig } from "@faustwp/core";
+import templates from "./wp-templates";
+import possibleTypes from "./possibleTypes.json";
+import { RelayStylePagination } from "./plugins/RelayStylePagination";
+
+/**
+ * @type {import('@faustwp/core').FaustConfig}
+ **/
+export default setConfig({
+  templates,
+  experimentalPlugins: [new RelayStylePagination()],
+  possibleTypes,
+});
+```
 
 
 
