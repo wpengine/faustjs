@@ -37,8 +37,10 @@ import {
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
 } from './components/Toolbar/index.js';
+import flatListToHierarchical from './utils/flatListToHierarchical.js';
 
 export {
+  flatListToHierarchical,
   FaustProvider,
   WordPressTemplate,
   FaustTemplateProps,
