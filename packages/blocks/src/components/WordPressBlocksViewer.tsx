@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import resolveBlockTemplate from '../resolveBlockTemplate.js';
 import { WordPressBlocksContext } from './WordPressBlocksProvider.js';
@@ -25,7 +23,6 @@ export function BlockDataProvider(
 
 export interface WordpressBlocksViewerProps {
   blocks: Array<ContentBlock | null>;
-  className?: string;
 }
 
 export interface ContentBlock {
@@ -48,16 +45,19 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { blocks: editorBlocks, className } = props;
+  const { blocks: editorBlocks } = props;
   const renderedBlocks = editorBlocks.map((blockProps, idx) => {
     const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={blockProps} key={idx}>
-        <>{React.createElement<ContentBlock>(BlockTemplate, { ...blockProps })}</>
+        <>
+          {React.createElement<ContentBlock>(BlockTemplate, { ...blockProps })}
+        </>
       </BlockDataProvider>
     );
   });
 
-  return <div className={className}>{renderedBlocks}</div>;
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{renderedBlocks}</>;
 }
