@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## 0.2.7
+
+### Patch Changes
+
+- 1c8f79b: Type Definition fixes+improvements for Blocks and Core
+- d775f47: Rectifies return type of getWordPressProps and getNextStaticProps for TypeScript
+
 ## 0.2.6
 
 ### Patch Changes

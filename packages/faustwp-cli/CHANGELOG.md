@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.2.7
+
+### Patch Changes
+
+- 02f7bee: Include Platform info in telemetry payload
+
 ## 0.2.2
 
 ### Patch Changes
