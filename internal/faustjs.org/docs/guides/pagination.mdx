@@ -66,6 +66,31 @@ export default setConfig({
 });
 ```
 
+## Example WPGraphQL Pagination Query
+
+```
+const GET_POSTS = gql`
+  query getPosts($first: Int!, $after: String) {
+    posts(first: $first, after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          databaseId
+          title
+          slug
+        }
+      }
+    }
+  }
+`;
+```
+This is an example of a query with the fields for pagination being `hasNextPage` and `endCursor`.
+
+
 Lastly, do not forget to run `npm run generate` since the schema was updated with WPGraphQL and Pagination.  You should now be able to query for cursor based paginated content in your Faust.js site.
 
 If you need an in depth start to finish article with an example, please visit the developer relations article on [working with Apollo in Faust.js](https://developers.wpengine.com/blog/working-with-the-apollo-client-in-faust-js).
