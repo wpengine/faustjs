@@ -9,3 +9,5 @@ This guide covers how to set up Pagination in your Faust.js site with Apollo and
 ## Setup
 
 To get started, create a folder in the root of your Faust.js project called `plugins`.  In this `plugins` folder, create a file called `RelayStylePagination.js`. 
+
+The Apollo client can implement [relay-style pagination](https://www.apollographql.com/docs/react/pagination/cursor-based/) with the relay spec using merge and read functions, which means all the details of `connections`, `edges` and `pageInfo` can be abstracted away, into a single, reusable helper function. WPGraphQL follows the relay spec as well.
