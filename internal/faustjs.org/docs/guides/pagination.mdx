@@ -40,5 +40,7 @@ export class RelayStylePagination {
 }
 ```
 The Apollo client can implement [relay-style pagination](https://www.apollographql.com/docs/react/pagination/cursor-based/) with the relay spec using merge and read functions, which means all the details of `connections`, `edges` and `pageInfo` can be abstracted away, into a single, reusable helper function. WPGraphQL follows the relay spec as well.
-We are importing the `relayStylePagination` function from Apollo and the a `class component` is created which is the basic syntax of the Faust plugin.
+We are importing the `relayStylePagination` function from Apollo and then a `class component` is created which is the basic syntax of the Faust plugin.
+
+The apply method with the hooks param which is an object that gives you a function called `addFilter` allows us to modify Apollo's `InMemorycCacheOptions`.
 
