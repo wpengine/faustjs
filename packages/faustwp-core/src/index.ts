@@ -3,7 +3,7 @@ import {
   WordPressTemplate,
   FaustTemplateProps,
 } from './components/WordPressTemplate.js';
-import { getWordPressProps } from './getWordPressProps.js';
+import { getWordPressProps, FaustTemplate } from './getWordPressProps.js';
 import { getNextStaticProps, getNextServerSideProps } from './getProps.js';
 import { getConfig, setConfig, FaustConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
@@ -74,4 +74,5 @@ export {
   ToolbarNodeSkeleton,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
+  FaustTemplate,
 };

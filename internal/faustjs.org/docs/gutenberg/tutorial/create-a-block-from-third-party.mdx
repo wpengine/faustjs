@@ -28,7 +28,7 @@ For this tutorial, we are going to implement the [Call To Action Block](https://
 
 ## 4. Review the Block design in the Editor
 
-Before you try to implement the block, it's usefull to get an ideal of how the block is configured within the editor.
+Before you try to implement the block, it's useful to get an idea of how the block is configured within the editor.
 You want to create a few sample blocks and test their options.
 
 Navigate to the editor by creating a new Post and insert the Block into the page:
@@ -38,14 +38,13 @@ Navigate to the editor by creating a new Post and insert the Block into the page
     alt="Ultimate Blocks Call To Action Block look and feel in the editor"
   />
 
-You can expand the block sidebar options to change some of its styling.
-For example you can configure the Color, Headline, Content, Button and Link settings for that block.
-Once you get familiar with the block look and feel, let's explore its attributes from the GraphQL IDE.
+You can expand the block sidebar options to change some of its styling. For example, you can configure the Color, Headline, Content, Button and Link settings for that block.
+Once you get familiar with the block's look and feel, let's explore its attributes from the GraphQL IDE.
 
 ## 5. Review the Block data and attributes in the GraphQL IDE
 
-Within the GraphQL IDE, use the Docs to find the type of the block to display its type and properties.
-There should be a `UBCallToActionBlock` that contains all the important fields we can query.
+Within the GraphQL IDE, use the Docs to find the type of block to display its type and properties.
+For our example, there should be a `UBCallToActionBlock` that contains all the important fields we can query.
 
 <img
     src="/docs/img/call-to-action-block-ide.png"
@@ -64,7 +63,7 @@ There are a lot of attributes associated with that block. You can use the follow
 ```graphql
 {
   post(id: "/posts/test", idType: URI) {
-    contentBlocks {
+    editorBlocks {
       renderedHtml
       ...on UbCallToActionBlock {
         attributes {
@@ -81,12 +80,12 @@ There are a lot of attributes associated with that block. You can use the follow
 }
 ```
 
-This will resolve into:
+This will resolve to:
 
 ```
 "data": {
     "post": {
-      "contentBlocks": [
+      "editorBlocks": [
         {
           "renderedHtml": "<div class=\"ub_call_to_action\" id=\"ub_call_to_action_37aa7f1a-5d3a-4077-9c2b-a29b3672896c\">\n                <div class=\"ub_call_to_action_headline\">\n                    <p class=\"ub_call_to_action_headline_text\">Call To Action</p></div>\n                <div class=\"ub_call_to_action_content\">\n                    <p class=\"ub_cta_content_text\">Help us achieve our goals</p></div>\n                <div class=\"ub_call_to_action_button\">\n                    <a href=\"http://locahost:3000/donate\" target=\"_self\" rel=\"noopener noreferrer\"\n                        class=\"ub_cta_button\">\n                        <p class=\"ub_cta_button_text\">Donate Now</p></a></div></div>",
           "attributes": {
@@ -104,12 +103,12 @@ This will resolve into:
 ```
 
 There are also attributes that control the style of the individual elements so you can query their attributes as well.
-Once you get familiar with how to query the necessary data from that block, let's see now how to implement the assosiated block in the Decoupled site.
+Once you get familiar with how to query the necessary data from that block, let's see now how to implement the associated block in the Decoupled site.
 
 ## 6. Create the initial block
 
-Inside the codebase of your application, create the basic block structure that simply prints the blocks attributes.
-The steps required to achive that are the following:
+Inside the codebase of your application, create the basic block structure that simply prints the block's attributes.
+The steps required to achieve that are the following:
 
 ### 6.1 Create the block and save it inside the `wp-blocks` folder
 
@@ -131,7 +130,7 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js` we make it available in the WordrPressBlocksProvider.
+By exporting the block in the `index.js` we make it available in the WordPressBlocksProvider.
 You can also use a different name as long as it matches either the Block `name` or the `__typename` fields.
 
 This also works:
@@ -203,12 +202,12 @@ query GetPost(
 ...
 	post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
 		...
-		contentBlocks {
+		editorBlocks {
 			name
 			__typename
 			renderedHtml
-			id: nodeId
-			parentId
+			id: clientId
+			parentClientId
 			...${blocks.UbCallToActionBlock.fragments.key}
       	}
 	}
@@ -229,7 +228,7 @@ Now you are ready to design the block based on the original block's look and fee
 
 The last part is to implement the Block by using the block attributes and the view in the editor to construct the final HTML markup.
 
-Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implmentation of this block and try to port the parts that render the block
+Since the block you want to implement already consists of React elements that the Editor uses, you can review the plugin implementation of this block and try to port the parts that render the block
 the block in the frontend.
 
 If you take a look at the `wp-content/plugins` folder inside the `ultimate-blocks/src/blocks/call-to-action` folder there are some important files there that you want to review:
@@ -251,7 +250,7 @@ wp-content/plugins/ultimate-blocks/src/blocks/call-to-action
 
 You are interested in the following files:
 
-`style.scss`: Contains the front-end block styles. You can definatelly include those into our global styles.
+`style.scss`: Contains the front-end block styles. You can definitely include those into our global styles.
 
 ```scss title="style.scss"
 /**
@@ -269,21 +268,21 @@ You are interested in the following files:
 
 `block.js`: Contains both the block attributes specification and the `save` function.
 According to [the docs](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save),
-the `save` function is used  defines the way in which the different attributes should be combined into the final markup, which is then serialized into `post_content`.
+the `save` function defines the way in which the different attributes should be combined into the final markup, which is then serialized into `post_content`.
 
-Most of the times the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way the design of the block in the editor will match the design in the Decoupled site.
+Most of the time, the `save` function contains the actual implementation of the block, so you can take this markup and adopt it. This way the design of the block in the editor will match the design in the Decoupled site.
 
 :::note
 
-In our case we were lucky. Some times the `save` function is not provided or it returns `null`. The component is considered then to be `dynamic`, aka it renders in the server.
+In our case we were lucky. Sometimes the `save` function is not provided or it returns `null`. The component is considered then to be `dynamic`, aka it renders in the server.
 So you want to check if the [register_block_type](https://developer.wordpress.org/reference/functions/register_block_type/) provides an implementation for rendering the block.
 In that case, the `render_callback` will provide the markup for the block using PHP. You can take this implementation and translate it to React.
 
 :::
 
-Since the `save` function is provided with that block we have a viable stategy that will save us time without having to figure out the actual implementation.
+Since the `save` function is provided with that block we have a viable strategy that will save us time without having to figure out the actual implementation.
 
-So go ahead and provide the implementation of the Block based on the `save` function:
+So go ahead and provide the implementation of the block based on the `save` function:
 
 ```javascript title="wp-blocks/UbCallToActionBlock.js"
 export default function UbCallToActionBlock(props) {
@@ -392,7 +391,7 @@ So you need to either import the styles from a global module or translate the st
 
 :::
 
-## Futher Considerations
+## Further Considerations
 
 ### What if the block is missing some attributes?
 
@@ -421,7 +420,7 @@ Bear in mind that this will almost always result in degraded user editing experi
 
 ### What if the block contains custom js assets?
 
-Some blocks, include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
+Some blocks include JavaScript assets that are injected into the WordPress page so that they can run in the front view. Typically a lot of [Dynamic Blocks](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/) use that functionality since they have no way to include user interactivity.
 Since React is not normally bundled as a dependency in the browser, the JavaScript code usually consists of good old jQuery and document selectors.
 
 In that case you want to be able to review the bundled JavaScript assets and choose one of the following options:
@@ -432,4 +431,4 @@ In that case you want to be able to review the bundled JavaScript assets and cho
 
 * **Use an equivalent React Component from a library:** A simpler alternative is to find a compatible React Package and use that instead of trying to replicate the blocks interactivity. Sometimes this is a viable strategy as it frees the developer from implementing the functionality from scratch.
 
-Innevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you how you want to handle the pros and cons of each approach.
+Inevitably this is a common pain point when trying to leverage the power of Blocks in the Decoupled Website so it's up to you as to how you want to handle the pros and cons of each approach.

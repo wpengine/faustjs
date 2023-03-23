@@ -155,7 +155,10 @@ export function Toolbar({ seedNode }: ToolbarProps) {
         className="quicklinks"
         role="navigation"
         aria-label="Toolbar">
-        <ul id="wp-admin-bar-root-default" className="ab-top-menu">
+        <ul
+          id="wp-admin-bar-root-default"
+          className="ab-top-menu"
+          aria-label="primary toolbar menu items">
           {primaryNodes.map(({ component, id, ...props }: FaustToolbarNode) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <ToolbarNode key={id} id={id} {...props}>
@@ -165,7 +168,8 @@ export function Toolbar({ seedNode }: ToolbarProps) {
         </ul>
         <ul
           id="wp-admin-bar-top-secondary"
-          className="ab-top-secondary ab-top-menu">
+          className="ab-top-secondary ab-top-menu"
+          aria-label="secondary toolbar menu items">
           {secondaryNodes.map(
             ({ component, id, ...props }: FaustToolbarNode) => (
               // eslint-disable-next-line react/jsx-props-no-spreading

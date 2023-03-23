@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { FC } from 'react';
+
+export type WordPressBlockBase = React.FC & {
+  displayName: string;
+  name: string;
+  config: {
+    name: string;
+  };
+};
 
 /**
  * WordPressBlock is a React component that contains some optional properties that we are
  * used to match it with equivalent block data from the API
  */
-export type WordPressBlock = React.FC & {
-  displayName?: string;
-  name?: string;
-  config?: {
-    name: string;
-  };
-};
+export type WordPressBlock<P = Record<string, any>> = FC<P> &
+  Partial<Pick<WordPressBlockBase, 'config' | 'displayName' | 'name'>>;
+
 export const WordPressBlocksContext =
   React.createContext<WordPressBlocksContextType>({});
 

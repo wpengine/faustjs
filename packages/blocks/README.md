@@ -19,19 +19,13 @@
   </a>
 </p>
 
-🚧 Please note this is prerelease software and breaking changes may occur.
-
 `@faustwp/blocks` provides conventional connector components for rendering WordPress blocks.
 
 # Getting Started with Gutenberg Blocks Provider and Viewer
 
 ## Quick Start
 
-:::note
-
 Make sure you have completed the initial setup for Faust at [Getting Started](https://faustjs.org/docs/getting-started).
-
-:::
 
 Install the blocks package:
 
@@ -54,24 +48,26 @@ import { WordPressBlocksProvider } from '@faustwp/blocks';
 </FaustProvider>
 ```
 
-Then, inside your templates you need to pass on the `contentBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
+Then, inside your templates you need to pass on the `editorBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
 
 ```js
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 
-const { contentBlocks } = props.data.post;
-const blocks = flatListToHierarchical(contentBlocks);
+const { editorBlocks } = props.data.post;
+const blocks = flatListToHierarchical(editorBlocks);
+
+return <WordPressBlocksViewer blocks={blocks}/>
 ```
 
-Example `contentBlock` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
+Example `editorBlocks` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
 
 ```graphql
 ${components.CoreParagraph.fragments.entry}
-contentBlocks(flat: true) {
+editorBlocks(flat: true) {
   __typename
   renderedHtml
-  id: nodeId
-  parentId
+  id: clientId
+  parentClientId
   ...${components.CoreParagraph.fragments.key}
 }
 ```

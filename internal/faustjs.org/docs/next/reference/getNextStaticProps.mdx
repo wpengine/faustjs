@@ -25,7 +25,7 @@ This is merely a convenient way to fetch the page data while reusing the logic b
 
 This is the same object that Next.js provides in `getStaticProps`. You can read the [list of parameters here](https://nextjs.org/docs/api-reference/data-fetching/get-static-props#context-parameter).
 
-## GetNextServerSidePropsConfig Parameter
+## GetNextStaticPropsConfig Parameter
 
 The second argument of `getNextStaticProps` is of type `GetNextStaticPropsConfig` and accepts the following parameters:
 
@@ -35,6 +35,6 @@ The second argument of `getNextStaticProps` is of type `GetNextStaticPropsConfig
 
 Because the `GetNextStaticPropsConfig` type extends `GetNextServerSidePropsConfig`, it can also accept any other properties of the [getNextServerSideProps](/docs/next/reference/getNextServerSideProps).
 
-## getNextServerSideProps Return Values
+## getNextStaticProps Return Values
 
 The `getNextStaticProps` function returns an object that is required by the `getStaticProps` function.
