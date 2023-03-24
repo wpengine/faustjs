@@ -20,5 +20,10 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sass": "^1.54.9"
+  },
+  "nextBundleAnalysis": {
+    "budget": 358400,
+    "budgetPercentIncreaseRed": 20,
+    "showDetails": true
   }
 }
