@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - main # change this if your default branch is named differently
+      - MERL-372-track-package-sizes # change this if your default branch is named differently
   workflow_dispatch:
 
 defaults:
