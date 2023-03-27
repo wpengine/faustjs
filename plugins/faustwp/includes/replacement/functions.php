@@ -56,11 +56,11 @@ function normalize_url( $url, $frontend = false ) {
 		? str_replace( $home_url, $frontend_uri, $url )
 		: str_replace( $frontend_uri, $home_url, $url );
 
-	// Replace the schemes, if different
-	$frontend_uri_scheme = wp_parse_url( $frontend_uri, PHP_URL_SCHEME );
+	// Replace the schemes, if different.
+	$frontend_uri_scheme   = wp_parse_url( $frontend_uri, PHP_URL_SCHEME );
 	$normalized_url_scheme = wp_parse_url( $normalized_url, PHP_URL_SCHEME );
 	if ( $frontend_uri_scheme !== $normalized_url_scheme ) {
-		$normalized_url = str_replace( $normalized_url_scheme . '://', $frontend_uri_scheme. '://', $normalized_url );
+		$normalized_url = str_replace( $normalized_url_scheme . '://', $frontend_uri_scheme . '://', $normalized_url );
 	}
 
 	return $normalized_url;

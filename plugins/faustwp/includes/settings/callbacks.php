@@ -179,7 +179,7 @@ add_filter( 'sanitize_option_faustwp_settings', __NAMESPACE__ . '\\sanitize_faus
  * @return array Sanitized settings.
  */
 function sanitize_faustwp_settings( $settings, $option ) {
-	$errors = null;
+	$errors    = null;
 	$protocols = array( 'http', 'https' );
 	foreach ( $settings as $name => $value ) {
 		switch ( $name ) {
