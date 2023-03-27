@@ -41,9 +41,9 @@ jobs:
       - name: Build next.js app
         # change this if your site requires a custom build command
         run: |
-          pwd
-          ls -la
+          cp .env.local.sample .env.local
           npm install
+          ls -la
           npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
