@@ -61,8 +61,9 @@ function deny_public_access() {
 
 	$response_code = 302;
 	$redirect_url  = str_replace( trailingslashit( get_home_url() ), $frontend_uri, $request_uri );
+	$protocols = array( 'http', 'https' );
 
 	header( 'X-Redirect-By: WP Engine Headless plugin' ); // For support teams. See https://developer.yoast.com/blog/x-redirect-by-header/.
-	header( 'Location: ' . esc_url_raw( $redirect_url ), true, $response_code );
+	header( 'Location: ' . esc_url_raw( $redirect_url, $protocols ), true, $response_code );
 	exit;
 }

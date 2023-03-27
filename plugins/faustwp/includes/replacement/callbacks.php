@@ -224,7 +224,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_sc
  */
 function enqueue_preview_scripts() {
 	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
-	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
+	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => equivalent_frontend_url(get_preview_post_link()) ) );
 }
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
