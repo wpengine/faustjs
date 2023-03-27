@@ -1,12 +1,31 @@
+interface Node {
+  id: number;
+  parentId?: number;
+  [key: string]: any;
+}
+
+interface Params {
+  idKey?: string;
+  parentKey?: string;
+  childrenKey?: string;
+}
+
 /**
- * Turns a flat list of items into a hierarchical one.
+ * 
+ * @param data The node items.
+ * @param param1 The node parameters.
+ * @returns Node Array
  */
 export default function flatListToHierarchical(
-  data = [],
-  { idKey = 'id', parentKey = 'parentId', childrenKey = 'children' } = {},
-) {
-  const tree = [];
-  const childrenOf = {};
+  data: Node[] = [],
+  {
+    idKey = 'id',
+    parentKey = 'parentId',
+    childrenKey = 'children',
+  }: Params = {},
+): Node[] {
+  const tree: Node[] = [];
+  const childrenOf: { [key: number]: Node[] } = {};
 
   data.forEach((item) => {
     const newItem = { ...item };
@@ -15,6 +34,7 @@ export default function flatListToHierarchical(
     childrenOf[id] = childrenOf[id] || [];
     newItem[childrenKey] = childrenOf[id];
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     parentId
       ? (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem)
       : tree.push(newItem);
