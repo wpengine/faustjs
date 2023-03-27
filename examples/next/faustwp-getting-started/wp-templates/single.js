@@ -102,7 +102,7 @@ Component.query = gql`
         }
       }
       ...FeaturedImageFragment
-      editorBlocks {
+      editorBlocks(flat: true) {
         name
         __typename
         renderedHtml

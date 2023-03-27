@@ -12,7 +12,7 @@ export default function CoreColumns(props) {
   );
 }
 
-CoreColumn.fragments = {
+CoreColumns.fragments = {
   entry: gql`
     fragment CoreColumnsFragment on CoreColumns {
       attributes {
@@ -21,5 +21,5 @@ CoreColumn.fragments = {
       }
     }
   `,
-  key: `CoreColumnFragment`,
+  key: `CoreColumnsFragment`,
 };
