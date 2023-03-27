@@ -1,0 +1,14 @@
+.entry {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.meta {
+  font-size: 0.9rem;
+}

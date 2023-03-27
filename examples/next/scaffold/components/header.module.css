@@ -1,0 +1,34 @@
+.header > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.siteTitle {
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.siteDescription {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav ul li {
+  margin-right: 1rem;
+  font-size: 1.25rem;
+}
+
+.nav ul li:last-child {
+  margin-right: 0;
+}
