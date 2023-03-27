@@ -11,7 +11,7 @@ interface Params {
 }
 
 /**
- * 
+ * Converts a flat list to hierarchical.
  * @param data The node items.
  * @param param1 The node parameters.
  * @returns Node Array
