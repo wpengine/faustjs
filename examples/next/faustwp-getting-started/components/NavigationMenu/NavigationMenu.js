@@ -1,9 +1,9 @@
 import classNames from 'classnames/bind';
 import { gql } from '@apollo/client';
 import Link from 'next/link';
-import flatListToHierarchical from '../../utilities/flatListToHierarchical';
 import styles from './NavigationMenu.module.scss';
 import stylesFromWP from './NavigationMenuClassesFromWP.module.scss';
+import { flatListToHierarchical } from '@faustwp/core/src';
 
 let cx = classNames.bind(styles);
 let cxFromWp = classNames.bind(stylesFromWP);

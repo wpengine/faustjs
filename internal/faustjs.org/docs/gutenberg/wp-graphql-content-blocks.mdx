@@ -253,7 +253,7 @@ This way you can reconstruct the block tree as before and pass it on to the `Wor
 
 ```js
 import { WordPressBlocksViewer } from '@faustwp/blocks';
-import flatListToHierarchical from '../utilities/flatListToHierarchical';
+import { flatListToHierarchical } from '@faustwp/core/src';
 ...
 const { editorBlocks } = props.data.post;
 const blocks = flatListToHierarchical(editorBlocks);
