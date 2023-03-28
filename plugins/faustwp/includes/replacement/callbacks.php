@@ -114,12 +114,21 @@ function post_preview_link( $link, $post ) {
 	if ( $frontend_uri ) {
 		$home_url     = trailingslashit( get_home_url() );
 		$frontend_uri = trailingslashit( $frontend_uri );
+
+
+		$link = str_replace( $home_url, $frontend_uri, $link );
+
+		// Replace the schemes, if different.
+		$frontend_uri_scheme   = wp_parse_url( $link, PHP_URL_SCHEME );
+		$home_url_scheme = wp_parse_url( $home_url, PHP_URL_SCHEME );
+		if ( $frontend_uri_scheme !== $home_url_scheme ) {
+			$link = str_replace( $home_url_scheme . '://', $frontend_uri_scheme . '://', $link );
+		}
+
 		/**
 		 * This should already be handled by WPE\FaustWP\Replacement\post_link, but
 		 * it's here for verbosity's sake and if the other filter changes for any reason.
 		 */
-		$link = str_replace( $home_url, $frontend_uri, $link );
-
 		$parsed_link_query = wp_parse_url( $link, PHP_URL_QUERY );
 		$args              = wp_parse_args( $parsed_link_query );
 		$preview_id        = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
@@ -224,7 +233,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_sc
  */
 function enqueue_preview_scripts() {
 	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), '1.0.0', true );
-	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => equivalent_frontend_url( get_preview_post_link() ) ) );
+	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 }
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
