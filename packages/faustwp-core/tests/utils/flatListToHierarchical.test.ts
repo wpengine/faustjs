@@ -1,64 +1,40 @@
 import flatListToHierarchical from '../../src/utils/flatListToHierarchical';
 
 const items = [
-  { Id: '1', Name: 'abc', Parent: '2' },
-  { Id: '2', Name: 'abc', Parent: '' },
-  { Id: '3', Name: 'abc', Parent: '5' },
-  { Id: '4', Name: 'abc', Parent: '2' },
-  { Id: '5', Name: 'abc', Parent: '' },
-  { Id: '6', Name: 'abc', Parent: '2' },
-  { Id: '7', Name: 'abc', Parent: '6' },
-  { Id: '8', Name: 'abc', Parent: '6' },
+  { id: '1', name: 'abc', parentId: '2' },
+  { id: '2', name: 'abc', parentId: '' },
+  { id: '3', name: 'abc', parentId: '5' },
+  { id: '4', name: 'abc', parentId: '2' },
+  { id: '5', name: 'abc', parentId: '' },
+  { id: '6', name: 'abc', parentId: '2' },
+  { id: '7', name: 'abc', parentId: '6' },
+  { id: '8', name: 'abc', parentId: '6' },
 ];
 
 const result = [
   {
-    Id: '1',
-    Name: 'abc',
-    Parent: '2',
-    children: [],
+    id: '2',
+    name: 'abc',
+    parentId: '',
+    children: [
+      { id: '1', name: 'abc', parentId: '2', children: [] },
+      { id: '4', name: 'abc', parentId: '2', children: [] },
+      {
+        id: '6',
+        name: 'abc',
+        parentId: '2',
+        children: [
+          { id: '7', name: 'abc', parentId: '6', children: [] },
+          { id: '8', name: 'abc', parentId: '6', children: [] },
+        ],
+      },
+    ],
   },
   {
-    Id: '2',
-    Name: 'abc',
-    Parent: '',
-    children: [],
-  },
-  {
-    Id: '3',
-    Name: 'abc',
-    Parent: '5',
-    children: [],
-  },
-  {
-    Id: '4',
-    Name: 'abc',
-    Parent: '2',
-    children: [],
-  },
-  {
-    Id: '5',
-    Name: 'abc',
-    Parent: '',
-    children: [],
-  },
-  {
-    Id: '6',
-    Name: 'abc',
-    Parent: '2',
-    children: [],
-  },
-  {
-    Id: '7',
-    Name: 'abc',
-    Parent: '6',
-    children: [],
-  },
-  {
-    Id: '8',
-    Name: 'abc',
-    Parent: '6',
-    children: [],
+    id: '5',
+    name: 'abc',
+    parentId: '',
+    children: [{ id: '3', name: 'abc', parentId: '5', children: [] }],
   },
 ];
 
