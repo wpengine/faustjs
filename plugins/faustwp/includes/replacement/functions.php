@@ -55,6 +55,7 @@ function normalize_url( $url, $frontend = false ) {
 	$normalized_url = $frontend
 		? str_replace( $home_url, $frontend_uri, $url )
 		: str_replace( $frontend_uri, $home_url, $url );
+
 	return $normalized_url;
 }
 
