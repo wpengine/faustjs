@@ -59,9 +59,11 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - name: Build next.js app
+        working-directory: ./examples/next/faustwp-getting-started
         run: |
           cp .env.local.sample .env.local
-          npm install && ./node_modules/.bin/faust build
+          npm install
+          npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
