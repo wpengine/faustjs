@@ -64,7 +64,7 @@ jobs:
           rm ../../../package.json
           rm ../../../package-lock.json
           cp .env.local.sample .env.local
-          npm install --verbose
+          npm install @next/bundle-analyzer
           npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
