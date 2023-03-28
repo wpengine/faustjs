@@ -31,6 +31,12 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: ./examples/next/faustwp-getting-started
+          useLockFile: false
+
       # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
       # so the step above will fail to pull dependencies
       # - uses: pnpm/action-setup@v2
@@ -57,9 +63,7 @@ jobs:
         run: |
           cp .env.local.sample .env.local
           npm install
-          pwd
-          ls -l
-          npm run build
+          ls -laR && ./node_modules/.bin/faust build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
