@@ -35,6 +35,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           working-directory: ./examples/next/faustwp-getting-started
+          useLockFile: false
 
       # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
       # so the step above will fail to pull dependencies
