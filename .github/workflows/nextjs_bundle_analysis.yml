@@ -61,8 +61,10 @@ jobs:
       - name: Build next.js app
         working-directory: ./examples/next/faustwp-getting-started
         run: |
+          rm ../../../package.json
+          rm ../../../package-lock.json
           cp .env.local.sample .env.local
-          npm install
+          npm install --verbose
           npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
