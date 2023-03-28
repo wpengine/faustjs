@@ -1,7 +1,7 @@
+import React from 'react';
 import Link from 'next/link';
-import { FeaturedImage } from '../FeaturedImage';
-import { PostInfo } from '../PostInfo';
-import styles from './Post.module.scss';
+import { FeaturedImage, PostInfo } from '.';
+import styles from '../styles/components/Post.module.scss';
 
 export default function Post({
   title,

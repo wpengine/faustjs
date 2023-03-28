@@ -1,6 +1,7 @@
+import React from 'react';
 import classNames from 'classnames/bind';
-import * as SELECTORS from '../../constants/selectors';
-import styles from './Main.module.scss';
+import * as SELECTORS from '../constants/selectors';
+import styles from '../styles/components/Main.module.scss';
 
 let cx = classNames.bind(styles);
 

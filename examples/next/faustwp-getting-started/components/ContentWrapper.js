@@ -1,5 +1,6 @@
+import React from 'react';
 import className from 'classnames/bind';
-import styles from './ContentWrapper.module.scss';
+import styles from '../styles/components/ContentWrapper.module.scss';
 
 let cx = className.bind(styles);
 

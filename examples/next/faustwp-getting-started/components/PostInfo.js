@@ -1,4 +1,5 @@
-import { FormatDate } from '../../components';
+import React from 'react';
+import { FormatDate } from '.';
 
 export default function PostInfo({ date, author, className }) {
   if (!date && !author) {

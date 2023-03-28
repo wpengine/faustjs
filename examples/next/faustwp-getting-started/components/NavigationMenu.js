@@ -1,8 +1,10 @@
+import React from 'react';
 import classNames from 'classnames/bind';
 import { gql } from '@apollo/client';
 import Link from 'next/link';
-import styles from './NavigationMenu.module.scss';
-import stylesFromWP from './NavigationMenuClassesFromWP.module.scss';
+import styles from '../styles/componentsNavigationMenu.module.scss';
+import stylesFromWP from '../styles/componentsNavigationMenuClassesFromWP.module.scss';
+
 import { flatListToHierarchical } from '@faustwp/core/src';
 
 let cx = classNames.bind(styles);

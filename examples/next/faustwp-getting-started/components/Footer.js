@@ -1,6 +1,7 @@
+import React from 'react';
 import classNames from 'classnames/bind';
-import { Container, NavigationMenu } from '../../components';
-import styles from './Footer.module.scss';
+import { Container, NavigationMenu } from '.';
+import styles from '../styles/components/Footer.module.scss';
 
 let cx = classNames.bind(styles);
 

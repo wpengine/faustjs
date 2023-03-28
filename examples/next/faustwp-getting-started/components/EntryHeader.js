@@ -1,6 +1,7 @@
+import React from 'react';
 import className from 'classnames/bind';
-import { Heading, PostInfo, Container, FeaturedImage } from '../../components';
-import styles from './EntryHeader.module.scss';
+import { Heading, PostInfo, Container, FeaturedImage } from '.';
+import styles from '../styles/components/EntryHeader.module.scss';
 
 let cx = className.bind(styles);
 
