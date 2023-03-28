@@ -118,8 +118,8 @@ function post_preview_link( $link, $post ) {
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
 		// Replace the schemes, if different.
-		$frontend_uri_scheme   = wp_parse_url( $frontend_uri, PHP_URL_SCHEME );
-		$link_scheme = wp_parse_url( $link, PHP_URL_SCHEME );
+		$frontend_uri_scheme = wp_parse_url( $frontend_uri, PHP_URL_SCHEME );
+		$link_scheme         = wp_parse_url( $link, PHP_URL_SCHEME );
 		if ( $frontend_uri_scheme !== $link_scheme ) {
 			$link = str_replace( $link_scheme . '://', $frontend_uri_scheme . '://', $link );
 		}
