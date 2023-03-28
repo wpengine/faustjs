@@ -57,6 +57,8 @@ jobs:
         run: |
           cp .env.local.sample .env.local
           npm install
+          pwd
+          ls -l
           npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
