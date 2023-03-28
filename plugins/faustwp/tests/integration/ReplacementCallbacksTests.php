@@ -185,15 +185,13 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 * Tests post_preview_link() uses frontend_uri scheme if different than home_url scheme.
 	 */
 	public function test_post_preview_link_uses_frontend_uri_scheme() {
-		function get_home_url( $url ) {
-			return "https://example.com/";
-		}
+
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		add_filter( 'home_url', 'get_home_url' );
+		add_filter( 'home_url', [$this, 'get_home_url'] );
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
 		$this->assertStringStartsWith( 'http://', $link );
-		remove_filter( 'home_url', 'get_home_url' );
+		remove_filter( 'home_url', [$this, 'get_home_url'] );
 	}
 
 	/**
@@ -273,6 +271,10 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		] );
 
 		return $post_id;
+	}
+
+	public function get_home_url( $url ) {
+		return "https://example.com/";
 	}
 
 }

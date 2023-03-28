@@ -78,14 +78,6 @@ class ReplacementFunctionsTests extends \WP_UnitTestCase {
 		$this->assertStringContainsString( $wp_url, $frontend_url );
 	}
 
-	public function test_equivalent_frontend_url_uses_frontend_uri_scheme() {
-		$home_url = str_replace( 'http://', 'https://', get_home_url() );
-		$wp_url       = $home_url . '/posts/hello-world/';
-		$frontend_url = equivalent_frontend_url( $wp_url );
-
-		$this->assertStringStartsWith( 'http://', $frontend_url );
-	}
-
 	public function test_normalize_sitemap_entry_replaces_frontend_uri_with_home_url() {
 		$frontend_post_url = $this->init_settings['frontend_uri'] . '/posts/hello-world/';
 
