@@ -69,14 +69,12 @@ jobs:
         run: npx -p nextjs-bundle-analysis report
 
       - name: Upload bundle
-        working-directory: ./examples/next/faustwp-getting-started
         uses: actions/upload-artifact@v3
         with:
           name: bundle
           path: .next/analyze/__bundle_analysis.json
 
       - name: Download base branch bundle stats
-        working-directory: ./examples/next/faustwp-getting-started
         uses: dawidd6/action-download-artifact@v2
         if: success() && github.event.number
         with:
@@ -98,12 +96,10 @@ jobs:
       # Either of these arguments can be changed or removed by editing the `nextBundleAnalysis`
       # entry in your package.json file.
       - name: Compare with base branch bundle
-        working-directory: ./examples/next/faustwp-getting-started
         if: success() && github.event.number
         run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
-        working-directory: ./examples/next/faustwp-getting-started
         id: get-comment-body
         if: success() && github.event.number
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
@@ -113,7 +109,6 @@ jobs:
           echo EOF >> $GITHUB_OUTPUT
 
       - name: Find Comment
-        working-directory: ./examples/next/faustwp-getting-started
         uses: peter-evans/find-comment@v2
         if: success() && github.event.number
         id: fc
@@ -122,7 +117,6 @@ jobs:
           body-includes: '<!-- __NEXTJS_BUNDLE -->'
 
       - name: Create Comment
-        working-directory: ./examples/next/faustwp-getting-started
         uses: peter-evans/create-or-update-comment@v2
         if: success() && github.event.number && steps.fc.outputs.comment-id == 0
         with:
@@ -130,7 +124,6 @@ jobs:
           body: ${{ steps.get-comment-body.outputs.body }}
 
       - name: Update Comment
-        working-directory: ./examples/next/faustwp-getting-started
         uses: peter-evans/create-or-update-comment@v2
         if: success() && github.event.number && steps.fc.outputs.comment-id != 0
         with:
