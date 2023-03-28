@@ -115,7 +115,6 @@ function post_preview_link( $link, $post ) {
 		$home_url     = trailingslashit( get_home_url() );
 		$frontend_uri = trailingslashit( $frontend_uri );
 
-
 		$link = str_replace( $home_url, $frontend_uri, $link );
 
 		// Replace the schemes, if different.
