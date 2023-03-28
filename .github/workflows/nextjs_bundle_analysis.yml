@@ -60,11 +60,8 @@ jobs:
 
       - name: Build next.js app
         run: |
-          ls -la
           cp .env.local.sample .env.local
-          ls -la
-          ./node_modules/.bin/faust build
-          ls -la
+          npm install && ./node_modules/.bin/faust build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
