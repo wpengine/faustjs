@@ -82,8 +82,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: bundle
+          path: ./examples/next/faustwp-getting-started/.next/analyze/base
 
       - name: Display structure of downloaded files
+        working-directory: ./examples/next/faustwp-getting-started
         run: ls -R
 
       # And here's the second place - this runs after we have both the current and
@@ -101,6 +103,7 @@ jobs:
       # entry in your package.json file.
       - name: Compare with base branch bundle
         if: success() && github.event.number
+        working-directory: ./examples/next/faustwp-getting-started
         run: |
           ls -laR .next/analyze/base
           npx -p nextjs-bundle-analysis compare
@@ -108,6 +111,7 @@ jobs:
       - name: Get Comment Body
         id: get-comment-body
         if: success() && github.event.number
+        working-directory: ./examples/next/faustwp-getting-started
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
