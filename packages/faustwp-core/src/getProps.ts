@@ -16,7 +16,9 @@ export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
     query?: DocumentNode;
     variables?: (
       context: GetStaticPropsContext | GetServerSidePropsContext,
-    ) => { [key: string]: any };
+    ) => {
+      [key: string]: any;
+    };
   };
   props?: Props;
   notFound?: true;
@@ -26,6 +28,16 @@ export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
 export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
   extends GetNextServerSidePropsConfig<Props> {
   revalidate?: number | boolean;
+}
+
+export interface FaustPage<Data, Props = void>
+  extends React.FC<
+    { data?: Data; __PAGE_VARIABLES__?: { [key: string]: any } } & Props
+  > {
+  query?: DocumentNode;
+  variables?: (context: GetStaticPropsContext | GetServerSidePropsContext) => {
+    [key: string]: any;
+  };
 }
 
 /**
@@ -69,7 +81,7 @@ export async function getNextStaticProps<Props>(
   }
 
   if (pageVariables) {
-    returnedProps = { ...returnedProps, __PAGE_VARIABLES: pageVariables };
+    returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
   }
 
   const pageProps = addApolloState(apolloClient, { props: returnedProps });
@@ -122,7 +134,7 @@ export async function getNextServerSideProps<Props>(
   }
 
   if (pageVariables) {
-    returnedProps = { ...returnedProps, __PAGE_VARIABLES: pageVariables };
+    returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
   }
 
   return addApolloState(apolloClient, {

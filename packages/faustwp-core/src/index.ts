@@ -4,7 +4,11 @@ import {
   FaustTemplateProps,
 } from './components/WordPressTemplate.js';
 import { getWordPressProps, FaustTemplate } from './getWordPressProps.js';
-import { getNextStaticProps, getNextServerSideProps } from './getProps.js';
+import {
+  getNextStaticProps,
+  getNextServerSideProps,
+  FaustPage,
+} from './getProps.js';
 import { getConfig, setConfig, FaustConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
@@ -75,4 +79,5 @@ export {
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
   FaustTemplate,
+  FaustPage,
 };
