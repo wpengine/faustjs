@@ -114,12 +114,20 @@ function post_preview_link( $link, $post ) {
 	if ( $frontend_uri ) {
 		$home_url     = trailingslashit( get_home_url() );
 		$frontend_uri = trailingslashit( $frontend_uri );
+
+		$link = str_replace( $home_url, $frontend_uri, $link );
+
+		// Replace the schemes, if different.
+		$frontend_uri_scheme = wp_parse_url( $frontend_uri, PHP_URL_SCHEME );
+		$link_scheme         = wp_parse_url( $link, PHP_URL_SCHEME );
+		if ( $frontend_uri_scheme !== $link_scheme ) {
+			$link = str_replace( $link_scheme . '://', $frontend_uri_scheme . '://', $link );
+		}
+
 		/**
 		 * This should already be handled by WPE\FaustWP\Replacement\post_link, but
 		 * it's here for verbosity's sake and if the other filter changes for any reason.
 		 */
-		$link = str_replace( $home_url, $frontend_uri, $link );
-
 		$parsed_link_query = wp_parse_url( $link, PHP_URL_QUERY );
 		$args              = wp_parse_args( $parsed_link_query );
 		$preview_id        = isset( $args['preview_id'] ) ? $args['preview_id'] : $post->ID;
