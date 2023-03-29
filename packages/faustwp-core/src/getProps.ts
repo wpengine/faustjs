@@ -52,14 +52,27 @@ export async function getNextStaticProps<Props>(
     };
   }
 
+  const pageVariables = Page?.variables ? Page?.variables(context) : undefined;
+
+  let pageQueryRes;
   if (Page.query) {
-    await apolloClient.query({
+    pageQueryRes = await apolloClient.query({
       query: Page.query,
-      variables: Page?.variables ? Page?.variables(context) : undefined,
+      variables: pageVariables,
     });
   }
 
-  const pageProps = addApolloState(apolloClient, { props: { ...props } });
+  let returnedProps = { ...props };
+
+  if (pageQueryRes?.data) {
+    returnedProps = { ...returnedProps, data: pageQueryRes.data };
+  }
+
+  if (pageVariables) {
+    returnedProps = { ...returnedProps, __PAGE_VARIABLES: pageVariables };
+  }
+
+  const pageProps = addApolloState(apolloClient, { props: returnedProps });
   pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
   return pageProps as GetStaticPropsResult<Props>;
 }
@@ -92,15 +105,27 @@ export async function getNextServerSideProps<Props>(
     };
   }
 
+  const pageVariables = Page?.variables ? Page?.variables(context) : undefined;
+
+  let pageQueryRes;
   if (Page.query) {
-    await apolloClient.query({
+    pageQueryRes = await apolloClient.query({
       query: Page.query,
-      variables: Page?.variables ? Page?.variables(context) : undefined,
+      variables: pageVariables,
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  let returnedProps = { ...props };
+
+  if (pageQueryRes?.data) {
+    returnedProps = { ...returnedProps, data: pageQueryRes.data };
+  }
+
+  if (pageVariables) {
+    returnedProps = { ...returnedProps, __PAGE_VARIABLES: pageVariables };
+  }
+
   return addApolloState(apolloClient, {
-    props: { ...props },
+    props: returnedProps,
   }) as GetServerSidePropsResult<Props>;
 }
