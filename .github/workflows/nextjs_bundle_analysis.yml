@@ -80,6 +80,7 @@ jobs:
           path: ./examples/next/faustwp-getting-started/.next/analyze/__bundle_analysis.json
 
       - uses: actions/download-artifact@v3
+        if: success() && github.event.number
         with:
           name: bundle
           path: ./examples/next/faustwp-getting-started/.next/analyze/base
