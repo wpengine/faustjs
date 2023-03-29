@@ -86,7 +86,7 @@ jobs:
 
       - name: Display structure of downloaded files
         working-directory: ./examples/next/faustwp-getting-started
-        run: ls -R
+        run: ls -Ra .next/
 
       # And here's the second place - this runs after we have both the current and
       # base branch bundle stats, and will compare them to determine what changed.
