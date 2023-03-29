@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.2
-Stable tag: 0.8.3
+Stable tag: 0.8.4
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 0.8.4 =
+
+### Patch Changes
+
+- 43205e1: Bug Fix: "Post and Category URL rewrites" setting ignores protocol of configured front-end site URL
+
 = 0.8.3 =
 
 ### Patch Changes
@@ -65,11 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
-
-= 0.8.1 =
-
-### Patch Changes
-
-- c016c9f: Update plugin title in changelog
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
