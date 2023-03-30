@@ -52,13 +52,17 @@ jobs:
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
-      - name: Build next.js app
+      - name: Setup Environment
         working-directory: ${{ matrix.dir }}
         run: |
           rm ../../../package.json
           rm ../../../package-lock.json
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
+
+      - name: Build next.js app
+        working-directory: ${{ matrix.dir }}
+        run: |
           npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
