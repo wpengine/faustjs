@@ -46,6 +46,11 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
   }
 
   const { blocks: editorBlocks } = props;
+
+  if (!editorBlocks) {
+    throw new Error('The "blocks" prop is required in <WordPressBlocksViewer>');
+  }
+
   const renderedBlocks = editorBlocks.map((blockProps, idx) => {
     const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
     return (
