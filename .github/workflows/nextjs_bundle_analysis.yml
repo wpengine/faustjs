@@ -48,7 +48,7 @@ jobs:
         with:
           # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
           # ex: if your app builds to `dist`, replace `.next` with `dist`
-          path: .next/cache
+          path: ${{ matrix.dir }}/.next/cache
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
@@ -59,6 +59,7 @@ jobs:
           rm ../../../package-lock.json
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
+          ls -Ra .next/
 
       - name: Build next.js app
         working-directory: ${{ matrix.dir }}
