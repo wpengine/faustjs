@@ -59,7 +59,7 @@ jobs:
           rm ../../../package-lock.json
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
-          ls -Ra .next/
+          ls -Ra ./
 
       - name: Build next.js app
         working-directory: ${{ matrix.dir }}
