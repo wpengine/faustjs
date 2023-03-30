@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 import Link from 'next/link';
 import styles from './NavigationMenu.module.scss';
 import stylesFromWP from './NavigationMenuClassesFromWP.module.scss';
-import { flatListToHierarchical } from '@faustwp/core/src';
+import { flatListToHierarchical } from '@faustwp/core';
 
 let cx = classNames.bind(styles);
 let cxFromWp = classNames.bind(stylesFromWP);

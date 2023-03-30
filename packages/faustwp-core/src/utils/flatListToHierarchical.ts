@@ -1,10 +1,10 @@
-interface Node {
-  id: number;
-  parentId?: number;
+export interface ListNode {
+  id: number | string;
+  parentId?: number | string;
   [key: string]: any;
 }
 
-interface Params {
+export interface Params {
   idKey?: string;
   parentKey?: string;
   childrenKey?: string;
@@ -12,20 +12,20 @@ interface Params {
 
 /**
  * Converts a flat list to hierarchical.
- * @param data The node items.
- * @param param1 The node parameters.
- * @returns Node Array
+ * @param data The ListNode items.
+ * @param param1 The ListNode parameters.
+ * @returns ListNode Array
  */
-export default function flatListToHierarchical(
-  data: Node[] = [],
+export function flatListToHierarchical(
+  data: ListNode[] = [],
   {
     idKey = 'id',
     parentKey = 'parentId',
     childrenKey = 'children',
   }: Params = {},
-): Node[] {
-  const tree: Node[] = [];
-  const childrenOf: { [key: number]: Node[] } = {};
+): ListNode[] {
+  const tree: ListNode[] = [];
+  const childrenOf: { [key: number]: ListNode[] } = {};
 
   data.forEach((item) => {
     const newItem = { ...item };

@@ -1,6 +1,6 @@
-import flatListToHierarchical from '../../src/utils/flatListToHierarchical';
+import { flatListToHierarchical, ListNode } from '../../src/utils/flatListToHierarchical';
 
-const items = [
+const items: ListNode[] = [
   { id: '1', name: 'abc', parentId: '2' },
   { id: '2', name: 'abc', parentId: '' },
   { id: '3', name: 'abc', parentId: '5' },
@@ -40,7 +40,6 @@ const result = [
 
 describe('utils/flatListToHierarchical', () => {
   test('returns a hierarchical list from items array', () => {
-    //@ts-ignore
     expect(flatListToHierarchical(items)).toEqual(result);
   });
 });
