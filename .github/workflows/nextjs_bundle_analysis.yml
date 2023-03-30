@@ -86,7 +86,7 @@ jobs:
         run: |
           ls -laR .next/analyze/base
           mkdir -p .next/analyze/base/bundle
-          mv .next/analyze/base .next/analyze/base/bundle
+          mv .next/analyze/base/* .next/analyze/base/bundle
           npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
