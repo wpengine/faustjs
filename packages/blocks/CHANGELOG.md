@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 0.2.1
+
+### Patch Changes
+
+- fed67a4: Added: Throw an error if the `blocks` prop was not set on the `<WordPressBlocksViewer>` component
+
 ## 0.2.0
 
 ### Minor Changes
