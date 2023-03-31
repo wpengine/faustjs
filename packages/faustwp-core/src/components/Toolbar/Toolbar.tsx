@@ -183,7 +183,7 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
     gql`
       {
         viewer {
-          isToolbarVisible
+          shouldShowFaustToolbar
         }
       }
     `,
