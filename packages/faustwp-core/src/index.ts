@@ -1,3 +1,4 @@
+import _ from 'lodash'; // Let's increase the bundle size significantly.
 import { FaustProvider } from './components/FaustProvider.js';
 import {
   WordPressTemplate,
