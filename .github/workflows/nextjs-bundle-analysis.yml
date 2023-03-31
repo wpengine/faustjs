@@ -1,5 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
+#
+# Based on https://github.com/hashicorp/nextjs-bundle-analysis/blob/main/template.yml
 
 name: 'Next.js Bundle Analysis'
 
@@ -8,7 +10,7 @@ on:
   push:
     branches:
       - canary
-      - MERL-372-track-package-sizes
+      - MERL-372-track-package-sizes # test
   workflow_dispatch:
 
 permissions:
@@ -20,11 +22,8 @@ jobs:
   analyze:
     strategy:
       matrix:
-        dir:
-          [
-            './examples/next/faustwp-getting-started',
-            './examples/next/getting-started',
-          ]
+        next-dir: ['examples/next/faustwp-getting-started']
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,10 +33,15 @@ jobs:
         with:
           node-version: 18
 
+      - name: Remove root package.json to prevent NPM confusion
+        run: |
+          rm package.json
+          rm package-lock.json
+
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
         with:
-          working-directory: ${{ matrix.dir }}
+          working-directory: ${{ matrix.next-dir }}
           useLockFile: false
 
       - name: Restore next build
@@ -48,52 +52,45 @@ jobs:
         with:
           # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
           # ex: if your app builds to `dist`, replace `.next` with `dist`
-          path: ${{ matrix.dir }}/.next/cache
+          path: ${{ matrix.next-dir }}/.next/cache
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - name: Setup Environment
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.next-dir }}
         run: |
-          ls -la ../../../
-          ls -la ../../
-          ls -la ../
-          rm ../../../package.json
-          rm ../../../package-lock.json
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
 
       - name: Build next.js app
-        working-directory: ${{ matrix.dir }}
-        run: |
-          npm run build
-          ls -Ra .next/
+        working-directory: ${{ matrix.next-dir }}
+        run: npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
       - name: Analyze bundle
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.next-dir }}
         run: npx -p nextjs-bundle-analysis report
 
       - name: Upload bundle
         uses: actions/upload-artifact@v3
         with:
           name: bundle
-          path: ${{ matrix.dir }}/.next/analyze/__bundle_analysis.json
+          path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
 
       - uses: actions/download-artifact@v3
         if: success() && github.event.number
         with:
           name: bundle
-          path: ${{ matrix.dir }}/.next/analyze/base
+          path: ${{ matrix.next-dir }}/.next/analyze/base
 
       - name: Display structure of downloaded files
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.next-dir }}
         run: ls -Ra .next/
 
       - name: Compare with base branch bundle
         if: success() && github.event.number
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.next-dir }}
         run: |
           ls -laR .next/analyze/base
           mkdir -p .next/analyze/base/bundle
@@ -103,7 +100,7 @@ jobs:
       - name: Get Comment Body
         id: get-comment-body
         if: success() && github.event.number
-        working-directory: ${{ matrix.dir }}
+        working-directory: ${{ matrix.next-dir }}
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
