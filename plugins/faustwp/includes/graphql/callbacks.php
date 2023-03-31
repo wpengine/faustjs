@@ -44,28 +44,32 @@ function register_templates_field() {
 	);
 }
 
-add_action( 'graphql_register_types',  __NAMESPACE__ . '\\register_faust_toolbar_field' );
+add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_faust_toolbar_field' );
 /**
  * Registers a field on the User model called "shouldShowFaustToolbar" which
  * gets the user's WP Admin toolbar preference. This is then used to conditionally
  * show the Faust toolbar on the headless frontend.
- * 
+ *
  * @return void
- * 
+ *
  * @uses register_graphql_field
  * @uses wp_get_current_user
  * @uses get_user_meta
  */
 function register_faust_toolbar_field() {
-	register_graphql_field( 'User', 'shouldShowFaustToolbar', [
-		'type' => 'Boolean',
-		'resolve' => function() {
-			$user = wp_get_current_user();
-			$toolbar_preference_meta = get_user_meta( $user->ID, 'show_admin_bar_front', true );
+	register_graphql_field(
+		'User',
+		'shouldShowFaustToolbar',
+		array(
+			'type'    => 'Boolean',
+			'resolve' => function() {
+				$user                    = wp_get_current_user();
+				$toolbar_preference_meta = get_user_meta( $user->ID, 'show_admin_bar_front', true );
 
-			return 'true' === $toolbar_preference_meta ? true : false;
-		},
-	]);
+				return 'true' === $toolbar_preference_meta ? true : false;
+			},
+		)
+	);
 }
 
 /**
