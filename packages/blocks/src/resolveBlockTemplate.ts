@@ -12,7 +12,7 @@ import DefaultBlock from './components/DefaultBlock.js';
  * @returns An instance of the WordPressBlock component that matches the the provided contentBlock or a DefaultBlock if no such match exists.
  */
 export default function resolveBlockTemplate(
-  contentBlock: ContentBlock,
+  contentBlock: ContentBlock | null,
   blocks: WordPressBlock[],
 ): WordPressBlock {
   // eslint-disable-next-line no-underscore-dangle
