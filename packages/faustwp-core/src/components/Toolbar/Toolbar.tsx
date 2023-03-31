@@ -190,6 +190,12 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
     { client },
   );
 
+  /**
+   * If the above query for "shouldShowFaustToolbar" fails, it likely means
+   * that the user doesn't have a version of the FaustWP plugin installed where
+   * this field was made available. In that case, don't throw an error, and
+   * just continue with showing the toolbar.
+   */
   if (error) {
     return <AuthenticatedToolbar seedNode={seedNode} />;
   }
@@ -198,7 +204,7 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
     return null;
   }
 
-  if (data.viewer.isToolbarVisible === false) {
+  if (data.viewer.shouldShowFaustToolbar === false) {
     return null;
   }
 
