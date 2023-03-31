@@ -59,12 +59,12 @@ jobs:
           rm ../../../package-lock.json
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
-          ls -Ra ./
 
       - name: Build next.js app
         working-directory: ${{ matrix.dir }}
         run: |
           npm run build
+          ls -Ra .next/
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
