@@ -22,8 +22,8 @@ jobs:
       matrix:
         dir:
           [
-            'examples/next/faustwp-getting-started',
-            'examples/next/getting-started',
+            './examples/next/faustwp-getting-started',
+            './examples/next/getting-started',
           ]
     runs-on: ubuntu-latest
     steps:
