@@ -40,6 +40,7 @@ import {
 } from './components/Toolbar/index.js';
 
 export {
+  _,
   FaustProvider,
   WordPressTemplate,
   FaustTemplateProps,
