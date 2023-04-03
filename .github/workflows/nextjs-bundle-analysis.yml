@@ -92,11 +92,12 @@ jobs:
           name: bundle
           path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
 
-      - name: Download bundle
-        uses: actions/download-artifact@v3
+      - name: Download base branch bundle stats
+        uses: dawidd6/action-download-artifact@v2
         if: success() && github.event.number
         with:
-          name: bundle
+          workflow: nextjs-bundle-analysis.yml
+          branch: ${{ github.event.pull_request.base.ref }}
           path: ${{ matrix.next-dir }}/.next/analyze/base
 
       - name: Display structure of downloaded files
