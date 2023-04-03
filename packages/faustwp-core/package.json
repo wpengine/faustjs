@@ -58,7 +58,7 @@
     "build-fonts": "mkdir -p dist/fonts && shx cp src/fonts/* dist/fonts",
     "build-styles": "sass src/styles/toolbar.scss dist/css/toolbar.css --embed-sources",
     "watch-styles": "sass src/styles/toolbar.scss dist/css/toolbar.css --embed-sources --watch",
-    "watch-js": "tsc -p . --watch"
+    "watch-js": "concurrently \"npm:build-js -- --watch\" \"npm:build-cjs -- --watch\""
   },
   "repository": {
     "type": "git",
