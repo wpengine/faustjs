@@ -92,10 +92,12 @@ jobs:
           name: bundle
           path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
 
-      - uses: actions/download-artifact@v3
+      - name: Download base branch bundle stats
+        uses: dawidd6/action-download-artifact@v2
         if: success() && github.event.number
         with:
-          name: bundle
+          workflow: nextjs-bundle-analysis.yml
+          branch: ${{ github.event.pull_request.base.ref }}
           path: ${{ matrix.next-dir }}/.next/analyze/base
 
       - name: Display structure of downloaded files
@@ -107,8 +109,8 @@ jobs:
         working-directory: ${{ matrix.next-dir }}
         run: |
           ls -laR .next/analyze/base
-          mkdir -p .next/analyze/base/bundle
-          mv .next/analyze/base/__bundle_analysis.json .next/analyze/base/bundle/__bundle_analysis.json
+          cat .next/analyze/__bundle_analysis.json
+          cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
