@@ -109,8 +109,6 @@ jobs:
         working-directory: ${{ matrix.next-dir }}
         run: |
           ls -laR .next/analyze/base
-          mkdir -p .next/analyze/base/bundle
-          mv .next/analyze/base/__bundle_analysis.json .next/analyze/base/bundle/__bundle_analysis.json
           cat .next/analyze/__bundle_analysis.json
           cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
