@@ -147,8 +147,7 @@ If the resolved block has values for those fields, it will return them, otherwis
 
 ## What about innerBlocks?
 
-In order to facilitate querying `innerBlocks` fields more efficiently you want to use `editorBlocks(flat: true)` instead of `editorBlocks`.
-By passing this argument, all the blocks available (both blocks and innerBlocks) will be returned all flattened in the same list.
+All the blocks available (both blocks and innerBlocks) will be returned flattened in the same list by default. If you want to query `innerBlocks` fields and return separate nodes with their own arrays, use `editorBlocks(flat: false)` instead of `editorBlocks`.
 
 For example, given the following HTML Content:
 
@@ -220,7 +219,7 @@ In each case we would have to copy the whole fragment list again and again. This
 This is how you request all blocks as a flat list:
 
 ```graphql
-editorBlocks(flat:true) {
+editorBlocks {
     __typename
     name
 	id: clientId

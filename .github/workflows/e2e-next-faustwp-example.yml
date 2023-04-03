@@ -7,7 +7,7 @@ on:
 
 jobs:
   e2e-test-next-getting-started-example:
-    name: (legacy) Next Getting Started Example on Node ${{ matrix.node }}
+    name: (faustwp) Next Getting Started Example on Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     env:
       PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
@@ -39,7 +39,7 @@ jobs:
         run: |
           npx create-next-app \
             -e https://github.com/${PR_REPO}/tree/${PR_BRANCH} \
-            --example-path examples/next/getting-started \
+            --example-path examples/next/faustwp-getting-started \
             --use-npm \
             e2e-app
       - name: install and build packages
@@ -54,10 +54,11 @@ jobs:
       # writing this they do not function as expected on GH actions
       - name: replace downloaded registry faust packages with local build
         run: |
-          rm -rf e2e-app/node_modules/@faustjs/core
-          rm -rf e2e-app/node_modules/@faustjs/next
-          cp -r packages/core e2e-app/node_modules/@faustjs/core
-          cp -r packages/next e2e-app/node_modules/@faustjs/next
+          rm -rf e2e-app/node_modules/@faustwp/cli
+          rm -rf e2e-app/node_modules/@faustwp/core
+          cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
+          cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
+          chmod +x e2e-app/node_modules/.bin/faust
       - name: copy env
         working-directory: e2e-app
         run: |

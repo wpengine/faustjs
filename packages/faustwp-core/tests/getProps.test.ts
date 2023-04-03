@@ -1,4 +1,11 @@
-import { getNextStaticProps } from '../src/getProps';
+import {
+  ApolloCache,
+  ApolloClient,
+  gql,
+  NormalizedCacheObject,
+} from '@apollo/client';
+import * as client from '../src/client';
+import { getNextServerSideProps, getNextStaticProps } from '../src/getProps';
 
 //@ts-ignore-next-line
 global.fetch = jest.fn(() =>
@@ -10,6 +17,10 @@ global.fetch = jest.fn(() =>
 beforeEach(() => {
   //@ts-ignore-next-line
   fetch.mockClear();
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 describe('getProps', () => {
@@ -47,6 +58,90 @@ describe('getProps', () => {
           __APOLLO_STATE__: {},
         },
         revalidate: 900,
+      });
+    });
+
+    test('getNextStaticProps() returns page data and variables as props', async () => {
+      const mockApolloClient = {
+        query: jest.fn().mockReturnValue({
+          data: { generalSettings: { title: 'My test site' } },
+        }),
+        cache: {
+          extract: jest.fn().mockReturnValue({ testing: true }),
+        },
+      } as any as ApolloClient<NormalizedCacheObject>;
+
+      const clientSpy = jest
+        .spyOn(client, 'getApolloClient')
+        .mockReturnValue(mockApolloClient);
+
+      const Page = {
+        query: gql`
+          {
+            generalSettings {
+              title
+            }
+          }
+        `,
+        variables: () => ({
+          testVar: true,
+        }),
+      };
+
+      expect(await getNextStaticProps({}, { Page })).toStrictEqual({
+        props: {
+          __APOLLO_STATE__: { testing: true },
+          data: { generalSettings: { title: 'My test site' } },
+          __PAGE_VARIABLES__: { testVar: true },
+        },
+        revalidate: 900,
+      });
+    });
+
+    test('getNextServerSideProps() returns page data and variables as props', async () => {
+      const mockApolloClient = {
+        query: jest.fn().mockReturnValue({
+          data: { generalSettings: { title: 'My test site' } },
+        }),
+        cache: {
+          extract: jest.fn().mockReturnValue({ testing: true }),
+        },
+      } as any as ApolloClient<NormalizedCacheObject>;
+
+      const clientSpy = jest
+        .spyOn(client, 'getApolloClient')
+        .mockReturnValue(mockApolloClient);
+
+      const Page = {
+        query: gql`
+          {
+            generalSettings {
+              title
+            }
+          }
+        `,
+        variables: () => ({
+          testVar: true,
+        }),
+      };
+
+      expect(
+        await getNextServerSideProps(
+          {
+            res: {
+              setHeader() {},
+              writeHead() {},
+              end() {},
+            },
+          } as any,
+          { Page },
+        ),
+      ).toStrictEqual({
+        props: {
+          __APOLLO_STATE__: { testing: true },
+          data: { generalSettings: { title: 'My test site' } },
+          __PAGE_VARIABLES__: { testVar: true },
+        },
       });
     });
   });
