@@ -6,5 +6,5 @@ import { getWpUrl } from './getWpUrl.js';
 export function getGraphqlEndpoint() {
   const wpUrl = getWpUrl();
 
-  return `${wpUrl}/graphql`;
+  return `${wpUrl}/index.php?graphql`;
 }

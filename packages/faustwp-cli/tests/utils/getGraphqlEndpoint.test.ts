@@ -15,14 +15,9 @@ describe('utils/getGraphqlEndpoint', () => {
     process.env = envBackup;
   });
 
-  it('provides the GraphQL endpoint (currently without a hook)', async () => {
+  it('provides the GraphQL endpoint', async () => {
     const wpUrlFromEnv = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-    expect(getGraphqlEndpoint()).toEqual(wpUrlFromEnv + '/graphql');
-  });
-
-  it('provides the GraphQL endpoint (currently without a hook)', async () => {
-    const wpUrlFromEnv = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-    expect(getGraphqlEndpoint()).toEqual(wpUrlFromEnv + '/graphql');
+    expect(getGraphqlEndpoint()).toEqual(wpUrlFromEnv + '/index.php?graphql');
   });
 
 });
