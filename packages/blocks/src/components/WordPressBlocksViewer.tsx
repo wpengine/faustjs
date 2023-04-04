@@ -23,6 +23,7 @@ export function BlockDataProvider(
 
 export interface WordpressBlocksViewerProps {
   blocks: Array<ContentBlock | null>;
+  FallbackBlock: React.FC<ContentBlock>;
 }
 
 export interface ContentBlock {
@@ -41,18 +42,23 @@ export interface ContentBlock {
  */
 export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
   const { blocks } = React.useContext(WordPressBlocksContext);
+
   if (!blocks) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { blocks: editorBlocks } = props;
+  const { blocks: editorBlocks, FallbackBlock } = props;
 
   if (!editorBlocks) {
     throw new Error('The "blocks" prop is required in <WordPressBlocksViewer>');
   }
 
   const renderedBlocks = editorBlocks.map((blockProps, idx) => {
-    const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
+    const BlockTemplate = resolveBlockTemplate(
+      blockProps,
+      blocks,
+      FallbackBlock,
+    );
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={blockProps} key={idx}>
