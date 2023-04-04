@@ -10,7 +10,7 @@ on:
   push:
     branches:
       - canary
-      - MERL-372-track-package-sizes # test
+      - MERL-372-track-package-sizes # REMOVE FROM PR
   workflow_dispatch:
 
 permissions:
@@ -61,6 +61,12 @@ jobs:
         run: |
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
+          echo "const withBundleAnalyzer = require('@next/bundle-analyzer')({enabled: true});" >> next.config.js
+          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js
+
+      - name: Add workflow dependencies to package.json
+        working-directory: ${{ matrix.next-dir }}
+        run: npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
 
       # To ensure PR changes are tested accurately, we replace the
       # faust node_modules downloaded from NPM with the faust packages
@@ -100,17 +106,11 @@ jobs:
           branch: ${{ github.event.pull_request.base.ref }}
           path: ${{ matrix.next-dir }}/.next/analyze/base
 
-      - name: Display structure of downloaded files
-        working-directory: ${{ matrix.next-dir }}
-        run: ls -Ra .next/
-
       - name: Compare with base branch bundle
         if: success() && github.event.number
         working-directory: ${{ matrix.next-dir }}
         run: |
           ls -laR .next/analyze/base
-          cat .next/analyze/__bundle_analysis.json
-          cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
