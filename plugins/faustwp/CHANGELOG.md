@@ -1,5 +1,17 @@
 # Faust
 
+## 0.8.4
+
+### Patch Changes
+
+- 43205e1: Bug Fix: "Post and Category URL rewrites" setting ignores protocol of configured front-end site URL
+
+## 0.8.3
+
+### Patch Changes
+
+- c4696ef: - Added new filter `faustwp_exclude_from_public_redirect`, allowing WordPress plugins and themes to exclude certain routes from being redirected when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
+
 ## 0.8.2
 
 ### Patch Changes

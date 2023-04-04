@@ -1,5 +1,38 @@
 # @faustwp/core
 
+## 0.2.8
+
+### Patch Changes
+
+- 67ae4fd: Return `data` in props from Next.js pages that use the `getNextStaticProps`/`getNextServerSideProps` Faust helper functions
+- 67ae4fd: Create `FaustPage<Data, Props>` TypeScript type for Next.js pages that use Faust helpers:
+
+  ```tsx
+  import { FaustPage } from '@faustwp/core';
+
+  type GetPageData = {
+    generalSettings: {
+      title: string;
+    };
+  };
+
+  type PageProps = {
+    myProp: string;
+  };
+
+  const Page: FaustPage<GetPageData, PageProps> = (props) => {
+    const { myProp, data } = props;
+    return <></>;
+  };
+  ```
+
+## 0.2.7
+
+### Patch Changes
+
+- 1c8f79b: Type Definition fixes+improvements for Blocks and Core
+- d775f47: Rectifies return type of getWordPressProps and getNextStaticProps for TypeScript
+
 ## 0.2.6
 
 ### Patch Changes
