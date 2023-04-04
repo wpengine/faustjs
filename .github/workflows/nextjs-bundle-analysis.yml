@@ -62,7 +62,7 @@ jobs:
           cp .env.local.sample .env.local
           npm install @next/bundle-analyzer
           echo "const withBundleAnalyzer = require('@next/bundle-analyzer')({enabled: true});" >> next.config.js
-          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js"
+          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js
 
       - name: Add workflow dependencies to package.json
         working-directory: ${{ matrix.next-dir }}
