@@ -111,6 +111,8 @@ jobs:
         working-directory: ${{ matrix.next-dir }}
         run: |
           ls -laR .next/analyze/base
+          cat .next/analyze/__bundle_analysis.json
+          cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
