@@ -22,7 +22,7 @@ import {
   getApolloAuthClient,
   addApolloState,
 } from './client.js';
-import { FaustPlugin } from './wpHooks/index.js';
+import { FaustPlugin, hooks } from './wpHooks/index.js';
 import { FaustHooks } from './wpHooks/overloads.js';
 import {
   getSitemapProps,
@@ -80,4 +80,5 @@ export {
   ToolbarSubmenuWrapper,
   FaustTemplate,
   FaustPage,
+  hooks,
 };
