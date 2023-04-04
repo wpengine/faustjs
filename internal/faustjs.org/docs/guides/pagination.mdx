@@ -94,7 +94,7 @@ This is an example of a query with the fields for pagination being `hasNextPage`
 
 Now that you have your query with paginantion setup, Apollo provides a `fetchMore` helper function along with the `useQuery` hook to assist with fetching paginated queries.  This enables you to execute the same query with different values for varibles like the current cursor and the batch size number of posts you want to grab.
 
-Go to the components directory of your Faust project and create a file called `LoadMorePost.js` and insert this content:
+Go to the components directory of your Faust project and create a file.  For this guide, let's call it `LoadMorePost.js`, and insert this content:
 
 ```import { useQuery, gql } from "@apollo/client";
 import Link from "next/link";
@@ -193,7 +193,7 @@ The `onSubmit` handler in this guide example calls the `fetchMore` function in A
   
 Lastly, do not forget to run `npm run generate` since the schema was updated with WPGraphQL and Pagination.  You should now be able to query for cursor based paginated content in your Faust.js site.
 
-Once this is all done, to make sure it is working, go to the `pages` directory in the root of the Faust project, create a file called `pagination.js` and insert this content:
+Once this is all done, to make sure it is working, go to the `pages` directory in the root of the Faust project, and create a file.  Let's call it `pagination.js`.  Insert this content:
 
 ```import Head from "next/head";
 
