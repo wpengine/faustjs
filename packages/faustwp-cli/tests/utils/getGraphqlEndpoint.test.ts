@@ -15,7 +15,7 @@ describe('utils/getGraphqlEndpoint', () => {
     process.env = envBackup;
   });
 
-  it('provides the GraphQL endpoint', async () => {
+  it('provides the direct GraphQL endpoint', async () => {
     const wpUrlFromEnv = process.env.NEXT_PUBLIC_WORDPRESS_URL;
     expect(getGraphqlEndpoint()).toEqual(wpUrlFromEnv + '/index.php?graphql');
   });
