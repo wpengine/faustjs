@@ -10,13 +10,13 @@ import { ContentBlock } from './components/WordPressBlocksViewer.js';
  *
  * @param contentBlock An instance of a block as retrieved from the API
  * @param blocks A list of available WordPressBlock components to match with the provided contentBlock
- * @param FallbackBlock A React component that, when specified, will be used when no blocks were resolved.
+ * @param fallbackBlock A React component that, when specified, will be used when no blocks were resolved.
  * @returns An instance of the WordPressBlock component that matches the the provided contentBlock or a DefaultBlock if no such match exists.
  */
 export default function resolveBlockTemplate(
   contentBlock: ContentBlock | null,
   blocks: WordPressBlock[],
-  FallbackBlock: WordPressBlock | undefined,
+  fallbackBlock: WordPressBlock | undefined,
 ): WordPressBlock {
   // eslint-disable-next-line no-underscore-dangle
   const namesToCheck = [contentBlock?.name, contentBlock?.__typename].filter(
@@ -48,8 +48,8 @@ export default function resolveBlockTemplate(
     return block;
   }
 
-  if (FallbackBlock) {
-    return FallbackBlock;
+  if (fallbackBlock) {
+    return fallbackBlock;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call

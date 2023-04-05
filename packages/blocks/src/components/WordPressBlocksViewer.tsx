@@ -38,10 +38,10 @@ export interface WordpressBlocksViewerProps {
    *   )
    * }
    *
-   * <WordPressBlocksViewer FallbackBlock={MyFallbackComponent} />
+   * <WordPressBlocksViewer fallbackBlock={MyFallbackComponent} />
    * ```
    */
-  FallbackBlock: React.FC<ContentBlock>;
+  fallbackBlock: React.FC<ContentBlock>;
 }
 
 export interface ContentBlock {
@@ -65,7 +65,7 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { blocks: editorBlocks, FallbackBlock } = props;
+  const { blocks: editorBlocks, fallbackBlock } = props;
 
   if (!editorBlocks) {
     throw new Error('The "blocks" prop is required in <WordPressBlocksViewer>');
@@ -75,7 +75,7 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
     const BlockTemplate = resolveBlockTemplate(
       blockProps,
       blocks,
-      FallbackBlock,
+      fallbackBlock,
     );
     return (
       // eslint-disable-next-line react/no-array-index-key
