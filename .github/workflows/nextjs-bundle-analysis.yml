@@ -33,16 +33,17 @@ jobs:
         with:
           node-version: 18
 
-      - name: Remove root package.json to prevent NPM confusion
-        run: |
-          rm package.json
-          rm package-lock.json
-
-      - name: Install dependencies
+      - name: Install monorepo dependencies
         uses: bahmutov/npm-install@v1
-        with:
-          working-directory: ${{ matrix.next-dir }}
-          useLockFile: false
+
+      - name: Build monorepo
+        run: npm run build
+
+      # - name: Install dependencies
+      #   uses: bahmutov/npm-install@v1
+      #   with:
+      #     working-directory: ${{ matrix.next-dir }}
+      #     useLockFile: false
 
       - name: Restore next build
         uses: actions/cache@v3
@@ -55,6 +56,11 @@ jobs:
           path: ${{ matrix.next-dir }}/.next/cache
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
+
+      - name: Remove root package.json to prevent NPM confusion
+        run: |
+          rm package.json
+          rm package-lock.json
 
       - name: Setup Environment
         working-directory: ${{ matrix.next-dir }}
