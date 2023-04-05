@@ -7,6 +7,7 @@ name: 'Next.js Bundle Analysis'
 
 on:
   pull_request:
+  push:
     branches:
       - canary
       - next-bundle-tracking # REMOVE FROM PR
