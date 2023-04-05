@@ -22,7 +22,25 @@ export function BlockDataProvider(
 }
 
 export interface WordpressBlocksViewerProps {
+  /**
+   * Block data obtained from WPGraphQL Content Blocks
+   */
   blocks: Array<ContentBlock | null>;
+  /**
+   * An optional React component that will be used if
+   * no React components are resolved for a given block.
+   *
+   * @example
+   * ```jsx
+   * const MyFallbackComponent = ({renderedHtml}) => {
+   *   return (
+   *     <span dangerouslySetInnerHTML={{__html: renderedHtml}} />
+   *   )
+   * }
+   *
+   * <WordPressBlocksViewer FallbackBlock={MyFallbackComponent} />
+   * ```
+   */
   FallbackBlock: React.FC<ContentBlock>;
 }
 

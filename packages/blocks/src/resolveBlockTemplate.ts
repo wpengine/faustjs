@@ -10,6 +10,7 @@ import { ContentBlock } from './components/WordPressBlocksViewer.js';
  *
  * @param contentBlock An instance of a block as retrieved from the API
  * @param blocks A list of available WordPressBlock components to match with the provided contentBlock
+ * @param FallbackBlock A React component that, when specified, will be used when no blocks were resolved.
  * @returns An instance of the WordPressBlock component that matches the the provided contentBlock or a DefaultBlock if no such match exists.
  */
 export default function resolveBlockTemplate(
