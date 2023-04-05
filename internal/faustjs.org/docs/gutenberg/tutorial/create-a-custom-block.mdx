@@ -17,11 +17,11 @@ Before beginning, take stock of your activated plugins in your WordPress instanc
 
 In this tutorial, we will assume that you do not have a preexisting block in mind to use with your Decoupled site. If you have a block you want to emulate from the WordPress core blocks library, head to our [tutorial](/docs/gutenberg/tutorial/create-a-block-from-wordpress-core.mdx) to learn how to do exactly that. Likewise, if you need to recreate a block used by a third party plugin, we have a [tutorial](/docs/gutenberg/tutorial/create-a-block-from-third-party.mdx) tailored for that process, too.
 
-This tutorial assumes that you begin your block creation from nothing at all, which will therefore require a slightly different set of steps. 
+This tutorial assumes that you begin your block creation from nothing at all, which will therefore require a slightly different set of steps.
 
-:::tip 
+:::tip
 
-Check out all the components that are available to you through the [@wordpress/components](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-components/) library as you think about what you want your custom block to do and look like. 
+Check out all the components that are available to you through the [@wordpress/components](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-components/) library as you think about what you want your custom block to do and look like.
 
 :::
 
@@ -118,7 +118,18 @@ export default function MyCoolBlock(props) {
   console.log(props.attributes);
   return <div>MyCoolBlock</div>
 }
+
+MyCoolBlock.displayName = 'MyCoolBlock';
+// This also works
+// MyCoolBlock.config.name = 'MyCoolBlock'
 ```
+
+:::note
+
+We added a `displayName` property here to make sure that the `__typename` of the block matches this value.
+For production builds, it is required to use either a `displayName="NameOfBlock"` or a `config.name="NameOfBlock"` properties for the block to resolve successfully.
+
+:::
 
 This component prints the block attributes via the props passed as a parameter. This will help us understand what is happening a little later on.
 
@@ -133,7 +144,7 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`, which gives the proper context (i.e., which blocks have been defined as apart of your Faust app) to the `WordPressBlocksViewer` component. Read more about the WordPressBlocksProvider [here](http://localhost:3000/docs/reference/WordPressBlocksProvider). 
+By exporting the block in the `index.js`, we make it available in the `WordPressBlocksProvider`, which gives the proper context (i.e., which blocks have been defined as apart of your Faust app) to the `WordPressBlocksViewer` component. Read more about the WordPressBlocksProvider [here](http://localhost:3000/docs/reference/WordPressBlocksProvider).
 
 ### 4.3 Create the block fragment
 
@@ -242,6 +253,7 @@ export default function MyCoolBlock(props) {
     </pre>
   );
 }
+MyCoolBlock.displayName = 'MyCoolBlock';
 ```
 
 Now that you have the styles ported over, you can navigate into the Headless site's page and check that the block matches the styling you wish. Make sure to tweak the block in the editor and verify that the changes you want are being reflected here, too.

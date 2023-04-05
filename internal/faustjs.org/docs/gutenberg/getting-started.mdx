@@ -53,7 +53,7 @@ const blocks = flatListToHierarchical(editorBlocks);
 return <WordPressBlocksViewer blocks={blocks}/>
 ```
 
-Example `editorBlocks` GraphQL query fragment. 
+Example `editorBlocks` GraphQL query fragment.
 
 ```graphql
 ${components.CoreParagraph.fragments.entry}
@@ -100,15 +100,30 @@ CoreParagraph.fragments = {
   `,
   key: `CoreParagraphFragment`,
 };
+
+CoreParagraph.displayName = 'CoreParagraph';
+// This also works
+// CoreParagraph.config.name = 'CoreParagraph'
 ```
 
-`import` and `export default` the `CoreParagraph` Block in `wp-blocks/index.js`:
+:::note
+
+We added a `displayName` property here to make sure that the `__typename` of the block matches this value.
+For production builds, it is required to use either a `displayName="NameOfBlock"` or a `config.name="NameOfBlock"` properties for the block to resolve successfully.
+
+:::
+
+
+Export the block in `wp-blocks/index.js`:
+
 ```js
 import CoreParagraph from './CoreParagraph';
 export default {
   CoreParagraph,
 };
 ```
+
+
 
 ## Further Learning
 

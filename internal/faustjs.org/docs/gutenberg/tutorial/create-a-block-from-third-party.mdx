@@ -117,9 +117,20 @@ export default function UbCallToActionBlock(props) {
   console.log(props.attributes);
   return <div>UbCallToActionBlock</div>
 }
+
+UbCallToActionBlock.displayName = 'UbCallToActionBlock';
+// This also works
+// UbCallToActionBlock.config.name = 'UbCallToActionBlock'
 ```
 
 This component prints the block attributes via the props passed as a parameter.
+
+:::note
+
+We added a `displayName` property here to make sure that the `__typename` of the block matches this value.
+For production builds, it is required to use either a `displayName="NameOfBlock"` or a `config.name="NameOfBlock"` properties for the block to resolve successfully.
+
+:::
 
 ### 6.2 Export the block in the `index.js`
 
@@ -130,7 +141,7 @@ export default {
 }
 ```
 
-By exporting the block in the `index.js` we make it available in the WordPressBlocksProvider.
+By exporting the block in the `index.js` we make it available in the `WordPressBlocksProvider`.
 You can also use a different name as long as it matches either the Block `name` or the `__typename` fields.
 
 This also works:
@@ -362,6 +373,8 @@ export default function UbCallToActionBlock(props) {
     </div>
   );
 }
+
+UbCallToActionBlock.displayName = 'UbCallToActionBlock';
 ```
 
 Don't forget to include the global scss for the block so that the right styles are applied.
