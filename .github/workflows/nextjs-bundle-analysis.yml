@@ -74,6 +74,13 @@ jobs:
         run: |
           npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
 
+      - name: Debugging
+        run: |
+          ls -laR ./node_modules/@faustwp
+          ls -la ./node_modules/.bin
+
+          chmod +x ./node_modules/.bin/faust
+
       - name: Build Next.js example app
         working-directory: ${{ matrix.next-dir }}
         run: npm run build
