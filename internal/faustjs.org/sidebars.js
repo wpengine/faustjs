@@ -176,6 +176,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'How to Query Blocks',
+          id: 'gutenberg/how-to-query-blocks',
+        },
+        {
+          type: 'doc',
           label: 'Using wp-graphql-content-blocks plugin',
           id: 'gutenberg/wp-graphql-content-blocks',
         },
