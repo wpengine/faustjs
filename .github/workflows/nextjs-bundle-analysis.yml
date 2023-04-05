@@ -67,7 +67,10 @@ jobs:
 
       - name: Add workflow dependencies to package.json
         working-directory: ${{ matrix.next-dir }}
-        run: npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
+        run: |
+          npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
+          cat package.json
+          cat next.config.js
 
       # To ensure PR changes are tested accurately, we replace the
       # faust node_modules downloaded from NPM with the faust packages
@@ -111,7 +114,9 @@ jobs:
         if: success() && github.event.number
         working-directory: ${{ matrix.next-dir }}
         run: |
-          ls -laR .next/analyze/base
+          ls -laR .next/analyze
+          cat .next/analyze/__bundle_analysis.json
+          cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
