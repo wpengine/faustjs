@@ -113,7 +113,7 @@ jobs:
         if: success() && github.event.number
         working-directory: ${{ matrix.next-dir }}
         run: |
-          ls -laR .next/analyze/base
+          ls -laR .next/analyze
           cat .next/analyze/__bundle_analysis.json
           cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
