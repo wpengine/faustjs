@@ -11,6 +11,7 @@ on:
     branches:
       - canary
       - next-bundle-tracking # REMOVE FROM PR
+      - MERL-372-track-package-sizes
   workflow_dispatch:
 
 permissions:
@@ -37,30 +38,13 @@ jobs:
         run: npm install -g @next/bundle-analyzer
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build packages
         run: npm run build
 
       - name: Create "faust" cli bin
-        run: npm install
-
-      # - name: Restore next build
-      #   uses: actions/cache@v3
-      #   id: restore-build-cache
-      #   env:
-      #     cache-name: cache-next-build
-      #   with:
-      #     # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
-      #     # ex: if your app builds to `dist`, replace `.next` with `dist`
-      #     path: ${{ matrix.next-dir }}/.next/cache
-      #     # change this if you prefer a more strict cache
-      #     key: ${{ runner.os }}-build-${{ env.cache-name }}
-
-      # - name: Remove root package.json to prevent NPM confusion
-      #   run: |
-      #     rm package.json
-      #     rm package-lock.json
+        run: npm ci
 
       - name: Make example project .env.local file
         working-directory: ${{ matrix.next-dir }}
@@ -77,6 +61,18 @@ jobs:
         working-directory: ${{ matrix.next-dir }}
         run: |
           npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
+        
+      - name: Restore next build
+        uses: actions/cache@v3
+        id: restore-build-cache
+        env:
+          cache-name: cache-next-build
+        with:
+          # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
+          # ex: if your app builds to `dist`, replace `.next` with `dist`
+          path: ${{ matrix.next-dir }}/.next/cache
+          # change this if you prefer a more strict cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - name: Build Next.js example app
         working-directory: ${{ matrix.next-dir }}
