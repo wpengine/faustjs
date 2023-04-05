@@ -38,13 +38,13 @@ jobs:
         run: npm install -g @next/bundle-analyzer
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build packages
         run: npm run build
 
       - name: Create "faust" cli bin
-        run: npm install
+        run: npm ci
 
       - name: Make example project .env.local file
         working-directory: ${{ matrix.next-dir }}
