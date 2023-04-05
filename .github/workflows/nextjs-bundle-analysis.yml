@@ -1,0 +1,153 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+#
+# Based on https://github.com/hashicorp/nextjs-bundle-analysis/blob/main/template.yml
+
+name: 'Next.js Bundle Analysis'
+
+on:
+  pull_request:
+    branches:
+      - canary
+      - next-bundle-tracking # REMOVE FROM PR
+  workflow_dispatch:
+
+permissions:
+  contents: read # for checkout repository
+  actions: read # for fetching base branch bundle stats
+  pull-requests: write # for comments
+
+jobs:
+  analyze:
+    strategy:
+      matrix:
+        next-dir: ['examples/next/faustwp-getting-started']
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+        
+      - name: Install bundle analyzer dependency globally
+        run: npm install -g @next/bundle-analyzer
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build packages
+        run: npm run build
+
+      # - name: Restore next build
+      #   uses: actions/cache@v3
+      #   id: restore-build-cache
+      #   env:
+      #     cache-name: cache-next-build
+      #   with:
+      #     # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
+      #     # ex: if your app builds to `dist`, replace `.next` with `dist`
+      #     path: ${{ matrix.next-dir }}/.next/cache
+      #     # change this if you prefer a more strict cache
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}
+
+      # - name: Remove root package.json to prevent NPM confusion
+      #   run: |
+      #     rm package.json
+      #     rm package-lock.json
+
+      - name: Make example project .env.local file
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          cp .env.local.sample .env.local
+      
+      - name: Add bundle analyzer to next.config.js
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          echo "const withBundleAnalyzer = require('@next/bundle-analyzer')({enabled: true});" >> next.config.js
+          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js
+
+      - name: Add bundle analyzer config to package.json
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
+
+      # To ensure PR changes are tested accurately, we replace the
+      # faust node_modules downloaded from NPM with the faust packages
+      # built in the previous step
+      # TODO: It would be nice to use symlink or npm link here, but upon
+      # writing this they do not function as expected on GH actions
+      - name: replace downloaded registry faust packages with local build
+        run: |
+          rm -rf ${{ matrix.next-dir }}/node_modules/@faustwp/core
+          rm -rf ${{ matrix.next-dir }}/node_modules/@faustwp/cli
+          rm -rf ${{ matrix.next-dir }}/node_modules/@faustwp/blocks
+          cp -r packages/faustwp-core ${{ matrix.next-dir }}/node_modules/@faustwp/core
+          cp -r packages/faustwp-cli ${{ matrix.next-dir }}/node_modules/@faustwp/cli
+          cp -r packages/faustwp-cli ${{ matrix.next-dir }}/node_modules/@faustwp/blocks
+
+      - name: Build Next.js example app
+        working-directory: ${{ matrix.next-dir }}
+        run: npm run build
+
+      # Here's the first place where next-bundle-analysis' own script is used
+      # This step pulls the raw bundle stats for the current bundle
+      - name: Create bundle analysis report for this PR
+        working-directory: ${{ matrix.next-dir }}
+        run: npx -p nextjs-bundle-analysis report
+
+      - name: Upload bundle analysis report for this PR
+        uses: actions/upload-artifact@v3
+        with:
+          name: bundle
+          path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
+
+      - name: Download bundle analysis report for base branch
+        uses: dawidd6/action-download-artifact@v2
+        if: success() && github.event.number
+        with:
+          workflow: nextjs-bundle-analysis.yml
+          branch: ${{ github.event.pull_request.base.ref }}
+          path: ${{ matrix.next-dir }}/.next/analyze/base
+
+      - name: Compare analysis reports from base branch and PR branch
+        if: success() && github.event.number
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          npx -p nextjs-bundle-analysis compare
+
+      - name: Get Comment Body
+        id: get-comment-body
+        if: success() && github.event.number
+        working-directory: ${{ matrix.next-dir }}
+        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        if: success() && github.event.number
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: '<!-- __NEXTJS_BUNDLE -->'
+
+      - name: Create Comment
+        uses: peter-evans/create-or-update-comment@v2
+        if: success() && github.event.number && steps.fc.outputs.comment-id == 0
+        with:
+          issue-number: ${{ github.event.number }}
+          body: ${{ steps.get-comment-body.outputs.body }}
+
+      - name: Update Comment
+        uses: peter-evans/create-or-update-comment@v2
+        if: success() && github.event.number && steps.fc.outputs.comment-id != 0
+        with:
+          issue-number: ${{ github.event.number }}
+          body: ${{ steps.get-comment-body.outputs.body }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          edit-mode: replace
