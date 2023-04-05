@@ -10,8 +10,6 @@ on:
   push:
     branches:
       - canary
-      - next-bundle-tracking # REMOVE FROM PR
-      - MERL-372-track-package-sizes
   workflow_dispatch:
 
 permissions:
