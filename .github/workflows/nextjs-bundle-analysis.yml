@@ -74,20 +74,6 @@ jobs:
         run: |
           npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
 
-      # To ensure PR changes are tested accurately, we replace the
-      # faust node_modules downloaded from NPM with the faust packages
-      # built in the previous step
-      # TODO: It would be nice to use symlink or npm link here, but upon
-      # writing this they do not function as expected on GH actions
-      - name: replace downloaded registry faust packages with local build
-        run: |
-          rm -rf ${{ matrix.next-dir }}/node_modules/@faustwp/core
-          rm -rf ${{ matrix.next-dir }}/node_modules/@faustwp/cli
-          rm -rf ${{ matrix.next-dir }}/node_modules/@faustwp/blocks
-          cp -r packages/faustwp-core ${{ matrix.next-dir }}/node_modules/@faustwp/core
-          cp -r packages/faustwp-cli ${{ matrix.next-dir }}/node_modules/@faustwp/cli
-          cp -r packages/faustwp-cli ${{ matrix.next-dir }}/node_modules/@faustwp/blocks
-
       - name: Build Next.js example app
         working-directory: ${{ matrix.next-dir }}
         run: npm run build
