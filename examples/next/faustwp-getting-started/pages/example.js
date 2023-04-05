@@ -10,7 +10,7 @@ import {
   NavigationMenu,
   SEO,
 } from '../components';
-import { getNextStaticProps } from '@faustwp/core';
+import { getNextStaticProps, longTestingString } from '@faustwp/core';
 
 export default function Page(props) {
   const { data } = useQuery(Page.query, {
@@ -18,7 +18,10 @@ export default function Page(props) {
   });
   const title = props.title;
 
-  const { title: siteTitle, description: siteDescription } = data?.generalSettings;
+  console.log(longTestingString);
+
+  const { title: siteTitle, description: siteDescription } =
+    data?.generalSettings;
   const primaryMenu = data?.headerMenuItems?.nodes ?? [];
   const footerMenu = data?.footerMenuItems?.nodes ?? [];
 
@@ -70,10 +73,13 @@ Page.query = gql`
 Page.variables = () => {
   return {
     headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION
+    footerLocation: MENUS.FOOTER_LOCATION,
   };
 };
 
 export function getStaticProps(ctx) {
-  return getNextStaticProps(ctx, {Page, props: {title: 'File Page Example'}});
+  return getNextStaticProps(ctx, {
+    Page,
+    props: { title: 'File Page Example' },
+  });
 }
