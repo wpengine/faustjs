@@ -10,7 +10,8 @@ on:
   push:
     branches:
       - canary
-      - MERL-372-track-package-sizes # REMOVE FROM PR
+      - next-bundle-tracking # REMOVE FROM PR
+      - MERL-372-track-package-sizes
   workflow_dispatch:
 
 permissions:
@@ -32,19 +33,35 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+        
+      - name: Install bundle analyzer dependency globally
+        run: npm install -g @next/bundle-analyzer
 
-      - name: Install monorepo dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build monorepo
+      - name: Build packages
         run: npm run build
 
-      # - name: Install dependencies
-      #   uses: bahmutov/npm-install@v1
-      #   with:
-      #     working-directory: ${{ matrix.next-dir }}
-      #     useLockFile: false
+      - name: Create "faust" cli bin
+        run: npm ci
 
+      - name: Make example project .env.local file
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          cp .env.local.sample .env.local
+      
+      - name: Add bundle analyzer to next.config.js
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          echo "const withBundleAnalyzer = require('@next/bundle-analyzer')({enabled: true});" >> next.config.js
+          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js
+
+      - name: Add bundle analyzer config to package.json
+        working-directory: ${{ matrix.next-dir }}
+        run: |
+          npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
+        
       - name: Restore next build
         uses: actions/cache@v3
         id: restore-build-cache
@@ -57,57 +74,23 @@ jobs:
           # change this if you prefer a more strict cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}
 
-      - name: Remove root package.json to prevent NPM confusion
-        run: |
-          rm package.json
-          rm package-lock.json
-
-      - name: Setup Environment
-        working-directory: ${{ matrix.next-dir }}
-        run: |
-          cp .env.local.sample .env.local
-          npm install @next/bundle-analyzer
-          echo "const withBundleAnalyzer = require('@next/bundle-analyzer')({enabled: true});" >> next.config.js
-          echo "module.exports = withBundleAnalyzer(module.exports);" >> next.config.js
-
-      - name: Add workflow dependencies to package.json
-        working-directory: ${{ matrix.next-dir }}
-        run: |
-          npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
-          cat package.json
-          cat next.config.js
-
-      # To ensure PR changes are tested accurately, we replace the
-      # faust node_modules downloaded from NPM with the faust packages
-      # built in the previous step
-      # TODO: It would be nice to use symlink or npm link here, but upon
-      # writing this they do not function as expected on GH actions
-      - name: replace downloaded registry faust packages with local build
-        run: |
-          rm -rf node_modules/@faustwp/core
-          rm -rf node_modules/@faustwp/cli
-          rm -rf node_modules/@faustwp/blocks
-          cp -r packages/faustwp-core ${{ matrix.next-dir }}/node_modules/@faustwp/core
-          cp -r packages/faustwp-cli ${{ matrix.next-dir }}/node_modules/@faustwp/cli
-          cp -r packages/faustwp-cli ${{ matrix.next-dir }}/node_modules/@faustwp/blocks
-
-      - name: Build Next.js app
+      - name: Build Next.js example app
         working-directory: ${{ matrix.next-dir }}
         run: npm run build
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
-      - name: Analyze bundle
+      - name: Create bundle analysis report for this PR
         working-directory: ${{ matrix.next-dir }}
         run: npx -p nextjs-bundle-analysis report
 
-      - name: Upload bundle
+      - name: Upload bundle analysis report for this PR
         uses: actions/upload-artifact@v3
         with:
           name: bundle
           path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
 
-      - name: Download base branch bundle stats
+      - name: Download bundle analysis report for base branch
         uses: dawidd6/action-download-artifact@v2
         if: success() && github.event.number
         with:
@@ -115,13 +98,10 @@ jobs:
           branch: ${{ github.event.pull_request.base.ref }}
           path: ${{ matrix.next-dir }}/.next/analyze/base
 
-      - name: Compare with base branch bundle
+      - name: Compare analysis reports from base branch and PR branch
         if: success() && github.event.number
         working-directory: ${{ matrix.next-dir }}
         run: |
-          ls -laR .next/analyze
-          cat .next/analyze/__bundle_analysis.json
-          cat .next/analyze/base/bundle/__bundle_analysis.json
           npx -p nextjs-bundle-analysis compare
 
       - name: Get Comment Body
