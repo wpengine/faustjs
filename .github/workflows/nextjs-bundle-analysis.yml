@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-        
+
       - name: Install bundle analyzer dependency globally
         run: npm install -g @next/bundle-analyzer
 
@@ -44,11 +44,11 @@ jobs:
       - name: Create "faust" cli bin
         run: npm ci
 
-      - name: Make example project .env.local file
+      - name: Create example project .env.local file
         working-directory: ${{ matrix.next-dir }}
         run: |
           cp .env.local.sample .env.local
-      
+
       - name: Add bundle analyzer to next.config.js
         working-directory: ${{ matrix.next-dir }}
         run: |
@@ -59,7 +59,7 @@ jobs:
         working-directory: ${{ matrix.next-dir }}
         run: |
           npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
-        
+
       - name: Restore next build
         uses: actions/cache@v3
         id: restore-build-cache
