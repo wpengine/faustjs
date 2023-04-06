@@ -22,7 +22,26 @@ export function BlockDataProvider(
 }
 
 export interface WordpressBlocksViewerProps {
+  /**
+   * Block data obtained from WPGraphQL Content Blocks
+   */
   blocks: Array<ContentBlock | null>;
+  /**
+   * An optional React component that will be used if
+   * no React components are resolved for a given block.
+   *
+   * @example
+   * ```jsx
+   * const MyFallbackComponent = ({renderedHtml}) => {
+   *   return (
+   *     <span dangerouslySetInnerHTML={{__html: renderedHtml}} />
+   *   )
+   * }
+   *
+   * <WordPressBlocksViewer fallbackBlock={MyFallbackComponent} />
+   * ```
+   */
+  fallbackBlock: React.FC<ContentBlock>;
 }
 
 export interface ContentBlock {
@@ -41,18 +60,23 @@ export interface ContentBlock {
  */
 export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
   const { blocks } = React.useContext(WordPressBlocksContext);
+
   if (!blocks) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { blocks: editorBlocks } = props;
+  const { blocks: editorBlocks, fallbackBlock } = props;
 
   if (!editorBlocks) {
     throw new Error('The "blocks" prop is required in <WordPressBlocksViewer>');
   }
 
   const renderedBlocks = editorBlocks.map((blockProps, idx) => {
-    const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
+    const BlockTemplate = resolveBlockTemplate(
+      blockProps,
+      blocks,
+      fallbackBlock,
+    );
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={blockProps} key={idx}>
