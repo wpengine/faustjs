@@ -18,6 +18,7 @@ Within the `wp-graphql-content-blocks-main` plugin folder use composer to instal
 ```bash
 composer install
 ```
+
 Activate the plugin within WordPress plugins page:
 
 <img
@@ -41,14 +42,13 @@ This represents a list of available blocks for that content type:
 If you search in GraphiQL's documentation explorer tab for the `editorBlocks` type you will be able to see the available block fields.
 The most important ones are:
 
-* `renderedHTML`: It's the HTML of the block as rendered by the [render_block](https://developer.wordpress.org/reference/functions/render_block/) function.
-* `name`: The actual name of the block taken from it's `block.json` spec.
-* `__typename`: The type of block transformed from the `name` field in camel-case notation.
-* `apiVersion`: The apiVersion of the block taken from its `block.json` spec.
-* `innerBlocks`: The innerblock list of that block.
-* `isDynamic`: Whether the block is dynamic or not, taken from its `block.json` spec.
-* `clientId`, `parentClientId`: Unique identifiers for the block and the parent of the block. We will explain their usage later.
-
+- `renderedHTML`: It's the HTML of the block as rendered by the [render_block](https://developer.wordpress.org/reference/functions/render_block/) function.
+- `name`: The actual name of the block taken from it's `block.json` spec.
+- `__typename`: The type of block transformed from the `name` field in camel-case notation.
+- `apiVersion`: The apiVersion of the block taken from its `block.json` spec.
+- `innerBlocks`: The innerblock list of that block.
+- `isDynamic`: Whether the block is dynamic or not, taken from its `block.json` spec.
+- `clientId`, `parentClientId`: Unique identifiers for the block and the parent of the block. We will explain their usage later.
 
 ## How does the plugin work?
 
@@ -60,18 +60,18 @@ As an example, we are given the following `block.json` definition of a block:
 
 ```json title="block.json"
 {
-    "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 2,
-    "name": "my-plugin/notice",
-    "icon": "star",
-    "version": "1.0.3",
-    "attributes": {
-        "message": {
-            "type": "string",
-            "source": "html",
-            "selector": ".message"
-        }
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "my-plugin/notice",
+  "icon": "star",
+  "version": "1.0.3",
+  "attributes": {
+    "message": {
+      "type": "string",
+      "source": "html",
+      "selector": ".message"
     }
+  }
 }
 ```
 
@@ -98,11 +98,11 @@ Since the `block.json` message attribute uses the `.message` selector to source 
 
 Currently the plugin handles the following attribute types taken from the [reference list](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/):
 
-* boolean
-* number
-* integer
-* string
-* object
+- boolean
+- number
+- integer
+- string
+- object
 
 :::note
 If you see a specific attribute missing that you need for your project, please open a [new Feature Request](https://github.com/wpengine/wp-graphql-content-blocks/issues/new) so that the Faust team can make it available for you.
@@ -120,7 +120,7 @@ For example, to use `CoreParagraph` attributes you need to use the following que
       editorBlocks {
         __typename
         name
-        ...on CoreParagraph {
+        ... on CoreParagraph {
           attributes {
             content
             className
@@ -136,12 +136,12 @@ If the resolved block has values for those fields, it will return them, otherwis
 
 ```json
 {
-	"__typename" : "CoreParagraph",
-	"name": "core/paragraph",
-	"attributes": {
-    	"content": "Hello world",
-    	"className": null
-	}
+  "__typename": "CoreParagraph",
+  "name": "core/paragraph",
+  "attributes": {
+    "content": "Hello world",
+    "className": null
+  }
 }
 ```
 
@@ -153,38 +153,41 @@ For example, given the following HTML Content:
 
 ```html
 <columns>
-	<column>
-		<p>Example paragraph in Column<p>
-	</column>
-<column>
+  <column>
+    <p>Example paragraph in Column</p>
+    <p></p
+  ></column>
+
+  <column></column
+></columns>
 ```
 
 It will return the following blocks:
 
 ```json
 [
-	{
-	  "__typename": "CoreColumns",
-		"name": "core/columns",
-		"id": "63dbec9abcf9d",
-		"parentId": null
-	},
-	{
-	  "__typename": "CoreColumn",
-	  "name": "core/column",
-	  "id": "63dbec9abcfa6",
-      "parentId": "63dbec9abcf9d"
-	},
-	{
-	  "__typename": "CoreParagraph",
-	  "name": "core/paragraph",
-	  "id": "63dbec9abcfa9",
-      "parentId": "63dbec9abcfa6",
-	  "attributes": {
-	    "content": "Example paragraph in Column 1",
-	    "className": null
-	  }
-	}
+  {
+    "__typename": "CoreColumns",
+    "name": "core/columns",
+    "id": "63dbec9abcf9d",
+    "parentId": null
+  },
+  {
+    "__typename": "CoreColumn",
+    "name": "core/column",
+    "id": "63dbec9abcfa6",
+    "parentId": "63dbec9abcf9d"
+  },
+  {
+    "__typename": "CoreParagraph",
+    "name": "core/paragraph",
+    "id": "63dbec9abcfa9",
+    "parentId": "63dbec9abcfa6",
+    "attributes": {
+      "content": "Example paragraph in Column 1",
+      "className": null
+    }
+  }
 ]
 ```
 
@@ -252,7 +255,7 @@ This way you can reconstruct the block tree as before and pass it on to the `Wor
 
 ```js
 import { WordPressBlocksViewer } from '@faustwp/blocks';
-import flatListToHierarchical from '../utilities/flatListToHierarchical';
+import { flatListToHierarchical } from '@faustwp/core';
 ...
 const { editorBlocks } = props.data.post;
 const blocks = flatListToHierarchical(editorBlocks);
@@ -260,6 +263,7 @@ const blocks = flatListToHierarchical(editorBlocks);
 <WordPressBlocksViewer blocks={blocks} />
 ...
 ```
+
 :::note
 Currently the `clientId` field is only unique per request and is not persisted anywhere. If you perform another request each block will be assigned a new `nodeId` each time.
 :::
