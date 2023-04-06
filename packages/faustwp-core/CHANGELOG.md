@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 0.2.9
+
+### Patch Changes
+
+- eddf4e2: Expose `hooks` in `@faustwp/core` so other packages can register their own filters and actions
+
 ## 0.2.8
 
 ### Patch Changes
