@@ -138,7 +138,18 @@ export default function CoreCode(props) {
   console.log(props.attributes);
   return <div>CoreCode</div>;
 }
+
+CoreCode.displayName = 'CoreCode';
+// This also works
+// CoreCode.config.name = 'CoreCode'
 ```
+
+:::note
+
+We added a `displayName` property here to make sure that the `__typename` of the block matches this value.
+For production builds, it is required to use either a `displayName="NameOfBlock"` or a `config.name="NameOfBlock"` properties for the block to resolve and render properly.
+
+:::
 
 This component logs the block attributes to the console via the `attributes` prop passed through the `props` parameter.
 
@@ -473,6 +484,7 @@ CoreCode.fragments = {
     }
   `,
 };
+CoreCode.displayName = 'CoreCode';
 ```
 
 <img
