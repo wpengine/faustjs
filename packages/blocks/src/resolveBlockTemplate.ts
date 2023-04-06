@@ -38,7 +38,7 @@ export default function resolveBlockTemplate(
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  block = hooks.applyFilters('resolveBlockTemplate', block, {
+  block = hooks.applyFilters('faustBlocksResolveBlockTemplate', block, {
     contentBlock,
     blocks,
     namesToCheck,
@@ -54,7 +54,7 @@ export default function resolveBlockTemplate(
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return hooks.applyFilters(
-    'contentBlocksFallbackBlock',
+    'faustBlocksFallbackBlock',
     DefaultBlock,
     {},
   ) as WordPressBlock;
