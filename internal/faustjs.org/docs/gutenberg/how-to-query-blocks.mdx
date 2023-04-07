@@ -98,7 +98,7 @@ filter which controls which blocks are allowed in the block editor.
 
 If you set a filter that returns a different list of blocks per post type the plugin will register a more specific set of interfaces for each post type.
 
-```php
+```php title="PHP"
 add_filter( 'allowed_block_types_all', 'set_allowed_block_types', 10, 2 );
 /**
  * Set allowed Gutenberg block types
