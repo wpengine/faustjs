@@ -101,7 +101,7 @@ If you set a filter that returns a different list of blocks per post type the pl
 ```php
 add_filter( 'allowed_block_types_all', 'set_allowed_block_types', 10, 2 );
 /**
- * Set allowed gutenburg block types
+ * Set allowed Gutenberg block types
  */
 function set_allowed_block_types( $allowed_blocks, $editor_context ) {
 	// return blocks types for type `Post`
