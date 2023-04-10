@@ -46,7 +46,7 @@ describe('useLogin hook', () => {
       wrapper,
     });
 
-    fetchMock.post(`/graphql`, {
+    fetchMock.post(`/index.php?graphql`, {
       status: 200,
       body: JSON.stringify({
         data: {
@@ -82,7 +82,7 @@ describe('useLogin hook', () => {
       wrapper,
     });
 
-    fetchMock.post(`/graphql`, {
+    fetchMock.post(`/index.php?graphql`, {
       status: 200,
       body: JSON.stringify({
         data: {
@@ -116,7 +116,7 @@ describe('useLogin hook', () => {
       wrapper,
     });
 
-    fetchMock.post(`/graphql`, {
+    fetchMock.post(`/index.php?graphql`, {
       status: 200,
       body: JSON.stringify({
         data: {
