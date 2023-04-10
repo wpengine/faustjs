@@ -12,6 +12,7 @@
     "@types/configstore": "^6.0.0",
     "@types/cookie": "0.5.1",
     "@types/dotenv-flow": "^3.2.0",
+    "@types/node": "^18.15.11",
     "@types/prompt": "1.1.2",
     "@types/uuid": "8.3.4",
     "rimraf": "^3.0.2",
