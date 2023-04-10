@@ -11,7 +11,7 @@ export async function verifyGraphQLEndpoint() {
 
   const response: Response = await fetch(graphqlEndpoint);
 
-  if (200 === response.status) {
+  if (response.status === 200) {
     infoLog('Discovered WPGraphQL endpoint!');
     return true;
   }
