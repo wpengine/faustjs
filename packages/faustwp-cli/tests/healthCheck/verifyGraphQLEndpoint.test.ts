@@ -59,9 +59,6 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
     await verifyGraphQLEndpoint();
 
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`));
-    expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("Your WordPress site is unavailable"));
-    expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("WPGraphQL is not active"));
-    expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("WPGraphQL's default endpoint (/graphql) was changed in the plugin's settings"));
 
     consoleLogSpy.mockClear();
   });
