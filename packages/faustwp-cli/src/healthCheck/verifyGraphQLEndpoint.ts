@@ -34,16 +34,8 @@ export async function verifyGraphQLEndpoint() {
 
     return false;
   } catch (err) {
-    errorLog(`
-
-    Unable to find a GraphQL endpoint at ${graphqlEndpoint}
-
-    Potential reasons you are experiencing this error:
-
-      ● WPGraphQL is not active
-      ● Your WordPress site is unavailable
-    `);
-
+    errorLog(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`);
+    errorLog('WPGraphQL may not be active, or your WordPress site is unavailable.');
     return false;
   }
 }

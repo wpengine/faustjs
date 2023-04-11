@@ -51,6 +51,7 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
     const graphqlEndpoint = getGraphqlEndpoint();
 
+    // Request could still be a successful 200 if a regular WordPress page exists.
     fetchMock.post(graphqlEndpoint, {
       status: 200,
       body: '<html><head></head><body>Regular HTML Page</body></html>',
@@ -59,6 +60,7 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
     await verifyGraphQLEndpoint();
 
     expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`));
+    expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining("WPGraphQL may not be active, or your WordPress site is unavailable."));
 
     consoleLogSpy.mockClear();
   });
