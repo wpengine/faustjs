@@ -9,13 +9,41 @@ import { getGraphqlEndpoint } from '../utils/index.js';
 export async function verifyGraphQLEndpoint() {
   const graphqlEndpoint = getGraphqlEndpoint();
 
-  const response: Response = await fetch(graphqlEndpoint);
+  try {
+    // Perform GraphQL request.
+    const response: Response = await fetch(graphqlEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query: '{ __typename }' }),
+    });
 
-  if (response.status === 200) {
-    infoLog('Discovered WPGraphQL endpoint!');
-    return true;
+    // Expect a valid GraphQL response.
+    const json: {
+      data: {
+        __typename: 'string';
+      };
+    } = await response.json();
+
+    // eslint-disable-next-line no-underscore-dangle
+    if (json.data.__typename) {
+      infoLog('Discovered WPGraphQL endpoint!');
+      return true;
+    }
+
+    return false;
+  } catch (err) {
+    errorLog(`
+
+    Unable to find a GraphQL endpoint at ${graphqlEndpoint}
+
+    Potential reasons you are experiencing this error:
+
+      ● WPGraphQL is not active
+      ● Your WordPress site is unavailable
+    `);
+
+    return false;
   }
-
-  errorLog(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`);
-  return process.exit(0);
 }
