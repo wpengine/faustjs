@@ -38,6 +38,7 @@ export async function verifyGraphQLEndpoint() {
     errorLog(
       'WPGraphQL may not be active, or your WordPress site is unavailable.',
     );
-    return false;
+
+    process.exit(0);
   }
 }
