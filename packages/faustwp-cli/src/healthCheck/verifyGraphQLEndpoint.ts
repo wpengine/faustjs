@@ -35,7 +35,9 @@ export async function verifyGraphQLEndpoint() {
     return false;
   } catch (err) {
     errorLog(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`);
-    errorLog('WPGraphQL may not be active, or your WordPress site is unavailable.');
+    errorLog(
+      'WPGraphQL may not be active, or your WordPress site is unavailable.',
+    );
     return false;
   }
 }
