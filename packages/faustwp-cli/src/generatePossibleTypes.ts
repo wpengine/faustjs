@@ -1,7 +1,8 @@
 import 'isomorphic-fetch';
 import fs from 'fs';
 
-import { infoLog, errorLog } from './log.js';
+import { infoLog, errorLog } from './stdout/index.js';
+import { getGraphqlEndpoint } from './utils/index.js';
 
 type PossibleTypes = {
   [key: string]: any;
@@ -17,10 +18,9 @@ type Subtype = {
 };
 
 export async function generatePossibleTypes(): Promise<void> {
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  const GRAPHQL_ENDPOINT = `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`;
+  const graphqlEndpoint = getGraphqlEndpoint();
 
-  const response: Response = await fetch(GRAPHQL_ENDPOINT, {
+  const response: Response = await fetch(graphqlEndpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

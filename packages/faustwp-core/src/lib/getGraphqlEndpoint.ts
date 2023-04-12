@@ -3,7 +3,7 @@ import { getWpUrl } from './getWpUrl.js';
 
 export function getGraphqlEndpoint(): string {
   const wpUrl = getWpUrl();
-  let graphqlEndpoint = `${wpUrl}/graphql`;
+  let graphqlEndpoint = `${wpUrl}/index.php?graphql`;
 
   graphqlEndpoint = hooks.applyFilters('graphqlEndpoint', graphqlEndpoint, {
     wpUrl,

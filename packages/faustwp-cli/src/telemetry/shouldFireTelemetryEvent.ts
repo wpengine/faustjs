@@ -1,5 +1,5 @@
-import { getWpSecret } from './getWpSecret.js';
-import { userConfig } from './userConfig.js';
+import { userConfig } from '../userConfig.js';
+import { getWpSecret } from '../utils/index.js';
 
 export function shouldFireTelemetryEvent(): boolean {
   const hasAnonymousId = userConfig.get('telemetry.anonymousId');
