@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 
-import { infoLog, errorLog, debugLog } from '../stdout/index.js';
+import { errorLog, debugLog } from '../stdout/index.js';
 import { getGraphqlEndpoint } from '../utils/index.js';
 
 /**
@@ -28,7 +28,7 @@ export async function verifyGraphQLEndpoint() {
 
     // eslint-disable-next-line no-underscore-dangle
     if (!json.data.__typename) {
-      throw new Error(`GraphQL request didn't include "json.data.__typename"`)
+      throw new Error(`GraphQL request didn't include "json.data.__typename"`);
     }
 
     debugLog(`Discoverd GraphQL endpoint at ${graphqlEndpoint}`);
