@@ -141,7 +141,7 @@ Here is an example video demostration of this feature in action:
     loop
   />
   <p id="auth-flow-clip-desc">
-    In this clip, the user demostrates how to use the allowed_block_types_all filter to assign specific blocks per post type. It highlights type of the editorBlock field before and after using that filter.
+    In this clip, the user demostrates how to use the `allowed_block_types_all` filter to assign specific blocks per post type. It highlights type of the editorBlock field before and after using that filter.
   </p>
 </div>
 
@@ -178,25 +178,25 @@ query GetAllPostsWhichSupportBlockEditor {
 ```
 
 Notice that the query is exactly the same as before. However, now the type of the `editorBlocks` is different.
-Instead of `[EditorBlock]` it is `[PostBlock]`. You can see the resolved type when you search for the type in the documentation section:
+Instead of `[EditorBlock]` it is `[PostEditorBlock]`. You can see the resolved type when you search for the type in the documentation section:
 
-<img src="/docs/img/gutenberg-query-post-block-type.png" alt="PostBlock interface type" />
+<img src="/docs/img/gutenberg-query-post-block-type.png" alt="PostEditorBlock interface type" />
 
-Expanding the `PostBlock` interface docs, shows that the type only implements the two blocks we declared in the `allowed_block_types_all` filter:
+Expanding the `PostEditorBlock` interface docs, shows that the type only implements the two blocks we declared in the `allowed_block_types_all` filter:
 
-<img src="/docs/img/gutenberg-post-block-implementations.png" alt="PostBlock interface type implementations" />
+<img src="/docs/img/gutenberg-post-block-implementations.png" alt="PostEditorBlock interface type implementations" />
 
 ## PageBlock
 
 * A type that implements the `EditorBlock` interface and represents a single block that is available for the `Page` type.
 
-Same as above, the `PageBlock` implements the list of for five allowed block types:
+Same as above, the `PageEditorBlock` implements the list of for five allowed block types:
 
-<img src="/docs/img/gutenberg-page-block-implementations.png" alt="PageBlock interface type implementations" />
+<img src="/docs/img/gutenberg-page-block-implementations.png" alt="PageEditorBlock interface type implementations" />
 
 ## NodeWithPostBlocks
 
-* An interface type which represents a list of `PostBlock` types.
+* An interface type which represents a list of `PostEditorBlock` types.
 
 Here is an example query:
 
@@ -213,9 +213,9 @@ fragment Gallery on CoreGallery {
   	}
 }
 
-query GetAllPostsWhichSupportPostBlocks {
+query GetAllPostsWhichSupportPostEditorBlocks {
     nodeByUri(uri: "/posts/hello-world") {
-    ... on NodeWithPostBlocks {
+    ... on NodeWithPostEditorBlocks {
       editorBlocks {
         __typename
         clientId
@@ -232,9 +232,9 @@ query GetAllPostsWhichSupportPostBlocks {
 }
 ```
 
-## NodeWithPageBlocks
+## NodeWithPageEditorBlocks
 
-* An interface type which represents a list of `PageBlock` types.
+* An interface type which represents a list of `PageEditorBlock` types.
 
 Here is an example query:
 
@@ -247,13 +247,13 @@ fragment Paragraph on CoreParagraph {
 
 fragment Gallery on CoreGallery {
   	attributes {
-   		content
+   		images
   	}
 }
 
-query GetAllPostsWhichSupportPageBlocks {
+query GetAllPostsWhichSupportPageEditorBlocks {
 	nodeByUri(uri: "/about") {
-    ... on NodeWithPageBlocks {
+    ... on NodeWithPageEditorBlocks {
       editorBlocks {
         __typename
         clientId
