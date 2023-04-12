@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 
-import { infoLog, errorLog } from '../stdout/index.js';
+import { infoLog, errorLog, debugLog } from '../stdout/index.js';
 import { getGraphqlEndpoint } from '../utils/index.js';
 
 /**
@@ -27,12 +27,13 @@ export async function verifyGraphQLEndpoint() {
     } = await response.json();
 
     // eslint-disable-next-line no-underscore-dangle
-    if (json.data.__typename) {
-      infoLog('Discovered WPGraphQL endpoint!');
-      return true;
+    if (!json.data.__typename) {
+      throw new Error(`GraphQL request didn't include "json.data.__typename"`)
     }
 
-    return process.exit(0);
+    debugLog(`Discoverd GraphQL endpoint at ${graphqlEndpoint}`);
+
+    return true;
   } catch (err) {
     errorLog(`Unable to find a GraphQL endpoint at ${graphqlEndpoint}`);
     errorLog(
