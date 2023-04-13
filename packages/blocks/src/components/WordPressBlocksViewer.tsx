@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import resolveBlockTemplate from '../resolveBlockTemplate.js';
 import { WordPressBlocksContext } from './WordPressBlocksProvider.js';
@@ -24,14 +22,33 @@ export function BlockDataProvider(
 }
 
 export interface WordpressBlocksViewerProps {
-  contentBlocks: ContentBlock[];
+  /**
+   * Block data obtained from WPGraphQL Content Blocks
+   */
+  blocks: Array<ContentBlock | null>;
+  /**
+   * An optional React component that will be used if
+   * no React components are resolved for a given block.
+   *
+   * @example
+   * ```jsx
+   * const MyFallbackComponent = ({renderedHtml}) => {
+   *   return (
+   *     <span dangerouslySetInnerHTML={{__html: renderedHtml}} />
+   *   )
+   * }
+   *
+   * <WordPressBlocksViewer fallbackBlock={MyFallbackComponent} />
+   * ```
+   */
+  fallbackBlock: React.FC<ContentBlock>;
 }
 
 export interface ContentBlock {
   __typename?: string;
   apiVersion?: number;
   cssClassNames?: string;
-  innerBlocks?: ContentBlock[];
+  innerBlocks?: Array<ContentBlock | null>;
   isDynamic?: boolean;
   name?: string;
   renderedHtml?: string;
@@ -43,20 +60,33 @@ export interface ContentBlock {
  */
 export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
   const { blocks } = React.useContext(WordPressBlocksContext);
+
   if (!blocks) {
     throw new Error('Blocks are required. Please add them to your config.');
   }
 
-  const { contentBlocks } = props;
-  const renderedBlocks = contentBlocks.map((blockProps, idx) => {
-    const BlockTemplate = resolveBlockTemplate(blockProps, blocks);
+  const { blocks: editorBlocks, fallbackBlock } = props;
+
+  if (!editorBlocks) {
+    throw new Error('The "blocks" prop is required in <WordPressBlocksViewer>');
+  }
+
+  const renderedBlocks = editorBlocks.map((blockProps, idx) => {
+    const BlockTemplate = resolveBlockTemplate(
+      blockProps,
+      blocks,
+      fallbackBlock,
+    );
     return (
       // eslint-disable-next-line react/no-array-index-key
       <BlockDataProvider data={blockProps} key={idx}>
-        <>{React.createElement<ContentBlock>(BlockTemplate, { ...blockProps })}</>
+        <>
+          {React.createElement<ContentBlock>(BlockTemplate, { ...blockProps })}
+        </>
       </BlockDataProvider>
     );
   });
 
-  return renderedBlocks;
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{renderedBlocks}</>;
 }

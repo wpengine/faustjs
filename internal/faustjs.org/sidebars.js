@@ -55,6 +55,11 @@ module.exports = {
           label: 'Portfolio Migration',
           id: 'migrationPath/portfolio-migration',
         },
+        {
+          type: 'doc',
+          label: 'Custom Post Types',
+          id: 'guides/custom-post-types',
+        },
       ],
     },
     {
@@ -103,6 +108,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'getWordPressProps',
+          id: 'reference/getWordPressProps',
+        },
+        {
+          type: 'doc',
           label: 'useAuth',
           id: 'reference/useAuth',
         },
@@ -126,6 +136,11 @@ module.exports = {
           type: 'doc',
           label: 'Settings Reference',
           id: 'faustwp/settings',
+        },
+        {
+          type: 'doc',
+          label: 'Filters',
+          id: 'faustwp/filters',
         },
       ],
     },
@@ -161,6 +176,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'How to Query Blocks',
+          id: 'gutenberg/how-to-query-blocks',
+        },
+        {
+          type: 'doc',
           label: 'Using wp-graphql-content-blocks plugin',
           id: 'gutenberg/wp-graphql-content-blocks',
         },
@@ -168,6 +188,11 @@ module.exports = {
           type: 'doc',
           label: 'Plugin filters',
           id: 'gutenberg/filters',
+        },
+        {
+          type: 'doc',
+          label: 'Migration from WPGraphQL Gutenberg',
+          id: 'gutenberg/migration-from-wp-graphql-gutenberg',
         },
         {
           type: 'category',
@@ -180,8 +205,13 @@ module.exports = {
             },
             {
               type: 'doc',
-              label: 'Creating a Block from a third party plugin',
+              label: 'Creating a Block from a Third Party Plugin',
               id: 'gutenberg/tutorial/create-a-block-from-third-party',
+            },
+            {
+              type: 'doc',
+              label: 'Creating a Custom Block',
+              id: 'gutenberg/tutorial/create-a-custom-block',
             },
           ],
         },
@@ -196,6 +226,11 @@ module.exports = {
       type: 'doc',
       label: 'Deploy Your Faust.js App',
       id: 'going-to-production/deployment',
+    },
+    {
+      type: 'doc',
+      label: 'Debugging',
+      id: 'debugging',
     },
     {
       type: 'doc',

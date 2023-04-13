@@ -1,5 +1,6 @@
 import {
   GetStaticPropsContext,
+  GetStaticPropsResult,
   GetServerSidePropsResult,
   GetServerSidePropsContext,
   Redirect,
@@ -15,16 +16,28 @@ export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
     query?: DocumentNode;
     variables?: (
       context: GetStaticPropsContext | GetServerSidePropsContext,
-    ) => { [key: string]: any };
+    ) => {
+      [key: string]: any;
+    };
   };
   props?: Props;
-  notFound?: boolean;
+  notFound?: true;
   redirect?: Redirect;
 }
 
 export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
   extends GetNextServerSidePropsConfig<Props> {
   revalidate?: number | boolean;
+}
+
+export interface FaustPage<Data, Props = void>
+  extends React.FC<
+    { data?: Data; __PAGE_VARIABLES__?: { [key: string]: any } } & Props
+  > {
+  query?: DocumentNode;
+  variables?: (context: GetStaticPropsContext | GetServerSidePropsContext) => {
+    [key: string]: any;
+  };
 }
 
 /**
@@ -36,7 +49,7 @@ export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
 export async function getNextStaticProps<Props>(
   context: GetStaticPropsContext,
   cfg: GetNextStaticPropsConfig<Props>,
-) {
+): Promise<GetStaticPropsResult<Props>> {
   const { notFound, redirect, Page, revalidate, props } = cfg;
   const apolloClient = getApolloClient();
   if (isBoolean(notFound) && notFound === true) {
@@ -51,16 +64,29 @@ export async function getNextStaticProps<Props>(
     };
   }
 
+  const pageVariables = Page?.variables ? Page?.variables(context) : undefined;
+
+  let pageQueryRes;
   if (Page.query) {
-    await apolloClient.query({
+    pageQueryRes = await apolloClient.query({
       query: Page.query,
-      variables: Page?.variables ? Page?.variables(context) : undefined,
+      variables: pageVariables,
     });
   }
 
-  const pageProps = addApolloState(apolloClient, { props: { ...props } });
+  let returnedProps = { ...props };
+
+  if (pageQueryRes?.data) {
+    returnedProps = { ...returnedProps, data: pageQueryRes.data };
+  }
+
+  if (pageVariables) {
+    returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
+  }
+
+  const pageProps = addApolloState(apolloClient, { props: returnedProps });
   pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
-  return pageProps;
+  return pageProps as GetStaticPropsResult<Props>;
 }
 
 /**
@@ -91,15 +117,27 @@ export async function getNextServerSideProps<Props>(
     };
   }
 
+  const pageVariables = Page?.variables ? Page?.variables(context) : undefined;
+
+  let pageQueryRes;
   if (Page.query) {
-    await apolloClient.query({
+    pageQueryRes = await apolloClient.query({
       query: Page.query,
-      variables: Page?.variables ? Page?.variables(context) : undefined,
+      variables: pageVariables,
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  let returnedProps = { ...props };
+
+  if (pageQueryRes?.data) {
+    returnedProps = { ...returnedProps, data: pageQueryRes.data };
+  }
+
+  if (pageVariables) {
+    returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
+  }
+
   return addApolloState(apolloClient, {
-    props: { ...props },
+    props: returnedProps,
   }) as GetServerSidePropsResult<Props>;
 }

@@ -1,10 +1,54 @@
 ---
 slug: /guides/custom-toolbar
-title: Customizing the Toolbar
+title: How to Customize the Toolbar
 description: How to customize the Toolbar for your Faust.js site
 ---
 
 This guide covers how to customize your site's Toolbar utilizing the `toolbarNodes` filter.
+
+## Add the Toolbar to your project
+
+:::info
+
+The Toolbar is currently an experimental feature that was introduced in `@faustwp/core@0.2.5`.
+
+:::
+
+### Add styles
+
+The (Faust) Toolbar shares mostly the the same HTML as the WordPress core Toolbar. This enables the use of the same styles that exist in WordPress core, and have been converiently provided for you to import within `@faustwp/core`.
+
+```js title="pages/_app.js"
+import '@faustwp/core/dist/css/toolbar.css';
+```
+
+### Enable toolbar
+
+Add `experimentalToolbar: true` to your project's `faust.config.js`.
+
+```js title="faust.config.js"
+import { setConfig } from '@faustwp/core';
+import templates from './wp-templates';
+import possibleTypes from './possibleTypes.json';
+
+export default setConfig({
+  experimentalToolbar: true, // Enable experimental toolbar
+  templates,
+  possibleTypes,
+});
+```
+
+### Login to your site
+
+The Toolbar was designed to only load for authenticated user.
+
+:::tip
+
+A WordPress user will be automatically authenticated with your site when previewing a post. This approach can be used as a quick way view the Toolbar for development purposes.
+
+:::
+
+See [Authentication](https://faustjs.org/docs/auth) for more details about implementing auth within Faust.
 
 ## Create the plugin
 
@@ -18,19 +62,17 @@ See [Creating a Plugin](/plugin-system/creating-a-plugin) for additional informa
 
 Add the following code to `plugins/CustomPlugin.tsx`.
 
-```JavaScript
+```js title="plugins/CustomPlugin.tsx"
 import React from 'react';
 import {
   FaustHooks,
   FaustPlugin,
-} from '@faustwp/core';
-import {
   FaustToolbarNodes,
   FaustToolbarContext,
   ToolbarItem,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
-} from '@faustwp/core/toolbar';
+} from '@faustwp/core';
 
 /**
  * Example Custom Toolbar Plugin.
@@ -41,22 +83,26 @@ export class CustomToolbar implements FaustPlugin {
      * This example demonstrates how to filter on the core Toolbar nodes
      * in order to add your own custom nodes!
      */
-    hooks.addFilter('toolbarNodes', 'faust', (toolbarNodes: FaustToolbarNodes, context: FaustToolbarContext) => {
-      const customToolbarNodes: FaustToolbarNodes = [
-        {
-          id: 'custom-node',
-          location: 'primary',
-          component: <CustomNode />,
-        },
-        {
-          id: 'custom-node-with-submenu',
-          location: 'primary',
-          component: <CustomNodeWithSubmenu />
-        },
-      ];
+    hooks.addFilter(
+      'toolbarNodes',
+      'faust',
+      (toolbarNodes: FaustToolbarNodes, context: FaustToolbarContext) => {
+        const customToolbarNodes: FaustToolbarNodes = [
+          {
+            id: 'custom-node',
+            location: 'primary',
+            component: <CustomNode />,
+          },
+          {
+            id: 'custom-node-with-submenu',
+            location: 'primary',
+            component: <CustomNodeWithSubmenu />,
+          },
+        ];
 
-      return [...toolbarNodes, ...customToolbarNodes];
-    });
+        return [...toolbarNodes, ...customToolbarNodes];
+      },
+    );
   }
 }
 
@@ -65,7 +111,7 @@ export class CustomToolbar implements FaustPlugin {
  */
 export function CustomNode() {
   return (
-    <ToolbarItem href='https://wpengine.com' rel='nofollow'>
+    <ToolbarItem href="https://wpengine.com" rel="nofollow">
       Custom Node
     </ToolbarItem>
   );
@@ -77,19 +123,25 @@ export function CustomNode() {
 export function CustomNodeWithSubmenu() {
   return (
     <>
-      <ToolbarItem href='https://wpengine.com' rel='nofollow'>
+      <ToolbarItem href="https://wpengine.com" rel="nofollow">
         Custom Node w/ Submenu
       </ToolbarItem>
       <ToolbarSubmenuWrapper>
         <ToolbarSubmenu>
           <li>
-            <ToolbarItem href='https://wpengine.com' rel='nofollow'>Link</ToolbarItem>
+            <ToolbarItem href="https://wpengine.com" rel="nofollow">
+              Link
+            </ToolbarItem>
           </li>
           <li>
-            <ToolbarItem href='https://wpengine.com' rel='nofollow'>Link</ToolbarItem>
+            <ToolbarItem href="https://wpengine.com" rel="nofollow">
+              Link
+            </ToolbarItem>
           </li>
           <li>
-            <ToolbarItem href='https://wpengine.com' rel='nofollow'>Link</ToolbarItem>
+            <ToolbarItem href="https://wpengine.com" rel="nofollow">
+              Link
+            </ToolbarItem>
           </li>
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>
@@ -102,16 +154,18 @@ export function CustomNodeWithSubmenu() {
 
 Import and register your new plugin in `faust.config.js`.
 
-```JavaScript
+```js title="faust.config.js"
 import { setConfig } from '@faustwp/core';
 import templates from './wp-templates';
 import possibleTypes from './possibleTypes.json';
-import { CustomToolbar } from './plugins/CustomToolbar.tsx';
+import { CustomToolbar } from './plugins/CustomToolbar.js';
 
 export default setConfig({
   templates,
-  experimentalToolbar: true, // Enable experimental toolbar
-  experimentalPlugins: [new CustomToolbar()],  // Register plugin
+  experimentalToolbar: true,
+  experimentalPlugins: [new CustomToolbar()], // Register plugin
   possibleTypes,
 });
 ```
+
+You should now be able to see your new Custom Nodes.

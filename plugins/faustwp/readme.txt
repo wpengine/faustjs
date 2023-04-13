@@ -2,8 +2,8 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
-Tested up to: 6.1
-Stable tag: 0.8.2
+Tested up to: 6.2
+Stable tag: 0.8.4
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,23 +54,22 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 0.8.4 =
+
+### Patch Changes
+
+- 43205e1: Bug Fix: "Post and Category URL rewrites" setting ignores protocol of configured front-end site URL
+
+= 0.8.3 =
+
+### Patch Changes
+
+- c4696ef: - Added new filter `faustwp_exclude_from_public_redirect`, allowing WordPress plugins and themes to exclude certain routes from being redirected when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
+
 = 0.8.2 =
 
 ### Patch Changes
 
 - 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
-
-= 0.8.1 =
-
-### Patch Changes
-
-- c016c9f: Update plugin title in changelog
-
-= 0.8.0 =
-
-### Minor Changes
-
-- b59d6c0: Renamed plugin from `FaustWP` to `Faust`.
-- b59d6c0: Updated settings menu text from _Headless_ to _Faust_.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)

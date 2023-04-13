@@ -179,13 +179,13 @@ add_filter( 'sanitize_option_faustwp_settings', __NAMESPACE__ . '\\sanitize_faus
  * @return array Sanitized settings.
  */
 function sanitize_faustwp_settings( $settings, $option ) {
-	$errors = null;
-
+	$errors    = null;
+	$protocols = array( 'http', 'https' );
 	foreach ( $settings as $name => $value ) {
 		switch ( $name ) {
 			case 'frontend_uri':
 				if ( '' === $value || preg_match( '#http(s?)://(.+)#i', $value ) ) {
-					$settings[ $name ] = esc_url_raw( $value );
+					$settings[ $name ] = esc_url_raw( $value, $protocols );
 				} else {
 					$errors[ $name ]   = __( 'The Front-end site URL you entered did not appear to be a valid URL. Please enter a valid URL.', 'faustwp' );
 					$settings[ $name ] = faustwp_get_setting( $name );

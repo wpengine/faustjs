@@ -40,6 +40,20 @@ function deny_public_access() {
 		return;
 	}
 
+	/**
+	 * Filter 'faustwp_exclude_from_public_redirect'.
+	 *
+	 * Used to exclude certain routes from being redirected
+	 * when enable public route redirects is active.
+	 *
+	 * @param array $excluded_routes The array of routes to exclude from redirect.
+	 */
+	$excluded_routes = apply_filters( 'faustwp_exclude_from_public_redirect', array() );
+
+	if ( in_array( basename( add_query_arg( null, null ) ), $excluded_routes, true ) ) {
+		return;
+	}
+
 	$frontend_uri = trailingslashit( $frontend_uri );
 
 	// Get the request uri with query params.
@@ -47,8 +61,9 @@ function deny_public_access() {
 
 	$response_code = 302;
 	$redirect_url  = str_replace( trailingslashit( get_home_url() ), $frontend_uri, $request_uri );
+	$protocols     = array( 'http', 'https' );
 
 	header( 'X-Redirect-By: WP Engine Headless plugin' ); // For support teams. See https://developer.yoast.com/blog/x-redirect-by-header/.
-	header( 'Location: ' . esc_url_raw( $redirect_url ), true, $response_code );
+	header( 'Location: ' . esc_url_raw( $redirect_url, $protocols ), true, $response_code );
 	exit;
 }

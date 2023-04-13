@@ -3,8 +3,12 @@ import {
   WordPressTemplate,
   FaustTemplateProps,
 } from './components/WordPressTemplate.js';
-import { getWordPressProps } from './getWordPressProps.js';
-import { getNextStaticProps, getNextServerSideProps } from './getProps.js';
+import { getWordPressProps, FaustTemplate } from './getWordPressProps.js';
+import {
+  getNextStaticProps,
+  getNextServerSideProps,
+  FaustPage,
+} from './getProps.js';
 import { getConfig, setConfig, FaustConfig } from './config/index.js';
 import { ensureAuthorization } from './auth/index.js';
 import { authorizeHandler, logoutHandler, apiRouter } from './server/index.js';
@@ -18,7 +22,7 @@ import {
   getApolloAuthClient,
   addApolloState,
 } from './client.js';
-import { FaustPlugin } from './wpHooks/index.js';
+import { FaustPlugin, hooks } from './wpHooks/index.js';
 import { FaustHooks } from './wpHooks/overloads.js';
 import {
   getSitemapProps,
@@ -28,7 +32,19 @@ import { useAuth } from './hooks/useAuth.js';
 import { useLogin } from './hooks/useLogin.js';
 import { useLogout } from './hooks/useLogout.js';
 
+import {
+  FaustToolbarNodes,
+  FaustToolbarContext,
+  ToolbarNode,
+  ToolbarItem,
+  ToolbarNodeSkeleton,
+  ToolbarSubmenu,
+  ToolbarSubmenuWrapper,
+} from './components/Toolbar/index.js';
+import { flatListToHierarchical } from './utils/flatListToHierarchical.js';
+
 export {
+  flatListToHierarchical,
   FaustProvider,
   WordPressTemplate,
   FaustTemplateProps,
@@ -57,4 +73,14 @@ export {
   useAuth,
   useLogin,
   useLogout,
+  FaustToolbarNodes,
+  FaustToolbarContext,
+  ToolbarNode,
+  ToolbarItem,
+  ToolbarNodeSkeleton,
+  ToolbarSubmenu,
+  ToolbarSubmenuWrapper,
+  FaustTemplate,
+  FaustPage,
+  hooks,
 };
