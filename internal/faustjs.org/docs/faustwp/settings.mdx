@@ -15,14 +15,15 @@ The following options are available to customize based on your requirements:
 
 You can change the base path of the Front-end site URL by including it in your `Front-end site URL` value.
 For example, if your front-end site was hosted at `http://example.com/blog`, you would change the `Front-end site URL` value to `http://example.com/blog`.
-You also need add the base path, `/blog`, to your `next.config.js` for authenticating post previews to continue working.
+You also need to do two additional things to get the base path working. First, add an environment variable called `NEXT_PUBLIC_BASE_PATH` in yoru `.env` file and set it to `/blog`.
+Then reference your env value in your `next.config.js` for authenticating post previews to continue working.
 
 ```js title="next.config.js" {15}
 const { withFaust } = require('faustwp-core')
 
 module.exports = withFaust({
   ...
-  basePath: '/blog',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   ...
 })
 ```

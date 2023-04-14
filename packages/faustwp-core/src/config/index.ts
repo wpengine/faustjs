@@ -1,4 +1,3 @@
-import getNextConfig from 'next/config.js';
 import { PossibleTypesMap } from '@apollo/client';
 import defaults from 'lodash/defaults.js';
 import extend from 'lodash/extend.js';
@@ -33,7 +32,7 @@ export function setConfig(_config: FaustConfig) {
 
 export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
-    basePath: getNextConfig()?.basePath,
+    basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     apiBasePath: '/api/faust',
     loginPagePath: '/login',
     experimentalToolbar: false,
