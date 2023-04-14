@@ -9,10 +9,9 @@ import { hooks, FaustPlugin } from '../wpHooks/index.js';
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
   experimentalToolbar?: boolean;
-  loginPagePath: string;
+  loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
-  apiBasePath: string;
   basePath: string;
 }
 
@@ -33,7 +32,6 @@ export function setConfig(_config: FaustConfig) {
 export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-    apiBasePath: '/api/faust',
     loginPagePath: '/login',
     experimentalToolbar: false,
   });
@@ -50,6 +48,6 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
   return extend(cfg, {});
 }
 
-export function getConfig(): FaustConfig {
+export function getConfig(): Partial<FaustConfig> {
   return normalizeConfig(config);
 }

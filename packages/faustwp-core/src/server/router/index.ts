@@ -5,10 +5,8 @@ import { parseUrl } from '../../utils/index.js';
 import {
   LOGOUT_ENDPOINT_PARTIAL_PATH,
   TOKEN_ENDPOINT_PARTIAL_PATH,
+  FAUST_API_BASE_PATH,
 } from '../../lib/constants.js';
-import { getConfig } from '../../config/index.js';
-
-const { apiBasePath } = getConfig();
 
 /**
  * A node handler for processing all incoming Faust API requests.
@@ -33,9 +31,9 @@ export async function apiRouter(
   const pathname = trimEnd(parsedUrl?.pathname, '/');
 
   switch (pathname) {
-    case `${apiBasePath}/${TOKEN_ENDPOINT_PARTIAL_PATH}`:
+    case `${FAUST_API_BASE_PATH}/${TOKEN_ENDPOINT_PARTIAL_PATH}`:
       return authorizeHandler(req, res);
-    case `${apiBasePath}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`:
+    case `${FAUST_API_BASE_PATH}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`:
       return logoutHandler(req, res);
     default:
       res.statusCode = 404;
