@@ -129,7 +129,7 @@ Faust providers a `FaustHooks` type that you can use for applying the correspond
 ```ts title="src/plugins/ProjectTemplatePlugin.ts"
 import type {FaustHooks} from '@faustwp/core';
 
-export class ProjectTemplatePlugin {
+export class ProjectTemplatePlugin implements FaustPlugin {
   constructor() {}
 
   apply(hooks: FaustHooks) {
