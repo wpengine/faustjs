@@ -47,6 +47,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'TypeScript',
+          id: 'guides/typescript',
+        },
+        {
+          type: 'doc',
           label: 'Customizing the Toolbar',
           id: 'guides/custom-toolbar',
         },
