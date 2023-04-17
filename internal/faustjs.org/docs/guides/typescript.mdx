@@ -127,7 +127,7 @@ Then TypeScript will only allow the declared types to be used in the `props` par
 Faust providers a `FaustHooks` type that you can use for applying the corresponding type of the `hooks` parameter:
 
 ```ts title="src/plugins/ProjectTemplatePlugin.ts"
-import type {FaustHooks} from '@faustwp/core';
+import { FaustHooks, FaustPlugin } from '@faustwp/core';
 
 export class ProjectTemplatePlugin implements FaustPlugin {
   constructor() {}
