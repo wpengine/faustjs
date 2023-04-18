@@ -52,7 +52,7 @@
     "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.17.0",
+    "@changesets/cli": "^2.26.1",
     "@next/bundle-analyzer": "^13.2.4",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
