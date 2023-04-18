@@ -324,3 +324,22 @@ And here is a result assuming that one paragraph has an `anchor` field set as "h
   },
 }
 ```
+
+:::note
+
+The `BlockWithSupportsAnchor` will be attached to both the block and the block attributes object, so you can request this field from both places as well:
+
+```graphql
+editorBlocks {
+    name
+    ... on CoreParagraph {
+		# Request from the block itself
+        anchor
+		attributes {
+			# Request from the block attributes object
+        	anchor
+		}
+    }
+}
+```
+:::
