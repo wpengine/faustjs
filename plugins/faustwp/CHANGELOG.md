@@ -1,5 +1,11 @@
 # Faust
 
+## 0.8.5
+
+### Patch Changes
+
+- eaa5e48: Added the `shouldShowFaustToolbar` field on the `viewer` WPGraphQL type to determine if the Faust toolbar should be shown based on user preferences.
+
 ## 0.8.4
 
 ### Patch Changes

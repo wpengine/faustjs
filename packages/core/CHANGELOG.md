@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.15.10
+
+### Patch Changes
+
+- d52fcdb: Added notice for preference towards the new faust.js version.
+
 ## 0.15.7
 
 ### Patch Changes

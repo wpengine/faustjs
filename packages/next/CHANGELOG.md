@@ -1,5 +1,14 @@
 # @faustjs/next
 
+## 0.15.10
+
+### Patch Changes
+
+- d52fcdb: Added notice for preference towards the new faust.js version.
+- Updated dependencies [d52fcdb]
+  - @faustjs/core@0.15.10
+  - @faustjs/react@0.15.10
+
 ## 0.15.9
 
 ### Patch Changes
