@@ -7,6 +7,7 @@ import {
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
 import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 
 type FaustCoreFilters = {
   addFilter(
@@ -77,6 +78,18 @@ type FaustCoreFilters = {
       toolbarNodes: FaustToolbarNodes,
       context: { seedNode?: SeedNode },
     ) => string,
+    priority?: number | undefined,
+  ): void;
+
+  addFilter(
+    hookName: 'resolvedUrl',
+    namespace: string,
+    callback: (
+      resolvedUrl: string | null,
+      context: {
+        nextContext: GetServerSidePropsContext | GetStaticPropsContext;
+      },
+    ) => string | null,
     priority?: number | undefined,
   ): void;
 };
