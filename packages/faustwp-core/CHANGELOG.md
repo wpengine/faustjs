@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## 0.2.10
+
+### Patch Changes
+
+- d8b76ef: flatListToHierarchical is now in core instead of the projects.
+- 0ad4567: - Requests to the connected WordPress site's GraphQL endpoint will now use `/index.php?graphql`.
+
 ## 0.2.9
 
 ### Patch Changes

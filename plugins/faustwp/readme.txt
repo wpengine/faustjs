@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled
 Requires at least: 5.7
 Tested up to: 6.2
-Stable tag: 0.8.4
+Stable tag: 0.8.5
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 0.8.5 =
+
+### Patch Changes
+
+- eaa5e48: Added the `shouldShowFaustToolbar` field on the `viewer` WPGraphQL type to determine if the Faust toolbar should be shown based on user preferences.
+
 = 0.8.4 =
 
 ### Patch Changes
@@ -65,11 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - c4696ef: - Added new filter `faustwp_exclude_from_public_redirect`, allowing WordPress plugins and themes to exclude certain routes from being redirected when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
-
-= 0.8.2 =
-
-### Patch Changes
-
-- 4dce6dc: Added support for FAUST_SECRET_KEY in addition to the pre-existing FAUSTWP_SECRET_KEY.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)

@@ -1,6 +1,6 @@
 {
   "name": "@faustwp/blocks",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Faust Blocks",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
@@ -8,7 +8,7 @@
   "peerDependencies": {
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
-    "@faustwp/core": ">=0.2.9"
+    "@faustwp/core": ">=0.2.10"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
