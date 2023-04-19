@@ -5,9 +5,9 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client';
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 
 type FaustCoreFilters = {
   addFilter(
