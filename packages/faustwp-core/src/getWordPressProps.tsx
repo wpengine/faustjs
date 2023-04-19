@@ -71,6 +71,10 @@ export async function getWordPressProps(
     ctx.res.setHeader('x-using', 'faust');
   }
 
+  resolvedUrl = hooks.applyFilters('resolvedUrl', resolvedUrl, {
+    nextContext: ctx,
+  }) as string | null;
+
   if (!resolvedUrl) {
     return {
       notFound: true,
