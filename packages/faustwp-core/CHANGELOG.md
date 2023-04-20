@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 0.2.11
+
+### Patch Changes
+
+- 4a4ef79: Add `resolvedUrl` filter for modifying the resolved URL in the Faust template system
+
 ## 0.2.10
 
 ### Patch Changes
