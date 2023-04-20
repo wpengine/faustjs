@@ -269,3 +269,77 @@ query GetAllPostsWhichSupportPageEditorBlocks {
   }
 }
 ```
+
+## BlockWithSupportsAnchor
+
+* An interface type which represents a single block that supports an anchor field.
+* This is registered for every block that contains the following [supports](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/#anchor) config in their `block.json`.
+
+```json title="block.json"
+supports: {
+    anchor: true
+}
+```
+
+Here is an example query:
+
+```graphql title="GraphQL"
+nodeByUri(uri: "/posts/hello-world") {
+    ... on NodeWithPostEditorBlocks {
+      editorBlocks {
+        name
+        ... on BlockWithSupportsAnchor {
+          anchor
+        }
+      }
+    }
+  }
+```
+
+And here is a result assuming that one paragraph has an `anchor` field set as "hello-world":
+
+```json
+{
+  "data": {
+    "nodeByUri": {
+      "editorBlocks": [
+        {
+          "name": "core/paragraph",
+          "anchor": "hello-world"
+        },
+        {
+          "name": "core/columns",
+          "anchor": null
+        },
+        {
+          "name": "core/column",
+          "anchor": null
+        },
+        {
+          "name": "core/paragraph",
+          "anchor": null
+        },
+	  ]
+    }
+  },
+}
+```
+
+:::note
+
+The `BlockWithSupportsAnchor` will be attached to both the block and the block attributes object, so you can request this field from both places as well:
+
+```graphql
+editorBlocks {
+    name
+    ... on CoreParagraph {
+		# Request from the block itself
+        anchor
+		attributes {
+			# Request from the block attributes object
+        	anchor
+		}
+    }
+}
+```
+:::
