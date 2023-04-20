@@ -11,7 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.6",
     "@faustwp/cli": "0.2.10",
-    "@faustwp/core": "0.2.10",
+    "@faustwp/core": "0.2.11",
     "@wordpress/base-styles": "^4.7.0",
     "@wordpress/block-library": "^7.13.0",
     "classnames": "^2.3.1",
