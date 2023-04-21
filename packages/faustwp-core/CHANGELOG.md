@@ -1,5 +1,50 @@
 # @faustwp/core
 
+## 0.2.11
+
+### Patch Changes
+
+- 4a4ef79: Add `resolvedUrl` filter for modifying the resolved URL in the Faust template system
+
+## 0.2.10
+
+### Patch Changes
+
+- d8b76ef: flatListToHierarchical is now in core instead of the projects.
+- 0ad4567: - Requests to the connected WordPress site's GraphQL endpoint will now use `/index.php?graphql`.
+
+## 0.2.9
+
+### Patch Changes
+
+- eddf4e2: Expose `hooks` in `@faustwp/core` so other packages can register their own filters and actions
+
+## 0.2.8
+
+### Patch Changes
+
+- 67ae4fd: Return `data` in props from Next.js pages that use the `getNextStaticProps`/`getNextServerSideProps` Faust helper functions
+- 67ae4fd: Create `FaustPage<Data, Props>` TypeScript type for Next.js pages that use Faust helpers:
+
+  ```tsx
+  import { FaustPage } from '@faustwp/core';
+
+  type GetPageData = {
+    generalSettings: {
+      title: string;
+    };
+  };
+
+  type PageProps = {
+    myProp: string;
+  };
+
+  const Page: FaustPage<GetPageData, PageProps> = (props) => {
+    const { myProp, data } = props;
+    return <></>;
+  };
+  ```
+
 ## 0.2.7
 
 ### Patch Changes

@@ -47,6 +47,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'TypeScript',
+          id: 'guides/typescript',
+        },
+        {
+          type: 'doc',
           label: 'Customizing the Toolbar',
           id: 'guides/custom-toolbar',
         },
@@ -173,6 +178,11 @@ module.exports = {
           type: 'doc',
           label: 'Getting Started',
           id: 'gutenberg/getting-started',
+        },
+        {
+          type: 'doc',
+          label: 'How to Query Blocks',
+          id: 'gutenberg/how-to-query-blocks',
         },
         {
           type: 'doc',

@@ -180,3 +180,27 @@ Allows you to modify Faust's Toolbar nodes.
     priority?: number | undefined,
   ): void;
 ```
+
+## resolvedUrl
+
+Allows you to override the resolved URL in the Faust template system.
+
+### Context Object
+
+- `nextContext: GetServerSidePropsContext | GetStaticPropsContext`: The Next.js context object from either `getServerSideProps`or`getStaticProps`
+
+### Signature
+
+```tsx
+addFilter(
+  hookName: 'resolvedUrl',
+  namespace: string,
+  callback: (
+    resolvedUrl: string | null,
+    context: {
+      nextContext: GetServerSidePropsContext | GetStaticPropsContext;
+    },
+  ) => string | null,
+  priority?: number | undefined,
+): void;
+```

@@ -6,8 +6,10 @@ import { waitFor, queryByAttribute, within } from '@testing-library/dom';
 import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustToolbarNodes } from '../../../src';
 import { setConfig } from '../../../src/config/index';
+import * as apollo from '@apollo/client';
 
 import { Toolbar } from '../../../src/components/Toolbar';
+import { OperationVariables, QueryResult } from '@apollo/client';
 
 let mockIsAuthenticated = false;
 let mockIsReady = false;
@@ -29,13 +31,77 @@ test('returns null if not authenticated', async () => {
   expect(navElement).not.toBeInTheDocument();
 });
 
-test('renders the component correctly if authenticated', async () => {
+test('renders the toolbar if user preference is true', async () => {
   expect.assertions(1);
   mockIsAuthenticated = true;
+
+  const mockUseQuery = {
+    data: {
+      viewer: {
+        shouldShowFaustToolbar: true,
+      },
+    },
+  } as any as QueryResult<unknown, unknown>;
+
+  const useQuerySpy = jest
+    .spyOn(apollo, 'useQuery')
+    .mockReturnValue(mockUseQuery);
+
   const dom = render(<Toolbar />);
+
   const navElement = await waitFor(() =>
     queryByAttribute('id', dom.container, 'wpadminbar'),
   );
+
+  expect(navElement).toBeInTheDocument();
+});
+
+test('doesnt render the toolbar if user preference is false', async () => {
+  expect.assertions(1);
+  mockIsAuthenticated = true;
+
+  const mockUseQuery = {
+    data: {
+      viewer: {
+        shouldShowFaustToolbar: false,
+      },
+    },
+  } as any as QueryResult<unknown, unknown>;
+
+  const useQuerySpy = jest
+    .spyOn(apollo, 'useQuery')
+    .mockReturnValue(mockUseQuery);
+
+  const dom = render(<Toolbar />);
+
+  const navElement = await waitFor(() =>
+    queryByAttribute('id', dom.container, 'wpadminbar'),
+  );
+  expect(navElement).not.toBeInTheDocument();
+});
+
+test('render the toolbar if user preference request throws an error/fails', async () => {
+  expect.assertions(1);
+  mockIsAuthenticated = true;
+
+  /**
+   * Likely to happen if a user is using a version of FaustWP without the
+   * "shouldShowFaustToolbar" graphql field.
+   */
+  const mockUseQuery = {
+    error: {}, // Request error
+  } as any as QueryResult<unknown, unknown>;
+
+  const useQuerySpy = jest
+    .spyOn(apollo, 'useQuery')
+    .mockReturnValue(mockUseQuery);
+
+  const dom = render(<Toolbar />);
+
+  const navElement = await waitFor(() =>
+    queryByAttribute('id', dom.container, 'wpadminbar'),
+  );
+
   expect(navElement).toBeInTheDocument();
 });
 
