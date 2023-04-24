@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { debugLog, infoLog } from './stdout/index.js';
 import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
+import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { userConfig } from './userConfig.js';
 import { getCliArgs, getWpSecret, getWpUrl, isDebug } from './utils/index.js';
 import {
@@ -74,6 +75,12 @@ import {
     }
     case 'generatePossibleTypes': {
       await generatePossibleTypes();
+      process.exit(0);
+
+      break;
+    }
+    case 'generateGlobalStylesheet': {
+      await generateGlobalStylesheet();
       process.exit(0);
 
       break;
