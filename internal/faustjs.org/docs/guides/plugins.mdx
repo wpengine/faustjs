@@ -10,7 +10,7 @@ This guide covers how to set up Faust plugins and how to use them in your site.
 
 The experimental config object is used to setup plugins via the `experimentalPlugins` property. It's a property that takes an array of plugin class instances. You or the end user can then implement the plugin by adding it to the `experimentalPlugins` property in the App's `faust.config.js` file. See the example below:
 
-```js
+```js title="faust.config.js"
 import { setConfig } from '@faustwp/core';
 import templates from './wp-templates';
 import possibleTypes from './possibleTypes.json';
@@ -37,6 +37,8 @@ When you create a plugin you will use the `@wordpress/hooks` library as well as 
 ## Create a plugin
 
 To get started, follow our guide on [Creating a plugin](/docs/plugin-system/creating-a-plugin)
+
+# Example Usage
 
 ## Tapping into Apollo
 
@@ -83,5 +85,42 @@ addFilter(
   ): void;
 ```
 
----
+### Changing GET to POST in ApolloClient
 
+Here we show an example of a persisted query using a Faust plugin. You can find this example on GitHub [here](https://github.com/wp-graphql/wpgraphql.com/blob/master/src/plugins/PersistedQueriesPlugin.js).
+
+It uses the `addFilter` inside a Faust plugin called `PersistedQueriesPlugin`. It filters `apolloClientOptions` and pulls the link as `existingLink`. If the `existingLink` is an instance of `HttpLink` it adds the `existingLink` to the `persistedQueriesLink`. If it's not an instance of `HttpLink` it adds the `httpLink` to the `persistedQueriesLink`.
+
+```js title="PersistedQueriesPlugin.js"
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import { HttpLink } from '@apollo/client';
+import { sha256 } from 'crypto-hash';
+import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint';
+
+const httpLink = new HttpLink({ uri: getGraphqlEndpoint() });
+const persistedQueriesLink = createPersistedQueryLink({
+  sha256,
+  useGETForHashedQueries: true,
+});
+
+class PersistedQueriesPlugin {
+  apply({ addFilter }) {
+    addFilter('apolloClientOptions', 'faust', (apolloClientOptions) => {
+      const existingLink = apolloClientOptions?.link;
+      return {
+        ...apolloClientOptions,
+        link:
+          existingLink instanceof HttpLink
+            ? persistedQueriesLink.concat(existingLink)
+            : persistedQueriesLink.concat(httpLink),
+      };
+    });
+  }
+}
+
+export default PersistedQueriesPlugin;
+```
+
+## Additional Filters
+
+For further learning about the filters check out the [Faust Filters](https://faustjs.org/docs/plugin-system/filters).
