@@ -60,6 +60,11 @@ module.exports = {
           label: 'Custom Post Types',
           id: 'guides/custom-post-types',
         },
+        {
+          type: 'doc',
+          label: 'Plugins',
+          id: 'guides/plugins',
+        },
       ],
     },
     {
