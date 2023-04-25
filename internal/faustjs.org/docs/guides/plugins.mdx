@@ -90,7 +90,7 @@ addFilter(
 
 Here we show an example of a persisted query using a Faust plugin. You can find this example on GitHub [here](https://github.com/wp-graphql/wpgraphql.com/blob/master/src/plugins/PersistedQueriesPlugin.js).
 
-It uses the `addFilter` inside a Faust plugin called `PersistedQueriesPlugin`. It filters `apolloClientOptions` and pulls the link as `existingLink`. If the `existingLink` is an instance of `HttpLink` it adds the `existingLink` to the `persistedQueriesLink`. If it's not an instance of `HttpLink` it adds the `httpLink` to the `persistedQueriesLink`.
+It uses the `addFilter` inside a Faust plugin called `PersistedQueriesPlugin`. It filters `apolloClientOptions` and pulls the link as `existingLink`. If the `existingLink` is an instance of `HttpLink`, it adds the `existingLink` to the `persistedQueriesLink`. If it's not an instance of `HttpLink`, it adds the `httpLink` to the `persistedQueriesLink`.
 
 ```js title="PersistedQueriesPlugin.js"
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
