@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.2.12
+
+### Patch Changes
+
+- 02f7f78: Added new command `faust generateGlobalStyles` which adds the connected WordPress site's global stylesheet to the root of your project.
+
 ## 0.2.10
 
 ### Patch Changes
