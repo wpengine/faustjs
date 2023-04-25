@@ -83,6 +83,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'Global Stylesheet',
+          id: 'global-stylesheet',
+        },
+        {
+          type: 'doc',
           label: 'API Router',
           id: 'next/reference/api-router',
         },
