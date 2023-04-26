@@ -5,6 +5,16 @@ import { hooks } from './wpHooks/index.js';
 export function getPossibleTemplates(node: SeedNode) {
   let possibleTemplates: string[] = [];
 
+  if (
+    node.isContentNode &&
+    node.template?.templateName &&
+    node.contentType?.node?.name
+  ) {
+    possibleTemplates.push(
+      `${node.contentType.node.name}-template-${node.template.templateName}`,
+    );
+  }
+
   // Front page
   if (node.isFrontPage) {
     possibleTemplates.push('front-page');
