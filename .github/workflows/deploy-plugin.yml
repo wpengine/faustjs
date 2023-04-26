@@ -1,0 +1,22 @@
+# NOTE: This workflow is only to be used if the plugin needs to be deployed manually.
+# Otherwise, changesets and the release-packages workflow should take care of 
+# deploying the plugin automatically.
+name: Deploy Plugin
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy_plugin:
+    name: Deploy Plugin
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy plugin to WordPress.org
+      # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
+      # to support our monorepo structure.
+      uses: ./.github/actions/release-plugin
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        PLUGIN_DIR: plugins/faustwp
+        SLUG: faustwp
