@@ -67,7 +67,7 @@ export async function getWordPressProps(
       resolvedUrl = '/';
     }
   } else {
-    resolvedUrl = ctx.req.url;
+    resolvedUrl = ctx.resolvedUrl;
     ctx.res.setHeader('x-using', 'faust');
   }
 
