@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { ThemeJson } from '../theme.js';
 
 export type WordPressBlockBase = React.FC & {
   displayName: string;
@@ -20,6 +21,7 @@ export const WordPressBlocksContext =
 
 export interface WordPressBlocksContextType {
   blocks?: WordPressBlock[];
+  theme?: ThemeJson;
 }
 
 /**
@@ -38,4 +40,25 @@ export function WordPressBlocksProvider(props: {
       {children}
     </WordPressBlocksContext.Provider>
   );
+}
+
+/**
+ * useBlocksTheme can be used to retrieve the theme
+ * from within the WordPressBlocksProvider.
+ *
+ * @example
+ * ```
+ * const theme = useBlocksTheme();
+ * ```
+ */
+export function useBlocksTheme() {
+  const context = React.useContext(WordPressBlocksContext);
+
+  if (context === undefined) {
+    throw new Error(
+      'useBlocksTheme() must be used within a WordPressBlocksProvider',
+    );
+  }
+
+  return context.theme;
 }
