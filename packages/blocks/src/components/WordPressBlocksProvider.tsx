@@ -54,7 +54,8 @@ export function WordPressBlocksProvider(props: {
 export function useBlocksTheme() {
   const context = React.useContext(WordPressBlocksContext);
 
-  if (context === undefined) {
+  // If it's an empty object, the provider hasn't been initialized.
+  if (Object.keys(context).length === 0) {
     throw new Error(
       'useBlocksTheme() must be used within a WordPressBlocksProvider',
     );
