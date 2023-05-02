@@ -5,6 +5,10 @@ import { hooks } from './wpHooks/index.js';
 export function getPossibleTemplates(node: SeedNode) {
   let possibleTemplates: string[] = [];
 
+  if (node.template?.templateName) {
+    possibleTemplates.push(`template-${node.template.templateName}`);
+  }
+
   // Front page
   if (node.isFrontPage) {
     possibleTemplates.push('front-page');
