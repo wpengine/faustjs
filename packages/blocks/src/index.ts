@@ -2,6 +2,7 @@ import {
   WordPressBlocksContext,
   WordPressBlock,
   WordPressBlocksProvider,
+  useBlocksTheme,
 } from './components/WordPressBlocksProvider.js';
 import {
   useBlockData,
@@ -16,4 +17,5 @@ export {
   useBlockData,
   WordpressBlocksViewerProps,
   WordPressBlocksViewer,
+  useBlocksTheme,
 };
