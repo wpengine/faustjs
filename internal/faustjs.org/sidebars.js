@@ -118,6 +118,11 @@ module.exports = {
         },
         {
           type: 'doc',
+          label: 'useBlocksTheme',
+          id: 'reference/useBlocksTheme',
+        },
+        {
+          type: 'doc',
           label: 'getSitemapProps',
           id: 'reference/getSitemapProps',
         },
