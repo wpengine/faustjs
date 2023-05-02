@@ -10,7 +10,7 @@ authors:
 hide_table_of_contents: true
 ---
 
-Hello folks, Terri here to give you an update on all the work the Faust.js team has been doing over the last few weeks! In addition to our DeCode presentation, we have been hard at work streamlining the Content Blocks Plugin, executing a new in-depth case study for Faust, evaluating new documentation strategies, polishing content, and working on improvements to the Faust toolbar.
+Hello folks, Terri here to give you an update on all the work the Faust.js team has been doing over the last few weeks! In addition to our DeCode presentation, we have been hard at work streamlining the Content Blocks Plugin, executing a new in-depth case study for Faust, evaluating new documentation strategies, polishing content, and working on improvements to the Faust toolbar. 
 
 <!--truncate-->
 
@@ -29,6 +29,10 @@ During this quarter, we’re also rebuilding www.faustjs.org to use Faust, allow
 ## Toolbar Feature Planning
 
 This quarter will also see new Toolbar features. The team is currently working on building a solid foundation for this feature so that we can progress with a debugging panel, a few useful shortcuts for clearing a site cache and rebuilding a site, and search integration.  
+
+## New developer
+
+In addition to new releases, our team also welcomed a new developer to the team, John Parris. John brings our total to six Faust folk, and we're thrilled to have him working with us. You'll see his contributions in our [GitHub repo](https://github.com/wpengine/faustjs/) as he helps us bring the next several improvements of Faust into your hands as quickly as possible.
 
 ## Coming up next 
 
