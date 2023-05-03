@@ -41,5 +41,9 @@
   "bugs": {
     "url": "https://github.com/wpengine/faustjs/issues"
   },
-  "homepage": "https://github.com/wpengine/faustjs#readme"
+  "homepage": "https://github.com/wpengine/faustjs#readme",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  }
 }
