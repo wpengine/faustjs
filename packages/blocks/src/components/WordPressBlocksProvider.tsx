@@ -16,13 +16,16 @@ export type WordPressBlockBase = React.FC & {
 export type WordPressBlock<P = Record<string, any>> = FC<P> &
   Partial<Pick<WordPressBlockBase, 'config' | 'displayName' | 'name'>>;
 
-export const WordPressBlocksContext =
-  React.createContext<WordPressBlocksContextType>({});
+export type BlocksContextType = WordPressBlock[] | undefined;
+export type ThemeContextType = ThemeJson | undefined;
 
-export interface WordPressBlocksContextType {
-  blocks?: WordPressBlock[];
+export const BlocksContext = React.createContext<BlocksContextType>(undefined);
+export const ThemeContext = React.createContext<ThemeContextType>(undefined);
+
+export type WordPressBlocksProviderConfig = {
+  blocks: WordPressBlock[];
   theme?: ThemeJson;
-}
+};
 
 /**
  * WordPressBlocksProvider is used as a central store for the available list of WordPressBlock types.
@@ -31,14 +34,15 @@ export interface WordPressBlocksContextType {
  */
 export function WordPressBlocksProvider(props: {
   children: React.ReactNode;
-  config: WordPressBlocksContextType;
+  config: WordPressBlocksProviderConfig;
 }) {
   const { children, config } = props;
+  const { blocks, theme } = config;
 
   return (
-    <WordPressBlocksContext.Provider value={config}>
-      {children}
-    </WordPressBlocksContext.Provider>
+    <BlocksContext.Provider value={blocks}>
+      <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+    </BlocksContext.Provider>
   );
 }
 
@@ -52,14 +56,14 @@ export function WordPressBlocksProvider(props: {
  * ```
  */
 export function useBlocksTheme() {
-  const context = React.useContext(WordPressBlocksContext);
+  const themeContext = React.useContext(ThemeContext);
 
   // If it's an empty object, the provider hasn't been initialized.
-  if (Object.keys(context).length === 0) {
+  if (themeContext === undefined) {
     throw new Error(
-      'useBlocksTheme() must be used within a WordPressBlocksProvider',
+      'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
     );
   }
 
-  return context.theme;
+  return themeContext;
 }
