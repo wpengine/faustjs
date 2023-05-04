@@ -20,7 +20,6 @@ describe('getPossibleTemplates', () => {
     };
 
     expect(getTemplate.getPossibleTemplates(seedNode)).toStrictEqual([
-      'template-Default',
       'front-page',
       'page-home',
       'page-361',
@@ -68,7 +67,6 @@ describe('getPossibleTemplates', () => {
     };
 
     expect(getTemplate.getPossibleTemplates(seedNode)).toStrictEqual([
-      'template-Default',
       'single-movies-the-dark-knight',
       'single-movies',
       'singular',
