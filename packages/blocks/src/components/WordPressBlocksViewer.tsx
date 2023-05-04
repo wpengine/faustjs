@@ -59,7 +59,7 @@ export interface ContentBlock {
  * @returns JSX.Component that renders the block tree.
  */
 export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
-  const { blocks } = React.useContext(WordPressBlocksContext);
+  const blocks = React.useContext(WordPressBlocksContext);
 
   if (!blocks) {
     throw new Error('Blocks are required. Please add them to your config.');

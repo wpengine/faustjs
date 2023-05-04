@@ -15,7 +15,7 @@ describe('useBlocksTheme', () => {
     const { result } = renderHook(() => useBlocksTheme());
 
     expect(result.error?.message).toBe(
-      'useBlocksTheme() must be used within a WordPressBlocksProvider',
+      'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
     );
   });
 
@@ -45,5 +45,31 @@ describe('useBlocksTheme', () => {
 
     expect(result.error).toBeUndefined();
     expect(theme?.colors.palette).toStrictEqual({ primary: 'black' });
+  });
+
+  it('uses the path param', async () => {
+    const wrapper = ({ children }: PropsWithChildren<{}>) => {
+      const theme: ThemeJson = {
+        colors: {
+          palette: {
+            primary: 'black',
+          },
+        },
+        spacing: {},
+      };
+
+      return (
+        <WordPressBlocksProvider config={{ blocks: [], theme }}>
+          {children}
+        </WordPressBlocksProvider>
+      );
+    };
+
+    const { result } = renderHook(() => useBlocksTheme('colors.palette'), {
+      wrapper,
+    });
+
+    expect(result.error).toBeUndefined();
+    expect(result.current).toStrictEqual({ primary: 'black' });
   });
 });

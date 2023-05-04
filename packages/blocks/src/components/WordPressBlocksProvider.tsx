@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import get from 'lodash/get.js';
 import { ThemeJson } from '../theme.js';
 
 export type WordPressBlockBase = React.FC & {
@@ -16,11 +17,13 @@ export type WordPressBlockBase = React.FC & {
 export type WordPressBlock<P = Record<string, any>> = FC<P> &
   Partial<Pick<WordPressBlockBase, 'config' | 'displayName' | 'name'>>;
 
-export type BlocksContextType = WordPressBlock[] | undefined;
-export type ThemeContextType = ThemeJson | undefined;
+export type WordPressBlocksContextType = WordPressBlock[] | undefined;
+export type WordPressThemeContextType = ThemeJson | undefined;
 
-export const BlocksContext = React.createContext<BlocksContextType>(undefined);
-export const ThemeContext = React.createContext<ThemeContextType>(undefined);
+export const WordPressBlocksContext =
+  React.createContext<WordPressBlocksContextType>(undefined);
+export const WordPressThemeContext =
+  React.createContext<WordPressThemeContextType>(undefined);
 
 export type WordPressBlocksProviderConfig = {
   blocks: WordPressBlock[];
@@ -40,9 +43,11 @@ export function WordPressBlocksProvider(props: {
   const { blocks, theme } = config;
 
   return (
-    <BlocksContext.Provider value={blocks}>
-      <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
-    </BlocksContext.Provider>
+    <WordPressBlocksContext.Provider value={blocks}>
+      <WordPressThemeContext.Provider value={theme}>
+        {children}
+      </WordPressThemeContext.Provider>
+    </WordPressBlocksContext.Provider>
   );
 }
 
@@ -55,14 +60,20 @@ export function WordPressBlocksProvider(props: {
  * const theme = useBlocksTheme();
  * ```
  */
-export function useBlocksTheme() {
-  const themeContext = React.useContext(ThemeContext);
+export function useBlocksTheme(): ThemeJson;
+export function useBlocksTheme(path: string): unknown;
+export function useBlocksTheme(path?: string): ThemeJson | unknown {
+  const themeContext = React.useContext(WordPressThemeContext);
 
   // If it's an empty object, the provider hasn't been initialized.
   if (themeContext === undefined) {
     throw new Error(
       'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
     );
+  }
+
+  if (path) {
+    return get(themeContext, path, undefined);
   }
 
   return themeContext;
