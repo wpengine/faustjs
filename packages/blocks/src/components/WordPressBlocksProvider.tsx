@@ -61,8 +61,8 @@ export function WordPressBlocksProvider(props: {
  * ```
  */
 export function useBlocksTheme(): ThemeJson;
-export function useBlocksTheme(path: string): unknown;
-export function useBlocksTheme(path?: string): ThemeJson | unknown {
+export function useBlocksTheme(path: string): ReturnType<typeof get>;
+export function useBlocksTheme(path?: string) {
   const themeContext = React.useContext(WordPressThemeContext);
 
   // If it's an empty object, the provider hasn't been initialized.
