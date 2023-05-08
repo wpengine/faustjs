@@ -1,6 +1,6 @@
 type Keys = string | number;
 
-export type Theme = {
+export type ThemeJson = {
   colors: ThemePropertiesColor;
   spacing: ThemePropertiesSpacing;
   blocks?: ThemePropertiesBlocks;

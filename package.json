@@ -41,7 +41,7 @@
     "docs-legacy:clear": "npm run clear --prefix internal/legacy.faustjs.org",
     "docs-legacy:install": "cd internal/legacy.faustjs.org && npm i && cd ..",
     "docs-legacy:start": "npm start --prefix internal/legacy.faustjs.org",
-    "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/core",
+    "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks",
     "test:coverage": "npm run build && npm run test:coverage --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "wpe-build": "exit 1",
     "changeset": "changeset",

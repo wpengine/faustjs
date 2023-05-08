@@ -1,7 +1,9 @@
 import {
   WordPressBlocksContext,
+  WordPressThemeContext,
   WordPressBlock,
   WordPressBlocksProvider,
+  useBlocksTheme,
 } from './components/WordPressBlocksProvider.js';
 import {
   useBlockData,
@@ -11,9 +13,11 @@ import {
 
 export {
   WordPressBlocksContext,
+  WordPressThemeContext,
   WordPressBlock,
   WordPressBlocksProvider,
   useBlockData,
   WordpressBlocksViewerProps,
   WordPressBlocksViewer,
+  useBlocksTheme,
 };
