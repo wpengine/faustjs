@@ -13,12 +13,12 @@ name: Nightly Releases
 
 on:
   schedule:
-    # Every day at 8:35pm UTC / 3:35pm CST
+    # Monday-Friday at 8:35pm UTC / 3:35pm CST
     
     # Uses the 35th minute because GitHub Workflow load is significantly
     # increased at the start of the hour. By invoking the workflow in the
     # middle of the hour, there is less chance of delay.
-    - cron: '35 20 * * *'
+    - cron: '35 20 * * 1-5'
 
 jobs:
   release_nightly_canary:
