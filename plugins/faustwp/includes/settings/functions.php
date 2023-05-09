@@ -126,7 +126,7 @@ function maybe_set_default_settings() {
 	$settings   = faustwp_get_settings();
 
 	if ( empty( $settings ) ) {
-		faustwp_update_setting( 'disable_theme', '1' );
+		faustwp_update_setting( 'disable_theme', '0' );
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		faustwp_update_setting( 'enable_redirects', '1' );
 
