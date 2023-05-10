@@ -4,6 +4,7 @@ import getInlineStyles from './getInlineStyles.js';
 import getTypographyStyles from './getTypographyStyles.js';
 import getBackgroundStyles from './getBackgroundStyles.js';
 import getTextStyles from './getTextStyles.js';
+import getBorderStyles from './getBorderStyles.js';
 
 export default function getStyles<T extends BlockWithAttributes>(
   theme: ThemeJson,
@@ -15,6 +16,7 @@ export default function getStyles<T extends BlockWithAttributes>(
     ...getInlineStyles(attributes),
     ...getTypographyStyles(theme, block),
     ...getBackgroundStyles(theme, block),
-    ...getTextStyles(theme, block)
+    ...getTextStyles(theme, block),
+    ...getBorderStyles(theme, block),
   };
 }
