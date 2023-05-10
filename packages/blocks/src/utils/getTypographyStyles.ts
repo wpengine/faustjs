@@ -1,7 +1,6 @@
 import { ThemeJson } from '../theme.js';
 import { BlockWithAttributes } from '../components/WordPressBlocksViewer.js';
 
-
 /**
  *
  * Returns the specified block Typography Styles
