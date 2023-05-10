@@ -54,7 +54,9 @@ export interface ContentBlock {
   renderedHtml?: string;
 }
 
-export type BlockWithAttributes<T extends ContentBlock> = T & {
+export type BlockWithAttributes<
+  T extends ContentBlock = Record<string, unknown>,
+> = T & {
   attributes: Record<string, unknown>;
 };
 
