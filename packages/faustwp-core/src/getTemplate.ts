@@ -5,7 +5,7 @@ import { hooks } from './wpHooks/index.js';
 export function getPossibleTemplates(node: SeedNode) {
   let possibleTemplates: string[] = [];
 
-  if (node.template?.templateName) {
+  if (node.template?.templateName && node.template.templateName !== 'Default') {
     possibleTemplates.push(`template-${node.template.templateName}`);
   }
 
