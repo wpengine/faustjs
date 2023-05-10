@@ -34,7 +34,7 @@ class SettingsCest
         $I->seeInField('faustwp_settings[frontend_uri]', '');
         $I->seeInField('faustwp_settings[secret_key]', $settings['secret_key']);
         $I->seeInField('faustwp_settings[menu_locations]', 'Primary, Footer');
-        $I->seeCheckboxIsChecked('#disable_theme');
+        $I->dontSeeCheckboxIsChecked('#disable_theme');
         $I->seeCheckboxIsChecked('#enable_rewrites');
         $I->seeCheckboxIsChecked('#enable_redirects');
         $I->dontSeeCheckboxIsChecked('#enable_image_source');
