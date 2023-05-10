@@ -51,7 +51,6 @@ export default function getInlineStyles(
   let styles;
   // Duck Typing
   if (attributes?.style) {
-    console.debug(attributes);
     try {
       styles = cssToReactStyle(
         compileCSS(JSON.parse(attributes?.style as string) as Style),
