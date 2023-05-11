@@ -57,7 +57,7 @@ export interface ContentBlock {
 export type BlockWithAttributes<
   T extends ContentBlock = Record<string, unknown>,
 > = T & {
-  attributes: Record<string, unknown>;
+  attributes?: Record<string, unknown> | null;
 };
 
 /**

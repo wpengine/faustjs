@@ -11,7 +11,7 @@ export default function getStyles<T extends BlockWithAttributes>(
   block: T,
 ): React.CSSProperties {
   return {
-    ...getInlineStyles(block?.attributes),
+    ...getInlineStyles(block?.attributes ?? {}),
     ...getTypographyStyles(theme, block),
     ...getBackgroundStyles(theme, block),
     ...getTextStyles(theme, block),
