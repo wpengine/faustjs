@@ -14,7 +14,7 @@ export type WordPressBlockBase = React.FC & {
  * WordPressBlock is a React component that contains some optional properties that we are
  * used to match it with equivalent block data from the API
  */
-export type WordPressBlock<P = Record<string, unknown>> = FC<P> &
+export type WordPressBlock<P = Record<string, any>> = FC<P> &
   Partial<Pick<WordPressBlockBase, 'config' | 'displayName' | 'name'>>;
 
 export type WordPressBlocksContextType = WordPressBlock[] | undefined;
