@@ -1,11 +1,12 @@
-import { flatListToHierarchical, ListNode } from '../../src/utils/flatListToHierarchical';
+import { flatListToHierarchical } from '../../src/utils/flatListToHierarchical';
 
-const items: ListNode[] = [
+const items = [
   { id: '1', name: 'abc', parentId: '2' },
   { id: '2', name: 'abc', parentId: '' },
   { id: '3', name: 'abc', parentId: '5' },
   { id: '4', name: 'abc', parentId: '2' },
   { id: '5', name: 'abc', parentId: '' },
+  { name: 'abc', parentId: '' },
   { id: '6', name: 'abc', parentId: '2' },
   { id: '7', name: 'abc', parentId: '6' },
   { id: '8', name: 'abc', parentId: '6' },
