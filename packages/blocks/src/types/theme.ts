@@ -2,6 +2,8 @@ import type { DeepPartial } from './deep-partial.js';
 import type { Keys } from './keys.js';
 import type { ThemePropertiesColor } from './color.js';
 import type { ThemePropertiesSpacing } from './spacing.js';
+import type { ThemePropertiesLayout } from './layout.js';
+import type { ThemePropertiesTypography } from './typography.js';
 
 export type BlocksTheme = {
   colors?: ThemePropertiesColor;
@@ -280,37 +282,6 @@ export type StylesProperties = {
    * Sets custom CSS to apply styling not covered by other theme.json properties.
    */
   css?: string;
-  [k: string]: unknown;
-};
-
-/**
- * Properties related to layout.
- */
-export type ThemePropertiesLayout = {
-  /**
-   * Sets the max-width of the content.
-   */
-  contentSize?: string;
-  /**
-   * Sets the max-width of wide (`.alignwide`) content.
-   */
-  wideSize?: string;
-  [k: string]: unknown;
-};
-
-type FontSizes = Record<Keys, string>;
-type FontFamilies = Record<Keys, string>;
-
-/**
- * Properties related to Typography.
- */
-export type ThemePropertiesTypography = {
-  /**
-   * Font size presets for the font size selector.
-   * Generates a single class (`.has-{slug}-color`) and custom property (`--wp--preset--font-size--{slug}`) per preset value.
-   */
-  fontSizes?: FontSizes;
-  fontFamilies?: FontFamilies;
   [k: string]: unknown;
 };
 

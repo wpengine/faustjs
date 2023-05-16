@@ -14,7 +14,7 @@ export interface SpacingProperties {
 export function getSpacingOptions(
   spacing: SpacingProperties,
 ): ThemePropertiesSpacing {
-  if (spacing.spacingSizes) {
+  if (spacing?.spacingSizes) {
     return {
       sizes: getSluggedProps(spacing.spacingSizes, 'size') as SpacingSizes,
     };

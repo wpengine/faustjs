@@ -12,7 +12,7 @@ export interface ColorProperties {
  * @returns {ThemePropertiesColor} An object with an optional `palette` property of type `Palette`.
  */
 export function getColorOptions(color: ColorProperties): ThemePropertiesColor {
-  if (color.palette) {
+  if (color?.palette) {
     return {
       palette: getSluggedProps(color.palette, 'color') as Palette,
     };
