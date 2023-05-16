@@ -15,8 +15,10 @@ describe('getLayoutOptions', () => {
       },
       {
         layout: {
-          contentSize: '1000px',
-          wideSize: '1200px',
+          layout: {
+            contentSize: '1000px',
+            wideSize: '1200px',
+          },
         },
       },
     ],
@@ -28,7 +30,9 @@ describe('getLayoutOptions', () => {
       },
       {
         layout: {
-          contentSize: '1000px',
+          layout: {
+            contentSize: '1000px',
+          },
         },
       },
     ],
@@ -40,7 +44,9 @@ describe('getLayoutOptions', () => {
       },
       {
         layout: {
-          wideSize: '1200px',
+          layout: {
+            wideSize: '1200px',
+          },
         },
       },
     ],

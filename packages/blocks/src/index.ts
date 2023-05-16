@@ -12,8 +12,9 @@ import {
   BlockWithAttributes,
 } from './components/WordPressBlocksViewer.js';
 
+import { fromThemeJson } from './utils/from-theme-json/fromThemeJson.js';
 import getStyles from './utils/getStyles.js';
-import { ThemeJson } from './theme.js';
+import { BlocksTheme } from './types/theme.js';
 
 export {
   WordPressBlocksContext,
@@ -25,6 +26,7 @@ export {
   WordPressBlocksViewer,
   useBlocksTheme,
   getStyles,
-  ThemeJson,
+  BlocksTheme,
   BlockWithAttributes,
+  fromThemeJson,
 };

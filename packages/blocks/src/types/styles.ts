@@ -1,106 +1,6 @@
-type Keys = string | number;
+import type { ThemePropertiesBlocks } from './blocks';
 
-export type ThemeJson = {
-  colors?: ThemePropertiesColor;
-  spacing?: ThemePropertiesSpacing;
-  blocks?: ThemePropertiesBlocks;
-  layout?: ThemePropertiesLayout;
-  typography?: ThemePropertiesTypography;
-  [k: string]: unknown;
-};
-
-/**
- * A mapping between standard color names and colors.
- */
-type Palette = Record<string, Color>;
-
-/**
- * A CSS Color string of any sort.
- */
-type Color = string;
-
-/**
- * Properties related to colors.
- */
-export type ThemePropertiesColor = {
-  palette?: Palette;
-  [k: string]: unknown;
-};
-
-type SpacingSizes = Record<Keys, number | string>;
-
-/**
- * Properties related to spacing.
- */
-export type ThemePropertiesSpacing = {
-  sizes?: SpacingSizes;
-  [k: string]: unknown;
-};
-
-type BlockKeys =
-  | 'core/paragraph'
-  | 'core/image'
-  | 'core/heading'
-  | 'core/gallery'
-  | 'core/list'
-  | 'core/quote'
-  | 'core/shortcode'
-  | 'core/archives'
-  | 'core/audio'
-  | 'core/button'
-  | 'core/buttons'
-  | 'core/calendar'
-  | 'core/categories'
-  | 'core/code'
-  | 'core/columns'
-  | 'core/column'
-  | 'core/cover'
-  | 'core/embed'
-  | 'core/file'
-  | 'core/group'
-  | 'core/freeform'
-  | 'core/html'
-  | 'core/media-text'
-  | 'core/latest-comments'
-  | 'core/latest-posts'
-  | 'core/missing'
-  | 'core/more'
-  | 'core/nextpage'
-  | 'core/preformatted'
-  | 'core/pullquote'
-  | 'core/rss'
-  | 'core/search'
-  | 'core/separator'
-  | 'core/block'
-  | 'core/social-links'
-  | 'core/social-link'
-  | 'core/spacer'
-  | 'core/subhead'
-  | 'core/table'
-  | 'core/tag-cloud'
-  | 'core/text-columns'
-  | 'core/verse'
-  | 'core/video'
-  | string;
-
-/**
- * Styles defined on a per-block basis
- */
-export type ThemePropertiesBlocks = {
-  [k: BlockKeys]: StylesPropertiesAndElements;
-};
-
-export type StylesPropertiesAndElements = StylesProperties & {
-  border?: unknown;
-  color?: unknown;
-  spacing?: unknown;
-  typography?: unknown;
-  css?: unknown;
-  elements?: StylesPropertiesAndElements;
-  [k: string]: unknown;
-};
-
-export type StylesProperties = {
+export interface StylesProperties {
   /**
    * Border styles.
    */
@@ -112,7 +12,27 @@ export type StylesProperties = {
     /**
      * Sets the `border-radius` CSS property.
      */
-    radius?: string;
+    radius?:
+      | string
+      | {
+          /**
+           * Sets the `border-top-left-radius` CSS property.
+           */
+          topLeft?: string;
+          /**
+           * Sets the `border-top-right-radius` CSS property.
+           */
+          topRight?: string;
+          /**
+           * Sets the `border-bottom-left-radius` CSS property.
+           */
+          bottomLeft?: string;
+          /**
+           * Sets the `border-bottom-right-radius` CSS property.
+           */
+          bottomRight?: string;
+          [k: string]: unknown;
+        };
     /**
      * Sets the `border-style` CSS property.
      */
@@ -298,43 +218,122 @@ export type StylesProperties = {
     textTransform?: string;
   };
   /**
+   * CSS and SVG filter styles.
+   */
+  filter?: {
+    /**
+     * Sets the duotone filter.
+     */
+    duotone?: string;
+  };
+  /**
    * Box shadow styles.
    */
   shadow?: string;
+  /**
+   * Outline styles.
+   */
+  outline?: {
+    /**
+     * Sets the `outline-color` CSS property.
+     */
+    color?: string;
+    /**
+     * Sets the `outline-offset` CSS property.
+     */
+    offset?: string;
+    /**
+     * Sets the `outline-style` CSS property.
+     */
+    style?: string;
+    /**
+     * Sets the `outline-width` CSS property.
+     */
+    width?: string;
+  };
   /**
    * Sets custom CSS to apply styling not covered by other theme.json properties.
    */
   css?: string;
   [k: string]: unknown;
-};
+}
 
 /**
- * Properties related to layout.
+ * Styles defined on a per-element basis using the element's selector.
  */
-export type ThemePropertiesLayout = {
-  /**
-   * Sets the max-width of the content.
-   */
-  contentSize?: string;
-  /**
-   * Sets the max-width of wide (`.alignwide`) content.
-   */
-  wideSize?: string;
-  [k: string]: unknown;
+export interface StylesElementsPropertiesComplete {
+  button?: StylesProperties & {
+    border?: unknown;
+    color?: unknown;
+    filter?: unknown;
+    shadow?: unknown;
+    outline?: unknown;
+    spacing?: unknown;
+    typography?: unknown;
+    css?: unknown;
+    ':hover'?: StylesPropertiesComplete;
+    ':focus'?: StylesPropertiesComplete;
+    ':active'?: StylesPropertiesComplete;
+    ':visited'?: StylesPropertiesComplete;
+    ':link'?: StylesPropertiesComplete;
+    ':any-link'?: StylesPropertiesComplete;
+  };
+  link?: StylesProperties & {
+    border?: unknown;
+    color?: unknown;
+    spacing?: unknown;
+    typography?: unknown;
+    ':hover'?: StylesPropertiesComplete;
+    ':focus'?: StylesPropertiesComplete;
+    ':active'?: StylesPropertiesComplete;
+    ':visited'?: StylesPropertiesComplete;
+    ':link'?: StylesPropertiesComplete;
+    ':any-link'?: StylesPropertiesComplete;
+  };
+  heading?: StylesPropertiesComplete;
+  h1?: StylesPropertiesComplete;
+  h2?: StylesPropertiesComplete;
+  h3?: StylesPropertiesComplete;
+  h4?: StylesPropertiesComplete;
+  h5?: StylesPropertiesComplete;
+  h6?: StylesPropertiesComplete;
+  caption?: StylesPropertiesComplete;
+  cite?: StylesPropertiesComplete;
+}
+
+export type StylesPropertiesComplete = StylesProperties & {
+  border?: unknown;
+  color?: unknown;
+  dimensions?: unknown;
+  spacing?: unknown;
+  typography?: unknown;
+  filter?: unknown;
+  shadow?: unknown;
+  outline?: unknown;
+  css?: unknown;
+};
+export type StylesPropertiesAndElementsComplete = StylesProperties & {
+  border?: unknown;
+  color?: unknown;
+  dimensions?: unknown;
+  spacing?: unknown;
+  typography?: unknown;
+  filter?: unknown;
+  shadow?: unknown;
+  outline?: unknown;
+  css?: unknown;
+  elements?: StylesElementsPropertiesComplete;
 };
 
-type FontSizes = Record<Keys, string>;
-type FontFamilies = Record<Keys, string>;
-
-/**
- * Properties related to Typography.
- */
-export type ThemePropertiesTypography = {
-  /**
-   * Font size presets for the font size selector.
-   * Generates a single class (`.has-{slug}-color`) and custom property (`--wp--preset--font-size--{slug}`) per preset value.
-   */
-  fontSizes?: FontSizes;
-  fontFamilies?: FontFamilies;
-  [k: string]: unknown;
-};
+export interface ThemePropertiesStyles {
+  border?: unknown;
+  color?: unknown;
+  spacing?: unknown;
+  typography?: unknown;
+  filter?: unknown;
+  shadow?: unknown;
+  outline?: unknown;
+  css?: unknown;
+  elements?: StylesElementsPropertiesComplete;
+  blocks?: ThemePropertiesBlocks;
+}

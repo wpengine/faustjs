@@ -12,9 +12,8 @@ export function getLayoutOptions(
   layout?: LayoutProperties,
 ): ThemePropertiesLayout {
   if (!isEmpty(layout)) {
-    /* eslint-disable @typescript-eslint/no-unsafe-return */
     return {
-      ...layout,
+      layout,
     };
   }
   return {};
