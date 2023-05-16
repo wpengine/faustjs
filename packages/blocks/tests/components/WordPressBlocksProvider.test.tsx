@@ -7,7 +7,7 @@ import {
   WordPressBlocksProvider,
   useBlocksTheme,
 } from '../../src/components/WordPressBlocksProvider';
-import type { ThemeJson } from '../../src/theme';
+import type { BlocksTheme } from '../../src/types/theme';
 import { renderHook } from '@testing-library/react-hooks';
 
 describe('useBlocksTheme', () => {
@@ -21,7 +21,7 @@ describe('useBlocksTheme', () => {
 
   it('returns the passed in theme from WordPressBlocksProvider', async () => {
     const wrapper = ({ children }: PropsWithChildren<{}>) => {
-      const theme: ThemeJson = {
+      const theme: BlocksTheme = {
         colors: {
           palette: {
             primary: 'black',
@@ -49,7 +49,7 @@ describe('useBlocksTheme', () => {
 
   it('uses the path param', async () => {
     const wrapper = ({ children }: PropsWithChildren<{}>) => {
-      const theme: ThemeJson = {
+      const theme: BlocksTheme = {
         colors: {
           palette: {
             primary: 'black',
