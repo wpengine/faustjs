@@ -1,13 +1,13 @@
-import { ThemeJson } from '../theme.js';
-import { BlockWithAttributes } from '../components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../types/theme.js';
+import { BlockWithAttributes } from '../../components/WordPressBlocksViewer.js';
 import getInlineStyles from './getInlineStyles.js';
 import getTypographyStyles from './getTypographyStyles.js';
 import getBackgroundStyles from './getBackgroundStyles.js';
 import getTextStyles from './getTextStyles.js';
 import getBorderStyles from './getBorderStyles.js';
 
-export default function getStyles<T extends BlockWithAttributes>(
-  theme: ThemeJson,
+export function getStyles<T extends BlockWithAttributes>(
+  theme: BlocksTheme,
   block: T,
 ): React.CSSProperties {
   return {

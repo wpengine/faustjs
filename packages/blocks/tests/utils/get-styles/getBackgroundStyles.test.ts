@@ -1,6 +1,6 @@
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer.js';
-import { ThemeJson } from '../../src/theme.js';
-import getBackgroundStyles from '../../src/utils/getBackgroundStyles.js';
+import { BlockWithAttributes } from '../../../src/components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../../src/types/theme.js';
+import getBackgroundStyles from '../../../src/utils/get-styles/getBackgroundStyles.js';
 
 describe('getBackgroundStyles()', () => {
   const theme = {};
@@ -20,7 +20,7 @@ describe('getBackgroundStyles()', () => {
   ])(
     'theme %p and block %p expecting background Styles %p',
     (
-      theme: ThemeJson,
+      theme: BlocksTheme,
       block: BlockWithAttributes,
       result: React.CSSProperties | undefined,
     ) => {

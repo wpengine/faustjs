@@ -1,14 +1,14 @@
-import { ThemeJson } from '../theme.js';
-import { BlockWithAttributes } from '../components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../types/theme.js';
+import { BlockWithAttributes } from '../../components/WordPressBlocksViewer.js';
 
 /**
- *
  * Returns the specified block Background Styles
+ *
  * @param theme Block Theme object
  * @returns React CSS Properties object
  */
 export default function getBackgroundStyles<T extends BlockWithAttributes>(
-  theme: ThemeJson,
+  theme: BlocksTheme,
   block: T,
 ): React.CSSProperties {
   const { attributes } = block;
