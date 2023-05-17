@@ -44,7 +44,7 @@ describe('useBlocksTheme', () => {
     const theme = result.current;
 
     expect(result.error).toBeUndefined();
-    expect(theme?.colors.palette).toStrictEqual({ primary: 'black' });
+    expect(theme?.colors?.palette).toStrictEqual({ primary: 'black' });
   });
 
   it('uses the path param', async () => {

@@ -53,6 +53,13 @@ export interface ContentBlock {
   name?: string;
   renderedHtml?: string;
 }
+
+export type BlockWithAttributes<
+  T extends ContentBlock = Record<string, unknown>,
+> = T & {
+  attributes?: Record<string, unknown> | null;
+};
+
 /**
  * WordPressBlocksViewer is the main component that renders blocks taken from WordPress as a list of ContentBlock[] data.
  * @param props WordpressBlocksViewerProps
