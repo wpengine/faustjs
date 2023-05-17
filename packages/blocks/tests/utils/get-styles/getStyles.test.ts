@@ -30,7 +30,7 @@ describe('getStyles()', () => {
   ])(
     'theme %p and block %p expecting css Styles %p',
     (
-      theme: ThemeJson,
+      theme: BlocksTheme,
       block: BlockWithAttributes,
       result: React.CSSProperties | undefined,
     ) => {
