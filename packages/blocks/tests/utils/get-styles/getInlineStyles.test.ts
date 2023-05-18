@@ -1,4 +1,4 @@
-import getInlineStyles from '../../src/utils/getInlineStyles.js';
+import getInlineStyles from '../../../src/utils/get-styles/getInlineStyles.js';
 
 describe('getInlineStyles()', () => {
   it.each([

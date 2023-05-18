@@ -1,6 +1,6 @@
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer.js';
-import { ThemeJson } from '../../src/theme.js';
-import getTypographyStyles from '../../src/utils/getTypographyStyles.js';
+import { BlockWithAttributes } from '../../../src/components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../../src/types/theme.js';
+import getTypographyStyles from '../../../src/utils/get-styles/getTypographyStyles.js';
 
 describe('getTypographyStyles()', () => {
   const theme = {};
@@ -22,7 +22,7 @@ describe('getTypographyStyles()', () => {
   ])(
     'theme %p and block %p expecting typography Styles %p',
     (
-      theme: ThemeJson,
+      theme: BlocksTheme,
       block: BlockWithAttributes,
       result: React.CSSProperties | undefined,
     ) => {

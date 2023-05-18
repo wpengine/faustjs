@@ -1,9 +1,9 @@
-import { ThemeJson } from '../../src/theme.js';
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer.js';
-import getStyles from '../../src/utils/getStyles.js';
+import { BlocksTheme } from '../../../src/types/theme.js';
+import { getStyles } from '../../../src/utils/get-styles/getStyles.js';
+import { BlockWithAttributes } from '../../../src/components/WordPressBlocksViewer.js';
 
 describe('getStyles()', () => {
-  const theme: ThemeJson = {};
+  const theme: BlocksTheme = {};
   it.each([
     [theme, {}, {}],
     [theme, { attributes: {} }, {}],
@@ -30,7 +30,7 @@ describe('getStyles()', () => {
   ])(
     'theme %p and block %p expecting css Styles %p',
     (
-      theme: ThemeJson,
+      theme: BlocksTheme,
       block: BlockWithAttributes,
       result: React.CSSProperties | undefined,
     ) => {

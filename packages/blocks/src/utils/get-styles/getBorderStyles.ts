@@ -1,5 +1,5 @@
-import { ThemeJson } from '../theme.js';
-import { BlockWithAttributes } from '../components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../types/theme.js';
+import { BlockWithAttributes } from '../../components/WordPressBlocksViewer.js';
 
 /**
  *
@@ -8,7 +8,7 @@ import { BlockWithAttributes } from '../components/WordPressBlocksViewer.js';
  * @returns React CSS Properties object
  */
 export default function getBorderStyles<T extends BlockWithAttributes>(
-  theme: ThemeJson,
+  theme: BlocksTheme,
   block: T,
 ): React.CSSProperties {
   const { attributes } = block;

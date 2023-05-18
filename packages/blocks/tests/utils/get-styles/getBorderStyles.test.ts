@@ -1,6 +1,6 @@
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer.js';
-import { ThemeJson } from '../../src/theme.js';
-import getBorderStyles from '../../src/utils/getBorderStyles.js';
+import { BlockWithAttributes } from '../../../src/components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../../src/types/theme.js';
+import getBorderStyles from '../../../src/utils/get-styles/getBorderStyles.js';
 
 describe('getBorderStyles()', () => {
   const theme = {};
@@ -20,7 +20,7 @@ describe('getBorderStyles()', () => {
   ])(
     'theme %p and block %p expecting border Styles %p',
     (
-      theme: ThemeJson,
+      theme: BlocksTheme,
       block: BlockWithAttributes,
       result: React.CSSProperties | undefined,
     ) => {

@@ -1,6 +1,6 @@
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer.js';
-import { ThemeJson } from '../../src/theme.js';
-import getTextStyles from '../../src/utils/getTextStyles.js';
+import { BlockWithAttributes } from '../../../src/components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../../../src/types/theme.js';
+import getTextStyles from '../../../src/utils/get-styles/getTextStyles.js';
 
 describe('getTextStyles()', () => {
   const theme = {};
@@ -20,7 +20,7 @@ describe('getTextStyles()', () => {
   ])(
     'theme %p and block %p expecting text Styles %p',
     (
-      theme: ThemeJson,
+      theme: BlocksTheme,
       block: BlockWithAttributes,
       result: React.CSSProperties | undefined,
     ) => {

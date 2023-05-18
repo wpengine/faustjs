@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import get from 'lodash/get.js';
-import { ThemeJson } from '../theme.js';
+import { BlocksTheme } from '../types/theme.js';
 
 export type WordPressBlockBase = React.FC & {
   displayName: string;
@@ -18,7 +18,7 @@ export type WordPressBlock<P = Record<string, any>> = FC<P> &
   Partial<Pick<WordPressBlockBase, 'config' | 'displayName' | 'name'>>;
 
 export type WordPressBlocksContextType = WordPressBlock[] | undefined;
-export type WordPressThemeContextType = ThemeJson | undefined;
+export type WordPressThemeContextType = BlocksTheme | undefined;
 
 export const WordPressBlocksContext =
   React.createContext<WordPressBlocksContextType>(undefined);
@@ -27,7 +27,7 @@ export const WordPressThemeContext =
 
 export type WordPressBlocksProviderConfig = {
   blocks: WordPressBlock[];
-  theme?: ThemeJson;
+  theme?: BlocksTheme;
 };
 
 /**
@@ -60,7 +60,7 @@ export function WordPressBlocksProvider(props: {
  * const theme = useBlocksTheme();
  * ```
  */
-export function useBlocksTheme(): ThemeJson;
+export function useBlocksTheme(): BlocksTheme;
 export function useBlocksTheme(path: string): ReturnType<typeof get>;
 export function useBlocksTheme(path?: string) {
   const themeContext = React.useContext(WordPressThemeContext);
