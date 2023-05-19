@@ -1,5 +1,13 @@
 # @faustwp/core
 
+## 0.2.13
+
+### Patch Changes
+
+- 8eec554: Added the WordPress template to the possible templates list
+- 200bdb8: Add min engines declaration in package.json
+- 0521fd3: Bug Fix: `getWordPressProps` resolves url when using `getServerSideProps`.
+
 ## 0.2.11
 
 ### Patch Changes

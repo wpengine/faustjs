@@ -1,5 +1,11 @@
 # Faust
 
+## 0.8.7
+
+### Patch Changes
+
+- 2eeb366: The default plugin setting for "Disable WordPress Theme Admin Pages" is now unchecked, requiring a user to opt-in after initial activation.
+
 ## 0.8.6
 
 ### Patch Changes
