@@ -35,7 +35,7 @@ const windowApolloState =
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 let apolloAuthClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient(authenticated = false) {
+export function createApolloClient(authenticated = false) {
   const { possibleTypes, usePersistedQueries, useGETForQueries } = getConfig();
 
   let inMemoryCacheObject: InMemoryCacheConfig = {
