@@ -1,6 +1,3 @@
-import { useMemo } from 'react';
-import merge from 'deepmerge';
-import isEqual from 'lodash/isEqual.js';
 import {
   ApolloClient,
   ApolloClientOptions,
@@ -9,14 +6,20 @@ import {
   InMemoryCacheConfig,
   NormalizedCacheObject,
 } from '@apollo/client';
+import merge from 'deepmerge';
+import isEqual from 'lodash/isEqual.js';
+import { useMemo } from 'react';
 // eslint-disable-next-line import/extensions
 import { setContext } from '@apollo/client/link/context';
 // eslint-disable-next-line import/extensions
+import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
+import { sha256 } from 'crypto-hash';
+// eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
-import { getConfig } from './config/index.js';
-import { hooks } from './wpHooks/index.js';
-import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { getAccessToken } from './auth/index.js';
+import { getConfig } from './config/index.js';
+import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
+import { hooks } from './wpHooks/index.js';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
@@ -33,7 +36,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 let apolloAuthClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createApolloClient(authenticated = false) {
-  const { possibleTypes } = getConfig();
+  const { possibleTypes, usePersistedQueries, useGETForQueries } = getConfig();
 
   let inMemoryCacheObject: InMemoryCacheConfig = {
     possibleTypes,
@@ -53,28 +56,36 @@ function createApolloClient(authenticated = false) {
     {},
   ) as InMemoryCacheConfig;
 
-  const httpLink = createHttpLink({
+  let linkChain = createHttpLink({
     uri: getGraphqlEndpoint(),
+    useGETForQueries,
   });
 
-  const authLink = setContext((_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    const token = getAccessToken();
+  // If the user requested to use persisted queries, apply the link.
+  if (usePersistedQueries) {
+    linkChain = createPersistedQueryLink({ sha256 }).concat(linkChain);
+  }
 
-    // return the headers to the context so httpLink can read them
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : '',
-      },
-    };
-  });
+  // If the request is coming from the auth client, apply the auth link.
+  if (authenticated) {
+    linkChain = setContext((_, { headers }) => {
+      // get the authentication token from local storage if it exists
+      const token = getAccessToken();
+
+      // return the headers to the context so httpLink can read them
+      return {
+        headers: {
+          ...headers,
+          authorization: token ? `Bearer ${token}` : '',
+        },
+      };
+    }).concat(linkChain);
+  }
 
   let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
     ssrMode: typeof window === 'undefined',
     connectToDevTools: typeof window !== 'undefined',
-    // uri: getGraphqlEndpoint(),
-    link: authenticated ? authLink.concat(httpLink) : httpLink,
+    link: linkChain,
     cache: new InMemoryCache(inMemoryCacheObject).restore(windowApolloState),
   };
 
