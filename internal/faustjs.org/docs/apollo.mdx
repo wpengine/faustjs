@@ -61,14 +61,14 @@ export default setConfig({
 });
 ```
 
-### Changing the Desired HTTP Method for Your GraphQL Requests
+## Changing the Desired HTTP Method for Your GraphQL Requests
 
-Since Faust 0.3.0, GraphQL requests are made using the `GET` HTTP method. Since most hosting providers cache `GET` requests, this will help keep your WordPress instance below capacity. However, there are some instances where you may want Apollo to use the `POST` HTTP method for GraphQL Requests:
+Since Faust 0.3.0, GraphQL requests are made using the `GET` HTTP method. Since most hosting providers cache `GET` requests, this will help keep your WordPress instance below capacity. However, there are some instances where you may want Apollo to use the `POST` HTTP method for GraphQL requests:
 
 - You are receiving stale data
 - Your GraphQL queries are too long to be stringified into a URL (this length is determined by your hosting provider)
 
-If you would Faust to switch from making `GET` requests and instead use `POST`, you can set the following property in your `faust.config.js`:
+If you want Faust to use `POST` requests instead of `GET` requests, you can set the following property in your `faust.config.js`:
 
 ```jsx title="faust.config.js" {12}
 import { setConfig } from '@faustwp/core';
@@ -104,7 +104,7 @@ Just make sure to enable [WPGraphQL introspection](https://www.wpgraphql.com/doc
 Running the command will create the following file: `possibleTypes.json`. You can commit this file to your version control system.
 Now make sure you import this file to the `faust.config.js`:
 
-```json title="faust.config.js" {11}
+```jsx title="faust.config.js" {11}
 import { setConfig } from '@faustwp/core';
 import templates from './wp-templates';
 import possibleTypes from './possibleTypes.json';
