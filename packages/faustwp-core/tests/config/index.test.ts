@@ -1,6 +1,6 @@
 import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustPlugin } from '../../src';
-import { setConfig } from '../../src/config/index';
+import { FaustConfig, getConfig, setConfig } from '../../src/config/index';
 
 class HelloWorldTestPlugin {
   constructor() {}
@@ -52,5 +52,33 @@ describe('config', () => {
         templates: [],
       }),
     ).not.toThrowError();
+  });
+
+  test('config sets useGETForRequests to true by default', () => {
+    setConfig({} as any as FaustConfig);
+
+    expect(getConfig().useGETForQueries).toBeTruthy();
+  });
+
+  test('useGETForRequests can be modified', () => {
+    setConfig({ useGETForQueries: false } as any as FaustConfig);
+    expect(getConfig().useGETForQueries).toBeFalsy();
+
+    setConfig({ useGETForQueries: true } as any as FaustConfig);
+    expect(getConfig().useGETForQueries).toBeTruthy();
+  });
+
+  test('config sets usePersistedQueries to false by default', () => {
+    setConfig({} as any as FaustConfig);
+
+    expect(getConfig().useGETForQueries).toBeFalsy();
+  });
+
+  test('usePersistedQueries can be modified', () => {
+    setConfig({ usePersistedQueries: false } as any as FaustConfig);
+    expect(getConfig().usePersistedQueries).toBeFalsy();
+
+    setConfig({ usePersistedQueries: true } as any as FaustConfig);
+    expect(getConfig().usePersistedQueries).toBeTruthy();
   });
 });
