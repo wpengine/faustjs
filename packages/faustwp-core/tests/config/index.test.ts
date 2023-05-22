@@ -71,7 +71,7 @@ describe('config', () => {
   test('config sets usePersistedQueries to false by default', () => {
     setConfig({} as any as FaustConfig);
 
-    expect(getConfig().useGETForQueries).toBeFalsy();
+    expect(getConfig().usePersistedQueries).toBeFalsy();
   });
 
   test('usePersistedQueries can be modified', () => {
