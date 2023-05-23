@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { setContext } from '@apollo/client/link/context';
 // eslint-disable-next-line import/extensions
 import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries';
-import { sha256 } from 'crypto-hash';
+import { sha256 } from 'js-sha256';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
 import { getAccessToken } from './auth/index.js';
