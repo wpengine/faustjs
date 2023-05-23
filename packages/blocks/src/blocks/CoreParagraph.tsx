@@ -11,17 +11,17 @@ import {
 
 export type CoreParagraphFragmentProps = ContentBlock & {
   attributes: {
-    cssClassName?: string;
-    backgroundColor?: string;
-    content?: string;
-    style?: string;
-    textColor?: string;
-    fontSize?: string;
-    fontFamily?: string;
-    direction?: string;
-    dropCap?: string;
-    gradient?: string;
-    align?: string;
+    cssClassName: string;
+    backgroundColor: string;
+    content: string;
+    style: string;
+    textColor: string;
+    fontSize: string;
+    fontFamily: string;
+    direction: string;
+    dropCap: string;
+    gradient: string;
+    align: string;
   };
 };
 
