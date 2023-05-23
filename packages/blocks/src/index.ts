@@ -15,6 +15,7 @@ import {
 import { fromThemeJson } from './utils/from-theme-json/fromThemeJson.js';
 import { getStyles } from './utils/get-styles/getStyles.js';
 import { BlocksTheme } from './types/theme.js';
+import coreBlocks from './blocks/index.js';
 
 export {
   WordPressBlocksContext,
@@ -29,4 +30,5 @@ export {
   BlocksTheme,
   BlockWithAttributes,
   fromThemeJson,
+  coreBlocks,
 };

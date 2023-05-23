@@ -6,6 +6,7 @@
     "dev": "faust dev",
     "build": "faust build",
     "generate": "faust generatePossibleTypes",
+    "stylesheet": "faust generateGlobalStylesheet",
     "start": "faust start"
   },
   "dependencies": {

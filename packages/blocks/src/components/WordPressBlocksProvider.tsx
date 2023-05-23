@@ -3,6 +3,7 @@ import get from 'lodash/get.js';
 import { BlocksTheme } from '../types/theme.js';
 
 export type WordPressBlockBase = React.FC & {
+  fragments?: string;
   displayName: string;
   name: string;
   config: {
@@ -15,7 +16,9 @@ export type WordPressBlockBase = React.FC & {
  * used to match it with equivalent block data from the API
  */
 export type WordPressBlock<P = Record<string, any>> = FC<P> &
-  Partial<Pick<WordPressBlockBase, 'config' | 'displayName' | 'name'>>;
+  Partial<
+    Pick<WordPressBlockBase, 'config' | 'displayName' | 'name' | 'fragments'>
+  >;
 
 export type WordPressBlocksContextType = WordPressBlock[] | undefined;
 export type WordPressThemeContextType = BlocksTheme | undefined;
