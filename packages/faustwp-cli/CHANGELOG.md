@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 0.2.13
+
+### Patch Changes
+
+- 200bdb8: Add min engines declaration in package.json
+
 ## 0.2.12
 
 ### Patch Changes
