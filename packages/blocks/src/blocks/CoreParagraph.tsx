@@ -11,17 +11,17 @@ import {
 
 export type CoreParagraphFragmentProps = ContentBlock & {
   attributes: {
-    cssClassName: string;
-    backgroundColor: string;
-    content: string;
-    style: string;
-    textColor: string;
-    fontSize: string;
-    fontFamily: string;
-    direction: string;
-    dropCap: string;
-    gradient: string;
-    align: string;
+    cssClassName?: string;
+    backgroundColor?: string;
+    content?: string;
+    style?: string;
+    textColor?: string;
+    fontSize?: string;
+    fontFamily?: string;
+    direction?: string;
+    dropCap?: string;
+    gradient?: string;
+    align?: string;
   };
 };
 
@@ -36,7 +36,7 @@ export function CoreParagraph(
       style={style}
       className={attributes?.cssClassName}
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: attributes.content }}
+      dangerouslySetInnerHTML={{ __html: attributes?.content ?? '' }}
     />
   );
 }
