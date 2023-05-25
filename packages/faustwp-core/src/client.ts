@@ -63,7 +63,10 @@ export function createApolloClient(authenticated = false) {
 
   // If the user requested to use persisted queries, apply the link.
   if (usePersistedQueries) {
-    linkChain = createPersistedQueryLink({ sha256 }).concat(linkChain);
+    linkChain = createPersistedQueryLink({
+      sha256,
+      useGETForHashedQueries: useGETForQueries,
+    }).concat(linkChain);
   }
 
   // If the request is coming from the auth client, apply the auth link.
