@@ -12,6 +12,9 @@ import {
   FeaturedImage,
   SEO,
 } from '../components';
+import { WordPressBlocksViewer } from '@faustwp/blocks';
+import { coreBlocks } from '@faustwp/blocks';
+import { flatListToHierarchical } from '@faustwp/core';
 
 export default function Component(props) {
   // Loading state for previews
@@ -23,7 +26,11 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
+  const { title, editorBlocks, featuredImage } = props?.data?.page ?? {
+    title: '',
+  };
+
+  console.log('editorBlocks', editorBlocks);
 
   return (
     <>
@@ -41,7 +48,9 @@ export default function Component(props) {
         <>
           <EntryHeader title={title} image={featuredImage?.node} />
           <Container>
-            <ContentWrapper content={content} />
+            <WordPressBlocksViewer
+              blocks={flatListToHierarchical(editorBlocks)}
+            />
           </Container>
         </>
       </Main>
@@ -63,6 +72,7 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
+  ${coreBlocks.CoreCode.fragments.entry}
   query GetPageData(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -71,7 +81,13 @@ Component.query = gql`
   ) {
     page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
-      content
+      editorBlocks {
+        __typename
+        renderedHtml
+        id: clientId
+        parentClientId
+        ...${coreBlocks.CoreCode.fragments.key}
+      }
       ...FeaturedImageFragment
     }
     generalSettings {
