@@ -13,7 +13,7 @@ const excludedFullContributors = [
   'John Parris <public@johnparris.com>',
 ];
 
-const excludedShortContributors = ['github-actions[bot]'];
+const excludedShortContributors = ['github-actions[bot]', 'Chris Wiegman'];
 
 const publicRepos = [
   'https://github.com/wpengine/wp-graphql-content-blocks.git',
