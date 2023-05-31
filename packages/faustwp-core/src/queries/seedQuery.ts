@@ -25,8 +25,11 @@ export interface SeedNode {
 }
 
 export const SEED_QUERY = gql`
-  query GetNodeByUri($uri: String!) {
-    node: nodeByUri(uri: $uri) {
+  query GetNodeByUri($uri: String = "", $id: ID = "", $isUsingUri: Boolean!) {
+    nodeByUri(uri: $uri) @skip(if: $isUsingUri) {
+      ...NodeByUri
+    }
+    contentNode(id: $id, idType: DATABASE_ID) @include(if: $isUsingUri) {
       ...NodeByUri
     }
   }
