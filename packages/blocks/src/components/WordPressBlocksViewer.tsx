@@ -41,7 +41,7 @@ export interface WordpressBlocksViewerProps {
    * <WordPressBlocksViewer fallbackBlock={MyFallbackComponent} />
    * ```
    */
-  fallbackBlock: React.FC<ContentBlock>;
+  fallbackBlock?: React.FC<ContentBlock>;
 }
 
 export interface ContentBlock {

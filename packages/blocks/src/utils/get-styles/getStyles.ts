@@ -5,6 +5,7 @@ import getTypographyStyles from './getTypographyStyles.js';
 import getBackgroundStyles from './getBackgroundStyles.js';
 import getTextStyles from './getTextStyles.js';
 import getBorderStyles from './getBorderStyles.js';
+import getLayoutStyles from './getLayoutStyles.js';
 
 export function getStyles<T extends BlockWithAttributes>(
   theme: BlocksTheme,
@@ -16,5 +17,6 @@ export function getStyles<T extends BlockWithAttributes>(
     ...getBackgroundStyles(theme, block),
     ...getTextStyles(theme, block),
     ...getBorderStyles(theme, block),
+    ...getLayoutStyles(theme, block),
   };
 }

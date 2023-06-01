@@ -1,0 +1,48 @@
+/** @jest-environment jsdom */
+import * as React from 'react';
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { WordPressBlocksProvider } from '../../src/components/WordPressBlocksProvider';
+import {
+  CoreColumns,
+  CoreColumnsFragmentProps,
+} from '../../src/blocks/CoreColumns.js';
+import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
+
+function renderProvider(props: BlockWithAttributes<CoreColumnsFragmentProps>) {
+  const blocks: any = {
+    CoreParagraph: () => {
+      return <div>Hello World</div>;
+    },
+  };
+  return render(
+    <WordPressBlocksProvider config={{ blocks, theme: {} }}>
+      <CoreColumns {...props} />
+    </WordPressBlocksProvider>,
+  );
+}
+
+describe('<CoreColumns />', () => {
+  test('renders the component correctly', () => {
+    renderProvider({
+      innerBlocks: [
+        {
+          name: 'CoreParagraph',
+        },
+      ],
+      attributes: {},
+    });
+    expect(screen.queryByText('Hello World')).toBeInTheDocument();
+  });
+
+  test('applies the correct styles', () => {
+    renderProvider({
+      attributes: {
+        cssClassName: 'has-background-color',
+        style:
+          '{"color":{"background":"#602929"},"typography":{"fontSize":"53px"}}',
+      },
+    });
+    expect(screen.queryByText('Hello World')).toMatchInlineSnapshot(`null`);
+  });
+});
