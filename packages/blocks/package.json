@@ -9,7 +9,8 @@
     "@faustwp/core": ">=0.2.13",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
-    "@wordpress/style-engine": ">=1.15.0"
+    "@wordpress/style-engine": ">=1.15.0",
+    "@apollo/client": ">=3.6.6"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
