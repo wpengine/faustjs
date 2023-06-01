@@ -25,16 +25,26 @@ export interface SeedNode {
 }
 
 export const SEED_QUERY = gql`
-  query GetNodeByUri($uri: String = "", $id: ID = "", $isUsingUri: Boolean!) {
-    nodeByUri(uri: $uri) @skip(if: $isUsingUri) {
-      ...NodeByUri
+  query GetSeedNode(
+    $id: ID = -1
+    $uri: String = ""
+    $isUsingUri: Boolean = true
+  ) {
+    ... on RootQuery @include(if: $isUsingUri) {
+      nodeByUri(uri: $uri) {
+        __typename
+        ...GetNode
+      }
     }
-    contentNode(id: $id, idType: DATABASE_ID) @include(if: $isUsingUri) {
-      ...NodeByUri
+    ... on RootQuery @skip(if: $isUsingUri) {
+      contentNode(id: $id, idType: DATABASE_ID) {
+        __typename
+        ...GetNode
+      }
     }
   }
 
-  fragment NodeByUri on UniformResourceIdentifiable {
+  fragment GetNode on UniformResourceIdentifiable {
     __typename
     uri
     id
