@@ -104,12 +104,12 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       );
 
       let databaseId = '';
-      let isUsingUri = false; // This informs the Seed Query to use nodeByUri vs contentNode.
+      let isUsingUri = true; // This informs the Seed Query to use nodeByUri vs contentNode.
 
       if (isPreview) {
         seedQueryUri = getQueryParam(window.location.href, 'previewPathname');
         databaseId = getQueryParam(window.location.href, 'p');
-        isUsingUri = true;
+        isUsingUri = false;
 
         if (seedQueryUri === '') {
           throw new Error(
