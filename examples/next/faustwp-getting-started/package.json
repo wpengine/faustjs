@@ -6,12 +6,13 @@
     "dev": "faust dev",
     "build": "faust build",
     "generate": "faust generatePossibleTypes",
+    "stylesheet": "faust generateGlobalStylesheet",
     "start": "faust start"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
-    "@faustwp/cli": "0.2.12",
-    "@faustwp/core": "0.2.11",
+    "@faustwp/cli": "0.2.13",
+    "@faustwp/core": "0.2.13",
     "@wordpress/base-styles": "^4.7.0",
     "@wordpress/block-library": "^7.13.0",
     "classnames": "^2.3.1",

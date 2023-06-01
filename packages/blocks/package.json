@@ -1,12 +1,12 @@
 {
   "name": "@faustwp/blocks",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Faust Blocks",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/mjs/index.d.ts",
   "peerDependencies": {
-    "@faustwp/core": ">=0.2.10",
+    "@faustwp/core": ">=0.2.13",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
     "@wordpress/style-engine": ">=1.15.0",
