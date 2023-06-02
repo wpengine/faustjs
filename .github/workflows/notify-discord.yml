@@ -18,7 +18,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
-          args: '{{ github.ref_name }} has been released!'
-
-      - name: DEBUGGING
-        run: echo ${{ github.ref_name }}
+          args: '${{ github.ref_name }} has been released!'
