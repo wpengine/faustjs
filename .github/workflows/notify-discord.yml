@@ -1,0 +1,24 @@
+name: Notify Discord
+
+on:
+  push:
+    tags:
+      - '@faustwp/wordpress-plugin@*'
+      - '@faustwp/core@*'
+      - '@faustwp/cli@*'
+      - '@faustwp/blocks@*'
+      - '@faustwp/test@*'
+
+jobs:
+  release_plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
+
+      - name: DEBUGGING
+        run: echo ${{ github.ref_name }}
