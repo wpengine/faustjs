@@ -27,23 +27,28 @@ describe('<CoreCode />', () => {
   test('applies the correct styles', () => {
     const tree = renderProvider({
       attributes: {
-        backgroundColor: 'secondary',
-        textColor: 'primary',
+        backgroundColor: 'vivid-red',
+        borderColor: 'pale-cyan-blue',
+        content: '&lt;div&gt;My code block&lt;/div&gt;',
         cssClassName:
-          'wp-block-code has-secondary-background-color has-background',
-        style: '{"typography":{"fontSize":"36px"}}',
-        content: '&lt;div&gt;My code block here&lt;/div&gt;',
+          'wp-block-code has-border-color has-pale-cyan-blue-border-color has-background-color has-vivid-red-background-color has-text-color has-background has-medium-font-size',
+        fontSize: 'medium',
+        style: '{"border":{"radius":"37px","width":"27px"}}',
+        textColor: 'background',
       },
     });
 
-    expect(tree.container).toMatchInlineSnapshot(`
-      <div>
-        <pre
-          style="font-size:36px;background-color:var(--wp--preset--color--secondary)"
-          class="wp-block-code has-secondary-background-color has-background">
-          <code>&lt;div&gt;My code block here&lt;/div&gt;</code>
-        </pre>
-      </div>
+    expect(tree.container).toMatchSnapshot(`
+    <div>
+      <pre
+        class="wp-block-code has-border-color has-pale-cyan-blue-border-color has-background-color has-vivid-red-background-color has-text-color has-background has-medium-font-size"
+        style="border-width: 27px; border-radius: 37px;"
+      >
+        <code>
+          &lt;div&gt;My code block&lt;/div&gt;
+        </code>
+      </pre>
+    </div>    
     `);
   });
 });
