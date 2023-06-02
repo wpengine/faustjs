@@ -148,7 +148,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
         const seedQueryRes = await client.query(queryArgs);
 
-        const node = seedQueryRes?.data?.node as SeedNode;
+        const node = isPreview
+          ? (seedQueryRes?.data?.contentNode as SeedNode)
+          : (seedQueryRes?.data?.nodeByUri as SeedNode);
 
         setSeedNode(node);
       }
