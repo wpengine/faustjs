@@ -7,6 +7,7 @@ on:
       - '@faustwp/core@*'
       - '@faustwp/cli@*'
       - '@faustwp/blocks@*'
+      # Test this action without creating a full release.
       - '@faustwp/test@*'
 
 jobs:
@@ -18,18 +19,6 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: Faust.js Bot
           DISCORD_AVATAR: https://pbs.twimg.com/profile_images/1658588429385601025/QZhc7IAR_400x400.png
-          DISCORD_EMBEDS: |
-            [
-              {
-                "title": "Meow!",
-                "color": 1127128
-              },
-              {
-                "title": "Meow-meow!",
-                "color": 14177041
-              }
-            ]
-
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
           args: '${{ github.ref_name }} has been released!'
