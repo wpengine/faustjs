@@ -12,6 +12,18 @@ export interface FaustConfig {
   loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
+  /**
+   * Instruct the Apollo Client to use Persisted Queries
+   *
+   * @link https://www.apollographql.com/docs/apollo-server/performance/apq/#apollo-client-setup
+   */
+  usePersistedQueries?: boolean;
+  /**
+   * Instruct the Apollo Client to send applicable requests as GET instead of POST.
+   *
+   * @link https://www.apollographql.com/docs/react/networking/advanced-http-networking/#the-httplink-object
+   */
+  useGETForQueries?: boolean;
 }
 
 let config: FaustConfig;
@@ -32,6 +44,8 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
     loginPagePath: '/login',
     experimentalToolbar: false,
+    usePersistedQueries: false,
+    useGETForQueries: true,
   });
 
   Object.keys(cfg).forEach((key) => {
