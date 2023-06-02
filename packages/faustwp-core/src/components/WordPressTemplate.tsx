@@ -116,8 +116,6 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         }
       }
 
-      console.log({ seedQueryUri, databaseId });
-
       let queryArgs: QueryOptions = {
         query: SEED_QUERY,
         variables: {
