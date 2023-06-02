@@ -28,16 +28,16 @@ export const SEED_QUERY = gql`
   query GetSeedNode(
     $id: ID = -1
     $uri: String = ""
-    $isUsingUri: Boolean = true
+    $asPreview: Boolean = false
   ) {
-    ... on RootQuery @include(if: $isUsingUri) {
+    ... on RootQuery @skip(if: $asPreview) {
       nodeByUri(uri: $uri) {
         __typename
         ...GetNode
       }
     }
-    ... on RootQuery @skip(if: $isUsingUri) {
-      contentNode(id: $id, idType: DATABASE_ID) {
+    ... on RootQuery @include(if: $asPreview) {
+      contentNode(id: $id, idType: DATABASE_ID, asPreview: true) {
         __typename
         ...GetNode
       }
