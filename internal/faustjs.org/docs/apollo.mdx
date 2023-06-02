@@ -86,6 +86,20 @@ export default setConfig({
 });
 ```
 
+## Making One-Off POST/GET Requests
+
+If you want to execute a GraphQL request with a different method than the default behavior on a one-off basis, you can modify the `fetchOptions` in the Apollo `useQuery` hook to specify your desired method:
+
+```js
+const { data, loading, error } = useQuery(MY_QUERY, {
+  context: {
+    fetchOptions: {
+      method: 'POST',
+    },
+  },
+});
+```
+
 ## Generating Possible types JSON
 
 Apollo Client v3 requires you to provide a `possibleTypes object` that maps interfaces to all their possible types.
