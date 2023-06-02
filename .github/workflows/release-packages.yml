@@ -42,7 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Possibly deploy WordPress plugin
         # Checks the changesets publishedPackages output
         # If there is a published package named "@faustwp/wordpress-plugin"
@@ -57,3 +57,11 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           PLUGIN_DIR: plugins/faustwp
           SLUG: faustwp
+
+      - name: Notify Headless WordPress Discord if published
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
+        with:
+          args: '{{ github.ref_name }} has been released!'
