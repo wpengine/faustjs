@@ -2,4 +2,4 @@
 '@faustwp/blocks': patch
 ---
 
-Add reference implementation of CoreColums and CoreColumn block
+Add reference implementation of CoreColumns and CoreColumn block
