@@ -1,5 +1,7 @@
 ---
-'@faustwp/core': patch
+'@faustwp/core': minor
 ---
 
-A bug has been fixed where the seed query was failing when attempting to view an unpublished WordPress with a draft status.
+**BREAKING** - Fixed seed query failing when attempting to view an unpublished WordPress with a draft status.
+
+Previously the seed query would only receive `data.node`. These changes update the seed query to now recieve both `data.contentNode` & `data.nodeByUri`. Note that projects hooking into Faust's `seedQueryDocumentNode` filter will need to refactor in order to use the new nodeByUri/contentNode syntax.
