@@ -119,9 +119,10 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       let queryArgs: QueryOptions = {
         query: SEED_QUERY,
         variables: {
-          uri: seedQueryUri,
-          id: databaseId,
-          asPreview: isPreview,
+          // Conditionally add relevant query args.
+          ...(!isPreview && { uri: seedQueryUri }),
+          ...(isPreview && { id: databaseId }),
+          ...(isPreview && { asPreview: true }),
         },
       };
 
