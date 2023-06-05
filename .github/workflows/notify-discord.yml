@@ -19,7 +19,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: Faust.js Bot
           DISCORD_AVATAR: https://pbs.twimg.com/profile_images/1658588429385601025/QZhc7IAR_400x400.png
-          DISCORD_EMBED: |
+          DISCORD_EMBEDS: |
             toJson({
               'title': '✨',
               'description': 'A new release is now available!',
