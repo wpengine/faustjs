@@ -103,8 +103,11 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         '',
       );
 
+      let databaseId = '';
+
       if (isPreview) {
         seedQueryUri = getQueryParam(window.location.href, 'previewPathname');
+        databaseId = getQueryParam(window.location.href, 'p');
 
         if (seedQueryUri === '') {
           throw new Error(
@@ -116,7 +119,10 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       let queryArgs: QueryOptions = {
         query: SEED_QUERY,
         variables: {
-          uri: seedQueryUri,
+          // Conditionally add relevant query args.
+          ...(!isPreview && { uri: seedQueryUri }),
+          ...(isPreview && { id: databaseId }),
+          ...(isPreview && { asPreview: true }),
         },
       };
 
@@ -141,7 +147,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
         const seedQueryRes = await client.query(queryArgs);
 
-        const node = seedQueryRes?.data?.node as SeedNode;
+        const node = isPreview
+          ? (seedQueryRes?.data?.contentNode as SeedNode)
+          : (seedQueryRes?.data?.nodeByUri as SeedNode);
 
         setSeedNode(node);
       }
