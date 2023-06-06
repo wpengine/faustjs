@@ -134,6 +134,7 @@ export async function getWordPressProps(
       __SEED_NODE__: seedNode ?? null,
       __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
       __TEMPLATE_VARIABLES__: templateVariables ?? null,
+      __FAUST__: {},
       ...props,
     },
   });

@@ -84,6 +84,8 @@ export async function getNextStaticProps<Props>(
     returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
   }
 
+  returnedProps = { ...returnedProps, __FAUST__: {} };
+
   const pageProps = addApolloState(apolloClient, { props: returnedProps });
   pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
   return pageProps as GetStaticPropsResult<Props>;
@@ -136,6 +138,8 @@ export async function getNextServerSideProps<Props>(
   if (pageVariables) {
     returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
   }
+
+  returnedProps = { ...returnedProps, __FAUST__: {} };
 
   return addApolloState(apolloClient, {
     props: returnedProps,
