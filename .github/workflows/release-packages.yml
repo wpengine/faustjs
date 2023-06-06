@@ -42,7 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
+
       - name: Possibly deploy WordPress plugin
         # Checks the changesets publishedPackages output
         # If there is a published package named "@faustwp/wordpress-plugin"
