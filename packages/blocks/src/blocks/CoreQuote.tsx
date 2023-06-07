@@ -34,16 +34,19 @@ export function CoreQuote(props: BlockWithAttributes<CoreQuoteFragmentProps>) {
     return null;
   }
 
-  return (
-    <figure className={attributes.cssClassName} style={style}>
-      {/* eslint-disable-next-line react/no-danger */}
-      <blockquote dangerouslySetInnerHTML={{ __html: attributes.value }} />
+  let innerHtml = attributes.value;
 
-      {!!attributes.citation && (
-        // eslint-disable-next-line react/no-danger
-        <figcaption dangerouslySetInnerHTML={{ __html: attributes.citation }} />
-      )}
-    </figure>
+  if (attributes.citation) {
+    innerHtml += `<cite>${attributes.citation}</cite>`;
+  }
+
+  return (
+    <blockquote
+      className={attributes.cssClassName}
+      style={style}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: innerHtml }}
+    />
   );
 }
 
