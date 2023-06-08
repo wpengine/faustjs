@@ -72,3 +72,9 @@ CoreQuote.fragments = {
     }
   `,
 };
+
+CoreQuote.config = {
+  name: 'CoreQuote',
+};
+
+CoreQuote.displayName = 'CoreQuote';
