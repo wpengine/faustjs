@@ -12,7 +12,7 @@ export interface FaustConfig {
   loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
-  basePath: string;
+  basePath?: string;
 }
 
 let config: FaustConfig;
@@ -31,7 +31,6 @@ export function setConfig(_config: FaustConfig) {
 
 export function normalizeConfig(_config: FaustConfig): FaustConfig {
   const cfg = defaults({}, _config, {
-    basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     loginPagePath: '/login',
     experimentalToolbar: false,
   });
