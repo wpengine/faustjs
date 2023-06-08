@@ -63,3 +63,7 @@ CoreColumns.fragments = {
     }
   `,
 };
+CoreColumns.config = {
+  name: 'CoreColumns',
+};
+CoreColumns.displayName = 'CoreColumns';

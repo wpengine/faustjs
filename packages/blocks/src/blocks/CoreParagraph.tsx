@@ -61,3 +61,7 @@ CoreParagraph.fragments = {
     }
   `,
 };
+CoreParagraph.config = {
+  name: 'CoreParagraph',
+};
+CoreParagraph.displayName = 'CoreParagraph';

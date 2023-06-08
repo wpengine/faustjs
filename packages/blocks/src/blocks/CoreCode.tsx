@@ -60,3 +60,7 @@ CoreCode.fragments = {
     }
   `,
 };
+CoreCode.config = {
+  name: 'CoreCode',
+};
+CoreCode.displayName = 'CoreCode';
