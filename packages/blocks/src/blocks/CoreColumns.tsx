@@ -5,7 +5,6 @@ import { getStyles } from '../utils/get-styles/getStyles.js';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 
 import {
-  BlockWithAttributes,
   ContentBlock,
   WordPressBlocksViewer,
 } from '../components/WordPressBlocksViewer.js';
@@ -28,9 +27,7 @@ export type CoreColumnsFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreColumns(
-  props: BlockWithAttributes<CoreColumnsFragmentProps>,
-) {
+export function CoreColumns(props: CoreColumnsFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes, innerBlocks } = props;

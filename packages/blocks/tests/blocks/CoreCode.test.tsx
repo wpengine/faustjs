@@ -4,11 +4,10 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { WordPressBlocksProvider } from '../../src/components/WordPressBlocksProvider';
 import { CoreCode, CoreCodeFragmentProps } from '../../src/blocks/CoreCode.js';
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
-function renderProvider(props: BlockWithAttributes<CoreCodeFragmentProps>) {
+function renderProvider(props: CoreCodeFragmentProps) {
   return render(
-    <WordPressBlocksProvider config={{ blocks: [], theme: {} }}>
+    <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreCode {...props} />
     </WordPressBlocksProvider>,
   );
@@ -48,7 +47,7 @@ describe('<CoreCode />', () => {
           &lt;div&gt;My code block&lt;/div&gt;
         </code>
       </pre>
-    </div>    
+    </div>
     `);
   });
 });

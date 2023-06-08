@@ -1,4 +1,3 @@
-import reduce from 'lodash/reduce.js';
 import { BlocksTheme } from '../../types/theme.js';
 import { getSettingsOptions } from './getSettingsOptions.js';
 import { getStylesOptions } from './getStylesOptions.js';
@@ -8,9 +7,8 @@ import { getStylesOptions } from './getStylesOptions.js';
  * @param theme The theme.json object
  */
 export function fromThemeJson(theme: Record<string, any>): BlocksTheme {
-  const result: BlocksTheme = reduce(
-    theme,
-    (acc, value, key) => {
+  const result: BlocksTheme = Object.entries(theme).reduce(
+    (acc, [key, value]) => {
       if (key === 'settings') {
         const fromSettings = getSettingsOptions(
           value as Record<string, unknown>,

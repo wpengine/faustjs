@@ -10,7 +10,7 @@ exports[`<CoreCode /> applies the correct styles:
           &lt;div&gt;My code block&lt;/div&gt;
         </code>
       </pre>
-    </div>    
+    </div>
      1`] = `
 <div>
   <pre

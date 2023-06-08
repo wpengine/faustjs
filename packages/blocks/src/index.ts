@@ -6,10 +6,8 @@ import {
   useBlocksTheme,
 } from './components/WordPressBlocksProvider.js';
 import {
-  useBlockData,
   WordpressBlocksViewerProps,
   WordPressBlocksViewer,
-  BlockWithAttributes,
 } from './components/WordPressBlocksViewer.js';
 
 import { fromThemeJson } from './utils/from-theme-json/fromThemeJson.js';
@@ -22,13 +20,11 @@ export {
   WordPressThemeContext,
   WordPressBlock,
   WordPressBlocksProvider,
-  useBlockData,
   WordpressBlocksViewerProps,
   WordPressBlocksViewer,
   useBlocksTheme,
   getStyles,
   BlocksTheme,
-  BlockWithAttributes,
   fromThemeJson,
   CoreBlocks,
 };

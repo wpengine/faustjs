@@ -1,10 +1,7 @@
 import { gql } from '@apollo/client';
 import React from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
-import {
-  BlockWithAttributes,
-  ContentBlock,
-} from '../components/WordPressBlocksViewer.js';
+import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreSeparatorFragmentProps = ContentBlock & {
@@ -19,9 +16,7 @@ export type CoreSeparatorFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreSeparator(
-  props: BlockWithAttributes<CoreSeparatorFragmentProps>,
-) {
+export function CoreSeparator(props: CoreSeparatorFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;

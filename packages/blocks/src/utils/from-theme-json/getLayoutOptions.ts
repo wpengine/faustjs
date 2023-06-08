@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash';
 import type { ThemePropertiesLayout } from '../../types/layout';
+import { isEmpty } from '../isEmpty.js';
 
 export type LayoutProperties = Record<string, unknown>;
 
