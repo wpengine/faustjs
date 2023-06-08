@@ -5,6 +5,7 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client';
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
 
@@ -77,6 +78,18 @@ type FaustCoreFilters = {
       toolbarNodes: FaustToolbarNodes,
       context: { seedNode?: SeedNode },
     ) => string,
+    priority?: number | undefined,
+  ): void;
+
+  addFilter(
+    hookName: 'resolvedUrl',
+    namespace: string,
+    callback: (
+      resolvedUrl: string | null,
+      context: {
+        nextContext: GetServerSidePropsContext | GetStaticPropsContext;
+      },
+    ) => string | null,
     priority?: number | undefined,
   ): void;
 };

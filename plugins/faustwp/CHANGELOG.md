@@ -1,5 +1,23 @@
 # Faust
 
+## 0.8.7
+
+### Patch Changes
+
+- 2eeb366: The default plugin setting for "Disable WordPress Theme Admin Pages" is now unchecked, requiring a user to opt-in after initial activation.
+
+## 0.8.6
+
+### Patch Changes
+
+- 02f7f78: Registered a new GraphQL field, `globalStylesheet`, that returns [wp_get_global_stylesheet](https://developer.wordpress.org/reference/functions/wp_get_global_stylesheet/) and provides the same arguments as the core WordPress function.
+
+## 0.8.5
+
+### Patch Changes
+
+- eaa5e48: Added the `shouldShowFaustToolbar` field on the `viewer` WPGraphQL type to determine if the Faust toolbar should be shown based on user preferences.
+
 ## 0.8.4
 
 ### Patch Changes

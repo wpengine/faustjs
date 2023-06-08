@@ -1,7 +1,5 @@
 {
-  "$schema": "https://github.com/IBM/audit-ci/raw/main/docs/schema.json",
-  "moderate": true,
-  "allowlist": [
-    "json5"
-  ]
+	"$schema": "https://github.com/IBM/audit-ci/raw/main/docs/schema.json",
+	"moderate": true,
+	"allowlist": []
 }

@@ -72,6 +72,62 @@ function register_faust_toolbar_field() {
 	);
 }
 
+add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_global_stylesheet_field' );
+/**
+ * Registers a field on the User model called "globalStylesheet" which
+ * returns the stylesheet resulting of merging core, theme, and user data.
+ *
+ * @return void
+ *
+ * @uses register_graphql_enum_type
+ * @uses register_graphql_field
+ * @uses wp_get_global_stylesheet
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_get_global_stylesheet/
+ */
+function register_global_stylesheet_field() {
+	register_graphql_enum_type(
+		'GlobalStylesheetTypesEnum',
+		array(
+			'description' => __( 'Types of styles to load', 'faustwp' ),
+			'values'      => array(
+				'VARIABLES'          => array(
+					'value' => 'variables',
+				),
+				'PRESETS'            => array(
+					'value' => 'presets',
+				),
+				'STYLES'             => array(
+					'value' => 'styles',
+				),
+				'BASE_LAYOUT_STYLES' => array(
+					'value' => 'base-layout-styles',
+				),
+			),
+		)
+	);
+
+	register_graphql_field(
+		'RootQuery',
+		'globalStylesheet',
+		array(
+			'type'        => 'String',
+			'args'        => array(
+				'types' => array(
+					'type'        => array( 'list_of' => 'GlobalStylesheetTypesEnum' ),
+					'description' => __( 'Types of styles to load.', 'faustwp' ),
+				),
+			),
+			'description' => __( 'Returns the stylesheet resulting of merging core, theme, and user data.', 'faustwp' ),
+			'resolve'     => function( $root, $args, $context, $info ) {
+				$types = $args['types'] ?? null;
+
+				return wp_get_global_stylesheet( $types );
+			},
+		)
+	);
+}
+
 /**
  * Resolver for getting the templates that will be loaded on a given node
  *

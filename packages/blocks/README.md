@@ -33,6 +33,12 @@ Install the blocks package:
 npm i @faustwp/blocks
 ```
 
+Additionally if you are using the `theme.json` helper functions (`getStyles()`) you need the following peer dependency:
+
+```bash
+npm i @wordpress/style-engine
+```
+
 Open `_app.js` and import the blocks provider:
 
 ```jsx

@@ -1,5 +1,32 @@
 # @faustwp/blocks
 
+## 0.3.1
+
+### Patch Changes
+
+- 66ecbb3: Adds getStyles helper that generates inline styles from block attributes.
+- 8a74237: Feat: Add fromThemeJson helper
+- 200bdb8: Add min engines declaration in package.json
+- Updated dependencies [8eec554]
+- Updated dependencies [200bdb8]
+- Updated dependencies [0521fd3]
+  - @faustwp/core@0.2.13
+
+## 0.3.0
+
+### Minor Changes
+
+- cce2828: **BREAKING** added a new peer dependency of `@faustwp/core` at a version of 0.2.9 or higher
+
+### Patch Changes
+
+- cce2828: `WordPressBlocksViewer` now accepts a new prop `fallbackBlock` that can be used to override the default fallback block. This prop also takes precedence over the Faust filter.
+- cce2828: Add a Faust filter to modify the `resolveBlockTemplate` logic
+- cce2828: Added a Faust filter to modify the fallback block shown in `WordPressBlocksViewer` when there is no React component to resolve
+- Updated dependencies [d8b76ef]
+- Updated dependencies [0ad4567]
+  - @faustwp/core@0.2.10
+
 ## 0.2.1
 
 ### Patch Changes
