@@ -108,7 +108,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       if (isPreview) {
         seedQueryUri = getQueryParam(window.location.href, 'previewPathname');
         databaseId = getQueryParam(window.location.href, 'p');
-        
+
         // If a user includes a base path, it will be part of the uri query that we need to filter out
         if (basePath) {
           seedQueryUri = seedQueryUri.replace(basePath, '');
