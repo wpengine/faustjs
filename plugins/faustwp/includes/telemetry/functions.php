@@ -56,6 +56,19 @@ function get_anonymous_faustwp_data() {
 }
 
 /**
+ * Returns the current WPGraphQL Content Blocks settings while keeping identifiable information private.
+ *
+ * @return array
+ */
+function get_anonymous_wpgraphql_content_blocks_data() {
+	$anonymous_data = array(
+		'version' => get_wpgraphql_content_blocks_plugin_version(),
+	);
+
+	return $anonymous_data;
+}
+
+/**
  * Checks if the frontend_uri FaustWP setting has been set.
  *
  * @return boolean
@@ -80,4 +93,22 @@ function get_plugin_version() {
 	$version   = $file_data[0];
 
 	return $version;
+}
+
+/**
+ * Returns the WPGraphql Content Blocks plugin version.
+ *
+ * @return null|string
+ */
+function get_wpgraphql_content_blocks_plugin_version() {
+	$plugin_file = 'wp-graphql-content-blocks/wp-graphql-content-blocks.php';
+
+	if ( is_plugin_active( $plugin_file ) ) {
+		$file_data = get_file_data( trailingslashit( WP_PLUGIN_DIR ) . $plugin_file, array( 'Version' ) );
+		$version   = $file_data[0];
+
+		return $version;
+	}
+
+	return null;
 }
