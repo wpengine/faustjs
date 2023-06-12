@@ -41,7 +41,7 @@ export interface WordpressBlocksViewerProps {
    * <WordPressBlocksViewer fallbackBlock={MyFallbackComponent} />
    * ```
    */
-  fallbackBlock: React.FC<ContentBlock>;
+  fallbackBlock?: React.FC<ContentBlock>;
 }
 
 export interface ContentBlock {
@@ -53,13 +53,20 @@ export interface ContentBlock {
   name?: string;
   renderedHtml?: string;
 }
+
+export type BlockWithAttributes<
+  T extends ContentBlock = Record<string, unknown>,
+> = T & {
+  attributes?: Record<string, unknown> | null;
+};
+
 /**
  * WordPressBlocksViewer is the main component that renders blocks taken from WordPress as a list of ContentBlock[] data.
  * @param props WordpressBlocksViewerProps
  * @returns JSX.Component that renders the block tree.
  */
 export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
-  const { blocks } = React.useContext(WordPressBlocksContext);
+  const blocks = React.useContext(WordPressBlocksContext);
 
   if (!blocks) {
     throw new Error('Blocks are required. Please add them to your config.');

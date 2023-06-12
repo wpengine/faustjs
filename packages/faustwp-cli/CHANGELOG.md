@@ -1,5 +1,24 @@
 # @faustwp/cli
 
+## 0.2.13
+
+### Patch Changes
+
+- 200bdb8: Add min engines declaration in package.json
+
+## 0.2.12
+
+### Patch Changes
+
+- 02f7f78: Added new command `faust generateGlobalStyles` which adds the connected WordPress site's global stylesheet to the root of your project.
+
+## 0.2.10
+
+### Patch Changes
+
+- c46eac9: Give human readable errors when `faust generatePossibleTypes` fails. Typically due to having "Public Introspection" disabled
+- 0ad4567: - Improved error handling for scenarios when [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) is unavailable due to it being deactivated or the WordPress site is unavailable.
+
 ## 0.2.7
 
 ### Patch Changes

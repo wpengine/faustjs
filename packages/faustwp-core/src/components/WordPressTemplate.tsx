@@ -103,12 +103,17 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         '',
       );
 
+      let databaseId = '';
+
       if (isPreview) {
         seedQueryUri = getQueryParam(window.location.href, 'previewPathname');
+        databaseId = getQueryParam(window.location.href, 'p');
+
         // If a user includes a base path, it will be part of the uri query that we need to filter out
         if (basePath) {
           seedQueryUri = seedQueryUri.replace(basePath, '');
         }
+
         if (seedQueryUri === '') {
           throw new Error(
             'The URL must contain the proper "previewPathname" query param for previews.',
@@ -119,7 +124,10 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       let queryArgs: QueryOptions = {
         query: SEED_QUERY,
         variables: {
-          uri: seedQueryUri,
+          // Conditionally add relevant query args.
+          ...(!isPreview && { uri: seedQueryUri }),
+          ...(isPreview && { id: databaseId }),
+          ...(isPreview && { asPreview: true }),
         },
       };
 
@@ -144,7 +152,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
         const seedQueryRes = await client.query(queryArgs);
 
-        const node = seedQueryRes?.data?.node as SeedNode;
+        const node = isPreview
+          ? (seedQueryRes?.data?.contentNode as SeedNode)
+          : (seedQueryRes?.data?.nodeByUri as SeedNode);
 
         setSeedNode(node);
       }

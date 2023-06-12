@@ -26,6 +26,11 @@ Faust.js aims to be framework agnostic, so it can be used with any front-end fra
 
 As we work towards our first release, we will be introducing support for other frameworks.
 
+## System Requirements
+
+- Node.js v16.0.0 or newer (v16.8.0 when using Next.js 13).
+- MacOS, Windows (including WSL), and Linux are supported.
+
 ## Documentation
 
 Visit [https://faustjs.org/docs/getting-started](https://faustjs.org/docs/getting-started) to view the full documentation.

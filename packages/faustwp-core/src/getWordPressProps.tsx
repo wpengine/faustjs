@@ -67,9 +67,13 @@ export async function getWordPressProps(
       resolvedUrl = '/';
     }
   } else {
-    resolvedUrl = ctx.req.url;
+    resolvedUrl = ctx.resolvedUrl;
     ctx.res.setHeader('x-using', 'faust');
   }
+
+  resolvedUrl = hooks.applyFilters('resolvedUrl', resolvedUrl, {
+    nextContext: ctx,
+  }) as string | null;
 
   if (!resolvedUrl) {
     return {
@@ -86,7 +90,8 @@ export async function getWordPressProps(
     variables: { uri: resolvedUrl },
   });
 
-  const seedNode = seedQueryRes?.data?.node as SeedNode;
+  // Since previews only work for client side, we only need to handle nodeByUri instead of both that and contentNode.
+  const seedNode = seedQueryRes?.data?.nodeByUri as SeedNode;
 
   debugLog(`Seed Node for resolved url: "${resolvedUrl}": `, seedNode);
 
