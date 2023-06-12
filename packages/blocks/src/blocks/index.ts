@@ -4,6 +4,7 @@ import { CoreColumns } from './CoreColumns.js';
 import { CoreColumn } from './CoreColumn.js';
 import { CoreCode } from './CoreCode.js';
 import { CoreQuote } from './CoreQuote.js';
+import { CoreSeparator } from './CoreSeparator.js';
 
 export default {
   CoreParagraph: CoreParagraph,
@@ -11,4 +12,5 @@ export default {
   CoreColumn: CoreColumn,
   CoreCode: CoreCode,
   CoreQuote: CoreQuote,
+  CoreSeparator: CoreSeparator,
 };
