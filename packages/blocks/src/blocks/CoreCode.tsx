@@ -1,10 +1,7 @@
 import { gql } from '@apollo/client';
 import React from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
-import {
-  BlockWithAttributes,
-  ContentBlock,
-} from '../components/WordPressBlocksViewer.js';
+import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreCodeFragmentProps = ContentBlock & {
@@ -24,7 +21,7 @@ export type CoreCodeFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreCode(props: BlockWithAttributes<CoreCodeFragmentProps>) {
+export function CoreCode(props: CoreCodeFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
@@ -60,3 +57,7 @@ CoreCode.fragments = {
     }
   `,
 };
+CoreCode.config = {
+  name: 'CoreCode',
+};
+CoreCode.displayName = 'CoreCode';

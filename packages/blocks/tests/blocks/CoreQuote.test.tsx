@@ -7,11 +7,10 @@ import {
   CoreQuote,
   CoreQuoteFragmentProps,
 } from '../../src/blocks/CoreQuote.js';
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
-function renderProvider(props: BlockWithAttributes<CoreQuoteFragmentProps>) {
+function renderProvider(props: CoreQuoteFragmentProps) {
   return render(
-    <WordPressBlocksProvider config={{ blocks: [], theme: {} }}>
+    <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreQuote {...props} />
     </WordPressBlocksProvider>,
   );

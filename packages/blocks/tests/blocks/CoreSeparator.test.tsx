@@ -10,10 +10,10 @@ import {
 import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
 function renderProvider(
-  props: BlockWithAttributes<CoreSeparatorFragmentProps>,
+  props: CoreSeparatorFragmentProps,
 ) {
   return render(
-    <WordPressBlocksProvider config={{ blocks: [], theme: {} }}>
+    <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreSeparator {...props} />
     </WordPressBlocksProvider>,
   );

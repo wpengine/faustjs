@@ -1,10 +1,7 @@
 import { gql } from '@apollo/client';
 import React from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
-import {
-  BlockWithAttributes,
-  ContentBlock,
-} from '../components/WordPressBlocksViewer.js';
+import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreQuoteFragmentProps = ContentBlock & {
@@ -25,7 +22,7 @@ export type CoreQuoteFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreQuote(props: BlockWithAttributes<CoreQuoteFragmentProps>) {
+export function CoreQuote(props: CoreQuoteFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;

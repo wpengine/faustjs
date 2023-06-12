@@ -7,10 +7,9 @@ import {
   CoreColumns,
   CoreColumnsFragmentProps,
 } from '../../src/blocks/CoreColumns.js';
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
-function renderProvider(props: BlockWithAttributes<CoreColumnsFragmentProps>) {
-  const blocks: any = {
+function renderProvider(props: CoreColumnsFragmentProps) {
+  const blocks = {
     CoreParagraph: () => {
       return <div>Hello World</div>;
     },
