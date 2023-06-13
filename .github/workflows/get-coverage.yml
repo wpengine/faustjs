@@ -19,7 +19,7 @@ jobs:
                 mkdir coverage
                 cp packages/faustwp-core/coverage/coverage-final.json coverage/coverage-final-core.json
                 cp packages/faustwp-cli/coverage/coverage-final.json coverage/coverage-final-cli.json
-                jq 'reduce inputs as $i (.; . * $i)' coverage/coverage-final-*.json > coverage-merged.json
+                jq 'reduce inputs as $i (.; . * $i)' coverage/coverage-final-*.json > coverage/coverage-merged.json
             
             - uses: ArtiomTr/jest-coverage-report-action@v2
               with:
