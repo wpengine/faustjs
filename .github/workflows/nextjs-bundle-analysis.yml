@@ -118,7 +118,7 @@ jobs:
         id: fc
         with:
           issue-number: ${{ github.event.number }}
-          body-includes: '<!-- __NEXTJS_BUNDLE -->'
+          body-includes: '<!-- __NEXTJS_BUNDLE_@faustwp/getting-started-example -->'
 
       - name: Create Comment
         uses: peter-evans/create-or-update-comment@v2
