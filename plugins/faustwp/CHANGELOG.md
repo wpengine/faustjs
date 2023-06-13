@@ -1,5 +1,15 @@
 # Faust
 
+## 1.0.0
+
+### Major Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
+
+### Patch Changes
+
+- ef92d02: Added `wp-graphql-content-blocks` version to the telemetry endpoint.
+
 ## 0.8.7
 
 ### Patch Changes

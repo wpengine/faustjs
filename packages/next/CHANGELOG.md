@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.15.11
+
+### Patch Changes
+
+- f5dac42: Updated `fast-xml-parser` dependency
+
 ## 0.15.10
 
 ### Patch Changes
