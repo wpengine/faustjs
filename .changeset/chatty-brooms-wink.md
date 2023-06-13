@@ -1,5 +1,5 @@
 ---
-'@faustjs/core': patch
+'@faustwp/core': patch
 '@faustwp/cli': patch
 ---
 
