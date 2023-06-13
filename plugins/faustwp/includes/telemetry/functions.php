@@ -101,14 +101,5 @@ function get_plugin_version() {
  * @return null|string
  */
 function get_wpgraphql_content_blocks_plugin_version() {
-	$plugin_file = 'wp-graphql-content-blocks/wp-graphql-content-blocks.php';
-
-	if ( is_plugin_active( $plugin_file ) ) {
-		$file_data = get_file_data( trailingslashit( WP_PLUGIN_DIR ) . $plugin_file, array( 'Version' ) );
-		$version   = $file_data[0];
-
-		return $version;
-	}
-
-	return null;
+	return defined( 'WPGRAPHQL_CONTENT_BLOCKS_VERSION' ) ? WPGRAPHQL_CONTENT_BLOCKS_VERSION : null;
 }
