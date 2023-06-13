@@ -1,5 +1,24 @@
 # @faustwp/core
 
+## 1.0.0
+
+### Major Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org).
+
+### Minor Changes
+
+- 442c834: **BREAKING:** By default, Faust is now using GET for GraphQL requests in Apollo. If you would like to switch back to POST requests, you can do so by setting the `useGETForQueries` property to `false` in `faust.config.js`
+- 4cae3d9: **BREAKING** - Fixed seed query failing when attempting to view an unpublished WordPress post with a draft status.
+
+  Previously the seed query would only receive `data.node`. These changes update the seed query to now receive both `data.contentNode` & `data.nodeByUri`. Note that projects hooking into Faust's `seedQueryDocumentNode` filter will need to refactor in order to use the new nodeByUri/contentNode syntax.
+
+### Patch Changes
+
+- 442c834: Added first party support for persisted queries in Apollo. They can be enabled by setting the `usePersistedQueries` property in your `faust.config.js`
+- 2934310: Added the ability to specify the base path for a site (ex. https://example.com/blog) with the `basePath` property in `faust.config.js`. Thanks @riderjensen!
+- f5dac42: Updated `fast-xml-parser` dependency
+
 ## 0.2.13
 
 ### Patch Changes

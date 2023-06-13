@@ -1,5 +1,0 @@
----
-'@faustwp/cli': minor
----
-
-Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.

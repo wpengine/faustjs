@@ -1,5 +1,15 @@
 # @faustwp/cli
 
+## 1.0.0
+
+### Minor Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
+
+### Patch Changes
+
+- ef92d02: Added `@faustwp/blocks` version to telemetry data.
+
 ## 0.2.13
 
 ### Patch Changes
