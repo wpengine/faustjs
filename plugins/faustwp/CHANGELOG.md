@@ -1,5 +1,27 @@
 # Faust
 
+## 1.0.0
+
+### Major Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
+
+### Patch Changes
+
+- ef92d02: Added `wp-graphql-content-blocks` version to the telemetry endpoint.
+
+## 0.8.7
+
+### Patch Changes
+
+- 2eeb366: The default plugin setting for "Disable WordPress Theme Admin Pages" is now unchecked, requiring a user to opt-in after initial activation.
+
+## 0.8.6
+
+### Patch Changes
+
+- 02f7f78: Registered a new GraphQL field, `globalStylesheet`, that returns [wp_get_global_stylesheet](https://developer.wordpress.org/reference/functions/wp_get_global_stylesheet/) and provides the same arguments as the core WordPress function.
+
 ## 0.8.5
 
 ### Patch Changes

@@ -65,6 +65,11 @@ module.exports = {
           label: 'Custom Post Types',
           id: 'guides/custom-post-types',
         },
+        {
+          type: 'doc',
+          label: 'Plugins',
+          id: 'guides/plugins',
+        },
       ],
     },
     {
@@ -80,6 +85,11 @@ module.exports = {
           type: 'doc',
           label: 'Seed Query',
           id: 'faustwp/seed-query',
+        },
+        {
+          type: 'doc',
+          label: 'Global Stylesheet',
+          id: 'global-stylesheet',
         },
         {
           type: 'doc',
@@ -105,6 +115,11 @@ module.exports = {
           type: 'doc',
           label: 'WordPressBlocksProvider',
           id: 'reference/WordPressBlocksProvider',
+        },
+        {
+          type: 'doc',
+          label: 'useBlocksTheme',
+          id: 'reference/useBlocksTheme',
         },
         {
           type: 'doc',

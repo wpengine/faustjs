@@ -20,6 +20,7 @@ use function WPE\FaustWP\Telemetry\{
 	get_wp_version,
 	is_wpe,
 	get_anonymous_faustwp_data,
+	get_anonymous_wpgraphql_content_blocks_data,
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -124,11 +125,12 @@ function register_rest_routes() {
  */
 function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	$data = array(
-		'faustwp'     => get_anonymous_faustwp_data(),
-		'is_wpe'      => is_wpe(),
-		'multisite'   => is_multisite(),
-		'php_version' => PHP_VERSION,
-		'wp_version'  => get_wp_version(),
+		'faustwp'                  => get_anonymous_faustwp_data(),
+		'wpgraphql_content_blocks' => get_anonymous_wpgraphql_content_blocks_data(),
+		'is_wpe'                   => is_wpe(),
+		'multisite'                => is_multisite(),
+		'php_version'              => PHP_VERSION,
+		'wp_version'               => get_wp_version(),
 	);
 
 	return new \WP_REST_Response( $data );

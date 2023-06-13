@@ -1,5 +1,41 @@
 # @faustwp/blocks
 
+## 1.0.0
+
+### Major Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org).
+
+### Minor Changes
+
+- ba51e7b: Refactor: Cleanup, Remove Lodash, added Block display names, removed useBlockData
+
+### Patch Changes
+
+- 2cd74c4: Add CoreSeparator
+- 3fd30c5: Add reference implementation of CoreCode block
+- 49e797e: Add reference implementation of CoreColumns and CoreColumn block
+- daa5c9a: Add reference implementation of CoreParagraph block
+- Updated dependencies [442c834]
+- Updated dependencies [7952ebe]
+- Updated dependencies [442c834]
+- Updated dependencies [2934310]
+- Updated dependencies [4cae3d9]
+- Updated dependencies [f5dac42]
+  - @faustwp/core@1.0.0
+
+## 0.3.1
+
+### Patch Changes
+
+- 66ecbb3: Adds getStyles helper that generates inline styles from block attributes.
+- 8a74237: Feat: Add fromThemeJson helper
+- 200bdb8: Add min engines declaration in package.json
+- Updated dependencies [8eec554]
+- Updated dependencies [200bdb8]
+- Updated dependencies [0521fd3]
+  - @faustwp/core@0.2.13
+
 ## 0.3.0
 
 ### Minor Changes
