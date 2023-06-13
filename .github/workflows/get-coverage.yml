@@ -13,17 +13,14 @@ jobs:
 
             - run: npm ci
 
-            - run: npm run test:coverage:ci
+            - run: npm run test:coverage
 
             - run: |
-                mkdir coverage
-                cp packages/faustwp-core/report.json coverage/report-core.json
-                cp packages/faustwp-cli/report.json coverage/report-cli.json
-                jq 'reduce inputs as $i (.; . * $i)' coverage/report-*.json > coverage/report-merged.json
+                npx istanbul-merge --out coverage/coverage-merged.json packages/faustwp-core/coverage/coverage-final.json packages/faustwp-cli/coverage/coverage-final.json
             
             - uses: ArtiomTr/jest-coverage-report-action@v2
               with:
                 annotations: none
                 skip-step: all
-                coverage-file: coverage/report-merged.json
-                base-coverage-file: coverage/report-merged.json
+                coverage-file: coverage/coverage-merged.json
+                base-coverage-file: coverage/coverage-merged.json
