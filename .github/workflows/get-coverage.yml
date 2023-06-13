@@ -13,7 +13,7 @@ jobs:
 
             - run: npm ci
 
-            - run: npm run test:coverage
+            - run: npm run test:coverage:ci
 
             - run: |
                 mkdir coverage
