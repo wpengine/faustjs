@@ -2,25 +2,6 @@ import React from 'react';
 import resolveBlockTemplate from '../resolveBlockTemplate.js';
 import { WordPressBlocksContext } from './WordPressBlocksProvider.js';
 
-const Context = React.createContext<{ [key: string]: any } | null>(null);
-
-export const useBlockData = (): { [key: string]: any } | null => {
-  const contextState = React.useContext(Context);
-  if (contextState === null) {
-    throw new Error('useBlockData must be used within a BlockDataProvider tag');
-  }
-  return contextState;
-};
-
-export function BlockDataProvider(
-  props: React.PropsWithChildren<{ data: Record<string, any> | null }>,
-) {
-  const { children, data } = props;
-  const ref = React.useRef(data);
-
-  return <Context.Provider value={ref.current}>{children}</Context.Provider>;
-}
-
 export interface WordpressBlocksViewerProps {
   /**
    * Block data obtained from WPGraphQL Content Blocks
@@ -54,11 +35,9 @@ export interface ContentBlock {
   renderedHtml?: string;
 }
 
-export type BlockWithAttributes<
-  T extends ContentBlock = Record<string, unknown>,
-> = T & {
+export interface BlockWithAttributes extends ContentBlock {
   attributes?: Record<string, unknown> | null;
-};
+}
 
 /**
  * WordPressBlocksViewer is the main component that renders blocks taken from WordPress as a list of ContentBlock[] data.
@@ -84,16 +63,13 @@ export function WordPressBlocksViewer(props: WordpressBlocksViewerProps) {
       blocks,
       fallbackBlock,
     );
-    return (
-      // eslint-disable-next-line react/no-array-index-key
-      <BlockDataProvider data={blockProps} key={idx}>
-        <>
-          {React.createElement<ContentBlock>(BlockTemplate, { ...blockProps })}
-        </>
-      </BlockDataProvider>
-    );
-  });
 
+    return React.createElement<ContentBlock>(BlockTemplate, {
+      ...blockProps,
+      // eslint-disable-next-line react/no-array-index-key
+      key: idx,
+    });
+  });
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{renderedBlocks}</>;
 }

@@ -7,13 +7,12 @@ import {
   CoreParagraph,
   CoreParagraphFragmentProps,
 } from '../../src/blocks/CoreParagraph.js';
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
 function renderProvider(
-  props: BlockWithAttributes<CoreParagraphFragmentProps>,
+  props: CoreParagraphFragmentProps,
 ) {
   return render(
-    <WordPressBlocksProvider config={{ blocks: [], theme: {} }}>
+    <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreParagraph {...props} />
     </WordPressBlocksProvider>,
   );

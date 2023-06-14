@@ -4,10 +4,7 @@ import { gql } from '@apollo/client';
 import { getStyles } from '../utils/get-styles/getStyles.js';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 
-import {
-  BlockWithAttributes,
-  ContentBlock,
-} from '../components/WordPressBlocksViewer.js';
+import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 
 export type CoreParagraphFragmentProps = ContentBlock & {
   attributes: {
@@ -25,9 +22,7 @@ export type CoreParagraphFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreParagraph(
-  props: BlockWithAttributes<CoreParagraphFragmentProps>,
-) {
+export function CoreParagraph(props: CoreParagraphFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
@@ -61,3 +56,7 @@ CoreParagraph.fragments = {
     }
   `,
 };
+CoreParagraph.config = {
+  name: 'CoreParagraph',
+};
+CoreParagraph.displayName = 'CoreParagraph';

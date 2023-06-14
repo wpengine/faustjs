@@ -33,13 +33,13 @@ Install the blocks package:
 npm i @faustwp/blocks
 ```
 
-Additionally if you are using the `theme.json` helper functions (`getStyles()`) you need the following peer dependency:
+Install the peer dependencies:
 
 ```bash
 npm i @wordpress/style-engine
 ```
 
-Open `_app.js` and import the blocks provider:
+Open `_app.js` and import the `WordPressBlocksProvider`:
 
 ```jsx
 import { WordPressBlocksProvider } from '@faustwp/blocks';
@@ -54,23 +54,29 @@ import { WordPressBlocksProvider } from '@faustwp/blocks';
 </FaustProvider>
 ```
 
-Then, inside your templates you need to pass on the `editorBlocks` data in your `WordPressBlocksViewer`. The helper function `flatListToHierarchical` is referenced [here](www.wpgraphql.com/docs/menus/#hierarchical-data):
+Then, inside your templates you need to pass on the `editorBlocks` data in your `WordPressBlocksViewer`.
+
+The helper function `flatListToHierarchical` is imported from `@faustwp/core`:
 
 ```js
+import { flatListToHierarchical } from '@faustwp/core';
 import { WordPressBlocksViewer } from '@faustwp/blocks';
+import blocks from '../wp-blocks';
 
 const { editorBlocks } = props.data.post;
-const blocks = flatListToHierarchical(editorBlocks);
+const blocks = flatListToHierarchical(editorBlocks, {childrenKey: 'innerBlocks'});
 
 return <WordPressBlocksViewer blocks={blocks}/>
 ```
+By default the API brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays. Therefore we use the `flatListToHierarchical` to convert the list back to the hierarchical tree type.
 
-Example `editorBlocks` GraphQL query fragment. Setting `flat: true` brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays:
+Example `editorBlocks` GraphQL query fragment:
 
 ```graphql
 ${components.CoreParagraph.fragments.entry}
-editorBlocks(flat: true) {
+editorBlocks {
   __typename
+  name
   renderedHtml
   id: clientId
   parentClientId
@@ -108,14 +114,17 @@ CoreParagraph.fragments = {
   key: `CoreParagraphFragment`,
 };
 ```
+Use a default barrel export of the CoreParagraph Block in `index.js`:
 
-`Import` and `export default` the CoreParagraph Block in `index.js`:
 ```js
 import CoreParagraph from './CoreParagraph';
 export default {
-  CoreParagraph,
+  'CoreParagraph': CoreParagraph,
 };
 ```
+
+By doing so the framework will match the name of the export `CoreParagraph` with the `__typename`
+or `name` fields in the query response. If it finds a match it will resolve the Component associated with that name.
 
 ## Further Learning
 

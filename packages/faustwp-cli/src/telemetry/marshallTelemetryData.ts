@@ -10,6 +10,7 @@ export interface TelemetryData {
   setting_themes_disabled?: boolean;
   setting_img_src_replacement_enabled?: boolean;
   faustwp_version?: string;
+  wpgraphql_content_blocks_version?: string;
   is_wpe?: boolean;
   multisite?: boolean;
   php_version?: string;
@@ -17,6 +18,7 @@ export interface TelemetryData {
   platform?: string;
   node_faustwp_core_version?: string;
   node_faustwp_cli_version?: string;
+  node_faustwp_blocks_version?: string;
   node_apollo_client_version?: string;
   node_version?: string;
   node_next_version?: string;
@@ -69,6 +71,9 @@ export const marshallTelemetryData = (
     node_faustwp_cli_version: sanitizePackageJsonVersion(
       packageJson?.dependencies?.['@faustwp/cli'] as string | undefined,
     ),
+    node_faustwp_blocks_version: sanitizePackageJsonVersion(
+      packageJson?.dependencies?.['@faustwp/blocks'] as string | undefined,
+    ),
     node_apollo_client_version: sanitizePackageJsonVersion(
       packageJson?.dependencies?.['@apollo/client'] as string | undefined,
     ),
@@ -85,6 +90,8 @@ export const marshallTelemetryData = (
     setting_img_src_replacement_enabled:
       wpTelemetryData?.faustwp?.image_source_replacement_enabled,
     faustwp_version: wpTelemetryData?.faustwp?.version,
+    wpgraphql_content_blocks_version:
+      wpTelemetryData?.wpgraphql_content_blocks?.version,
     is_wpe: wpTelemetryData?.is_wpe,
     multisite: wpTelemetryData?.multisite,
     php_version: wpTelemetryData?.php_version,

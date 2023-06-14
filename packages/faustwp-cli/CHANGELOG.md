@@ -1,5 +1,21 @@
 # @faustwp/cli
 
+## 1.0.1
+
+### Patch Changes
+
+- c79d881: Bump to 1.0.1 since 1.0.0 release already existed in NPM from initial setup
+
+## 1.0.0
+
+### Minor Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
+
+### Patch Changes
+
+- ef92d02: Added `@faustwp/blocks` version to telemetry data.
+
 ## 0.2.13
 
 ### Patch Changes

@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash';
 import type { ThemePropertiesStyles } from '../../types/styles';
+import { isEmpty } from '../isEmpty.js';
 
 export type StylesProperties = Record<string, unknown> & {
   border?: unknown;
