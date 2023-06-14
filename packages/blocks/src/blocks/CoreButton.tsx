@@ -28,6 +28,7 @@ export function CoreButton(props: CoreButtonFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
+  const linkTarget = attributes.linkTarget ? '_blank' : undefined;
   if (attributes?.url) {
     return (
       <div
@@ -36,6 +37,7 @@ export function CoreButton(props: CoreButtonFragmentProps) {
         className={attributes?.cssClassName}>
         <Link href={attributes?.url}>
           <a
+            target={linkTarget}
             className={attributes?.linkClassName}
             rel={attributes?.rel}
             style={style}>
@@ -51,6 +53,7 @@ export function CoreButton(props: CoreButtonFragmentProps) {
       id={attributes?.anchor}
       className={attributes?.cssClassName}>
       <a
+        target={linkTarget}
         className={attributes?.linkClassName}
         rel={attributes?.rel}
         style={style}>
