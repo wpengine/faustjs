@@ -31,11 +31,13 @@ export function CoreButton(props: CoreButtonFragmentProps) {
     return (
       <div
         aria-label={attributes?.text}
-        style={style}
         id={attributes?.anchor}
         className={attributes?.cssClassName}>
         <Link href={attributes?.url}>
-          <a className={attributes?.linkClassName} rel={attributes?.rel}>
+          <a
+            className={attributes?.linkClassName}
+            rel={attributes?.rel}
+            style={style}>
             <span>{attributes?.text}</span>
           </a>
         </Link>
@@ -45,10 +47,12 @@ export function CoreButton(props: CoreButtonFragmentProps) {
   return (
     <div
       aria-label={attributes?.text}
-      style={style}
       id={attributes?.anchor}
       className={attributes?.cssClassName}>
-      <a className={attributes?.linkClassName} rel={attributes?.rel}>
+      <a
+        className={attributes?.linkClassName}
+        rel={attributes?.rel}
+        style={style}>
         <span>{attributes?.text}</span>
       </a>
     </div>
