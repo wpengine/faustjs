@@ -15,6 +15,7 @@ export type CoreButtonFragmentProps = ContentBlock & {
     gradient?: string;
     style?: string;
     text?: string;
+    textAlign?: string;
     textColor?: string;
     linkTarget?: string;
     rel?: string;
