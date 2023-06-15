@@ -33,7 +33,7 @@ export type CoreImageFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreImage(props: BlockWithAttributes<CoreImageFragmentProps>) {
+export function CoreImage(props: CoreImageFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
