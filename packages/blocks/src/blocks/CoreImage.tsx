@@ -1,10 +1,7 @@
 import { gql } from '@apollo/client';
 import React from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
-import {
-  BlockWithAttributes,
-  ContentBlock,
-} from '../components/WordPressBlocksViewer.js';
+import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreImageFragmentProps = ContentBlock & {
@@ -43,6 +40,8 @@ export function CoreImage(props: CoreImageFragmentProps) {
       <img
         style={style}
         alt={attributes.alt}
+        width={attributes.width}
+        height={attributes.height}
         className={attributes?.cssClassName}
       />
     </figure>

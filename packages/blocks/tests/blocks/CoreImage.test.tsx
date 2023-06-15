@@ -7,11 +7,10 @@ import {
   CoreImage,
   CoreImageFragmentProps,
 } from '../../src/blocks/CoreImage.js';
-import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
-function renderProvider(props: BlockWithAttributes<CoreImageFragmentProps>) {
+function renderProvider(props: CoreImageFragmentProps) {
   return render(
-    <WordPressBlocksProvider config={{ blocks: [], theme: {} }}>
+    <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreImage {...props} />
     </WordPressBlocksProvider>,
   );
@@ -24,7 +23,7 @@ describe('<CoreImage />', () => {
         alt: 'testing_alt_text',
         width: '498',
         height: '310',
-        style: 'border-width:44px;border-radius:83px',
+        // style: 'border-width:44px;border-radius:83px',
       },
     });
 
@@ -40,7 +39,7 @@ describe('<CoreImage />', () => {
             width: '498',
             height: '310',
             alt: 'This is alt text for core image',
-            style: 'border-width:44px;border-radius:83px',
+            style: 'border-width:44px;border-radius:83px'
       },
     });
 
