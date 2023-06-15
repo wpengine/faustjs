@@ -23,35 +23,50 @@ describe('<CoreImage />', () => {
         alt: 'testing_alt_text',
         width: '498',
         height: '310',
-        // style: 'border-width:44px;border-radius:83px',
+        style: 'border-width:44px;border-radius:83px',
+        caption: 'this_is_a_caption',
+        src: 'image.png'
       },
     });
 
     expect(
       screen.queryByAltText('testing_alt_text'),
-    );
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('testing', {
+        name: /this_is_a_caption/i
+      })
+    ).toBeInTheDocument()
+
+    expect(
+      screen.queryByRole('img')
+    ).toBeInTheDocument()
 
   });
+
 
   test('applies the correct styles', () => {
     const tree = renderProvider({
       attributes: {
-            width: '498',
-            height: '310',
-            alt: 'This is alt text for core image',
-            style: 'border-width:44px;border-radius:83px'
+            width: "498",
+            height: "310",
+            alt: "This is alt text for core image",
+            style: "{\"border\":{\"radius\":\"83px\",\"width\":\"44px\"}}"
       },
     });
 
     expect(tree.container).toMatchInlineSnapshot(`
-      <figure>
-        <img>
-          width="498"
-          height="310"
-          alt="This is alt text for core image"
-          style="border-width:44px;border-radius:83px"
-        </img>
-      </figure>
-    `);
+      <div>
+        <figure>
+          <img
+            alt="This is alt text for core image"
+            height="310"
+            style="border-width: 44px; border-radius: 83px;"
+            width="498"
+          />
+        </figure>
+      </div>
+     `);
   });
 });

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import React from 'react';
+import { Image } from 'next/image';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
@@ -37,11 +38,12 @@ export function CoreImage(props: CoreImageFragmentProps) {
 
   return (
     <figure>
-      <img
+      <Image
         style={style}
-        alt={attributes.alt}
+        src={attributes.src}
         width={attributes.width}
         height={attributes.height}
+        alt={attributes.alt}
         className={attributes?.cssClassName}
       />
     </figure>
