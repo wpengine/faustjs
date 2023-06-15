@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CoreCode /> applies the correct styles: 
+    <div>
+      <pre
+        class="wp-block-code has-border-color has-pale-cyan-blue-border-color has-background-color has-vivid-red-background-color has-text-color has-background has-medium-font-size"
+        style="border-width: 27px; border-radius: 37px;"
+      >
+        <code>
+          &lt;div&gt;My code block&lt;/div&gt;
+        </code>
+      </pre>
+    </div>
+     1`] = `
+<div>
+  <pre
+    class="wp-block-code has-border-color has-pale-cyan-blue-border-color has-background-color has-vivid-red-background-color has-text-color has-background has-medium-font-size"
+    style="border-width: 27px; border-radius: 37px;"
+  >
+    <code>
+      &lt;div&gt;My code block&lt;/div&gt;
+    </code>
+  </pre>
+</div>
+`;

@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
-import get from 'lodash/get.js';
+import type { DocumentNode } from '@apollo/client';
 import { BlocksTheme } from '../types/theme.js';
 
 export type WordPressBlockBase = React.FC & {
-  fragments?: string;
+  fragments: {
+    key: string;
+    entry: DocumentNode;
+  };
   displayName: string;
   name: string;
   config: {
@@ -15,12 +18,14 @@ export type WordPressBlockBase = React.FC & {
  * WordPressBlock is a React component that contains some optional properties that we are
  * used to match it with equivalent block data from the API
  */
-export type WordPressBlock<P = Record<string, any>> = FC<P> &
+export type WordPressBlock<P = { [key: string]: any }> = FC<P> &
   Partial<
     Pick<WordPressBlockBase, 'config' | 'displayName' | 'name' | 'fragments'>
   >;
 
-export type WordPressBlocksContextType = WordPressBlock[] | undefined;
+export type WordPressBlocksContextType =
+  | { [key: string]: WordPressBlock }
+  | undefined;
 export type WordPressThemeContextType = BlocksTheme | undefined;
 
 export const WordPressBlocksContext =
@@ -29,7 +34,7 @@ export const WordPressThemeContext =
   React.createContext<WordPressThemeContextType>(undefined);
 
 export type WordPressBlocksProviderConfig = {
-  blocks: WordPressBlock[];
+  blocks: { [key: string]: WordPressBlock };
   theme?: BlocksTheme;
 };
 
@@ -63,9 +68,7 @@ export function WordPressBlocksProvider(props: {
  * const theme = useBlocksTheme();
  * ```
  */
-export function useBlocksTheme(): BlocksTheme;
-export function useBlocksTheme(path: string): ReturnType<typeof get>;
-export function useBlocksTheme(path?: string) {
+export function useBlocksTheme(): BlocksTheme {
   const themeContext = React.useContext(WordPressThemeContext);
 
   // If it's an empty object, the provider hasn't been initialized.
@@ -73,10 +76,6 @@ export function useBlocksTheme(path?: string) {
     throw new Error(
       'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
     );
-  }
-
-  if (path) {
-    return get(themeContext, path, undefined);
   }
 
   return themeContext;

@@ -12,6 +12,7 @@ export interface FaustConfig {
   loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
+  basePath?: string;
   /**
    * Instruct the Apollo Client to use Persisted Queries
    *

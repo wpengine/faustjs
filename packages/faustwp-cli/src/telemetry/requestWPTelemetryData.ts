@@ -11,6 +11,9 @@ export interface WPTelemetryResponseData {
     themes_disabled: boolean;
     image_source_replacement_enabled: boolean;
   };
+  wpgraphql_content_blocks: {
+    version: string;
+  };
   is_wpe: boolean;
   multisite: boolean;
   php_version: string;

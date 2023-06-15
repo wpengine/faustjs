@@ -1,4 +1,3 @@
-import reduce from 'lodash/reduce.js';
 import { getSpacingOptions } from './getSpacingOptions.js';
 import { getColorOptions } from './getColorOptions.js';
 import { getTypographyOptions } from './getTypographyOptions.js';
@@ -15,21 +14,17 @@ const mappers = [
 export function getSettingsOptions(
   settings: Record<string, unknown>,
 ): Record<string, unknown> {
-  const result = reduce(
-    settings,
-    (acc, value, key) => {
-      for (let i = 0; i < mappers.length; i += 1) {
-        if (mappers[i].key === key) {
-          const options = mappers[i].fn(value as Record<string, unknown>);
-          return {
-            ...acc,
-            ...options,
-          };
-        }
+  const result = Object.entries(settings).reduce((acc, [key, value]) => {
+    for (let i = 0; i < mappers.length; i += 1) {
+      if (mappers[i].key === key) {
+        const options = mappers[i].fn(value as Record<string, unknown>);
+        return {
+          ...acc,
+          ...options,
+        };
       }
-      return acc;
-    },
-    {} as BlocksTheme,
-  );
+    }
+    return acc;
+  }, {} as BlocksTheme);
   return result;
 }

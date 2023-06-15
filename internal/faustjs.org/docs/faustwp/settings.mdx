@@ -9,7 +9,23 @@ allows you to customize the behavior of the plugin by configuring certain featur
 
 ## Features Explained
 
-The following options are available to enable/disabled based on your requirements:
+The following options are available to customize based on your requirements:
+
+### Modifying Base Path
+
+You can change the base path of the Front-end site URL by including it in your `Front-end site URL` value.
+For example, if your front-end site was hosted at `http://example.com/blog`, you would change the `Front-end site URL` value to `http://example.com/blog`.
+You also need to add your base path value in your `next.config.js` for authenticating post previews to continue working.
+
+```js title="next.config.js" {15}
+const { withFaust } = require('faustwp-core')
+
+module.exports = withFaust({
+  ...
+  basePath: '/blog'
+  ...
+})
+```
 
 ### Disabling WordPress Theme Admin Pages
 

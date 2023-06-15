@@ -21,7 +21,7 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
 };
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
-  const { templates } = getConfig();
+  const { basePath, templates } = getConfig();
 
   if (!templates) {
     throw new Error('Templates are required. Please add them to your config.');
@@ -109,6 +109,11 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         seedQueryUri = getQueryParam(window.location.href, 'previewPathname');
         databaseId = getQueryParam(window.location.href, 'p');
 
+        // If a user includes a base path, it will be part of the uri query that we need to filter out
+        if (basePath) {
+          seedQueryUri = seedQueryUri.replace(basePath, '');
+        }
+
         if (seedQueryUri === '') {
           throw new Error(
             'The URL must contain the proper "previewPathname" query param for previews.',
@@ -154,7 +159,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         setSeedNode(node);
       }
     })();
-  }, [seedNode, isPreview, isAuthenticated]);
+  }, [seedNode, isPreview, isAuthenticated, basePath]);
 
   /**
    * Finally, get the template's query data.

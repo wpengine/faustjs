@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.2
-Stable tag: 0.8.7
+Stable tag: 1.0.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,16 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.0.0 =
+
+### Major Changes
+
+- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
+
+### Patch Changes
+
+- ef92d02: Added `wp-graphql-content-blocks` version to the telemetry endpoint.
+
 = 0.8.7 =
 
 ### Patch Changes
@@ -65,11 +75,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 02f7f78: Registered a new GraphQL field, `globalStylesheet`, that returns [wp_get_global_stylesheet](https://developer.wordpress.org/reference/functions/wp_get_global_stylesheet/) and provides the same arguments as the core WordPress function.
-
-= 0.8.5 =
-
-### Patch Changes
-
-- eaa5e48: Added the `shouldShowFaustToolbar` field on the `viewer` WPGraphQL type to determine if the Faust toolbar should be shown based on user preferences.
 
 [View the full changelog](https://faustjs.org/docs/changelog/faustwp)
