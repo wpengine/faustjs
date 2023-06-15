@@ -4,13 +4,22 @@ import { useRouter } from 'next/router';
 import { FaustProvider } from '@faustwp/core';
 import '@faustwp/core/dist/css/toolbar.css';
 import '../styles/global.scss';
+import { WordPressBlocksProvider } from '@faustwp/blocks';
+import blocks from '../wp-blocks';
+import '../globalStylesheet.css';
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
-
   return (
     <FaustProvider pageProps={pageProps}>
-      <Component {...pageProps} key={router.asPath} />
+      <WordPressBlocksProvider
+        config={{
+          blocks,
+          theme: {},
+        }}>
+        <Component {...pageProps} key={router.asPath} />
+      </WordPressBlocksProvider>
     </FaustProvider>
   );
 }
+

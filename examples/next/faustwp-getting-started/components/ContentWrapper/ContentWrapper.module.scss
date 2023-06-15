@@ -1,5 +1,5 @@
 .component {
-	max-width: var(--wpe--content--max-width);
+	// max-width: var(--wpe--content--max-width);
 	margin: 0 auto;
 	line-height: 1.6875;
 
@@ -29,16 +29,16 @@
 			font-weight: 700;
 		}
 
-		a {
-			color: var(--wpe--link--color);
-			text-decoration: underline;
+		// a {
+		// 	color: var(--wpe--link--color);
+		// 	text-decoration: underline;
 
-			&:hover,
-			&:focus {
-				color: var(--wpe--link--color);
-				text-decoration: none;
-			}
-		}
+		// 	&:hover,
+		// 	&:focus {
+		// 		color: var(--wpe--link--color);
+		// 		text-decoration: none;
+		// 	}
+		// }
 
 		li {
 			font-size: 1.6rem;
