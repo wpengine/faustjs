@@ -15,5 +15,4 @@ export default {
   CoreQuote: CoreQuote,
   CoreImage: CoreImage,
   CoreSeparator: CoreSeparator,
-
 };
