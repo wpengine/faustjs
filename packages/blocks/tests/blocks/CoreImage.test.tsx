@@ -25,7 +25,7 @@ describe('<CoreImage />', () => {
         height: '310',
         style: 'border-width:44px;border-radius:83px',
         caption: 'this_is_a_caption',
-        src: 'image.png'
+        src: '/image.png'
       },
     });
 
