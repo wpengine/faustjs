@@ -38,7 +38,7 @@ export function CoreImage(props: CoreImageFragmentProps) {
 
   if (attributes.width && attributes.height) {
     return (
-      <figure>
+      <figure className={attributes?.cssClassName}>
         <Image
           style={style}
           src={attributes.src || ''}
