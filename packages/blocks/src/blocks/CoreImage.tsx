@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import { Image } from 'next/image';
+import Image from 'next/image.js';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
@@ -36,9 +36,24 @@ export function CoreImage(props: CoreImageFragmentProps) {
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
 
+  if (attributes.width && attributes.height) {
+    return (
+      <figure>
+        <Image
+          style={style}
+          src={attributes.src || ''}
+          width={attributes.width}
+          height={attributes.height}
+          alt={attributes.alt}
+          className={attributes?.cssClassName}
+        />
+        {attributes?.caption && <figcaption>{attributes.caption}</figcaption>}
+      </figure>
+    );
+  }
   return (
     <figure>
-      <Image
+      <img
         style={style}
         src={attributes.src}
         width={attributes.width}
@@ -46,6 +61,7 @@ export function CoreImage(props: CoreImageFragmentProps) {
         alt={attributes.alt}
         className={attributes?.cssClassName}
       />
+      {attributes?.caption && <figcaption>{attributes.caption}</figcaption>}
     </figure>
   );
 }
