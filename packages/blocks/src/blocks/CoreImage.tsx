@@ -45,7 +45,6 @@ export function CoreImage(props: CoreImageFragmentProps) {
           width={attributes.width}
           height={attributes.height}
           alt={attributes.alt}
-          className={attributes?.cssClassName}
         />
         {attributes?.caption && <figcaption>{attributes.caption}</figcaption>}
       </figure>
