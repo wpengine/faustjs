@@ -52,7 +52,7 @@ export function CoreImage(props: CoreImageFragmentProps) {
     );
   }
   return (
-    <figure>
+    <figure className={attributes?.cssClassName}>
       <img
         style={style}
         src={attributes.src}
