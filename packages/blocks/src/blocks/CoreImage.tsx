@@ -35,6 +35,7 @@ export function CoreImage(props: CoreImageFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
+  const linkTarget = attributes.linkTarget ? '_blank' : undefined;
 
   if (attributes.width && attributes.height) {
     return (
