@@ -51,7 +51,7 @@ export function CoreImage(props: CoreImageFragmentProps) {
     );
   }
   return (
-    <figure className={attributes?.cssClassName}>
+    <figure id={attributes?.anchor} className={attributes?.cssClassName}>
       <img
         style={style}
         src={attributes.src}
