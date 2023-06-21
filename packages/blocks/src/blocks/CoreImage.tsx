@@ -86,7 +86,7 @@ CoreImage.fragments = {
         linkTarget
         linkDestination
         linkClass
-        id
+        imageId: id
         href
         height
         cssClassName
