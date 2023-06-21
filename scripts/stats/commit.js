@@ -13,7 +13,7 @@ const excludedFullContributors = [
   'John Parris <public@johnparris.com>',
 ];
 
-const excludedShortContributors = ['github-actions[bot]', 'Chris Wiegman'];
+const excludedShortContributors = ['github-actions[bot]', 'Chris Wiegman', 'dependabot[bot]'];
 
 const publicRepos = [
   'https://github.com/wpengine/wp-graphql-content-blocks.git',
@@ -26,8 +26,8 @@ async function getRepoStats() {
   for (const repo of publicRepos) {
     const { stdout } = await processExec(
       'git clone ' +
-        repo +
-        ' repo; cd repo; git shortlog -se --no-merges --since="28 days ago" < /dev/tty; cd ..; rm -rf repo',
+      repo +
+      ' repo; cd repo; git shortlog -se --no-merges --since="28 days ago" < /dev/tty; cd ..; rm -rf repo',
     );
 
     repoStats += stdout;
