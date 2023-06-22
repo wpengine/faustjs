@@ -199,6 +199,10 @@ After a successful release, a PR from `canary` to `main` is automatically create
 
 Developers with full GitHub repository access can create public releases. We use [Changesets](https://github.com/atlassian/changesets) to automate the versioning and deployment process for all of our packages and plugins.
 
+### Adding a changeset
+
+To add a new changeset for a new feature, bugfix or other change please see the [changeset documentation](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).
+
 ### Versioning
 
 When you are ready to release, you should first create the new package and plugin versions.
@@ -230,4 +234,3 @@ Once deployed, the updated packages and plugin will be visible here:
 ### Update the docs
 
 After a release, remember to update the docs using the [Prod Site Deployment](#prod-site-deployment) process outlined above.
-
