@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 1.0.2
+
+### Patch Changes
+
+- 80e5605: Fixed a bug in the seed query when persisted queries are enabled. Thanks @justlevine!
+
 ## 1.0.1
 
 ### Patch Changes
