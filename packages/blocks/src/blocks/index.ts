@@ -7,6 +7,7 @@ import { CoreButton } from './CoreButton.js';
 import { CoreCode } from './CoreCode.js';
 import { CoreQuote } from './CoreQuote.js';
 import { CoreSeparator } from './CoreSeparator.js';
+import { CoreHeading } from './CoreHeading.js';
 
 export default {
   CoreParagraph: CoreParagraph,
@@ -17,4 +18,5 @@ export default {
   CoreSeparator: CoreSeparator,
   CoreButton: CoreButton,
   CoreButtons: CoreButtons,
+  CoreHeading: CoreHeading,
 };
