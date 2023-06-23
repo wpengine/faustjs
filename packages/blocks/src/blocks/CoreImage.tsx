@@ -24,7 +24,6 @@ export type CoreImageFragmentProps = ContentBlock & {
     linkTarget?: string;
     linkDestination?: string;
     linkClass?: string;
-    id?: string;
     href?: string;
     height?: string;
     cssClassName?: string;
@@ -39,7 +38,7 @@ export function CoreImage(props: CoreImageFragmentProps) {
 
   if (attributes.width && attributes.height) {
     return (
-      <figure className={attributes?.cssClassName}>
+      <figure id={attributes?.anchor} className={attributes?.cssClassName}>
         <Image
           style={style}
           src={attributes.src || ''}
@@ -87,7 +86,6 @@ CoreImage.fragments = {
         linkTarget
         linkDestination
         linkClass
-        imageId: id
         href
         height
         cssClassName
