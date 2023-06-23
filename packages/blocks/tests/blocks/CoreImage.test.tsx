@@ -31,12 +31,8 @@ describe('<CoreImage />', () => {
 
     expect(screen.queryByAltText('testing_alt_text')).toBeInTheDocument();
 
-    // expect(
-    //   screen.queryByRole('testing', {
-    //     name: /this_is_a_caption/i
-    //   })
-    // ).toBeInTheDocument()
-
+    expect(screen.queryByText(/this_is_a_caption/i)).toBeInTheDocument();
+    
     expect(screen.queryByRole('img')).toBeInTheDocument();
   });
 
