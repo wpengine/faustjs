@@ -20,6 +20,7 @@ export type CoreListFragmentProps = ContentBlock & {
     textColor?: string;
     type?: string;
     values?: string;
+    cssClassName?: string;
   };
 };
 
@@ -36,13 +37,15 @@ export function CoreList(props: CoreListFragmentProps) {
 
   return (
     <ListLevel
+      style={style}
+      className={attributes?.cssClassName}
       reversed={
         attributes?.ordered && attributes?.reversed === true ? true : undefined
       }
       start={
         attributes?.ordered && attributes?.start ? attributes?.start : undefined
       }
-      style={style}
+      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: attributes.values }}
     />
   );
@@ -67,6 +70,7 @@ CoreList.fragments = {
         textColor
         type
         values
+        cssClassName
       }
     }
   `,
