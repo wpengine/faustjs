@@ -13,7 +13,6 @@ export type CoreListFragmentProps = ContentBlock & {
     gradient?: string;
     lock?: string;
     ordered?: boolean;
-    placeholder?: string;
     reversed?: boolean;
     start?: number;
     style?: string;
@@ -27,15 +26,23 @@ export function CoreList(props: CoreListFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
-  const { values } = attributes;
 
-  if (!values) {
+  if (!attributes?.values) {
     return null;
   }
 
   const ListLevel = attributes?.ordered ? 'ol' : 'ul';
 
   return (
-    <ListLevel style={style} dangerouslySetInnerHTML={{ __html: values }} />
+    <ListLevel
+      reversed={
+        attributes?.ordered && attributes?.reversed === true ? true : undefined
+      }
+      start={
+        attributes?.ordered && attributes?.start ? attributes?.start : undefined
+      }
+      style={style}
+      dangerouslySetInnerHTML={{ __html: attributes.values }}
+    />
   );
 }
