@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client';
 import React from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
@@ -46,3 +47,33 @@ export function CoreList(props: CoreListFragmentProps) {
     />
   );
 }
+
+CoreList.fragments = {
+  key: `CoreListBlockFragment`,
+  entry: gql`
+    fragment CoreListBlockFragment on CoreList {
+      attributes {
+        anchor
+        backgroundColor
+        className
+        fontFamily
+        fontSize
+        gradient
+        lock
+        ordered
+        reversed
+        start
+        style
+        textColor
+        type
+        values
+      }
+    }
+  `,
+};
+
+CoreList.config = {
+  name: 'CoreList',
+};
+
+CoreList.displayName = 'CoreList';

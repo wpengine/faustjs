@@ -12,6 +12,7 @@ import {
   FeaturedImage,
   SEO,
 } from '../components';
+import { CoreBlocks } from '@faustwp/blocks';
 
 export default function Component(props) {
   // Loading state for previews
@@ -59,6 +60,7 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
+  ${CoreBlocks.CoreList.fragments.entry}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -75,6 +77,13 @@ Component.query = gql`
         }
       }
       ...FeaturedImageFragment
+      editorBlocks {
+        __typename
+        renderedHtml
+        id: clientId
+        parentClientId
+        ...${CoreBlocks.CoreList.fragments.key}
+      }
     }
     generalSettings {
       ...BlogInfoFragment
