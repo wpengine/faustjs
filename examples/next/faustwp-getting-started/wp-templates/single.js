@@ -12,9 +12,6 @@ import {
   FeaturedImage,
   SEO,
 } from '../components';
-import components from '../wp-blocks';
-import { flatListToHierarchical } from '@faustwp/core';
-import { WordPressBlocksViewer } from '@faustwp/blocks';
 
 export default function Component(props) {
   // Loading state for previews
@@ -26,8 +23,7 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author, editorBlocks } = props.data.post;
-  const blocks = flatListToHierarchical(editorBlocks, {childrenKey: 'innerBlocks'});
+  const { title, content, featuredImage, date, author } = props.data.post;
 
   return (
     <>
@@ -49,10 +45,8 @@ export default function Component(props) {
             date={date}
             author={author?.node?.name}
           />
-          <Container className="wp-block-group is-layout-flow">
-            <ContentWrapper className="entry-content wp-block-post-content has-global-padding is-layout-constrained">
-              <WordPressBlocksViewer blocks={blocks}/>
-            </ContentWrapper>
+          <Container>
+            <ContentWrapper content={content} />
           </Container>
         </>
       </Main>
@@ -65,7 +59,6 @@ Component.query = gql`
   ${BlogInfoFragment}
   ${NavigationMenu.fragments.entry}
   ${FeaturedImage.fragments.entry}
-  ${components.CoreHeading.fragments.entry}
   query GetPost(
     $databaseId: ID!
     $headerLocation: MenuLocationEnum
@@ -80,14 +73,6 @@ Component.query = gql`
         node {
           name
         }
-      }
-      editorBlocks {
-        name
-        __typename
-        renderedHtml
-        id: clientId
-        parentId: parentClientId
-        ...${components.CoreHeading.fragments.key}
       }
       ...FeaturedImageFragment
     }
