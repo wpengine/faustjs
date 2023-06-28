@@ -13,7 +13,7 @@ function renderProvider(props: CoreListFragmentProps) {
   );
 }
 
-describe('<CoreCode />', () => {
+describe('<CoreList />', () => {
   test('renders the proper ordered list', async () => {
     renderProvider({
       attributes: {
