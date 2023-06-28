@@ -1,5 +1,16 @@
 # @faustwp/blocks
 
+## 1.1.0
+
+### Minor Changes
+
+- f087feb: Feat: Add CoreButton and CoreButtons blocks
+
+### Patch Changes
+
+- Updated dependencies [80e5605]
+  - @faustwp/core@1.0.2
+
 ## 1.0.0
 
 ### Major Changes
