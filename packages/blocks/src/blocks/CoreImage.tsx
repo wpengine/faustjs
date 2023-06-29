@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { gql } from '@apollo/client';
 import Image from 'next/image.js';
-import Link from 'next/link.js';
 import React, { PropsWithChildren } from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
@@ -45,14 +43,21 @@ function LinkWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
     return <>{children}</>;
   }
 
+  /**
+   * Using a traditional "a" tag here instead of a Next link since Next links
+   * only work with relative Next.js pages. Identifying that is tough.
+   * We could conditionally use a Next.js Link for relative URLs, but since we
+   * are seeing a hybrid approach of Faust apps with their monolithic WP counterparts,
+   * for now it's best to stick with a simple "a" tag.
+   */
   return (
-    <Link
+    <a
       href={attributes.href}
       target={attributes?.linkTarget}
       className={attributes?.linkClass}
       rel={attributes?.rel}>
       {children}
-    </Link>
+    </a>
   );
 }
 
@@ -98,7 +103,9 @@ export function CoreImage(props: CoreImageFragmentProps) {
     <figure
       id={attributes?.anchor ?? undefined}
       className={attributes?.cssClassName}>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <LinkWrapper {...props}>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <ImgWrapper {...props} />
       </LinkWrapper>
       {attributes?.caption && (
