@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import React from 'react';
 import Image from 'next/image.js';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
+import { NextLink } from '../components/NextLink.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
@@ -34,18 +35,22 @@ export function CoreImage(props: CoreImageFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
-  const linkTarget = attributes.linkTarget ? '_blank' : undefined;
+  // const linkTarget = attributes.linkTarget ? '_blank' : undefined;
 
   if (attributes.width && attributes.height) {
     return (
       <figure id={attributes?.anchor} className={attributes?.cssClassName}>
-        <Image
-          style={style}
-          src={attributes.src || ''}
-          width={attributes.width}
-          height={attributes.height}
-          alt={attributes.alt}
-        />
+        {/* TODO: implement the NextLink helper */}
+        {props.href && }
+        <NextLink>
+          <Image
+            style={style}
+            src={attributes.src || ''}
+            width={attributes.width}
+            height={attributes.height}
+            alt={attributes.alt}
+          />
+        </NextLink>
         {attributes?.caption && <figcaption>{attributes.caption}</figcaption>}
       </figure>
     );
