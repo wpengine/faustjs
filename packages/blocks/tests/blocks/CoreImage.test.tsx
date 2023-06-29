@@ -21,8 +21,8 @@ describe('<CoreImage />', () => {
     renderProvider({
       attributes: {
         alt: 'testing_alt_text',
-        width: '498',
-        height: '310',
+        width: 498,
+        height: 310,
         style: 'border-width:44px;border-radius:83px',
         caption: 'this_is_a_caption',
         src: '/image.png',
@@ -32,63 +32,90 @@ describe('<CoreImage />', () => {
     expect(screen.queryByAltText('testing_alt_text')).toBeInTheDocument();
 
     expect(screen.queryByText(/this_is_a_caption/i)).toBeInTheDocument();
-    
+
     expect(screen.queryByRole('img')).toBeInTheDocument();
   });
 
-  test('applies the correct styles', () => {
+  test('applies the correct styles for a regular img', () => {
     const tree = renderProvider({
       attributes: {
-        width: '498',
-        height: '310',
-        alt: 'This is alt text for core image',
-        style: '{"border":{"radius":"83px","width":"44px"}}',
-        src: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        align: 'wide',
+        alt: 'My alt text',
+        anchor: 'my-anchor',
+        caption: 'My caption',
+        className: 'is-style-rounded',
+        cssClassName:
+          'wp-block-image alignwide size-large has-custom-border is-style-rounded',
+        href: 'http://localhost:3000/hello-world/my-image/',
+        id: 429,
+        linkClass: 'my-link-class',
+        linkDestination: 'attachment',
+        linkTarget: '_blank',
+        rel: 'noreferrer noopener',
+        sizeSlug: 'large',
+        src: 'http://headless.local/wp-content/uploads/2022/12/My-image-1024x576.png',
+        style: '{"border":{"width":"27px"}}',
+        title: 'mytitle',
+        url: 'http://localhost:3000/wp-content/uploads/2022/12/My-image-1024x576.png',
       },
     });
 
-    expect(tree.container).toMatchSnapshot();
+    expect(tree.container).toMatchInlineSnapshot(`
+    <div>
+      <figure
+        class="wp-block-image alignwide size-large has-custom-border is-style-rounded"
+        id="my-anchor"
+      >
+        <img
+          alt="My alt text"
+          src="http://headless.local/wp-content/uploads/2022/12/Faust-Takeover-2022-December-Google-Slides-1-1024x576.png"
+          style="border-width: 27px;"
+          title="mytitle"
+        />
+        <figcaption
+          class="wp-element-caption"
+        >
+          My caption
+        </figcaption>
+      </figure>
+    </div>
+    `);
+  });
 
-    //   expect(tree.container).toMatchInlineSnapshot(`
-    //     <div>
-    //       <figure>
-    //         <img
-    //           alt="This is alt text for core image"
-    //           height="310"
-    //           style="border-width: 44px; border-radius: 83px;"
-    //           width="498"
-    //         />
-    //       </figure>
-    //     </div>
-    //    `);
+  test('applies the correct styles for a Next.js img', () => {
+    const tree = renderProvider({
+      attributes: {
+        alt: 'My alt text',
+        anchor: 'my-anchor',
+        caption: '',
+        className: 'another-class',
+        cssClassName: 'wp-block-image size-large is-resized another-class',
+        height: 578,
+        id: 389,
+        linkDestination: 'none',
+        sizeSlug: 'large',
+        src: 'http://headless.local/wp-content/uploads/2022/09/carbon5-1024x578.png',
+        title: 'mytitle',
+        url: 'http://localhost:3000/wp-content/uploads/2022/09/carbon5-1024x578.png',
+        width: 1024,
+      },
+    });
 
     expect(tree.container).toMatchInlineSnapshot(`
-      <div>
-        <figure>
-          <span
-            style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
-          >
-            <span
-              style="box-sizing: border-box; display: block; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27498%27%20height=%27310%27/%3e"
-                style="display: block; max-width: 100%; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"
-              />
-            </span>
-            <img
-              alt="This is alt text for core image"
-              data-nimg="intrinsic"
-              decoding="async"
-              src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-              style="border-radius: 83px; height: 0px; position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;"
-            />
-            <noscript />
-          </span>
-        </figure>
-      </div>
+    <div>
+      <figure
+        class="wp-block-image size-large is-resized another-class"
+        id="my-anchor"
+      >
+        <img
+          alt="My alt text"
+          src="http://headless.local/wp-content/uploads/2022/09/carbon5-1024x578.png"
+          style="flex-basis: 1024px; height: 578px;"
+          title="mytitle"
+        />
+        
+      </figure>
+    </div>
     `);
   });
 });

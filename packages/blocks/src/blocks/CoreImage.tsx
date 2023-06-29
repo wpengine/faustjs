@@ -15,7 +15,8 @@ export type CoreImageFragmentProps = ContentBlock & {
     borderColor?: string;
     caption?: string;
     className?: string;
-    width?: string;
+    width?: number;
+    id?: number;
     url?: string;
     title?: string;
     style?: string;
@@ -27,7 +28,7 @@ export type CoreImageFragmentProps = ContentBlock & {
     linkDestination?: string;
     linkClass?: string;
     href?: string;
-    height?: string;
+    height?: number;
     cssClassName?: string;
   };
 };
