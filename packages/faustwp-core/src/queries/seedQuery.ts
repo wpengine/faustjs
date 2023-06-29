@@ -26,8 +26,8 @@ export interface SeedNode {
 
 export const SEED_QUERY = gql`
   query GetSeedNode(
-    $id: ID = 0
-    $uri: String = ""
+    $id: ID! = 0
+    $uri: String! = ""
     $asPreview: Boolean = false
   ) {
     ... on RootQuery @skip(if: $asPreview) {
