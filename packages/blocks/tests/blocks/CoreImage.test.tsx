@@ -26,6 +26,7 @@ describe('<CoreImage />', () => {
         style: 'border-width:44px;border-radius:83px',
         caption: 'this_is_a_caption',
         src: '/image.png',
+        href: 'https://google.com',
       },
     });
 
@@ -34,6 +35,8 @@ describe('<CoreImage />', () => {
     expect(screen.queryByText(/this_is_a_caption/i)).toBeInTheDocument();
 
     expect(screen.queryByRole('img')).toBeInTheDocument();
+
+    expect(screen.queryByRole('link')).toBeInTheDocument();
   });
 
   test('applies the correct styles for a regular img', () => {
@@ -66,12 +69,19 @@ describe('<CoreImage />', () => {
         class="wp-block-image alignwide size-large has-custom-border is-style-rounded"
         id="my-anchor"
       >
-        <img
-          alt="My alt text"
-          src="http://headless.local/wp-content/uploads/2022/12/Faust-Takeover-2022-December-Google-Slides-1-1024x576.png"
-          style="border-width: 27px;"
-          title="mytitle"
-        />
+        <a
+          class="my-link-class"
+          href="http://localhost:3000/hello-world/my-image/"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          <img
+            alt="My alt text"
+            src="http://headless.local/wp-content/uploads/2022/12/My-image-1024x576.png"
+            style="border-width: 27px;"
+            title="mytitle"
+          />
+        </a>
         <figcaption
           class="wp-element-caption"
         >
