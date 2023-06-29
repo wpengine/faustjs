@@ -2,4 +2,4 @@
 '@faustwp/core': patch
 ---
 
-Bug Fix: useLogin access token `code` is now properly escaped.
+Bug Fix: `useLogin` and `fetchAccessToken` access token `code` parameter is now properly escaped. Fixes bug with authentication not workin on Vercel.
