@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { gql } from '@apollo/client';
-import React from 'react';
 import Image from 'next/image.js';
+import Link from 'next/link.js';
+import React, { PropsWithChildren } from 'react';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
-import { NextLink } from '../components/NextLink.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
@@ -31,40 +32,79 @@ export type CoreImageFragmentProps = ContentBlock & {
   };
 };
 
-export function CoreImage(props: CoreImageFragmentProps) {
+function LinkWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
+  const { attributes, children } = props;
+
+  if (!attributes.href) {
+    /**
+     * Fragment is used to fix the following TS error:
+     * 'LinkWrapper' cannot be used as a JSX component.
+     */
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    return <>{children}</>;
+  }
+
+  return (
+    <Link
+      href={attributes.href}
+      target={attributes?.linkTarget}
+      className={attributes?.linkClass}
+      rel={attributes?.rel}>
+      {children}
+    </Link>
+  );
+}
+
+function ImgWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
-  // const linkTarget = attributes.linkTarget ? '_blank' : undefined;
 
-  if (attributes.width && attributes.height) {
-    return (
-      <figure id={attributes?.anchor} className={attributes?.cssClassName}>
-        {/* TODO: implement the NextLink helper */}
-        {props.href && }
-        <NextLink>
-          <Image
-            style={style}
-            src={attributes.src || ''}
-            width={attributes.width}
-            height={attributes.height}
-            alt={attributes.alt}
-          />
-        </NextLink>
-        {attributes?.caption && <figcaption>{attributes.caption}</figcaption>}
-      </figure>
-    );
+  if (!attributes.src) {
+    return null;
   }
+
+  /**
+   * Next Image requires width, height, and alt
+   *
+   * @link https://nextjs.org/docs/pages/api-reference/components/image
+   */
+  if (attributes?.width && attributes?.height) {
+    <Image
+      style={style}
+      src={attributes?.src}
+      width={attributes.width}
+      height={attributes.height}
+      alt={attributes?.alt ?? ''}
+      title={attributes?.title ?? undefined}
+    />;
+  }
+
   return (
-    <figure id={attributes?.anchor} className={attributes?.cssClassName}>
-      <img
-        style={style}
-        src={attributes.src}
-        width={attributes.width}
-        height={attributes.height}
-        alt={attributes.alt}
-      />
-      {attributes?.caption && <figcaption>{attributes.caption}</figcaption>}
+    <img
+      src={attributes.src}
+      style={style}
+      alt={attributes?.alt ?? ''}
+      title={attributes?.title ?? undefined}
+    />
+  );
+}
+
+export function CoreImage(props: CoreImageFragmentProps) {
+  const { attributes } = props;
+
+  return (
+    <figure
+      id={attributes?.anchor ?? undefined}
+      className={attributes?.cssClassName}>
+      <LinkWrapper {...props}>
+        <ImgWrapper {...props} />
+      </LinkWrapper>
+      {attributes?.caption && (
+        <figcaption className="wp-element-caption">
+          {attributes.caption}
+        </figcaption>
+      )}
     </figure>
   );
 }
