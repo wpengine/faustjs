@@ -95,6 +95,20 @@ describe('auth/client/accessToken', () => {
     expect(accessToken.getAccessToken()).toBe('test');
   });
 
+  test('fetchAccessToken() should url encode the code parameter if provided', async () => {
+    const code = "//+\\==asdasdadasd:*&^%$))!£!";
+    fetchMock.get(`/api/faust/auth/token?code=${encodeURIComponent(code)}`, {
+      status: 200,
+      body: JSON.stringify({
+        accessToken: 'test',
+      }),
+    });
+    const token = await accessToken.fetchAccessToken(code);
+
+    expect(token).toBe('test');
+    expect(accessToken.getAccessToken()).toBe('test');
+  });
+
   test('A refresh timer is set after calling fetchAccessToken()', async () => {
     jest.spyOn(accessToken, 'getRefreshTimer');
 

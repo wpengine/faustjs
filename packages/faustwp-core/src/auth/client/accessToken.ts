@@ -140,7 +140,7 @@ export async function fetchAccessToken(code?: string): Promise<string | null> {
 
   // Add the code to the url if it exists
   if (isString(code) && code.length > 0) {
-    url += `?code=${code}`;
+    url += `?code=${encodeURIComponent(code)}`;
   }
 
   try {
