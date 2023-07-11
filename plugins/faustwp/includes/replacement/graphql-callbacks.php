@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\faustwp_get_setting;
+use function WPE\FaustWP\Replacement\graphql_rewrite_keys;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -49,17 +50,28 @@ function url_replacement( $response ) {
  */
 function url_replace_recursive( &$data ) {
 	foreach ( $data as $key => &$value ) {
+		// Exclude generalSettings from URL replacement.
 		if ( 'generalSettings' === $key ) {
 			continue;
 		}
 
-		if ( ( 'url' === $key || 'href' === $key ) && is_string( $value ) ) {
+		if (
+			in_array( $key, graphql_rewrite_keys(), true ) &&
+			is_string( $value )
+		) {
+			// Handle URI replacements.
 			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 			$value       = str_replace( site_url(), $replacement, $value );
-		} elseif ( ( 'path' === $key && is_multisite() ) && is_string( $value ) ) {
+
+		} elseif (
+			( 'path' === $key && is_multisite() ) &&
+			is_string( $value )
+		) {
+			// Remove subdirectory from the path if multisite.
 			$site         = get_site();
 			$subdirectory = untrailingslashit( $site->path );
 			$value        = str_replace( $subdirectory, '', $value );
+
 		} elseif ( is_array( $value ) ) {
 			url_replace_recursive( $value );
 		}

@@ -94,3 +94,20 @@ function normalize_sitemap_entry( $sitemap_entry ) {
 
 	return $sitemap_entry;
 }
+
+/**
+ * Determine what keys within a GraphQL response should have
+ * their values rewritten when rewrites are enabled.
+ *
+ * @return array An array of GraphQL response keys.
+ */
+function graphql_rewrite_keys() {
+	$graphql_rewrite_keys = [ 'url', 'href' ];
+
+	/**
+	 * Filter 'faustwp_graphql_rewrite_keys'.
+	 *
+	 * Used to override or extend the response keys targeted to have their values rewritten.
+	 */
+	return apply_filters( 'faustwp_graphql_rewrite_keys', $graphql_rewrite_keys );
+}
