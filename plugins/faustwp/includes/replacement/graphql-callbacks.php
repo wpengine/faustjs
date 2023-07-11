@@ -55,23 +55,13 @@ function url_replace_recursive( &$data ) {
 			continue;
 		}
 
-		if (
-			in_array( $key, graphql_rewrite_keys(), true ) &&
-			is_string( $value )
-		) {
-			// Handle URI replacements.
+		if ( in_array( $key, graphql_rewrite_keys(), true ) && is_string( $value ) ) {
 			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 			$value       = str_replace( site_url(), $replacement, $value );
-
-		} elseif (
-			( 'path' === $key && is_multisite() ) &&
-			is_string( $value )
-		) {
-			// Remove subdirectory from the path if multisite.
+		} elseif ( ( 'path' === $key && is_multisite() ) && is_string( $value ) ) {
 			$site         = get_site();
 			$subdirectory = untrailingslashit( $site->path );
 			$value        = str_replace( $subdirectory, '', $value );
-
 		} elseif ( is_array( $value ) ) {
 			url_replace_recursive( $value );
 		}
