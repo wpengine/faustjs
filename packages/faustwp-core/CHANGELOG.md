@@ -1,5 +1,17 @@
 # @faustwp/core
 
+## 1.0.3
+
+### Patch Changes
+
+- 790b485: Bug Fix: `useLogin` and `fetchAccessToken` access token `code` parameter is now properly escaped. Fixes bug with authentication not workin on Vercel.
+
+## 1.0.2
+
+### Patch Changes
+
+- 80e5605: Fixed a bug in the seed query when persisted queries are enabled. Thanks @justlevine!
+
 ## 1.0.1
 
 ### Patch Changes

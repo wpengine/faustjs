@@ -1,5 +1,41 @@
 # @faustwp/blocks
 
+## 1.2.0
+
+### Minor Changes
+
+- 240a47b: Introduced the `CoreList` block. It can be used like:
+
+  `wp-blocks/index.js`:
+
+  ```jsx
+  import { CoreBlocks } from '@faustwp/blocks';
+
+  export default {
+    // Your other blocks...
+    CoreList: CoreBlocks.CoreList,
+  };
+  ```
+
+- 19c7395: Added CoreHeading block implementation.
+
+### Patch Changes
+
+- 0cf14d4: Provide reference implementation of core image
+- Updated dependencies [790b485]
+  - @faustwp/core@1.0.3
+
+## 1.1.0
+
+### Minor Changes
+
+- f087feb: Feat: Add CoreButton and CoreButtons blocks
+
+### Patch Changes
+
+- Updated dependencies [80e5605]
+  - @faustwp/core@1.0.2
+
 ## 1.0.0
 
 ### Major Changes
