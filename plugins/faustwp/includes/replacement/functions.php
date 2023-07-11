@@ -102,7 +102,7 @@ function normalize_sitemap_entry( $sitemap_entry ) {
  * @return array An array of GraphQL response keys.
  */
 function graphql_rewrite_keys() {
-	$graphql_rewrite_keys = [ 'url', 'href' ];
+	$graphql_rewrite_keys = array( 'url', 'href' );
 
 	/**
 	 * Filter 'faustwp_graphql_rewrite_keys'.
