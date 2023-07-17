@@ -77,6 +77,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 function register_rest_routes() {
 	register_rest_route(
 		'faustwp/v1',
+		'/blocks',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_blocks_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_blocks_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
 		'/telemetry',
 		array(
 			'methods'             => 'POST',
@@ -123,6 +133,56 @@ function register_rest_routes() {
  *
  * @return mixed A WP_REST_Response, array, or WP_Error.
  */
+function handle_rest_blocks_callback( \WP_REST_Request $request ) {
+	// Get the JSON data from the request body
+	$json_data = $request->get_json_params();
+
+	// Verify if the JSON data is valid
+	if ( is_null( $json_data ) ) {
+		return new \WP_Error(
+			'invalid_json',
+			__( 'Invalid JSON data.', 'faustwp' ),
+			array( 'status' => 400 )
+		);
+	}
+
+	// Create the custom uploads directory if it doesn't exist
+	$faustwp_dir = wp_get_upload_dir()['basedir'] . '/faustwp';
+
+	if ( !is_dir( $faustwp_dir ) ) {
+		wp_mkdir_p( $faustwp_dir );
+	}
+
+	$filename = 'blocks.json';
+
+	// Save the JSON data to a file in the custom uploads directory
+	$file_path  = $faustwp_dir . '/' . $filename;
+	$file_saved = file_put_contents( $file_path, $request->get_body() );
+
+	if ( $file_saved === false ) {
+		return new \WP_Error(
+			'file_save_error',
+			__( 'Failed to sync JSON data.', 'faustwp' ),
+			array( 'status' => 500 )
+		);
+	}
+
+	return new \WP_REST_Response(
+		array( 'message' => __( 'JSON data sync successfully.', 'faustwp' ) ), 200 );
+}
+
+/**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle GET /faustwp/v1/telemetry response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current WP_REST_Request object.
+ *
+ * @return mixed A WP_REST_Response, array, or WP_Error.
+ */
 function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	$data = array(
 		'faustwp'                  => get_anonymous_faustwp_data(),
@@ -134,6 +194,19 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	);
 
 	return new \WP_REST_Response( $data );
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/blocks`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_blocks_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**

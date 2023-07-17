@@ -3,14 +3,17 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
+    "predev": "npm run generate && npm run sync",
     "dev": "faust dev",
     "build": "faust build",
     "generate": "faust generatePossibleTypes",
     "stylesheet": "faust generateGlobalStylesheet",
+    "sync": "faust syncBlocks",
     "start": "faust start"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
+    "@faustwp/blocks": "1.2.0",
     "@faustwp/cli": "1.0.1",
     "@faustwp/core": "1.0.3",
     "@wordpress/base-styles": "^4.26.0",

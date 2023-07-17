@@ -1,6 +1,10 @@
+import React from 'react';
 import { gql } from '@apollo/client';
+import { flatListToHierarchical } from '@faustwp/core';
+import { WordPressBlocksViewer } from '@faustwp/blocks';
 import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import components from '../wp-blocks';
 import {
   Header,
   Footer,
@@ -23,8 +27,9 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author } = props.data.post;
-
+  const { title, content, featuredImage, date, author, editorBlocks } = props.data.post;
+  const blocks = flatListToHierarchical(editorBlocks, {childrenKey: 'innerBlocks'});
+  
   return (
     <>
       <SEO
@@ -45,8 +50,10 @@ export default function Component(props) {
             date={date}
             author={author?.node?.name}
           />
-          <Container>
-            <ContentWrapper content={content} />
+          <Container className="wp-block-group is-layout-flow">
+            <ContentWrapper className="entry-content wp-block-post-content has-global-padding is-layout-constrained">
+              <WordPressBlocksViewer blocks={blocks}/>
+            </ContentWrapper>
           </Container>
         </>
       </Main>
@@ -73,6 +80,13 @@ Component.query = gql`
         node {
           name
         }
+      }
+      editorBlocks(flat: false) {
+        name
+        __typename
+        renderedHtml
+        id: clientId
+        parentId: parentClientId
       }
       ...FeaturedImageFragment
     }
