@@ -134,10 +134,10 @@ function register_rest_routes() {
  * @return mixed A WP_REST_Response, array, or WP_Error.
  */
 function handle_rest_blocks_callback( \WP_REST_Request $request ) {
-	// Get the JSON data from the request body
+	// Get the JSON data from the request body.
 	$json_data = $request->get_json_params();
 
-	// Verify if the JSON data is valid
+	// Verify if the JSON data is valid.
 	if ( is_null( $json_data ) ) {
 		return new \WP_Error(
 			'invalid_json',
@@ -146,20 +146,20 @@ function handle_rest_blocks_callback( \WP_REST_Request $request ) {
 		);
 	}
 
-	// Create the custom uploads directory if it doesn't exist
+	// Create the custom uploads directory if it doesn't exist.
 	$faustwp_dir = wp_get_upload_dir()['basedir'] . '/faustwp';
 
-	if ( !is_dir( $faustwp_dir ) ) {
+	if ( ! is_dir( $faustwp_dir ) ) {
 		wp_mkdir_p( $faustwp_dir );
 	}
 
 	$filename = 'blocks.json';
 
-	// Save the JSON data to a file in the custom uploads directory
+	// Save the JSON data to a file in the custom uploads directory.
 	$file_path  = $faustwp_dir . '/' . $filename;
 	$file_saved = file_put_contents( $file_path, $request->get_body() );
 
-	if ( $file_saved === false ) {
+	if ( false === $file_saved ) {
 		return new \WP_Error(
 			'file_save_error',
 			__( 'Failed to sync JSON data.', 'faustwp' ),
@@ -168,7 +168,9 @@ function handle_rest_blocks_callback( \WP_REST_Request $request ) {
 	}
 
 	return new \WP_REST_Response(
-		array( 'message' => __( 'JSON data sync successfully.', 'faustwp' ) ), 200 );
+		array( 'message' => __( 'JSON data synced successfully.', 'faustwp' ) ),
+		200
+	);
 }
 
 /**
