@@ -20,7 +20,11 @@ export type WordPressTemplate = React.FC & {
   query?: DocumentNode;
   variables?: (
     seedNode: SeedNode,
-    context?: { asPreview?: boolean; locale?: string },
+    context?: {
+      asPreview?: boolean;
+      locale?: string;
+    },
+    extra?: Record<string, unknown>,
   ) => { [key: string]: any };
 };
 
@@ -34,6 +38,10 @@ export interface GetWordPressPropsConfig<Props = Record<string, unknown>> {
   ctx: GetServerSidePropsContext | GetStaticPropsContext;
   props?: Props;
   revalidate?: number | boolean;
+  /**
+   * Provide extra parameters for the Page.variables function call.
+   */
+  extra?: Props;
 }
 export async function getWordPressProps(
   options: GetWordPressPropsConfig,
@@ -54,7 +62,7 @@ export async function getWordPressProps(
     throw new Error('Templates are required. Please add them to your config.');
   }
 
-  const { ctx, props, revalidate } = options;
+  const { ctx, props, revalidate, extra } = options;
 
   const client = getApolloClient();
 
@@ -116,7 +124,14 @@ export async function getWordPressProps(
 
   let templateQueryRes;
   const templateVariables = template?.variables
-    ? template?.variables(seedNode, { asPreview: false, locale: ctx.locale })
+    ? template?.variables(
+        seedNode,
+        {
+          asPreview: false,
+          locale: ctx.locale,
+        },
+        extra,
+      )
     : undefined;
 
   if (template.query) {
