@@ -1,5 +1,11 @@
 # Faust
 
+## 1.0.1
+
+### Patch Changes
+
+- 9ed3c40: Bug: Fixed an issue where the preview button could crash the browser
+
 ## 1.0.0
 
 ### Major Changes
