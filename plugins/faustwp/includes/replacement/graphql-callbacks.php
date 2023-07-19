@@ -56,7 +56,7 @@ function url_replace_recursive( &$data ) {
 		}
 
 		if (
-			( 'url' === $key || 'href' === $key ) && 
+			( 'url' === $key || 'href' === $key ) &&
 			is_string( $value ) &&
 			! has_file_extension( $value )
 		) {

@@ -98,16 +98,16 @@ function normalize_sitemap_entry( $sitemap_entry ) {
 /**
  * Check if a string has a file extension.
  *
- * @param string $string
+ * @param string $string The string to check.
  * @return boolean
  */
 function has_file_extension( $string ) {
-    $file_extension_pattern = '/\.[a-zA-Z0-9]+$/';
+	$file_extension_pattern = '/\.[a-zA-Z0-9]+$/';
 
-    if ( preg_match( $file_extension_pattern, $string ) ) {
-        return true; 
-    } else {
-        return false; // String does not have a file extension.
-    }
+	if ( preg_match( $file_extension_pattern, $string ) ) {
+		return true;
+	} else {
+		return false; // String does not have a file extension.
+	}
 }
 
