@@ -96,18 +96,18 @@ function normalize_sitemap_entry( $sitemap_entry ) {
 }
 
 /**
- * Determine what keys within a GraphQL response should have
- * their values rewritten when rewrites are enabled.
+ * Check if a string has a file extension.
  *
- * @return array An array of GraphQL response keys.
+ * @param string $string
+ * @return boolean
  */
-function graphql_rewrite_keys() {
-	$graphql_rewrite_keys = array( 'url', 'href' );
+function has_file_extension( $string ) {
+    $file_extension_pattern = '/\.[a-zA-Z0-9]+$/';
 
-	/**
-	 * Filter 'faustwp_graphql_rewrite_keys'.
-	 *
-	 * Used to override or extend the response keys targeted to have their values rewritten.
-	 */
-	return apply_filters( 'faustwp_graphql_rewrite_keys', $graphql_rewrite_keys );
+    if ( preg_match( $file_extension_pattern, $string ) ) {
+        return true; 
+    } else {
+        return false; // String does not have a file extension.
+    }
 }
+

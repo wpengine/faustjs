@@ -8,7 +8,7 @@
 namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\faustwp_get_setting;
-use function WPE\FaustWP\Replacement\graphql_rewrite_keys;
+use function WPE\FaustWP\Replacement\has_file_extension;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,8 +43,8 @@ function url_replacement( $response ) {
 }
 
 /**
- * Replaces the WordPress Site URL with the replacement domain in 'url' and
- * 'href' fields.
+ * Replaces the WordPress Site URL with the replacement domain
+ * in 'url' and 'href' fields, skipping over values with file extensions.
  *
  * @param array $data The response data.
  */
@@ -55,7 +55,11 @@ function url_replace_recursive( &$data ) {
 			continue;
 		}
 
-		if ( in_array( $key, graphql_rewrite_keys(), true ) && is_string( $value ) ) {
+		if (
+			( 'url' === $key || 'href' === $key ) && 
+			is_string( $value ) &&
+			! has_file_extension( $value )
+		) {
 			$replacement = faustwp_get_setting( 'frontend_uri', '/' );
 			$value       = str_replace( site_url(), $replacement, $value );
 		} elseif ( ( 'path' === $key && is_multisite() ) && is_string( $value ) ) {
