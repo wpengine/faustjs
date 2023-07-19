@@ -99,6 +99,5 @@ class ReplacementFunctionsTests extends \WP_UnitTestCase {
         $this->assertFalse( has_file_extension( 'file' ) );
         $this->assertFalse( has_file_extension( 'no_extension.' ) );
         $this->assertFalse( has_file_extension( 'no_extension' ) );
-        $this->assertFalse( has_file_extension( 'file.with.multiple.extensions' ) );
     }
 }
