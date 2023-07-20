@@ -12,7 +12,8 @@ use function WPE\FaustWP\Replacement\{
 	normalize_url,
 	equivalent_wp_url,
 	equivalent_frontend_url,
-	normalize_sitemap_entry
+	normalize_sitemap_entry,
+	has_file_extension
 };
 
 class ReplacementFunctionsTests extends \WP_UnitTestCase {
@@ -90,4 +91,13 @@ class ReplacementFunctionsTests extends \WP_UnitTestCase {
 
 		$this->assertStringContainsString( get_home_url(), $normalized_sitemap_entry['loc'] );
 	}
+
+	public function test_has_file_extension() {
+        $this->assertTrue( has_file_extension( 'file.txt' ) );
+        $this->assertTrue( has_file_extension( 'document.pdf' ) );
+        $this->assertTrue( has_file_extension( 'image.jpg' ) );
+        $this->assertFalse( has_file_extension( 'file' ) );
+        $this->assertFalse( has_file_extension( 'no_extension.' ) );
+        $this->assertFalse( has_file_extension( 'no_extension' ) );
+    }
 }
