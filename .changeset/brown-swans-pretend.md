@@ -2,7 +2,7 @@
 '@faustwp/core': minor
 ---
 
-Allow passing extra parameters in Page.variables(). This is allowed in `getNextStaticProps``, `getServerSideProps` and `getWordPressProps`:
+Allow passing extra parameters in Page.variables(). This is allowed in `getNextStaticProps`, `getServerSideProps` and `getWordPressProps`:
 
 Ex:
 
