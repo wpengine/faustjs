@@ -11,31 +11,41 @@ import isObject from 'lodash/isObject.js';
 import { DEFAULT_ISR_REVALIDATE } from './getWordPressProps.js';
 import { addApolloState, getApolloClient } from './client.js';
 
-export interface GetNextServerSidePropsConfig<Props = Record<string, unknown>> {
+type Props = Record<string, unknown>;
+
+export interface GetNextServerSidePropsConfig<TProps = Props> {
   Page: {
     query?: DocumentNode;
     variables?: (
       context: GetStaticPropsContext | GetServerSidePropsContext,
+      extra?: TProps,
     ) => {
       [key: string]: any;
     };
   };
-  props?: Props;
+  props?: TProps;
   notFound?: true;
   redirect?: Redirect;
+  /**
+   * Provide extra parameters for the Page.variables function call.
+   */
+  extra?: TProps;
 }
 
-export interface GetNextStaticPropsConfig<Props = Record<string, unknown>>
-  extends GetNextServerSidePropsConfig<Props> {
+export interface GetNextStaticPropsConfig<TProps = Props>
+  extends GetNextServerSidePropsConfig<TProps> {
   revalidate?: number | boolean;
 }
 
-export interface FaustPage<Data, Props = void>
+export interface FaustPage<Data, TProps = void>
   extends React.FC<
-    { data?: Data; __PAGE_VARIABLES__?: { [key: string]: any } } & Props
+    { data?: Data; __PAGE_VARIABLES__?: { [key: string]: any } } & TProps
   > {
   query?: DocumentNode;
-  variables?: (context: GetStaticPropsContext | GetServerSidePropsContext) => {
+  variables?: (
+    context: GetStaticPropsContext | GetServerSidePropsContext,
+    extra?: Props,
+  ) => {
     [key: string]: any;
   };
 }
@@ -46,11 +56,11 @@ export interface FaustPage<Data, Props = void>
  * @param {GetStaticPropsContext} context
  * @param {GetNextStaticPropsConfig} cfg
  */
-export async function getNextStaticProps<Props>(
+export async function getNextStaticProps<TProps>(
   context: GetStaticPropsContext,
-  cfg: GetNextStaticPropsConfig<Props>,
-): Promise<GetStaticPropsResult<Props>> {
-  const { notFound, redirect, Page, revalidate, props } = cfg;
+  cfg: GetNextStaticPropsConfig<TProps>,
+): Promise<GetStaticPropsResult<TProps>> {
+  const { notFound, redirect, Page, revalidate, props, extra } = cfg;
   const apolloClient = getApolloClient();
   if (isBoolean(notFound) && notFound === true) {
     return {
@@ -64,7 +74,9 @@ export async function getNextStaticProps<Props>(
     };
   }
 
-  const pageVariables = Page?.variables ? Page?.variables(context) : undefined;
+  const pageVariables = Page?.variables
+    ? Page?.variables(context, extra)
+    : undefined;
 
   let pageQueryRes;
   if (Page.query) {
@@ -86,7 +98,7 @@ export async function getNextStaticProps<Props>(
 
   const pageProps = addApolloState(apolloClient, { props: returnedProps });
   pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
-  return pageProps as GetStaticPropsResult<Props>;
+  return pageProps as GetStaticPropsResult<TProps>;
 }
 
 /**
@@ -95,12 +107,12 @@ export async function getNextStaticProps<Props>(
  * @param {GetServerSidePropsContext} context
  * @param {GetNextServerSidePropsConfig} cfg
  */
-export async function getNextServerSideProps<Props>(
+export async function getNextServerSideProps<TProps>(
   context: GetServerSidePropsContext,
-  cfg: GetNextServerSidePropsConfig<Props>,
-): Promise<GetServerSidePropsResult<Props>> {
+  cfg: GetNextServerSidePropsConfig<TProps>,
+): Promise<GetServerSidePropsResult<TProps>> {
   const { res } = context;
-  const { notFound, redirect, Page, props } = cfg;
+  const { notFound, redirect, Page, props, extra } = cfg;
   const apolloClient = getApolloClient();
 
   res.setHeader('x-using', 'faust');
@@ -117,7 +129,9 @@ export async function getNextServerSideProps<Props>(
     };
   }
 
-  const pageVariables = Page?.variables ? Page?.variables(context) : undefined;
+  const pageVariables = Page?.variables
+    ? Page?.variables(context, extra)
+    : undefined;
 
   let pageQueryRes;
   if (Page.query) {
@@ -139,5 +153,5 @@ export async function getNextServerSideProps<Props>(
 
   return addApolloState(apolloClient, {
     props: returnedProps,
-  }) as GetServerSidePropsResult<Props>;
+  }) as GetServerSidePropsResult<TProps>;
 }
