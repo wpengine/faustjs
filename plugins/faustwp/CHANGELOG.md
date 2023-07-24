@@ -1,5 +1,11 @@
 # Faust
 
+## 1.0.2
+
+### Patch Changes
+
+- 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
+
 ## 1.0.1
 
 ### Patch Changes

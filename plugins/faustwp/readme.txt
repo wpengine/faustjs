@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.0.2 =
+
+### Patch Changes
+
+- 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
+
 = 1.0.1 =
 
 ### Patch Changes
@@ -70,10 +76,4 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 - ef92d02: Added `wp-graphql-content-blocks` version to the telemetry endpoint.
 
-= 0.8.7 =
-
-### Patch Changes
-
-- 2eeb366: The default plugin setting for "Disable WordPress Theme Admin Pages" is now unchecked, requiring a user to opt-in after initial activation.
-
-[View the full changelog](https://faustjs.org/docs/changelog/faustwp)
+[View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
