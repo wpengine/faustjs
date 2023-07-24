@@ -156,7 +156,7 @@ async function generateReadmeChangelog(readmeTxtFile, changelog) {
     const changelogStart = readmeTxt.indexOf('== Changelog ==');
 
     output = readmeTxt.substring(0, changelogStart) + changelog;
-    output += "\n[View the full changelog](https://faustjs.org/docs/changelog/faustwp)";
+    output += "\n[View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)";
 
     return writeFile(readmeTxtFile, output);
   } catch(e) {
