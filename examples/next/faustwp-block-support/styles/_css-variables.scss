@@ -1,0 +1,47 @@
+// CSS Variables
+// See `_breakpoints.scss` for media query breakpoint variables.
+
+:root {
+	// Color Definitions.
+	--wpe--color--black: #000;
+	--wpe--color--white: #fff;
+	--wpe--color--offwhite: #f7f7f7;
+	--wpe--color--neutral: rgba(175,184,193,0.2);
+	--wpe--color--slate: #0a2540;
+	--wpe--color--purple: #635bff;
+
+	// Color Assignments.
+	--wpe--color--accent: var(--wpe--color--purple);
+	--wpe--color--accent--dark: var(--wpe--color--slate);
+	--wpe--color--title: var(--wpe--color--black);
+	--wpe--link--color: var(--wpe--color--accent);
+	--wpe--code--color: var(--wpe--color--black);
+	--wpe--code--background-color: var(--wpe--color--neutral);
+	--wpe--header--color: var(--wpe--color--slate);
+	--wpe--header--background-color: var(--wpe--color--white);
+	--wpe--navigation-menu--color: var(--wpe--color--black);
+	--wpe--navigation-menu--color--hover: var(--wpe--color--accent);
+	--wpe--navigation-menu--background-color: transparent;
+	--wpe--dropdown--background-color: var(--wpe--color--white);
+	--wpe--main--color: var(--wpe--color--black);
+	--wpe--main--background-color: var(--wpe--color--white);
+	--wpe--footer--color: var(--wpe--color--black);
+	--wpe--footer--background-color: var(--wpe--color--white);
+	--wpe--heading--color: var(--wpe--color--accent);
+	--wpe--border--light: 1px solid var(--wpe--color--neutral);
+	--wpe--border--extra-light: 1px solid var(--wpe--color--offwhite);
+
+	// Type.
+	--wpe--font-weight--light: 300;
+	--wpe--font-weight--medium: 400;
+	--wpe--font-weight--bold: 700;
+
+	// Spacing.
+	--wpe--content--max-width: 620px;
+	--wpe--section--padding-y: 3rem;
+	--wpe--container--padding-x: 15px;
+	--wpe--container--max-width: 1000px;
+
+	// Shadows.
+	--wpe--shadow--large: 0 50px 120px -40px rgba(150, 150, 150, 0.2), 0 20px 60px -30px rgba(0, 0, 0, 0.5);
+}

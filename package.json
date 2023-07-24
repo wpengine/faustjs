@@ -15,6 +15,7 @@
       "packages/faustwp-core",
       "examples/next/getting-started",
       "examples/next/faustwp-getting-started",
+      "examples/next/faustwp-block-support",
       "plugins/faustwp"
     ]
   },
