@@ -1,5 +1,12 @@
 # @faustwp/blocks
 
+## 2.0.0
+
+### Patch Changes
+
+- Updated dependencies [f308cc5]
+  - @faustwp/core@1.1.0
+
 ## 1.2.0
 
 ### Minor Changes

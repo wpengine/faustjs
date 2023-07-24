@@ -1,5 +1,24 @@
 # @faustwp/core
 
+## 1.1.0
+
+### Minor Changes
+
+- f308cc5: Allow passing extra parameters in Page.variables(). This is allowed in `getNextStaticProps`, `getServerSideProps` and `getWordPressProps`:
+
+  Ex:
+
+  ```
+  export function getStaticProps(ctx) {
+    return getWordPressProps({ ctx, extra: {hello: 'world'} }); // extra parameter will be forwarded to the Template `variables` callback
+  }
+
+  Component.variables = ({ databaseId }, ctx, extra) => {
+    console.log(extra) // {hello: 'world'}
+    ...
+  }
+  ```
+
 ## 1.0.3
 
 ### Patch Changes
