@@ -25,8 +25,9 @@ window.addEventListener('DOMContentLoaded', function () {
       if (!wpPreviewLink.length) {
         return;
       }
+
       // don't add extra link if the faust preview link and the default WP links are the same
-      if (wpPreviewLink.href === previewLink) {
+      if (wpPreviewLink[0].href === previewLink) {
         return;
       }
 
