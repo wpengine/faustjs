@@ -1,19 +1,18 @@
-import react from 'react';
+import { gql } from '@apollo/client';
 import { flatListToHierarchical } from '@faustwp/core';
 import { WordPressBlocksViewer } from '@faustwp/blocks';
-import { gql } from '@apollo/client';
 import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
-import components from '../wp-blocks';
+import blocks from '../wp-blocks';
 import {
-  Header,
-  Footer,
-  Main,
   Container,
   ContentWrapper,
   EntryHeader,
-  NavigationMenu,
   FeaturedImage,
+  Footer,
+  Header,
+  Main,
+  NavigationMenu,
   SEO,
 } from '../components';
 

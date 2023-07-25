@@ -1,19 +1,18 @@
-import react from 'react';
 import { gql } from '@apollo/client';
 import { flatListToHierarchical } from '@faustwp/core';
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
-import components from '../wp-blocks';
+import blocks from '../wp-blocks';
 import {
-  Header,
-  Footer,
-  Main,
   Container,
-  EntryHeader,
-  NavigationMenu,
   ContentWrapper,
+  EntryHeader,
   FeaturedImage,
+  Footer,
+  Header,
+  Main,
+  NavigationMenu,
   SEO,
 } from '../components';
 
@@ -27,8 +26,8 @@ export default function Component(props) {
     props?.data?.generalSettings;
   const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
   const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author, editorBlocks } = props.data.post;
-  const blocks = flatListToHierarchical(editorBlocks, {childrenKey: 'innerBlocks'});
+  const { title, featuredImage, date, author, editorBlocks } = props.data.post;
+  const blockList = flatListToHierarchical(editorBlocks, {childrenKey: 'innerBlocks'});
 
   return (
     <>
@@ -52,7 +51,7 @@ export default function Component(props) {
           />
           <Container className="wp-block-group is-layout-flow">
             <ContentWrapper className="entry-content wp-block-post-content has-global-padding is-layout-constrained">
-              <WordPressBlocksViewer blocks={blocks}/>
+              <WordPressBlocksViewer blocks={blockList}/>
             </ContentWrapper>
           </Container>
         </>
