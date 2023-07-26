@@ -3,11 +3,13 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "predev": "npm run generate && npm run stylesheet",
+    "predev": "npm run generate && npm run stylesheet && npm run themeJson",
     "dev": "faust dev",
     "build": "faust build",
     "generate": "faust generatePossibleTypes",
     "stylesheet": "faust generateGlobalStylesheet",
+    "themeJson": "faust generateThemeJson",
+    "blockset": "faust blockset",
     "start": "faust start"
   },
   "dependencies": {
