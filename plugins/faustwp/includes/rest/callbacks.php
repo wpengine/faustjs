@@ -77,6 +77,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 function register_rest_routes() {
 	register_rest_route(
 		'faustwp/v1',
+		'/theme.json',
+		array(
+			'methods'             => 'GET',
+			'callback'            => __NAMESPACE__ . '\\get_theme_json',
+			'permission_callback' => __NAMESPACE__ . '\\rest_theme_json_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
 		'/telemetry',
 		array(
 			'methods'             => 'POST',
@@ -112,6 +122,28 @@ function register_rest_routes() {
 }
 
 /**
+ * Returns the contents of theme.json if present.
+ *
+ * @param \WP_REST_Request $request Current WP_REST_Request object.
+ * @return void
+ */
+function get_theme_json( \WP_REST_Request $request ) {
+    $file_path = get_template_directory() . '/theme.json';
+
+    if ( ! file_exists( $file_path ) ) {
+        return new WP_Error( 'no_theme_json', 'No theme.json file found in the active theme.', array( 'status' => 404 ) );
+    }
+
+    $json_content = file_get_contents( $file_path );
+
+    if ( false === $json_content ) {
+        return new WP_Error( 'reading_error', 'Error reading theme.json file.', array( 'status' => 500 ) );
+    }
+
+    return rest_ensure_response( json_decode( $json_content, true ) );
+}
+
+/**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
  * Handle GET /faustwp/v1/telemetry response.
@@ -134,6 +166,19 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	);
 
 	return new \WP_REST_Response( $data );
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/theme.json`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_theme_json_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**
