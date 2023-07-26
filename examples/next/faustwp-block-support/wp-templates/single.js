@@ -13,7 +13,7 @@ import {
   Header,
   Main,
   NavigationMenu,
-  SEO,
+  Head,
 } from '../components';
 
 export default function Component(props) {
@@ -31,7 +31,7 @@ export default function Component(props) {
 
   return (
     <>
-      <SEO
+      <Head
         title={siteTitle}
         description={siteDescription}
         imageUrl={featuredImage?.node?.sourceUrl}

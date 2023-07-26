@@ -1,7 +1,7 @@
-import Head from 'next/head';
+import NextHead from 'next/head';
 
 /**
- * Provide SEO related meta tags to a page.
+ * Adds <head> meta tags to a page.
  *
  * @param {Props} props The props object.
  * @param {string} props.title Used for the page title, og:title, twitter:title, etc.
@@ -9,16 +9,16 @@ import Head from 'next/head';
  * @param {string} props.imageUrl Used for the og:image and twitter:image. NOTE: Must be an absolute url.
  * @param {string} props.url Used for the og:url and twitter:url.
  *
- * @returns {React.ReactElement} The SEO component
+ * @returns {React.ReactElement} The Head component
  */
-export function SEO({ title, description, imageUrl, url }) {
+export function Head({ title, description, imageUrl, url }) {
   if (!title && !description && !imageUrl && !url) {
     return null;
   }
 
   return (
     <>
-      <Head>
+      <NextHead>
         <meta property="og:type" content="website" />
         <meta property="twitter:card" content="summary_large_image" />
 
@@ -52,7 +52,7 @@ export function SEO({ title, description, imageUrl, url }) {
             <meta property="twitter:url" content={url} />
           </>
         )}
-      </Head>
+      </NextHead>
     </>
   );
 }

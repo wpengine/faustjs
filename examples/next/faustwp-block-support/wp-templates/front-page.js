@@ -8,7 +8,7 @@ import {
   Container,
   NavigationMenu,
   Hero,
-  SEO,
+  Head,
 } from '../components';
 
 export default function Component() {
@@ -23,7 +23,7 @@ export default function Component() {
 
   return (
     <>
-      <SEO title={siteTitle} description={siteDescription} />
+      <Head title={siteTitle} description={siteDescription} />
       <Header
         title={siteTitle}
         description={siteDescription}

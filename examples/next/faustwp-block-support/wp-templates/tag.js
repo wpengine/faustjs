@@ -10,7 +10,7 @@ import {
   NavigationMenu,
   FeaturedImage,
   Post,
-  SEO,
+  Head,
 } from '../components';
 
 export default function Component(props) {
@@ -22,7 +22,7 @@ export default function Component(props) {
 
   return (
     <>
-      <SEO title={siteTitle} description={siteDescription} />
+      <Head title={siteTitle} description={siteDescription} />
       <Header
         title={siteTitle}
         description={siteDescription}

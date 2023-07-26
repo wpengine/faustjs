@@ -8,7 +8,7 @@ import {
   Main,
   Container,
   NavigationMenu,
-  SEO,
+  Head,
 } from '../components';
 import { getNextStaticProps } from '@faustwp/core';
 
@@ -24,7 +24,7 @@ export default function Page(props) {
 
   return (
     <>
-      <SEO title={siteTitle} description={siteDescription} />
+      <Head title={siteTitle} description={siteDescription} />
       <Header
         title={siteTitle}
         description={siteDescription}

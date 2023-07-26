@@ -12,4 +12,4 @@ export { PostInfo } from './PostInfo';
 export { SkipNavigationLink } from './SkipNavigationLink';
 export { Hero } from './Hero';
 export { Post } from './Post';
-export { SEO } from './SEO';
+export { Head } from './Head';
