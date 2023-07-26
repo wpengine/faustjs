@@ -18,7 +18,7 @@ export async function generateThemeJson(): Promise<void> {
     });
 
     if (response.ok) {
-      infoLog('Discovered theme.json!');
+      debugLog('Discovered theme.json');
     } else {
       errorLog('Failed to fetch theme.json', response.statusText);
     }
@@ -28,7 +28,7 @@ export async function generateThemeJson(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     fs.writeFileSync('./theme.json', JSON.stringify(data));
 
-    infoLog("This project's theme.json has been updated!");
+    infoLog("This project's theme.json has been updated.");
   } catch (err) {
     debugLog(
       `"faust generateThemeJson" failed with the following error: `,
