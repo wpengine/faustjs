@@ -6,10 +6,10 @@
 .button {
 	a {
 		@media (min-width: $breakpoint-small) {
-			background-color: var(--wpe--color--accent);
+			background-color: var(--wp--preset--color--primary);
 			border-radius: 100px;
-			border: var(--wpe--border--light);
-			color: var(--wpe--color--white);
+			border: var(--wp--preset--color--tertiary);
+			color: var(--wp--preset--color--base);
 			font-size: 92%;
 			padding: 0.5rem 1rem;
 			text-decoration: none;
@@ -17,8 +17,8 @@
 
 			&:hover,
 			&:focus {
-				background-color: var(--wpe--color--accent--dark);
-				color: var(--wpe--color--white);
+				background-color: var(--wp--preset--color--secondary);
+				color: var(--wp--preset--color--base);
 			}
 		}
 	}

@@ -14,7 +14,7 @@
 }
 
 .component {
-	background-color: var(--wpe--navigation-menu--background-color);
+	background-color: transparent;
 }
 
 .menu {
@@ -47,7 +47,7 @@
 	}
 
 	a {
-		color: var(--wpe--navigation-menu--color);
+		color: var(--wp--preset--color--contrast);
 		padding: 0.5rem;
 		display: block;
 		transition: all 0.2s ease-out;
@@ -57,7 +57,7 @@
 
 		&:hover,
 		&:focus {
-			color: var(--wpe--navigation-menu--color--hover);
+			color: var(--wp--preset--color--primary);
 		}
 
 		// Remove link underline when component is inside header.
@@ -68,7 +68,7 @@
 
 	li ul {
 		@extend %hidden;
-		background-color: var(--wpe--dropdown--background-color);
+		background-color: var(--wp--preset--color--base);
 		display: flex;
 		flex-direction: column;
 		gap: 0;
@@ -79,12 +79,12 @@
 			left: -10px;
 			top: 100%;
 			text-align: left;
-			box-shadow: var(--wpe--shadow--large);
+			box-shadow: var(--wp--preset--shadow--natural);
 			padding: 1rem;
 			border-radius: 8px;
 			transition: all 0.2s ease-out;
 			width: inherit;
-			border: var(--wpe--border--extra-light);
+			border: var(--wp--preset--color--tertiary);
 		}
 
 		&:hover {
@@ -93,7 +93,7 @@
 
 		li + li {
 			@media (min-width: $breakpoint-small) {
-				border-top: var(--wpe--border--light);
+				border-top: var(--wp--preset--color--tertiary);
 				margin-top: 3px; // Make room for default browser focus styles.
 			}
 		}

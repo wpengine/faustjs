@@ -1,7 +1,7 @@
 @import 'styles/breakpoints';
 
 .component {
-	color: var(--wpe--color--white);
+	color: var(--wp--preset--color--base);
 	position: relative;
 	overflow: hidden;
 	margin-bottom: 2rem;
@@ -11,8 +11,8 @@
 	}
 }
 
-.has-image {
-	--wpe--color--title: var(--wpe--color--white);
+.has-image .title {
+	color: var(--wp--preset--color--base);
 }
 
 .text,
@@ -32,7 +32,7 @@
 .title {
 	line-height: 1.25;
 	font-size: 5rem;
-	color: var(--wpe--color--title);
+	color: var(--wp--preset--color--contrast);
 
 	@media (max-width: $breakpoint-small) {
 		font-size: 3rem;
@@ -40,7 +40,6 @@
 }
 
 .byline {
-	font-weight: var(--wpe--font-weight--medium);
 	font-size: 1.2rem;
 }
 

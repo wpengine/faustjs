@@ -1,8 +1,8 @@
 .component {
-	color: var(--wpe--footer--color);
-	background: var(--wpe--footer--background-color);
-	padding-top: var(--wpe--section--padding-y);
-	padding-bottom: var(--wpe--section--padding-y);
+	color: var(--wp--preset--color--contrast);
+	background: var(--wp--preset--color--base);
+	padding-top: var(--wp--style--root--padding-top);
+	padding-bottom: var(--wp--style--root--padding-bottom);
 }
 
 .copyright {

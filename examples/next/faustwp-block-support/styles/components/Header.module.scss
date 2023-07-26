@@ -1,8 +1,8 @@
 @import 'styles/breakpoints';
 
 .component {
-	color: var(--wpe--header--color);
-	background-color: var(--wpe--header--background-color);
+	color: var(--wp--preset--color--contrast);
+	background-color: var(--wp--preset--color--base);
 	position: relative;
 	z-index: 2; // Pull dropdown menus to the foreground to sit above <Main />.
 }
@@ -36,8 +36,8 @@
 .nav-toggle {
 	align-items: center;
 	background-color: transparent;
-	border: 0.1rem solid var(--wpe--color--white);
-	color: var(--wpe--color--black);
+	border: 0.1rem solid var(--wp--preset--color--base);
+	color: var(--wp--preset--color--contrast);
 	cursor: pointer;
 	display: flex;
 	margin: 0;
@@ -48,8 +48,8 @@
 
 	&:hover,
 	&:focus {
-		background-color: var(--wpe--color--white);
-		color: var(--wpe--color--black);
+		background-color: var(--wp--preset--color--base);
+		color: var(--wp--preset--color--contrast);
 	}
 
 	@media (min-width: $breakpoint-small) {

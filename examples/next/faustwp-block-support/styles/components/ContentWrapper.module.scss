@@ -1,5 +1,5 @@
 .component {
-	max-width: var(--wpe--content--max-width);
+	max-width: var(--wp--style--global--content-size);
 	margin: 0 auto;
 	line-height: 1.6875;
 
@@ -30,12 +30,12 @@
 		}
 
 		a {
-			color: var(--wpe--link--color);
+			color: var(--wp--preset--color--primary);
 			text-decoration: underline;
 
 			&:hover,
 			&:focus {
-				color: var(--wpe--link--color);
+				color: var(--wp--preset--color--primary);
 				text-decoration: none;
 			}
 		}
