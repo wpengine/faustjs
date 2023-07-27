@@ -1,27 +1,15 @@
-import {
-  CoreParagraph,
-  CoreColumns,
-  CoreColumn,
-  CoreCode,
-  CoreButtons,
-  CoreButton,
-  CoreQuote,
-  CoreImage,
-  CoreSeparator,
-  CoreList,
-  CoreHeading,
-} from '@faustwp/blocks';
-  
+import { CoreBlocks } from '@faustwp/blocks';
+
 export default {
-  CoreParagraph: CoreParagraph,
-  CoreColumns: CoreColumns,
-  CoreColumn: CoreColumn,
-  CoreCode: CoreCode,
-  CoreQuote: CoreQuote,
-  CoreImage: CoreImage,
-  CoreSeparator: CoreSeparator,
-  CoreList: CoreList,
-  CoreButton: CoreButton,
-  CoreButtons: CoreButtons,
-  CoreHeading: CoreHeading,
+  CoreParagraph: CoreBlocks.CoreParagraph,
+  CoreColumns: CoreBlocks.CoreColumns,
+  CoreColumn: CoreBlocks.CoreColumn,
+  CoreCode: CoreBlocks.CoreCode,
+  CoreQuote: CoreBlocks.CoreQuote,
+  CoreImage: CoreBlocks.CoreImage,
+  CoreSeparator: CoreBlocks.CoreSeparator,
+  CoreList: CoreBlocks.CoreList,
+  CoreButton: CoreBlocks.CoreButton,
+  CoreButtons: CoreBlocks.CoreButtons,
+  CoreHeading: CoreBlocks.CoreHeading,
 };
