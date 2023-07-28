@@ -14,14 +14,14 @@ use function WPE\FaustWP\Auth\{
 	generate_refresh_token,
 	generate_access_token
 };
-use function WPE\FaustWP\Settings\get_secret_key;
-
 use function WPE\FaustWP\Telemetry\{
 	get_wp_version,
 	is_wpe,
 	get_anonymous_faustwp_data,
 	get_anonymous_wpgraphql_content_blocks_data,
 };
+use function WPE\FaustWP\Settings\get_secret_key;
+use function WPE\FaustWP\Blocks\get_theme_json;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -80,7 +80,7 @@ function register_rest_routes() {
 		'/theme.json',
 		array(
 			'methods'             => 'GET',
-			'callback'            => __NAMESPACE__ . '\\get_theme_json',
+			'callback'            => __NAMESPACE__ . '\\handle_theme_json_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_theme_json_permission_callback',
 		)
 	);
@@ -122,25 +122,15 @@ function register_rest_routes() {
 }
 
 /**
- * Returns the contents of theme.json if present.
+ * Handle callback for theme.json endpoint.
  *
  * @param \WP_REST_Request $request Current WP_REST_Request object.
- * @return void
+ * @return \WP_REST_Response An instance of WP_REST_Response containing the decoded JSON content.
  */
-function get_theme_json( \WP_REST_Request $request ) {
-    $file_path = get_template_directory() . '/theme.json';
+function handle_theme_json_callback( \WP_REST_Request $request ) {
+	$json_content = get_theme_json();
 
-    if ( ! file_exists( $file_path ) ) {
-        return new WP_Error( 'no_theme_json', 'No theme.json file found in the active theme.', array( 'status' => 404 ) );
-    }
-
-    $json_content = file_get_contents( $file_path );
-
-    if ( false === $json_content ) {
-        return new WP_Error( 'reading_error', 'Error reading theme.json file.', array( 'status' => 500 ) );
-    }
-
-    return rest_ensure_response( json_decode( $json_content, true ) );
+	return new \WP_REST_Response( $json_content );
 }
 
 /**
