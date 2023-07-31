@@ -31,6 +31,7 @@ function discoverBlockJsonFiles(
  * much like a traditional typesetter would with type.
  */
 export async function blockSet() {
+  const faustDir = '.faust';
   const wpUrl = getWpUrl();
   const endpointUrl = `${wpUrl}/wp-json/faustwp/v1/blocks`;
   const blockJsonFiles = discoverBlockJsonFiles();
@@ -44,14 +45,19 @@ export async function blockSet() {
   });
 
   const lastUpdated = Date.now();
+  const blocksJson = JSON.stringify({ lastUpdated, blocks }, null, 4);
+
+  if (!fs.existsSync(faustDir)) {
+    fs.mkdirSync(faustDir);
+  }
+
+  // Create local file for debugging purposes.
+  fs.writeFileSync(`${faustDir}/blocks.json`, blocksJson, { encoding: 'utf8' });
 
   // Send JSON data to the REST API endpoint.
   const response = await fetch(endpointUrl, {
     method: 'POST',
-    body: JSON.stringify({
-      lastUpdated,
-      blocks,
-    }),
+    body: blocksJson,
     headers: {
       'Content-Type': 'application/json',
       'x-faustwp-secret': getWpSecret() || '',
