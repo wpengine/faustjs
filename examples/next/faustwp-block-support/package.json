@@ -9,7 +9,7 @@
     "generate": "faust generatePossibleTypes",
     "stylesheet": "faust generateGlobalStylesheet",
     "themeJson": "faust generateThemeJson",
-    "blockset": "faust blockset",
+    "blockSet": "faust blockSet",
     "start": "faust start"
   },
   "dependencies": {
