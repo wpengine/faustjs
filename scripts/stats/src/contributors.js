@@ -20,7 +20,7 @@ const publicRepos = [
   'https://github.com/wpengine/faustjs.git',
 ];
 
-async function getRepoStats() {
+async function getRepoLogs() {
   let repoStats = '';
 
   for (const repo of publicRepos) {
@@ -36,11 +36,11 @@ async function getRepoStats() {
   return repoStats;
 }
 
-async function getContributorStats() {
-  let contributions = await getRepoStats();
+export async function getStats() {
+  let contributions = await getRepoLogs();
 
   let totalContributions = {
-    contributors: [],
+    individuals: [],
     totals: {
       contributors: 0,
       contributions: 0,
@@ -70,16 +70,10 @@ async function getContributorStats() {
       if (goodUser) {
         totalContributions.totals.contributors++;
         totalContributions.totals.contributions += stat.count;
-        totalContributions.contributors.push(stat);
+        totalContributions.individuals.push(stat);
       }
     }
   });
 
   return totalContributions;
 }
-
-(async () => {
-  let stats = await getContributorStats();
-
-  console.log(stats);
-})();
