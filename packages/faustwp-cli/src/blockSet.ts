@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { getWpUrl, getWpSecret } from './utils/index.js';
-import { errorLog, infoLog } from './stdout/log.js';
+import { errorLog, infoLog, debugLog } from './stdout/log.js';
 
 // Function to recursively find block.json files
 function discoverBlockJsonFiles(
@@ -36,7 +36,7 @@ export async function blockSet() {
   const blockJsonFiles = discoverBlockJsonFiles();
   const blocks: any[] = [];
 
-  infoLog(`Discovered ${blockJsonFiles.length} blocks to sync.`);
+  debugLog(`Discovered ${blockJsonFiles.length} blocks.`);
 
   blockJsonFiles.forEach((blockJsonFile) => {
     const data = JSON.parse(fs.readFileSync(blockJsonFile, 'utf8'));
