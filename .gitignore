@@ -6,6 +6,7 @@ dist
 process.yml
 .vscode
 .next
+.faust/
 .env
 .env.*
 !.env.local.sample
