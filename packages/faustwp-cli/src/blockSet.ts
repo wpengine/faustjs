@@ -65,8 +65,8 @@ export async function blockSet() {
   });
 
   if (response.ok) {
-    infoLog('Blocks synced successfully!');
+    infoLog(`${blockJsonFiles.length} block pushed to WordPress`);
   } else {
-    errorLog('Failed to send JSON data:', response.statusText);
+    errorLog('Block push failed:', response.statusText);
   }
 }
