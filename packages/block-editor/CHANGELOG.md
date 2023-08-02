@@ -1,0 +1,1 @@
+# @faustwp/block-editor
