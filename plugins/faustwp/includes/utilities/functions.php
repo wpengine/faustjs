@@ -32,3 +32,14 @@ function camelcase( $str, $preserved_chars = array() ) {
 
 	return lcfirst( $str );
 }
+
+/**
+ * Returns the current version of this plugin.
+ *
+ * @return string The current plugin version.
+ */
+function plugin_version() {
+	$plugin = get_plugin_data( FAUSTWP_FILE );
+
+	return $plugin['Version'];
+}
