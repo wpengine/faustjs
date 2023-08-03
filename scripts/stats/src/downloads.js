@@ -32,7 +32,7 @@ var packages = [
   "@faustjs/core",
 ];
 
-(async () => {
+export async function getStats() {
   var currentDate = new Date(new Date().setDate(new Date().getDate() - 1));
   var priorDate = new Date(new Date().setDate(currentDate.getDate() - 27));
 
@@ -96,5 +96,5 @@ var packages = [
 
   totals["average-downloads"] = parseInt(totalDownloads / 28);
 
-  console.log(totals);
-})();
+  return totals
+}

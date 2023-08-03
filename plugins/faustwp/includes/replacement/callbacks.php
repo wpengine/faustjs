@@ -12,6 +12,9 @@ use function WPE\FaustWP\Settings\{
 	is_image_source_replacement_enabled,
 	is_rewrites_enabled
 };
+use function WPE\FaustWP\Utilities\{
+	plugin_version,
+};
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -223,7 +226,6 @@ function term_link( $term_link ) {
 	return equivalent_frontend_url( $term_link );
 }
 
-
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_scripts' );
 /**
  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link.
@@ -231,7 +233,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_sc
  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
 function enqueue_preview_scripts() {
-	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'jquery' ), plugin_version(), true );
 	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
 }
 

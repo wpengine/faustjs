@@ -8,8 +8,8 @@ name: 'Next.js Bundle Analysis'
 on:
   pull_request:
   push:
-    branches-ignore:
-      - main
+    branches:
+      - 'canary'
   workflow_dispatch:
 
 permissions:
@@ -21,10 +21,7 @@ jobs:
   analyze:
     strategy:
       matrix:
-        next-dir: [
-          'examples/next/faustwp-getting-started',
-          'examples/next/faustwp-block-support'
-        ]
+        next-dir: ['examples/next/faustwp-getting-started']
 
     runs-on: ubuntu-latest
     steps:
