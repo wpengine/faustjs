@@ -8,7 +8,7 @@ import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { generateThemeJson } from './generateThemeJson.js';
-import { blockSet } from './blockSet.js';
+import { blockset } from './blockset.js';
 import { userConfig } from './userConfig.js';
 import { getCliArgs, getWpSecret, getWpUrl, isDebug } from './utils/index.js';
 import {
@@ -93,8 +93,8 @@ import {
 
       break;
     }
-    case 'blockSet': {
-      await blockSet();
+    case 'blockset': {
+      await blockset();
       process.exit(0);
 
       break;

@@ -30,7 +30,7 @@ function discoverBlockJsonFiles(
  * This function gathers, organizes, and prepares blocks to use,
  * much like a traditional typesetter would with type.
  */
-export async function blockSet() {
+export async function blockset() {
   const faustDir = '.faust';
   const wpUrl = getWpUrl();
   const endpointUrl = `${wpUrl}/wp-json/faustwp/v1/blocks`;
