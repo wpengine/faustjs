@@ -44,7 +44,9 @@ export async function blockset() {
     blocks.push(data);
   });
 
-  const lastUpdated = Date.now();
+  const timestamp = Date.now();
+  const lastUpdated = new Date(timestamp).toISOString();
+
   const blocksJson = JSON.stringify({ lastUpdated, blocks }, null, 4);
 
   if (!fs.existsSync(faustDir)) {
