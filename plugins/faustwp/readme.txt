@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.3
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.0.3 =
+
+### Patch Changes
+
+- 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
+
 = 1.0.2 =
 
 ### Patch Changes
@@ -65,15 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 9ed3c40: Bug: Fixed an issue where the preview button could crash the browser
-
-= 1.0.0 =
-
-### Major Changes
-
-- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
-
-### Patch Changes
-
-- ef92d02: Added `wp-graphql-content-blocks` version to the telemetry endpoint.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
