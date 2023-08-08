@@ -1,5 +1,11 @@
 # Faust
 
+## 1.0.3
+
+### Patch Changes
+
+- 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
+
 ## 1.0.2
 
 ### Patch Changes
