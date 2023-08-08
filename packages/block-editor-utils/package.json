@@ -1,7 +1,7 @@
 {
-  "name": "@faustwp/block-editor",
+  "name": "@faustwp/block-editor-utils",
   "version": "0.0.1",
-  "description": "Faust Editor Package",
+  "description": "Faust Block Editor Utils Package",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/mjs/index.d.ts",
