@@ -1,1 +1,1 @@
-export {};
+export { getClient } from './client.js';
