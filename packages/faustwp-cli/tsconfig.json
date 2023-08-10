@@ -1,5 +1,4 @@
 {
-	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"strict": true,
 		"outDir": "dist",
@@ -7,7 +6,9 @@
 		"target": "ES2017",
 		"esModuleInterop": true,
 		"moduleResolution": "node",
-		"declaration": true
+		"declaration": true,
+		"types": ["node"],
+    	"typeRoots": ["node_modules/@types"]
 	},
 	"include": ["src"],
 	"exclude": [
