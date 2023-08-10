@@ -6,7 +6,8 @@ import {
   NextSSRInMemoryCache,
   // eslint-disable-next-line import/extensions
 } from '@apollo/experimental-nextjs-app-support/ssr';
-import { getConfig, getGraphqlEndpoint } from '@faustwp/core';
+import { getConfig } from '@faustwp/core/dist/cjs/config/index.js';
+import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
 
 export const { getClient } = registerApolloClient(() => {
   const { possibleTypes } = getConfig();
