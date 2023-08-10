@@ -1,26 +1,31 @@
-import { registerBlockType, BlockConfiguration } from '@wordpress/blocks';
+import {
+  registerBlockType,
+  BlockConfiguration,
+  BlockEditProps,
+  BlockSaveProps,
+} from '@wordpress/blocks';
 import { WordPressBlock } from '@faustwp/blocks';
 
-export interface RegisterFaustBlockMetadata<P> {
+export interface RegisterFaustBlockMetadata<P, T extends Record<string, any>> {
   // The block.json metadata object
   blockJson: BlockConfiguration;
   // A custom edit function
-  editFn: (ctx: EditFnContext<P>) => React.ReactNode | null;
+  editFn: (ctx: EditFnContext<P, T>) => React.ReactNode | null;
   // A custom save function
-  saveFn: (ctx: SaveFnContext<P>) => React.ReactNode | null;
+  saveFn: (ctx: SaveFnContext<P, T>) => React.ReactNode | null;
 }
 
-export interface EditFnContext<P> {
+export interface EditFnContext<P, T extends Record<string, any>> {
   block: WordPressBlock<P>;
-  props: unknown;
+  props: BlockEditProps<T>;
   wp: unknown;
   config: WordPressBlock<P>['config'];
-  blockJson: RegisterFaustBlockMetadata<P>['blockJson'];
+  blockJson: RegisterFaustBlockMetadata<P, T>['blockJson'];
 }
 
-export interface SaveFnContext<P> {
+export interface SaveFnContext<P, T extends Record<string, unknown>> {
   block: WordPressBlock<P>;
-  props: unknown;
+  props: BlockSaveProps<T>;
   wp: unknown;
 }
 
@@ -35,9 +40,9 @@ export interface SaveFnContext<P> {
  * @param block The React component to register as Gutenberg Block.
  * @param ctx  The metadata object that contains the block.json.
  */
-export default function registerFaustBlock<P>(
+export default function registerFaustBlock<P, T extends Record<string, any>>(
   block: WordPressBlock<P>,
-  { blockJson, editFn, saveFn }: RegisterFaustBlockMetadata<P>,
+  { blockJson, editFn, saveFn }: RegisterFaustBlockMetadata<P, T>,
 ): ReturnType<typeof registerBlockType> {
   // Pass the block config as a separate argument
   const { config } = block;
@@ -46,7 +51,7 @@ export default function registerFaustBlock<P>(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return registerBlockType(name, {
     ...blockJson,
-    edit: (props: unknown) =>
+    edit: (props: BlockEditProps<T>) =>
       editFn({
         block,
         blockJson,
@@ -54,7 +59,7 @@ export default function registerFaustBlock<P>(
         props,
         wp,
       }),
-    save: (props: unknown) =>
+    save: (props: BlockSaveProps<T>) =>
       saveFn({
         block,
         props,
