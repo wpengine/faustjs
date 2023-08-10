@@ -6,6 +6,13 @@ import {
   NextSSRInMemoryCache,
   // eslint-disable-next-line import/extensions
 } from '@apollo/experimental-nextjs-app-support/ssr';
+/**
+ * We are currently importing these utils from their respective dist paths because importing
+ * from the root will also include the FaustProvider component, which throws an error because
+ * it does not have the "use client" directive set.
+ *
+ * @todo Find a workaround for importing these utils without invoking FaustProvider.
+ */
 import { getConfig } from '@faustwp/core/dist/cjs/config/index.js';
 import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
 
