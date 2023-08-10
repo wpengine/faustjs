@@ -22,6 +22,7 @@ export default async function Home() {
 
   return (
     <main>
+      <h2>Posts</h2>
       <ul>
         {data.posts.nodes.map((post) => (
           <li>
