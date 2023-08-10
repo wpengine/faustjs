@@ -1,5 +1,5 @@
-import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import type { IncomingMessage } from 'http';
+import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import isArray from 'lodash/isArray.js';
 import isUndefined from 'lodash/isUndefined.js';
 import trim from 'lodash/trim.js';
