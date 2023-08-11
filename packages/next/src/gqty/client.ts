@@ -1,3 +1,4 @@
+import type { IncomingMessage } from 'http';
 import {
   ClientConfig,
   getClient as getCoreClient,
@@ -11,7 +12,6 @@ import {
   ReactClient,
 } from '@gqty/react';
 import type { GQtyClient } from 'gqty';
-import type { IncomingMessage } from 'http';
 import noop from 'lodash/noop.js';
 import isObject from 'lodash/isObject.js';
 import merge from 'lodash/merge.js';
