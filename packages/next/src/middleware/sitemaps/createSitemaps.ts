@@ -1,7 +1,7 @@
+import { IncomingMessage } from 'http';
 import { stripIndent } from 'common-tags';
 import { X2jOptions, XMLParser } from 'fast-xml-parser';
 import { NextRequest } from 'next/server.js';
-import { IncomingMessage } from 'http';
 import {
   FAUST_PAGES_PATHNAME,
   NormalizedMiddlewareConfig,

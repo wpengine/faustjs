@@ -5,7 +5,9 @@
 	  "outDir": "dist/mjs",
 	  "target": "es2017",
 	  "rootDir": "src",
-	  "jsx": "react"
+	  "jsx": "react",
+	  "types": ["node", "jest"],
+	  "typeRoots": ["./node_modules/@types", "./src/types"]
 	},
 	"exclude": ["node_modules", "dist"],
 	"include": ["src"]
