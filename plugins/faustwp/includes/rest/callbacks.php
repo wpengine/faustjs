@@ -77,6 +77,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 function register_rest_routes() {
 	register_rest_route(
 		'faustwp/v1',
+		'/blockset',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_blockset_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_blockset_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
 		'/theme.json',
 		array(
 			'methods'             => 'GET',
@@ -122,6 +132,20 @@ function register_rest_routes() {
 }
 
 /**
+ * Handle callback for blockset endpoint.
+ *
+ * @param \WP_REST_Request $request Current WP_REST_Request object.
+ * @return \WP_REST_Response An instance of WP_REST_Response containing the decoded JSON content.
+ */
+function handle_blockset_callback( \WP_REST_Request $request ) {
+	$data = array(
+		'hello' => 'world',
+	);
+
+	return new \WP_REST_Response( $data );
+}
+
+/**
  * Handle callback for theme.json endpoint.
  *
  * @param \WP_REST_Request $request Current WP_REST_Request object.
@@ -156,6 +180,19 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	);
 
 	return new \WP_REST_Response( $data );
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/blockset`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_blockset_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**

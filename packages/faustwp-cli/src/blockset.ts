@@ -33,7 +33,7 @@ function discoverBlockJsonFiles(
 export async function blockset() {
   const faustDir = '.faust';
   const wpUrl = getWpUrl();
-  const endpointUrl = `${wpUrl}/wp-json/faustwp/v1/blocks`;
+  const endpointUrl = `${wpUrl}/wp-json/faustwp/v1/blockset`;
   const blockJsonFiles = discoverBlockJsonFiles();
   const blocks: any[] = [];
 
