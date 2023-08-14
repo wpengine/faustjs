@@ -17,6 +17,7 @@
       "packages/faustwp-core",
       "examples/next/getting-started",
       "examples/next/faustwp-getting-started",
+      "examples/next/block-support",
       "examples/next/app-router",
       "plugins/faustwp"
     ]
