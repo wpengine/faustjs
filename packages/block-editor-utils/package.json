@@ -1,0 +1,58 @@
+{
+  "name": "@faustwp/block-editor-utils",
+  "version": "0.0.1",
+  "description": "Faust Block Editor Utils Package",
+  "main": "dist/cjs/index.js",
+  "module": "dist/mjs/index.js",
+  "types": "dist/mjs/index.d.ts",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "@faustwp/blocks": ">=2.0.0"
+  },
+  "dependencies": {
+    "@wordpress/blocks": "^12.15.0",
+    "@wordpress/components": "^25.4.0",
+    "@wordpress/block-editor": "^12.6.0",
+    "@wordpress/hooks": "^3.38.0",
+    "@wordpress/i18n": "^4.38.0"
+  },
+  "devDependencies": {
+    "jest-environment-jsdom": "29.6.2",
+    "@types/node": "^18.0.6",
+    "@types/react": "^18.0.0",
+    "@types/jest": "^29.5.3",
+    "rimraf": "^4.4.0",
+    "@wordpress/jest-preset-default": "^11.9.0",
+    "@types/wordpress__blocks": "12.5.0",
+    "ts-jest": "29.1.1",
+    "jest": "29.6.2",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "scripts": {
+    "prebuild": "npm run clean",
+    "postbuild": "npm run package",
+    "clean": "rimraf dist",
+    "package": "node ../../scripts/package.js",
+    "test": "jest",
+    "build": "npm run build-esm && npm run build-cjs",
+    "build-esm": "tsc -p .",
+    "build-cjs": "tsc -p tsconfig.cjs.json",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpengine/faustjs.git"
+  },
+  "author": "Faust.js Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wpengine/faustjs/issues"
+  },
+  "homepage": "https://github.com/wpengine/faustjs#readme",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  }
+}

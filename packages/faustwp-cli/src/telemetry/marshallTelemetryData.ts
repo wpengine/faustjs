@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { platform } from 'node:process';
+import { platform } from 'process';
 import { getCliArgs } from '../utils/index.js';
 import { WPTelemetryResponseData } from './requestWPTelemetryData.js';
 
