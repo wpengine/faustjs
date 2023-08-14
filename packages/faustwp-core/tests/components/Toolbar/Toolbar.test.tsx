@@ -9,7 +9,7 @@ import { setConfig } from '../../../src/config/index';
 import * as apollo from '@apollo/client';
 
 import { Toolbar } from '../../../src/components/Toolbar';
-import { QueryResult } from '@apollo/client';
+import { OperationVariables, QueryResult } from '@apollo/client';
 
 let mockIsAuthenticated = false;
 let mockIsReady = false;
@@ -41,7 +41,7 @@ test('renders the toolbar if user preference is true', async () => {
         shouldShowFaustToolbar: true,
       },
     },
-  } as any as QueryResult;
+  } as any as QueryResult<unknown, unknown>;
 
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
@@ -66,7 +66,7 @@ test('doesnt render the toolbar if user preference is false', async () => {
         shouldShowFaustToolbar: false,
       },
     },
-  } as any as QueryResult;
+  } as any as QueryResult<unknown, unknown>;
 
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
@@ -90,7 +90,7 @@ test('render the toolbar if user preference request throws an error/fails', asyn
    */
   const mockUseQuery = {
     error: {}, // Request error
-  } as any as QueryResult;
+  } as any as QueryResult<unknown, unknown>;
 
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
