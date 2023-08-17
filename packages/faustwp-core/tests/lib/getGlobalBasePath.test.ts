@@ -12,4 +12,3 @@ describe('getGlobalBasePath()', () => {
         expect(getGlobalBasePath()).toEqual('');
     });
 });
-  
