@@ -1,7 +1,7 @@
-import { getConfig } from '../config/index.js';
+import { getConfig, FaustConfig } from '../config/index.js';
 
-export function getGlobalBasePath() {
-  const { basePath } = getConfig();
+export function getGlobalBasePath(): string {
+  const { basePath } = getConfig() as FaustConfig;
 
   return basePath ?? '';
 }
