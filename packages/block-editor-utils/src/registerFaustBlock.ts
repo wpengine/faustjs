@@ -4,7 +4,8 @@ import {
   BlockEditProps,
   BlockSaveProps,
 } from '@wordpress/blocks';
-import { WordPressBlock } from '@faustwp/blocks';
+import DefaultSaveFn from './components/Save.js';
+import { BlockFC, ConfigType } from './types/index.js';
 
 export interface RegisterFaustBlockMetadata<P, T extends Record<string, any>> {
   // The block.json metadata object
@@ -12,19 +13,19 @@ export interface RegisterFaustBlockMetadata<P, T extends Record<string, any>> {
   // A custom edit function
   editFn: (ctx: EditFnContext<P, T>) => React.ReactNode | null;
   // A custom save function
-  saveFn: (ctx: SaveFnContext<P, T>) => React.ReactNode | null;
+  saveFn: (ctx: SaveFnContext<T>) => React.ReactNode | null;
 }
 
 export interface EditFnContext<P, T extends Record<string, any>> {
-  block: WordPressBlock<P>;
+  block: BlockFC;
   props: BlockEditProps<T>;
   wp: unknown;
-  config: WordPressBlock<P>['config'];
+  config: ConfigType;
   blockJson: RegisterFaustBlockMetadata<P, T>['blockJson'];
 }
 
-export interface SaveFnContext<P, T extends Record<string, unknown>> {
-  block: WordPressBlock<P>;
+export interface SaveFnContext<T extends Record<string, unknown>> {
+  block: BlockFC;
   props: BlockSaveProps<T>;
   wp: unknown;
 }
@@ -41,12 +42,16 @@ export interface SaveFnContext<P, T extends Record<string, unknown>> {
  * @param ctx  The metadata object that contains the block.json.
  */
 export default function registerFaustBlock<P, T extends Record<string, any>>(
-  block: WordPressBlock<P>,
-  { blockJson, editFn, saveFn }: RegisterFaustBlockMetadata<P, T>,
+  block: BlockFC,
+  {
+    blockJson,
+    editFn,
+    saveFn = DefaultSaveFn,
+  }: RegisterFaustBlockMetadata<P, T>,
 ): ReturnType<typeof registerBlockType> {
   // Pass the block config as a separate argument
   const { config } = block;
-  const name =
+  const name: string =
     blockJson.name ?? config?.name ?? block.displayName ?? block.name;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   return registerBlockType(name, {
