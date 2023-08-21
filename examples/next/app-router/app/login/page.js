@@ -1,12 +1,6 @@
 export default function Page() {
-  async function loginUser(data) {
-    'use server';
-
-    console.log(data.get('username'));
-  }
-
   return (
-    <form action={loginUser}>
+    <form>
       <fieldset>
         <label htmlFor="username">Username</label>
         <input name="username" type="text" />
