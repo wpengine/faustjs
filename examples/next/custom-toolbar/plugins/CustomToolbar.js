@@ -54,7 +54,7 @@ export function CustomNode() {
 export function CustomNodeWithSubmenu() {
   return (
     <>
-      <ToolbarItem href="https://wpengine.com" rel="nofollow">
+      <ToolbarItem>
         Custom Node w/ Submenu
       </ToolbarItem>
       <ToolbarSubmenuWrapper>
