@@ -10,6 +10,8 @@ export default function Page() {
         <label htmlFor="password">Password</label>
         <input name="password" type="password" />
       </fieldset>
+
+      <button type="submit">Login</button>
     </form>
   );
 }
