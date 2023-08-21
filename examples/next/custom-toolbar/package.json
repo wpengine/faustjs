@@ -1,0 +1,28 @@
+{
+    "name": "@faustwp/custom-toolbar-example",
+    "private": true,
+    "type": "module",
+    "scripts": {
+      "predev": "faust generatePossibleTypes && faust generateGlobalStylesheet",
+      "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet",
+      "dev": "faust dev",
+      "build": "faust build",
+      "start": "faust start"
+    },
+    "dependencies": {
+      "@apollo/client": "^3.8.0",
+      "@faustwp/cli": "1.0.1",
+      "@faustwp/core": "1.1.0",
+      "@faustwp/experimental-app-router": "^0.0.1",
+      "@apollo/experimental-nextjs-app-support": "^0.4.1",
+      "graphql": "^16.7.1",
+      "next": "^13.4.13",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0"
+    },
+    "engines": {
+      "node": ">=16",
+      "npm": ">=8"
+    }
+  }
+  
