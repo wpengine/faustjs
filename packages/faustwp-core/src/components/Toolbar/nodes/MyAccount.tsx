@@ -47,12 +47,12 @@ export function AuthenticatedAccount() {
       e.preventDefault();
       logout();
     }
-  }
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     logout();
-  }
+  };
 
   return (
     <>

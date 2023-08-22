@@ -31,7 +31,7 @@ export function ToolbarNode({
     } else if (e.key === 'Escape') {
       setHover(false); // Close the dropdown
     }
-  }
+  };
 
   return (
     <li

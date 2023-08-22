@@ -7,12 +7,7 @@ type Props = PropsWithChildren<{
 
 export function ToolbarItem({ href, handleClick, children, ...props }: Props) {
   return (
-    <a
-      role="menuitem"
-      tabIndex={0}
-      className="ab-item"
-      href={href}
-      {...props}>
+    <a role="menuitem" tabIndex={0} className="ab-item" href={href} {...props}>
       {children}
     </a>
   );
