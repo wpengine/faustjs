@@ -3,12 +3,13 @@ import {
   ToolbarItem,
   ToolbarSubmenu,
   ToolbarSubmenuWrapper,
+  ToolbarNodeSkeleton,
 } from '@faustwp/core';
 
 /**
  * Example Custom Toolbar Plugin.
  */
-export class CustomToolbar {
+export class CustomToolbarPlugin {
   apply(hooks) {
     /**
      * This example demonstrates how to filter on the core Toolbar nodes
@@ -28,6 +29,11 @@ export class CustomToolbar {
             id: 'custom-node-with-submenu',
             location: 'primary',
             component: <CustomNodeWithSubmenu />,
+          },
+          {
+            id: 'custom-node-with-submenu',
+            location: 'primary',
+            component: <CustomNodeWithLoading />,
           },
         ];
 
@@ -77,5 +83,14 @@ export function CustomNodeWithSubmenu() {
         </ToolbarSubmenu>
       </ToolbarSubmenuWrapper>
     </>
+  );
+}
+
+/**
+ * A simple link.
+ */
+export function CustomNodeWithLoading() {
+  return (
+    <ToolbarNodeSkeleton />
   );
 }

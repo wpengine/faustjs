@@ -7,3 +7,10 @@ export default function Page(props) {
 export function getStaticProps(ctx) {
   return getWordPressProps({ ctx });
 }
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
