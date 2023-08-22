@@ -16,6 +16,8 @@ export default function Page() {
     return <>Loading...</>;
   }
 
+  console.log({ isAuthenticated, isReady, loginUrl });
+
   if (isAuthenticated === true) {
     return <AuthenticatedView />;
   }

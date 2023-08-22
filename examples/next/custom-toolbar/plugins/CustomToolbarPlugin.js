@@ -33,7 +33,7 @@ export class CustomToolbarPlugin {
           {
             id: 'custom-node-with-submenu',
             location: 'primary',
-            component: <CustomNodeWithLoading />,
+            component: <CustomNodeWithLoader />,
           },
         ];
 
@@ -87,9 +87,9 @@ export function CustomNodeWithSubmenu() {
 }
 
 /**
- * A simple link.
+ * Use the skeleton component for async data.
  */
-export function CustomNodeWithLoading() {
+export function CustomNodeWithLoader() {
   return (
     <ToolbarNodeSkeleton />
   );
