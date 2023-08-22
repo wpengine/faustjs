@@ -18,7 +18,7 @@ import {
  */
 import { getConfig } from '@faustwp/core/dist/cjs/config/index.js';
 import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
-import { fetchAccessToken } from './server/fetchAccessToken.js';
+import { fetchAccessToken } from './server/auth/fetchAccessToken.js';
 
 async function createFaustApolloClient(authenticated = false) {
   const { possibleTypes } = getConfig();

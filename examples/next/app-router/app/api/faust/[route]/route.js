@@ -1,5 +1,5 @@
-import { nextRouteHandler } from '@faustwp/experimental-app-router';
+import { faustRouteHandler } from '@faustwp/experimental-app-router';
 
-const { GET, POST } = nextRouteHandler;
+const { GET, POST } = faustRouteHandler;
 
 export { GET, POST };

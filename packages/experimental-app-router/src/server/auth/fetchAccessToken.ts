@@ -1,8 +1,8 @@
 import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
 // eslint-disable-next-line import/extensions
 import { cookies } from 'next/headers';
-import { AuthorizeResponse } from './nextRouteHandler.js';
-import { getUrl } from '../lib/getUrl.js';
+import { AuthorizeResponse } from '../routeHandler/tokenHandler.js';
+import { getUrl } from '../../lib/getUrl.js';
 
 export async function fetchAccessToken(code?: string) {
   const cookieStore = cookies();
@@ -26,14 +26,11 @@ export async function fetchAccessToken(code?: string) {
         'Content-Type': 'application/json',
         Cookie: cookieStore.toString(),
       },
-      credentials: 'include',
     });
 
     if (!response.ok) {
       return null;
     }
-
-    console.log('htting'), console.log('res headers', response.headers);
 
     const data = (await response.json()) as AuthorizeResponse;
 

@@ -1,8 +1,6 @@
 import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
 import { getWpSecret } from '@faustwp/core/dist/cjs/lib/getWpSecret.js';
-// eslint-disable-next-line import/extensions
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers.js';
 
 export type AuthorizeResponse = {
   accessToken: string;
@@ -57,9 +55,15 @@ export async function tokenHandler(req: Request) {
        * - revoked
        * - from a different WordPress instance when developing on localhost
        */
+
+      /**
+       * @TODO Delete the cookie
+       */
       // cookieStore.delete(cookieName);
 
-      // @todo throw different errors based on response
+      /**
+       * @TODO throw different errors based on response
+       */
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: {
@@ -70,16 +74,14 @@ export async function tokenHandler(req: Request) {
 
     const data = (await response.json()) as AuthorizeResponse;
 
-    // @todo set expiry
-    // cookieStore.set(cookieName, 'testing');
+    /**
+     * @TODO Set the refresh token cookie with the new refresh token
+     * and expiration.
+     */
 
-    const res = NextResponse.json(data, { status: 200 });
-
-    res.cookies.set(cookieName, 'testing', {
-      httpOnly: true,
+    return new Response(JSON.stringify(data), {
+      status: 200,
     });
-
-    return res;
   } catch (err) {
     console.error('Invalid response for authorize handler:', err);
 
@@ -91,25 +93,3 @@ export async function tokenHandler(req: Request) {
     });
   }
 }
-
-export async function GetFn(req: Request) {
-  const { pathname } = new URL(req.url);
-
-  switch (pathname) {
-    case '/api/faust/token': {
-      return tokenHandler(req);
-    }
-    default: {
-      return new Response('Not Found', {
-        status: 404,
-      });
-    }
-  }
-}
-
-export async function PostFn(req: Request) {}
-
-export const nextRouteHandler = {
-  GET: (req: Request) => GetFn(req),
-  POST: (req: Request) => PostFn(req),
-};
