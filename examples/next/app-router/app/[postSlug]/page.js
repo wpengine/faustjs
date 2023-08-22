@@ -8,7 +8,7 @@ export default async function Page(props) {
   const postSlug = props.params.postSlug;
 
   // Depending on if isPreview or not use the auth client or regular client
-  let client = getClient();
+  let client = await getClient();
 
   const { data } = await client.query({
     query: gql`

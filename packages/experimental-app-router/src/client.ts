@@ -9,7 +9,6 @@ import {
   // eslint-disable-next-line import/extensions
 } from '@apollo/experimental-nextjs-app-support/ssr';
 // eslint-disable-next-line import/extensions
-import { getAccessToken } from '@faustwp/core/dist/cjs/auth';
 /**
  * We are currently importing these utils from their respective dist paths because importing
  * from the root will also include the FaustProvider component, which throws an error because
@@ -19,8 +18,9 @@ import { getAccessToken } from '@faustwp/core/dist/cjs/auth';
  */
 import { getConfig } from '@faustwp/core/dist/cjs/config/index.js';
 import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
+import { fetchAccessToken } from './server/fetchAccessToken.js';
 
-function createFaustApolloClient(authenticated = false) {
+async function createFaustApolloClient(authenticated = false) {
   const { possibleTypes } = getConfig();
 
   const inMemoryCacheObject: InMemoryCacheConfig = {
@@ -43,9 +43,9 @@ function createFaustApolloClient(authenticated = false) {
 
   // If the request is coming from the auth client, apply the auth link.
   if (authenticated) {
-    linkChain = setContext((_, { headers }) => {
+    linkChain = setContext(async (_, { headers }) => {
       // get the authentication token from local storage if it exists
-      const token = getAccessToken();
+      const token = await fetchAccessToken();
 
       // return the headers to the context so httpLink can read them
       return {
@@ -71,10 +71,22 @@ function createFaustApolloClient(authenticated = false) {
   });
 }
 
-export const { getClient } = registerApolloClient(() =>
-  createFaustApolloClient(false),
-);
+export async function getClient() {
+  const faustApolloClient = await createFaustApolloClient(false);
+  const client = registerApolloClient(() => faustApolloClient);
 
-export const { getClient: getAuthClient } = registerApolloClient(() =>
-  createFaustApolloClient(true),
-);
+  return client.getClient();
+}
+
+export async function getAuthClient() {
+  const token = await fetchAccessToken();
+
+  if (!token) {
+    return null;
+  }
+
+  const faustApolloClient = await createFaustApolloClient(true);
+  const client = registerApolloClient(() => faustApolloClient);
+
+  return client.getClient();
+}
