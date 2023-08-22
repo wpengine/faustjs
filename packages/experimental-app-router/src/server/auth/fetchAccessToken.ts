@@ -36,6 +36,7 @@ export async function fetchAccessToken(code?: string) {
 
     return data.accessToken;
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.log('There was an error fetching the access token', err);
 
     return null;
