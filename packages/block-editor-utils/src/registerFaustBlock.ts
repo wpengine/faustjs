@@ -5,23 +5,24 @@ import {
   BlockSaveProps,
 } from '@wordpress/blocks';
 import DefaultSaveFn from './components/Save.js';
+import DefaultEditFn from './components/Edit.js';
 import { BlockFC, ConfigType } from './types/index.js';
 
 export interface RegisterFaustBlockMetadata<P, T extends Record<string, any>> {
   // The block.json metadata object
   blockJson: BlockConfiguration;
   // A custom edit function
-  editFn: (ctx: EditFnContext<P, T>) => React.ReactNode | null;
+  editFn: (ctx: EditFnContext<T>) => React.ReactNode | null;
   // A custom save function
   saveFn: (ctx: SaveFnContext<T>) => React.ReactNode | null;
 }
 
-export interface EditFnContext<P, T extends Record<string, any>> {
+export interface EditFnContext<T extends Record<string, any>> {
   block: BlockFC;
   props: BlockEditProps<T>;
   wp: unknown;
   config: ConfigType;
-  blockJson: RegisterFaustBlockMetadata<P, T>['blockJson'];
+  blockJson: BlockConfiguration;
 }
 
 export interface SaveFnContext<T extends Record<string, unknown>> {
@@ -45,7 +46,7 @@ export default function registerFaustBlock<P, T extends Record<string, any>>(
   block: BlockFC,
   {
     blockJson,
-    editFn,
+    editFn = DefaultEditFn,
     saveFn = DefaultSaveFn,
   }: RegisterFaustBlockMetadata<P, T>,
 ): ReturnType<typeof registerBlockType> {
