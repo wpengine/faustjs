@@ -9,7 +9,7 @@ on:
   pull_request:
   push:
     branches:
-      - canary
+      - 'canary'
   workflow_dispatch:
 
 permissions:

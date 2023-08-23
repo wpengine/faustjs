@@ -3,10 +3,10 @@
  */
 
 window.addEventListener('DOMContentLoaded', function () {
-  wp.domReady(function () {
+  jQuery(document).ready(function () {
     // Get the correct preview link via wp_localize_script
     const previewLink = window._faustwp_preview_link
-		? window._faustwp_preview_link._preview_link
+      ? window._faustwp_preview_link._preview_link
       : undefined;
 
     /**
@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     const intervalId = setInterval(function () {
-      const previewButton = document.querySelectorAll(
+      const previewButton = jQuery(
         'button[class~="block-editor-post-preview__button-toggle"]',
       );
 
@@ -27,19 +27,19 @@ window.addEventListener('DOMContentLoaded', function () {
       }
 
       clearInterval(intervalId);
-      previewButton[0].addEventListener('click', function () {
+      previewButton.first().one('click', function () {
         setTimeout(function () {
-          const links = document.querySelectorAll('a[target*="wp-preview"]');
+          const links = jQuery('a[target*="wp-preview"]');
 
           if (!links.length) {
             return;
           }
 
-          links.forEach((link) => {
+          links.each((i, link) => {
             link.href = previewLink;
 
             var copy = link.cloneNode(true);
-            copy.addEventListener('click', function (ev) {
+            copy.addEventListener('click', function () {
               previewButton[0].click();
 
               wp.data.dispatch('core/editor').autosave();

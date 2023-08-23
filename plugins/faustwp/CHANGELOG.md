@@ -1,5 +1,23 @@
 # Faust
 
+## 1.0.3
+
+### Patch Changes
+
+- 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
+
+## 1.0.2
+
+### Patch Changes
+
+- 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
+
+## 1.0.1
+
+### Patch Changes
+
+- 9ed3c40: Bug: Fixed an issue where the preview button could crash the browser
+
 ## 1.0.0
 
 ### Major Changes

@@ -5,12 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "stats": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Chris Wiegman <chris.wiegman@wpengine.com>",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.41.0"
+    "eslint": "^8.46.0"
   },
   "dependencies": {
     "axios": "^1.4.0",

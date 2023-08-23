@@ -2,8 +2,8 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.2
-Stable tag: 1.0.0
+Tested up to: 6.3
+Stable tag: 1.0.3
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,26 +54,22 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
-= 1.0.0 =
-
-### Major Changes
-
-- 7952ebe: Transitioned to [Semantic Versioning](https://semver.org). There are no breaking changes in this release.
+= 1.0.3 =
 
 ### Patch Changes
 
-- ef92d02: Added `wp-graphql-content-blocks` version to the telemetry endpoint.
+- 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
 
-= 0.8.7 =
-
-### Patch Changes
-
-- 2eeb366: The default plugin setting for "Disable WordPress Theme Admin Pages" is now unchecked, requiring a user to opt-in after initial activation.
-
-= 0.8.6 =
+= 1.0.2 =
 
 ### Patch Changes
 
-- 02f7f78: Registered a new GraphQL field, `globalStylesheet`, that returns [wp_get_global_stylesheet](https://developer.wordpress.org/reference/functions/wp_get_global_stylesheet/) and provides the same arguments as the core WordPress function.
+- 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
 
-[View the full changelog](https://faustjs.org/docs/changelog/faustwp)
+= 1.0.1 =
+
+### Patch Changes
+
+- 9ed3c40: Bug: Fixed an issue where the preview button could crash the browser
+
+[View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

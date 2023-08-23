@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        wordpress: ['6.2', '6.1']
+        wordpress: ['6.2', '6.3']
     steps:
       - name: Checkout
         uses: actions/checkout@v3

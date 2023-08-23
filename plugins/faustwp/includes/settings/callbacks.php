@@ -7,6 +7,10 @@
 
 namespace WPE\FaustWP\Settings;
 
+use function WPE\FaustWP\Utilities\{
+	plugin_version,
+};
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -433,13 +437,11 @@ function verify_graphql_dependency() {
  * Callback for admin_enqueue_scripts.
  */
 function add_settings_assets() {
-	$plugin = get_plugin_data( FAUSTWP_FILE );
-
 	wp_enqueue_style(
 		'faustwp-settings',
 		FAUSTWP_URL . 'includes/settings/assets/style.css',
 		array(),
-		$plugin['Version']
+		plugin_version()
 	);
 
 	if ( ! function_exists( 'graphql' ) ) {
@@ -447,7 +449,7 @@ function add_settings_assets() {
 			'faustwp-wpgraphql-install',
 			FAUSTWP_URL . 'includes/settings/assets/js/wpgraphql-install.js',
 			array( 'wp-a11y', 'wp-api-fetch' ),
-			$plugin['Version'],
+			plugin_version(),
 			true
 		);
 

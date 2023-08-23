@@ -1,5 +1,11 @@
 # @faustjs/next
 
+## 0.15.12
+
+### Patch Changes
+
+- 176bc82: Chore: Fixes import order style lint error.
+
 ## 0.15.11
 
 ### Patch Changes

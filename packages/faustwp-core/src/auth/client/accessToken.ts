@@ -3,10 +3,8 @@ import {
   FAUST_API_BASE_PATH,
   TOKEN_ENDPOINT_PARTIAL_PATH,
 } from '../../lib/constants.js';
-import { getConfig } from '../../config/index.js';
+import { getGlobalBasePath } from '../../lib/getGlobalBasePath.js';
 import { isServerSide } from '../../utils/index.js';
-
-const { basePath } = getConfig();
 
 export interface AccessToken {
   /**
@@ -134,9 +132,7 @@ export function clearAccessTokenRefreshTimer(): void {
  * @param {string} code An authorization code to fetch an access token
  */
 export async function fetchAccessToken(code?: string): Promise<string | null> {
-  let url = `${
-    basePath ?? ''
-  }${FAUST_API_BASE_PATH}/${TOKEN_ENDPOINT_PARTIAL_PATH}`;
+  let url = `${getGlobalBasePath()}${FAUST_API_BASE_PATH}/${TOKEN_ENDPOINT_PARTIAL_PATH}`;
 
   // Add the code to the url if it exists
   if (isString(code) && code.length > 0) {

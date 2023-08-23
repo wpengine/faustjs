@@ -1,3 +1,4 @@
+import type { IncomingMessage } from 'http';
 import {
   ClientOptions,
   createClient,
@@ -6,7 +7,6 @@ import {
   ScalarsEnumsHash,
   Schema as GQtySchema,
 } from 'gqty';
-import type { IncomingMessage } from 'http';
 import fetch from 'isomorphic-fetch';
 import isFunction from 'lodash/isFunction.js';
 import isNil from 'lodash/isNil.js';
