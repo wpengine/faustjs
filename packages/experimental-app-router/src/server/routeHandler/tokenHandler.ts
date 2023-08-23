@@ -1,6 +1,7 @@
 import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
 import { getWpSecret } from '@faustwp/core/dist/cjs/lib/getWpSecret.js';
 import { cookies } from 'next/headers.js';
+import { NextResponse } from 'next/server.js';
 
 export type AuthorizeResponse = {
   accessToken: string;
@@ -79,9 +80,19 @@ export async function tokenHandler(req: Request) {
      * and expiration.
      */
 
-    return new Response(JSON.stringify(data), {
+    const res = NextResponse.json(data, {
       status: 200,
     });
+
+    res.cookies.set(cookieName, data.refreshToken, {
+      secure: true,
+      httpOnly: true,
+      path: '/',
+      expires: new Date(data.refreshTokenExpiration * 1000),
+      sameSite: 'strict',
+    });
+
+    return res;
   } catch (err) {
     console.error('Invalid response for authorize handler:', err);
 
