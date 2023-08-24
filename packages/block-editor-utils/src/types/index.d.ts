@@ -9,6 +9,7 @@ export type BlockFC<T = {}> = React.FC<T> & {
 };
 export interface ConfigType {
   name?: string;
+  editorFields?: Partial<Field>[];
 }
 
 export type Field = {
@@ -20,9 +21,9 @@ export type Field = {
   default?: unknown;
 }
 
-type FieldType = "string" | "number" | "boolean" | "integer" | "object"
-type FieldControl = "textarea" | "color" | "text" | "radio" | "select" | "range" | "number" | "checkbox"
-type FieldLocation = "editor" | "inspector"
+export type FieldType = "string" | "number" | "boolean" | "integer" | "object" | "array"
+export type FieldControl = "textarea" | "color" | "text" | "radio" | "select" | "range" | "number" | "checkbox"
+export type FieldLocation = "editor" | "inspector"
 
 export interface ControlProps<T extends Record<string, any>> {
   config: Field;

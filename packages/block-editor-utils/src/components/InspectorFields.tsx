@@ -28,7 +28,7 @@ function InspectorFields<T extends Record<string, any>>({
           }
           return (
             <PanelBody
-              className="faust-inspector-form"
+              className="faust-inspector-form-field"
               key={`inspector-controls-panel-${field.name as string}`}>
               <ControlField config={field} props={props} />;
             </PanelBody>

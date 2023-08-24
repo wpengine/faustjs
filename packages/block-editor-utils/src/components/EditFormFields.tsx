@@ -5,12 +5,16 @@ import { Field } from '../types/index.js';
 
 interface EditFormFieldsProps<T extends Record<string, any>> {
   props: BlockEditProps<T>;
+  fields: Field[];
 }
 
 function EditFormFields<T extends Record<string, any>>({
   props,
+  fields,
 }: EditFormFieldsProps<T>) {
-  const inspectorFields = [] as Field[];
+  const inspectorFields = fields.filter(
+    (field: Field) => field.location === 'inspector',
+  );
   return (
     <>
       <InspectorFields fields={inspectorFields} props={props} />
