@@ -16,7 +16,7 @@ jobs:
       - name: Save Plugin version
         run: |
           json=${{ steps.data.outputs.packages }}
-          echo PLUGIN_VERSION=$(echo $json | jq '.[] | select(.name == "@faustwp/wordpress-plugin") | .version') >> $GITHUB_ENV
+          echo PLUGIN_VERSION=$(echo $json | jq '.[] | select(.name == \"@faustwp/wordpress-plugin\") | .version') >> $GITHUB_ENV
       - name: Echo output
         run: |
           echo "${{ env.PLUGIN_VERSION }}"
