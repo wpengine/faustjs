@@ -1,74 +1,193 @@
-import { useQuery, gql } from '@apollo/client';
-import * as MENUS from '../constants/menus';
-import { BlogInfoFragment } from '../fragments/GeneralSettings';
-import {
-  Header,
-  Footer,
-  Main,
-  Container,
-  NavigationMenu,
-  Hero,
-  SEO,
-} from '../components';
+import { gql, useQuery } from '@apollo/client';
 
 export default function Component() {
-  const { data } = useQuery(Component.query, {
-    variables: Component.variables(),
-  });
+  const { data } = useQuery(Component.query);
 
-  const { title: siteTitle, description: siteDescription } =
-    data?.generalSettings;
-  const primaryMenu = data?.headerMenuItems?.nodes ?? [];
-  const footerMenu = data?.footerMenuItems?.nodes ?? [];
-
-  return (
-    <>
-      <SEO title={siteTitle} description={siteDescription} />
-      <Header
-        title={siteTitle}
-        description={siteDescription}
-        menuItems={primaryMenu}
-      />
-      <Main>
-        <Container>
-          <Hero title={'Front Page'} />
-          <div className="text-center">
-            <p>This page is utilizing the "front-page" WordPress template.</p>
-            <code>wp-templates/front-page.js</code>
-          </div>
-        </Container>
-      </Main>
-      <Footer title={siteTitle} menuItems={footerMenu} />
-    </>
-  );
+  return <>Testing persisted queries</>;
 }
 
 Component.query = gql`
-  ${BlogInfoFragment}
-  ${NavigationMenu.fragments.entry}
-  query GetPageData(
-    $headerLocation: MenuLocationEnum
-    $footerLocation: MenuLocationEnum
-  ) {
-    generalSettings {
-      ...BlogInfoFragment
+  query MyQuery {
+    allSettings {
+      discussionSettingsDefaultCommentStatus
+      discussionSettingsDefaultPingStatus
+      generalSettingsDateFormat
+      generalSettingsDescription
+      generalSettingsLanguage
+      generalSettingsStartOfWeek
+      generalSettingsTimeFormat
+      generalSettingsTimezone
+      generalSettingsTitle
+      generalSettingsUrl
+      readingSettingsPageForPosts
+      readingSettingsPageOnFront
+      readingSettingsPostsPerPage
+      readingSettingsShowOnFront
+      writingSettingsDefaultCategory
+      writingSettingsDefaultPostFormat
+      writingSettingsUseSmilies
     }
-    headerMenuItems: menuItems(where: { location: $headerLocation }) {
-      nodes {
-        ...NavigationMenuItemFragment
-      }
-    }
-    footerMenuItems: menuItems(where: { location: $footerLocation }) {
-      nodes {
-        ...NavigationMenuItemFragment
+    mediaItems {
+      edges {
+        node {
+          id
+          altText
+          author {
+            node {
+              id
+            }
+          }
+          ancestors {
+            edges {
+              node {
+                id
+                contentTypeName
+                databaseId
+                contentType {
+                  node {
+                    id
+                    canExport
+                    connectedTaxonomies {
+                      edges {
+                        node {
+                          id
+                          description
+                          graphqlPluralName
+                          graphqlSingleName
+                          hierarchical
+                          isRestricted
+                          label
+                          public
+                          name
+                          restBase
+                          restControllerClass
+                          showCloud
+                          showInAdminColumn
+                          showInMenu
+                          showUi
+                          showInRest
+                          showInQuickEdit
+                          showInNavMenus
+                          showInGraphql
+                        }
+                      }
+                    }
+                    conditionalTags {
+                      isArchive
+                      isAttachment
+                      isAuthor
+                      isCategory
+                      isDate
+                      isDay
+                      isFrontPage
+                      isHome
+                      isMonth
+                      isMultiAuthor
+                      isPage
+                      isPageTemplate
+                      isPostTypeArchive
+                      isPreview
+                      isPrivacyPolicy
+                      isSearch
+                      isSingle
+                      isSingular
+                      isSticky
+                      isTag
+                      isTax
+                      isYear
+                    }
+                    contentNodes {
+                      edges {
+                        node {
+                          id
+                          guid
+                          enclosure
+                          desiredSlug
+                          databaseId
+                          date
+                          dateGmt
+                          contentTypeName
+                          isPreview
+                          isContentNode
+                          isRestricted
+                          isTermNode
+                          modified
+                          link
+                          status
+                          slug
+                          previewRevisionId
+                          previewRevisionDatabaseId
+                          modifiedGmt
+                          uri
+                          templates
+                          template {
+                            templateName
+                          }
+                        }
+                        cursor
+                      }
+                    }
+                    isFrontPage
+                    isRestricted
+                    graphqlPluralName
+                    graphqlSingleName
+                    hasArchive
+                    hierarchical
+                  }
+                }
+                conditionalTags {
+                  isArchive
+                  isPrivacyPolicy
+                  isPreview
+                  isPostTypeArchive
+                  isPageTemplate
+                  isPage
+                  isMultiAuthor
+                  isMonth
+                  isHome
+                  isFrontPage
+                  isDay
+                  isDate
+                  isCategory
+                  isAuthor
+                  isAttachment
+                  isSingular
+                  isSearch
+                  isSingle
+                  isSticky
+                  isTag
+                  isTax
+                  isYear
+                }
+                desiredSlug
+                dateGmt
+                date
+                enclosure
+                isTermNode
+                isRestricted
+                isPreview
+                isContentNode
+                guid
+                enqueuedStylesheets {
+                  edges {
+                    node {
+                      id
+                    }
+                  }
+                }
+                enqueuedScripts {
+                  edges {
+                    node {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cursor
       }
     }
   }
 `;
-
-Component.variables = () => {
-  return {
-    headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION,
-  };
-};
