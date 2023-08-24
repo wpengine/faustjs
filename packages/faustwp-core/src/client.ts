@@ -58,7 +58,12 @@ export function createApolloClient(authenticated = false) {
 
   let linkChain = createHttpLink({
     uri: getGraphqlEndpoint(),
-    useGETForQueries,
+    /**
+     * Only add this option if usePersistedQueries is not set/false.
+     * When persisted queries is enabled and this flag and useGETForHashedQueries
+     * are both set, there is a conflict and persisted queries does not work.
+     */
+    useGETForQueries: useGETForQueries && !usePersistedQueries,
   });
 
   // If the user requested to use persisted queries, apply the link.
