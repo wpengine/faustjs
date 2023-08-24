@@ -42,9 +42,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Save env var
+      - name: Save Plugin version
         run: |
-          echo PLUGIN_VERSION=$(echo "$json" | jq '.[] | select(.name == "@xx/xx") | .version') >> $GITHUB_ENV
+          json=steps.changesets.outputs.publishedPackages
+          echo PLUGIN_VERSION=$(echo "$json" | jq '.[] | select(.name == "@faustwp/wordpress-plugin") | .version') >> $GITHUB_ENV
       - name: Deploy WordPress plugin
         # Checks the changesets publishedPackages output
         # If there is a published package named "@faustwp/wordpress-plugin"
