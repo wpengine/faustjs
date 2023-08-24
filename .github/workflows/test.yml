@@ -12,7 +12,7 @@ jobs:
       - name: Set variables
         id: data
         run: |
-          echo "packages='[{"name": "@xx/xx", "version": "1.2.0"}, {"name": "@faustwp/wordpress-plugin", "version": "0.8.9"}]'" >> $GITHUB_OUPUT
+          echo "packages='[{"name": "@xx/xx", "version": "1.2.0"}, {"name": "@faustwp/wordpress-plugin", "version": "0.8.9"}]'" >> $GITHUB_OUTPUT
       - name: Save Plugin version
         run: |
           json=steps.data.outputs.packages
