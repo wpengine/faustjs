@@ -44,7 +44,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Save env var
         run: |
-          version=$(echo "$json" | jq '.[] | select(.name == "@xx/xx") | .version')
+          PLUGIN_VERSION=$(echo "$json" | jq '.[] | select(.name == "@xx/xx") | .version') >> $GITHUB_ENV
       - name: Deploy WordPress plugin
         # Checks the changesets publishedPackages output
         # If there is a published package named "@faustwp/wordpress-plugin"
@@ -59,4 +59,4 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           PLUGIN_DIR: plugins/faustwp
           SLUG: faustwp
-          VERSION: '$version'
+          VERSION: ${{ env.PLUGIN_VERSION }}
