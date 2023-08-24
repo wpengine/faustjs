@@ -4,7 +4,6 @@ import { EditFnContext } from '../registerFaustBlock.js';
 import Preview from './Preview.js';
 import EditFormFields from './EditFormFields.js';
 import getControlFields from '../helpers/getControlFields.js';
-import { Field } from '../types/index.js';
 
 export default function Edit<T extends Record<string, any>>(
   ctx: EditFnContext<T>,
@@ -14,7 +13,8 @@ export default function Edit<T extends Record<string, any>>(
   const { editorFields = [] } = block.config;
   const fieldsConfig = getControlFields(
     blockJson,
-    editorFields as Partial<Field>[],
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    editorFields,
   );
   return (
     <div {...blockProps}>

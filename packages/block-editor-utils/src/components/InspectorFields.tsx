@@ -29,7 +29,8 @@ function InspectorFields<T extends Record<string, any>>({
           return (
             <PanelBody
               className="faust-inspector-form-field"
-              key={`inspector-controls-panel-${field.name as string}`}>
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              key={`inspector-controls-panel-${field.name}`}>
               <ControlField config={field} props={props} />;
             </PanelBody>
           );
