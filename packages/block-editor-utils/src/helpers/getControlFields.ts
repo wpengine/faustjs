@@ -25,16 +25,16 @@ function getControlFields(
 ): Field[] {
   const fields: Field[] = [];
   Object.entries(blockJson.attributes).forEach(([key, value]) => {
-    const fieldConfig = editorFields.find((field: Partial<Field>) => {
-      return field.name === key;
-    });
+    const fieldConfig = Object.entries(editorFields).find(([name]) => {
+      return key === name;
+    })?.[1];
     const fieldType: FieldType = (value as any).type;
     const control = blockAttributeTypeToControlMap[fieldType] ?? 'text';
     // Set default field by merging both blockAttributes meta and editorFields hints.
     if (fieldConfig) {
       fields.push({
         name: key,
-        label: fieldConfig.label,
+        label: fieldConfig.label ?? key,
         type: fieldType,
         location: fieldConfig.location ?? 'editor',
         control: fieldConfig?.control ?? control,
@@ -43,6 +43,7 @@ function getControlFields(
       // Set default field by using only blockAttributes meta
       fields.push({
         name: key,
+        label: key,
         type: fieldType,
         location: 'editor',
         control,
