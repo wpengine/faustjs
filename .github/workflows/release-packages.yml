@@ -42,3 +42,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Save env var
+        run: |
+          version=$(echo "$json" | jq '.[] | select(.name == "@xx/xx") | .version')
+      - name: Deploy WordPress plugin
+        # Checks the changesets publishedPackages output
+        # If there is a published package named "@faustwp/wordpress-plugin"
+        # Then deploy the WordPress plugin
+        # https://github.com/changesets/action#outputs
+        if: contains(steps.changesets.outputs.publishedPackages.*.name, '@faustwp/wordpress-plugin')
+        # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
+        # to support our monorepo structure.
+        uses: ./.github/actions/release-plugin
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          PLUGIN_DIR: plugins/faustwp
+          SLUG: faustwp
+          VERSION: '$version'
