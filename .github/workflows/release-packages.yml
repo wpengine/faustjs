@@ -44,7 +44,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Save Plugin version
         run: |
-          json=steps.changesets.outputs.publishedPackages
+          json=${{ toJSON(steps.changesets.outputs.publishedPackages) }}
           echo PLUGIN_VERSION=$(echo "$json" | jq '.[] | select(.name == "@faustwp/wordpress-plugin") | .version') >> $GITHUB_ENV
       - name: Deploy WordPress plugin
         # Checks the changesets publishedPackages output
