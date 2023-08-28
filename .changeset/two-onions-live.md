@@ -1,5 +1,5 @@
 ---
-'@faustjs/core': patch
+'@faustwp/experimental-app-router': patch
 ---
 
 Created `getAuthClient` for making authenticated server side requests in the Next.js App Router. It can be used like:

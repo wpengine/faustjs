@@ -1,5 +1,5 @@
 ---
-'@faustjs/core': patch
+'@faustwp/experimental-app-router': patch
 ---
 
 Introduced a new API handler for App router projects called `faustRouteHandler`. It can be used by creating a file `/app/api/faust/[route]/route.js` with the following contents:
