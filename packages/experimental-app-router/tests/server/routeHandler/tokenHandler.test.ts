@@ -17,6 +17,7 @@ describe('tokenHandler', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    fetchMock.restore();
   });
 
   afterAll(() => {
