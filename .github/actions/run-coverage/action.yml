@@ -13,6 +13,8 @@ runs:
     # Remove this when the issue has been resolved.
     - uses: ArtiomTr/jest-coverage-report-action@v2.1.2
       with:
+        # tell to the action to not attach comment.
+        output: report-markdown
         test-script: npm run test:coverage:ci
         working-directory: ${{ inputs.working-directory }}
         annotations: none

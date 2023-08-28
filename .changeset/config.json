@@ -13,6 +13,6 @@
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
-  "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example"],
+  "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example", "@faustwp/app-router-example"],
   "onlyUpdatePeerDependentsWhenOutOfRange": true
 }
