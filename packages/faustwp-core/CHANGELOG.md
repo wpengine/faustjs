@@ -1,5 +1,13 @@
 # @faustwp/core
 
+## 1.1.1
+
+### Patch Changes
+
+- 176bc82: Chore: Fixes import order style lint error.
+- 3f5cee8: Prefix all api routes with the basePath from faust config when available. Fixes issue with preview tokens and logout with the toolbar.
+- 3810bbb: Fixes an issue where previews would get stuck in an endless loop when basePath was set.
+
 ## 1.1.0
 
 ### Minor Changes

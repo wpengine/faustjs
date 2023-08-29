@@ -15,7 +15,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const client = getClient();
+  const client = await getClient();
 
   const { data } = await client.query({
     query: gql`

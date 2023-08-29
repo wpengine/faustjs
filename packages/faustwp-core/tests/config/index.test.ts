@@ -81,4 +81,15 @@ describe('config', () => {
     setConfig({ usePersistedQueries: true } as any as FaustConfig);
     expect(getConfig().usePersistedQueries).toBeTruthy();
   });
+
+  test('config does not use basePath by default', () => {
+    setConfig({} as any as FaustConfig);
+    expect(getConfig().basePath).toBeFalsy();
+  });
+
+  test('basePath can be modified', () => {
+    const mockBasePath = '/blog';
+    setConfig({ basePath: mockBasePath } as any as FaustConfig);
+    expect(getConfig().basePath).toEqual(mockBasePath);
+  });
 });
