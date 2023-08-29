@@ -23,8 +23,8 @@ export function Edit({ seedNode }: Props) {
 
   // This is a preview.
   if (!postId) {
-    postId = p;
-    postType = typeName;
+    postId = p as string;
+    postType = typeName as string;
   }
 
   const editPostUrl = getAdminUrl(`post.php?post=${postId}&action=edit`);
