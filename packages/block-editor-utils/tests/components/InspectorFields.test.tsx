@@ -46,18 +46,19 @@ function filterA(controls: { [key: string]: Control }) {
   return controls;
 }
 
+const blockProps = {
+  clientId: '1',
+  setAttributes: () => null,
+  context: {},
+  attributes: {
+    message: 'Hello',
+  },
+  isSelected: false,
+  className: 'SimpleBlock',
+};
+
 describe('<InspectorFields />', () => {
   it('renders an empty InspectorFields if no fields are provided', () => {
-    const blockProps = {
-      clientId: '1',
-      setAttributes: () => null,
-      context: {},
-      attributes: {
-        message: 'Hello',
-      },
-      isSelected: false,
-      className: 'SimpleBlock',
-    };
     const fields: Field[] = [];
     addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
     render(<InspectorFields fields={fields} props={blockProps} />);
@@ -69,16 +70,6 @@ describe('<InspectorFields />', () => {
     `);
   });
   it('renders InspectorFields if matching fields are provided', () => {
-    const blockProps = {
-      clientId: '1',
-      setAttributes: () => null,
-      context: {},
-      attributes: {
-        message: 'Hello',
-      },
-      isSelected: false,
-      className: 'SimpleBlock',
-    };
     const fields: Field[] = [
       {
         type: 'string',
