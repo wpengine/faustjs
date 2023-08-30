@@ -18,13 +18,12 @@ export function Edit({ seedNode }: Props) {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  let postType = seedNode?.__typename || '';
-  let postId = seedNode?.databaseId || '';
+  // eslint-disable-next-line no-underscore-dangle
+  const postType = seedNode?.__typename ?? (typeName as string | undefined);
+  const postId = seedNode?.databaseId ?? (p as string | undefined);
 
-  // This is a preview.
-  if (!postId) {
-    postId = p as string;
-    postType = typeName as string;
+  if (!postId || !postType) {
+    return null;
   }
 
   const editPostUrl = getAdminUrl(`post.php?post=${postId}&action=edit`);
