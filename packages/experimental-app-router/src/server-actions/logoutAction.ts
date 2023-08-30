@@ -6,9 +6,9 @@ export async function onLogout() {
 
   const wpCookieName = `${getWpUrl()}-rt`;
   const cookieStore = cookies();
-  const wpCookieExists = cookieStore.has(wpCookieName);
+  const wpCookie = cookieStore.get(wpCookieName);
 
-  if (wpCookieExists) {
+  if (wpCookie?.name) {
     cookieStore.delete(wpCookieName);
     return true;
   }

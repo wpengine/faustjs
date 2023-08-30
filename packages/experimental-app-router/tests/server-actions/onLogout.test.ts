@@ -26,18 +26,23 @@ describe('onLogout', () => {
 
   it('return true if cookie exists and gets deleted', async () => {
     const cookiesSpy = jest.spyOn(nextHeaders, 'cookies');
+    const deleteSpy = jest.fn();
 
     // No refresh token
     cookiesSpy.mockReturnValue({
-      has() {
-        return true;
+      get() {
+        return {
+          value: 'values',
+          name: 'cookieName',
+        };
       },
-      delete() {},
+      delete: deleteSpy,
     } as any);
 
     const loggedOut = await onLogout();
 
-    expect(loggedOut).toBe(true);
+    expect(deleteSpy).toHaveBeenCalled();
+    expect(loggedOut).toBeTruthy();
   });
 
   it("return false if cookie doesn't exist", async () => {
@@ -45,14 +50,14 @@ describe('onLogout', () => {
 
     // No refresh token
     cookiesSpy.mockReturnValue({
-      has() {
-        return false;
+      get() {
+        return undefined;
       },
       delete() {},
     } as any);
 
     const loggedOut = await onLogout();
 
-    expect(loggedOut).toBe(false);
+    expect(loggedOut).toBeFalsy();
   });
 });
