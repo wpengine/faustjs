@@ -7,7 +7,7 @@ import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustToolbarNodes } from '../../../src';
 import { setConfig } from '../../../src/config/index';
 import * as apollo from '@apollo/client';
-
+import * as nextRouter from 'next/router';
 import { Toolbar } from '../../../src/components/Toolbar';
 import { OperationVariables, QueryResult } from '@apollo/client';
 
@@ -46,6 +46,10 @@ test('renders the toolbar if user preference is true', async () => {
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
     .mockReturnValue(mockUseQuery);
+
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {},
+  } as any as nextRouter.NextRouter);
 
   const dom = render(<Toolbar />);
 
