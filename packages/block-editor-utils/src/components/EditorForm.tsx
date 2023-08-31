@@ -8,15 +8,15 @@ const styles = {
   form: {
     padding: '0 10px',
     margin: '20px 0',
-  },
+  } as React.CSSProperties,
   icon: {
-    'margin-right': '10px',
-  },
+    marginRight: '10px',
+  } as React.CSSProperties,
   heading: {
     margin: '10px 0',
     display: 'flex',
-    'align-items': 'center',
-  },
+    alignItems: 'center',
+  } as React.CSSProperties,
 };
 
 interface EditorFormProps<T extends Record<string, any>> {
@@ -34,7 +34,10 @@ function EditorForm<T extends Record<string, any>>({
     [key: string]: Control;
   };
   return (
-    <div className="faust-editor-form" style={styles.form}>
+    <div
+      className="faust-editor-form"
+      aria-label="Faust block editor form"
+      style={styles.form}>
       <h3 className="faust-editor-form__heading" style={styles.heading}>
         <Icon size={24} icon={blockJson.icon} style={styles.icon} />
         {blockJson.title}

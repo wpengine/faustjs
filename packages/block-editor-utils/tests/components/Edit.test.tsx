@@ -90,9 +90,19 @@ describe('<Edit />', () => {
         wp={null}
       />,
     );
-    expect(screen.getByText('Edit mode')).toMatchInlineSnapshot(`
-      <div>
-        Edit mode
+    expect(screen.getByLabelText('Faust block editor form'))
+      .toMatchInlineSnapshot(`
+      <div
+        aria-label="Faust block editor form"
+        class="faust-editor-form"
+        style="padding: 0px 10px; margin: 20px 0px;"
+      >
+        <h3
+          class="faust-editor-form__heading"
+          style="margin: 10px 0px; display: flex; align-items: center;"
+        >
+          SimpleBlock
+        </h3>
       </div>
     `);
   });
