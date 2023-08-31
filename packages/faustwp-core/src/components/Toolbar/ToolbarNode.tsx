@@ -34,10 +34,8 @@ export function ToolbarNode({
   };
 
   return (
+    /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */
     <li
-      role="menuitem"
-      aria-haspopup="true"
-      aria-expanded={hover}
       id={wpAdminBar(id)}
       className={className('menupop', { hover }, additionalClassNames)}
       onMouseEnter={() => setHover(true)}
