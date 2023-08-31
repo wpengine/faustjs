@@ -2,4 +2,4 @@
 "@faustwp/core": patch
 ---
 
-Bug where review routes missing the "Edit Post" toolbar node fixed
+Fixed bug where the "Edit Post" link was missing in the Faust Toolbar
