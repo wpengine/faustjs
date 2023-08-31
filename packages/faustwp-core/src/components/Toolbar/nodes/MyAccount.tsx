@@ -45,13 +45,13 @@ export function AuthenticatedAccount() {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      logout();
+      void logout();
     }
   };
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    logout();
+    void logout();
   };
 
   return (
