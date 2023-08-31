@@ -35,13 +35,14 @@ export function ToolbarNode({
 
   return (
     <li
+      role="menuitem"
+      aria-haspopup="true"
+      aria-expanded={hover}
       id={wpAdminBar(id)}
       className={className('menupop', { hover }, additionalClassNames)}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onKeyDown={handleKeyDown}
-      aria-haspopup="true"
-      aria-expanded={hover}
       {...props}>
       {children}
     </li>
