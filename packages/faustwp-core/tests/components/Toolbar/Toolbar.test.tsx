@@ -215,7 +215,7 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
 
   mockIsReady = true;
   const dom = render(
-    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post', databaseId: '4'}} />,
+    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post' }} />,
   );
   await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
   const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
