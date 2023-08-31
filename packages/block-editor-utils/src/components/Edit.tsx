@@ -1,22 +1,9 @@
 import * as React from 'react';
 import { useBlockProps } from '@wordpress/block-editor';
-import { addFilter } from '@wordpress/hooks';
 import { EditFnContext } from '../registerFaustBlock.js';
 import Preview from './Preview.js';
 import EditFormFields from './EditFormFields.js';
 import getControlFields from '../helpers/getControlFields.js';
-import { Control } from '../types/index.js';
-
-type ControlMap = { [key: string]: Control };
-addFilter(
-  'faustBlockEditorUtils.controls',
-  'faust-block-editor-utils',
-  (controls: ControlMap) => {
-    // eslint-disable-next-line no-param-reassign
-    controls.color = () => <div>Another Color</div>;
-    return controls;
-  },
-);
 
 export default function Edit<T extends Record<string, any>>(
   ctx: EditFnContext<T>,
