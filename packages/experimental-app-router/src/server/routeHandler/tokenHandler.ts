@@ -19,7 +19,7 @@ export async function tokenHandler(req: Request) {
     }
 
     const { url } = req;
-    const code = new URL(url).searchParams.get('code');
+    const code = new URL(url).searchParams.get('code') ?? undefined;
 
     const cookieStore = cookies();
     const cookieName = `${getWpUrl()}-rt`;
@@ -80,7 +80,7 @@ export async function tokenHandler(req: Request) {
      * and expiration.
      */
 
-    const res = NextResponse.json(data, {
+    const res = new NextResponse(JSON.stringify(data), {
       status: 200,
     });
 
