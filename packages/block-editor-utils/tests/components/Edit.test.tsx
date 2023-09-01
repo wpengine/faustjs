@@ -10,6 +10,7 @@ jest.mock('@wordpress/block-editor', () => {
   const originalModule = jest.requireActual('@wordpress/block-editor');
   return {
     ...originalModule,
+    InspectorControls: jest.fn((props) => <div>{props.children}</div>),
     useBlockProps: jest.fn(),
   };
 });
