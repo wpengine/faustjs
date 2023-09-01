@@ -7,7 +7,7 @@ import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustToolbarNodes } from '../../../src';
 import { setConfig } from '../../../src/config/index';
 import * as apollo from '@apollo/client';
-
+import * as nextRouter from 'next/router';
 import { Toolbar } from '../../../src/components/Toolbar';
 import { OperationVariables, QueryResult } from '@apollo/client';
 
@@ -47,6 +47,10 @@ test('renders the toolbar if user preference is true', async () => {
     .spyOn(apollo, 'useQuery')
     .mockReturnValue(mockUseQuery);
 
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {},
+  } as any as nextRouter.NextRouter);
+
   const dom = render(<Toolbar />);
 
   const navElement = await waitFor(() =>
@@ -77,6 +81,7 @@ test('doesnt render the toolbar if user preference is false', async () => {
   const navElement = await waitFor(() =>
     queryByAttribute('id', dom.container, 'wpadminbar'),
   );
+
   expect(navElement).not.toBeInTheDocument();
 });
 
@@ -96,6 +101,10 @@ test('render the toolbar if user preference request throws an error/fails', asyn
     .spyOn(apollo, 'useQuery')
     .mockReturnValue(mockUseQuery);
 
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {},
+  } as any as nextRouter.NextRouter);
+
   const dom = render(<Toolbar />);
 
   const navElement = await waitFor(() =>
@@ -108,6 +117,11 @@ test('render the toolbar if user preference request throws an error/fails', asyn
 test('renders a default list of nodes in the primary section if seedNode is not provided', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
+
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {},
+  } as any as nextRouter.NextRouter);
+
   const dom = render(<Toolbar />);
   await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
   const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
@@ -128,9 +142,15 @@ test('renders a default list of nodes in the primary section if seedNode is not 
 test('renders an Edit Post Node,  in the primary section if seedNode is provided', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
+
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {},
+  } as any as nextRouter.NextRouter);
+
   const dom = render(
-    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post' }} />,
+    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post', databaseId: '4' }} />,
   );
+
   await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
   const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
   // Primary Toolbar
@@ -151,6 +171,11 @@ test('renders an Account Node in the secondary section', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
   mockIsReady = true;
+
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {},
+  } as any as nextRouter.NextRouter);
+
   const dom = render(
     <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post' }} />,
   );
@@ -171,6 +196,67 @@ test('renders an Account Node in the secondary section', async () => {
   );
 });
 
+test('renders an Edit Post Node, if seedNode is not provided and is preview', async () => {
+  expect.assertions(2);
+  mockIsAuthenticated = true;
+
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {
+      p: '123',
+      typeName: 'Post',
+      preview: true,
+    },
+  } as any as nextRouter.NextRouter);
+
+  const dom = render(
+    <Toolbar />,
+  );
+
+  await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
+  const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
+  // Primary Toolbar
+  testToolBarNode(
+    toolBars[0],
+    3,
+    `
+  Array [
+    "WordPress",
+    "Edit Post",
+    "GraphiQL IDE",
+  ]
+  `,
+  );
+});
+
+test('does not render an Edit Post Node, if there is no seedNode and it is not a preview', async () => {
+  expect.assertions(2);
+  mockIsAuthenticated = true;
+
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {
+    },
+  } as any as nextRouter.NextRouter);
+
+  const dom = render(
+    <Toolbar />,
+  );
+
+  await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
+  const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
+  // Primary Toolbar
+  testToolBarNode(
+    toolBars[0],
+    3,
+    `
+  Array [
+    "WordPress",
+    "",
+    "GraphiQL IDE",
+  ]
+`,
+  );
+});
+
 test('Uses `toolbarNodes` hook to add nodes', async () => {
   setConfig({
     // @ts-ignore
@@ -180,9 +266,15 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
   });
   expect.assertions(2);
   mockIsAuthenticated = true;
+  
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {
+    },
+  } as any as nextRouter.NextRouter);
+
   mockIsReady = true;
   const dom = render(
-    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post' }} />,
+    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post', databaseId: '4' }} />,
   );
   await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
   const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
