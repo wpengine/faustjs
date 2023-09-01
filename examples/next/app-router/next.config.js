@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 export default {
-  appDir: true,
   experimental: {
+    appDir: true,
     serverActions: true,
   },
 };
