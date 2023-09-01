@@ -26,8 +26,8 @@ export function ToolbarNode({
   const [hover, setHover] = useState(false);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      setHover(!hover); // Toggle hover state when "Enter" or space is pressed
+    if (e.key === 'Enter') {
+      setHover(!hover); // Toggle hover state when "Enter" is pressed
     } else if (e.key === 'Escape') {
       setHover(false); // Close the dropdown
     }
