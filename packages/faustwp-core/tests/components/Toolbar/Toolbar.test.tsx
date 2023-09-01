@@ -196,43 +196,6 @@ test('renders an Account Node in the secondary section', async () => {
   );
 });
 
-
-test('Uses `toolbarNodes` hook to add nodes', async () => {
-  setConfig({
-    // @ts-ignore
-    templates: [],
-    // @ts-ignore
-    experimentalPlugins: [new TestAddToolbarNodePlugin()],
-  });
-  expect.assertions(2);
-  mockIsAuthenticated = true;
-  
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {
-    },
-  } as any as nextRouter.NextRouter);
-
-  mockIsReady = true;
-  const dom = render(
-    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post', databaseId: '4' }} />,
-  );
-  await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
-  const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
-  // Secondary Toolbar
-  testToolBarNode(
-    toolBars[0],
-    4,
-    `
-    Array [
-      "WordPress",
-      "Edit Post",
-      "GraphiQL IDE",
-      "Test Node",
-    ]
-  `,
-  );
-});
-
 test('renders an Edit Post Node, if seedNode is not provided and is preview', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
@@ -291,6 +254,42 @@ test('does not render an Edit Post Node, if there is no seedNode and it is not a
     "GraphiQL IDE",
   ]
 `,
+  );
+});
+
+test('Uses `toolbarNodes` hook to add nodes', async () => {
+  setConfig({
+    // @ts-ignore
+    templates: [],
+    // @ts-ignore
+    experimentalPlugins: [new TestAddToolbarNodePlugin()],
+  });
+  expect.assertions(2);
+  mockIsAuthenticated = true;
+  
+  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
+    query: {
+    },
+  } as any as nextRouter.NextRouter);
+
+  mockIsReady = true;
+  const dom = render(
+    <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post', databaseId: '4' }} />,
+  );
+  await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
+  const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
+  // Secondary Toolbar
+  testToolBarNode(
+    toolBars[0],
+    4,
+    `
+    Array [
+      "WordPress",
+      "Edit Post",
+      "GraphiQL IDE",
+      "Test Node",
+    ]
+  `,
   );
 });
 
