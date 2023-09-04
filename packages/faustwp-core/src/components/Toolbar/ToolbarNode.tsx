@@ -25,16 +25,22 @@ export function ToolbarNode({
 }: Props) {
   const [hover, setHover] = useState(false);
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      setHover(!hover); // Toggle hover state when "Enter" is pressed
+    } else if (e.key === 'Escape') {
+      setHover(false); // Close the dropdown
+    }
+  };
+
   return (
+    /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */
     <li
       id={wpAdminBar(id)}
       className={className('menupop', { hover }, additionalClassNames)}
-      onMouseEnter={() => {
-        setHover(true);
-      }}
-      onMouseLeave={() => {
-        setHover(false);
-      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onKeyDown={handleKeyDown}
       {...props}>
       {children}
     </li>
