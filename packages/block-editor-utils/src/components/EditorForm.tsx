@@ -42,7 +42,6 @@ function EditorForm<T extends Record<string, any>>({
         <Icon size={24} icon={blockJson.icon} style={styles.icon} />
         {blockJson.title}
       </h3>
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
       {fields.map((field: Field) => {
         const ControlField = loadedControls[field.control];
         if (!ControlField) {
