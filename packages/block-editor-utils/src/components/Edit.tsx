@@ -17,7 +17,7 @@ export default function Edit<T extends Record<string, any>>(
     editorFields,
   );
   return (
-    <div {...blockProps} style={{ border: '1px solid black' }}>
+    <div {...blockProps}>
       {props.isSelected ? (
         <EditFormFields
           props={props}

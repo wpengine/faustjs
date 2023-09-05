@@ -8,6 +8,7 @@ const styles = {
   form: {
     padding: '0 10px',
     margin: '20px 0',
+    border: '1px solid black',
   } as React.CSSProperties,
   icon: {
     marginRight: '10px',
