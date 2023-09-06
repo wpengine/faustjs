@@ -47,8 +47,6 @@ async function createFaustApolloClient(authenticated = false) {
       // get the authentication token from local storage if it exists
       const token = await fetchAccessToken();
 
-      console.log('token', token);
-
       // return the headers to the context so httpLink can read them
       return {
         headers: {
