@@ -1,30 +1,11 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import InspectorFields from '../../src/components/InspectorFields.js';
+import EditorForm from '../../src/components/EditorForm.js';
 import { actions, filters, addFilter } from '@wordpress/hooks';
 import { Control, Field } from '../../src/types/index.js';
 
 afterEach(() => {
   jest.clearAllMocks();
-});
-
-jest.mock('@wordpress/block-editor', () => {
-  const originalModule = jest.requireActual('@wordpress/block-editor');
-  return {
-    ...originalModule,
-    InspectorControls: jest.fn((props) => (
-      <div data-testid="inspector-controls-test">{props.children}</div>
-    )),
-  };
-});
-jest.mock('@wordpress/components', () => {
-  const originalModule = jest.requireActual('@wordpress/components');
-  return {
-    ...originalModule,
-    PanelBody: jest.fn((props) => (
-      <div data-testid="panel-body-test">{props.children}</div>
-    )),
-  };
 });
 
 beforeEach(() => {
@@ -57,25 +38,47 @@ const blockProps = {
   className: 'SimpleBlock',
 };
 
-describe('<InspectorFields />', () => {
-  it('renders an empty InspectorFields if no fields are provided', () => {
+const blockJson = {
+  title: 'SimpleBlock',
+  icon: 'star',
+  category: 'text',
+  attributes: {},
+};
+
+describe('<EditorForm />', () => {
+  it('renders an empty EditorForm if no fields are provided', () => {
     const fields: Field[] = [];
     addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
-    render(<InspectorFields fields={fields} props={blockProps} />);
-    expect(screen.getByTestId('inspector-controls-test'))
+    render(
+      <EditorForm fields={fields} props={blockProps} blockJson={blockJson} />,
+    );
+    expect(screen.getByLabelText('Faust block editor form'))
       .toMatchInlineSnapshot(`
       <div
-        data-testid="inspector-controls-test"
-      />
+        aria-label="Faust block editor form"
+        class="faust-editor-form"
+        style="padding: 0px 10px; margin: 20px 0px;"
+      >
+        <h3
+          class="faust-editor-form__heading"
+          style="margin: 10px 0px; display: flex; align-items: center;"
+        >
+          <span
+            class="dashicon dashicons dashicons-star"
+            style="font-size: 24px; width: 24px; height: 24px; margin-right: 10px;"
+          />
+          SimpleBlock
+        </h3>
+      </div>
     `);
   });
-  it('renders InspectorFields if matching fields are provided', () => {
+  it('renders EditorForm if matching fields are provided', () => {
     const fields: Field[] = [
       {
         type: 'string',
         control: 'color',
         name: 'myColor',
-        location: 'inspector',
+        location: 'editor',
       },
       {
         type: 'string',
@@ -85,7 +88,9 @@ describe('<InspectorFields />', () => {
       },
     ];
     addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
-    render(<InspectorFields fields={fields} props={blockProps} />);
+    render(
+      <EditorForm fields={fields} props={blockProps} blockJson={blockJson} />,
+    );
     expect(screen.getAllByText('Another Color')).toHaveLength(1);
   });
 });

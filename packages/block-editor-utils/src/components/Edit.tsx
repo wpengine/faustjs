@@ -19,7 +19,11 @@ export default function Edit<T extends Record<string, any>>(
   return (
     <div {...blockProps}>
       {props.isSelected ? (
-        <EditFormFields props={props} fields={fieldsConfig} />
+        <EditFormFields
+          props={props}
+          fields={fieldsConfig}
+          blockJson={blockJson}
+        />
       ) : (
         <Preview block={block} props={props} />
       )}
