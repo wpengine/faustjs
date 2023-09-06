@@ -11,18 +11,17 @@ function Color<T extends Record<string, any>>({
   const onChange = (newContent: string) => {
     props.setAttributes({ [config.name]: newContent });
   };
+  // check for default value (https://developer.wordpress.org/block-editor/reference-guides/components/color-picker/#usage:~:text=setColor%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20enableAlpha-,defaultValue%3D%22%23000%22,-/%3E%0A%20%20%20%20)%3B)
+  // label https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label
+  
   return (
     <>
+    <label htmlFor={config.label}>{config.label}</label>  
       <ColorPicker
-        label={config.label}
-        value={props.attributes[config.name]}
+        id={config.label}
+        color={props.attributes[config.name]}
         onChange={onChange}
       />  
-      <ColorIndicator
-        label={config.label}
-        value={props.attributes[config.name]}
-        onChange={onChange}
-      /> 
     </>
   );
 }
