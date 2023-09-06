@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 1.1.1
+
+### Patch Changes
+
+- 176bc82: Adds reference to parent tsconfig.json and fixes type resolution errors.
+
 ## 1.0.1
 
 ### Patch Changes

@@ -81,6 +81,25 @@ describe('createApolloClient', () => {
     expect(persistedQueriesLinkSpy).toHaveBeenCalledTimes(1);
   });
 
+  it('Does not set useGETForQueries in HttpLink if persisted queries is enabled', () => {
+    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
+
+    setConfig({
+      usePersistedQueries: true,
+    } as any as FaustConfig);
+
+    client.createApolloClient();
+
+    expect(httpLinkSpy).toHaveBeenCalledTimes(1);
+
+    expect(httpLinkSpy).toHaveBeenCalledWith({
+      uri: 'http://headless.local/index.php?graphql',
+      useGETForQueries: false,
+    });
+
+    expect(persistedQueriesLinkSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('invokes setContext to set the proper auth headers if its an auth client', () => {
     client.createApolloClient(true);
 

@@ -1,5 +1,29 @@
 # @faustwp/core
 
+## 1.1.2
+
+### Patch Changes
+
+- a419252: Fixed an issue where persisted queries were not being enabled properly when setting the `usePersistedQueries` flag.
+- cf887d3: Fixed bug where the "Edit Post" link was missing in the Faust Toolbar
+- 795d956: Improved keyboard navigation within Toolbar menus, allowing for dropdowns to be toggled open with "enter"
+
+  Note that the `ToolbarItem` component no longer uses the prop `handleClick`, instead relying on pass-through props in order to separate the click event from the the key event.
+
+  ```jsx
+  <ToolbarItem onKeyDown={handleKeyDown} onClick={handleClick}>
+    Log Out
+  </ToolbarItem>
+  ```
+
+## 1.1.1
+
+### Patch Changes
+
+- 176bc82: Chore: Fixes import order style lint error.
+- 3f5cee8: Prefix all api routes with the basePath from faust config when available. Fixes issue with preview tokens and logout with the toolbar.
+- 3810bbb: Fixes an issue where previews would get stuck in an endless loop when basePath was set.
+
 ## 1.1.0
 
 ### Minor Changes

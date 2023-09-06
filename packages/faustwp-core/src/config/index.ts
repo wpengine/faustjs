@@ -47,6 +47,7 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
     experimentalToolbar: false,
     usePersistedQueries: false,
     useGETForQueries: true,
+    basePath: '',
   });
 
   Object.keys(cfg).forEach((key) => {

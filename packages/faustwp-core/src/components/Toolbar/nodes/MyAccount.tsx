@@ -42,9 +42,21 @@ export function AuthenticatedAccount() {
     return <ToolbarNodeSkeleton />;
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      void logout();
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    void logout();
+  };
+
   return (
     <>
-      <ToolbarItem aria-haspopup="true" href={getAdminUrl('profile.php')}>
+      <ToolbarItem aria-haspopup="true">
         Howdy, <span className="display-name">{data?.viewer?.name}</span>
         <img
           alt=""
@@ -81,7 +93,10 @@ export function AuthenticatedAccount() {
             </ToolbarItem>
           </li>
           <li id="wp-admin-bar-logout">
-            <ToolbarItem href="" handleClick={() => logout()}>
+            <ToolbarItem
+              href="#"
+              onKeyDown={handleKeyDown}
+              onClick={handleClick}>
               Log Out
             </ToolbarItem>
           </li>

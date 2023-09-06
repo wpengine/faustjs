@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 import Link from 'next/link';
 
 export default async function Home() {
-  let client = getClient();
+  let client = await getClient();
 
   const { data } = await client.query({
     query: gql`
