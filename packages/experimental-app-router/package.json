@@ -1,6 +1,6 @@
 {
   "name": "@faustwp/experimental-app-router",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Experimental: A Faust package to support Next.js' App Router",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
@@ -40,7 +40,7 @@
     "@apollo/client": ">=3.8.0",
     "@apollo/experimental-nextjs-app-support": ">=0.3.2",
     "@faustwp/cli": ">=1.1.1",
-    "@faustwp/core": ">=1.1.1",
+    "@faustwp/core": ">=1.1.2",
     "next": ">=12.1.6",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2"
@@ -49,7 +49,7 @@
     "@apollo/client": "^3.8.0",
     "@apollo/experimental-nextjs-app-support": "^0.4.1",
     "@faustwp/cli": "^1.1.1",
-    "@faustwp/core": "^1.1.1",
+    "@faustwp/core": "^1.1.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@types/node": "^20.4.6",
     "concurrently": "^8.2.0",
