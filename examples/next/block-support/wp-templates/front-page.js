@@ -13,10 +13,10 @@ export default function Component({ loading, data }) {
   const blockList = flatListToHierarchical(editorBlocks, { childrenKey: 'innerBlocks' });
 
   return (
-    <>
+    <div className='is-layout-constrained'>
       <h1>{title}</h1>
       <WordPressBlocksViewer blocks={blockList} />
-    </>
+    </div>
   );
 }
 
