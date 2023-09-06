@@ -16,7 +16,7 @@ function Color<T extends Record<string, any>>({
   
   return (
     <>
-    <label htmlFor={config.label}>{config.label}</label>  
+    <label style={{ marginBottom: "10px", display: "block" }} htmlFor={config.label}>{config.label}</label>  
       <ColorPicker
         id={config.label}
         color={props.attributes[config.name]}
