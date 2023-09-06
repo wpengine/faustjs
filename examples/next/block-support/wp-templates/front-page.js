@@ -9,13 +9,13 @@ export default function Component({ loading, data }) {
     return <>Loading...</>;
   }
 
-  const { title, editorBlocks } = data?.post ?? { title: '' };
+  const { title, editorBlocks } = data?.page ?? { title: '' };
   const blockList = flatListToHierarchical(editorBlocks, { childrenKey: 'innerBlocks' });
 
   return (
     <>
       <h1>{title}</h1>
-      <WordPressBlocksViewer blocks={blockList}/>
+      <WordPressBlocksViewer blocks={blockList} />
     </>
   );
 }
