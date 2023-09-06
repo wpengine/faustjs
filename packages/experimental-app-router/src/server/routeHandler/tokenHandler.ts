@@ -2,6 +2,7 @@ import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
 import { getWpSecret } from '@faustwp/core/dist/cjs/lib/getWpSecret.js';
 import { cookies } from 'next/headers.js';
 import { NextResponse } from 'next/server.js';
+import { setRefreshToken } from '../../server-actions/utils/setRefreshToken';
 
 export type AuthorizeResponse = {
   accessToken: string;
@@ -47,8 +48,6 @@ export async function tokenHandler(req: Request) {
         refreshToken,
       }),
     });
-
-    console.log('response status', response.status);
 
     if (!response.ok) {
       /**

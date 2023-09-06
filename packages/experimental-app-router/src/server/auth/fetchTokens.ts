@@ -4,6 +4,13 @@ import { cookies } from 'next/headers';
 import { AuthorizeResponse } from '../routeHandler/tokenHandler.js';
 import { getUrl } from '../../lib/getUrl.js';
 
+/**
+ * Fetches tokens using either the refresh token cookie or the provided
+ * authorization code.
+ *
+ * @param code string|undefined An authorization code to fetch tokens.
+ * @returns string|null
+ */
 export async function fetchTokens(code?: string) {
   const cookieStore = cookies();
   const cookieName = `${getWpUrl()}-rt`;
