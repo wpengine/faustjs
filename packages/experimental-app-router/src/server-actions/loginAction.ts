@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client';
-import { getApolloClient } from '@faustwp/core/dist/cjs/client.js';
+// eslint-disable-next-line import/extensions
+import { print } from '@apollo/client/utilities';
+import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
 import { isValidEmail } from '@faustwp/core/dist/cjs/utils/assert.js';
-import { fetchAccessToken } from '../server/auth/fetchAccessToken.js';
-import { getUrl } from '../lib/getUrl.js';
+import { fetchTokens } from '../server/auth/fetchTokens.js';
+import { setRefreshToken } from './utils/setRefreshToken.js';
 
 export const GENERATE_AUTHORIZATION_CODE = gql`
   mutation GenerateAuthorizationCode(
@@ -19,76 +21,105 @@ export const GENERATE_AUTHORIZATION_CODE = gql`
   }
 `;
 
-export type GenerateAuthCodeMutationRes =
-  | {
-      generateAuthorizationCode: {
-        code: string;
-        error: null;
+export type GenerateAuthCodeMutationRes = {
+  data?:
+    | {
+        generateAuthorizationCode: {
+          code: string;
+          error: null;
+        };
+      }
+    | {
+        generateAuthorizationCode: {
+          code: null;
+          error: string;
+        };
       };
-    }
-  | {
-      generateAuthorizationCode: {
-        code: null;
-        error: string;
-      };
-    };
+};
 
 function isString(value: any): value is string {
   return typeof value === 'string' || value instanceof String;
 }
 
-export async function loginAction(formData: FormData) {
+export const validationError = {
+  error:
+    'There were validation errors. Please ensure your login action has two inputs, "usernameEmail" and "password"',
+};
+
+export async function onLogin(formData: FormData) {
   'use server';
 
-  const usernameEmail = formData.get('usernameEmail');
-  const password = formData.get('password');
+  try {
+    const usernameEmail = formData.get('usernameEmail');
+    const password = formData.get('password');
 
-  if (!usernameEmail) {
-    throw new Error('The usernameEmail field is required');
-  }
+    if (
+      !usernameEmail ||
+      !isString(usernameEmail) ||
+      !password ||
+      !isString(password)
+    ) {
+      return validationError;
+    }
 
-  if (!isString(usernameEmail)) {
-    throw new Error('The usernameEmail field should be a string');
-  }
+    const mutationVariables: {
+      username?: string;
+      email?: string;
+      password: string;
+    } = { password };
 
-  if (!password) {
-    throw new Error('The password field is required');
-  }
+    if (isValidEmail(usernameEmail)) {
+      mutationVariables.email = usernameEmail;
+    } else {
+      mutationVariables.username = usernameEmail;
+    }
 
-  if (!isString(password)) {
-    throw new Error('The password field should be a string');
-  }
+    /**
+     * Using standard fetch here so we don't muddy the waters with Next caching
+     * and Apollo.
+     */
+    const mutationRes = await fetch(`${getGraphqlEndpoint()}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: print(GENERATE_AUTHORIZATION_CODE),
+        variables: mutationVariables,
+      }),
+      // We do not want Next caching the generate auth code response.
+      cache: 'no-store',
+    });
 
-  const client = getApolloClient();
+    const { data } = (await mutationRes.json()) as GenerateAuthCodeMutationRes;
 
-  const mutationVariables: {
-    username?: string;
-    email?: string;
-    password: string;
-  } = { password };
+    if (data?.generateAuthorizationCode.error !== null) {
+      return {
+        error: data?.generateAuthorizationCode.error,
+      };
+    }
 
-  if (isValidEmail(usernameEmail)) {
-    mutationVariables.email = usernameEmail;
-  } else {
-    mutationVariables.username = usernameEmail;
-  }
+    const { code } = data.generateAuthorizationCode;
 
-  const mutationRes = await client.mutate<GenerateAuthCodeMutationRes>({
-    mutation: GENERATE_AUTHORIZATION_CODE,
-    variables: mutationVariables,
-  });
+    const tokens = await fetchTokens(code);
 
-  if (mutationRes.data?.generateAuthorizationCode.error !== null) {
+    if (tokens === null) {
+      throw new Error('Could not fetch tokens');
+    }
+
+    await setRefreshToken(
+      tokens.refreshToken,
+      tokens.refreshTokenExpiration * 1000,
+    );
+
     return {
-      error: mutationRes.data?.generateAuthorizationCode.error,
+      message: 'User was successfully logged in',
+    };
+  } catch (err) {
+    console.error('User could not be logged in:', err);
+
+    return {
+      error: 'There was an error logging in the user',
     };
   }
-
-  const { code } = mutationRes.data.generateAuthorizationCode;
-
-  console.log(await tokenRes.json());
-
-  return {
-    message: 'success',
-  };
 }

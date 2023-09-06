@@ -48,8 +48,9 @@ export async function tokenHandler(req: Request) {
       }),
     });
 
+    console.log('response status', response.status);
+
     if (!response.ok) {
-      console.log(await response.json());
       /**
        * Remove the refresh token from the cookie in the case the token is:
        * - expired
