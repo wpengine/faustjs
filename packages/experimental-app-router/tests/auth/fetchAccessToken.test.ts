@@ -29,8 +29,8 @@ describe('fetchAccessToken', () => {
 
     // No refresh token
     cookiesSpy.mockReturnValue({
-      has() {
-        return false;
+      get(name: string) {
+        return { name: undefined, value: undefined };
       },
     } as any);
 
@@ -46,8 +46,8 @@ describe('fetchAccessToken', () => {
 
     // No refresh token
     cookiesSpy.mockReturnValue({
-      has() {
-        return false;
+      get(name: string) {
+        return { name: undefined, value: undefined };
       },
     } as any);
 
@@ -71,10 +71,9 @@ describe('fetchAccessToken', () => {
 
     const cookiesSpy = jest.spyOn(nextHeaders, 'cookies');
 
-    // No refresh token
     cookiesSpy.mockReturnValue({
-      has() {
-        return true;
+      get(name: string) {
+        return { name, value: '1234' };
       },
     } as any);
 
@@ -94,16 +93,16 @@ describe('fetchAccessToken', () => {
 
     // No refresh token
     cookiesSpy.mockReturnValue({
-      has() {
-        return true;
+      get(name: string) {
+        return { name, value: 'valid-refresh-token' };
       },
     } as any);
 
     fetchMock.get(`http://localhost:3000/api/faust/token`, {
       status: 200,
       body: {
-        accessToken: 'valid-token'
-      }
+        accessToken: 'valid-token',
+      },
     });
 
     const token = await fetchAccessToken.fetchAccessToken();
