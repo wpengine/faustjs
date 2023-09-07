@@ -1,44 +1,18 @@
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
-// eslint-disable-next-line import/extensions
-import { cookies } from 'next/headers';
-import { AuthorizeResponse } from '../routeHandler/tokenHandler.js';
-import { getUrl } from '../../lib/getUrl.js';
+import { fetchTokens } from './fetchTokens.js';
 
+/**
+ * Fetches an access token from the token endpoint. Uses fetchTokens under
+ * the hood.
+ *
+ * @param code string|undefined An authorization code to get tokens.
+ * @returns string|null
+ */
 export async function fetchAccessToken(code?: string) {
-  const cookieStore = cookies();
-  const cookieName = `${getWpUrl()}-rt`;
+  const tokens = await fetchTokens(code);
 
-  if (!cookieStore.has(cookieName) && !code) {
-    // The user is not authenticated.
+  if (tokens === null) {
     return null;
   }
 
-  let url = `${getUrl()}/api/faust/token`;
-
-  if (code) {
-    url += `?code=${encodeURIComponent(code)}`;
-  }
-
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: cookieStore.toString(),
-      },
-    });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = (await response.json()) as AuthorizeResponse;
-
-    return data.accessToken;
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log('There was an error fetching the access token', err);
-
-    return null;
-  }
+  return tokens.accessToken;
 }
