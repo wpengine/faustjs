@@ -7,6 +7,7 @@ import {
 import DefaultSaveFn from './components/Save.js';
 import DefaultEditFn from './components/Edit.js';
 import { BlockFC, ConfigType } from './types/index.js';
+import './controls/index.js';
 
 export interface RegisterFaustBlockMetadata<T extends Record<string, any>> {
   // The block.json metadata object

@@ -20,7 +20,6 @@ function InspectorFields<T extends Record<string, any>>({
   return (
     <InspectorControls key="FaustBlockInspectorControls">
       <>
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
         {fields.map((field: Field) => {
           const ControlField = loadedControls[field.control];
           if (!ControlField) {
@@ -29,7 +28,6 @@ function InspectorFields<T extends Record<string, any>>({
           return (
             <PanelBody
               className="faust-inspector-form-field"
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               key={`inspector-controls-panel-${field.name}`}>
               <ControlField config={field} props={props} />
             </PanelBody>

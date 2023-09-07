@@ -8,6 +8,7 @@ const styles = {
   form: {
     padding: '0 10px',
     margin: '20px 0',
+    border: '1px solid black',
   } as React.CSSProperties,
   icon: {
     marginRight: '10px',
@@ -42,7 +43,6 @@ function EditorForm<T extends Record<string, any>>({
         <Icon size={24} icon={blockJson.icon} style={styles.icon} />
         {blockJson.title}
       </h3>
-      {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
       {fields.map((field: Field) => {
         const ControlField = loadedControls[field.control];
         if (!ControlField) {

@@ -95,7 +95,7 @@ describe('<Edit />', () => {
       <div
         aria-label="Faust block editor form"
         class="faust-editor-form"
-        style="padding: 0px 10px; margin: 20px 0px;"
+        style="padding: 0px 10px; margin: 20px 0px; border: 1px solid black;"
       >
         <h3
           class="faust-editor-form__heading"
