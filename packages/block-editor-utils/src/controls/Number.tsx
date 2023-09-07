@@ -2,12 +2,12 @@ import * as React from 'react';
 import { TextControl as NumberControl } from '@wordpress/components';
 import { ControlProps } from '../types/index.js';
 
-function Number<T extends Record<string, any>>({
+function NumberField<T extends Record<string, any>>({
   config,
   props,
 }: ControlProps<T>) {
   const onChange = (newContent: string) => {
-    props.setAttributes({ [config.name]: newContent });
+    props.setAttributes({ [config.name]: Number(newContent) });
   };
   return (
     <NumberControl
@@ -19,4 +19,4 @@ function Number<T extends Record<string, any>>({
   );
 }
 
-export default Number;
+export default NumberField;
