@@ -9,6 +9,8 @@ import Edit from '../../src/components/Edit.js';
 import { registerBlockType } from '@wordpress/blocks';
 // jest.mock('@wordpress/blocks');
 
+
+// https://github.com/WordPress/gutenberg/blob/6d9850ad9c244736cc8687612ea8cc43e9d0f453/packages/components/src/color-picker/test/index.tsx
 afterEach(() => {
   jest.clearAllMocks();
 });
@@ -16,24 +18,36 @@ afterEach(() => {
 // this code is taken from the Edit.test.tsx file to emulate the block editor in the testing environment
 // I think all this stays the same.
 
-jest.mock('@wordpress/block-editor', () => {
-  const originalModule = jest.requireActual('@wordpress/block-editor');
+// jest.mock('@wordpress/block-editor', () => {
+//   const originalModule = jest.requireActual('@wordpress/block-editor');
+//   return {
+//     ...originalModule,
+//     InspectorControls: jest.fn((props) => <div>{props.children}</div>),
+//     useBlockProps: jest.fn(),
+//   };
+// });
+
+jest.mock('@wordpress/element', () => {
+  const originalModule = jest.requireActual('@wordpress/element');
   return {
     ...originalModule,
-    InspectorControls: jest.fn((props) => <div>{props.children}</div>),
-    useBlockProps: jest.fn(),
+    useMemo: jest.fn(),
+    useCallback: jest.fn(),
+    useContext: jest.fn()
   };
 });
 
+// this is the interface we use to shape the props that the SimpleBlock takes below
+// changed attributes to colorPicker
 interface BlockProps {
   className?: string;
   attributes?: {
-    message: string;
+    colorPicker: string;
   };
 }
 
 const SimpleBlock = (props: BlockProps) => (
-  <div className={props.className}>{props?.attributes?.message}</div>
+  <div className={props.className}>{props?.attributes?.colorPicker}</div>
 );
 SimpleBlock.config = {
   name: 'SimpleBlock',
@@ -41,37 +55,31 @@ SimpleBlock.config = {
 
 
 // Added block.json attribute, colorPicker 
-// TODO: delete message attribute
 const blockJson = {
   title: 'SimpleBlock',
   attributes: {
-    message: {
-      type: 'string',
-      default: 'Hello World',
-    },
     colorPicker: {
         type: 'string',
         default: '#fff'
   },
   },
-  category: '',
 };
 
-// Where can I tell the snapshot to emulate the Sidebar for the results of the block being selected?
+// test the display value of <p> to ensure config.label from Color matches snapshot
+// acquire snapshot ( .toMatchInlineSnapshot)
+
 describe('<Color />', () => {
-  it('renders the Color control component in the sidebar if the blocks `isSelected=true`', () => {
+  it('renders the Color control component in the sidebar if the blocks `isSelected=true` and when a change occurs, it calls the attributes callback', () => {
     const blockProps = {
-      clientId: '1',
-      setAttributes: () => null,
-      context: {},
+      // setAttributes: () => null,
       isSelected: true,
       attributes: {
-        message: 'Hello',
+        colorPicker: '#fff'
       },
       className: 'SimpleBlock',
     };
 
-    // from my reading, this seems correct
+    // from my reading, this seems correct, but the Color component is read as null
     render(
       <Color
         config={{
@@ -86,21 +94,13 @@ describe('<Color />', () => {
         // wp={null}
       />,
     );
-    // where can I find the color control aria-label? It wasn't set above for the example, and I don't see this in devtools
-    expect(screen.getByLabelText('Faust block editor form'))
+    // Should I have added a color control aria-label? It wasn't set above for the example, and I don't see this in devtools
+    expect(screen.getByLabelText('SimpleBlock'))
       .toMatchInlineSnapshot(`
-      <div
-        aria-label="Faust block editor form"
-        class="faust-editor-form"
-        style="padding: 0px 10px; margin: 20px 0px; border: 1px solid black;"
-      >
-        <h3
-          class="faust-editor-form__heading"
-          style="margin: 10px 0px; display: flex; align-items: center;"
-        >
-          SimpleBlock
-        </h3>
-      </div>
+      <>
+        <p style={{ marginBottom: '10px' }}>{colorPicker}</p>
+        <ColorPicker color={props.attributes[config.name]} onChange={onChange} />
+      </>
     `);
   });
 });
