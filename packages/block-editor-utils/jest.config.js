@@ -25,6 +25,8 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     "uuid": require.resolve('uuid'),
+    "^react($|/.+)": "<rootDir>/node_modules/react$1",
+    '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1'
   },
   collectCoverage: true,
   coverageReporters: ['json', 'html'],
