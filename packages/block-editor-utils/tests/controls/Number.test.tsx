@@ -1,15 +1,7 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import NumberField from '../../src/controls/Number';
 import { Field } from '../../src/types';
-
-jest.mock('@wordpress/element', () => {
-  const originalModule = jest.requireActual('@wordpress/element');
-  return {
-    ...originalModule,
-    useMemo: jest.fn(),
-  };
-});
 
 const config: Field = {
   label: 'numberField',
