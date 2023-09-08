@@ -57,7 +57,7 @@ const blockJson = {
   category: '',
 };
 
-// Where can I tell the test to look in the Sidebar for the results of the block being selected?
+// Where can I tell the snapshot to emulate the Sidebar for the results of the block being selected?
 describe('<Color />', () => {
   it('renders the Color control component in the sidebar if the blocks `isSelected=true`', () => {
     const blockProps = {
@@ -70,6 +70,8 @@ describe('<Color />', () => {
       },
       className: 'SimpleBlock',
     };
+
+    // from my reading, this seems correct
     render(
       <Color
         config={{
