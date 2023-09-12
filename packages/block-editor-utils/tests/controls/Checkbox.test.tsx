@@ -26,6 +26,8 @@ const config: Field = {
   name: "checkboxField",
   type: "boolean"
 };
+
+// This should set the checkbox value (aka check the box)
 const props = {
   setAttributes: jest.fn(),
   attributes: {
