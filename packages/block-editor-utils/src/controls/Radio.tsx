@@ -13,7 +13,7 @@ function Radio<T extends Record<string, any>>({
     <RadioControl
       label={config.label}
       selected={props.attributes[config.name]}
-      options={props.attributes[config.options]}
+      options={config.options}
       onChange={onChange}
     />
   );
