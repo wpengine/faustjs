@@ -1,12 +1,6 @@
 import { gql } from '@apollo/client';
 import { getClient } from '@faustwp/experimental-app-router';
 import Link from 'next/link';
-/**
- * For now, we will manually call the Faust config as we have not yet determined
- * how we want to set the config (Currently in Faust we call it in the [wordPressNode] file).
- *
- * @todo
- */
 import '../faust.config.js';
 
 export const metadata = {
