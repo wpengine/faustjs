@@ -24,7 +24,6 @@ export type Field = {
   location: FieldLocation;
   label?: string;
   default?: unknown;
-  selected?: string;
   options?: FieldOption[];
 };
 
