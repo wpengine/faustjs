@@ -38,6 +38,7 @@ function getControlFields(
         type: fieldType,
         location: fieldConfig.location ?? 'editor',
         control: fieldConfig?.control ?? control,
+        options: fieldConfig?.options ?? [],
       });
     } else {
       // Set default field by using only blockAttributes meta
@@ -47,6 +48,7 @@ function getControlFields(
         type: fieldType,
         location: 'editor',
         control,
+        options: [],
       });
     }
   });
