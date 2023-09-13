@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { print } from '@apollo/client/utilities';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
-import { isValidEmail } from '@faustwp/core/dist/cjs/utils/assert.js';
+import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint.js';
+import { isValidEmail } from '@faustwp/core/dist/mjs/utils/assert.js';
 import { fetchTokens } from '../server/auth/fetchTokens.js';
 import { setRefreshToken } from './utils/setRefreshToken.js';
 

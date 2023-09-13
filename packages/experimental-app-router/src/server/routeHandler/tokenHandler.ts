@@ -1,5 +1,5 @@
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
-import { getWpSecret } from '@faustwp/core/dist/cjs/lib/getWpSecret.js';
+import { getWpUrl } from '@faustwp/core/dist/mjs/lib/getWpUrl.js';
+import { getWpSecret } from '@faustwp/core/dist/mjs/lib/getWpSecret.js';
 import { cookies } from 'next/headers.js';
 import { NextResponse } from 'next/server.js';
 

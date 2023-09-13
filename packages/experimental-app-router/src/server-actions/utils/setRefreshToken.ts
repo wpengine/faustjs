@@ -1,4 +1,4 @@
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
+import { getWpUrl } from '@faustwp/core/dist/mjs/lib/getWpUrl.js';
 import { cookies } from 'next/headers.js';
 
 /**

@@ -19,7 +19,7 @@
     "test:watch": "jest --watch",
     "test": "jest",
     "build-js": "tsc -p .",
-    "watch-js": "concurrently \"npm:build-js -- --watch\" \"npm:build-cjs -- --watch\""
+    "watch-js": "concurrently \"npm:build-js -- --watch\""
   },
   "repository": {
     "type": "git",

@@ -16,8 +16,8 @@ import {
  *
  * @todo Find a workaround for importing these utils without invoking FaustProvider.
  */
-import { getConfig } from '@faustwp/core/dist/cjs/config/index.js';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
+import { getConfig } from '@faustwp/core/dist/mjs/config/index.js';
+import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint.js';
 import { fetchAccessToken } from './server/auth/fetchAccessToken.js';
 
 async function createFaustApolloClient(authenticated = false) {
