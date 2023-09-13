@@ -14,7 +14,6 @@ function Checkbox<T extends Record<string, any>>({
     // https://developer.wordpress.org/block-editor/reference-guides/components/checkbox-control/#usage-2
     <CheckboxControl
       label={config.label}
-      help={props.attributes[config.help]}
       checked={props.attributes[config.name]}
       onChange={onChange}
     />

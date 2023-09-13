@@ -19,7 +19,6 @@ export type Field = {
   location: FieldLocation;
   label?: string;
   default?: unknown;
-  help?: string;
 }
 
 export type FieldType = "string" | "number" | "boolean" | "integer" | "object" | "array"
