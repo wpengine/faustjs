@@ -33,6 +33,7 @@ function getControlFields(
     // Set default field by merging both blockAttributes meta and editorFields hints.
     if (fieldConfig) {
       fields.push({
+        ...fieldConfig,
         name: key,
         label: fieldConfig.label ?? key,
         type: fieldType,
