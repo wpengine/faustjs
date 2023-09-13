@@ -7,8 +7,9 @@ import {
 import DefaultSaveFn from './components/Save.js';
 import DefaultEditFn from './components/Edit.js';
 import { BlockFC, ConfigType } from './types/index.js';
+import './controls/index.js';
 
-export interface RegisterFaustBlockMetadata<P, T extends Record<string, any>> {
+export interface RegisterFaustBlockMetadata<T extends Record<string, any>> {
   // The block.json metadata object
   blockJson: BlockConfiguration;
   // A custom edit function
@@ -42,13 +43,13 @@ export interface SaveFnContext<T extends Record<string, unknown>> {
  * @param block The React component to register as Gutenberg Block.
  * @param ctx  The metadata object that contains the block.json.
  */
-export default function registerFaustBlock<P, T extends Record<string, any>>(
+export default function registerFaustBlock<T extends Record<string, any>>(
   block: BlockFC,
   {
     blockJson,
     editFn = DefaultEditFn,
     saveFn = DefaultSaveFn,
-  }: RegisterFaustBlockMetadata<P, T>,
+  }: RegisterFaustBlockMetadata<T>,
 ): ReturnType<typeof registerBlockType> {
   // Pass the block config as a separate argument
   const { config } = block;

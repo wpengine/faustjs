@@ -3,19 +3,11 @@ import React, { PropsWithChildren } from 'react';
 type Props = PropsWithChildren<{
   href?: string;
   tabIndex?: number;
-  handleClick?: () => Promise<void>;
 }> & { [key: string]: unknown };
 
-export function ToolbarItem({ href, handleClick, children, ...props }: Props) {
+export function ToolbarItem({ href, children, ...props }: Props) {
   return (
-    <a
-      role="menuitem"
-      tabIndex={0}
-      className="ab-item"
-      onClick={handleClick}
-      onKeyDown={handleClick}
-      href={href}
-      {...props}>
+    <a role="menuitem" tabIndex={0} className="ab-item" href={href} {...props}>
       {children}
     </a>
   );
