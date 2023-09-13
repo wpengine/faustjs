@@ -5,29 +5,48 @@ import { validateFaustEnvVars } from '../../src/healthCheck/validateFaustEnvVars
 describe('healthCheck/validateFaustEnvVars', () => {
   const envBackup = process.env;
 
+  beforeEach(() => {
+    process.env = { ...envBackup };
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   afterAll(() => {
     process.env = envBackup;
   });
 
   it('exits with a 1 exit code when the WordPress URL is undefined', () => {
-    const processExitSpy = jest.spyOn(process, 'exit').mockImplementation();
+    // @ts-ignore
+    const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
+      if (code && code !== 0) {
+        throw new Error(`Exit code: ${code}`);
+      }
+    });
 
-    validateFaustEnvVars();
+    // Use try/catch block to mock process.exit
+    try {
+      validateFaustEnvVars();
+    } catch (err) {
+      console.log(err);
+    }
 
-    expect(processExitSpy).toHaveBeenCalledWith(1);
-
-    processExitSpy.mockRestore();
+    expect(mockExit).toHaveBeenCalledWith(1);
   });
 
   it('does not exit or throw an error when the WordPress URL is set', () => {
-    const processExitSpy = jest.spyOn(process, 'exit').mockImplementation();
+    // @ts-ignore
+    const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
+      if (code && code !== 0) {
+        return;
+      }
+    });
 
     process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
 
     validateFaustEnvVars();
 
-    expect(processExitSpy).not.toHaveBeenCalled();
-
-    processExitSpy.mockRestore();
+    expect(mockExit).toBeCalledTimes(0);
   });
 });
