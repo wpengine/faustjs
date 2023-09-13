@@ -12,4 +12,3 @@ registerControl('color', Color);
 registerControl('checkbox', Checkbox);
 registerControl('select', Select);
 registerControl('radio', Radio);
-
