@@ -33,7 +33,7 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
     expect(result).toEqual(true);
   });
 
-  it('exits when the test GraphQL query fails', async () => {
+  it('exits with a 1 exit code when the test GraphQL query fails', async () => {
     const graphqlEndpoint = getGraphqlEndpoint();
     const processExitSpy = jest.spyOn(process, 'exit').mockImplementation();
 
@@ -45,7 +45,7 @@ describe('healthCheck/verifyGraphQLEndpoint', () => {
 
     await verifyGraphQLEndpoint();
 
-    expect(processExitSpy).toHaveBeenCalledWith(0);
+    expect(processExitSpy).toHaveBeenCalledWith(1);
 
     processExitSpy.mockRestore();
   });
