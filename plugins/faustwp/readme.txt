@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.3
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.0.4 =
+
+### Patch Changes
+
+- fcc6d37: Fixed a bug in the block editor screen where the preview link was missing the `p` and `previewPathName` query arguments after saving a draft.
+
 = 1.0.3 =
 
 ### Patch Changes
@@ -65,11 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
-
-= 1.0.1 =
-
-### Patch Changes
-
-- 9ed3c40: Bug: Fixed an issue where the preview button could crash the browser
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
