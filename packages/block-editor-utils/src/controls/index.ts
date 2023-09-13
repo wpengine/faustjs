@@ -3,8 +3,13 @@ import Text from './Text.js';
 import NumberField from './Number.js';
 import Color from './Color.js';
 import Checkbox from './Checkbox.js';
+import Select from './Select.js';
+import Radio from './Radio.js';
 
 registerControl('text', Text);
 registerControl('number', NumberField);
 registerControl('color', Color);
 registerControl('checkbox', Checkbox);
+registerControl('select', Select);
+registerControl('radio', Radio);
+
