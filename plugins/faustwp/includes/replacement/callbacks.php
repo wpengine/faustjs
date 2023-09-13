@@ -233,8 +233,15 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_sc
  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
 function enqueue_preview_scripts() {
-	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'jquery' ), plugin_version(), true );
-	wp_localize_script( 'faustwp-gutenberg-filters', '_faustwp_preview_link', array( '_preview_link' => get_preview_post_link() ) );
+	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), plugin_version(), true );
+	wp_localize_script(
+		'faustwp-gutenberg-filters',
+		'_faustwp_preview_data',
+		array(
+			'_preview_link' => get_preview_post_link(),
+			'_wp_version'   => get_bloginfo( 'version' ),
+		)
+	);
 }
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
