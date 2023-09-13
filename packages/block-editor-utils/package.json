@@ -7,8 +7,7 @@
   "types": "dist/mjs/index.d.ts",
   "peerDependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "@faustwp/blocks": ">=2.0.0"
+    "react-dom": "^18.0.0"
   },
   "dependencies": {
     "@wordpress/blocks": "^12.18.0",
