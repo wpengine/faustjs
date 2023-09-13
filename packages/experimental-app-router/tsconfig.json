@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
-    "outDir": "dist/mjs",
+    "outDir": "dist",
     "target": "es2017",
     "rootDir": "src",
     "jsx": "react"
