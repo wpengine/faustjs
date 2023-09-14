@@ -60,9 +60,6 @@ describe('Checkbox', () => {
       <input
         type="checkbox"
         aria-label="checkbox"
-        name="checkbox-array"
-        value="second"
-        id="second"
       />,
     );
 
