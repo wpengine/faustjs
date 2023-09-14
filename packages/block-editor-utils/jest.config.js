@@ -13,7 +13,10 @@ module.exports = {
     ],
   },
   // Run code before each file in the suite is tested.
-  setupFilesAfterEnv: ['./jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  setupFiles: [
+		'<rootDir>/tests/global-mocks.ts',
+	],
 
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
 
