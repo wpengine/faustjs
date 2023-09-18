@@ -8,7 +8,7 @@ export const validateFaustEnvVars = () => {
   if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
     errorLog('Could not find NEXT_PUBLIC_WORDPRESS_URL environment variable.');
 
-    process.exit(0);
+    process.exit(1);
   }
 
   if (!getWpSecret()) {

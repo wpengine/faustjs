@@ -2,54 +2,63 @@
  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
 
-window.addEventListener('DOMContentLoaded', function () {
-  jQuery(document).ready(function () {
-    // Get the correct preview link via wp_localize_script
-    const previewLink = window._faustwp_preview_link
-      ? window._faustwp_preview_link._preview_link
-      : undefined;
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the preview data via wp_localize_script
+  const faustPreviewData = window._faustwp_preview_data;
 
-    /**
-     * Check to make sure there is a preview link before continuing, as there may not be a preview link
-     * for every instance the block editor is enqueued (e.g. /wp-admin/widgets.php)
-     */
-    if (!previewLink) {
-      return;
+  /**
+   * Check to make sure there is a preview link before continuing, as there may not be a preview link
+   * for every instance the block editor is enqueued (e.g. /wp-admin/widgets.php)
+   */
+  if (!faustPreviewData) {
+    return;
+  }
+
+  const wpVersion = faustPreviewData._wp_version;
+  const faustPreviewLink = faustPreviewData._preview_link;
+
+  function debounce(func, wait) {
+    let timeout;
+    return function() {
+      const context = this;
+      const args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        func.apply(context, args);
+      }, wait);
+    };
+  }
+
+  // Handle potential breaking changes from WordPress.
+  function getPreviewLinksByVersion(version) {
+    switch (version) {
+      default:
+        return {
+          headerLink: document.querySelector('.edit-post-header-preview__grouping-external a'),
+          snackbarLink: document.querySelector('.components-snackbar__content a'),
+        };
+    }
+  }
+
+  function updateUIElements() {
+    const { headerLink, snackbarLink } = getPreviewLinksByVersion(wpVersion);
+
+    // Clone & replace the original link in order to clear pre-existing events.
+    if (headerLink && headerLink.getAttribute('href') !== faustPreviewLink) {
+      const clonedHeaderLink = headerLink.cloneNode(true);
+      headerLink.parentNode.replaceChild(clonedHeaderLink, headerLink);
+      if (clonedHeaderLink) clonedHeaderLink.setAttribute('href', faustPreviewLink);
     }
 
-    const intervalId = setInterval(function () {
-      const previewButton = jQuery(
-        'button[class~="block-editor-post-preview__button-toggle"]',
-      );
+    if (snackbarLink && snackbarLink.getAttribute('href') !== faustPreviewLink) {
+      snackbarLink.setAttribute('href', faustPreviewLink);
+    }
+  }
 
-      if (!previewButton.length) {
-        return;
-      }
+  // Run the update function on initial page load.
+  const debouncedUpdateUIElements = debounce(updateUIElements, 300);
 
-      clearInterval(intervalId);
-      previewButton.first().one('click', function () {
-        setTimeout(function () {
-          const links = jQuery('a[target*="wp-preview"]');
-
-          if (!links.length) {
-            return;
-          }
-
-          links.each((i, link) => {
-            link.href = previewLink;
-
-            var copy = link.cloneNode(true);
-            copy.addEventListener('click', function () {
-              previewButton[0].click();
-
-              wp.data.dispatch('core/editor').autosave();
-            });
-
-            link.parentElement.insertBefore(copy, link);
-            link.style.display = 'none';
-          });
-        }, 100);
-      });
-    }, 100);
-  });
+  // Observe DOM changes to update UI elements accordingly.
+  const observer = new MutationObserver(debouncedUpdateUIElements);
+  observer.observe(document.body, { childList: true, subtree: true });
 });

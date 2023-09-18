@@ -12,13 +12,32 @@ export interface ConfigType {
   editorFields?: Partial<Field>[];
 }
 
-export type Field = {
+export interface FieldOption {
+  label: string;
+  value: string;
+}
+
+export type Field = BasicField | SelectableField | RangeField
+
+type BasicField = {
   name: string;
-  type: FieldType;
+  type: FieldType
   control: FieldControl;
   location: FieldLocation;
   label?: string;
   default?: unknown;
+  options?: FieldOption[];
+};
+
+export type SelectableField = BasicField & {
+  control: 'select' | 'radio';
+  options?: FieldOption[];
+}
+
+export type RangeField = BasicField & {
+  control: 'range';
+  min?: number;
+  max?: number;
 }
 
 export type FieldType = "string" | "number" | "boolean" | "integer" | "object" | "array"
@@ -29,6 +48,6 @@ export interface ControlProps<T extends Record<string, any>> {
   config: Field;
   props: BlockEditProps<T>;
 }
-export type Control = React.FC<ControlProps>
+export type Control = React.FC<ControlProps>;
 
 export {};

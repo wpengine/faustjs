@@ -13,7 +13,10 @@ module.exports = {
     ],
   },
   // Run code before each file in the suite is tested.
-  setupFilesAfterEnv: ['./jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  setupFiles: [
+		'<rootDir>/tests/global-mocks.ts',
+	],
 
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
 
@@ -25,6 +28,8 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     "uuid": require.resolve('uuid'),
+    "^react($|/.+)": "<rootDir>/node_modules/react$1",
+    '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1'
   },
   collectCoverage: true,
   coverageReporters: ['json', 'html'],
