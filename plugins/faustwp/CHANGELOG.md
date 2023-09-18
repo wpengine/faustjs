@@ -1,5 +1,11 @@
 # Faust
 
+## 1.0.4
+
+### Patch Changes
+
+- fcc6d37: Fixed a bug in the block editor screen where the preview link was missing the `p` and `previewPathName` query arguments after saving a draft.
+
 ## 1.0.3
 
 ### Patch Changes

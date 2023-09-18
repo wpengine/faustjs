@@ -1,14 +1,13 @@
 {
   "name": "@faustwp/block-editor-utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Faust Block Editor Utils Package",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
   "types": "dist/mjs/index.d.ts",
   "peerDependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "@faustwp/blocks": ">=2.0.0"
+    "react-dom": "^18.0.0"
   },
   "dependencies": {
     "@wordpress/blocks": "^12.18.0",
