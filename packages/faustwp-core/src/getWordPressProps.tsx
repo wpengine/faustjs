@@ -10,7 +10,6 @@ import { infoLog, debugLog } from './utils/log.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
-
 function isSSR(
   ctx: GetServerSidePropsContext | GetStaticPropsContext,
 ): ctx is GetServerSidePropsContext {
@@ -67,7 +66,7 @@ export async function getWordPressProps(
 
   const client = getApolloClient();
 
-  const REVALIDATE_404 = 1;
+  const REVALIDATE_404_TIME = 1;
 
   let resolvedUrl = null;
   if (!isSSR(ctx)) {
@@ -89,7 +88,7 @@ export async function getWordPressProps(
   if (!resolvedUrl) {
     return {
       notFound: true,
-      revalidate: REVALIDATE_404,
+      revalidate: REVALIDATE_404_TIME,
     };
   }
 
@@ -110,7 +109,7 @@ export async function getWordPressProps(
   if (!seedNode) {
     return {
       notFound: true,
-      revalidate: REVALIDATE_404,
+      revalidate: REVALIDATE_404_TIME,
     };
   }
 
@@ -124,7 +123,7 @@ export async function getWordPressProps(
   if (!template) {
     return {
       notFound: true,
-      revalidate: REVALIDATE_404,
+      revalidate: REVALIDATE_404_TIME,
     };
   }
 
