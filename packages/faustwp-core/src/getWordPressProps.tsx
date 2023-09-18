@@ -88,7 +88,7 @@ export async function getWordPressProps(
   if (!resolvedUrl) {
     return {
       notFound: true,
-      revalidate: REVALIDATE_404_TIME,
+      revalidate: revalidate || REVALIDATE_404_TIME,
     };
   }
 
@@ -109,7 +109,7 @@ export async function getWordPressProps(
   if (!seedNode) {
     return {
       notFound: true,
-      revalidate: REVALIDATE_404_TIME,
+      revalidate: revalidate || REVALIDATE_404_TIME,
     };
   }
 
@@ -123,7 +123,7 @@ export async function getWordPressProps(
   if (!template) {
     return {
       notFound: true,
-      revalidate: REVALIDATE_404_TIME,
+      revalidate: revalidate || REVALIDATE_404_TIME,
     };
   }
 
