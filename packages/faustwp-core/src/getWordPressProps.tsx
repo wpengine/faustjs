@@ -68,6 +68,13 @@ export async function getWordPressProps(
 
   const REVALIDATE_404_TIME = 1;
 
+  const get404 = () => {
+    return {
+      notFound: true,
+      revalidate: revalidate || REVALIDATE_404_TIME,
+    };
+  };
+
   let resolvedUrl = null;
   if (!isSSR(ctx)) {
     const wordPressNodeParams = ctx.params?.wordpressNode;
@@ -86,10 +93,7 @@ export async function getWordPressProps(
   }) as string | null;
 
   if (!resolvedUrl) {
-    return {
-      notFound: true,
-      revalidate: revalidate || REVALIDATE_404_TIME,
-    };
+    get404();
   }
 
   const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
@@ -107,10 +111,7 @@ export async function getWordPressProps(
   debugLog(`Seed Node for resolved url: "${resolvedUrl}": `, seedNode);
 
   if (!seedNode) {
-    return {
-      notFound: true,
-      revalidate: revalidate || REVALIDATE_404_TIME,
-    };
+    get404();
   }
 
   infoLog(
@@ -121,10 +122,7 @@ export async function getWordPressProps(
   const template = getTemplate(seedNode, templates);
 
   if (!template) {
-    return {
-      notFound: true,
-      revalidate: revalidate || REVALIDATE_404_TIME,
-    };
+    get404();
   }
 
   let templateQueryRes;
