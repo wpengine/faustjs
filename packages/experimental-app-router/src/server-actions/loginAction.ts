@@ -1,10 +1,9 @@
 import { gql } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { print } from '@apollo/client/utilities';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint.js';
-import { isValidEmail } from '@faustwp/core/dist/mjs/utils/assert.js';
 import { fetchTokens } from '../server/auth/fetchTokens.js';
 import { setRefreshToken } from './utils/setRefreshToken.js';
+import { isValidEmail, getGraphqlEndpoint } from '../faust-core-utils.js';
 
 export const GENERATE_AUTHORIZATION_CODE = gql`
   mutation GenerateAuthorizationCode(

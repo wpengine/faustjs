@@ -8,17 +8,8 @@ import {
 import { setContext } from '@apollo/client/link/context';
 // eslint-disable-next-line import/extensions
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-// eslint-disable-next-line import/extensions
-/**
- * We are currently importing these utils from their respective dist paths because importing
- * from the root will also include the FaustProvider component, which throws an error because
- * it does not have the "use client" directive set.
- *
- * @todo Find a workaround for importing these utils without invoking FaustProvider.
- */
-import { getConfig } from '@faustwp/core/dist/mjs/config/index.js';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint.js';
 import { fetchAccessToken } from './server/auth/fetchAccessToken.js';
+import { getConfig, getGraphqlEndpoint } from './faust-core-utils.js';
 
 async function createFaustApolloClient(authenticated = false) {
   const { possibleTypes } = getConfig();

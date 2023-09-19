@@ -5,9 +5,9 @@ import {
   onLogin,
   validationError,
 } from '../../src/server-actions/loginAction.js';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint.js';
 import * as fetchTokens from '../../src/server/auth/fetchTokens.js';
 import * as setRefreshToken from '../../src/server-actions/utils/setRefreshToken.js';
+import { getGraphqlEndpoint } from '../../src/faust-core-utils.js';
 
 // // https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-893763840
 const nextHeaders = { cookies };
