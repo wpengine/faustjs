@@ -2,25 +2,24 @@
   "name": "@faustwp/experimental-app-router",
   "version": "0.0.4",
   "description": "Experimental: A Faust package to support Next.js' App Router",
-  "main": "dist/cjs/index.js",
-  "module": "dist/mjs/index.js",
-  "types": "dist/cjs/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
     "build": "concurrently \"npm:build-*\" --prefix-colors \"auto\"",
     "prebuild": "npm run clean",
-    "postbuild": "npm run package",
     "clean": "rimraf dist",
     "format": "prettier --write .",
-    "package": "node ../../scripts/package.js",
     "prepublish": "npm run build",
     "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --outputFile=report.json",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test": "jest",
     "build-js": "tsc -p .",
-    "build-cjs": "tsc -p tsconfig-cjs.json",
-    "watch-js": "concurrently \"npm:build-js -- --watch\" \"npm:build-cjs -- --watch\""
+    "watch-js": "concurrently \"npm:build-js -- --watch\""
   },
   "repository": {
     "type": "git",

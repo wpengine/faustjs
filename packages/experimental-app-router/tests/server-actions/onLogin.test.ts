@@ -5,7 +5,7 @@ import {
   onLogin,
   validationError,
 } from '../../src/server-actions/loginAction.js';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
+import { getGraphqlEndpoint } from '@faustwp/core/dist/mjs/lib/getGraphqlEndpoint.js';
 import * as fetchTokens from '../../src/server/auth/fetchTokens.js';
 import * as setRefreshToken from '../../src/server-actions/utils/setRefreshToken.js';
 

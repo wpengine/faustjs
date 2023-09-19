@@ -1,4 +1,4 @@
-import { setConfig } from '@faustwp/core/dist/cjs/config/index.js';
+import { setConfig } from '@faustwp/core/dist/mjs/config/index.js';
 import possibleTypes from './possibleTypes.json';
 
 /** @type {import('@faustwp/core').FaustConfig} */

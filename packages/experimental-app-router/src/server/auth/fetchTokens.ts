@@ -1,4 +1,4 @@
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
+import { getWpUrl } from '@faustwp/core/dist/mjs/lib/getWpUrl.js';
 // eslint-disable-next-line import/extensions
 import { cookies } from 'next/headers';
 import { AuthorizeResponse } from '../routeHandler/tokenHandler.js';
