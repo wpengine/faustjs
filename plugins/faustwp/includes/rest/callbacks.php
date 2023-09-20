@@ -77,6 +77,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 function register_rest_routes() {
 	register_rest_route(
 		'faustwp/v1',
+		'/blockset',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_blockset_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_blockset_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
 		'/telemetry',
 		array(
 			'methods'             => 'POST',
@@ -112,6 +122,67 @@ function register_rest_routes() {
 }
 
 /**
+ * Callback function to handle file upload and unzip.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_Error|WP_REST_Response
+ */
+function handle_blockset_callback( \WP_REST_Request $request ) {
+	// Check if ZipArchive class exists.
+	if ( ! class_exists( 'ZipArchive' ) ) {
+		return new WP_Error( 'ziparchive_missing', 'The ZipArchive class is not available', array( 'status' => 500 ) );
+	}
+
+    // Check if file is sent.
+    $files = $request->get_file_params();
+
+    if ( empty( $files['zipfile'] ) ) {
+        return new WP_Error( 'no_file', 'No file was sent', array( 'status' => 400 ) );
+    }
+
+    $file = $files['zipfile'];
+
+    // Check for upload errors.
+    if ( $file['error'] ) {
+        return new WP_Error( 'upload_error', 'File upload error', array( 'status' => 400 ) );
+    }
+
+    // Check if it's a zip file.
+    if ( 'application/zip' !== $file['type'] ) {
+        return new WP_Error( 'wrong_type', 'Not a zip file', array( 'status' => 400 ) );
+    }
+
+    // Get WordPress upload directory.
+    $upload_dir = wp_upload_dir();
+    $target_dir = trailingslashit( $upload_dir['basedir'] ) . 'faustwp/';
+
+    // Create target directory if it doesn't exist.
+    if ( ! file_exists( $target_dir ) ) {
+        if ( ! wp_mkdir_p( $target_dir ) ) {
+            return new WP_Error( 'mkdir_error', 'Could not create directory', array( 'status' => 500 ) );
+        }
+    }
+
+    $target_file = $target_dir . sanitize_file_name( basename( $file['name'] ) );
+
+    // Move uploaded file to target directory.
+    if ( ! move_uploaded_file( $file['tmp_name'], $target_file ) ) {
+        return new WP_Error( 'move_error', 'Could not move uploaded file', array( 'status' => 500 ) );
+    }
+
+    // Unzip the file.
+    $zip = new ZipArchive();
+    if ( true === $zip->open( $target_file ) ) {
+        $zip->extractTo( $target_dir );
+        $zip->close();
+        unlink( $target_file ); // Delete the zip file.
+        return new WP_REST_Response( 'File unzipped successfully', 200 );
+    } else {
+        return new WP_Error( 'unzip_error', 'Could not unzip the file', array( 'status' => 500 ) );
+    }
+}
+
+/**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
  * Handle GET /faustwp/v1/telemetry response.
@@ -134,6 +205,19 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	);
 
 	return new \WP_REST_Response( $data );
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/blockset`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_blockset_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**
