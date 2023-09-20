@@ -1,5 +1,5 @@
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
 import { cookies } from 'next/headers.js';
+import { getWpUrl } from '../../faust-core-utils.js';
 
 /**
  * Sets the refresh token to the proper cookie. This can only be used within

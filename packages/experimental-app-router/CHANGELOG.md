@@ -1,5 +1,15 @@
 # @faustwp/experimental-app-router
 
+## 0.1.0
+
+### Minor Changes
+
+- 77c5d4f: **BREAKING**: Removed `cjs` support. The experimental app router package now is ESM only.
+
+### Patch Changes
+
+- 77c5d4f: Fixed an issue where the Apollo Client was being shipped to the browser client bundle resulting in large bundle sizes (150kb+). For more context: https://github.com/apollographql/apollo-client-nextjs/issues/95
+
 ## 0.0.4
 
 ### Patch Changes

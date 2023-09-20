@@ -1,8 +1,8 @@
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
 // eslint-disable-next-line import/extensions
 import { cookies } from 'next/headers';
 import { AuthorizeResponse } from '../routeHandler/tokenHandler.js';
 import { getUrl } from '../../lib/getUrl.js';
+import { getWpUrl } from '../../faust-core-utils.js';
 
 /**
  * Fetches tokens using either the refresh token cookie or the provided

@@ -1,24 +1,15 @@
-import { InMemoryCacheConfig, createHttpLink } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  InMemoryCacheConfig,
+  createHttpLink,
+} from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { setContext } from '@apollo/client/link/context';
 // eslint-disable-next-line import/extensions
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-import {
-  NextSSRApolloClient,
-  NextSSRInMemoryCache,
-  // eslint-disable-next-line import/extensions
-} from '@apollo/experimental-nextjs-app-support/ssr';
-// eslint-disable-next-line import/extensions
-/**
- * We are currently importing these utils from their respective dist paths because importing
- * from the root will also include the FaustProvider component, which throws an error because
- * it does not have the "use client" directive set.
- *
- * @todo Find a workaround for importing these utils without invoking FaustProvider.
- */
-import { getConfig } from '@faustwp/core/dist/cjs/config/index.js';
-import { getGraphqlEndpoint } from '@faustwp/core/dist/cjs/lib/getGraphqlEndpoint.js';
 import { fetchAccessToken } from './server/auth/fetchAccessToken.js';
+import { getConfig, getGraphqlEndpoint } from './faust-core-utils.js';
 
 async function createFaustApolloClient(authenticated = false) {
   const { possibleTypes } = getConfig();
@@ -65,8 +56,8 @@ async function createFaustApolloClient(authenticated = false) {
    * we may set config differently than how we currently do it.
    */
 
-  return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(inMemoryCacheObject),
+  return new ApolloClient({
+    cache: new InMemoryCache(inMemoryCacheObject),
     link: linkChain,
   });
 }

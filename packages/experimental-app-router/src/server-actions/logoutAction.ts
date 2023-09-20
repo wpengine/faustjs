@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers.js';
-import { getWpUrl } from '@faustwp/core/dist/cjs/lib/getWpUrl.js';
+import { getWpUrl } from '../faust-core-utils.js';
 
 export async function onLogout() {
   'use server';
