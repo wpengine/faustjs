@@ -7,6 +7,7 @@ import { debugLog, infoLog } from './stdout/index.js';
 import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
+import { blockset } from './blockset.js';
 import { userConfig } from './userConfig.js';
 import { getCliArgs, getWpSecret, getWpUrl, isDebug } from './utils/index.js';
 import {
@@ -81,6 +82,12 @@ import {
     }
     case 'generateGlobalStylesheet': {
       await generateGlobalStylesheet();
+      process.exit(0);
+
+      break;
+    }
+    case 'blockset': {
+      await blockset();
       process.exit(0);
 
       break;
