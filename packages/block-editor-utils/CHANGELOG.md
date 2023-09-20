@@ -1,5 +1,12 @@
 # @faustwp/block-editor-utils
 
+## 0.0.4
+
+### Patch Changes
+
+- ae69cfb: Feat: Add `CheckboxControl` field in `block-editor-utils`.
+- ee8c08e: Feat: Add `RangeControl` field in `block-editor-utils`.
+
 ## 0.0.3
 
 ### Patch Changes
