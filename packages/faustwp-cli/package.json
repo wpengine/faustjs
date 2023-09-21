@@ -29,8 +29,10 @@
     "configstore": "^6.0.0",
     "dotenv-flow": "^3.2.0",
     "fs-extra": "^11.1.1",
+    "glob-promise": "^6.0.5",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2",
     "uuid": "8.3.2"
   },
   "scripts": {
