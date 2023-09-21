@@ -128,9 +128,9 @@ function register_rest_routes() {
  * @return \WP_Error|WP_REST_Response
  */
 function handle_blockset_callback( \WP_REST_Request $request ) {
-	// Check if \ZipArchive class exists.
+	// Check if ZipArchive class exists.
 	if ( ! class_exists( 'ZipArchive' ) ) {
-		return new \WP_Error( 'ziparchive_missing', 'The \ZipArchive class is not available', array( 'status' => 500 ) );
+		return new \WP_Error( 'ziparchive_missing', 'The ZipArchive class is not available', array( 'status' => 500 ) );
 	}
 
     // Check if file is sent.
