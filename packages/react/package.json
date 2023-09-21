@@ -69,7 +69,7 @@
     "@gqty/react": "^2.1.0",
     "@faustjs/core": "^0.15.10",
     "gqty": "^2.3.0",
-    "graphql": ">=15.6",
+    "graphql": ">=16.8",
     "lodash": "^4.17.21"
   }
 }
