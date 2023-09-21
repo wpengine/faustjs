@@ -124,13 +124,13 @@ function register_rest_routes() {
 /**
  * Callback function to handle file upload and unzip.
  *
- * @param WP_REST_Request $request Full data about the request.
+ * @param \WP_REST_Request $request Full data about the request.
  * @return \WP_Error|WP_REST_Response
  */
 function handle_blockset_callback( \WP_REST_Request $request ) {
-	// Check if ZipArchive class exists.
+	// Check if \ZipArchive class exists.
 	if ( ! class_exists( 'ZipArchive' ) ) {
-		return new \WP_Error( 'ziparchive_missing', 'The ZipArchive class is not available', array( 'status' => 500 ) );
+		return new \WP_Error( 'ziparchive_missing', 'The \ZipArchive class is not available', array( 'status' => 500 ) );
 	}
 
     // Check if file is sent.
@@ -171,12 +171,12 @@ function handle_blockset_callback( \WP_REST_Request $request ) {
     }
 
     // Unzip the file.
-    $zip = new ZipArchive();
+    $zip = new \ZipArchive();
     if ( true === $zip->open( $target_file ) ) {
         $zip->extractTo( $target_dir );
         $zip->close();
         unlink( $target_file ); // Delete the zip file.
-        return new WP_REST_Response( 'File unzipped successfully', 200 );
+        return new \WP_REST_Response( 'File unzipped successfully', 200 );
     } else {
         return new \WP_Error( 'unzip_error', 'Could not unzip the file', array( 'status' => 500 ) );
     }
@@ -190,9 +190,9 @@ function handle_blockset_callback( \WP_REST_Request $request ) {
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
  *
- * @param \WP_REST_Request $request Current WP_REST_Request object.
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
  *
- * @return mixed A WP_REST_Response, array, or \WP_Error.
+ * @return mixed A \WP_REST_Response, array, or \WP_Error.
  */
 function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	$data = array(
@@ -212,7 +212,7 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
  *
  * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
  *
- * @param \WP_REST_Request $request The current WP_REST_Request object.
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
  *
  * @return bool True if current user can, false if else.
  */
@@ -225,7 +225,7 @@ function rest_blockset_permission_callback( \WP_REST_Request $request ) {
  *
  * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
  *
- * @param \WP_REST_Request $request The current WP_REST_Request object.
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
  *
  * @return bool True if current user can, false if else.
  */
@@ -243,9 +243,9 @@ function rest_telemetry_permission_callback( \WP_REST_Request $request ) {
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
  *
- * @param \WP_REST_Request $request Current WP_REST_Request object.
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
  *
- * @return mixed A WP_REST_Response, array, or \WP_Error.
+ * @return mixed A \WP_REST_Response, array, or \WP_Error.
  */
 function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 	$code          = trim( $request->get_param( 'code' ) );
@@ -287,7 +287,7 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
  *
- * @param \WP_REST_Request $request The current WP_REST_Request object.
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
  *
  * @return bool True if current user can, false if else.
  */
@@ -312,7 +312,7 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
  *
- * @param \WP_REST_Request $request The current WP_REST_Request object.
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
  *
  * @return bool True if current user can, false if else.
  */
