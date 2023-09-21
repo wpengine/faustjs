@@ -16,7 +16,7 @@ const IGNORE_NODE_MODULES = '**/node_modules/**';
 // Ensure required directories exist
 fs.ensureDirSync(BLOCKS_DIR);
 
-type Manifest = {
+export type Manifest = {
   blocks: any[];
   timestamp: string;
 };
@@ -31,7 +31,7 @@ const manifest: Manifest = {
  * 
  * @returns {Promise<string[]>} An array of paths to block.json files.
  */
-async function fetchBlockFiles(): Promise<string[]> {
+export async function fetchBlockFiles(): Promise<string[]> {
   return glob(`${ROOT_DIR}/**/block.json`, { ignore: IGNORE_NODE_MODULES });
 }
 
@@ -41,7 +41,7 @@ async function fetchBlockFiles(): Promise<string[]> {
  * @param {string[]} files - An array of paths to block.json files.
  * @returns {Promise<void>}
  */
-async function processBlockFiles(files: string[]): Promise<void> {
+export async function processBlockFiles(files: string[]): Promise<void> {
   for (const filePath of files) {
     const blockDir = path.dirname(filePath);
     const blockName = path.basename(blockDir);
@@ -59,7 +59,7 @@ async function processBlockFiles(files: string[]): Promise<void> {
  * 
  * @returns {Promise<string>} Path to the created ZIP archive.
  */
-async function createZipArchive(): Promise<string> {
+export async function createZipArchive(): Promise<string> {
   const zipPath = path.join(FAUST_DIR, 'blocks.zip');
   const output = fs.createWriteStream(zipPath);
   const archive = archiver('zip');
@@ -77,7 +77,7 @@ async function createZipArchive(): Promise<string> {
  * @param {string} zipPath - Path to the ZIP archive to be uploaded.
  * @returns {Promise<void>}
  */
-async function uploadToWordPress(zipPath: string): Promise<void> {
+export async function uploadToWordPress(zipPath: string): Promise<void> {
   const form = new FormData();
   form.append('zipfile', fs.createReadStream(zipPath));
 
@@ -117,3 +117,4 @@ export async function blockset(): Promise<void> {
     process.exit(1);
   }
 }
+
