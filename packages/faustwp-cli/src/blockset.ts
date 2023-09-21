@@ -1,46 +1,51 @@
-import 'isomorphic-fetch';
-import FormData from 'form-data';
-import fs from 'fs-extra';
-import glob from 'glob';
 import path from 'path';
+import fs from 'fs-extra';
+import glob from 'glob-promise';
+import fetch from 'node-fetch';
+import FormData from 'form-data';
 import archiver from 'archiver';
 
 import { getWpUrl, getWpSecret } from './utils/index.js';
 
-const rootDir: string = process.cwd();
-const faustDir: string = path.join(rootDir, '.faust');
-const blocksDir: string = path.join(faustDir, 'blocks');
-const manifestPath: string = path.join(faustDir, 'manifest.json');
+const ROOT_DIR = process.cwd();
+const FAUST_DIR = path.join(ROOT_DIR, '.faust');
+const BLOCKS_DIR = path.join(FAUST_DIR, 'blocks');
+const MANIFEST_PATH = path.join(FAUST_DIR, 'manifest.json');
+const IGNORE_NODE_MODULES = '**/node_modules/**';
 
 // Ensure required directories exist
-fs.ensureDirSync(blocksDir);
+fs.ensureDirSync(BLOCKS_DIR);
 
-// Initialize manifest object
-const manifest: { blocks: any[]; timestamp: string } = {
+type Manifest = {
+  blocks: any[];
+  timestamp: string;
+};
+
+const manifest: Manifest = {
   blocks: [],
   timestamp: new Date().toISOString(),
 };
 
 /**
- * Fetch block.json files, ignoring node_modules.
+ * Fetches paths to all block.json files while ignoring node_modules.
+ * 
+ * @returns {Promise<string[]>} An array of paths to block.json files.
  */
 async function fetchBlockFiles(): Promise<string[]> {
-  return new Promise((resolve, reject) => {
-    glob(`${rootDir}/**/block.json`, { ignore: '**/node_modules/**' }, (err, files) => {
-      if (err) reject(err);
-      else resolve(files);
-    });
-  });
+  return glob(`${ROOT_DIR}/**/block.json`, { ignore: IGNORE_NODE_MODULES });
 }
 
 /**
- * Process each block.json file.
+ * Processes each block.json file, copying its directory and updating the manifest.
+ * 
+ * @param {string[]} files - An array of paths to block.json files.
+ * @returns {Promise<void>}
  */
 async function processBlockFiles(files: string[]): Promise<void> {
   for (const filePath of files) {
     const blockDir = path.dirname(filePath);
     const blockName = path.basename(blockDir);
-    const destDir = path.join(blocksDir, blockName);
+    const destDir = path.join(BLOCKS_DIR, blockName);
 
     await fs.copy(blockDir, destDir);
 
@@ -50,22 +55,27 @@ async function processBlockFiles(files: string[]): Promise<void> {
 }
 
 /**
- * Create a ZIP archive of the blocks.
+ * Creates a ZIP archive of the blocks.
+ * 
+ * @returns {Promise<string>} Path to the created ZIP archive.
  */
 async function createZipArchive(): Promise<string> {
-  const zipPath = path.join(faustDir, 'blocks.zip');
+  const zipPath = path.join(FAUST_DIR, 'blocks.zip');
   const output = fs.createWriteStream(zipPath);
   const archive = archiver('zip');
 
   archive.pipe(output);
-  archive.directory(blocksDir, false);
+  archive.directory(BLOCKS_DIR, false);
   await archive.finalize();
 
   return zipPath;
 }
 
 /**
- * Upload the ZIP archive to WordPress.
+ * Uploads the ZIP archive to WordPress.
+ * 
+ * @param {string} zipPath - Path to the ZIP archive to be uploaded.
+ * @returns {Promise<void>}
  */
 async function uploadToWordPress(zipPath: string): Promise<void> {
   const form = new FormData();
@@ -78,36 +88,32 @@ async function uploadToWordPress(zipPath: string): Promise<void> {
   };
 
   const response = await fetch(apiUrl, {
-    method: 'POST',
-    body: form as any,
     headers,
+    method: 'POST',
+    body: form
   });
 
-  const responseText = await response.text();
-  console.log("Raw response:", responseText);
-
-  if (response.ok) {
-    try {
-      const data = await response.json();
-      console.log('Successfully uploaded to WordPress:', data);
-    } catch (error) {
-      console.error("Error parsing response as JSON:", error);
-    }
-  } else {
-    const errorData = await response.text();
-    throw new Error(`Error uploading to WordPress: ${errorData}`);
+  if (!response.ok) {
+    throw new Error(`Error uploading to WordPress: ${await response.text()}`);
   }
+
+  console.log('Successfully uploaded to WordPress:', await response.json());
 }
 
+/**
+ * Main function to process block files, create a ZIP archive, and upload to WordPress.
+ * 
+ * @returns {Promise<void>}
+ */
 export async function blockset(): Promise<void> {
   try {
     const files = await fetchBlockFiles();
     await processBlockFiles(files);
-    await fs.writeJson(manifestPath, manifest, { spaces: 2 });
+    await fs.writeJson(MANIFEST_PATH, manifest, { spaces: 2 });
     const zipPath = await createZipArchive();
     await uploadToWordPress(zipPath);
   } catch (error) {
-    console.error(`"faust blockset" failed with the following error: `, error);
-    process.exit(0);
+    console.error(`"faust blockset" failed with the following error:`, error);
+    process.exit(1);
   }
 }
