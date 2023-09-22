@@ -18,14 +18,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Handle the uploaded blockset file and unzip it.
+ * Returns true upon success.
  *
  * @param array $file The uploaded file details.
- * @return \WP_Error|string
+ * @return \WP_Error|bool
  */
 function handle_uploaded_blockset( $file ) {
     // Ensure ZipArchive class is available.
     if ( ! class_exists( 'ZipArchive' ) ) {
         return new \WP_Error( 'ziparchive_missing', __( 'The ZipArchive class is not available', 'faustwp' ) );
+    }
+
+    // Check if it's a zip file.
+    if ( 'application/zip' !== $file['type'] ) {
+        return new \WP_Error( 'wrong_type', __( 'Not a zip file', 'faustwp' ) );
     }
 
     // Define directories.
@@ -60,5 +66,5 @@ function handle_uploaded_blockset( $file ) {
         return new \WP_Error( 'rename_error', __( 'Could not rename the directory', 'faustwp' ) );
     }
 
-    return __( 'The blockset was successfully uploaded', 'faustwp' );
+    return true;
 }
