@@ -1,7 +1,7 @@
+import fetch from 'isomorphic-fetch';
 import path from 'path';
 import fs from 'fs-extra';
 import glob from 'glob-promise';
-import fetch from 'node-fetch';
 import FormData from 'form-data';
 import archiver from 'archiver';
 
@@ -42,6 +42,9 @@ export async function fetchBlockFiles(): Promise<string[]> {
  * @returns {Promise<void>}
  */
 export async function processBlockFiles(files: string[]): Promise<void> {
+  // Clean up the blocks directory now that we have the list of block files
+  await fs.emptyDir(BLOCKS_DIR);
+
   for (const filePath of files) {
     const blockDir = path.dirname(filePath);
     const blockName = path.basename(blockDir);
@@ -78,6 +81,10 @@ export async function createZipArchive(): Promise<string> {
  * @returns {Promise<void>}
  */
 export async function uploadToWordPress(zipPath: string): Promise<void> {
+  if (!fs.existsSync(zipPath)) {
+    throw new Error('Provided zipPath does not exist.');
+  }
+
   const form = new FormData();
   form.append('zipfile', fs.createReadStream(zipPath));
 
@@ -87,17 +94,36 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
     'x-faustwp-secret': getWpSecret() || '',
   };
 
-  const response = await fetch(apiUrl, {
-    headers,
-    method: 'POST',
-    body: form
-  });
+  try {
+    const response = await fetch(apiUrl, {
+      headers,
+      method: 'POST',
+      // @ts-ignore
+      body: form,
+      timeout: 30000 // 30 seconds timeout
+    });
 
-  if (!response.ok) {
-    throw new Error(`Error uploading to WordPress: ${await response.text()}`);
+    if (!response.ok) {
+      throw new Error(`Error uploading to WordPress: ${await response.text()}`);
+    }
+
+    try {
+      console.log('WordPress:', await response.json());
+    } catch (jsonError) {
+      if (jsonError instanceof Error) {
+        throw new Error('Error parsing response from WordPress.');
+      }
+      throw jsonError;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        throw new Error('Request timed out.');
+      }
+      throw new Error(`Network error: ${error.message}`);
+    }
+    throw error;
   }
-
-  console.log('Successfully uploaded to WordPress:', await response.json());
 }
 
 /**
@@ -114,7 +140,6 @@ export async function blockset(): Promise<void> {
     await uploadToWordPress(zipPath);
   } catch (error) {
     console.error(`"faust blockset" failed with the following error:`, error);
-    process.exit(1);
   }
 }
 

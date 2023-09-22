@@ -15,13 +15,13 @@ use function WPE\FaustWP\Auth\{
 	generate_access_token
 };
 use function WPE\FaustWP\Settings\get_secret_key;
-
 use function WPE\FaustWP\Telemetry\{
 	get_wp_version,
 	is_wpe,
 	get_anonymous_faustwp_data,
 	get_anonymous_wpgraphql_content_blocks_data,
 };
+use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
