@@ -1,34 +1,53 @@
-// import { fetchAccessToken } from "@/faust/auth/fetchAccessToken";
-// import { getAuthClient, getClient } from "@/faust/client";
-// import { isPreviewMode } from "@/faust/previews";
-import { getClient } from '@faustwp/experimental-app-router';
+import { getAuthClient, getClient } from '@faustwp/experimental-app-router';
 import { gql } from '@apollo/client';
+import { hasPreviewProps } from './hasPreviewProps';
+import { PleaseLogin } from '@/components/please-login';
 
 export default async function Page(props) {
   const postSlug = props.params.postSlug;
+  const isPreview = hasPreviewProps(props);
 
-  // Depending on if isPreview or not use the auth client or regular client
-  let client = await getClient();
+  let client = isPreview ? await getAuthClient() : await getClient();
 
+  if (!client) {
+    return <PleaseLogin />;
+  }
+
+  /**
+   * There is currently a bug in WPGraphQL where you can not query for previews
+   * using the contentNode type. This bug will need to be resolved for preview
+   * functionality in the below query to work properly. For now, it returns
+   * the production ready data for the given contentNode regardless if
+   * asPreview is true or false.
+   *
+   * @see https://github.com/wp-graphql/wp-graphql/issues/1673
+   */
   const { data } = await client.query({
     query: gql`
-      query GetPost($postSlug: ID!) {
-        post(id: $postSlug, idType: SLUG) {
-          title
-          content
+      query GetContentNode($uri: ID!, $asPreview: Boolean!) {
+        contentNode(id: $uri, idType: URI, asPreview: $asPreview) {
+          ... on NodeWithTitle {
+            title
+          }
+          ... on NodeWithContentEditor {
+            content
+          }
           date
         }
       }
     `,
     variables: {
-      postSlug,
+      uri: postSlug,
+      asPreview: isPreview,
     },
   });
 
   return (
     <main>
-      <h2>{data?.post?.title}</h2>
-      <div dangerouslySetInnerHTML={{ __html: data?.post?.content ?? '' }} />
+      <h2>{data?.contentNode?.title}</h2>
+      <div
+        dangerouslySetInnerHTML={{ __html: data?.contentNode?.content ?? '' }}
+      />
     </main>
   );
 }

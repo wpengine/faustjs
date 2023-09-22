@@ -20,7 +20,7 @@ export default async function Page() {
        */
       console.error(res.error);
     } else {
-      redirect('/gated-content');
+      redirect('/my-account');
     }
   }
 
@@ -28,7 +28,6 @@ export default async function Page() {
     <>
       <h2>Login</h2>
 
-      {/* @ts-ignore */}
       <form action={loginAction}>
         <fieldset>
           <label htmlFor="usernameEmail">Username or Email</label>

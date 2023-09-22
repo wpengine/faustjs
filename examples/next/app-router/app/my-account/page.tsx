@@ -1,11 +1,12 @@
+import { PleaseLogin } from '@/components/please-login';
 import { gql } from '@apollo/client';
-import { getAuthClient } from '@faustwp/experimental-app-router';
+import { getAuthClient, onLogout } from '@faustwp/experimental-app-router';
 
 export default async function Page() {
   const client = await getAuthClient();
 
   if (!client) {
-    return <>You must be authenticated</>;
+    return <PleaseLogin />;
   }
 
   const { data } = await client.query({
@@ -28,11 +29,16 @@ export default async function Page() {
     <>
       <h2>Welcome {data.viewer.name}</h2>
 
+      <h3>My Posts</h3>
       <ul>
         {data.viewer.posts.nodes.map((post) => (
           <li key={post.id}>{post.title}</li>
         ))}
       </ul>
+
+      <form action={onLogout}>
+        <button type="submit">Logout</button>
+      </form>
     </>
   );
 }
