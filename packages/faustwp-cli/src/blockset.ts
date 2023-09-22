@@ -28,7 +28,7 @@ const manifest: Manifest = {
 
 /**
  * Fetches paths to all block.json files while ignoring node_modules.
- * 
+ *
  * @returns {Promise<string[]>} An array of paths to block.json files.
  */
 export async function fetchBlockFiles(): Promise<string[]> {
@@ -37,7 +37,7 @@ export async function fetchBlockFiles(): Promise<string[]> {
 
 /**
  * Processes each block.json file, copying its directory and updating the manifest.
- * 
+ *
  * @param {string[]} files - An array of paths to block.json files.
  * @returns {Promise<void>}
  */
@@ -59,7 +59,7 @@ export async function processBlockFiles(files: string[]): Promise<void> {
 
 /**
  * Creates a ZIP archive of the blocks.
- * 
+ *
  * @returns {Promise<string>} Path to the created ZIP archive.
  */
 export async function createZipArchive(): Promise<string> {
@@ -76,7 +76,7 @@ export async function createZipArchive(): Promise<string> {
 
 /**
  * Uploads the ZIP archive to WordPress.
- * 
+ *
  * @param {string} zipPath - Path to the ZIP archive to be uploaded.
  * @returns {Promise<void>}
  */
@@ -100,7 +100,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
       method: 'POST',
       // @ts-ignore
       body: form,
-      timeout: 30000 // 30 seconds timeout
+      timeout: 30000, // 30 seconds timeout
     });
 
     if (!response.ok) {
@@ -128,7 +128,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
 
 /**
  * Main function to process block files, create a ZIP archive, and upload to WordPress.
- * 
+ *
  * @returns {Promise<void>}
  */
 export async function blockset(): Promise<void> {
@@ -142,4 +142,3 @@ export async function blockset(): Promise<void> {
     console.error(`"faust blockset" failed with the following error:`, error);
   }
 }
-
