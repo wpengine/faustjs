@@ -6,6 +6,7 @@ import FormData from 'form-data';
 import archiver from 'archiver';
 
 import { getWpUrl, getWpSecret } from './utils/index.js';
+import { infoLog, errorLog, debugLog } from './stdout/index.js';
 
 const ROOT_DIR = process.cwd();
 const FAUST_DIR = path.join(ROOT_DIR, '.faust');
@@ -108,7 +109,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
     }
 
     try {
-      console.log('WordPress:', await response.json());
+      infoLog('WordPress:', await response.json());
     } catch (jsonError) {
       if (jsonError instanceof Error) {
         throw new Error('Error parsing response from WordPress.');
