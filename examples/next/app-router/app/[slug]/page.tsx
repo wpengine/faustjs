@@ -4,7 +4,7 @@ import { hasPreviewProps } from './hasPreviewProps';
 import { PleaseLogin } from '@/components/please-login';
 
 export default async function Page(props) {
-  const postSlug = props.params.postSlug;
+  const slug = props.params.slug;
   const isPreview = hasPreviewProps(props);
 
   let client = isPreview ? await getAuthClient() : await getClient();
@@ -37,7 +37,7 @@ export default async function Page(props) {
       }
     `,
     variables: {
-      uri: postSlug,
+      uri: slug,
       asPreview: isPreview,
     },
   });
