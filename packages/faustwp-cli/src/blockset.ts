@@ -6,7 +6,7 @@ import FormData from 'form-data';
 import archiver from 'archiver';
 
 import { getWpUrl, getWpSecret } from './utils/index.js';
-import { infoLog, errorLog, debugLog } from './stdout/index.js';
+import { infoLog } from './stdout/index.js';
 
 const ROOT_DIR = process.cwd();
 const FAUST_DIR = path.join(ROOT_DIR, '.faust');
@@ -43,19 +43,21 @@ export async function fetchBlockFiles(): Promise<string[]> {
  * @returns {Promise<void>}
  */
 export async function processBlockFiles(files: string[]): Promise<void> {
-  // Clean up the blocks directory now that we have the list of block files
   await fs.emptyDir(BLOCKS_DIR);
 
-  for (const filePath of files) {
-    const blockDir = path.dirname(filePath);
-    const blockName = path.basename(blockDir);
-    const destDir = path.join(BLOCKS_DIR, blockName);
+  // Use Promise.all and map instead of for...of loop
+  await Promise.all(
+    files.map(async (filePath) => {
+      const blockDir = path.dirname(filePath);
+      const blockName = path.basename(blockDir);
+      const destDir = path.join(BLOCKS_DIR, blockName);
 
-    await fs.copy(blockDir, destDir);
+      await fs.copy(blockDir, destDir);
 
-    const blockJson = await fs.readJson(filePath);
-    manifest.blocks.push(blockJson);
-  }
+      const blockJson = await fs.readJson(filePath);
+      manifest.blocks.push(blockJson);
+    }),
+  );
 }
 
 /**
@@ -99,6 +101,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
     const response = await fetch(apiUrl, {
       headers,
       method: 'POST',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       body: form,
       timeout: 30000, // 30 seconds timeout
