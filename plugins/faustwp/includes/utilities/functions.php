@@ -52,16 +52,16 @@ function plugin_version() {
  * @return bool True on success, false on failure.
  */
 function unzip_to_directory( $file_path, $destination ) {
-    $zip = new \ZipArchive();
-    if ( true !== $zip->open( $file_path ) ) {
-        return false;
-    }
+	$zip = new \ZipArchive();
+	if ( true !== $zip->open( $file_path ) ) {
+		return false;
+	}
 
-    $zip->extractTo( $destination );
-    $zip->close();
-    unlink( $file_path ); // Delete the zip file.
+	$zip->extractTo( $destination );
+	$zip->close();
+	unlink( $file_path ); // Delete the zip file.
 
-    return true;
+	return true;
 }
 
 /**
@@ -70,22 +70,22 @@ function unzip_to_directory( $file_path, $destination ) {
  * @param string $dir Directory path.
  */
 function rrmdir( $dir ) {
-    if ( ! is_dir( $dir ) ) {
-        return;
-    }
+	if ( ! is_dir( $dir ) ) {
+		return;
+	}
 
-    $objects = scandir( $dir );
-    foreach ( $objects as $object ) {
-        if ( '.' === $object || '..' === $object ) {
-            continue;
-        }
+	$objects = scandir( $dir );
+	foreach ( $objects as $object ) {
+		if ( '.' === $object || '..' === $object ) {
+			continue;
+		}
 
-        $item_path = $dir . '/' . $object;
-        if ( is_dir( $item_path ) ) {
-            rrmdir( $item_path );
-        } else {
-            unlink( $item_path );
-        }
-    }
-    rmdir( $dir );
+		$item_path = $dir . '/' . $object;
+		if ( is_dir( $item_path ) ) {
+			rrmdir( $item_path );
+		} else {
+			unlink( $item_path );
+		}
+	}
+	rmdir( $dir );
 }

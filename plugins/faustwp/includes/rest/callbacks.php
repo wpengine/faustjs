@@ -128,27 +128,27 @@ function register_rest_routes() {
  * @return \WP_Error|WP_REST_Response
  */
 function handle_blockset_callback( \WP_REST_Request $request ) {
-    // Check if file is sent.
-    $files = $request->get_file_params();
+	// Check if file is sent.
+	$files = $request->get_file_params();
 
-    if ( empty( $files['zipfile'] ) ) {
-        return new \WP_Error( 'no_file', __( 'No file was sent', 'faustwp' ), array( 'status' => 400 ) );
-    }
+	if ( empty( $files['zipfile'] ) ) {
+		return new \WP_Error( 'no_file', __( 'No file was sent', 'faustwp' ), array( 'status' => 400 ) );
+	}
 
-    $file = $files['zipfile'];
+	$file = $files['zipfile'];
 
-    // Check for upload errors.
-    if ( $file['error'] ) {
-        return new \WP_Error( 'upload_error', __( 'File upload error', 'faustwp' ), array( 'status' => 400 ) );
-    }
+	// Check for upload errors.
+	if ( $file['error'] ) {
+		return new \WP_Error( 'upload_error', __( 'File upload error', 'faustwp' ), array( 'status' => 400 ) );
+	}
 
-    $result = handle_uploaded_blockset( $file );
+	$result = handle_uploaded_blockset( $file );
 
-    if ( is_wp_error( $result ) ) {
-        return $result;
-    }
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
 
-    return new \WP_REST_Response( __( 'Blockset sync complete.', 'faustwp' ), 200 );
+	return new \WP_REST_Response( __( 'Blockset sync complete.', 'faustwp' ), 200 );
 }
 
 /**
