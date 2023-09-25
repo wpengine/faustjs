@@ -17,6 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Corrects the asset path by replacing the 'file:./' prefix and appending the base URL.
+ *
+ * @param string $path      The original asset path.
+ * @param string $base_url  The base URL to prepend to the asset path.
+ *
+ * @return string           The corrected asset path.
+ */
+function correct_asset_path( $path, $base_url ) {
+    return $base_url . str_replace( 'file:./', '', $path );
+}
+
+/**
  * Handle the uploaded blockset file and unzip it.
  * Returns true upon success.
  *
