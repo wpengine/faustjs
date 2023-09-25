@@ -10,6 +10,9 @@
     "blockset": "faust blockset",
     "start": "faust start"
   },
+  "devDependencies": {
+    "@wordpress/scripts": "26.13.0"
+  },
   "dependencies": {
     "@apollo/client": "^3.6.6",
     "@faustwp/blocks": "2.0.0",

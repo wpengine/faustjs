@@ -4,14 +4,16 @@ import fs from 'fs-extra';
 import glob from 'glob-promise';
 import FormData from 'form-data';
 import archiver from 'archiver';
+import { spawnSync } from 'child_process';
 
 import { getWpUrl, getWpSecret } from './utils/index.js';
 import { infoLog } from './stdout/index.js';
 
 const ROOT_DIR = process.cwd();
 const FAUST_DIR = path.join(ROOT_DIR, '.faust');
+const FAUST_BUILD_DIR = path.join(FAUST_DIR, 'build');
 const BLOCKS_DIR = path.join(FAUST_DIR, 'blocks');
-const MANIFEST_PATH = path.join(FAUST_DIR, 'manifest.json');
+const MANIFEST_PATH = path.join(BLOCKS_DIR, 'manifest.json');
 const IGNORE_NODE_MODULES = '**/node_modules/**';
 
 // Ensure required directories exist
@@ -33,7 +35,7 @@ const manifest: Manifest = {
  * @returns {Promise<string[]>} An array of paths to block.json files.
  */
 export async function fetchBlockFiles(): Promise<string[]> {
-  return glob(`${ROOT_DIR}/**/block.json`, { ignore: IGNORE_NODE_MODULES });
+  return glob(`${FAUST_BUILD_DIR}/**/block.json`, { ignore: IGNORE_NODE_MODULES });
 }
 
 /**
@@ -44,7 +46,6 @@ export async function fetchBlockFiles(): Promise<string[]> {
  */
 export async function processBlockFiles(files: string[]): Promise<void> {
   await fs.emptyDir(BLOCKS_DIR);
-
   // Use Promise.all and map instead of for...of loop
   await Promise.all(
     files.map(async (filePath) => {
@@ -130,6 +131,29 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
   }
 }
 
+export async function compileBlocks(): Promise<void> {
+  await fs.emptyDir(FAUST_BUILD_DIR);
+  const wpScriptsCommand = 'npm';
+  spawnSync(
+    wpScriptsCommand,
+    [
+      '--verbose',
+      'exec',
+      'wp-scripts',
+      'start',
+      '--',
+      '--no-watch',
+      '--webpack-src-dir=wp-blocks',
+      `--output-path=${FAUST_BUILD_DIR}`,
+    ],
+    {
+      shell: true,
+      stdio: 'inherit',
+      encoding: 'utf8',
+    },
+  );
+}
+
 /**
  * Main function to process block files, create a ZIP archive, and upload to WordPress.
  *
@@ -137,6 +161,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
  */
 export async function blockset(): Promise<void> {
   try {
+    await compileBlocks();
     const files = await fetchBlockFiles();
     await processBlockFiles(files);
     await fs.writeJson(MANIFEST_PATH, manifest, { spaces: 2 });
