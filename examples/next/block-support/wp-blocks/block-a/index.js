@@ -27,6 +27,7 @@ import metadata from './block.json';
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 registerBlockType(metadata.name, {
+	title: 'Block A',
 	/**
 	 * @see ./edit.js
 	 */
