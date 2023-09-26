@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string           The corrected asset path.
  */
 function correct_asset_path( $path, $base_url ) {
-    return $base_url . str_replace( 'file:./', '', $path );
+	return $base_url . str_replace( 'file:./', '', $path );
 }
 
 /**
@@ -35,9 +35,31 @@ function correct_asset_path( $path, $base_url ) {
  * @return string The inferred title.
  */
 function infer_title_from_name( $block_name ) {
-    $block_name_parts = explode( '/', $block_name );
-    $fallback_title   = end( $block_name_parts ); // Get the last part of the block's name.
-    return ucwords( str_replace( '-', ' ', $fallback_title ) ); // Convert to title case.
+	$block_name_parts = explode( '/', $block_name );
+	$fallback_title   = end( $block_name_parts ); // Get the last part of the block's name.
+	return ucwords( str_replace( '-', ' ', $fallback_title ) ); // Convert to title case.
+}
+
+/**
+ * Determines the path to the manifest.json file.
+ *
+ * @return string The path to the manifest.json file.
+ */
+function get_manifest_file_path() {
+	$uploads_dir = wp_upload_dir();
+	return trailingslashit( $uploads_dir['basedir'] ) . 'faustwp/blocks/manifest.json';
+}
+
+/**
+ * Fetches and decodes the JSON data from the manifest file.
+ *
+ * @param string $file_path Path to the manifest file.
+ * @return array|false Decoded manifest data or false on failure.
+ */
+function get_manifest_data( $file_path ) {
+	// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	$manifest_content = file_get_contents( $file_path );
+	return json_decode( $manifest_content, true );
 }
 
 /**
@@ -96,24 +118,39 @@ function handle_uploaded_blockset( $file ) {
 /**
  * Enqueue an asset and return its handle.
  *
- * @param string $relative_path Relative path to the asset.
- * @param string $base_url Base URL for the asset.
+ * @param string      $relative_path Relative path to the asset.
+ * @param string      $base_url Base URL for the asset.
  * @param string|bool $script 'style' for styles, true for scripts.
- * 
+ * @param array       $dependencies Array of handles that a given script/style is dependent on.
+ *
  * @return string|bool The asset handle or false on failure.
  */
-function enqueue_asset( $relative_path, $base_url, $script = true ) {
-    $url = correct_asset_path( $relative_path, $base_url );
+function enqueue_asset( $relative_path, $base_url, $script = true, $dependencies = array() ) {
+	$url                = correct_asset_path( $relative_path, $base_url );
+	$handle             = basename( $relative_path, '.' . pathinfo( $relative_path, PATHINFO_EXTENSION ) );
+	$manifest_file_path = get_manifest_file_path();
 
-    $handle = basename( $relative_path, '.' . pathinfo( $relative_path, PATHINFO_EXTENSION ) );
+	if ( 'style' === $script ) {
+		wp_register_style(
+			$handle,
+			$url,
+			$dependencies,
+			filemtime( $manifest_file_path )
+		);
 
-    if ( $script === 'style' ) {
-        wp_register_style( $handle, $url );
-        return $handle;
-    } elseif ( $script ) {
-        wp_register_script( $handle, $url, [], null, true );
-        return $handle;
-    }
+		return $handle;
+	} elseif ( $script ) {
+		wp_register_script(
+			$handle,
+			$url,
+			$dependencies,
+			filemtime( $manifest_file_path ),
+			true
+		);
 
-    return false;
+		return $handle;
+	}
+
+	return false;
 }
+
