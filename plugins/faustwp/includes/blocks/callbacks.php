@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', __NAMESPACE__ . '\\register_custom_blocks' );
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\register_custom_blocks' );
 /**
  * Register Gutenberg blocks from block.json files located in the specified paths.
  */
