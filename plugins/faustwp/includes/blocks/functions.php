@@ -29,6 +29,18 @@ function correct_asset_path( $path, $base_url ) {
 }
 
 /**
+ * Infer a human-readable title based on the block's name.
+ *
+ * @param string $block_name The block's name.
+ * @return string The inferred title.
+ */
+function infer_title_from_name( $block_name ) {
+    $block_name_parts = explode( '/', $block_name );
+    $fallback_title   = end( $block_name_parts ); // Get the last part of the block's name.
+    return ucwords( str_replace( '-', ' ', $fallback_title ) ); // Convert to title case.
+}
+
+/**
  * Handle the uploaded blockset file and unzip it.
  * Returns true upon success.
  *
@@ -79,4 +91,29 @@ function handle_uploaded_blockset( $file ) {
 	}
 
 	return true;
+}
+
+/**
+ * Enqueue an asset and return its handle.
+ *
+ * @param string $relative_path Relative path to the asset.
+ * @param string $base_url Base URL for the asset.
+ * @param string|bool $script 'style' for styles, true for scripts.
+ * 
+ * @return string|bool The asset handle or false on failure.
+ */
+function enqueue_asset( $relative_path, $base_url, $script = true ) {
+    $url = correct_asset_path( $relative_path, $base_url );
+
+    $handle = basename( $relative_path, '.' . pathinfo( $relative_path, PATHINFO_EXTENSION ) );
+
+    if ( $script === 'style' ) {
+        wp_register_style( $handle, $url );
+        return $handle;
+    } elseif ( $script ) {
+        wp_register_script( $handle, $url, [], null, true );
+        return $handle;
+    }
+
+    return false;
 }
