@@ -43,3 +43,36 @@ function register_custom_blocks() {
 		}
 	}
 }
+
+add_filter( 'style_loader_src', __NAMESPACE__ . '\\correct_asset_src_for_uploads_dir', 10, 2 );
+add_filter( 'script_loader_src', __NAMESPACE__ . '\\correct_asset_src_for_uploads_dir', 10, 2 );
+/**
+ * Modify the source URL for enqueued assets stored in the uploads directory.
+ *
+ * Filters the source URL of specific enqueued styles and scripts to correct their paths,
+ * focusing on assets that include "faustwp/blocks" in their URL.
+ *
+ * @param string $src    The source URL of the enqueued asset.
+ * @param string $handle The asset's registered handle.
+ *
+ * @return string        Modified or original source URL.
+ *
+ * @see https://github.com/WordPress/wordpress-develop/blob/6.3/src/wp-includes/blocks.php#L149-L165C3
+ */
+function correct_asset_src_for_uploads_dir( $src, $handle ) {
+    // Check for the presence of "faustwp/blocks" in the src.
+    if ( strpos( $src, 'faustwp/blocks' ) !== false ) {
+        // Extract the specific block directory.
+        preg_match( '#faustwp/blocks/([^/]+)#', $src, $matches );
+
+        if ( isset( $matches[1] ) ) {
+            $uploads_dir = wp_upload_dir();
+            $base_url = trailingslashit( $uploads_dir['baseurl'] );
+
+            $correct_src = $base_url . 'faustwp/blocks/' . $matches[1] . '/' . wp_basename( $src );
+			return $correct_src;
+        }
+    }
+
+    return $src;
+}
