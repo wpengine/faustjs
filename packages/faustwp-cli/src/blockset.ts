@@ -5,6 +5,7 @@ import glob from 'glob-promise';
 import FormData from 'form-data';
 import archiver from 'archiver';
 import { spawnSync } from 'child_process';
+import hasYarn from 'has-yarn';
 
 import { getWpUrl, getWpSecret } from './utils/index.js';
 import { infoLog } from './stdout/index.js';
@@ -35,7 +36,9 @@ const manifest: Manifest = {
  * @returns {Promise<string[]>} An array of paths to block.json files.
  */
 export async function fetchBlockFiles(): Promise<string[]> {
-  return glob(`${FAUST_BUILD_DIR}/**/block.json`, { ignore: IGNORE_NODE_MODULES });
+  return glob(`${FAUST_BUILD_DIR}/**/block.json`, {
+    ignore: IGNORE_NODE_MODULES,
+  });
 }
 
 /**
@@ -133,25 +136,25 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
 
 export async function compileBlocks(): Promise<void> {
   await fs.emptyDir(FAUST_BUILD_DIR);
-  const wpScriptsCommand = 'npm';
-  spawnSync(
-    wpScriptsCommand,
-    [
-      '--verbose',
-      'exec',
-      'wp-scripts',
-      'start',
-      '--',
-      '--no-watch',
-      '--webpack-src-dir=wp-blocks',
-      `--output-path=${FAUST_BUILD_DIR}`,
-    ],
-    {
-      shell: true,
-      stdio: 'inherit',
-      encoding: 'utf8',
-    },
-  );
+  const command = hasYarn() ? 'yarn' : 'npm';
+  let args = ['exec', 'wp-scripts', 'start'];
+  if (!hasYarn()) {
+    args.push('--verbose');
+    args.push('--');
+  }
+  args = args.concat([
+    '--no-watch',
+    '--webpack-src-dir=wp-blocks',
+    `--output-path=${FAUST_BUILD_DIR}`,
+  ]);
+  const res = spawnSync(command, args, {
+    shell: true,
+    stdio: 'inherit',
+    encoding: 'utf8',
+  });
+  if (res.status && res.status > 0) {
+    process.exit(res.status);
+  }
 }
 
 /**
