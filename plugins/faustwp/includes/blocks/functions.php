@@ -17,52 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Corrects the asset path by replacing the 'file:./' prefix and appending the base URL.
- *
- * @param string $path      The original asset path.
- * @param string $base_url  The base URL to prepend to the asset path.
- *
- * @return string           The corrected asset path.
- */
-function correct_asset_path( $path, $base_url ) {
-	return $base_url . str_replace( 'file:./', '', $path );
-}
-
-/**
- * Infer a human-readable title based on the block's name.
- *
- * @param string $block_name The block's name.
- * @return string The inferred title.
- */
-function infer_title_from_name( $block_name ) {
-	$block_name_parts = explode( '/', $block_name );
-	$fallback_title   = end( $block_name_parts ); // Get the last part of the block's name.
-	return ucwords( str_replace( '-', ' ', $fallback_title ) ); // Convert to title case.
-}
-
-/**
- * Determines the path to the manifest.json file.
- *
- * @return string The path to the manifest.json file.
- */
-function get_manifest_file_path() {
-	$uploads_dir = wp_upload_dir();
-	return trailingslashit( $uploads_dir['basedir'] ) . 'faustwp/blocks/manifest.json';
-}
-
-/**
- * Fetches and decodes the JSON data from the manifest file.
- *
- * @param string $file_path Path to the manifest file.
- * @return array|false Decoded manifest data or false on failure.
- */
-function get_manifest_data( $file_path ) {
-	// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	$manifest_content = file_get_contents( $file_path );
-	return json_decode( $manifest_content, true );
-}
-
-/**
  * Handle the uploaded blockset file and unzip it.
  * Returns true upon success.
  *
