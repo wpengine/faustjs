@@ -23,6 +23,9 @@
     "ts-jest": "^27.1.5",
     "typescript": "^4.9.5"
   },
+  "peerDependencies": {
+    "@wordpress/scripts": "26.13.0"
+  },
   "dependencies": {
     "archiver": "^6.0.1",
     "chalk": "^4.1.2",

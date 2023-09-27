@@ -16,6 +16,7 @@ const FAUST_BUILD_DIR = path.join(FAUST_DIR, 'build');
 const BLOCKS_DIR = path.join(FAUST_DIR, 'blocks');
 const MANIFEST_PATH = path.join(BLOCKS_DIR, 'manifest.json');
 const IGNORE_NODE_MODULES = '**/node_modules/**';
+const FAUST_BLOCKS_SRC_DIR = 'wp-blocks';
 
 // Ensure required directories exist
 fs.ensureDirSync(BLOCKS_DIR);
@@ -134,7 +135,13 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
   }
 }
 
+/**
+ * Compiles the blocks and places them into the faust build dir.
+ *
+ * @returns {Promise<void>}
+ */
 export async function compileBlocks(): Promise<void> {
+  infoLog(`Faust: Compiling Blocks into ${FAUST_BUILD_DIR}`);
   await fs.emptyDir(FAUST_BUILD_DIR);
   const command = hasYarn() ? 'yarn' : 'npm';
   let args = ['exec', 'wp-scripts', 'start'];
@@ -144,7 +151,7 @@ export async function compileBlocks(): Promise<void> {
   }
   args = args.concat([
     '--no-watch',
-    '--webpack-src-dir=wp-blocks',
+    `--webpack-src-dir=${FAUST_BLOCKS_SRC_DIR}`,
     `--output-path=${FAUST_BUILD_DIR}`,
   ]);
   const res = spawnSync(command, args, {
