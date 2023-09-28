@@ -2,4 +2,4 @@
 "@faustwp/cli": patch
 ---
 
-Allow health checks to be skipped via CLI
+Allow CLI health checks to be skipped via `--skip-health-checks` argument
