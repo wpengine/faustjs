@@ -20,7 +20,7 @@ import {
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
-  const arg1 = getCliArgs()[0];
+  const [arg1, ...otherArgs] = getCliArgs();
 
   dotenv.config();
 
@@ -50,7 +50,9 @@ import {
    * Ensure that everything Faust requires to run
    * is available before continuing.
    */
-  await healthCheck();
+  if (!otherArgs.includes('--skip-health-checks')) {
+    await healthCheck();
+  }
 
   // Inform user of telemetry program.
   if (!telemetryPrefsExist()) {
