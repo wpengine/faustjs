@@ -8,7 +8,13 @@ import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { userConfig } from './userConfig.js';
-import { getCliArgs, getWpSecret, getWpUrl, isDebug } from './utils/index.js';
+import {
+  getCliArgs,
+  getNextCliArgs,
+  getWpSecret,
+  getWpUrl,
+  isDebug,
+} from './utils/index.js';
 import {
   telemetryPrefsExist,
   marshallTelemetryData,
@@ -125,7 +131,7 @@ import {
   const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
 
   process.exit(
-    spawnSync(nextjsCommand, getCliArgs(), {
+    spawnSync(nextjsCommand, getNextCliArgs(), {
       stdio: 'inherit',
       encoding: 'utf8',
     })?.status as number | undefined,
