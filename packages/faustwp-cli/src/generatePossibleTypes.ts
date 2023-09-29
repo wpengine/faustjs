@@ -2,7 +2,7 @@ import 'isomorphic-fetch';
 import fs from 'fs';
 
 import { infoLog, errorLog, debugLog } from './stdout/index.js';
-import { getGraphqlEndpoint, getWpUrl } from './utils/index.js';
+import { getGraphqlEndpoint, getWpSecret, getWpUrl } from './utils/index.js';
 
 type PossibleTypes = {
   [key: string]: any;
@@ -25,6 +25,7 @@ export async function generatePossibleTypes(): Promise<void> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-faust-secret': getWpSecret() || '',
       },
       body: JSON.stringify({
         variables: {},

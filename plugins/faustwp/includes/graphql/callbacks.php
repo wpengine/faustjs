@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\GraphQL;
 
 use function WPE\FaustWP\Auth\generate_authorization_code;
+use function WPE\FaustWP\Settings\get_secret_key;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 
@@ -42,6 +43,28 @@ function register_templates_field() {
 			'resolve' => __NAMESPACE__ . '\\templates_resolver',
 		)
 	);
+}
+
+add_filter( 'graphql_get_setting_section_field_value', __NAMESPACE__ . '\\filter_introspection', 10, 5 );
+
+function filter_introspection( $value, $default_value, $option_name, $section_fields, $section_name ) {
+	if ( $option_name !== 'public_introspection_enabled' ) {
+		return $value;
+	}
+
+	// check header for faust secret key.
+	if ( !isset( $_SERVER['HTTP_X_FAUST_SECRET'])) {
+		return $value;
+	};
+
+	$secret_key = get_secret_key();
+
+	// validate secret
+	if ( $secret_key !== $_SERVER['HTTP_X_FAUST_SECRET'] ) {
+		return $value;
+	}
+	
+	return 'on';
 }
 
 add_action( 'graphql_register_types', __NAMESPACE__ . '\\register_faust_toolbar_field' );
