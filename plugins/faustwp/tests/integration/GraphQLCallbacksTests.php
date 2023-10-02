@@ -107,6 +107,10 @@ class GraphQLCallbacksTests extends \WP_UnitTestCase {
 		$this->graphqlResponse->data = $this->responseData;
 	}
 
+	public function test_graphql_section_field_value() {
+		$this->assertSame( 10, has_action( 'graphql_get_setting_section_field_value', 'WPE\FaustWP\GraphQL\filter_introspection' ) );
+	}
+
 	public function test_graphql_request_results_filter() {
 		$this->assertSame( 10, has_action( 'graphql_request_results', 'WPE\FaustWP\Replacement\url_replacement' ) );
 	}
