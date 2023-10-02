@@ -29,11 +29,21 @@ const excludedShortContributors = [
   'Blake Wilson',
   'Jason Bahl',
   'John Parris',
+  'bhardie',
+  'andrewbotz',
+  'Kevin W. Hoffman',
+  'Jason Konen',
+  'Anthony Burchell',
+
 ];
 
 const publicRepos = [
   'https://github.com/wpengine/wp-graphql-content-blocks.git',
   'https://github.com/wpengine/faustjs.git',
+  'https://github.com/wpengine/atlas-blueprint-portfolio.git',
+  'https://github.com/wpengine/faust-scaffold.git',
+  'https://github.com/wpengine/faust-scaffold-ts.git',
+  'https://github.com/wpengine/atlas-content-modeler.git',
 ];
 
 async function getRepoLogs() {
