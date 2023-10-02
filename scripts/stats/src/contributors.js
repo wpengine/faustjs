@@ -46,19 +46,12 @@ const publicRepos = [
 ];
 
 async function getRepoLogs() {
-  let repoStats = {
-    lastMonth: '',
-    allTime: ''
-  };
+  let repoStats = {};
 
   for (const repo of publicRepos) {
 
     let commands = [
-      {
-        command: 'git clone ' +
-          repo +
-          ' repo'
-      },
+      { command: 'git clone ' + repo + ' repo' },
       {
         name: "lastMonth",
         command: 'cd repo; git shortlog -se --no-merges --since="28 days ago" < /dev/tty'
@@ -67,9 +60,7 @@ async function getRepoLogs() {
         name: "allTime",
         command: 'cd repo; git shortlog -se --no-merges < /dev/tty'
       },
-      {
-        command: 'rm -rf repo'
-      },
+      { command: 'rm -rf repo' },
     ]
 
     for (const command of commands) {
