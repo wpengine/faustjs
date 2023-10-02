@@ -36,14 +36,6 @@ const publicRepos = [
   'https://github.com/wpengine/faustjs.git',
 ];
 
-const contributorStats = {
-  individuals: [],
-  totals: {
-    contributors: 0,
-    contributions: 0,
-  }
-}
-
 async function getRepoLogs() {
   let repoStats = {
     lastMonth: '',
@@ -97,18 +89,24 @@ export async function getStats() {
   let contributions = await getRepoLogs();
 
   let totalContributions = {
-    lastMonth: contributorStats,
-    allTime: contributorStats,
+    allTime: {},
+    lastMonth: {}
   };
 
-  totalContributions.lastMonth = await crunchContributions(contributions.lastMonth)
   totalContributions.allTime = await crunchContributions(contributions.allTime)
+  totalContributions.lastMonth = await crunchContributions(contributions.lastMonth)
 
   return totalContributions;
 }
 
 async function crunchContributions(contributions) {
-  let stats = contributorStats
+  let stats = {
+    individuals: [],
+    totals: {
+      contributors: 0,
+      contributions: 0,
+    }
+  }
 
   contributions.split('\n').forEach((contribution) => {
     let contributor = contribution.trim().split('\t');
