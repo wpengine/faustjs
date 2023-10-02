@@ -99,7 +99,6 @@ export async function getStats() {
   let totalContributions = {
     lastMonth: contributorStats,
     allTime: contributorStats,
-    withWPE: contributorStats,
   };
 
   totalContributions.lastMonth = await crunchContributions(contributions.lastMonth)
