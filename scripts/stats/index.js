@@ -7,6 +7,7 @@ import { inspect } from 'util'
 
     stats.contributors = await contributors.getStats();
     stats.downloads = await downloads.getStats();
+    stats.wpgql = await downloads.getWPGQLDownloads();
 
     console.log(inspect(stats, false, null, true))
 })();

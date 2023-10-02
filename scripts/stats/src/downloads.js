@@ -39,6 +39,11 @@ const plugins = [
   "faustwp"
 ];
 
+const wpgqlPlugins = [
+  "wp-graphql",
+  "wpgraphql-smart-cache"
+];
+
 export async function getStats() {
   var currentDate = new Date(new Date().setDate(new Date().getDate() - 1));
   var priorDate = new Date(new Date().setDate(currentDate.getDate() - 27));
@@ -94,6 +99,60 @@ export async function getStats() {
     }
 
     currentDate = subDays(currentDate, 1);
+  }
+
+  var totalDownloads = 0;
+
+  for (var downCount in totals["download-counts"]) {
+    var packDownloads = totals["download-counts"][downCount];
+    totalDownloads = totalDownloads + packDownloads;
+  }
+
+  totals["average-downloads"] = parseInt(totalDownloads / 28);
+
+  return totals
+}
+
+export async function getWPGQLDownloads() {
+  var currentDate = new Date(new Date().setDate(new Date().getDate() - 1));
+  var priorDate = new Date(new Date().setDate(currentDate.getDate() - 27));
+
+  var totals = [];
+
+  totals["end-data"] = getDate(currentDate);
+  totals["start-date"] = getDate(priorDate);
+  totals["download-counts"] = [];
+
+  for (const plugin of wpgqlPlugins) {
+    const pluginStats = await axios
+      .get(
+        "https://api.wordpress.org/stats/plugin/1.0/downloads.php?slug=" + plugin + "&limit=29",
+        {
+          headers: {
+            Accept: "accept",
+            Authorization: "authorize",
+          },
+        }
+      )
+      .then((response) => {
+        const arr = Object.keys(response.data).map((key) => [
+          key,
+          response.data[key],
+        ]);
+
+        var downloadCount = 0;
+
+        for (let value of arr) {
+          downloadCount = downloadCount + parseInt(value[1]);
+        }
+
+        return downloadCount;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    totals["download-counts"][plugin] = pluginStats;
   }
 
   var totalDownloads = 0;
