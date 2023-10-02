@@ -11,11 +11,11 @@
   "author": "Chris Wiegman <chris.wiegman@wpengine.com>",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.46.0"
+    "eslint": "^8.50.0"
   },
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.5.1",
     "date-fns": "^2.30.0",
-    "npm-stats-api": "^1.2.3"
+    "npm-stats-api": "^2.0.2"
   }
 }
