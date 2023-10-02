@@ -23,13 +23,20 @@ function getDate(date) {
   );
 }
 
-var packages = [
-  "@faustwp/core",
-  "@faustwp/cli",
-  "@faustwp/blocks",
+const packages = [
+  "@faustjs/core",
   "@faustjs/next",
   "@faustjs/react",
-  "@faustjs/core",
+  "@faustwp/block-editor-utils",
+  "@faustwp/blocks",
+  "@faustwp/cli",
+  "@faustwp/core",
+  "@faustwp/experimental-app-router"
+];
+
+const plugins = [
+  "atlas-content-modeler",
+  "faustwp"
 ];
 
 export async function getStats() {
@@ -42,33 +49,37 @@ export async function getStats() {
   totals["start-date"] = getDate(priorDate);
   totals["download-counts"] = [];
 
-  const pluginStats = await axios
-    .get(
-      "https://api.wordpress.org/stats/plugin/1.0/downloads.php?slug=faustwp&limit=29",
-      {
-        headers: {
-          Accept: "accept",
-          Authorization: "authorize",
-        },
-      }
-    )
-    .then((response) => {
-      const arr = Object.keys(response.data).map((key) => [
-        key,
-        response.data[key],
-      ]);
+  for (const plugin of plugins) {
+    const pluginStats = await axios
+      .get(
+        "https://api.wordpress.org/stats/plugin/1.0/downloads.php?slug=" + plugin + "&limit=29",
+        {
+          headers: {
+            Accept: "accept",
+            Authorization: "authorize",
+          },
+        }
+      )
+      .then((response) => {
+        const arr = Object.keys(response.data).map((key) => [
+          key,
+          response.data[key],
+        ]);
 
-      var downloadCount = 0;
+        var downloadCount = 0;
 
-      for (let value of arr) {
-        downloadCount = downloadCount + parseInt(value[1]);
-      }
+        for (let value of arr) {
+          downloadCount = downloadCount + parseInt(value[1]);
+        }
 
-      return downloadCount;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        return downloadCount;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    totals["download-counts"][plugin] = pluginStats;
+  }
 
   while (currentDate > priorDate) {
     for (const npmPackage of packages) {
@@ -84,8 +95,6 @@ export async function getStats() {
 
     currentDate = subDays(currentDate, 1);
   }
-
-  totals["download-counts"]["faustwp"] = pluginStats;
 
   var totalDownloads = 0;
 
