@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 1.1.4
+
+### Patch Changes
+
+- 9a84eb4: Allow CLI health checks to be skipped via `--skip-health-checks` argument
+
 ## 1.1.3
 
 ### Patch Changes
