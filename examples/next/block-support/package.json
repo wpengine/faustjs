@@ -7,7 +7,8 @@
     "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet",
     "dev": "faust dev",
     "build": "faust build",
-    "start": "faust start"
+    "start": "faust start",
+    "blockset": "faust blockset"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
@@ -22,6 +23,9 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sass": "^1.54.9"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "26.12.0"
   },
   "engines": {
     "node": ">=16",

@@ -23,6 +23,8 @@ use function WPE\FaustWP\Telemetry\{
 	get_anonymous_wpgraphql_content_blocks_data,
 };
 
+use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -77,6 +79,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\\register_rest_routes' );
 function register_rest_routes() {
 	register_rest_route(
 		'faustwp/v1',
+		'/blockset',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_blockset_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_blockset_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
 		'/telemetry',
 		array(
 			'methods'             => 'POST',
@@ -112,6 +124,36 @@ function register_rest_routes() {
 }
 
 /**
+ * Callback function to handle file upload and unzip.
+ *
+ * @param \WP_REST_Request $request Full data about the request.
+ * @return \WP_Error|WP_REST_Response
+ */
+function handle_blockset_callback( \WP_REST_Request $request ) {
+	// Check if file is sent.
+	$files = $request->get_file_params();
+
+	if ( empty( $files['zipfile'] ) ) {
+		return new \WP_Error( 'no_file', __( 'No file was sent', 'faustwp' ), array( 'status' => 400 ) );
+	}
+
+	$file = $files['zipfile'];
+
+	// Check for upload errors.
+	if ( $file['error'] ) {
+		return new \WP_Error( 'upload_error', __( 'File upload error', 'faustwp' ), array( 'status' => 400 ) );
+	}
+
+	$result = handle_uploaded_blockset( $file );
+
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
+
+	return new \WP_REST_Response( __( 'Blockset sync complete.', 'faustwp' ), 200 );
+}
+
+/**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
  * Handle GET /faustwp/v1/telemetry response.
@@ -134,6 +176,19 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	);
 
 	return new \WP_REST_Response( $data );
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/blockset`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_blockset_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
 
 /**
