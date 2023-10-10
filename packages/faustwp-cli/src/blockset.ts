@@ -5,9 +5,8 @@ import glob from 'glob-promise';
 import FormData from 'form-data';
 import archiver from 'archiver';
 import { spawnSync } from 'child_process';
-import hasYarn from 'has-yarn';
 
-import { getWpUrl, getWpSecret } from './utils/index.js';
+import { getWpUrl, getWpSecret, hasYarn } from './utils/index.js';
 import { infoLog } from './stdout/index.js';
 
 const ROOT_DIR = process.cwd();
