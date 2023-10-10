@@ -11,14 +11,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\register_custom_blocks' );
+add_action( 'init', __NAMESPACE__ . '\\register_custom_blocks' );
 /**
  * Register Gutenberg blocks from block.json files located in the specified paths.
  */
 /**
  * Register Gutenberg blocks from block.json files located in the specified paths.
+ * 
+ * @return 
  */
 function register_custom_blocks() {
+	static $initialized = false;
+
+	// Prevent subsequent runs since blocks should already be registered.
+	if ( $initialized ) {
+		return;
+	}
+
 	$uploads = wp_upload_dir();
 
 	// Define the base directory path and URL.
@@ -42,6 +51,8 @@ function register_custom_blocks() {
 			register_block_type( $metadata_file );
 		}
 	}
+
+	$initialized = true;
 }
 
 add_filter( 'style_loader_src', __NAMESPACE__ . '\\correct_asset_src_for_uploads_dir', 10, 2 );
