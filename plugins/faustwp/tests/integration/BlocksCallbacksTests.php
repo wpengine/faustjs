@@ -2,37 +2,21 @@
 
 namespace WPE\FaustWP\Tests;
 
-use Brain\Monkey;
 use Brain\Monkey\Functions;
 use WPE\FaustWP\Blocks;
+use WPE\FaustWP\Tests\Unit\FaustUnitTest;
 
 /**
  * Test_Blocks class.
  */
-class BlocksCallbacksTests extends \WP_UnitTestCase {
-
-	/**
-	 * Set up the tests.
-	 */
-	protected function setUp(): void {
-		parent::setUp();
-		Monkey\setUp();
-	}
-
-	/**
-	 * Tear down the tests.
-	 */
-	protected function tearDown(): void {
-		Monkey\tearDown();
-		parent::tearDown();
-	}
+class BlocksCallbacksTests extends FaustUnitTest {
 
 	/**
 	 * Test that register_custom_blocks() only initializes once.
 	 */
 	public function test_register_custom_blocks_initializes_once() {
 		$this->assertTrue( function_exists( 'WPE\FaustWP\Blocks\register_custom_blocks' ) );
-		
+
 		Blocks\register_custom_blocks(); // First initialization
 
 		// Expect register_block_type() not to be called again during second initialization.
