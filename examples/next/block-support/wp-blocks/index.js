@@ -1,4 +1,5 @@
 import { CoreBlocks } from '@faustwp/blocks';
+import BlockC from './block-c/Component.js';
 
 export default {
   CoreParagraph: CoreBlocks.CoreParagraph,
@@ -12,4 +13,5 @@ export default {
   CoreButton: CoreBlocks.CoreButton,
   CoreButtons: CoreBlocks.CoreButtons,
   CoreHeading: CoreBlocks.CoreHeading,
+  CreateBlockBlockC: BlockC,
 };
