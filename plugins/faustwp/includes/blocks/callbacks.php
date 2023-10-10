@@ -15,11 +15,6 @@ add_action( 'init', __NAMESPACE__ . '\\register_custom_blocks' );
 /**
  * Register Gutenberg blocks from block.json files located in the specified paths.
  */
-/**
- * Register Gutenberg blocks from block.json files located in the specified paths.
- * 
- * @return 
- */
 function register_custom_blocks() {
 	static $initialized = false;
 
