@@ -41,12 +41,17 @@ function content_replacement( $content ) {
 		$replacement = '/';
 	}
 
-	$content = str_replace( "href=\"{$site_url}", "href=\"{$replacement}", $content );
+	if ( ! is_image_source_replacement_enabled() ) {
+		$upload_dir = str_replace( $site_url, '', wp_upload_dir()['baseurl'] );
+		$content    = preg_replace( "#href=\"{$site_url}(?!{$upload_dir})#", "href=\"{$replacement}", $content );
+	} else {
+		$content = str_replace( "href=\"{$site_url}", "href=\"{$replacement}", $content );
+	}
 
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-add_filter( 'the_content', __NAMESPACE__ . '\\image_source_replacement' );
+// add_filter( 'the_content', __NAMESPACE__ . '\\image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
