@@ -82,7 +82,33 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_content_replacement_filters_content_when_content_replacement_enabled() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		add_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
-		$this->assertSame( '<a href="http://moo">moo</a>', content_replacement( '<a href="http://example.org">moo</a>' ) );
+		$this->assertSame(
+			'<a href="http://moo">moo</a>',
+			content_replacement( '<a href="http://example.org">moo</a>' )
+		);
+
+		$this->assertSame(
+			'<a href="http://moo/?p=1">Hi</a>',
+			content_replacement( '<a href="http://example.org/?p=1">Hi</a>' )
+		);
+
+		$this->assertSame(
+			'<a href="http://moo/posts/hello-world">Hello World</a>',
+			content_replacement( '<a href="http://example.org/posts/hello-world">Hello World</a>' )
+		);
+
+		faustwp_update_setting( 'frontend_uri', null );
+		remove_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
+	}
+
+	public function test_content_replacement_does_not_filter_wp_upload_dir_link() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		add_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
+		$content = '<a href="http://example.org/wp-content/uploads/file.pdf">Download</a>. http://example.org/wp-content/uploads/file.pdf';
+		$this->assertSame(
+			$content,
+			content_replacement( $content )
+		);
 		faustwp_update_setting( 'frontend_uri', null );
 		remove_filter( 'faustwp_domain_replacement_enabled', '__return_true' );
 	}
@@ -98,6 +124,9 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		# Do replace exact domain match
 		$this->assertSame( '<img src="http://example.org/image.png">', image_source_replacement( '<img src="http://foo.co/image.png">' ) );
 		$this->assertSame( '<img src="http://example.org/image.png">', image_source_replacement( '<img src="/image.png">' ) );
+
+		// Ensure unrelated domains are left alone.
+		$this->assertSame( '<img src="http://fake/image.png">', image_source_replacement( '<img src="http://fake/image.png">' ) );
 		faustwp_update_setting( 'frontend_uri', null );
 		faustwp_update_setting( 'enable_image_source', '0' );
 	}
