@@ -14,6 +14,10 @@ use function WPE\FaustWP\Settings\{
 	faustwp_update_setting,
 };
 
+use function WPE\FaustWP\GraphQL\{
+	filter_introspection,
+};
+
 class GraphQLCallbacksTests extends \WP_UnitTestCase {
 
 	private $graphqlResponse;
@@ -140,5 +144,74 @@ class GraphQLCallbacksTests extends \WP_UnitTestCase {
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		$filteredRespone = url_replacement( $this->graphqlResponse );
 		$this->assertSame( $this->expectedData, $filteredRespone->data );
+	}
+
+	/**
+	 * Tests filter_introspection() does not modify values unrelated to public introspection.
+	 */
+	public function test_filter_introspection_returns_same_value_for_unrelated_option_name(): void {
+		$input = 'leave me alone';
+		self::assertSame(
+			$input,
+			filter_introspection( $input, false, 'stylesheet', [], 'default' )
+		);
+	}
+
+	/**
+	 * Tests filter_introspection() does not enable public introspection when the Faust secret key is not present.
+	 */
+	public function test_filter_introspection_returns_same_value_when_faust_secret_key_is_not_present(): void {
+		$input = 'leave me alone';
+		self::assertSame(
+			$input,
+			filter_introspection( $input, false, 'public_introspection_enabled', [], 'default' )
+		);
+	}
+
+	/**
+	 * Tests filter_introspection() does not enable public introspection when the Faust secret key is incorrect.
+	 */
+	public function test_filter_introspection_returns_same_value_when_faust_secret_key_is_present_but_incorrect(): void {
+		global $_SERVER;
+		$_SERVER['HTTP_X_FAUST_SECRET'] = 'wrong-key';
+
+		$input = 'leave me alone';
+		self::assertSame(
+			$input,
+			filter_introspection( $input, false, 'public_introspection_enabled', [], 'default' )
+		);
+	}
+
+	/**
+	 * Tests filter_introspection() enables public introspection when the Faust secret key is correct.
+	 */
+	public function test_filter_introspection_returns_on_when_faust_secret_key_is_present_and_correct(): void {
+		global $_SERVER;
+		$_SERVER['HTTP_X_FAUST_SECRET'] = 'correct-key';
+
+		tests_add_filter( 'faustwp_get_setting', [ $this, 'filter_secret_key' ], 10, 3 );
+
+		$input = 'this should not be returned. "on" should be returned.';
+
+		self::assertSame(
+			'on',
+			filter_introspection( $input, false, 'public_introspection_enabled', [], 'default' )
+		);
+
+		remove_filter( 'faustwp_get_setting', [ $this, 'filter_secret_key' ] );
+	}
+
+	/**
+	 * Filters the secret key value for testing.
+	 *
+	 * @param mixed  $value   The setting value.
+	 * @param string $name    The setting name.
+	 * @param mixed  $default Optional setting value.
+	 */
+	public function filter_secret_key( $value, $name, $default ) {
+		if ( 'secret_key' !== $name ) {
+			return $value;
+		}
+		return 'correct-key';
 	}
 }
