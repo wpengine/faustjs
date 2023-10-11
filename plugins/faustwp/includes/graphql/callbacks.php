@@ -46,24 +46,31 @@ function register_templates_field() {
 }
 
 add_filter( 'graphql_get_setting_section_field_value', __NAMESPACE__ . '\\filter_introspection', 10, 5 );
-
+/**
+ * Enables WPGraphQL public introspection option
+ * when authenticated requests come from Faust.
+ *
+ * @param mixed  $value          The value of the field.
+ * @param mixed  $default_value  The default value if there is no value set.
+ * @param string $option_name    The name of the option.
+ * @param array  $section_fields The setting values within the section.
+ * @param string $section_name   The name of the section the setting belongs to.
+ */
 function filter_introspection( $value, $default_value, $option_name, $section_fields, $section_name ) {
-	if ( $option_name !== 'public_introspection_enabled' ) {
+	if ( 'public_introspection_enabled' !== $option_name ) {
 		return $value;
 	}
 
 	// check header for faust secret key.
-	if ( !isset( $_SERVER['HTTP_X_FAUST_SECRET'])) {
+	if ( ! isset( $_SERVER['HTTP_X_FAUST_SECRET'] ) ) {
 		return $value;
 	};
 
 	$secret_key = get_secret_key();
-
-	// validate secret
 	if ( $secret_key !== $_SERVER['HTTP_X_FAUST_SECRET'] ) {
 		return $value;
 	}
-	
+
 	return 'on';
 }
 
