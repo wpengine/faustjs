@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "predev": "faust generatePossibleTypes && faust generateGlobalStylesheet",
-    "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet",
+    "predev": "faust generatePossibleTypes && faust generateGlobalStylesheet && faust blockset",
+    "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet && faust blockset",
     "dev": "faust dev",
     "build": "faust build",
     "blockset": "faust blockset",
