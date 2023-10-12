@@ -82,7 +82,7 @@ export async function generatePossibleTypes(): Promise<void> {
 
     errorLog("Unable to update this project's possibleTypes schema");
     errorLog(
-      `Make sure you have "Enable Public Introspection" checked in WPGraphQL: ${getWpUrl()}/wp-admin/admin.php?page=graphql-settings`,
+      `Make sure the FAUST_SECRET_KEY value in your environment matches the value in the Faust WordPress plugin settings, or that you have "Enable Public Introspection" checked in WPGraphQL if not using FAUST_SECRET_KEY: ${getWpUrl()}/wp-admin/admin.php?page=graphql-settings`,
     );
 
     process.exit(0);
