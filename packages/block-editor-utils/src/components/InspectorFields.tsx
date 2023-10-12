@@ -17,23 +17,26 @@ function InspectorFields<T extends Record<string, any>>({
   const loadedControls = applyFilters('faustBlockEditorUtils.controls', {}) as {
     [key: string]: Control;
   };
+  const renderFields = () => {
+    return fields
+      .map((field: Field) => {
+        const ControlField = loadedControls[field.control];
+        if (!ControlField) {
+          return null;
+        }
+        return (
+          <PanelBody
+            className="faust-inspector-form-field"
+            key={`inspector-controls-panel-${field.name}`}>
+            <ControlField config={field} props={props} />
+          </PanelBody>
+        );
+      })
+      .filter(Boolean);
+  };
   return (
     <InspectorControls key="FaustBlockInspectorControls">
-      <>
-        {fields.map((field: Field) => {
-          const ControlField = loadedControls[field.control];
-          if (!ControlField) {
-            return null;
-          }
-          return (
-            <PanelBody
-              className="faust-inspector-form-field"
-              key={`inspector-controls-panel-${field.name}`}>
-              <ControlField config={field} props={props} />
-            </PanelBody>
-          );
-        })}
-      </>
+      <>{renderFields()}</>
     </InspectorControls>
   );
 }
