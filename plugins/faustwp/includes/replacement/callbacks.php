@@ -51,7 +51,6 @@ function content_replacement( $content ) {
 	return str_replace( 'href="//', 'href="/', $content );
 }
 
-// add_filter( 'the_content', __NAMESPACE__ . '\\image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
