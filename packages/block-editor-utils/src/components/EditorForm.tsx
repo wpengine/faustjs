@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BlockConfiguration, BlockEditProps } from '@wordpress/blocks';
-import { Icon, IconType } from '@wordpress/components';
+import { Icon } from '@wordpress/components';
 import { applyFilters } from '@wordpress/hooks';
 import { Control, Field } from '../types/index.js';
 
@@ -40,11 +40,7 @@ function EditorForm<T extends Record<string, any>>({
       aria-label="Faust block editor form"
       style={styles.form}>
       <h3 className="faust-editor-form__heading" style={styles.heading}>
-        <Icon
-          size={24}
-          icon={blockJson?.icon as IconType}
-          style={styles.icon}
-        />
+        <Icon size={24} icon={blockJson?.icon} style={styles.icon} />
         {blockJson.title}
       </h3>
       {fields.map((field: Field) => {
