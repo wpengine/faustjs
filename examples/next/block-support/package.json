@@ -27,5 +27,8 @@
   "engines": {
     "node": ">=16",
     "npm": ">=8"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^26.14.0"
   }
 }
