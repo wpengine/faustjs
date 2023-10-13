@@ -107,7 +107,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
       method: 'POST',
       body: form,
       timeout: 30000, // 30 seconds timeout
-    });
+    } as unknown as RequestInit);
 
     if (!response.ok) {
       throw new Error(`Error uploading to WordPress: ${await response.text()}`);
