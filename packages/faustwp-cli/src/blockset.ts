@@ -105,8 +105,6 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
     const response = await fetch(apiUrl, {
       headers,
       method: 'POST',
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       body: form,
       timeout: 30000, // 30 seconds timeout
     });
