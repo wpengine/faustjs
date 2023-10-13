@@ -13,7 +13,7 @@ function Component({ style, className, attributes, children, ...props }) {
 }
 
 Component.config = {
-  name: 'CreateBlockBlockC',
+  name: 'CreateBlockBlockB',
   editorFields: {
     message: {
       type: 'string',

@@ -10,6 +10,12 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+		"message": {
+			"type": "string",
+			"default": "Hello World"
+		}
+	},
 	"textdomain": "block-b",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
