@@ -32,6 +32,7 @@ export function FaustProvider(props: {
         />
       )}
       {children}
+      <div id="__FAUST" style={{ display: 'none' }} />
     </ApolloProvider>
   );
 }
