@@ -72,7 +72,7 @@ export async function addHeaders(
   }
 
   headers.push({
-    source: '/(.*?)',
+    source: '/:path*',
     headers: [
       {
         key: 'x-using',
