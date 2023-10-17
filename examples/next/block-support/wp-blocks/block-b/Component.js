@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
 
-function Component({ style, className, attributes, children, ...props }) {
+function Component({ style, attributes, children, ...props }) {
   const styles = {
     ...style,
   };
-  const cssClassName = className ?? 'wp-block-create-block-block-b';
+  const cssClassName = 'create-block-block-b-message';
   return (
     <div
       style={styles}
