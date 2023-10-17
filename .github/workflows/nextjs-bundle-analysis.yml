@@ -23,7 +23,6 @@ jobs:
       matrix:
         next-dir: [
           'examples/next/faustwp-getting-started',
-          'examples/next/block-support'
         ]
 
     runs-on: ubuntu-latest
