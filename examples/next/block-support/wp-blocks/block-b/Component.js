@@ -12,6 +12,17 @@ function Component({ style, className, attributes, children, ...props }) {
   );
 }
 
+Component.fragments = {
+  key: `CreateBlockBlockBFragment`,
+  entry: gql`
+    fragment CreateBlockBlockBFragment on CreateBlockBlockB {
+      attributes {
+        message
+      }
+    }
+  `,
+};
+
 Component.config = {
   name: 'CreateBlockBlockB',
   editorFields: {
