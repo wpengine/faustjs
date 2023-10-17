@@ -4,10 +4,11 @@ function Component({ style, className, attributes, children, ...props }) {
   const styles = {
     ...style,
   };
+  const cssClassName = className ?? 'wp-block-create-block-block-b';
   return (
     <div
       style={styles}
-      className={className}
+      className={cssClassName}
       dangerouslySetInnerHTML={{ __html: attributes.message }}
     />
   );
