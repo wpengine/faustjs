@@ -1,10 +1,11 @@
+import { gql } from '@apollo/client';
+
 function Component({ style, className, attributes, children, ...props }) {
   const styles = {
     ...style,
   };
   return (
     <div
-      {...props}
       style={styles}
       className={className}
       dangerouslySetInnerHTML={{ __html: attributes.message }}
