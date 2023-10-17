@@ -18,6 +18,8 @@ module.exports = {
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   globals: {
     'ts-jest': {
+      tsconfig: 'tsconfig.json',
+      isolatedModules: true,
       useESM: true,
     },
   },
