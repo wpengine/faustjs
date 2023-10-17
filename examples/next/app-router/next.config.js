@@ -1,6 +1,8 @@
+import { withFaust } from '@faustwp/core';
+
 /** @type {import('next').NextConfig} */
-export default {
+export default withFaust({
   experimental: {
     serverActions: true,
   },
-};
+});
