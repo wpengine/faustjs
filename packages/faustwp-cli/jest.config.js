@@ -5,7 +5,7 @@ export default {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-
+  testEnvironment: 'jsdom',
   // Run code before each file in the suite is tested.
   setupFilesAfterEnv: ['./jest.setup.ts'],
 

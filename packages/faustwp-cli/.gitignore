@@ -2,3 +2,6 @@ node_modules
 dist
 coverage
 report.json
+
+# For tests
+.faust

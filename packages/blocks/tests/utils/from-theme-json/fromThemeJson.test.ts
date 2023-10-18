@@ -12,33 +12,33 @@ describe('fromThemeJson()', () => {
     const themeJson = theme;
 
     expect(fromThemeJson(themeJson)).toMatchInlineSnapshot(`
-      Object {
-        "fontFamilies": Object {
-          "dm-sans": "\\"DM Sans\\", sans-serif",
+      {
+        "fontFamilies": {
+          "dm-sans": ""DM Sans", sans-serif",
           "ibm-plex-mono": "'IBM Plex Mono', monospace",
-          "inter": "\\"Inter\\", sans-serif",
-          "source-serif-pro": "\\"Source Serif Pro\\", serif",
-          "system-font": "-apple-system,BlinkMacSystemFont,\\"Segoe UI\\",Roboto,Oxygen-Sans,Ubuntu,Cantarell,\\"Helvetica Neue\\",sans-serif",
+          "inter": ""Inter", sans-serif",
+          "source-serif-pro": ""Source Serif Pro", serif",
+          "system-font": "-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif",
         },
-        "fontSizes": Object {
+        "fontSizes": {
           "large": "1.75rem",
           "medium": "1.125rem",
           "small": "1rem",
           "x-large": "2.25rem",
           "xx-large": "10rem",
         },
-        "layout": Object {
+        "layout": {
           "contentSize": "650px",
           "wideSize": "1200px",
         },
-        "palette": Object {
+        "palette": {
           "base": "#ffffff",
           "contrast": "#000000",
           "primary": "#9DFF20",
           "secondary": "#345C00",
           "tertiary": "#F6F6F6",
         },
-        "sizes": Object {
+        "sizes": {
           "30": "clamp(1.5rem, 5vw, 2rem)",
           "40": "clamp(1.8rem, 1.8rem + ((1vw - 0.48rem) * 2.885), 3rem)",
           "50": "clamp(2.5rem, 8vw, 4.5rem)",
@@ -46,422 +46,422 @@ describe('fromThemeJson()', () => {
           "70": "clamp(5rem, 5.25rem + ((1vw - 0.48rem) * 9.096), 8rem)",
           "80": "clamp(7rem, 14vw, 11rem)",
         },
-        "styles": Object {
-          "blocks": Object {
-            "core/comment-author-name": Object {
-              "elements": Object {
-                "link": Object {
-                  ":active": Object {
-                    "color": Object {
+        "styles": {
+          "blocks": {
+            "core/comment-author-name": {
+              "elements": {
+                "link": {
+                  ":active": {
+                    "color": {
                       "text": "var(--wp--preset--color--secondary)",
                     },
-                    "typography": Object {
+                    "typography": {
                       "textDecoration": "none",
                     },
                   },
-                  ":focus": Object {
-                    "typography": Object {
+                  ":focus": {
+                    "typography": {
                       "textDecoration": "underline dashed",
                     },
                   },
-                  ":hover": Object {
-                    "typography": Object {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
             },
-            "core/comment-date": Object {
-              "elements": Object {
-                "link": Object {
-                  ":active": Object {
-                    "color": Object {
+            "core/comment-date": {
+              "elements": {
+                "link": {
+                  ":active": {
+                    "color": {
                       "text": "var(--wp--preset--color--secondary)",
                     },
-                    "typography": Object {
+                    "typography": {
                       "textDecoration": "none",
                     },
                   },
-                  ":focus": Object {
-                    "typography": Object {
+                  ":focus": {
+                    "typography": {
                       "textDecoration": "underline dashed",
                     },
                   },
-                  ":hover": Object {
-                    "typography": Object {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
               },
             },
-            "core/comment-edit-link": Object {
-              "typography": Object {
+            "core/comment-edit-link": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
               },
             },
-            "core/comment-reply-link": Object {
-              "typography": Object {
+            "core/comment-reply-link": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
               },
             },
-            "core/comments-pagination": Object {
-              "elements": Object {
-                "link": Object {
-                  "typography": Object {
+            "core/comments-pagination": {
+              "elements": {
+                "link": {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "spacing": Object {
-                "margin": Object {
+              "spacing": {
+                "margin": {
                   "top": "var(--wp--preset--spacing--40)",
                 },
               },
             },
-            "core/comments-title": Object {
-              "spacing": Object {
-                "margin": Object {
+            "core/comments-title": {
+              "spacing": {
+                "margin": {
                   "bottom": "var(--wp--preset--spacing--40)",
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--large)",
               },
             },
-            "core/navigation": Object {
-              "elements": Object {
-                "link": Object {
-                  ":active": Object {
-                    "typography": Object {
+            "core/navigation": {
+              "elements": {
+                "link": {
+                  ":active": {
+                    "typography": {
                       "textDecoration": "none",
                     },
                   },
-                  ":focus": Object {
-                    "typography": Object {
+                  ":focus": {
+                    "typography": {
                       "textDecoration": "underline dashed",
                     },
                   },
-                  ":hover": Object {
-                    "typography": Object {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
               },
             },
-            "core/post-author": Object {
-              "typography": Object {
+            "core/post-author": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
               },
             },
-            "core/post-content": Object {
-              "elements": Object {
-                "link": Object {
-                  "color": Object {
+            "core/post-content": {
+              "elements": {
+                "link": {
+                  "color": {
                     "text": "var(--wp--preset--color--secondary)",
                   },
                 },
               },
             },
-            "core/post-date": Object {
-              "elements": Object {
-                "link": Object {
-                  ":hover": Object {
-                    "typography": Object {
+            "core/post-date": {
+              "elements": {
+                "link": {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
                 "fontWeight": "400",
               },
             },
-            "core/post-excerpt": Object {
-              "typography": Object {
+            "core/post-excerpt": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--medium)",
               },
             },
-            "core/post-terms": Object {
-              "typography": Object {
+            "core/post-terms": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
               },
             },
-            "core/post-title": Object {
-              "elements": Object {
-                "link": Object {
-                  ":active": Object {
-                    "color": Object {
+            "core/post-title": {
+              "elements": {
+                "link": {
+                  ":active": {
+                    "color": {
                       "text": "var(--wp--preset--color--secondary)",
                     },
-                    "typography": Object {
+                    "typography": {
                       "textDecoration": "none",
                     },
                   },
-                  ":focus": Object {
-                    "typography": Object {
+                  ":focus": {
+                    "typography": {
                       "textDecoration": "underline dashed",
                     },
                   },
-                  ":hover": Object {
-                    "typography": Object {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "spacing": Object {
-                "margin": Object {
+              "spacing": {
+                "margin": {
                   "bottom": "1.25rem",
                   "top": "1.25rem",
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontWeight": "400",
               },
             },
-            "core/pullquote": Object {
-              "border": Object {
+            "core/pullquote": {
+              "border": {
                 "style": "solid",
                 "width": "1px 0",
               },
-              "elements": Object {
-                "cite": Object {
-                  "typography": Object {
+              "elements": {
+                "cite": {
+                  "typography": {
                     "fontSize": "var(--wp--preset--font-size--small)",
                     "fontStyle": "normal",
                     "textTransform": "none",
                   },
                 },
               },
-              "spacing": Object {
-                "margin": Object {
+              "spacing": {
+                "margin": {
                   "bottom": "var(--wp--preset--spacing--40) !important",
                   "top": "var(--wp--preset--spacing--40) !important",
                 },
               },
-              "typography": Object {
+              "typography": {
                 "lineHeight": "1.3",
               },
             },
-            "core/query": Object {
-              "elements": Object {
-                "h2": Object {
-                  "typography": Object {
+            "core/query": {
+              "elements": {
+                "h2": {
+                  "typography": {
                     "fontSize": "var(--wp--preset--font-size--x-large)",
                   },
                 },
               },
             },
-            "core/query-pagination": Object {
-              "elements": Object {
-                "link": Object {
-                  ":hover": Object {
-                    "typography": Object {
+            "core/query-pagination": {
+              "elements": {
+                "link": {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--small)",
                 "fontWeight": "400",
               },
             },
-            "core/quote": Object {
-              "border": Object {
+            "core/quote": {
+              "border": {
                 "width": "1px",
               },
-              "elements": Object {
-                "cite": Object {
-                  "typography": Object {
+              "elements": {
+                "cite": {
+                  "typography": {
                     "fontSize": "var(--wp--preset--font-size--small)",
                     "fontStyle": "normal",
                   },
                 },
               },
-              "spacing": Object {
-                "padding": Object {
+              "spacing": {
+                "padding": {
                   "left": "var(--wp--preset--spacing--30)",
                   "right": "var(--wp--preset--spacing--30)",
                 },
               },
             },
-            "core/site-title": Object {
-              "elements": Object {
-                "link": Object {
-                  ":active": Object {
-                    "color": Object {
+            "core/site-title": {
+              "elements": {
+                "link": {
+                  ":active": {
+                    "color": {
                       "text": "var(--wp--preset--color--secondary)",
                     },
-                    "typography": Object {
+                    "typography": {
                       "textDecoration": "none",
                     },
                   },
-                  ":focus": Object {
-                    "typography": Object {
+                  ":focus": {
+                    "typography": {
                       "textDecoration": "underline dashed",
                     },
                   },
-                  ":hover": Object {
-                    "typography": Object {
+                  ":hover": {
+                    "typography": {
                       "textDecoration": "underline",
                     },
                   },
-                  "typography": Object {
+                  "typography": {
                     "textDecoration": "none",
                   },
                 },
               },
-              "typography": Object {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--medium)",
                 "fontWeight": "normal",
                 "lineHeight": "1.4",
               },
             },
           },
-          "color": Object {
+          "color": {
             "background": "var(--wp--preset--color--base)",
             "text": "var(--wp--preset--color--contrast)",
           },
-          "elements": Object {
-            "button": Object {
-              ":active": Object {
-                "color": Object {
+          "elements": {
+            "button": {
+              ":active": {
+                "color": {
                   "background": "var(--wp--preset--color--secondary)",
                   "text": "var(--wp--preset--color--base)",
                 },
               },
-              ":focus": Object {
-                "color": Object {
+              ":focus": {
+                "color": {
                   "background": "var(--wp--preset--color--contrast)",
                   "text": "var(--wp--preset--color--base)",
                 },
               },
-              ":hover": Object {
-                "color": Object {
+              ":hover": {
+                "color": {
                   "background": "var(--wp--preset--color--contrast)",
                   "text": "var(--wp--preset--color--base)",
                 },
               },
-              ":visited": Object {
-                "color": Object {
+              ":visited": {
+                "color": {
                   "text": "var(--wp--preset--color--contrast)",
                 },
               },
-              "border": Object {
+              "border": {
                 "radius": "0",
               },
-              "color": Object {
+              "color": {
                 "background": "var(--wp--preset--color--primary)",
                 "text": "var(--wp--preset--color--contrast)",
               },
             },
-            "h1": Object {
-              "typography": Object {
+            "h1": {
+              "typography": {
                 "fontSize": "3.625rem",
                 "lineHeight": "1.2",
               },
             },
-            "h2": Object {
-              "typography": Object {
+            "h2": {
+              "typography": {
                 "fontSize": "clamp(2.625rem, calc(2.625rem + ((1vw - 0.48rem) * 8.4135)), 3.25rem)",
                 "lineHeight": "1.2",
               },
             },
-            "h3": Object {
-              "typography": Object {
+            "h3": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--x-large)",
               },
             },
-            "h4": Object {
-              "typography": Object {
+            "h4": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--large)",
               },
             },
-            "h5": Object {
-              "typography": Object {
+            "h5": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--medium)",
                 "fontWeight": "700",
                 "textTransform": "uppercase",
               },
             },
-            "h6": Object {
-              "typography": Object {
+            "h6": {
+              "typography": {
                 "fontSize": "var(--wp--preset--font-size--medium)",
                 "textTransform": "uppercase",
               },
             },
-            "heading": Object {
-              "typography": Object {
+            "heading": {
+              "typography": {
                 "fontWeight": "400",
                 "lineHeight": "1.4",
               },
             },
-            "link": Object {
-              ":active": Object {
-                "color": Object {
+            "link": {
+              ":active": {
+                "color": {
                   "text": "var(--wp--preset--color--secondary)",
                 },
-                "typography": Object {
+                "typography": {
                   "textDecoration": "none",
                 },
               },
-              ":focus": Object {
-                "typography": Object {
+              ":focus": {
+                "typography": {
                   "textDecoration": "underline dashed",
                 },
               },
-              ":hover": Object {
-                "typography": Object {
+              ":hover": {
+                "typography": {
                   "textDecoration": "none",
                 },
               },
-              "color": Object {
+              "color": {
                 "text": "var(--wp--preset--color--contrast)",
               },
-              "typography": Object {
+              "typography": {
                 "textDecoration": "underline",
               },
             },
           },
-          "spacing": Object {
+          "spacing": {
             "blockGap": "1.5rem",
-            "padding": Object {
+            "padding": {
               "bottom": "var(--wp--preset--spacing--40)",
               "left": "var(--wp--preset--spacing--30)",
               "right": "var(--wp--preset--spacing--30)",
               "top": "var(--wp--preset--spacing--40)",
             },
           },
-          "typography": Object {
+          "typography": {
             "fontFamily": "var(--wp--preset--font-family--system-font)",
             "fontSize": "var(--wp--preset--font-size--medium)",
             "lineHeight": "1.6",
