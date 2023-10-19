@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
+import { BlocksTheme } from '../types/theme.js';
 
 export type CoreHeadingFragmentProps = ContentBlock & {
+  theme: BlocksTheme;
   attributes: {
     align?: string;
     anchor?: string;
@@ -23,9 +24,8 @@ export type CoreHeadingFragmentProps = ContentBlock & {
 };
 
 export function CoreHeading(props: CoreHeadingFragmentProps) {
-  const theme = useBlocksTheme();
+  const { attributes, theme } = props;
   const style = getStyles(theme, { ...props });
-  const { attributes } = props;
 
   const level = `h${attributes?.level ?? 1}`;
   const headingProps = {

@@ -2,11 +2,12 @@ import React from 'react';
 import { gql } from '@apollo/client';
 
 import { getStyles } from '../utils/get-styles/getStyles.js';
-import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../types/theme.js';
 
 export type CoreParagraphFragmentProps = ContentBlock & {
+  theme: BlocksTheme;
   attributes: {
     cssClassName?: string;
     backgroundColor?: string;
@@ -23,9 +24,9 @@ export type CoreParagraphFragmentProps = ContentBlock & {
 };
 
 export function CoreParagraph(props: CoreParagraphFragmentProps) {
-  const theme = useBlocksTheme();
+  const { attributes, theme } = props;
   const style = getStyles(theme, { ...props });
-  const { attributes } = props;
+
   return (
     <p
       style={style}

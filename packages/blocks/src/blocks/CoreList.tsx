@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
+import { BlocksTheme } from '../types/theme.js';
 
 export type CoreListFragmentProps = ContentBlock & {
+  theme: BlocksTheme;
   attributes: {
     anchor?: string;
     backgroundColor?: string;
@@ -25,9 +26,8 @@ export type CoreListFragmentProps = ContentBlock & {
 };
 
 export function CoreList(props: CoreListFragmentProps) {
-  const theme = useBlocksTheme();
+  const { attributes, theme } = props;
   const style = getStyles(theme, { ...props });
-  const { attributes } = props;
 
   if (!attributes?.values) {
     return null;

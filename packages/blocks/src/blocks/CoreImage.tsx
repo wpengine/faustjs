@@ -1,11 +1,12 @@
 import { gql } from '@apollo/client';
 import Image from 'next/image.js';
 import React, { PropsWithChildren } from 'react';
-import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
+import { BlocksTheme } from '../types/theme.js';
 
 export type CoreImageFragmentProps = ContentBlock & {
+  theme: BlocksTheme;
   attributes: {
     align?: string;
     alt?: string;
@@ -62,9 +63,8 @@ function LinkWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
 }
 
 function ImgWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
-  const theme = useBlocksTheme();
+  const { attributes, theme } = props;
   const style = getStyles(theme, { ...props });
-  const { attributes } = props;
 
   if (!attributes.src) {
     return null;

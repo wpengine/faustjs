@@ -2,14 +2,17 @@ import React from 'react';
 import { gql } from '@apollo/client';
 
 import { getStyles } from '../utils/get-styles/getStyles.js';
-import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 
 import {
   ContentBlock,
   WordPressBlocksViewer,
 } from '../components/WordPressBlocksViewer.js';
+import { BlocksTheme } from '../types/theme.js';
+import { WordPressBlock } from '../components/WordPressBlocksProvider.js';
 
 export type CoreColumnsFragmentProps = ContentBlock & {
+  theme: BlocksTheme;
+  blocks: { [key: string]: WordPressBlock };
   attributes: {
     cssClassName?: string;
     align?: string;
@@ -28,9 +31,8 @@ export type CoreColumnsFragmentProps = ContentBlock & {
 };
 
 export function CoreColumns(props: CoreColumnsFragmentProps) {
-  const theme = useBlocksTheme();
+  const { attributes, theme, innerBlocks } = props;
   const style = getStyles(theme, { ...props });
-  const { attributes, innerBlocks } = props;
   return (
     <div style={style} className={attributes?.cssClassName}>
       <WordPressBlocksViewer blocks={innerBlocks ?? []} />
