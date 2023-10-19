@@ -13,7 +13,12 @@
   "access": "public",
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
-  "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example", "@faustwp/app-router-example"],
+  "ignore": [
+    "@faustjs/next-headless-getting-started",
+    "@faustwp/getting-started-example",
+    "@faustwp/app-router-example",
+    "@faustwp/block-support-example"
+  ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }
