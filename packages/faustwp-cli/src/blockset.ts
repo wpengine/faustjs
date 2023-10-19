@@ -141,7 +141,7 @@ export async function compileBlocks(): Promise<void> {
   infoLog(`Faust: Compiling Blocks into ${FAUST_BUILD_DIR}`);
   await fs.emptyDir(FAUST_BUILD_DIR);
   const command = hasYarn() ? 'yarn' : 'npm';
-  let args = ['exec', 'wp-scripts', 'start'];
+  let args = ['exec', 'wp-scripts', 'start', '--package=@wordpress/scripts'];
   if (!hasYarn()) {
     args.push('--verbose');
     args.push('--');
