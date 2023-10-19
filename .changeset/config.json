@@ -14,5 +14,8 @@
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
   "ignore": ["@faustjs/next-headless-getting-started", "@faustwp/getting-started-example", "@faustwp/app-router-example"],
-  "onlyUpdatePeerDependentsWhenOutOfRange": true
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
+  
 }
