@@ -12,8 +12,8 @@
   "dependencies": {
     "@apollo/client": "^3.8.0",
     "@apollo/experimental-nextjs-app-support": "^0.4.1",
-    "@faustwp/cli": "1.1.4",
-    "@faustwp/core": "1.1.2",
+    "@faustwp/cli": "1.2.0",
+    "@faustwp/core": "1.2.0",
     "@faustwp/experimental-app-router": "^0.1.0",
     "graphql": "^16.7.1",
     "next": "^13.4.20-canary.18",

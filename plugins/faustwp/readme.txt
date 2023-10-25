@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.3
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,16 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.1.0 =
+
+### Minor Changes
+
+- c29f83d: Add blockset command in @faust/cli and faustwp plugin.
+
+  Add your blocks inside `wp-blocks` folder. Then run `faust blockset` to compile and upload the blocks into WordPress. Blocks will be available in the editor.
+
+- d3d30aa: Added support for authenticated WPGraphQL introspection queries using FAUST_SECRET_KEY. It is no longer required to enable "Public Introspection" in WPGraphQL.
+
 = 1.0.4 =
 
 ### Patch Changes
@@ -65,11 +75,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
-
-= 1.0.2 =
-
-### Patch Changes
-
-- 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.0.5
+
+### Patch Changes
+
+- 604e9e3: Update block-editor-utils dependencies.
+
 ## 0.0.4
 
 ### Patch Changes
