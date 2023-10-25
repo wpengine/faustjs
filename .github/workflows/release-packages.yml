@@ -51,7 +51,7 @@ jobs:
         # If there is a published package named "@faustwp/wordpress-plugin"
         # Then deploy the WordPress plugin
         # https://github.com/changesets/action#outputs
-        if: contains(steps.changesets.outputs.publishedPackages.*.name, '@faustwp/wordpress-plugin')
+        if: steps.changesets.outputs.published && contains(steps.changesets.outputs.publishedPackages, '"@faustwp/wordpress-plugin"')
         # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
         # to support our monorepo structure.
         uses: ./.github/actions/release-plugin
