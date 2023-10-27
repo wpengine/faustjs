@@ -1,12 +1,14 @@
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+import { print } from '@apollo/client/utilities';
 import type { DocumentNode } from 'graphql';
-import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
-import { getPossibleTemplates, getTemplate } from './getTemplate.js';
-import { FaustTemplateProps } from './components/WordPressTemplate.js';
+import { sha256 } from 'js-sha256';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { addApolloState, getApolloClient } from './client.js';
+import { FaustTemplateProps } from './components/WordPressTemplate.js';
 import { getConfig } from './config/index.js';
+import { getPossibleTemplates, getTemplate } from './getTemplate.js';
+import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
+import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
-import { infoLog, debugLog } from './utils/log.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
@@ -18,6 +20,7 @@ function isSSR(
 
 export type WordPressTemplate = React.FC & {
   query?: DocumentNode;
+  queries?: DocumentNode[];
   variables?: (
     seedNode: SeedNode,
     context?: {
@@ -141,6 +144,25 @@ export async function getWordPressProps(
     });
   }
 
+  let queries: { [key: string]: string } | null = null;
+  if (template.queries) {
+    const queryCalls = template.queries.map((query) => {
+      return client.query({
+        query,
+        variables: templateVariables,
+      });
+    });
+    const queriesRes = await Promise.all(queryCalls);
+
+    queries = {};
+
+    queriesRes.forEach((queryRes, index) => {
+      if (queries && template.queries) {
+        queries[sha256(print(template.queries[index]))] = queryRes.data;
+      }
+    });
+  }
+
   const appProps = addApolloState(client, {
     props: {
       /**
@@ -150,6 +172,7 @@ export async function getWordPressProps(
       __SEED_NODE__: seedNode ?? null,
       __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
       __TEMPLATE_VARIABLES__: templateVariables ?? null,
+      queries,
       ...props,
     },
   });
