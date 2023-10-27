@@ -131,6 +131,9 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_image_source_replacement_filters_content_when_image_replacement_not_enabled() {
 		faustwp_update_setting( 'enable_image_source', '0' );
 		$this->assertSame( '<img src="/image.png">', image_source_replacement( '<img src="/image.png">' ) );
+
+		// Ensure unrelated domains are left alone.
+		$this->assertSame( '<img src="http://fake/image.png">', image_source_replacement( '<img src="http://fake/image.png">' ) );
 	}
 
 	/**
