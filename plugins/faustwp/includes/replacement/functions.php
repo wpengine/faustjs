@@ -19,8 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Determine if domain replacement can be done.
  *
- * Enabled if query string parameter 'replace-domain' is present.
- *
  * @return bool True if can proceed with replacement, false if else.
  */
 function domain_replacement_enabled() {
