@@ -255,6 +255,44 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 'http://moo/?cat=' . $term_id, get_term_link( $term_id ) );
 	}
 
+	/**
+	 * Tests content_replacement() handles mixed content blobs properly.
+	 */
+	public function test_content_replacement_properly_handles_a_mixed_content_blob() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_image_source', '1' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+
+		$input = <<<INPUT
+		<p>This is a <a href="http://example.org/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	INPUT;
+
+		$output = <<<OUTPUT
+		<p>This is a <a href="http://moo/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	OUTPUT;
+
+		self::assertSame(
+				$output,
+				content_replacement( $input )
+		);
+
+		// Check that media URLs are rewritten when enable_image_source setting is configured to NOT use the WP domain.
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$input = <<<INPUT
+		<p>This is a <a href="http://example.org/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	INPUT;
+
+		$output = <<<OUTPUT
+		<p>This is a <a href="http://moo/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://moo/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://moo/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	OUTPUT;
+
+		self::assertSame(
+				$output,
+				content_replacement( $input )
+		);
+	}
+
 	private function getCustomPostType() {
 		register_post_type('document', [
 			'public' => true,
