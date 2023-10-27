@@ -9,7 +9,8 @@ namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
-	is_rewrites_enabled
+	is_rewrites_enabled,
+	use_wp_domain_for_post_and_category_urls,
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,7 +30,7 @@ function domain_replacement_enabled() {
 	 *
 	 * @param bool $enabled True if domain replacement is enabled, false if else.
 	 */
-	return apply_filters( 'faustwp_domain_replacement_enabled', is_rewrites_enabled() );
+	return apply_filters( 'faustwp_domain_replacement_enabled', ! use_wp_domain_for_post_and_category_urls() );
 }
 
 /**
