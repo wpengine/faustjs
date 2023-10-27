@@ -201,11 +201,25 @@ add_filter( 'page_link', __NAMESPACE__ . '\\post_link', 1000 );
  */
 function post_link( $link ) {
 	global $pagenow;
+	$target_pages = array( 'admin-ajax.php', 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' );
+
+	if ( empty( $_POST ) && 'post-new.php' === $pagenow ) {
+		return $link;
+	}
+
+	// Ajax requests to generate permalink.
+	if ( in_array( $pagenow, $target_pages, true )
+		&& ! empty( $_POST['samplepermalinknonce'] )
+		&& check_ajax_referer( 'samplepermalink', 'samplepermalinknonce' )
+	) {
+			return $link;
+	}
+
 	if (
 		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
 		// Block editor makes REST requests on these pages to query content.
-		|| ( in_array( $pagenow, array( 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' ), true ) && current_user_can( 'edit_posts' ) && defined( 'REST_REQUEST' ) && REST_REQUEST )
+		|| ( in_array( $pagenow, $target_pages, true ) && current_user_can( 'edit_posts' ) && defined( 'REST_REQUEST' ) && REST_REQUEST )
 	) {
 		return $link;
 	}
