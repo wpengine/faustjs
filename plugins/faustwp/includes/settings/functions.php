@@ -30,6 +30,15 @@ function is_rewrites_enabled() {
 }
 
 /**
+ * Determines if posts and category URLs should link to the WP site.
+ *
+ * @return bool
+ */
+function use_wp_domain_for_post_and_category_urls() {
+	return ! is_rewrites_enabled();
+}
+
+/**
  * Determine if themes are disabled.
  *
  * @return bool True if themes are disabled, false if else.
