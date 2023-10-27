@@ -10,7 +10,9 @@ namespace WPE\FaustWP\Replacement;
 use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
 	is_image_source_replacement_enabled,
-	is_rewrites_enabled
+	is_rewrites_enabled,
+	use_wp_domain_for_media,
+	use_wp_domain_for_post_and_category_urls,
 };
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
@@ -27,26 +29,42 @@ add_filter( 'the_content', __NAMESPACE__ . '\\content_replacement' );
  * @param string $content The post content.
  *
  * @return string The post content.
- * @todo Needs work...
  */
 function content_replacement( $content ) {
-	if ( ! domain_replacement_enabled() ) {
+	$use_wp_domain_for_permalinks = ! domain_replacement_enabled();
+	$use_wp_domain_for_media      = use_wp_domain_for_media();
+
+	if ( $use_wp_domain_for_permalinks && $use_wp_domain_for_media ) {
 		return $content;
 	}
 
 	$replacement = faustwp_get_setting( 'frontend_uri' );
-	$site_url    = site_url();
-
 	if ( ! $replacement ) {
 		$replacement = '/';
 	}
 
-	$content = str_replace( "href=\"{$site_url}", "href=\"{$replacement}", $content );
+	$site_url  = site_url();
+	$media_dir = str_replace( $site_url, '', wp_upload_dir()['baseurl'] );
+	$media_url = $site_url . $media_dir;
 
-	return str_replace( 'href="//', 'href="/', $content );
+	if ( $use_wp_domain_for_permalinks && ! $use_wp_domain_for_media ) {
+		$content = str_replace( $media_url, $replacement . $media_dir, $content );
+		return $content;
+	}
+
+	if ( ! $use_wp_domain_for_permalinks && ! $use_wp_domain_for_media ) {
+		$content = str_replace( $site_url, $replacement, $content );
+		return $content;
+	}
+
+	if ( ! $use_wp_domain_for_permalinks && $use_wp_domain_for_media ) {
+		$content = preg_replace( "#{$site_url}(?!{$media_dir})#", "{$replacement}", $content );
+		return $content;
+	}
+
+	return $content;
 }
 
-add_filter( 'the_content', __NAMESPACE__ . '\\image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -70,7 +88,6 @@ function image_source_replacement( $content ) {
 	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
 }
 
-add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -79,24 +96,23 @@ add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_
  * @return string One or more arrays of source data.
  */
 function image_source_srcset_replacement( $sources ) {
-	if ( ! is_image_source_replacement_enabled() ) {
+	if ( is_image_source_replacement_enabled() ) {
+		$frontend_uri = faustwp_get_setting( 'frontend_uri' );
+		$site_url     = site_url();
+
+		if ( is_array( $sources ) ) {
+			// For urls with no domain or the frontend domain, replace with the wp site_url.
+			$patterns = array(
+				"#^{$frontend_uri}/#",
+				'#^/#',
+			);
+			foreach ( $sources as $width => $source ) {
+				$sources[ $width ]['url'] = preg_replace( $patterns, "$site_url/", $sources[ $width ]['url'] );
+			}
+		}
+
 		return $sources;
 	}
-
-	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-	$site_url     = site_url();
-
-	if ( is_array( $sources ) ) {
-		// For urls with no domain or the frontend domain, replace with the wp site_url.
-		$patterns = array(
-			"#^{$frontend_uri}/#",
-			'#^/#',
-		);
-		foreach ( $sources as $width => $source ) {
-			$sources[ $width ]['url'] = preg_replace( $patterns, "$site_url/", $sources[ $width ]['url'] );
-		}
-	}
-
 	return $sources;
 }
 
