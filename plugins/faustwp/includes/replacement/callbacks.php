@@ -204,8 +204,18 @@ function post_link( $link ) {
 	if (
 		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+		// Block editor makes REST requests on these pages to query content.
 		|| ( in_array( $pagenow, array( 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' ), true ) && current_user_can( 'edit_posts' ) && defined( 'REST_REQUEST' ) && REST_REQUEST )
 	) {
+		return $link;
+	}
+
+	// Check for wp-link-ajax requests. Used by Classic Editor when linking content.
+	if ( wp_doing_ajax()
+		&& ! empty( $_POST['_ajax_linking_nonce'] )
+		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
+		&& ! empty( $_POST['action'] )
+		&& 'wp-link-ajax' === $_POST['action'] ) {
 		return $link;
 	}
 
