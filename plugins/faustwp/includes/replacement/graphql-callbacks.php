@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_filter( 'graphql_request_results', __NAMESPACE__ . '\\url_replacement' );
 /**
  * Callback for WP GraphQL 'graphql_request_results' filter.
  *
