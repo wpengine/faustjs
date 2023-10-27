@@ -48,10 +48,6 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 1000, has_action( 'term_link', 'WPE\FaustWP\Replacement\term_link' ) );
 	}
 
-	public function test_graphql_request_results_filter() {
-		$this->assertSame( 10, has_action( 'graphql_request_results', 'WPE\FaustWP\Replacement\url_replacement' ) );
-	}
-
 	public function test_enqueue_preview_scripts_action() {
 		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'WPE\FaustWP\Replacement\enqueue_preview_scripts' ) );
 	}
