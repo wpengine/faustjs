@@ -200,9 +200,11 @@ add_filter( 'page_link', __NAMESPACE__ . '\\post_link', 1000 );
  * @return string URL used for the post.
  */
 function post_link( $link ) {
+	global $pagenow;
 	if (
 		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+		|| ( in_array( $pagenow, array( 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' ), true ) && current_user_can( 'edit_posts' ) && defined( 'REST_REQUEST' ) && REST_REQUEST )
 	) {
 		return $link;
 	}
