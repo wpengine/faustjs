@@ -11,7 +11,8 @@ use function WPE\FaustWP\Replacement\{
 	content_replacement,
 	post_preview_link,
 	image_source_replacement,
-	image_source_srcset_replacement
+	image_source_srcset_replacement,
+	post_link
 };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 
@@ -156,9 +157,49 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_link_returns_filtered_link_when_content_replacement_is_enabled() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_rewrites', '1' );
 
 		$this->assertSame( 'http://moo/?p=' . $this->post_id, get_permalink( $this->post_id ) );
+	}
+
+	public function test_post_link_returns_unfiltered_link_when_on_post_new_page(): void {
+		global $pagenow;
+		$pagenow = 'post-new.php';
+		self::assertSame( 'http://example.org/hello-world', post_link( 'http://example.org/hello-world' ) );
+	}
+
+	public function test_post_link_returns_unfiltered_link_on_ajax_requests_to_generate_permalinks_using_samplepermalinknonce(): void {
+		global $pagenow, $_REQUEST, $_POST;
+		$pagenow = 'admin-ajax.php';
+		wp_set_current_user( 1 );
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		$_REQUEST['samplepermalinknonce'] = wp_create_nonce( 'samplepermalink' );
+		$_POST['samplepermalinknonce'] = $_REQUEST['samplepermalinknonce'];
+
+		self::assertSame( 'http://example.org/hello-world', post_link( 'http://example.org/hello-world' ) );
+
+		unset( $_REQUEST['samplepermalinknonce'], $_POST['samplepermalinknonce'] );
+		unset( $pagenow );
+		wp_set_current_user( null );
+	}
+
+	public function test_post_link_returns_unfiltered_link_on_ajax_requests_to_generate_permalinks_using_ajax_linking_nonce(): void {
+		global $pagenow, $_POST;
+		$pagenow = 'admin-ajax.php';
+		wp_set_current_user( 1 );
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		add_filter( 'wp_doing_ajax', '__return_true' );
+		$_POST['_ajax_linking_nonce'] = wp_create_nonce( 'internal-linking' );
+		$_POST['action'] = 'wp-link-ajax';
+
+		self::assertSame( 'http://example.org/hello-world', post_link( 'http://example.org/hello-world' ) );
+
+		unset( $_POST['_ajax_linking_nonce'], $_POST['action'] );
+		unset( $pagenow );
+		remove_filter( 'wp_doing_ajax', '__return_true' );
+		wp_set_current_user( null );
 	}
 
 	/**
@@ -200,7 +241,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_custom_post_type_post_preview_link_returns_filtered_link_when_content_replacement_is_enabled()
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_rewrites', '1' );
 		$post_id = $this->getCustomPostType();
 		$this->assertSame( 'http://moo/?document=' . $post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $post_id ) ) ) . '&p=' . $post_id . '&typeName=Document', get_preview_post_link( $post_id ) );
 		faustwp_update_setting( 'frontend_uri', null );
@@ -213,7 +254,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_custom_post_type_post_link_returns_unfiltered_link_when_content_replacement_is_enabled()
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_rewrites', '1' );
 		$post_id = $this->getCustomPostType();
 		$this->assertSame( 'http://example.org/?document=' . $post_id, get_permalink($post_id) );
 		faustwp_update_setting( 'frontend_uri', null );
