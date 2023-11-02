@@ -7,6 +7,15 @@
     "./package.json": "./package.json"
   },
   "types": "dist/index.d.ts",
+  "keywords": [
+    "next",
+    "nextjs",
+    "faust",
+    "faustjs",
+    "esm",
+    "headless",
+    "wordpress"
+  ],
   "scripts": {
     "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
     "build": "concurrently \"npm:build-*\" --prefix-colors \"auto\"",
