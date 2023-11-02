@@ -38,7 +38,7 @@ $ npm install @wordpress/scripts @faustwp/block-editor-utils --dave-dev
 
 2. Put your React Component inside `wp-blocks` folder. Here is an example using `wp-blocks/my-first-block` folder:
 
-```
+```jsx
 // MyFirstBlock.jsx
 function MyFirstBlock({ style, className, attributes, children, ...props }) {
     const styles = {
