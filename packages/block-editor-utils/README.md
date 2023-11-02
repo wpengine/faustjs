@@ -25,7 +25,7 @@
 
 WordPress powers a significant portion of the web, and React is a popular library for building user interfaces. Converting React components into Gutenberg blocks will enable developers to utilize the power of React in WordPress development. This approach will also make it easier to keep the code DRY (Don't Repeat Yourself) and maintain a consistent UI across different parts of a WordPress site.
 
-This package exposes a helper function that you can use to register a React Component in place of the [registerBlockType](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/#registerblocktype). It will facilitate some features for you without providing a custom `edit` or `save` functions. We explain more  in detail next.
+This package exposes a helper function that you can use to register a React Component in place of the [registerBlockType](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/#registerblocktype). It will facilitate some features for you without providing a custom `edit` or `save` functions. More details in the next section.
 
 ## How to get started?
 
