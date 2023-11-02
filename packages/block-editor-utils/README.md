@@ -1,5 +1,24 @@
 # @faustwp/block-editor-utils
 
+<p align="center">
+  <a aria-label="NPM version" href="https://www.npmjs.com/package/@faustwp/block-editor-utils">
+    <img alt="" src="https://img.shields.io/npm/v/@faustwp/block-editor-utils?color=7e5cef&style=for-the-badge">
+  </a>
+
+  <a aria-label="License" href="https://github.com/wpengine/faustjs/blob/canary/LICENSE">
+    <img alt="" src="https://img.shields.io/npm/l/@faustwp/block-editor-utils?color=7e5cef&style=for-the-badge">
+  </a>
+</p>
+
+<p align="center">
+  <a aria-label="Faust.js block-editor-utils Downloads Per Month" href="https://www.npmjs.com/package/@faustwp/block-editor-utils">
+    <img alt="" src="https://img.shields.io/npm/dm/@faustwp/block-editor-utils?color=7e5cef&style=for-the-badge&label=@faustwp/block-editor-utils">
+  </a>
+  <a aria-label="Faust.js block-editor-utils Downloads Per Week" href="https://www.npmjs.com/package/@faustwp/block-editor-utils">
+    <img alt="" src="https://img.shields.io/npm/dw/@faustwp/block-editor-utils?color=7e5cef&style=for-the-badge&label=@faustwp/block-editor-utils">
+  </a>
+</p>
+
 `@faustwp/block-editor-utils` provides helper functions to convert React Components into Gutenberg Blocks.
 
 ## What is the big picture?
