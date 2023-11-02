@@ -33,7 +33,7 @@ Here are the quick steps needed to use this package:
 
 1. From your root folder, install the required dependencies:
 ```bash
-$ npm install @wordpress/scripts @faustwp/block-editor-utils --dave-dev
+$ npm install @wordpress/scripts @faustwp/block-editor-utils --save-dev
 ```
 
 2. Put your React Component inside `wp-blocks` folder. Here is an example using `wp-blocks/my-first-block` folder:
