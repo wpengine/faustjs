@@ -58,17 +58,6 @@ const GET_POST_QUERY = gql`
 export default function Component(props) {
   const context = useContext(FaustContext);
 
-  /**
-   * @TODO I'm not sure why context is shortly undefined before we
-   * get to our Faust component. The default value is set as undefined
-   * but the value is updated in the FaustProvider way before this component
-   * is reached. Will need to do some more digging. Otherwise, context is not
-   * found in `useFaustQuery` and the hook fails.
-   */
-  if (!context) {
-    return null;
-  }
-
   const { post } = useFaustQuery(GET_POST_QUERY);
   const { generalSettings, headerMenuItems, footerMenuItems } =
     useFaustQuery(GET_LAYOUT_QUERY);
