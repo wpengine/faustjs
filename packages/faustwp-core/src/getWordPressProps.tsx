@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import { print } from '@apollo/client/utilities';
 import type { DocumentNode } from 'graphql';
 import { sha256 } from 'js-sha256';
@@ -18,17 +19,26 @@ function isSSR(
   return (ctx as GetServerSidePropsContext).req !== undefined;
 }
 
+type QueryVariablesArgs = [
+  seedNode: SeedNode,
+  context?: {
+    asPreview?: boolean;
+    locale?: string;
+  },
+  extra?: Record<string, unknown>,
+];
+
 export type WordPressTemplate = React.FC & {
   query?: DocumentNode;
-  queries?: DocumentNode[];
-  variables?: (
-    seedNode: SeedNode,
-    context?: {
-      asPreview?: boolean;
-      locale?: string;
-    },
-    extra?: Record<string, unknown>,
-  ) => { [key: string]: any };
+  queries?: {
+    query: DocumentNode;
+    variables?: (...args: QueryVariablesArgs) => {
+      [key: string]: any;
+    };
+  }[];
+  variables?: (...args: QueryVariablesArgs) => {
+    [key: string]: any;
+  };
 };
 
 export interface FaustTemplate<Data>
@@ -125,6 +135,12 @@ export async function getWordPressProps(
     };
   }
 
+  if (template.query && template.queries) {
+    throw new Error(
+      '`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+    );
+  }
+
   let templateQueryRes;
   const templateVariables = template?.variables
     ? template?.variables(
@@ -146,10 +162,20 @@ export async function getWordPressProps(
 
   let queries: { [key: string]: string } | null = null;
   if (template.queries) {
-    const queryCalls = template.queries.map((query) => {
+    const queryCalls = template.queries.map(({ query, variables }) => {
+      const queryVariables = variables
+        ? variables(
+            seedNode,
+            {
+              asPreview: false,
+              locale: ctx.locale,
+            },
+            extra,
+          )
+        : undefined;
       return client.query({
         query,
-        variables: templateVariables,
+        variables: queryVariables,
       });
     });
     const queriesRes = await Promise.all(queryCalls);
@@ -158,7 +184,7 @@ export async function getWordPressProps(
 
     queriesRes.forEach((queryRes, index) => {
       if (queries && template.queries) {
-        queries[sha256(print(template.queries[index]))] = queryRes.data;
+        queries[sha256(print(template.queries[index].query))] = queryRes.data;
       }
     });
   }
@@ -172,7 +198,7 @@ export async function getWordPressProps(
       __SEED_NODE__: seedNode ?? null,
       __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
       __TEMPLATE_VARIABLES__: templateVariables ?? null,
-      queries,
+      __FAUST_QUERIES__: queries ?? null,
       ...props,
     },
   });

@@ -14,5 +14,5 @@ export function useFaustQuery(query: DocumentNode) {
 
   const sha = sha256(print(query));
 
-  return context?.queries?.[sha];
+  return context?.__FAUST_QUERIES__?.[sha];
 }

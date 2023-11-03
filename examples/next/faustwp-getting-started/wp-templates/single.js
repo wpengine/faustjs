@@ -113,13 +113,19 @@ export default function Component(props) {
   );
 }
 
-Component.queries = [GET_LAYOUT_QUERY, GET_POST_QUERY];
-
-Component.variables = ({ databaseId }, ctx) => {
-  return {
-    databaseId,
-    headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION,
-    asPreview: ctx?.asPreview,
-  };
-};
+Component.queries = [
+  {
+    query: GET_LAYOUT_QUERY,
+    variables: (seedNode, ctx) => ({
+      headerLocation: MENUS.PRIMARY_LOCATION,
+      footerLocation: MENUS.FOOTER_LOCATION,
+    }),
+  },
+  {
+    query: GET_POST_QUERY,
+    variables: ({ databaseId }, ctx) => ({
+      databaseId,
+      asPreview: ctx?.asPreview,
+    }),
+  },
+];
