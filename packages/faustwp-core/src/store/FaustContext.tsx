@@ -4,7 +4,7 @@ import { FaustPageProps } from '../components/FaustProvider.js';
 export const FaustContext = createContext<
   | ({
       __FAUST_QUERIES__?: {
-        [key: string]: string;
+        [key: string]: any;
       };
     } & FaustPageProps)
   | undefined

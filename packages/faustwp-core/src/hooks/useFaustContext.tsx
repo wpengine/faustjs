@@ -5,7 +5,7 @@ import { sha256 } from 'js-sha256';
 import { useContext } from 'react';
 import { FaustContext } from '../store/FaustContext.js';
 
-export function useFaustQuery(query: DocumentNode) {
+export function useFaustQuery<TData>(query: DocumentNode): TData {
   const context = useContext(FaustContext);
 
   if (context === undefined) {
@@ -15,5 +15,5 @@ export function useFaustQuery(query: DocumentNode) {
   const sha = sha256(print(query));
 
   // eslint-disable-next-line no-underscore-dangle
-  return context?.__FAUST_QUERIES__?.[sha];
+  return context?.__FAUST_QUERIES__?.[sha] as TData;
 }
