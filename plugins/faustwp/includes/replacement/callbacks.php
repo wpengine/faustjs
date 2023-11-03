@@ -203,14 +203,14 @@ function post_link( $link ) {
 	global $pagenow;
 	$target_pages = array( 'admin-ajax.php', 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' );
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in `is_ajax_generate_permalink_request()` and `is_wp_link_ajax_request()`.
 	if ( empty( $_POST ) && 'post-new.php' === $pagenow ) {
 		return $link;
 	}
 
 	// Ajax requests to generate permalink.
 	if ( in_array( $pagenow, $target_pages, true )
-		&& ! empty( $_POST['samplepermalinknonce'] )
-		&& check_ajax_referer( 'samplepermalink', 'samplepermalinknonce' )
+		&& is_ajax_generate_permalink_request()
 	) {
 			return $link;
 	}
@@ -225,11 +225,7 @@ function post_link( $link ) {
 	}
 
 	// Check for wp-link-ajax requests. Used by Classic Editor when linking content.
-	if ( wp_doing_ajax()
-		&& ! empty( $_POST['_ajax_linking_nonce'] )
-		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
-		&& ! empty( $_POST['action'] )
-		&& 'wp-link-ajax' === $_POST['action'] ) {
+	if ( is_wp_link_ajax_request() ) {
 		return $link;
 	}
 
