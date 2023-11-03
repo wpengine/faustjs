@@ -1,5 +1,5 @@
+import React from 'react';
 import { ApolloProvider } from '@apollo/client';
-import React, { createContext } from 'react';
 // eslint-disable-next-line import/extensions
 import { useRouter } from 'next/router';
 // eslint-disable-next-line import/extensions

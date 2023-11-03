@@ -14,5 +14,6 @@ export function useFaustQuery(query: DocumentNode) {
 
   const sha = sha256(print(query));
 
+  // eslint-disable-next-line no-underscore-dangle
   return context?.__FAUST_QUERIES__?.[sha];
 }
