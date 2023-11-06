@@ -14,7 +14,6 @@ function SubmitButton() {
 
 export default function Page() {
   const [state, formAction] = useFormState(loginAction, {});
-  const { pending } = useFormStatus();
 
   return (
     <>
