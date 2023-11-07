@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 add_filter( 'the_content', __NAMESPACE__ . '\\content_replacement' );
+add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\content_replacement');
 /**
  * Callback for WordPress 'the_content' filter.
  *
