@@ -114,10 +114,9 @@ add_filter( 'preview_post_link', __NAMESPACE__ . '\\post_preview_link', 1000, 2 
  */
 function post_preview_link( $link, $post ) {
 	// Don't rewrite preview link if redirect is disabled.
-	if ( !is_redirects_enabled() ) {
+	if ( ! is_redirects_enabled() ) {
 		return $link;
 	}
-	
 	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
