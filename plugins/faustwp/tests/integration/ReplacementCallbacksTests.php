@@ -190,6 +190,8 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
 		$this->assertSame( 'http://moo/', $link );
+
+		faustwp_update_setting( 'enable_redirects', true );
 	}
 
 	/**
