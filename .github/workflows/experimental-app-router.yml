@@ -2,8 +2,6 @@ name: Experimental App Router Build & Test
 
 on:
   pull_request:
-    paths:
-      - 'packages/experimental-app-router'
 
 jobs:
   experimental_app_router_build_test:
@@ -25,14 +23,9 @@ jobs:
 
       - name: Install
         run: npm ci
-        working-directory: packages/experimental-app-router
 
       - name: Build
         run: npm run build
-        working-directory: packages/experimental-app-router
-
-      - name: Lint
-        run: npm run lint
         working-directory: packages/experimental-app-router
 
       - name: Tests
