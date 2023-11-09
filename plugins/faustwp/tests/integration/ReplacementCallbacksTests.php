@@ -182,6 +182,17 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests post_preview_link() doesn't rewrite link if enable redirects is false.
+	 */
+	public function test_post_preview_doesnt_rewrite_link_with_redirect_off() {
+		faustwp_update_setting( 'enable_redirects', false );
+
+		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
+
+		$this->assertSame( get_preview_post_link( $this->post_id ), $link );
+	}
+
+	/**
 	 * Tests post_preview_link() uses frontend_uri scheme if different than home_url scheme.
 	 */
 	public function test_post_preview_link_uses_frontend_uri_scheme() {
