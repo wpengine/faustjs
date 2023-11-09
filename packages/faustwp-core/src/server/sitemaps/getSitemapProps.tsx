@@ -10,6 +10,7 @@ import {
   handleSitemapPath,
 } from './createSitemaps.js';
 import { SitemapSchemaUrlElement } from './sitemapUtils.js';
+import { DEFAULT_ISR_REVALIDATE } from '../../getWordPressProps.js';
 
 /**
  * The pathname to the root sitemap index.
@@ -136,6 +137,7 @@ export async function getSitemapProps(
     if (!response || response?.status === 404) {
       return {
         notFound: true,
+        revalidate: DEFAULT_ISR_REVALIDATE,
       };
     }
     ctx.res.setHeader('Content-Type', 'application/xml');
@@ -151,6 +153,7 @@ export async function getSitemapProps(
     if (!response || response?.status === 404) {
       return {
         notFound: true,
+        revalidate: DEFAULT_ISR_REVALIDATE,
       };
     }
     ctx.res.setHeader('Content-Type', 'application/xml');

@@ -86,6 +86,7 @@ export async function getWordPressProps(
   if (!resolvedUrl) {
     return {
       notFound: true,
+      revalidate: DEFAULT_ISR_REVALIDATE,
     };
   }
 
@@ -106,6 +107,7 @@ export async function getWordPressProps(
   if (!seedNode) {
     return {
       notFound: true,
+      revalidate: DEFAULT_ISR_REVALIDATE,
     };
   }
 
@@ -119,6 +121,7 @@ export async function getWordPressProps(
   if (!template) {
     return {
       notFound: true,
+      revalidate: DEFAULT_ISR_REVALIDATE,
     };
   }
 
