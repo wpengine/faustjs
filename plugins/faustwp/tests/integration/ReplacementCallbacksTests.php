@@ -189,7 +189,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
-		$this->assertSame( get_preview_post_link( $this->post_id ), $link );
+		$this->assertSame( 'http://moo/', $link );
 	}
 
 	/**
