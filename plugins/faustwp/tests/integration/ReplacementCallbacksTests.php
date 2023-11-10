@@ -166,7 +166,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_returns_filtered_link() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-
+		faustwp_update_setting( 'enable_redirects', true );
 		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&typeName=Post', get_preview_post_link( $this->post_id ) );
 	}
 
@@ -175,7 +175,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_adds_preview_true_query_param() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-
+		faustwp_update_setting( 'enable_redirects', true );
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
 		$this->assertSame( 'http://moo/?previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&p=' . $this->post_id . '&preview=true&typeName=Post', $link );
@@ -198,7 +198,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 * Tests post_preview_link() uses frontend_uri scheme if different than home_url scheme.
 	 */
 	public function test_post_preview_link_uses_frontend_uri_scheme() {
-
+		faustwp_update_setting( 'enable_redirects', true );
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		add_filter( 'home_url', [$this, 'get_home_url'] );
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
