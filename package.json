@@ -80,6 +80,7 @@
   },
   "overrides": {
     "semver": "~7.5.2",
-    "optionator": "0.9.3"
+    "optionator": "0.9.3",
+    "axios": "^1.6.1"
   }
 }
