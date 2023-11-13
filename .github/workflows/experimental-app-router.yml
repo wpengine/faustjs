@@ -1,0 +1,36 @@
+name: Experimental App Router Build & Test
+
+on:
+  pull_request:
+
+jobs:
+  experimental_app_router_build_test:
+    name: "Build and Test Experimental App Router on Node.js ${{ matrix.node }} ${{ matrix.os }}"
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        node: ['18', '20']
+    permissions:
+      checks: write
+      pull-requests: write
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install
+        run: npm ci
+
+      - name: Build (Monorepo)
+        run: npm run build
+
+      - name: Build
+        run: npm run build
+        working-directory: packages/experimental-app-router
+
+      - name: Tests
+        run: npm run test
+        working-directory: packages/experimental-app-router
