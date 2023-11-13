@@ -21,7 +21,9 @@ jobs:
   analyze:
     strategy:
       matrix:
-        next-dir: ['examples/next/faustwp-getting-started']
+        next-dir: [
+          'examples/next/faustwp-getting-started',
+        ]
 
     runs-on: ubuntu-latest
     steps:

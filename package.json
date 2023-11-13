@@ -18,17 +18,19 @@
       "examples/next/getting-started",
       "examples/next/faustwp-getting-started",
       "examples/next/app-router",
+      "examples/next/block-support",
       "plugins/faustwp"
     ]
   },
   "scripts": {
-    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
+    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
     "build:core": "npm run build --workspace=@faustjs/core",
     "build:next": "npm run build --workspace=@faustjs/next",
     "build:react": "npm run build --workspace=@faustjs/react",
     "build:faust-cli": "npm run build --workspace=@faustwp/cli",
     "build:faust-core": "npm run build --workspace=@faustwp/core",
     "build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
+    "build:experimentala-app-router": "npm run build --workspace=@faustwp/experimental-app-router",
     "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
     "clean:examples": "rimraf examples/**/node_modules",
     "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
@@ -45,8 +47,8 @@
     "docs-legacy:clear": "npm run clear --prefix internal/legacy.faustjs.org",
     "docs-legacy:install": "cd internal/legacy.faustjs.org && npm i && cd ..",
     "docs-legacy:start": "npm start --prefix internal/legacy.faustjs.org",
-    "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
-    "test:coverage": "npm run build && npm run test:coverage --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
+    "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+    "test:coverage": "npm run build && npm run test:coverage --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/block-editor-utils",
     "wpe-build": "exit 1",
     "changeset": "changeset",
     "version": "changeset version && node scripts/versionPlugin.js",
@@ -78,6 +80,7 @@
   },
   "overrides": {
     "semver": "~7.5.2",
-    "optionator": "0.9.3"
+    "optionator": "0.9.3",
+    "postcss": "8.4.31"
   }
 }

@@ -7,8 +7,15 @@ import { debugLog, infoLog } from './stdout/index.js';
 import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
+import { blockset } from './blockset.js';
 import { userConfig } from './userConfig.js';
-import { getCliArgs, getWpSecret, getWpUrl, isDebug } from './utils/index.js';
+import {
+  getCliArgs,
+  getNextCliArgs,
+  getWpSecret,
+  getWpUrl,
+  isDebug,
+} from './utils/index.js';
 import {
   telemetryPrefsExist,
   marshallTelemetryData,
@@ -20,7 +27,7 @@ import {
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
-  const arg1 = getCliArgs()[0];
+  const [arg1, ...otherArgs] = getCliArgs();
 
   dotenv.config();
 
@@ -50,7 +57,9 @@ import {
    * Ensure that everything Faust requires to run
    * is available before continuing.
    */
-  await healthCheck();
+  if (!otherArgs.includes('--skip-health-checks')) {
+    await healthCheck();
+  }
 
   // Inform user of telemetry program.
   if (!telemetryPrefsExist()) {
@@ -81,6 +90,12 @@ import {
     }
     case 'generateGlobalStylesheet': {
       await generateGlobalStylesheet();
+      process.exit(0);
+
+      break;
+    }
+    case 'blockset': {
+      await blockset();
       process.exit(0);
 
       break;
@@ -123,7 +138,7 @@ import {
   const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
 
   process.exit(
-    spawnSync(nextjsCommand, getCliArgs(), {
+    spawnSync(nextjsCommand, getNextCliArgs(), {
       stdio: 'inherit',
       encoding: 'utf8',
     })?.status as number | undefined,

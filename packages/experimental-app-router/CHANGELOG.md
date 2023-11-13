@@ -1,5 +1,55 @@
 # @faustwp/experimental-app-router
 
+## 0.2.0
+
+### Minor Changes
+
+- 6e43598: **BREAKING**: Updated the following peer dependencies to new required minimums:
+
+  - `@apollo/experimental-nextjs-app-support`: `0.4.1` -> `0.5.0`
+  - `next`: `12.1.6` -> `14.0.0`
+  - `react`: `17.0.2` -> `18.0.0`
+  - `react-dom`: `17.0.2` -> `18.0.0`
+
+- 6e43598: **BREAKING**: This package now requires **Node 18+**
+
+## 0.1.0
+
+### Minor Changes
+
+- 77c5d4f: **BREAKING**: Removed `cjs` support. The experimental app router package now is ESM only.
+
+### Patch Changes
+
+- 77c5d4f: Fixed an issue where the Apollo Client was being shipped to the browser client bundle resulting in large bundle sizes (150kb+). For more context: https://github.com/apollographql/apollo-client-nextjs/issues/95
+
+## 0.0.4
+
+### Patch Changes
+
+- b2ad517: Added the `onLogin` server action to login a user:
+
+  ```tsx
+  import { onLogin } from '@faustwp/experimental-app-router';
+
+  <form action={loginAction}>
+    <fieldset>
+      <label htmlFor="usernameEmail">Username or Email</label>
+      <input type="name" name="usernameEmail" />
+    </fieldset>
+
+    <fieldset>
+      <label htmlFor="password">Password</label>
+      <input type="password" name="password" />
+    </fieldset>
+
+    <button type="submit">Login</button>
+  </form>;
+  ```
+
+- Updated dependencies [b201ba2]
+  - @faustwp/cli@1.1.3
+
 ## 0.0.3
 
 ### Patch Changes

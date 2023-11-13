@@ -1,5 +1,28 @@
 # @faustwp/block-editor-utils
 
+## 0.0.5
+
+### Patch Changes
+
+- 604e9e3: Update block-editor-utils dependencies.
+
+## 0.0.4
+
+### Patch Changes
+
+- ae69cfb: Feat: Add `CheckboxControl` field in `block-editor-utils`.
+- ee8c08e: Feat: Add `RangeControl` field in `block-editor-utils`.
+
+## 0.0.3
+
+### Patch Changes
+
+- 457933b: Feat: Handle NumberControl fields in the block-editor-utils.
+- 40c836a: Feat: Handle RadioControl fields in the block-editor-utils.
+- deb5767: Feat: Handle SelectControl fields in the block-editor-utils.
+- db848c4: Feat: Handle TextControl fields in block-editor-utils.
+- 1bb5e94: Feat: Handle ColorControl fields in block-editor-utils
+
 ## 0.0.2
 
 ### Patch Changes

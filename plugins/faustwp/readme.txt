@@ -2,8 +2,8 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.3
-Stable tag: 1.0.3
+Tested up to: 6.4
+Stable tag: 1.1.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,22 +54,26 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
-= 1.0.3 =
+= 1.1.1 =
 
 ### Patch Changes
 
-- 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
+- b2c0fd3: Updated the settings page to improve descriptions and documentation links.
 
-= 1.0.2 =
+= 1.1.0 =
+
+### Minor Changes
+
+- c29f83d: Add blockset command in @faust/cli and faustwp plugin.
+
+  Add your blocks inside `wp-blocks` folder. Then run `faust blockset` to compile and upload the blocks into WordPress. Blocks will be available in the editor.
+
+- d3d30aa: Added support for authenticated WPGraphQL introspection queries using FAUST_SECRET_KEY. It is no longer required to enable "Public Introspection" in WPGraphQL.
+
+= 1.0.4 =
 
 ### Patch Changes
 
-- 0c9f9b5: Image URLs (and any URLs with file extensions) are now excluded from the replacement that Faust does in the GraphQL query results.
-
-= 1.0.1 =
-
-### Patch Changes
-
-- 9ed3c40: Bug: Fixed an issue where the preview button could crash the browser
+- fcc6d37: Fixed a bug in the block editor screen where the preview link was missing the `p` and `previewPathName` query arguments after saving a draft.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
