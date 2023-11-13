@@ -64,6 +64,10 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'wpseo_xml_sitemap_post_url', 'WPE\FaustWP\Replacement\yoast_sitemap_post_url' ) );
 	}
 
+	public function test_wp_calculate_image_srcset_filter(): void {
+		self::assertSame( 10, has_action( 'wp_calculate_image_srcset', 'WPE\FaustWP\Replacement\image_source_srcset_replacement' ) );
+	}
+
 	/**
 	 * Tests content_replacement() returns original value when content replacement is not enabled.
 	 */

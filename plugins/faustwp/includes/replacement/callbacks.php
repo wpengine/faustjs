@@ -89,6 +89,7 @@ function image_source_replacement( $content ) {
 	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
 }
 
+add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -97,23 +98,39 @@ function image_source_replacement( $content ) {
  * @return string One or more arrays of source data.
  */
 function image_source_srcset_replacement( $sources ) {
-	if ( is_image_source_replacement_enabled() ) {
-		$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-		$site_url     = site_url();
+	$use_wp_domain_for_media = use_wp_domain_for_media();
+	$frontend_uri            = faustwp_get_setting( 'frontend_uri' );
+	$site_url                = site_url();
 
-		if ( is_array( $sources ) ) {
-			// For urls with no domain or the frontend domain, replace with the wp site_url.
-			$patterns = array(
-				"#^{$frontend_uri}/#",
-				'#^/#',
-			);
-			foreach ( $sources as $width => $source ) {
-				$sources[ $width ]['url'] = preg_replace( $patterns, "$site_url/", $sources[ $width ]['url'] );
-			}
-		}
+	/**
+	 * For urls with no domain or the frontend domain, replace with the WP site_url.
+	 * This was the default replacement pattern until Faust 1.2, at which point this
+	 * was adjusted to correct replacement bugs.
+	 */
+	$patterns = array(
+		"#^{$site_url}/#",
+		'#^/#',
+	);
 
-		return $sources;
+	$replacement = $frontend_uri;
+
+	/**
+	 * If using WP domain for media and a frontend URL is encountered, rewrite it to WP URL.
+	 */
+	if ( $use_wp_domain_for_media ) {
+		$patterns    = array(
+			"#^{$frontend_uri}/#",
+			'#^/#',
+		);
+		$replacement = $site_url;
 	}
+
+	if ( is_array( $sources ) ) {
+		foreach ( $sources as $width => $source ) {
+			$sources[ $width ]['url'] = preg_replace( $patterns, "$replacement/", $source['url'] );
+		}
+	}
+
 	return $sources;
 }
 
