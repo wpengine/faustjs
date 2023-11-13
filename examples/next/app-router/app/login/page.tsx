@@ -1,34 +1,25 @@
-import { onLogin } from '@faustwp/experimental-app-router';
-import { redirect } from 'next/navigation';
+'use client';
 
-export default async function Page() {
-  async function loginAction(formData: FormData) {
-    'use server';
+import { useFormState, useFormStatus } from 'react-dom';
+import { loginAction } from './action';
 
-    const res = await onLogin(formData);
+function SubmitButton() {
+  const status = useFormStatus();
+  return (
+    <button disabled={status.pending}>
+      {status.pending ? 'Loading...' : 'Login'}
+    </button>
+  );
+}
 
-    if (res.error) {
-      /**
-       * @TODO Next.js is still working on ways persisting error messages from
-       * server actions to the client.
-       *
-       * "Displaying loading or error states currently requires using
-       * Client Components. We are exploring options for server-side functions
-       * to retrieve these values as we move forward in stability for Server Actions."
-       *
-       * @link https://nextjs.org/docs/app/building-your-application/data-fetching/forms-and-mutations#error-handling
-       */
-      console.error(res.error);
-    } else {
-      redirect('/my-account');
-    }
-  }
+export default function Page() {
+  const [state, formAction] = useFormState(loginAction, {});
 
   return (
     <>
       <h2>Login</h2>
 
-      <form action={loginAction}>
+      <form action={formAction}>
         <fieldset>
           <label htmlFor="usernameEmail">Username or Email</label>
           <input type="name" name="usernameEmail" />
@@ -39,7 +30,11 @@ export default async function Page() {
           <input type="password" name="password" />
         </fieldset>
 
-        <button type="submit">Login</button>
+        <SubmitButton />
+
+        {state.error && (
+          <p dangerouslySetInnerHTML={{ __html: state.error }}></p>
+        )}
       </form>
     </>
   );
