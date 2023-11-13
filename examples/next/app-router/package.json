@@ -14,7 +14,7 @@
     "@apollo/experimental-nextjs-app-support": "^0.5.1",
     "@faustwp/cli": "^1.2.0",
     "@faustwp/core": "^1.2.0",
-    "@faustwp/experimental-app-router": "^0.1.0",
+    "@faustwp/experimental-app-router": "^0.2.0",
     "graphql": "^16.7.1",
     "next": "^14.0.1",
     "react": "^18.3.0-canary-ce2bc58a9-20231102",
