@@ -226,23 +226,34 @@ function term_link( $term_link ) {
 	return equivalent_frontend_url( $term_link );
 }
 
-//add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_scripts' );
-// /**
-//  * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link.
-//  *
-//  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
-//  */
-// function enqueue_preview_scripts() {
-// 	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), plugin_version(), true );
-// 	wp_localize_script(
-// 		'faustwp-gutenberg-filters',
-// 		'_faustwp_preview_data',
-// 		array(
-// 			'_preview_link' => get_preview_post_link(),
-// 			'_wp_version'   => get_bloginfo( 'version' ),
-// 		)
-// 	);
-// }
+add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_scripts' );
+/**
+ * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link.
+ *
+ * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
+ */
+function enqueue_preview_scripts() {
+	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array(), plugin_version(), true );
+	wp_localize_script(
+		'faustwp-gutenberg-filters',
+		'_faustwp_preview_data',
+		array(
+			'_preview_link' => get_preview_post_link(),
+			'_wp_version'   => get_bloginfo( 'version' ),
+		)
+	);
+}
+
+add_filter( 'rest_prepare_post', __NAMESPACE__ . "\\preview_link_in_rest_response", 10, 2);
+add_filter( 'rest_prepare_page', __NAMESPACE__ . "\\preview_link_in_rest_response", 10, 2);
+function preview_link_in_rest_response($response, $post)
+{
+    if ("draft" === $post->post_status) {
+        $response->data["link"] = get_preview_post_link();
+    }
+
+    return $response;
+}
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
 /**
@@ -276,13 +287,4 @@ function yoast_sitemap_post_url( $url ) {
 	return equivalent_wp_url( $url );
 }
 
-add_filter( 'rest_prepare_post', __NAMESPACE__ . "\\preview_link_in_rest_response", 10, 2);
-add_filter( 'rest_prepare_page', __NAMESPACE__ . "\\preview_link_in_rest_response", 10, 2);
-function preview_link_in_rest_response($response, $post)
-{
-    if ("draft" === $post->post_status) {
-        $response->data["link"] = get_preview_post_link();
-    }
 
-    return $response;
-}

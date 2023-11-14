@@ -38,28 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
           snackbarLink: document.querySelector(
             '.components-snackbar__content a',
           ),
-          headerParentLink: document.querySelector(
-            '.edit-post-header-preview__grouping-external',
-          ),
         };
-    }
-  }
-
-  function autoSave(e) {
-    wp.data.dispatch('core/editor').autosave();
-  }
-
-  function maybeSetAutoUpdate() {
-    const { snackbarLink, headerParentLink } =
-      getPreviewLinksByVersion(wpVersion);
-    if (headerParentLink) {
-      headerParentLink.onClickCapture = autoSave;
-      headerParentLink.onTouch = autoSave;
-    }
-
-    if (snackbarLink) {
-      snackbarLink.onClick = autoSave;
-      snackbarLink.onTouch = autoSave;
     }
   }
 
@@ -76,8 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ) {
       snackbarLink.setAttribute('href', faustPreviewLink);
     }
-
-    maybeSetAutoUpdate();
   }
 
   // Run the update function on initial page load.
