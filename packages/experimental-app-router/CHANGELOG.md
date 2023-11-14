@@ -1,5 +1,11 @@
 # @faustwp/experimental-app-router
 
+## 0.2.1
+
+### Patch Changes
+
+- 6276c80: Fix broken build from 0.2.0
+
 ## 0.2.0
 
 ### Minor Changes
