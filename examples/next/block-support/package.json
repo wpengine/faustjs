@@ -7,21 +7,26 @@
     "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet",
     "dev": "faust dev",
     "build": "faust build",
+    "blockset": "faust blockset",
     "start": "faust start"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
     "@faustwp/blocks": "2.0.0",
-    "@faustwp/cli": "1.0.1",
-    "@faustwp/core": "1.1.0",
+    "@faustwp/cli": "^1.2.0",
+    "@faustwp/core": "^1.2.0",
     "@wordpress/base-styles": "^4.26.0",
     "@wordpress/block-library": "^7.19.0",
     "classnames": "^2.3.1",
     "graphql": "^16.6.0",
     "next": "^12.1.6",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "sass": "^1.54.9"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "26.12.0",
+    "@faustwp/block-editor-utils": "0.0.5"
   },
   "engines": {
     "node": ">=16",

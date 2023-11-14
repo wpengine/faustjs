@@ -41,7 +41,7 @@ test('renders the toolbar if user preference is true', async () => {
         shouldShowFaustToolbar: true,
       },
     },
-  } as any as QueryResult<unknown, unknown>;
+  } as unknown as QueryResult;
 
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
@@ -70,7 +70,7 @@ test('doesnt render the toolbar if user preference is false', async () => {
         shouldShowFaustToolbar: false,
       },
     },
-  } as any as QueryResult<unknown, unknown>;
+  } as unknown as QueryResult;
 
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
@@ -95,7 +95,7 @@ test('render the toolbar if user preference request throws an error/fails', asyn
    */
   const mockUseQuery = {
     error: {}, // Request error
-  } as any as QueryResult<unknown, unknown>;
+  } as unknown as QueryResult;
 
   const useQuerySpy = jest
     .spyOn(apollo, 'useQuery')
@@ -266,7 +266,7 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
   });
   expect.assertions(2);
   mockIsAuthenticated = true;
-  
+
   const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
     query: {
     },

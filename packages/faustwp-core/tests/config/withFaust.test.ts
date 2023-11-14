@@ -17,7 +17,7 @@ describe('withFaust', () => {
     );
     const headers = await finalConfig.headers!();
     expect(headers).toEqual([
-      { headers: [{ key: 'x-using', value: 'faust' }], source: '/(.*?)' },
+      { headers: [{ key: 'x-using', value: 'faust' }], source: '/:path*' },
     ]);
   });
   test('it applies a default redirects config', async () => {

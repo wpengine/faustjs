@@ -14,7 +14,7 @@ jobs:
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
     strategy:
       matrix:
-        node: ['16', '18']
+        node: ['16', '18', '20']
     defaults:
       run:
         working-directory: ./
@@ -37,7 +37,7 @@ jobs:
       # and use the PR branch to pull the correct example URL
       - name: npx create next app
         run: |
-          npx create-next-app \
+          npx create-next-app@13 \
             -e https://github.com/${PR_REPO}/tree/${PR_BRANCH} \
             --example-path examples/next/getting-started \
             --use-npm \

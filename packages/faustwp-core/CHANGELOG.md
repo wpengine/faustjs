@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 1.2.0
+
+### Patch Changes
+
+- 3722ab3: Fix `x-using` header not appearing when i18n options are set in `next.config.js`
+
 ## 1.1.2
 
 ### Patch Changes

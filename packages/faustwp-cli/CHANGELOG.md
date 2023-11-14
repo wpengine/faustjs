@@ -1,5 +1,19 @@
 # @faustwp/cli
 
+## 1.2.0
+
+### Minor Changes
+
+- c29f83d: Add blockset command in @faust/cli and faustwp plugin.
+
+  Add your blocks inside `wp-blocks` folder. Then run `faust blockset` to compile and upload the blocks into WordPress. Blocks will be available in the editor.
+
+- d3d30aa: Added support for authenticated WPGraphQL introspection queries using FAUST_SECRET_KEY. It is no longer required to enable "Public Introspection" in WPGraphQL.
+
+### Patch Changes
+
+- 03ee9e8: Bug Fix: Forces cli blockset command to use @wordpress/scripts package.
+
 ## 1.1.4
 
 ### Patch Changes

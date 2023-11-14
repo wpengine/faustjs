@@ -1,43 +1,48 @@
 ---
 name: '🐛 Bug Report'
-about: Report a reproducible bug or regression.
+about:  Create a report to help us improve
 title: 'Bug: '
 labels: 'Status: Unconfirmed'
 ---
 
 <!--
-  Please provide a clear and concise description of what the bug is. Include
-  screenshots if needed. Please test using the latest version of the relevant
-  FaustJS packages to make sure your issue has not already been fixed.
+  Before you submit a bug report, please make sure you have searched for similar issues.
+  Provide as much detail as possible so we can replicate the bug. Screenshots and screencasts
+  are also helpful. We recommend testing with the latest versions of FaustJS packages.
 -->
 
-## Applicable Versions
-
-- `@faustjs/core` version:
-- `@faustjs/react` version:
-- `@faustjs/next` version:
+## Environment
+- `@faustwp/core` version: 
+- `@faustwp/cli` version: 
+- `@faustwp/blocks` version: 
+- `@faustwp/block-editor-utils` version: 
 - WordPress version:
+- Browser, OS, and other relevant software versions:
 
-## Steps To Reproduce
-
-1.
-2.
-
+## Description
 <!--
-  Your bug will get fixed much faster if we can run your code and it doesn't
-  have dependencies other than what FaustJS requires. Issues without reproduction steps or
-  code examples may be immediately closed as not actionable.
+  A clear and concise description of what the bug is. Include any error messages or stack traces.
+  If applicable, add screenshots to help explain your problem.
 -->
 
-Link to code example:
-
+## Steps to Reproduce
 <!--
-  Please provide a link to a repository on GitHub, or provide a
-  minimal code example that reproduces the problem. You may provide a screenshot
-  of the application if you think it is relevant to your bug report.
-  Here are some tips for providing a minimal example: https://stackoverflow.com/help/mcve.
+  Steps to reproduce the behavior:
+  1. Go to '...'
+  2. Click on '....'
+  3. Scroll down to '....'
+  4. See error
 -->
 
-## The current behavior
+## Expected vs. Actual Behavior
+<!--
+  What did you expect to happen, and what actually happened instead? 
+  The more detail, the better. Comparing your expectations to reality can help us pinpoint where the issue lies.
+-->
 
-## The expected behavior
+## Reproducible Demo
+<!--
+  Please provide a link to a live example, or an unambiguous set of steps to reproduce
+  this bug. Include code to reproduce, if relevant. Sample projects on GitHub work well.
+  Here's how to provide a Minimal, Complete, and Verifiable example: https://stackoverflow.com/help/mcve.
+-->
