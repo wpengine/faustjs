@@ -11,22 +11,23 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.0",
-    "@apollo/experimental-nextjs-app-support": "^0.4.1",
-    "@faustwp/cli": "1.2.0",
-    "@faustwp/core": "1.2.0",
-    "@faustwp/experimental-app-router": "^0.1.0",
+    "@apollo/experimental-nextjs-app-support": "^0.5.1",
+    "@faustwp/cli": "^1.2.0",
+    "@faustwp/core": "^1.2.0",
+    "@faustwp/experimental-app-router": "^0.2.0",
     "graphql": "^16.7.1",
-    "next": "^13.4.20-canary.18",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "next": "^14.0.1",
+    "react": "^18.3.0-canary-ce2bc58a9-20231102",
+    "react-dom": "^18.3.0-canary-ce2bc58a9-20231102"
   },
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": ">=8"
   },
   "devDependencies": {
     "@types/node": "^20.6.3",
-    "@types/react": "^18.2.22",
+    "@types/react": "^18.2.36",
+    "@types/react-dom": "^18.2.14",
     "typescript": "^5.2.2"
   }
 }
