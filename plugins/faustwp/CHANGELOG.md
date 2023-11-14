@@ -1,5 +1,11 @@
 # Faust
 
+## 1.1.1
+
+### Patch Changes
+
+- b2c0fd3: Updated the settings page to improve descriptions and documentation links.
+
 ## 1.1.0
 
 ### Minor Changes
