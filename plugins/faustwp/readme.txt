@@ -2,8 +2,8 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.3
-Stable tag: 1.1.0
+Tested up to: 6.4
+Stable tag: 1.1.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.1.1 =
+
+### Patch Changes
+
+- b2c0fd3: Updated the settings page to improve descriptions and documentation links.
+
 = 1.1.0 =
 
 ### Minor Changes
@@ -69,11 +75,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - fcc6d37: Fixed a bug in the block editor screen where the preview link was missing the `p` and `previewPathName` query arguments after saving a draft.
-
-= 1.0.3 =
-
-### Patch Changes
-
-- 188bd75: Auto-update enqueued asset versions whenenever the plugin is updated.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

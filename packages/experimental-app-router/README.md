@@ -19,4 +19,6 @@
   </a>
 </p>
 
-`@faustwp/experimental-app-router` provides helper functions and utilities for Next.js' new [App Router.](https://nextjs.org/docs/app)
+This is an **experimental** collection of utilities to support Next.js' App Router feature in Faust. To get started, please visit the docs here:
+
+https://faustjs.org/tutorial/getting-started-with-the-experimental-app-router

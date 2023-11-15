@@ -14,7 +14,7 @@ name: Nightly Releases
 on:
   schedule:
     # Monday-Friday at 8:35pm UTC / 3:35pm CST
-    
+
     # Uses the 35th minute because GitHub Workflow load is significantly
     # increased at the start of the hour. By invoking the workflow in the
     # middle of the hour, there is less chance of delay.
@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js 18.x
         uses: actions/setup-node@master
         with:
           node-version: 18.x
