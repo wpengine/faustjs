@@ -64,8 +64,8 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
 /**
  * Validates the uploaded file type and readability.
  *
- * @param array              $file The uploaded file details.
  * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
+ * @param array              $file The uploaded file details.
  * @return WP_Error|bool
  */
 function validate_uploaded_file( $wp_filesystem, $file ) {
