@@ -110,3 +110,24 @@ function has_file_extension( $string ) {
 	}
 }
 
+/**
+ * Determines if an AJAX request to generate permalinks is in progress.
+ *
+ * @return boolean
+ */
+function is_ajax_generate_permalink_request(): bool {
+	return ( ! empty( $_POST['samplepermalinknonce'] ) && check_ajax_referer( 'samplepermalink', 'samplepermalinknonce' ) );
+}
+
+/**
+ * Determines if a wp-link-ajax request is in progress.
+ *
+ * @return boolean
+ */
+function is_wp_link_ajax_request(): bool {
+	return ( wp_doing_ajax()
+		&& ! empty( $_POST['_ajax_linking_nonce'] )
+		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
+		&& ! empty( $_POST['action'] )
+		&& 'wp-link-ajax' === $_POST['action'] );
+}
