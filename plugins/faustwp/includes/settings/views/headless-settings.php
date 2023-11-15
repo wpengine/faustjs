@@ -79,11 +79,11 @@
 					<h3>Faust.js Documentation</h3>
 					<section>
 						<ul>
-							<li><a href="https://faustjs.org/docs/tutorial/dev-env-setup" target="_blank" rel="noopener noreferrer">In-depth Tutorial</a></li>
-							<li><a href="https://faustjs.org/docs/next/getting-started" target="_blank" rel="noopener noreferrer">Quick Start</a></li>
-							<li><a href="https://faustjs.org/docs/next/guides/fetching-data" target="_blank" rel="noopener noreferrer">Fetching Data</a></li>
-							<li><a href="https://faustjs.org/docs/next/guides/post-page-previews" target="_blank" rel="noopener noreferrer">Previews</a></li>
-							<li><a href="https://faustjs.org/docs/next/guides/auth" target="_blank" rel="noopener noreferrer">Authentication</a></li>
+							<li><a href="https://faustjs.org/guide/how-to-use-the-faust-example-project" target="_blank" rel="noopener noreferrer">In-depth Tutorial</a></li>
+							<li><a href="https://faustjs.org/tutorial/get-started-with-faust" target="_blank" rel="noopener noreferrer">Quick Start</a></li>
+							<li><a href="https://faustjs.org/guide/how-to-use-apollo-in-faust" target="_blank" rel="noopener noreferrer">Fetching Data</a></li>
+							<li><a href="https://faustjs.org/guide/how-to-setup-post-and-page-previews" target="_blank" rel="noopener noreferrer">Previews</a></li>
+							<li><a href="https://faustjs.org/guide/how-to-handle-authentication" target="_blank" rel="noopener noreferrer">Authentication</a></li>
 						</ul>
 						<p><a class="button-primary" href="https://github.com/wpengine/faustjs/" target="_blank" rel="noopener noreferrer">Faust on GitHub</a></p>
 					</section>
