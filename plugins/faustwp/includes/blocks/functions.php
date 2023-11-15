@@ -18,20 +18,21 @@ require_once ABSPATH . 'wp-admin/includes/file.php';
  * @return WP_Error|bool
  */
 function handle_uploaded_blockset( $file ) {
-	global $wp_filesystem;
+    global $wp_filesystem;
+    WP_Filesystem();
 
-	WP_Filesystem();
+    $error = validate_uploaded_file( $wp_filesystem, $file );
+    if ( $error ) {
+        return $error;
+    }
 
-	if ( $error = validate_uploaded_file( $wp_filesystem, $file ) ) {
-		return $error;
-	}
+    $dirs = define_directories();
+    $error = ensure_directories_exist( $wp_filesystem, $dirs );
+    if ( $error ) {
+        return $error;
+    }
 
-	$dirs = define_directories();
-	if ( $error = ensure_directories_exist( $wp_filesystem, $dirs ) ) {
-		return $error;
-	}
-
-	return process_and_replace_blocks( $wp_filesystem, $file, $dirs );
+    return process_and_replace_blocks( $wp_filesystem, $file, $dirs );
 }
 
 /**
@@ -68,7 +69,7 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
  * @return WP_Error|bool
  */
 function validate_uploaded_file( $wp_filesystem, $file ) {
-	if ( $file['type'] !== 'application/zip' ) {
+    if ( 'application/zip' !== $file['type'] ) {
 		return new WP_Error( 'wrong_type', esc_html__( 'Not a zip file', 'faustwp' ) );
 	}
 
@@ -85,25 +86,26 @@ function validate_uploaded_file( $wp_filesystem, $file ) {
  * @return array
  */
 function define_directories() {
-	$uploadDir = wp_upload_dir();
-	$baseDir   = trailingslashit( $uploadDir['basedir'] ) . trailingslashit( FAUSTWP_SLUG );
+	$upload_dir = wp_upload_dir();
+	$base_dir   = trailingslashit( $upload_dir['basedir'] ) . trailingslashit( FAUSTWP_SLUG );
 
 	return array(
-		'target' => $baseDir . 'blocks',
-		'temp'   => $baseDir . 'tmp_blocks',
+		'target' => $base_dir . 'blocks',
+		'temp'   => $base_dir . 'tmp_blocks',
 	);
 }
 
 /**
  * Ensures that the necessary directories exist.
  *
- * @param WP_Filesystem_Base $wp_filesystem
- * @param array              $dirs
+ * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
+ * @param array              $dirs          Directories array.
  * @return WP_Error|true
  */
 function ensure_directories_exist( $wp_filesystem, $dirs ) {
 	foreach ( $dirs as $dir ) {
 		if ( ! $wp_filesystem->is_dir( $dir ) && ! $wp_filesystem->mkdir( $dir, FS_CHMOD_DIR ) ) {
+			/* translators: %s: directory path */
 			return new WP_Error( 'mkdir_error', sprintf( esc_html__( 'Could not create directory: %s', 'faustwp' ), $dir ) );
 		}
 	}
