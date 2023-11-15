@@ -110,4 +110,3 @@ function has_file_extension( $string ) {
 		return false; // String does not have a file extension.
 	}
 }
-

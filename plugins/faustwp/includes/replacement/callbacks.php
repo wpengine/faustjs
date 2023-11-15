@@ -244,15 +244,22 @@ function enqueue_preview_scripts() {
 	);
 }
 
-add_filter( 'rest_prepare_post', __NAMESPACE__ . "\\preview_link_in_rest_response", 10, 2);
-add_filter( 'rest_prepare_page', __NAMESPACE__ . "\\preview_link_in_rest_response", 10, 2);
-function preview_link_in_rest_response($response, $post)
-{
-    if ("draft" === $post->post_status) {
-        $response->data["link"] = get_preview_post_link();
-    }
+add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+/**
+ * Adds the preview link to rest responses.
+ *
+ * @param WP_Response $response The rest response object.
+ * @param WP_Post     $post Post object.
+ *
+ * @return string URL used for the post preview.
+ */
+function preview_link_in_rest_response( $response, $post ) {
+	if ( 'draft' === $post->post_status ) {
+		$response->data['link'] = get_preview_post_link();
+	}
 
-    return $response;
+	return $response;
 }
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
@@ -286,5 +293,3 @@ add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_
 function yoast_sitemap_post_url( $url ) {
 	return equivalent_wp_url( $url );
 }
-
-
