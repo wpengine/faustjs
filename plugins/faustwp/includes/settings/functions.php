@@ -30,6 +30,15 @@ function is_rewrites_enabled() {
 }
 
 /**
+ * Determines if posts and category URLs should link to the WP site.
+ *
+ * @return bool
+ */
+function use_wp_domain_for_post_and_category_urls() {
+	return ! is_rewrites_enabled();
+}
+
+/**
  * Determine if themes are disabled.
  *
  * @return bool True if themes are disabled, false if else.
@@ -47,6 +56,14 @@ function is_image_source_replacement_enabled() {
 	return '1' === faustwp_get_setting( 'enable_image_source' );
 }
 
+/**
+ * Determine if sourcing images from WP domain is enabled.
+ *
+ * @return bool True if image sources from WP are enabled, false if else.
+ */
+function use_wp_domain_for_media() {
+	return is_image_source_replacement_enabled();
+}
 
 /**
  * Get the secret key setting.
