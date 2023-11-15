@@ -18,21 +18,21 @@ require_once ABSPATH . 'wp-admin/includes/file.php';
  * @return WP_Error|bool
  */
 function handle_uploaded_blockset( $file ) {
-    global $wp_filesystem;
-    WP_Filesystem();
+	global $wp_filesystem;
+	WP_Filesystem();
 
-    $error = validate_uploaded_file( $wp_filesystem, $file );
-    if ( $error ) {
-        return $error;
-    }
+	$error = validate_uploaded_file( $wp_filesystem, $file );
+	if ( $error ) {
+		return $error;
+	}
 
-    $dirs = define_directories();
-    $error = ensure_directories_exist( $wp_filesystem, $dirs );
-    if ( $error ) {
-        return $error;
-    }
+	$dirs  = define_directories();
+	$error = ensure_directories_exist( $wp_filesystem, $dirs );
+	if ( $error ) {
+		return $error;
+	}
 
-    return process_and_replace_blocks( $wp_filesystem, $file, $dirs );
+	return process_and_replace_blocks( $wp_filesystem, $file, $dirs );
 }
 
 /**
@@ -69,7 +69,7 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
  * @return WP_Error|bool
  */
 function validate_uploaded_file( $wp_filesystem, $file ) {
-    if ( 'application/zip' !== $file['type'] ) {
+	if ( 'application/zip' !== $file['type'] ) {
 		return new WP_Error( 'wrong_type', esc_html__( 'Not a zip file', 'faustwp' ) );
 	}
 
