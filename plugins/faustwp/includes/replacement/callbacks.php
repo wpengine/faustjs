@@ -11,9 +11,8 @@ use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
 	is_image_source_replacement_enabled,
 	is_rewrites_enabled,
-	is_redirects_enabled
+	is_redirects_enabled,
 	use_wp_domain_for_media,
-	use_wp_domain_for_post_and_category_urls,
 };
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
