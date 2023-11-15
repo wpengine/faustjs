@@ -1,70 +1,155 @@
 <?php
 /**
- * Functions related to block support.
+ * Block support functions for FaustWP.
  *
  * @package FaustWP
  */
 
 namespace WPE\FaustWP\Blocks;
 
-use function WPE\FaustWP\Utilities\{
-	rrmdir,
-	unzip_to_directory,
-};
+use WP_Error;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+require_once ABSPATH . 'wp-admin/includes/file.php';
+
+/**
+ * Handles the uploaded blockset file and unzips it.
+ *
+ * @param array $file The uploaded file details.
+ * @return WP_Error|bool
+ */
+function handle_uploaded_blockset( $file ) {
+	global $wp_filesystem;
+
+	WP_Filesystem();
+
+	if ( $error = validate_uploaded_file( $wp_filesystem, $file ) ) {
+		return $error;
+	}
+
+	$dirs = define_directories();
+	if ( $error = ensure_directories_exist( $wp_filesystem, $dirs ) ) {
+		return $error;
+	}
+
+	return process_and_replace_blocks( $wp_filesystem, $file, $dirs );
 }
 
 /**
- * Handle the uploaded blockset file and unzip it.
- * Returns true upon success.
+ * Processes the uploaded blockset file, unzips it, and replaces the old blocks directory.
  *
- * @param array $file The uploaded file details.
- * @return \WP_Error|bool
+ * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
+ * @param array              $file The uploaded file details.
+ * @param array              $dirs Directories array.
+ * @return WP_Error|bool True on success, WP_Error on failure.
  */
-function handle_uploaded_blockset( $file ) {
-	// Ensure ZipArchive class is available.
-	if ( ! class_exists( 'ZipArchive' ) ) {
-		return new \WP_Error( 'ziparchive_missing', __( 'The ZipArchive class is not available', 'faustwp' ) );
+function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
+	$target_file = $dirs['target'] . sanitize_file_name( basename( $file['name'] ) );
+
+	$move_result = move_uploaded_file( $wp_filesystem, $file, $target_file );
+	if ( is_wp_error( $move_result ) ) {
+		return $move_result;
 	}
 
-	// Check if it's a zip file.
-	if ( 'application/zip' !== $file['type'] ) {
-		return new \WP_Error( 'wrong_type', __( 'Not a zip file', 'faustwp' ) );
+	$unzip_result = unzip_uploaded_file( $target_file, $dirs['blocks'] );
+	if ( is_wp_error( $unzip_result ) ) {
+		return $unzip_result;
 	}
 
-	// Define directories.
-	$upload_dir = wp_upload_dir();
-	$target_dir = trailingslashit( $upload_dir['basedir'] ) . 'faustwp/';
-	$blocks_dir = $target_dir . 'blocks/';
-	$tmp_dir    = $target_dir . 'tmp_blocks/';
+	cleanup_temp_directory( $wp_filesystem, $dirs['temp'] );
 
-	// Ensure temporary directory exists.
-	if ( ! file_exists( $tmp_dir ) && ! wp_mkdir_p( $tmp_dir ) ) {
-		return new \WP_Error( 'mkdir_error', __( 'Could not create temporary directory', 'faustwp' ) );
+	return true;
+}
+
+/**
+ * Validates the uploaded file type and readability.
+ *
+ * @param array              $file The uploaded file details.
+ * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
+ * @return WP_Error|bool
+ */
+function validate_uploaded_file( $wp_filesystem, $file ) {
+	if ( $file['type'] !== 'application/zip' ) {
+		return new WP_Error( 'wrong_type', esc_html__( 'Not a zip file', 'faustwp' ) );
 	}
 
-	// Move the uploaded file.
-	$target_file = $target_dir . sanitize_file_name( basename( $file['name'] ) );
-	if ( ! move_uploaded_file( $file['tmp_name'], $target_file ) ) {
-		return new \WP_Error( 'move_error', __( 'Could not move uploaded file', 'faustwp' ) );
-	}
-
-	// Unzip the file to the temporary directory.
-	if ( ! unzip_to_directory( $target_file, $tmp_dir ) ) {
-		rrmdir( $tmp_dir );  // Cleanup the temporary directory in case of unzip failure.
-		return new \WP_Error( 'unzip_error', __( 'Could not unzip the file', 'faustwp' ) );
-	}
-
-	// Replace the old blocks directory with the new content.
-	if ( is_dir( $blocks_dir ) ) {
-		rrmdir( $blocks_dir );
-	}
-
-	if ( ! rename( $tmp_dir, $blocks_dir ) ) {
-		return new \WP_Error( 'rename_error', __( 'Could not rename the directory', 'faustwp' ) );
+	if ( ! $wp_filesystem->is_readable( $file['tmp_name'] ) ) {
+		return new WP_Error( 'file_read_error', esc_html__( 'Uploaded file is not readable', 'faustwp' ) );
 	}
 
 	return true;
+}
+
+/**
+ * Defines and returns necessary directories for file processing.
+ *
+ * @return array
+ */
+function define_directories() {
+	$uploadDir = wp_upload_dir();
+	$baseDir   = trailingslashit( $uploadDir['basedir'] ) . trailingslashit( FAUSTWP_SLUG );
+
+	return array(
+		'target' => $baseDir . 'blocks',
+		'temp'   => $baseDir . 'tmp_blocks',
+	);
+}
+
+/**
+ * Ensures that the necessary directories exist.
+ *
+ * @param WP_Filesystem_Base $wp_filesystem
+ * @param array              $dirs
+ * @return WP_Error|true
+ */
+function ensure_directories_exist( $wp_filesystem, $dirs ) {
+	foreach ( $dirs as $dir ) {
+		if ( ! $wp_filesystem->is_dir( $dir ) && ! $wp_filesystem->mkdir( $dir, FS_CHMOD_DIR ) ) {
+			return new WP_Error( 'mkdir_error', sprintf( esc_html__( 'Could not create directory: %s', 'faustwp' ), $dir ) );
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Moves the uploaded file to the target directory.
+ *
+ * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
+ * @param array              $file The uploaded file details.
+ * @param string             $target_file The target file path.
+ * @return WP_Error|bool True on success, WP_Error on failure.
+ */
+function move_uploaded_file( WP_Filesystem_Base $wp_filesystem, $file, $target_file ) {
+	if ( ! $wp_filesystem->move( $file['tmp_name'], $target_file, true ) ) {
+		return new WP_Error( 'move_error', esc_html__( 'Could not move uploaded file', 'faustwp' ) );
+	}
+	return true;
+}
+
+/**
+ * Unzips the uploaded file.
+ *
+ * @param string $target_file The target file path.
+ * @param string $destination The destination directory for unzipping.
+ * @return WP_Error|bool True on success, WP_Error on failure.
+ */
+function unzip_uploaded_file( $target_file, $destination ) {
+	$unzip_result = unzip_file( $target_file, $destination );
+	if ( is_wp_error( $unzip_result ) ) {
+		return $unzip_result;
+	}
+	return true;
+}
+
+/**
+ * Cleans up temporary files or directories.
+ *
+ * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
+ * @param string             $temp_dir The temporary directory path.
+ * @return void
+ */
+function cleanup_temp_directory( WP_Filesystem_Base $wp_filesystem, $temp_dir ) {
+	if ( $wp_filesystem->is_dir( $temp_dir ) ) {
+		$wp_filesystem->delete( $temp_dir, true );
+	}
 }
