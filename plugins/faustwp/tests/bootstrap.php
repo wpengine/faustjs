@@ -6,7 +6,7 @@
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
-$_test_type = getenv( 'TEST_TYPE' );
+$_load_patchwork = getenv( 'LOAD_PATCHWORK' );
 
 define( 'WP_TEST_PLUGINS_DIR', '/var/www/html/wp-content/plugins' );
 
@@ -19,7 +19,7 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 	exit( 1 );
 }
 
-if ( 'unit' === $_test_type ) {
+if ( $_load_patchwork ) {
 	require_once __DIR__ . '/../vendor/antecedent/patchwork/Patchwork.php';
 }
 
