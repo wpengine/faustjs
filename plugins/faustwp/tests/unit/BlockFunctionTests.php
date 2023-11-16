@@ -69,7 +69,11 @@ class BlockFunctionTests extends FaustUnitTest {
             'tmp_name' => '/tmp/test.zip'
         ];
 
-        $this->assertTrue( Blocks\validate_uploaded_file( $file ) );
+        $filesystem = Mockery::mock( WP_Filesystem_Base::class );
+        $filesystem->shouldReceive( 'is_readable' )->with( $file['tmp_name'] )->andReturn( true );
+
+        // Call the function and assert true
+        $this->assertTrue( Blocks\validate_uploaded_file( $filesystem, $file ) );
     }
 
     /**
@@ -81,9 +85,30 @@ class BlockFunctionTests extends FaustUnitTest {
             'tmp_name' => '/tmp/test.txt'
         ];
 
-        $result = Blocks\validate_uploaded_file( $file );
+        $filesystem = Mockery::mock( WP_Filesystem_Base::class );
+
+        // Call the function and assert WP_Error
+        $result = Blocks\validate_uploaded_file( $filesystem, $file );
         $this->assertInstanceOf( WP_Error::class, $result );
         $this->assertEquals( 'wrong_type', $result->get_error_code() );
+    }
+
+    /**
+     * Test validate_uploaded_file with a non-readable file.
+     */
+    public function test_validate_uploaded_file_with_non_readable_file() {
+        $file = [
+            'type'     => 'application/zip',
+            'tmp_name' => '/tmp/test.zip'
+        ];
+
+        $filesystem = Mockery::mock( WP_Filesystem_Base::class );
+        $filesystem->shouldReceive( 'is_readable' )->with( $file['tmp_name'] )->andReturn( false );
+
+        // Call the function and assert WP_Error
+        $result = Blocks\validate_uploaded_file( $filesystem, $file );
+        $this->assertInstanceOf( WP_Error::class, $result );
+        $this->assertEquals( 'file_read_error', $result->get_error_code() );
     }
 
     /**
