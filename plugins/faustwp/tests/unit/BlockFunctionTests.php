@@ -10,12 +10,14 @@ use function Brain\Monkey\Functions\stubs;
 
 class BlockFunctionTests extends FaustUnitTest {
 
-	public function setUp(): void {
+    public function setUp(): void {
         parent::setUp();
+        Monkey\setUp();
     }
 
-	public function tearDown(): void {
+    public function tearDown(): void {
         Mockery::close();
+        Monkey\tearDown();
         parent::tearDown();
     }
 
@@ -74,7 +76,6 @@ class BlockFunctionTests extends FaustUnitTest {
         $filesystem = Mockery::mock( WP_Filesystem_Base::class );
         $filesystem->shouldReceive( 'is_readable' )->with( $file['tmp_name'] )->andReturn( true );
 
-        // Call the function and assert true
         $this->assertTrue( Blocks\validate_uploaded_file( $filesystem, $file ) );
     }
 
@@ -89,7 +90,6 @@ class BlockFunctionTests extends FaustUnitTest {
 
         $filesystem = Mockery::mock( WP_Filesystem_Base::class );
 
-        // Call the function and assert WP_Error
         $result = Blocks\validate_uploaded_file( $filesystem, $file );
         $this->assertInstanceOf( WP_Error::class, $result );
         $this->assertEquals( 'wrong_type', $result->get_error_code() );
@@ -107,7 +107,6 @@ class BlockFunctionTests extends FaustUnitTest {
         $filesystem = Mockery::mock( WP_Filesystem_Base::class );
         $filesystem->shouldReceive( 'is_readable' )->with( $file['tmp_name'] )->andReturn( false );
 
-        // Call the function and assert WP_Error
         $result = Blocks\validate_uploaded_file( $filesystem, $file );
         $this->assertInstanceOf( WP_Error::class, $result );
         $this->assertEquals( 'file_read_error', $result->get_error_code() );
@@ -133,12 +132,11 @@ class BlockFunctionTests extends FaustUnitTest {
             'temp'   => '/path/to/temp'
         ];
 
-        Monkey\Functions\stubs([
-            'WP_Filesystem_Base::is_dir' => true,
-            'WP_Filesystem_Base::mkdir'  => true,
-        ]);
+        $filesystem = Mockery::mock( 'WP_Filesystem_Base' );
+        $filesystem->shouldReceive( 'is_dir' )->andReturn( true );
+        $filesystem->shouldReceive( 'mkdir' )->andReturn( true );
 
-        $this->assertTrue( Blocks\ensure_directories_exist( $dirs ) );
+        $this->assertTrue( Blocks\ensure_directories_exist( $filesystem, $dirs ) );
     }
 
 }
