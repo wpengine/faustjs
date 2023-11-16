@@ -8,11 +8,11 @@ use WP_Error;
 
 class BlockFunctionTests extends FaustUnitTest {
 
-    protected function setUp(): void {
+	public function setUp(): void {
         parent::setUp();
     }
 
-    protected function tearDown(): void {
+	public function tearDown(): void {
         Mockery::close();
         parent::tearDown();
     }
