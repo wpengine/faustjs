@@ -35,7 +35,7 @@ class BlockFunctionTests extends FaustUnitTest {
             'temp'   => '/path/to/temp'
         ];
 
-        Monkey\Functions\stubs([
+        stubs([
             'WPE\FaustWP\Blocks\validate_uploaded_file'     => true,
             'WPE\FaustWP\Blocks\define_directories'         => $dirs,
             'WPE\FaustWP\Blocks\ensure_directories_exist'   => true,
@@ -54,11 +54,13 @@ class BlockFunctionTests extends FaustUnitTest {
             'type'     => 'text/plain',
             'tmp_name' => '/tmp/test.txt'
         ];
-
-        Monkey\Functions\stubs([
-            'WPE\FaustWP\Blocks\validate_uploaded_file' => new WP_Error( 'wrong_type', 'Not a zip file' ),
+    
+        stubs([
+            'WPE\FaustWP\Blocks\validate_uploaded_file' => function() {
+                return new WP_Error( 'wrong_type', 'Not a zip file' );
+            }
         ]);
-
+    
         $result = Blocks\handle_uploaded_blockset( $file );
         $this->assertInstanceOf( WP_Error::class, $result );
         $this->assertEquals( 'wrong_type', $result->get_error_code() );
