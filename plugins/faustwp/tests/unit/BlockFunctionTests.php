@@ -5,6 +5,8 @@ namespace WPE\FaustWP\Tests\Unit;
 use Mockery;
 use WPE\FaustWP\Blocks;
 use WP_Error;
+use Brain\Monkey;
+use function Brain\Monkey\Functions\stubs;
 
 class BlockFunctionTests extends FaustUnitTest {
 
