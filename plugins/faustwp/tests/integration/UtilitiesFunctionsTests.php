@@ -12,7 +12,7 @@ use WPE\FaustWP\Utilities;
 /**
  * Class UtilitiesTest
  */
-class UtilitiesTest extends \WP_UnitTestCase {
+class UtilitiesFunctionsTests extends \WP_UnitTestCase {
     /**
      * Setup runs before every test.
      */
