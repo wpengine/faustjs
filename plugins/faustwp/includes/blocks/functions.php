@@ -18,17 +18,17 @@ require_once ABSPATH . 'wp-admin/includes/file.php';
  * @return WP_Error|bool
  */
 function handle_uploaded_blockset( $file ) {
-	global $wp_filesystem;
 	WP_Filesystem();
+	global $wp_filesystem;
 
 	$error = validate_uploaded_file( $wp_filesystem, $file );
-	if ( $error ) {
+	if ( is_wp_error( $error ) ) {
 		return $error;
 	}
 
 	$dirs  = define_directories();
 	$error = ensure_directories_exist( $wp_filesystem, $dirs );
-	if ( $error ) {
+	if ( is_wp_error( $error ) ) {
 		return $error;
 	}
 
@@ -44,14 +44,14 @@ function handle_uploaded_blockset( $file ) {
  * @return WP_Error|bool True on success, WP_Error on failure.
  */
 function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
-	$target_file = $dirs['target'] . sanitize_file_name( basename( $file['name'] ) );
+	$target_file = trailingslashit( $dirs['target'] ) . sanitize_file_name( basename( $file['name'] ) );
 
 	$move_result = move_uploaded_file( $wp_filesystem, $file, $target_file );
 	if ( is_wp_error( $move_result ) ) {
 		return $move_result;
 	}
 
-	$unzip_result = unzip_uploaded_file( $target_file, $dirs['blocks'] );
+	$unzip_result = unzip_uploaded_file( $target_file, $dirs['target'] );
 	if ( is_wp_error( $unzip_result ) ) {
 		return $unzip_result;
 	}
@@ -121,7 +121,7 @@ function ensure_directories_exist( $wp_filesystem, $dirs ) {
  * @param string             $target_file The target file path.
  * @return WP_Error|bool True on success, WP_Error on failure.
  */
-function move_uploaded_file( WP_Filesystem_Base $wp_filesystem, $file, $target_file ) {
+function move_uploaded_file( $wp_filesystem, $file, $target_file ) {
 	if ( ! $wp_filesystem->move( $file['tmp_name'], $target_file, true ) ) {
 		return new WP_Error( 'move_error', esc_html__( 'Could not move uploaded file', 'faustwp' ) );
 	}
@@ -150,7 +150,7 @@ function unzip_uploaded_file( $target_file, $destination ) {
  * @param string             $temp_dir The temporary directory path.
  * @return void
  */
-function cleanup_temp_directory( WP_Filesystem_Base $wp_filesystem, $temp_dir ) {
+function cleanup_temp_directory( $wp_filesystem, $temp_dir ) {
 	if ( $wp_filesystem->is_dir( $temp_dir ) ) {
 		$wp_filesystem->delete( $temp_dir, true );
 	}

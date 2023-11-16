@@ -12,12 +12,10 @@ class BlockFunctionTests extends FaustUnitTest {
 
     public function setUp(): void {
         parent::setUp();
-        Monkey\setUp();
     }
 
     public function tearDown(): void {
         Mockery::close();
-        Monkey\tearDown();
         parent::tearDown();
     }
 
