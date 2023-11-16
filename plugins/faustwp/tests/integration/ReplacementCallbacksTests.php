@@ -10,13 +10,16 @@ namespace WPE\FaustWP\Tests\Integration;
 use function WPE\FaustWP\Replacement\{
 	content_replacement,
 	post_preview_link,
+	preview_link_in_rest_response,
 	image_source_replacement,
-	image_source_srcset_replacement
+	image_source_srcset_replacement,
 };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
+use WP_REST_Response;
 
 class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	protected $post_id;
+	protected $draft_post_id;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -26,6 +29,11 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 			'post_content' => 'Hi',
 			'post_status'  => 'publish',
 		] );
+		$this->draft_post_id = wp_insert_post( [
+			'title'        => 'Hello',
+			'post_content' => 'Hi',
+			'post_status'  => 'draft',
+		] );
 	}
 
 	public function test_the_content_filter() {
@@ -34,6 +42,14 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_preview_post_link_filter() {
 		$this->assertSame( 1000, has_action( 'preview_post_link', 'WPE\FaustWP\Replacement\post_preview_link' ) );
+	}
+
+	public function test_preview_rest_prepare_post_filter() {
+		$this->assertSame( 10, has_action( 'rest_prepare_post', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
+	}
+
+	public function test_preview_rest_prepare_page_filter() {
+		$this->assertSame( 10, has_action( 'rest_prepare_page', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
 	}
 
 	public function test_post_link_filter() {
@@ -159,6 +175,17 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		faustwp_update_setting( 'enable_rewrites', true );
 
 		$this->assertSame( 'http://moo/?p=' . $this->post_id, get_permalink( $this->post_id ) );
+	}
+
+	/**
+	 * Tests preview_link_in_rest_response() returns preview link in draft mode.
+	 */
+	public function test_preview_link_in_rest_response_returns_preview_link_for_draft_posts() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		$response = new WP_REST_Response( $data=[] );
+		$response->data['link'] = get_permalink( $this->draft_post_id );
+		$response = preview_link_in_rest_response( $response, get_post( $this->draft_post_id ) );
+		$this->assertSame( 'http://moo/?p=' . $this->draft_post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->draft_post_id ) ) ) . '&typeName=Post', $response->data['link'] );
 	}
 
 	/**

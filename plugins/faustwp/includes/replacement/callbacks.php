@@ -249,14 +249,14 @@ add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_respons
 /**
  * Adds the preview link to rest responses.
  *
- * @param WP_Response $response The rest response object.
- * @param WP_Post     $post Post object.
+ * @param WP_REST_Response $response The rest response object.
+ * @param WP_Post          $post Post object.
  *
  * @return string URL used for the post preview.
  */
 function preview_link_in_rest_response( $response, $post ) {
 	if ( 'draft' === $post->post_status ) {
-		$response->data['link'] = get_preview_post_link();
+		$response->data['link'] = get_preview_post_link( $post->ID );
 	}
 
 	return $response;
