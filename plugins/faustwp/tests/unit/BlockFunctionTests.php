@@ -127,10 +127,7 @@ class BlockFunctionTests extends FaustUnitTest {
      * Test ensure_directories_exist for existing directories.
      */
     public function test_ensure_directories_exist() {
-        $dirs = [
-            'target' => '/path/to/target',
-            'temp'   => '/path/to/temp'
-        ];
+        $dirs = Blocks\define_directories();
 
         $filesystem = Mockery::mock( 'WP_Filesystem_Base' );
         $filesystem->shouldReceive( 'is_dir' )->andReturn( true );
