@@ -4,7 +4,7 @@
   "type": "project",
   "minimum-stability": "stable",
   "require-dev": {
-    "antecedent/patchwork": "^2.1.8",
+    "antecedent/patchwork": "^2.1",
     "brain/monkey": "^2.6",
     "codeception/codeception": "^4.1",
     "codeception/module-asserts": "^1.0",
