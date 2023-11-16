@@ -27,7 +27,7 @@ function handle_uploaded_blockset( $file ) {
 	}
 
 	$dirs  = define_directories();
-	$error = ensure_directories_exist( $wp_filesystem, $dirs );
+	$error = ensure_directories_exist( $dirs );
 	if ( is_wp_error( $error ) ) {
 		return $error;
 	}
@@ -98,13 +98,12 @@ function define_directories() {
 /**
  * Ensures that the necessary directories exist.
  *
- * @param WP_Filesystem_Base $wp_filesystem Filesystem object.
- * @param array              $dirs          Directories array.
+ * @param array $dirs Directories array.
  * @return WP_Error|true
  */
-function ensure_directories_exist( $wp_filesystem, $dirs ) {
+function ensure_directories_exist( $dirs ) {
 	foreach ( $dirs as $dir ) {
-		if ( ! $wp_filesystem->is_dir( $dir ) && ! $wp_filesystem->mkdir( $dir, FS_CHMOD_DIR ) ) {
+		if ( ! wp_mkdir_p( $dir ) ) {
 			/* translators: %s: directory path */
 			return new WP_Error( 'mkdir_error', sprintf( esc_html__( 'Could not create directory: %s', 'faustwp' ), $dir ) );
 		}
@@ -112,6 +111,8 @@ function ensure_directories_exist( $wp_filesystem, $dirs ) {
 
 	return true;
 }
+
+
 
 /**
  * Moves the uploaded file to the target directory.
