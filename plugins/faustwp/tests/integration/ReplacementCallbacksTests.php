@@ -13,6 +13,7 @@ use function WPE\FaustWP\Replacement\{
 	preview_link_in_rest_response,
 	image_source_replacement,
 	image_source_srcset_replacement,
+	post_link,
 };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 use WP_REST_Response;
