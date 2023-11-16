@@ -238,10 +238,32 @@ add_filter( 'page_link', __NAMESPACE__ . '\\post_link', 1000 );
  * @return string URL used for the post.
  */
 function post_link( $link ) {
+	global $pagenow;
+	$target_pages = array( 'admin-ajax.php', 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' );
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in `is_ajax_generate_permalink_request()` and `is_wp_link_ajax_request()`.
+	if ( empty( $_POST ) && 'post-new.php' === $pagenow ) {
+		return $link;
+	}
+
+	// Ajax requests to generate permalink.
+	if ( in_array( $pagenow, $target_pages, true )
+		&& is_ajax_generate_permalink_request()
+	) {
+			return $link;
+	}
+
 	if (
 		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+		// Block editor makes REST requests on these pages to query content.
+		|| ( in_array( $pagenow, $target_pages, true ) && current_user_can( 'edit_posts' ) && defined( 'REST_REQUEST' ) && REST_REQUEST )
 	) {
+		return $link;
+	}
+
+	// Check for wp-link-ajax requests. Used by Classic Editor when linking content.
+	if ( is_wp_link_ajax_request() ) {
 		return $link;
 	}
 
