@@ -133,7 +133,7 @@ class BlockFunctionTests extends FaustUnitTest {
         $filesystem->shouldReceive( 'is_dir' )->andReturn( true );
         $filesystem->shouldReceive( 'mkdir' )->andReturn( true );
 
-        $this->assertTrue( Blocks\ensure_directories_exist( $filesystem, $dirs ) );
+        $this->assertTrue( Blocks\ensure_directories_exist( $dirs ) );
     }
 
 }
