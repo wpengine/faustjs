@@ -27,6 +27,9 @@
   <testsuites>
     <testsuite name="unit">
       <directory suffix=".php">./tests/unit/</directory>
+      <php>
+        <env name="TEST_TYPE" value="unit"/>
+      </php>
     </testsuite>
     <testsuite name="integration">
       <directory suffix=".php">./tests/integration/</directory>

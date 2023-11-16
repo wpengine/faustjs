@@ -6,6 +6,7 @@
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
+$_test_type = getenv( 'TEST_TYPE' );
 
 define( 'WP_TEST_PLUGINS_DIR', '/var/www/html/wp-content/plugins' );
 
@@ -16,6 +17,10 @@ if ( ! $_tests_dir ) {
 if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 	echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	exit( 1 );
+}
+
+if ( 'unit' === $_test_type ) {
+	require_once __DIR__ . '/../vendor/antecedent/patchwork/Patchwork.php';
 }
 
 require_once $_tests_dir . '/includes/functions.php';
@@ -41,5 +46,4 @@ function _manually_load_plugin() {
 	require_once WP_TEST_PLUGINS_DIR . '/wp-graphql/wp-graphql.php';
 }
 
-require_once __DIR__ . '/../vendor/antecedent/patchwork/Patchwork.php';
 require $_tests_dir . '/includes/bootstrap.php';
