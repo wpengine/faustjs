@@ -5,8 +5,6 @@
  * @package FaustWP
  */
 
-require_once __DIR__ . '/../vendor/antecedent/patchwork/Patchwork.php';
-
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
 define( 'WP_TEST_PLUGINS_DIR', '/var/www/html/wp-content/plugins' );
@@ -43,4 +41,5 @@ function _manually_load_plugin() {
 	require_once WP_TEST_PLUGINS_DIR . '/wp-graphql/wp-graphql.php';
 }
 
+require_once __DIR__ . '/../vendor/antecedent/patchwork/Patchwork.php';
 require $_tests_dir . '/includes/bootstrap.php';
