@@ -210,6 +210,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_returns_filtered_link() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_redirects', true );
 
 		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&typeName=Post', get_preview_post_link( $this->post_id ) );
 	}
@@ -219,10 +220,24 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_adds_preview_true_query_param() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_redirects', true );
 
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
 		$this->assertSame( 'http://moo/?previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&p=' . $this->post_id . '&preview=true&typeName=Post', $link );
+	}
+
+	/**
+	 * Tests post_preview_link() doesn't rewrite link if enable redirects is false.
+	 */
+	public function test_post_preview_doesnt_rewrite_link_with_redirect_off() {
+		faustwp_update_setting( 'enable_redirects', false );
+		$expected = 'http://moo/?p=' . $this->post_id;
+		$link     = post_preview_link( $expected, get_post( $this->post_id ) );
+
+		$this->assertSame( $expected, $link );
+
+		faustwp_update_setting( 'enable_redirects', true );
 	}
 
 	/**
@@ -244,7 +259,8 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_custom_post_type_post_preview_link_returns_filtered_link_when_content_replacement_is_enabled()
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_redirects', true );
 		$post_id = $this->getCustomPostType();
 		$this->assertSame( 'http://moo/?document=' . $post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $post_id ) ) ) . '&p=' . $post_id . '&typeName=Document', get_preview_post_link( $post_id ) );
 		faustwp_update_setting( 'frontend_uri', null );
@@ -269,6 +285,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_filters_link_for_posts_not_registered_with_wpgraphql() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_redirects', true );
 
 		register_post_type('notgraphql', ['public' => true]);
 

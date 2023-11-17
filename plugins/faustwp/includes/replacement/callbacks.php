@@ -11,8 +11,8 @@ use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
 	is_image_source_replacement_enabled,
 	is_rewrites_enabled,
+	is_redirects_enabled,
 	use_wp_domain_for_media,
-	use_wp_domain_for_post_and_category_urls,
 };
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
@@ -146,6 +146,10 @@ add_filter( 'preview_post_link', __NAMESPACE__ . '\\post_preview_link', 1000, 2 
  * @return string URL used for the post preview.
  */
 function post_preview_link( $link, $post ) {
+	// Don't rewrite preview link if redirect is disabled.
+	if ( ! is_redirects_enabled() ) {
+		return $link;
+	}
 	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
