@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/extensions
-import { cookies } from 'next/headers';
+import { cookies } from 'next/headers.js';
 import { AuthorizeResponse } from '../routeHandler/tokenHandler.js';
 import { getUrl } from '../../lib/getUrl.js';
 import { getWpUrl } from '../../faust-core-utils.js';
