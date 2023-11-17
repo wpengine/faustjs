@@ -1,6 +1,6 @@
 <?php
 /**
- * Block support functions for FaustWP.
+ * Functions related to block support.
  *
  * @package FaustWP
  */
@@ -9,10 +9,15 @@ namespace WPE\FaustWP\Blocks;
 
 use WP_Error;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 require_once ABSPATH . 'wp-admin/includes/file.php';
 
 /**
- * Handles the uploaded blockset file and unzips it.
+ * Handle the uploaded blockset file and unzips it.
+ * Returns true upon success.
  *
  * @param array $file The uploaded file details.
  * @return WP_Error|bool
@@ -70,11 +75,11 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
  */
 function validate_uploaded_file( $wp_filesystem, $file ) {
 	if ( 'application/zip' !== $file['type'] ) {
-		return new WP_Error( 'wrong_type', esc_html__( 'Not a zip file', 'faustwp' ) );
+		return new WP_Error( 'wrong_type', __( 'Not a zip file', 'faustwp' ) );
 	}
 
 	if ( ! $wp_filesystem->is_readable( $file['tmp_name'] ) ) {
-		return new WP_Error( 'file_read_error', esc_html__( 'Uploaded file is not readable', 'faustwp' ) );
+		return new WP_Error( 'file_read_error', __( 'Uploaded file is not readable', 'faustwp' ) );
 	}
 
 	return true;
@@ -105,7 +110,7 @@ function ensure_directories_exist( $dirs ) {
 	foreach ( $dirs as $dir ) {
 		if ( ! wp_mkdir_p( $dir ) ) {
 			/* translators: %s: directory path */
-			return new WP_Error( 'mkdir_error', sprintf( esc_html__( 'Could not create directory: %s', 'faustwp' ), $dir ) );
+			return new WP_Error( 'mkdir_error', sprintf( __( 'Could not create directory: %s', 'faustwp' ), $dir ) );
 		}
 	}
 
@@ -124,7 +129,7 @@ function ensure_directories_exist( $dirs ) {
  */
 function move_uploaded_file( $wp_filesystem, $file, $target_file ) {
 	if ( ! $wp_filesystem->move( $file['tmp_name'], $target_file, true ) ) {
-		return new WP_Error( 'move_error', esc_html__( 'Could not move uploaded file', 'faustwp' ) );
+		return new WP_Error( 'move_error', __( 'Could not move uploaded file', 'faustwp' ) );
 	}
 	return true;
 }
