@@ -4,12 +4,6 @@ import Link from 'next/link';
 import { FaustProvider } from '@faustwp/experimental-app-router';
 import '@/faust.config.js';
 
-import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
-
-// Adds messages only in a dev environment
-loadDevMessages();
-loadErrorMessages();
-
 export default async function RootLayout({ children }) {
   const client = await getClient();
 
