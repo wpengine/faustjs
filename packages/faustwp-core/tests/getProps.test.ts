@@ -29,7 +29,7 @@ describe('getProps', () => {
       expect.assertions(1);
       expect(
         await getNextStaticProps({}, { Page: {}, notFound: true }),
-      ).toStrictEqual({ notFound: true });
+      ).toStrictEqual({ notFound: true, revalidate: 900 });
     });
 
     test('getNextStaticProps() handles `redirect`', async () => {
