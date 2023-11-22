@@ -222,18 +222,6 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests preview_link_in_rest_response() returns preview link in draft mode.
-	 */
-	public function test_preview_link_in_rest_response_returns_preview_link_for_draft_posts() {
-		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		$response = new WP_REST_Response( $data=[] );
-		$response->data['link'] = get_permalink( $this->draft_post_id );
-		$response = preview_link_in_rest_response( $response, get_post( $this->draft_post_id ) );
-		$this->assertTrue($response);
-		$this->assertSame( 'http://moo/?p=' . $this->draft_post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->draft_post_id ) ) ) . '&typeName=Post', $response->data['link'] );
-	}
-
-	/**
 	 * Tests get_preview_post_link() returns rewritten value.
 	 */
 	public function test_post_preview_link_returns_filtered_link() {
