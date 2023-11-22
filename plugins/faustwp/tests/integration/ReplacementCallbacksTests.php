@@ -229,6 +229,8 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$response = new WP_REST_Response( $data=[] );
 		$response->data['link'] = get_permalink( $this->draft_post_id );
 		$response = preview_link_in_rest_response( $response, get_post( $this->draft_post_id ) );
+		print_r(get_permalink( $this->draft_post_id ));
+		print_r(get_permalink( $this->post_id ));
 		$this->assertSame( 'http://moo/?p=' . $this->draft_post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->draft_post_id ) ) ) . '&typeName=Post', $response->data['link'] );
 	}
 
