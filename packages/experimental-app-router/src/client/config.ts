@@ -1,27 +1,20 @@
 import {
   ApolloClient,
+  ApolloLink,
   InMemoryCache,
   InMemoryCacheConfig,
-  NormalizedCacheObject,
   createHttpLink,
 } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { setContext } from '@apollo/client/link/context';
 // eslint-disable-next-line import/extensions
-import {
-  NextSSRApolloClient,
-  NextSSRInMemoryCache,
-  // eslint-disable-next-line import/extensions
-} from '@apollo/experimental-nextjs-app-support/ssr';
+import { NextSSRInMemoryCache } from '@apollo/experimental-nextjs-app-support/ssr';
 import { getConfig, getGraphqlEndpoint } from '../faust-core-utils.js';
 import { fetchAccessToken } from '../server/auth/fetchAccessToken.js';
 
-export function createFaustApolloClient(
+export function createApolloConfig(
   authenticated = false,
-  rsc = true,
-):
-  | ApolloClient<NormalizedCacheObject>
-  | NextSSRApolloClient<NormalizedCacheObject> {
+): [InMemoryCacheConfig, ApolloLink] {
   const { possibleTypes } = getConfig();
 
   const inMemoryCacheObject: InMemoryCacheConfig = {
@@ -66,15 +59,21 @@ export function createFaustApolloClient(
    * we may set config differently than how we currently do it.
    */
 
-  if (!rsc) {
-    return new NextSSRApolloClient({
-      cache: new NextSSRInMemoryCache(inMemoryCacheObject),
-      link: linkChain,
-    });
-  }
+  return [inMemoryCacheObject, linkChain];
+}
 
+export function createRSCApolloClient(authenticated = false) {
+  const [inMemoryCacheObject, linkChain] = createApolloConfig(authenticated);
   return new ApolloClient({
     cache: new InMemoryCache(inMemoryCacheObject),
+    link: linkChain,
+  });
+}
+
+export function createSSRApolloClient(authenticated = false) {
+  const [inMemoryCacheObject, linkChain] = createApolloConfig(authenticated);
+  return new ApolloClient({
+    cache: new NextSSRInMemoryCache(inMemoryCacheObject),
     link: linkChain,
   });
 }

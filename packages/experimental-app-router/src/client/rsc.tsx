@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/extensions
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
 import { fetchAccessToken } from '../server/auth/fetchAccessToken.js';
-import { createFaustApolloClient } from './config.js';
+import { createRSCApolloClient } from './config.js';
 
 export async function getClient() {
-  const faustApolloClient = createFaustApolloClient();
+  const faustApolloClient = createRSCApolloClient(false);
   const client = registerApolloClient(() => faustApolloClient);
 
   return client.getClient();
@@ -17,7 +17,7 @@ export async function getAuthClient() {
     return null;
   }
 
-  const faustApolloClient = createFaustApolloClient(true);
+  const faustApolloClient = createRSCApolloClient(true);
   const client = registerApolloClient(() => faustApolloClient);
 
   return client.getClient();
