@@ -1,7 +1,6 @@
 import { gql } from '@apollo/client';
 import { getClient } from '@faustwp/experimental-app-router';
 import Link from 'next/link';
-import { FaustProvider } from '@faustwp/experimental-app-router/ssr';
 import '@/faust.config.js';
 export default async function RootLayout({ children }) {
   const client = await getClient();
@@ -34,26 +33,24 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <FaustProvider>
-          <header>
-            <div>
-              <h1>
-                <Link href="/">{data.generalSettings.title}</Link>
-              </h1>
+        <header>
+          <div>
+            <h1>
+              <Link href="/">{data.generalSettings.title}</Link>
+            </h1>
 
-              <h5>{data.generalSettings.description}</h5>
-            </div>
+            <h5>{data.generalSettings.description}</h5>
+          </div>
 
-            <ul>
-              {data.primaryMenuItems.nodes.map((node) => (
-                <li>
-                  <Link href={node.uri}>{node.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </header>
-          {children}
-        </FaustProvider>
+          <ul>
+            {data.primaryMenuItems.nodes.map((node) => (
+              <li>
+                <Link href={node.uri}>{node.label}</Link>
+              </li>
+            ))}
+          </ul>
+        </header>
+        {children}
       </body>
     </html>
   );

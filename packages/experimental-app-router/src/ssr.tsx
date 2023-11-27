@@ -1,1 +1,1 @@
-export { FaustProvider } from './client/ssr.js';
+export { FaustSSRProvider } from './client/ssr.js';

@@ -9,7 +9,7 @@ function makeClient() {
   return createSSRApolloClient(false);
 }
 
-export function FaustProvider({ children }: PropsWithChildren<object>) {
+export function FaustSSRProvider({ children }: PropsWithChildren<object>) {
   return (
     <ApolloNextAppProvider makeClient={makeClient}>
       {children}
