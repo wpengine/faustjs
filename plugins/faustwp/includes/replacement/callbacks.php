@@ -304,6 +304,24 @@ function enqueue_preview_scripts() {
 	);
 }
 
+add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+/**
+ * Adds the preview link to rest responses.
+ *
+ * @param WP_REST_Response $response The rest response object.
+ * @param WP_Post          $post Post object.
+ *
+ * @return string URL used for the post preview.
+ */
+function preview_link_in_rest_response( $response, $post ) {
+	if ( 'draft' === $post->post_status ) {
+		$response->data['link'] = get_preview_post_link( $post->ID );
+	}
+
+	return $response;
+}
+
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
 /**
  * Filters the sitemap entry for an individual post.
