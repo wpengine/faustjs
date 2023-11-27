@@ -7,8 +7,11 @@ import {
 } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { setContext } from '@apollo/client/link/context';
-// eslint-disable-next-line import/extensions
-import { NextSSRInMemoryCache } from '@apollo/experimental-nextjs-app-support/ssr';
+import {
+  NextSSRApolloClient,
+  NextSSRInMemoryCache,
+  // eslint-disable-next-line import/extensions
+} from '@apollo/experimental-nextjs-app-support/ssr';
 import { getConfig, getGraphqlEndpoint } from '../faust-core-utils.js';
 import { fetchAccessToken } from '../server/auth/fetchAccessToken.js';
 
@@ -72,7 +75,7 @@ export function createRSCApolloClient(authenticated = false) {
 
 export function createSSRApolloClient(authenticated = false) {
   const [inMemoryCacheObject, linkChain] = createApolloConfig(authenticated);
-  return new ApolloClient({
+  return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(inMemoryCacheObject),
     link: linkChain,
   });
