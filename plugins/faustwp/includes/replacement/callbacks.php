@@ -11,8 +11,8 @@ use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
 	is_image_source_replacement_enabled,
 	is_rewrites_enabled,
+	is_redirects_enabled,
 	use_wp_domain_for_media,
-	use_wp_domain_for_post_and_category_urls,
 };
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
@@ -146,6 +146,10 @@ add_filter( 'preview_post_link', __NAMESPACE__ . '\\post_preview_link', 1000, 2 
  * @return string URL used for the post preview.
  */
 function post_preview_link( $link, $post ) {
+	// Don't rewrite preview link if redirect is disabled.
+	if ( ! is_redirects_enabled() ) {
+		return $link;
+	}
 	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
@@ -298,6 +302,24 @@ function enqueue_preview_scripts() {
 			'_wp_version'   => get_bloginfo( 'version' ),
 		)
 	);
+}
+
+add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+/**
+ * Adds the preview link to rest responses.
+ *
+ * @param WP_REST_Response $response The rest response object.
+ * @param WP_Post          $post Post object.
+ *
+ * @return string URL used for the post preview.
+ */
+function preview_link_in_rest_response( $response, $post ) {
+	if ( 'draft' === $post->post_status ) {
+		$response->data['link'] = get_preview_post_link( $post->ID );
+	}
+
+	return $response;
 }
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );
