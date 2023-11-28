@@ -148,6 +148,7 @@ export async function compileBlocks(): Promise<void> {
   }
   args = args.concat([
     '--no-watch',
+    '--webpack-no-externals',
     `--webpack-src-dir=${FAUST_BLOCKS_SRC_DIR}`,
     `--output-path=${FAUST_BUILD_DIR}`,
   ]);
