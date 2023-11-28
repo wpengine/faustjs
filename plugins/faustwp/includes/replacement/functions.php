@@ -9,7 +9,8 @@ namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
-	is_rewrites_enabled
+	is_rewrites_enabled,
+	use_wp_domain_for_post_and_category_urls,
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -18,8 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Determine if domain replacement can be done.
- *
- * Enabled if query string parameter 'replace-domain' is present.
  *
  * @return bool True if can proceed with replacement, false if else.
  */
@@ -31,7 +30,7 @@ function domain_replacement_enabled() {
 	 *
 	 * @param bool $enabled True if domain replacement is enabled, false if else.
 	 */
-	return apply_filters( 'faustwp_domain_replacement_enabled', is_rewrites_enabled() );
+	return apply_filters( 'faustwp_domain_replacement_enabled', ! use_wp_domain_for_post_and_category_urls() );
 }
 
 /**
@@ -111,3 +110,24 @@ function has_file_extension( $string ) {
 	}
 }
 
+/**
+ * Determines if an AJAX request to generate permalinks is in progress.
+ *
+ * @return boolean
+ */
+function is_ajax_generate_permalink_request(): bool {
+	return ( ! empty( $_POST['samplepermalinknonce'] ) && check_ajax_referer( 'samplepermalink', 'samplepermalinknonce' ) );
+}
+
+/**
+ * Determines if a wp-link-ajax request is in progress.
+ *
+ * @return boolean
+ */
+function is_wp_link_ajax_request(): bool {
+	return ( wp_doing_ajax()
+		&& ! empty( $_POST['_ajax_linking_nonce'] )
+		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
+		&& ! empty( $_POST['action'] )
+		&& 'wp-link-ajax' === $_POST['action'] );
+}

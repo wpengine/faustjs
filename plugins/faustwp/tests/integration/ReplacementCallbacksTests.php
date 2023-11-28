@@ -10,13 +10,17 @@ namespace WPE\FaustWP\Tests\Integration;
 use function WPE\FaustWP\Replacement\{
 	content_replacement,
 	post_preview_link,
+	preview_link_in_rest_response,
 	image_source_replacement,
-	image_source_srcset_replacement
+	image_source_srcset_replacement,
+	post_link,
 };
 use function WPE\FaustWP\Settings\faustwp_update_setting;
+use WP_REST_Response;
 
 class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	protected $post_id;
+	protected $draft_post_id;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -26,6 +30,11 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 			'post_content' => 'Hi',
 			'post_status'  => 'publish',
 		] );
+		$this->draft_post_id = wp_insert_post( [
+			'title'        => 'Hello',
+			'post_content' => 'Hi',
+			'post_status'  => 'draft',
+		] );
 	}
 
 	public function test_the_content_filter() {
@@ -34,6 +43,14 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_preview_post_link_filter() {
 		$this->assertSame( 1000, has_action( 'preview_post_link', 'WPE\FaustWP\Replacement\post_preview_link' ) );
+	}
+
+	public function test_preview_rest_prepare_post_filter() {
+		$this->assertSame( 10, has_action( 'rest_prepare_post', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
+	}
+
+	public function test_preview_rest_prepare_page_filter() {
+		$this->assertSame( 10, has_action( 'rest_prepare_page', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
 	}
 
 	public function test_post_link_filter() {
@@ -46,10 +63,6 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_term_link_filter() {
 		$this->assertSame( 1000, has_action( 'term_link', 'WPE\FaustWP\Replacement\term_link' ) );
-	}
-
-	public function test_graphql_request_results_filter() {
-		$this->assertSame( 10, has_action( 'graphql_request_results', 'WPE\FaustWP\Replacement\url_replacement' ) );
 	}
 
 	public function test_enqueue_preview_scripts_action() {
@@ -66,6 +79,10 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_wpseo_xml_sitemap_post_url_filter() {
 		$this->assertSame( 10, has_action( 'wpseo_xml_sitemap_post_url', 'WPE\FaustWP\Replacement\yoast_sitemap_post_url' ) );
+	}
+
+	public function test_wp_calculate_image_srcset_filter(): void {
+		self::assertSame( 10, has_action( 'wp_calculate_image_srcset', 'WPE\FaustWP\Replacement\image_source_srcset_replacement' ) );
 	}
 
 	/**
@@ -131,6 +148,9 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_image_source_replacement_filters_content_when_image_replacement_not_enabled() {
 		faustwp_update_setting( 'enable_image_source', '0' );
 		$this->assertSame( '<img src="/image.png">', image_source_replacement( '<img src="/image.png">' ) );
+
+		// Ensure unrelated domains are left alone.
+		$this->assertSame( '<img src="http://fake/image.png">', image_source_replacement( '<img src="http://fake/image.png">' ) );
 	}
 
 	/**
@@ -156,9 +176,49 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_link_returns_filtered_link_when_content_replacement_is_enabled() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_rewrites', '1' );
 
 		$this->assertSame( 'http://moo/?p=' . $this->post_id, get_permalink( $this->post_id ) );
+	}
+
+	public function test_post_link_returns_unfiltered_link_when_on_post_new_page(): void {
+		global $pagenow;
+		$pagenow = 'post-new.php';
+		self::assertSame( 'http://example.org/hello-world', post_link( 'http://example.org/hello-world' ) );
+	}
+
+	public function test_post_link_returns_unfiltered_link_on_ajax_requests_to_generate_permalinks_using_samplepermalinknonce(): void {
+		global $pagenow, $_REQUEST, $_POST;
+		$pagenow = 'admin-ajax.php';
+		wp_set_current_user( 1 );
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		$_REQUEST['samplepermalinknonce'] = wp_create_nonce( 'samplepermalink' );
+		$_POST['samplepermalinknonce'] = $_REQUEST['samplepermalinknonce'];
+
+		self::assertSame( 'http://example.org/hello-world', post_link( 'http://example.org/hello-world' ) );
+
+		unset( $_REQUEST['samplepermalinknonce'], $_POST['samplepermalinknonce'] );
+		unset( $pagenow );
+		wp_set_current_user( null );
+	}
+
+	public function test_post_link_returns_unfiltered_link_on_ajax_requests_to_generate_permalinks_using_ajax_linking_nonce(): void {
+		global $pagenow, $_POST;
+		$pagenow = 'admin-ajax.php';
+		wp_set_current_user( 1 );
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		add_filter( 'wp_doing_ajax', '__return_true' );
+		$_POST['_ajax_linking_nonce'] = wp_create_nonce( 'internal-linking' );
+		$_POST['action'] = 'wp-link-ajax';
+
+		self::assertSame( 'http://example.org/hello-world', post_link( 'http://example.org/hello-world' ) );
+
+		unset( $_POST['_ajax_linking_nonce'], $_POST['action'] );
+		unset( $pagenow );
+		remove_filter( 'wp_doing_ajax', '__return_true' );
+		wp_set_current_user( null );
 	}
 
 	/**
@@ -166,6 +226,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_returns_filtered_link() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_redirects', true );
 
 		$this->assertSame( 'http://moo/?p=' . $this->post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&typeName=Post', get_preview_post_link( $this->post_id ) );
 	}
@@ -175,10 +236,24 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_adds_preview_true_query_param() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_redirects', true );
 
 		$link = post_preview_link( 'http://moo/', get_post( $this->post_id ) );
 
 		$this->assertSame( 'http://moo/?previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $this->post_id ) ) ) . '&p=' . $this->post_id . '&preview=true&typeName=Post', $link );
+	}
+
+	/**
+	 * Tests post_preview_link() doesn't rewrite link if enable redirects is false.
+	 */
+	public function test_post_preview_doesnt_rewrite_link_with_redirect_off() {
+		faustwp_update_setting( 'enable_redirects', false );
+		$expected = 'http://moo/?p=' . $this->post_id;
+		$link     = post_preview_link( $expected, get_post( $this->post_id ) );
+
+		$this->assertSame( $expected, $link );
+
+		faustwp_update_setting( 'enable_redirects', true );
 	}
 
 	/**
@@ -201,6 +276,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_redirects', true );
 		$post_id = $this->getCustomPostType();
 		$this->assertSame( 'http://moo/?document=' . $post_id . '&preview=true&previewPathname=' . rawurlencode( wp_make_link_relative( get_permalink( $post_id ) ) ) . '&p=' . $post_id . '&typeName=Document', get_preview_post_link( $post_id ) );
 		faustwp_update_setting( 'frontend_uri', null );
@@ -213,7 +289,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_custom_post_type_post_link_returns_unfiltered_link_when_content_replacement_is_enabled()
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
-		faustwp_update_setting( 'enable_rewrites', true );
+		faustwp_update_setting( 'enable_rewrites', '1' );
 		$post_id = $this->getCustomPostType();
 		$this->assertSame( 'http://example.org/?document=' . $post_id, get_permalink($post_id) );
 		faustwp_update_setting( 'frontend_uri', null );
@@ -225,6 +301,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	 */
 	public function test_post_preview_link_filters_link_for_posts_not_registered_with_wpgraphql() {
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_redirects', true );
 
 		register_post_type('notgraphql', ['public' => true]);
 
@@ -253,6 +330,44 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		$term_id = get_terms( [ 'hide_empty' => false, 'fields' => 'ids' ] )[0];
 		$this->assertSame( 'http://moo/?cat=' . $term_id, get_term_link( $term_id ) );
+	}
+
+	/**
+	 * Tests content_replacement() handles mixed content blobs properly.
+	 */
+	public function test_content_replacement_properly_handles_a_mixed_content_blob() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_image_source', '1' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+
+		$input = <<<INPUT
+		<p>This is a <a href="http://example.org/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	INPUT;
+
+		$output = <<<OUTPUT
+		<p>This is a <a href="http://moo/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	OUTPUT;
+
+		self::assertSame(
+				$output,
+				content_replacement( $input )
+		);
+
+		// Check that media URLs are rewritten when enable_image_source setting is configured to NOT use the WP domain.
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$input = <<<INPUT
+		<p>This is a <a href="http://example.org/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://example.org/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	INPUT;
+
+		$output = <<<OUTPUT
+		<p>This is a <a href="http://moo/hello-world/" data-type="post" data-id="1">post link</a>.</p><p>This is a <a href="http://moo/wp-content/uploads/2023/10/out-of-the-tar-pit.pdf" data-type="attachment" data-id="12">media link</a> to a PDF file.</p><p>This is a <a href="http://moo/wp-content/uploads/2023/10/IMG_8963-scaled.jpg" data-type="attachment" data-id="15">media link</a> to an image.</p>
+	OUTPUT;
+
+		self::assertSame(
+				$output,
+				content_replacement( $input )
+		);
 	}
 
 	private function getCustomPostType() {
