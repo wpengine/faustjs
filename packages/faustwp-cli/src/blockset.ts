@@ -45,7 +45,7 @@ export interface PhpAsset {
 
 /**
  * Parses a PHP asset file content and converts it into a JSON object.
- * 
+ *
  * @param {string} phpContent - The content of the PHP asset file.
  * @returns {PhpAsset} - A JSON object representing the parsed content.
  */
@@ -60,17 +60,20 @@ export function parsePhpAssetFile(phpContent: string): PhpAsset {
   }
 
   // Extract dependencies if present
-  const dependenciesMatch = matches[1].match(/'dependencies'\s*=>\s*array\(([^)]+)\)/);
+  const dependenciesMatch = matches[1].match(
+    /'dependencies'\s*=>\s*array\(([^)]+)\)/,
+  );
   if (dependenciesMatch) {
     jsonObject.dependencies = dependenciesMatch[1]
       .split(',')
-      .map(dep => dep.trim().replace(/'/g, ''));
+      .map((dep) => dep.trim().replace(/'/g, ''));
   }
 
   // Extract version if present
   const versionMatch = matches[1].match(/'version'\s*=>\s*'([^']+)'/);
   if (versionMatch) {
-    jsonObject.version = versionMatch[1];
+    const [, version] = versionMatch; // destructures versionMatch and skips the first element (which is the full match of the regex), directly assigning the second element (the captured group) to the variable version.
+    jsonObject.version = version;
   }
 
   return jsonObject;
@@ -96,44 +99,42 @@ export async function fetchBlockFiles(): Promise<string[]> {
  */
 export async function processBlockFiles(files: string[]): Promise<void> {
   await fs.emptyDir(BLOCKS_DIR);
-  await Promise.all(
-    files.map(async (filePath) => {
-      const blockDir = path.dirname(filePath);
-      const blockName = path.basename(blockDir);
-      const destDir = path.join(BLOCKS_DIR, blockName);
 
-      await fs.copy(blockDir, destDir);
+  const fileProcessingPromises = files.map(async (filePath) => {
+    const blockDir = path.dirname(filePath);
+    const blockName = path.basename(blockDir);
+    const destDir = path.join(BLOCKS_DIR, blockName);
 
-      // Check if the file is a JSON file.
-      if (path.extname(filePath) === '.json') {
-        try {
-          const blockJson = await fs.readJson(filePath);
-          manifest.blocks.push(blockJson);
-        } catch (error) {
-          console.error(`Error reading JSON file: ${filePath}`, error);
-        }
+    await fs.copy(blockDir, destDir);
+
+    if (path.extname(filePath) === '.json') {
+      try {
+        const blockJson = await fs.readJson(filePath);
+        manifest.blocks.push(blockJson);
+      } catch (error) {
+        console.error(`Error reading JSON file: ${filePath}`, error);
       }
+    }
 
-      // Handle PHP asset file.
-      const phpAssetPath = path.join(blockDir, 'index.asset.php');
-      if (await fs.pathExists(phpAssetPath)) {
-        const phpContent = await fs.readFile(phpAssetPath, 'utf8');
-        const assetData = parsePhpAssetFile(phpContent);
-        await fs.writeJson(path.join(destDir, 'index.asset.json'), assetData, { spaces: 2 });
-        await fs.remove(phpAssetPath);
-      }
-
-      // Check for and remove any other PHP files as many hosts do not allow *.php files
-      // within the uploads directory which could throw an error during the blockset process.
-      const phpFiles = await glob(`${destDir}/**/*.php`, {
-        ignore: IGNORE_NODE_MODULES,
+    // Handle PHP asset file
+    const phpAssetPath = path.join(blockDir, 'index.asset.php');
+    if (await fs.pathExists(phpAssetPath)) {
+      const phpContent = await fs.readFile(phpAssetPath, 'utf8');
+      const assetData = parsePhpAssetFile(phpContent);
+      await fs.writeJson(path.join(destDir, 'index.asset.json'), assetData, {
+        spaces: 2,
       });
-      for (const file of phpFiles) {
-        debugLog(`Removing PHP file: ${file}`);
-        await fs.remove(file);
-      }
-    }),
-  );
+      await fs.remove(phpAssetPath);
+    }
+
+    // Remove any other PHP files
+    const phpFiles = await glob(`${destDir}/**/*.php`, {
+      ignore: IGNORE_NODE_MODULES,
+    });
+    await Promise.all(phpFiles.map((file) => fs.remove(file)));
+  });
+
+  await Promise.all(fileProcessingPromises);
 }
 
 /**
