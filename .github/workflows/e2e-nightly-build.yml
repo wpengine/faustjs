@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: ['16', '18']
+        node: ['16', '18', '20']
     defaults:
       run:
         working-directory: ./
@@ -28,11 +28,11 @@ jobs:
       # Install faust-scaffold-ts via npx create next app
       - name: npx create next app
         run: |
-          npx create-next-app \
+          npx create-next-app@13 \
             -e https://github.com/wpengine/faust-scaffold-ts/tree/main \
             --use-npm \
             e2e-app
-        
+
       - name: Install nightly versions
         working-directory: e2e-app
         run: |

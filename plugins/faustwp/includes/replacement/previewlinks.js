@@ -2,7 +2,7 @@
  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Get the preview data via wp_localize_script
   const faustPreviewData = window._faustwp_preview_data;
 
@@ -19,12 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function debounce(func, wait) {
     let timeout;
-    return function() {
-      const context = this;
-      const args = arguments;
+    return function (...args) {
       clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        func.apply(context, args);
+      timeout = setTimeout(function () {
+        func(args);
       }, wait);
     };
   }
@@ -34,8 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
     switch (version) {
       default:
         return {
-          headerLink: document.querySelector('.edit-post-header-preview__grouping-external a'),
-          snackbarLink: document.querySelector('.components-snackbar__content a'),
+          headerLink: document.querySelector(
+            '.edit-post-header-preview__grouping-external a',
+          ),
+          snackbarLink: document.querySelector(
+            '.components-snackbar__content a',
+          ),
         };
     }
   }
@@ -43,14 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateUIElements() {
     const { headerLink, snackbarLink } = getPreviewLinksByVersion(wpVersion);
 
-    // Clone & replace the original link in order to clear pre-existing events.
     if (headerLink && headerLink.getAttribute('href') !== faustPreviewLink) {
-      const clonedHeaderLink = headerLink.cloneNode(true);
-      headerLink.parentNode.replaceChild(clonedHeaderLink, headerLink);
-      if (clonedHeaderLink) clonedHeaderLink.setAttribute('href', faustPreviewLink);
+      headerLink.setAttribute('href', faustPreviewLink);
     }
 
-    if (snackbarLink && snackbarLink.getAttribute('href') !== faustPreviewLink) {
+    if (
+      snackbarLink &&
+      snackbarLink.getAttribute('href') !== faustPreviewLink
+    ) {
       snackbarLink.setAttribute('href', faustPreviewLink);
     }
   }

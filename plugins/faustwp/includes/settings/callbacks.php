@@ -340,8 +340,8 @@ function display_secret_key_field() {
 		<?php
 		printf(
 			/* translators: %s: Documentation URL. */
-			wp_kses_post( __( 'This key is used to enable <a href="%s" target="_blank" rel="noopener noreferrer">headless post previews</a>.', 'faustwp' ) ),
-			'https://faustjs.org/docs/next/guides/post-page-previews'
+			wp_kses_post( __( 'This key is used to enable <a href="%s" target="_blank" rel="noopener noreferrer">headless post previews</a> and make authenticated GraphQL requests for schema generation.', 'faustwp' ) ),
+			'https://faustjs.org/guide/how-to-setup-post-and-page-previews'
 		);
 		?>
 	</p>

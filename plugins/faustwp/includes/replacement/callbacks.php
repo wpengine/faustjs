@@ -10,7 +10,9 @@ namespace WPE\FaustWP\Replacement;
 use function WPE\FaustWP\Settings\{
 	faustwp_get_setting,
 	is_image_source_replacement_enabled,
-	is_rewrites_enabled
+	is_rewrites_enabled,
+	is_redirects_enabled,
+	use_wp_domain_for_media,
 };
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
@@ -21,32 +23,49 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 add_filter( 'the_content', __NAMESPACE__ . '\\content_replacement' );
+add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\content_replacement' );
 /**
  * Callback for WordPress 'the_content' filter.
  *
  * @param string $content The post content.
  *
  * @return string The post content.
- * @todo Needs work...
  */
 function content_replacement( $content ) {
-	if ( ! domain_replacement_enabled() ) {
+	$use_wp_domain_for_permalinks = ! domain_replacement_enabled();
+	$use_wp_domain_for_media      = use_wp_domain_for_media();
+
+	if ( $use_wp_domain_for_permalinks && $use_wp_domain_for_media ) {
 		return $content;
 	}
 
 	$replacement = faustwp_get_setting( 'frontend_uri' );
-	$site_url    = site_url();
-
 	if ( ! $replacement ) {
 		$replacement = '/';
 	}
 
-	$content = str_replace( "href=\"{$site_url}", "href=\"{$replacement}", $content );
+	$site_url  = site_url();
+	$media_dir = str_replace( $site_url, '', wp_upload_dir()['baseurl'] );
+	$media_url = $site_url . $media_dir;
 
-	return str_replace( 'href="//', 'href="/', $content );
+	if ( $use_wp_domain_for_permalinks && ! $use_wp_domain_for_media ) {
+		$content = str_replace( $media_url, $replacement . $media_dir, $content );
+		return $content;
+	}
+
+	if ( ! $use_wp_domain_for_permalinks && ! $use_wp_domain_for_media ) {
+		$content = str_replace( $site_url, $replacement, $content );
+		return $content;
+	}
+
+	if ( ! $use_wp_domain_for_permalinks && $use_wp_domain_for_media ) {
+		$content = preg_replace( "#{$site_url}(?!{$media_dir})#", "{$replacement}", $content );
+		return $content;
+	}
+
+	return $content;
 }
 
-add_filter( 'the_content', __NAMESPACE__ . '\\image_source_replacement' );
 /**
  * Callback for WordPress 'the_content' filter to replace paths to media.
  *
@@ -79,21 +98,36 @@ add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_
  * @return string One or more arrays of source data.
  */
 function image_source_srcset_replacement( $sources ) {
-	if ( ! is_image_source_replacement_enabled() ) {
-		return $sources;
-	}
+	$use_wp_domain_for_media = use_wp_domain_for_media();
+	$frontend_uri            = faustwp_get_setting( 'frontend_uri' );
+	$site_url                = site_url();
 
-	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
-	$site_url     = site_url();
+	/**
+	 * For urls with no domain or the frontend domain, replace with the WP site_url.
+	 * This was the default replacement pattern until Faust 1.2, at which point this
+	 * was adjusted to correct replacement bugs.
+	 */
+	$patterns = array(
+		"#^{$site_url}/#",
+		'#^/#',
+	);
 
-	if ( is_array( $sources ) ) {
-		// For urls with no domain or the frontend domain, replace with the wp site_url.
-		$patterns = array(
+	$replacement = $frontend_uri;
+
+	/**
+	 * If using WP domain for media and a frontend URL is encountered, rewrite it to WP URL.
+	 */
+	if ( $use_wp_domain_for_media ) {
+		$patterns    = array(
 			"#^{$frontend_uri}/#",
 			'#^/#',
 		);
+		$replacement = $site_url;
+	}
+
+	if ( is_array( $sources ) ) {
 		foreach ( $sources as $width => $source ) {
-			$sources[ $width ]['url'] = preg_replace( $patterns, "$site_url/", $sources[ $width ]['url'] );
+			$sources[ $width ]['url'] = preg_replace( $patterns, "$replacement/", $source['url'] );
 		}
 	}
 
@@ -112,6 +146,10 @@ add_filter( 'preview_post_link', __NAMESPACE__ . '\\post_preview_link', 1000, 2 
  * @return string URL used for the post preview.
  */
 function post_preview_link( $link, $post ) {
+	// Don't rewrite preview link if redirect is disabled.
+	if ( ! is_redirects_enabled() ) {
+		return $link;
+	}
 	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
 	if ( $frontend_uri ) {
@@ -200,10 +238,32 @@ add_filter( 'page_link', __NAMESPACE__ . '\\post_link', 1000 );
  * @return string URL used for the post.
  */
 function post_link( $link ) {
+	global $pagenow;
+	$target_pages = array( 'admin-ajax.php', 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' );
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in `is_ajax_generate_permalink_request()` and `is_wp_link_ajax_request()`.
+	if ( empty( $_POST ) && 'post-new.php' === $pagenow ) {
+		return $link;
+	}
+
+	// Ajax requests to generate permalink.
+	if ( in_array( $pagenow, $target_pages, true )
+		&& is_ajax_generate_permalink_request()
+	) {
+			return $link;
+	}
+
 	if (
 		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+		// Block editor makes REST requests on these pages to query content.
+		|| ( in_array( $pagenow, $target_pages, true ) && current_user_can( 'edit_posts' ) && defined( 'REST_REQUEST' ) && REST_REQUEST )
 	) {
+		return $link;
+	}
+
+	// Check for wp-link-ajax requests. Used by Classic Editor when linking content.
+	if ( is_wp_link_ajax_request() ) {
 		return $link;
 	}
 
@@ -242,6 +302,24 @@ function enqueue_preview_scripts() {
 			'_wp_version'   => get_bloginfo( 'version' ),
 		)
 	);
+}
+
+add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+/**
+ * Adds the preview link to rest responses.
+ *
+ * @param WP_REST_Response $response The rest response object.
+ * @param WP_Post          $post Post object.
+ *
+ * @return string URL used for the post preview.
+ */
+function preview_link_in_rest_response( $response, $post ) {
+	if ( 'draft' === $post->post_status ) {
+		$response->data['link'] = get_preview_post_link( $post->ID );
+	}
+
+	return $response;
 }
 
 add_filter( 'wp_sitemaps_posts_entry', __NAMESPACE__ . '\\sitemaps_posts_entry' );

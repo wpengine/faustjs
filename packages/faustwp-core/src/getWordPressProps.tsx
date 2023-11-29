@@ -27,6 +27,13 @@ type QueryVariablesArgs = [
   },
   extra?: Record<string, unknown>,
 ];
+const createNotFound = (
+  ctx: GetStaticPropsContext,
+  revalidate?: number | boolean,
+) => ({
+  notFound: true as const,
+  ...(!isSSR(ctx) && { revalidate: revalidate ?? DEFAULT_ISR_REVALIDATE }),
+});
 
 export type WordPressTemplate = React.FC & {
   query?: DocumentNode;
@@ -67,6 +74,7 @@ export async function getWordPressProps(
     }
   | {
       notFound: true;
+      revalidate?: number | boolean | undefined;
     }
 > {
   const { templates } = getConfig();
@@ -97,9 +105,7 @@ export async function getWordPressProps(
   }) as string | null;
 
   if (!resolvedUrl) {
-    return {
-      notFound: true,
-    };
+    return createNotFound(ctx, revalidate);
   }
 
   const seedQuery = hooks.applyFilters('seedQueryDocumentNode', SEED_QUERY, {
@@ -117,9 +123,7 @@ export async function getWordPressProps(
   debugLog(`Seed Node for resolved url: "${resolvedUrl}": `, seedNode);
 
   if (!seedNode) {
-    return {
-      notFound: true,
-    };
+    return createNotFound(ctx, revalidate);
   }
 
   infoLog(
@@ -130,9 +134,7 @@ export async function getWordPressProps(
   const template = getTemplate(seedNode, templates);
 
   if (!template) {
-    return {
-      notFound: true,
-    };
+    return createNotFound(ctx, revalidate);
   }
 
   if (template.query && template.queries) {
