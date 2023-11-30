@@ -148,10 +148,11 @@ function handle_blockset_callback( \WP_REST_Request $request ) {
 		return $result;
 	}
 
+	// Translators: %s is replaced with the emoji indicating a successful sync.
 	return new \WP_REST_Response(
 		sprintf(
-			esc_html__( '%s Blockset sync complete!', 'faustwp' ), // Translators: This is a message displayed when a blockset sync is completed.
-			'✅' // Translators: This is an emoji indicating a successful sync.
+			esc_html__( '%s Blockset sync complete!', 'faustwp' ),
+			'✅'
 		),
 		200
 	);
