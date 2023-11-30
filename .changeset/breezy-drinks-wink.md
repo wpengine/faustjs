@@ -2,4 +2,4 @@
 '@faustwp/block-editor-utils': patch
 ---
 
-Readme update
+Publish Readme to NPM
