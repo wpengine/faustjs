@@ -55,7 +55,7 @@
     "version:nightly": "changeset version --snapshot && node scripts/versionPlugin.js",
     "version:status": "changeset status",
     "release": "npm run build && npm run build:experimental-app-router && changeset publish",
-    "release:nightly": "npm run build && changeset publish --tag canary",
+    "release:nightly": "npm run build && npm run build:experimental-app-router && changeset publish --tag canary",
     "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",
     "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
   },
