@@ -112,8 +112,6 @@ function ensure_directories_exist( $dirs ) {
 	return true;
 }
 
-
-
 /**
  * Moves the uploaded file to the target directory.
  *
@@ -155,4 +153,48 @@ function cleanup_temp_directory( $wp_filesystem, $temp_dir ) {
 	if ( $wp_filesystem->is_dir( $temp_dir ) ) {
 		$wp_filesystem->delete( $temp_dir, true );
 	}
+}
+
+/**
+ * Registers a block asset (script or style) if the file exists.
+ *
+ * This function checks for the existence of the asset file based on the provided metadata
+ * and field name, and then registers the asset with WordPress if the file is found.
+ *
+ * @param array  $metadata     Block metadata, typically from block.json.
+ * @param string $field_name   Asset type field name (e.g., editorScript, editorStyle).
+ * @param string $block_name   Unique name of the block.
+ * @param array  $dependencies Array of script or style dependencies.
+ * @param string $version      Version string for the asset.
+ * @return string|false        Registered handle on success, false on failure.
+ */
+function register_block_asset( $metadata, $field_name, $block_name, $dependencies, $version ) {
+	// Ensure that the asset path is set in the metadata.
+	if ( empty( $metadata[ $field_name ] ) ) {
+		return false;
+	}
+
+	// Process the asset path and construct the full URL.
+	$processed_asset_path = remove_block_asset_path_prefix( $metadata[ $field_name ] );
+	$full_url             = trailingslashit( wp_upload_dir()['baseurl'] ) . 'faustwp/blocks/' . $block_name . '/' . ltrim( $processed_asset_path, '/' );
+
+	// Construct the file system path to check for file existence.
+	$file_system_path = trailingslashit( wp_upload_dir()['basedir'] ) . 'faustwp/blocks/' . $block_name . '/' . ltrim( $processed_asset_path, '/' );
+
+	// Check if the asset file exists in the file system.
+	if ( ! file_exists( $file_system_path ) ) {
+		return false;
+	}
+
+	// Generate a handle and register the asset.
+	$handle = $block_name . '-' . strtolower( $field_name );
+	if ( strpos( strtolower( $field_name ), 'script' ) !== false ) {
+		wp_register_script( $handle, $full_url, $dependencies, $version, true );
+	} elseif ( strpos( strtolower( $field_name ), 'style' ) !== false ) {
+		wp_register_style( $handle, $full_url, $dependencies, $version );
+	} else {
+		return false;
+	}
+
+	return $handle;
 }
