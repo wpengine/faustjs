@@ -7,7 +7,7 @@ import archiver from 'archiver';
 import { spawnSync } from 'child_process';
 
 import { getWpUrl, getWpSecret, hasYarn } from './utils/index.js';
-import { infoLog, debugLog } from './stdout/index.js';
+import { debugLog } from './stdout/index.js';
 
 // File paths used throughout the blockset process
 export const ROOT_DIR = process.cwd();
@@ -187,7 +187,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
     }
 
     try {
-      infoLog('WordPress:', await response.json());
+      console.log(await response.json());
     } catch (jsonError) {
       if (jsonError instanceof Error) {
         throw new Error('Error parsing response from WordPress.');
