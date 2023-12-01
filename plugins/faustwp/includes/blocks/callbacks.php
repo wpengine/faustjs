@@ -42,8 +42,8 @@ function register_custom_blocks() {
 		$asset_file    = trailingslashit( $dir ) . 'index.asset.json';
 
 		if ( file_exists( $metadata_file ) ) {
-			$block_metadata = json_decode( file_get_contents( $metadata_file ), true );
-			$asset_data     = file_exists( $asset_file ) ? json_decode( file_get_contents( $asset_file ), true ) : array();
+			$block_metadata = json_decode( wp_remote_get( $metadata_file ), true );
+			$asset_data     = file_exists( $asset_file ) ? json_decode( wp_remote_get( $asset_file ), true ) : array();
 			$block_name     = basename( $dir );
 
 			$dependencies = $asset_data['dependencies'] ?? array();
@@ -51,7 +51,7 @@ function register_custom_blocks() {
 
 			$block_args = array();
 
-			// Register editor script
+			// Register editor script.
 			if ( isset( $block_metadata['editorScript'] ) ) {
 				$editor_script_handle = register_block_asset( $block_metadata, 'editorScript', $block_name, $dependencies, $version );
 				if ( $editor_script_handle ) {
@@ -59,7 +59,7 @@ function register_custom_blocks() {
 				}
 			}
 
-			// Register editor style
+			// Register editor style.
 			if ( isset( $block_metadata['editorStyle'] ) ) {
 				$editor_style_handle = register_block_asset( $block_metadata, 'editorStyle', $block_name, array(), $version );
 				if ( $editor_style_handle ) {
@@ -67,7 +67,7 @@ function register_custom_blocks() {
 				}
 			}
 
-			// Register style
+			// Register style.
 			if ( isset( $block_metadata['style'] ) ) {
 				$style_handle = register_block_asset( $block_metadata, 'style', $block_name, array(), $version );
 				if ( $style_handle ) {
@@ -100,13 +100,8 @@ add_filter( 'script_loader_src', __NAMESPACE__ . '\\correct_asset_src_for_upload
 function correct_asset_src_for_uploads_dir( $src, $handle ) {
 	// Check for the presence of "faustwp/blocks" in the src.
 	if ( strpos( $src, 'faustwp/blocks' ) !== false ) {
-		error_log( $src );
-		error_log( $handle );
-
 		// Extract the specific block directory.
 		preg_match( '#faustwp/blocks/([^/]+)#', $src, $matches );
-
-		error_log( print_r( $matches, true ) );
 
 		if ( isset( $matches[1] ) ) {
 			$uploads_dir = wp_upload_dir();
