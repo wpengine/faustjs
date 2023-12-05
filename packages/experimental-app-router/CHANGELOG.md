@@ -1,5 +1,15 @@
 # @faustwp/experimental-app-router
 
+## 0.2.2
+
+### Patch Changes
+
+- 626207b: Added: New util for fetching data on the client side. In a client component (`use client`), you can now use Apollo's `useQuery` to fetch data once your application is wrapped with the `<FaustProvider>` component. This new component is available via:
+
+  ```tsx
+  import { FaustProvider } from '@faustwp/experimental-app-router/ssr';
+  ```
+
 ## 0.2.1
 
 ### Patch Changes

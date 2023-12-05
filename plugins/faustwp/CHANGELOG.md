@@ -1,5 +1,13 @@
 # Faust
 
+## 1.1.2
+
+### Patch Changes
+
+- 78a061a: Fixed a bug that caused links to files in wp-content to be rewritten to the Faust Front-end site URL when they should not have been.
+- 2559958: Bug Fix: Fixed missing call to autosave when using Post/Page previews.
+- 75f5c80: Fixed a bug where links were rewritten to the Faust Front-end Site URL when using the post editor, resulting in those rewritten links being saved to the post content and guid fields when they shouldn't be. These links are now saved with the URL pointing to the WP site, as they should be. They are still rewritten at runtime to link to the Front-end Site URL when appropriate.
+
 ## 1.1.1
 
 ### Patch Changes
