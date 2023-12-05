@@ -14,6 +14,12 @@
 		"message": {
 			"type": "string",
 			"default": "Hello World"
+		},
+		"richText": {
+			"type": "string",
+			"source": "html",
+			"selector": ".rich-text",
+			"default": "Hello World"
 		}
 	},
 	"textdomain": "block-b",
