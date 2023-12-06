@@ -65,6 +65,7 @@ export async function getNextStaticProps<TProps>(
   if (isBoolean(notFound) && notFound === true) {
     return {
       notFound,
+      revalidate: DEFAULT_ISR_REVALIDATE,
     };
   }
 

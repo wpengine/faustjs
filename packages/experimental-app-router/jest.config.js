@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   roots: ['<rootDir>/tests'],
 
   // Adds Jest support for TypeScript using ts-jest.
