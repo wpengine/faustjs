@@ -222,7 +222,7 @@ export async function compileBlocks(): Promise<void> {
   args = args.concat([
     '--no-watch',
     `--webpack-src-dir=${FAUST_BLOCKS_SRC_DIR}`,
-    `--output-path=${FAUST_BUILD_DIR}`,
+    `--output-path="${FAUST_BUILD_DIR}"`,
   ]);
   const res = spawnSync(command, args, {
     shell: true,
