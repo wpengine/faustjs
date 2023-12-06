@@ -1,11 +1,20 @@
 import { QueryOptions } from '@apollo/client';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+// eslint-disable-next-line import/extensions
+import { print } from '@apollo/client/utilities';
+import { sha256 } from 'js-sha256';
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { ensureAuthorization, getAccessToken } from '../auth/index.js';
-import { getApolloClient } from '../client.js';
+import { getApolloAuthClient, getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
-import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
+import { SEED_QUERY, SeedNode } from '../queries/seedQuery.js';
 import { getQueryParam } from '../utils/convert.js';
+import { FaustContext } from '../store/FaustContext.js';
 
 export type WordPressTemplateProps = PropsWithChildren<{
   __SEED_NODE__: SeedNode | null;
@@ -18,6 +27,12 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
   __SEED_NODE__?: SeedNode | null;
   __TEMPLATE_QUERY_DATA__?: any | null;
   __TEMPLATE_VARIABLES__?: { [key: string]: any };
+};
+
+type WordPressTemplateContext = {
+  seedNode?: SeedNode;
+  isPreview?: boolean;
+  isAuthenticated?: boolean;
 };
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
@@ -35,6 +50,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const [seedNode, setSeedNode] = useState<SeedNode | null>(seedNodeProp);
   const template = getTemplate(seedNode, templates);
   const [data, setData] = useState<any | null>(templateQueryDataProp);
+  const [dataFromQueries, setDataFromQueries] = useState<any | null>(null); // TODO: Set queries from props;
   const [loading, setLoading] = useState(template === null);
   const [isPreview, setIsPreview] = useState<boolean | null>(
     templateQueryDataProp ? false : null,
@@ -47,6 +63,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       }
     | null
   >(null);
+  const faustContext = useContext(FaustContext);
 
   /**
    * Determine if the URL we are on is for previews
@@ -161,6 +178,62 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     })();
   }, [seedNode, isPreview, isAuthenticated, basePath]);
 
+  useEffect(() => {
+    // We don't know yet if this is a preview route or not
+    if (isPreview === null) {
+      return;
+    }
+
+    // This is a preview route, but we are not authenticated yet.
+    if (isPreview === true && isAuthenticated !== true) {
+      return;
+    }
+
+    void (async () => {
+      const client = isPreview ? getApolloAuthClient() : getApolloClient();
+
+      if (!template || !seedNode) {
+        return;
+      }
+
+      if (template.query) {
+        return;
+      }
+
+      if (!template.queries) {
+        return;
+      }
+
+      let queries: { [key: string]: string } | null = null;
+
+      const queryCalls = template.queries.map(({ query, variables }) => {
+        const queryVariables = variables
+          ? variables(seedNode, { asPreview: isPreview })
+          : undefined;
+        return client.query({
+          query,
+          variables: queryVariables,
+        });
+      });
+
+      const queriesRes = await Promise.all(queryCalls);
+
+      queries = {};
+
+      queriesRes.forEach((queryRes, index) => {
+        if (queries && template.queries) {
+          queries[sha256(print(template.queries[index].query))] = queryRes.data;
+        }
+      });
+
+      setDataFromQueries(queries);
+
+      faustContext?.setContext({ queries });
+
+      setLoading(false);
+    })();
+  }, [isAuthenticated, isPreview, seedNode, template, faustContext]);
+
   /**
    * Finally, get the template's query data.
    */
@@ -178,7 +251,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     void (async () => {
       const client = getApolloClient();
 
-      if (!template || !template?.query || !seedNode) {
+      if (!template || !template?.query || !template?.queries || !seedNode) {
         return;
       }
 
@@ -218,5 +291,9 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   }
 
   const Component = template as React.FC<{ [key: string]: any }>;
-  return React.createElement(Component, { ...props, data, loading }, null);
+  return React.createElement(
+    Component,
+    { ...props, data, loading, __FAUST_QUERIES__: dataFromQueries },
+    null,
+  );
 }

@@ -1,19 +1,20 @@
 import { gql } from '@apollo/client';
-import * as MENUS from '../constants/menus';
-import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import { useFaustQuery } from '@faustwp/core';
 import {
-  Header,
-  Footer,
-  Main,
   Container,
-  EntryHeader,
-  NavigationMenu,
   ContentWrapper,
+  EntryHeader,
   FeaturedImage,
+  Footer,
+  Header,
+  Main,
+  NavigationMenu,
   SEO,
 } from '../components';
+import * as MENUS from '../constants/menus';
+import { BlogInfoFragment } from '../fragments/GeneralSettings';
 import { useContext } from 'react';
-import { useFaustQuery, FaustContext } from '@faustwp/core';
+import { FaustContext } from '@faustwp/core';
 
 const GET_LAYOUT_QUERY = gql`
   ${BlogInfoFragment}
@@ -56,16 +57,20 @@ const GET_POST_QUERY = gql`
 `;
 
 export default function Component(props) {
-  const context = useContext(FaustContext);
-
-  const { post } = useFaustQuery(GET_POST_QUERY);
-  const { generalSettings, headerMenuItems, footerMenuItems } =
-    useFaustQuery(GET_LAYOUT_QUERY);
-
   // Loading state for previews
   if (props.loading) {
     return <>Loading...</>;
   }
+
+  const context = useContext(FaustContext);
+
+  console.log('context', context);
+
+  console.log(props);
+
+  const { post } = useFaustQuery(GET_POST_QUERY);
+  const { generalSettings, headerMenuItems, footerMenuItems } =
+    useFaustQuery(GET_LAYOUT_QUERY);
 
   const { title: siteTitle, description: siteDescription } = generalSettings;
   const primaryMenu = headerMenuItems?.nodes ?? [];

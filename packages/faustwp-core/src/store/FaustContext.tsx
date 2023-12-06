@@ -2,10 +2,11 @@ import { createContext } from 'react';
 import { FaustPageProps } from '../components/FaustProvider.js';
 
 export const FaustContext = createContext<
-  | ({
-      __FAUST_QUERIES__?: {
+  | {
+      queries: {
         [key: string]: any;
       };
-    } & FaustPageProps)
+      setContext: (newContext: any) => void;
+    }
   | undefined
 >(undefined);

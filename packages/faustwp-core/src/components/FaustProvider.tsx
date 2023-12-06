@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { useRouter } from 'next/router';
@@ -23,8 +23,26 @@ export function FaustProvider(props: {
   const router = useRouter();
   const apolloClient = useApollo(pageProps);
 
+  const setContext = (newContext) => {
+    console.log('called', newContext);
+    const queries = newContext?.queries;
+    setMyContext((prevContext) => {
+      console.log('prev', prevContext);
+      return {
+        ...prevContext,
+        queries,
+      };
+    });
+  };
+
+  const [myContext, setMyContext] = useState({
+    // eslint-disable-next-line no-underscore-dangle
+    queries: pageProps.__FAUST_QUERIES__,
+    setContext,
+  });
+
   return (
-    <FaustContext.Provider value={pageProps}>
+    <FaustContext.Provider value={myContext}>
       <ApolloProvider client={apolloClient}>
         {experimentalToolbar && (
           <Toolbar
