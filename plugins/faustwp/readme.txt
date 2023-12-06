@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,14 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.1.2 =
+
+### Patch Changes
+
+- 78a061a: Fixed a bug that caused links to files in wp-content to be rewritten to the Faust Front-end site URL when they should not have been.
+- 2559958: Bug Fix: Fixed missing call to autosave when using Post/Page previews.
+- 75f5c80: Fixed a bug where links were rewritten to the Faust Front-end Site URL when using the post editor, resulting in those rewritten links being saved to the post content and guid fields when they shouldn't be. These links are now saved with the URL pointing to the WP site, as they should be. They are still rewritten at runtime to link to the Front-end Site URL when appropriate.
+
 = 1.1.1 =
 
 ### Patch Changes
@@ -69,11 +77,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
   Add your blocks inside `wp-blocks` folder. Then run `faust blockset` to compile and upload the blocks into WordPress. Blocks will be available in the editor.
 
 - d3d30aa: Added support for authenticated WPGraphQL introspection queries using FAUST_SECRET_KEY. It is no longer required to enable "Public Introspection" in WPGraphQL.
-
-= 1.0.4 =
-
-### Patch Changes
-
-- fcc6d37: Fixed a bug in the block editor screen where the preview link was missing the `p` and `previewPathName` query arguments after saving a draft.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

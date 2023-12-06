@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 1.2.1
+
+### Patch Changes
+
+- c75ab2b: Bug: Quote blockset "output-path" to prevent issues with space in paths.
+
 ## 1.2.0
 
 ### Minor Changes
