@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
 import RichText from '../../src/controls/RichText';
 import { Field } from '../../src/types';
-import { useState } from 'react';
 import '@testing-library/jest-dom';
 
 Object.defineProperty(window, 'matchMedia', {
@@ -68,11 +67,11 @@ describe('RichText', () => {
         role="textbox"
         style="white-space: pre-wrap; min-width: 1px;"
       >
-        Hello
+        Hello 
         <b>
           World
         </b>
-
+        
       </div>
     `);
   });
