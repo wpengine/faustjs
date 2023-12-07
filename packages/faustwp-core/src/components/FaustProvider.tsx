@@ -8,10 +8,11 @@ import { useApollo } from '../client.js';
 import { Toolbar } from './Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
-import { FaustContext } from '../store/FaustContext.js';
+import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 
 export type FaustPageProps = AppProps['pageProps'] & {
   __SEED_NODE__?: SeedNode;
+  __FAUST_QUERIES__?: FaustQueries | null;
 };
 
 export function FaustProvider(props: {
@@ -23,26 +24,24 @@ export function FaustProvider(props: {
   const router = useRouter();
   const apolloClient = useApollo(pageProps);
 
-  const setContext = (newContext) => {
-    console.log('called', newContext);
-    const queries = newContext?.queries;
-    setMyContext((prevContext) => {
-      console.log('prev', prevContext);
+  const setQueries = (newQueries: FaustQueries) => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setFaustContext((prevContext) => {
       return {
         ...prevContext,
-        queries,
+        queries: newQueries,
       };
     });
   };
 
-  const [myContext, setMyContext] = useState({
+  const [faustContext, setFaustContext] = useState({
     // eslint-disable-next-line no-underscore-dangle
     queries: pageProps.__FAUST_QUERIES__,
-    setContext,
+    setQueries,
   });
 
   return (
-    <FaustContext.Provider value={myContext}>
+    <FaustContext.Provider value={faustContext}>
       <ApolloProvider client={apolloClient}>
         {experimentalToolbar && (
           <Toolbar
