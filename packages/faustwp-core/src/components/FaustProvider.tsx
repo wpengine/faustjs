@@ -6,14 +6,11 @@ import { useRouter } from 'next/router';
 import { AppProps } from 'next/app';
 import { useApollo } from '../client.js';
 import { Toolbar } from './Toolbar/index.js';
-import { SeedNode } from '../queries/seedQuery.js';
 import { getConfig } from '../config/index.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
+import { FaustProps } from './WordPressTemplate.js';
 
-export type FaustPageProps = AppProps['pageProps'] & {
-  __SEED_NODE__?: SeedNode;
-  __FAUST_QUERIES__?: FaustQueries | null;
-};
+export type FaustPageProps = AppProps['pageProps'] & FaustProps;
 
 export function FaustProvider(props: {
   children: React.ReactNode;
