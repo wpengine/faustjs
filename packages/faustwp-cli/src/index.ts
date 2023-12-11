@@ -63,9 +63,6 @@ import {
 
   // Inform user of telemetry program.
   if (!telemetryPrefsExist()) {
-    infoLog('Faust has completely anonymous, opt-in Telemetry!');
-    infoLog('You can enable it by running "npx faust telemetry enable"');
-
     // Create user's telemetry setting.
     userConfig.set('telemetry', {
       notifiedAt: new Date().getTime(),
