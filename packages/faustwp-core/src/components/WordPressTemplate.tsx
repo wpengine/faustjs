@@ -59,6 +59,7 @@ export function WordPressTemplateInternal(
     __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
     loading,
     setLoading,
+    ...wordpressTemplateProps
   } = props;
   const template = getTemplate(seedNode, templates);
   const [data, setData] = useState<any | null>(templateQueryDataProp);
@@ -122,26 +123,28 @@ export function WordPressTemplateInternal(
     void (async () => {
       const client = isPreview ? getApolloAuthClient() : getApolloClient();
 
-      if (!template || !template?.query || !template?.queries || !seedNode) {
+      if (!template || !template?.query || template?.queries || !seedNode) {
         return;
       }
 
-      if (!data) {
-        setLoading(true);
-
-        const queryArgs: QueryOptions = {
-          query: template?.query,
-          variables: template?.variables
-            ? template?.variables(seedNode, { asPreview: isPreview })
-            : undefined,
-        };
-
-        const templateQueryRes = await client.query(queryArgs);
-
-        setData(templateQueryRes.data);
-
-        setLoading(false);
+      if (data) {
+        return;
       }
+
+      setLoading(true);
+
+      const queryArgs: QueryOptions = {
+        query: template?.query,
+        variables: template?.variables
+          ? template?.variables(seedNode, { asPreview: isPreview })
+          : undefined,
+      };
+
+      const templateQueryRes = await client.query(queryArgs);
+
+      setData(templateQueryRes.data);
+
+      setLoading(false);
     })();
   }, [data, template, seedNode, isPreview, isAuthenticated, setLoading]);
 
@@ -150,7 +153,15 @@ export function WordPressTemplateInternal(
   }
 
   const Component = template as React.FC<{ [key: string]: any }>;
-  return React.createElement(Component, { ...props, data, loading }, null);
+
+  const newProps = {
+    ...wordpressTemplateProps,
+    __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
+    data,
+    loading,
+  };
+
+  return React.createElement(Component, newProps, null);
 }
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
@@ -218,6 +229,10 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       return;
     }
 
+    if (seedNode) {
+      return;
+    }
+
     void (async () => {
       const client = isPreview ? getApolloAuthClient() : getApolloClient();
 
@@ -254,17 +269,15 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         },
       };
 
-      if (!seedNode) {
-        setLoading(true);
+      setLoading(true);
 
-        const seedQueryRes = await client.query(queryArgs);
+      const seedQueryRes = await client.query(queryArgs);
 
-        const node = isPreview
-          ? (seedQueryRes?.data?.contentNode as SeedNode)
-          : (seedQueryRes?.data?.nodeByUri as SeedNode);
+      const node = isPreview
+        ? (seedQueryRes?.data?.contentNode as SeedNode)
+        : (seedQueryRes?.data?.nodeByUri as SeedNode);
 
-        setSeedNode(node);
-      }
+      setSeedNode(node);
     })();
   }, [seedNode, isPreview, isAuthenticated, basePath]);
 
