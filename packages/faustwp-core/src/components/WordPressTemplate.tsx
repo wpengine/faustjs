@@ -210,7 +210,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     }
 
     if (isPreview && isAuthenticated === false && loginUrl) {
-      window.location.href = loginUrl;
+      window.location.assign(loginUrl);
     }
   }, [isAuthenticated, isPreview, loginUrl]);
 
