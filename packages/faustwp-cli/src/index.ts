@@ -1,29 +1,12 @@
 #!/usr/bin/env node
-
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
-import { v4 as uuid } from 'uuid';
-import { debugLog, infoLog } from './stdout/index.js';
+import { debugLog } from './stdout/index.js';
 import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { blockset } from './blockset.js';
-import { userConfig } from './userConfig.js';
-import {
-  getCliArgs,
-  getNextCliArgs,
-  getWpSecret,
-  getWpUrl,
-  isDebug,
-} from './utils/index.js';
-import {
-  telemetryPrefsExist,
-  marshallTelemetryData,
-  handleTelemetrySubcommand,
-  requestWPTelemetryData,
-  shouldFireTelemetryEvent,
-  sendTelemetryData,
-} from './telemetry/index.js';
+import { getCliArgs, getNextCliArgs, isDebug } from './utils/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
 (async function () {
@@ -61,24 +44,8 @@ import {
     await healthCheck();
   }
 
-  // Inform user of telemetry program.
-  if (!telemetryPrefsExist()) {
-    // Create user's telemetry setting.
-    userConfig.set('telemetry', {
-      notifiedAt: new Date().getTime(),
-      anonymousId: uuid(),
-      enabled: false,
-    });
-  }
-
   // eslint-disable-next-line default-case
   switch (arg1) {
-    case 'telemetry': {
-      handleTelemetrySubcommand();
-      process.exit(0);
-
-      break;
-    }
     case 'generatePossibleTypes': {
       await generatePossibleTypes();
       process.exit(0);
@@ -96,35 +63,6 @@ import {
       process.exit(0);
 
       break;
-    }
-  }
-
-  if (shouldFireTelemetryEvent()) {
-    try {
-      const wpTelemetryData = await requestWPTelemetryData(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        getWpUrl()!,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        getWpSecret()!,
-      );
-
-      if (!wpTelemetryData) {
-        throw new Error(
-          'There was a problem retrieving telemetry data from the WordPress instance',
-        );
-      }
-
-      const telemetryData = marshallTelemetryData(wpTelemetryData, arg1);
-
-      debugLog('Telemetry event: ', telemetryData);
-
-      void sendTelemetryData(
-        telemetryData,
-        userConfig.get('telemetry.anonymousId') as string,
-      );
-    } catch (err) {
-      // console.log(err);
-      // Fail silently
     }
   }
 
