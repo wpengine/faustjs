@@ -10,6 +10,7 @@ import { getPossibleTemplates, getTemplate } from './getTemplate.js';
 import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
 import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
+import { FaustQueries } from './store/FaustContext.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
@@ -162,7 +163,7 @@ export async function getWordPressProps(
     });
   }
 
-  let queries: { [key: string]: string } | null = null;
+  let queries: FaustQueries | null = null;
   if (template.queries) {
     const queryCalls = template.queries.map(({ query, variables }) => {
       const queryVariables = variables
