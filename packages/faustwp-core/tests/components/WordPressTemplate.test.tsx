@@ -6,7 +6,9 @@ import * as WordPressTemplate from '../../src/components/WordPressTemplate.js';
 import * as useAuth from '../../src/hooks/useAuth.js';
 import * as client from '../../src/client.js';
 import { SEED_QUERY } from '../../src/queries/seedQuery.js';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, NormalizedCacheObject, gql } from '@apollo/client';
+import * as getTemplate from '../../src/getTemplate.js';
+import * as FaustProvider from '../../src/components/FaustProvider.js';
 
 describe('<WordPressTemplate />', () => {
   const windowBackup = window;
@@ -152,8 +154,6 @@ describe('<WordPressTemplate />', () => {
       templates: {},
     });
 
-    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
-
     const useAuthSpy = jest.spyOn(useAuth, 'useAuth').mockReturnValue({
       isAuthenticated: true,
       isReady: true,
@@ -187,6 +187,174 @@ describe('<WordPressTemplate />', () => {
       },
     });
   });
+});
 
-  test('Returns the <WordPressTemplateInternal /> component', () => {});
+describe('<WordPressTemplateInternal />', () => {
+  const windowBackup = window;
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+    window = windowBackup;
+  });
+
+  const setLoadingMock = jest.fn();
+
+  const props = {
+    seedNode: { databaseId: '1' },
+    setLoading: setLoadingMock,
+    loading: false,
+    isPreview: false,
+    isAuthenticated: false,
+    __TEMPLATE_QUERY_DATA__: null,
+  };
+
+  test('it throws an error if templates are not defined in config', () => {
+    const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({});
+    expect(() =>
+      render(<WordPressTemplate.WordPressTemplateInternal {...props} />),
+    ).toThrow('Templates are required. Please add them to your config.');
+  });
+
+  test('it queries the template.query properly', async () => {
+    const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({
+      templates: {},
+    });
+
+    const GET_TITLE_QUERY = gql`
+      query GetTitle {
+        generalSettings {
+          title
+        }
+      }
+    `;
+
+    const MyTemplate = () => {
+      return <>My component</>;
+    };
+
+    MyTemplate.query = GET_TITLE_QUERY;
+    MyTemplate.variables = () => ({
+      databaseId: '5',
+    });
+
+    const templateSpy = jest
+      .spyOn(getTemplate, 'getTemplate')
+      .mockReturnValue(MyTemplate);
+
+    const clientQueryMock = jest.fn();
+    const getApolloClientSpy = jest
+      .spyOn(client, 'getApolloClient')
+      .mockImplementation(
+        () =>
+          ({
+            query: clientQueryMock,
+          } as any as ApolloClient<NormalizedCacheObject>),
+      );
+    clientQueryMock.mockImplementation(() => ({
+      data: {
+        generalSettings: {
+          title: 'testing',
+        },
+      },
+    }));
+
+    await act(async () => {
+      render(<WordPressTemplate.WordPressTemplateInternal {...props} />);
+    });
+
+    expect(clientQueryMock).toHaveBeenCalledWith({
+      query: GET_TITLE_QUERY,
+      variables: {
+        databaseId: '5',
+      },
+    });
+  });
+
+  test('it queries the template.queries properly', async () => {
+    const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({
+      templates: {},
+    });
+
+    const GET_TITLE_QUERY = gql`
+      query GetTitle {
+        generalSettings {
+          title
+        }
+      }
+    `;
+
+    const GET_POST_QUERY = gql`
+      query GetPost($postId: ID!) {
+        post(id: $postId, idType: DATABASE_ID) {
+          title
+        }
+      }
+    `;
+
+    const MyTemplate = () => {
+      return <>My component</>;
+    };
+
+    MyTemplate.queries = [
+      {
+        query: GET_TITLE_QUERY,
+      },
+      {
+        query: GET_POST_QUERY,
+        variables: () => ({
+          postId: '50',
+        }),
+      },
+    ];
+
+    const templateSpy = jest
+      .spyOn(getTemplate, 'getTemplate')
+      .mockReturnValue(MyTemplate);
+
+    const clientQueryMock = jest.fn();
+    const getApolloClientSpy = jest
+      .spyOn(client, 'getApolloClient')
+      .mockImplementation(
+        () =>
+          ({
+            query: clientQueryMock,
+          } as any as ApolloClient<NormalizedCacheObject>),
+      );
+
+    clientQueryMock.mockImplementationOnce(() => ({
+      data: {
+        generalSettings: {
+          title: 'testing',
+        },
+      },
+    }));
+
+    clientQueryMock.mockImplementationOnce(() => ({
+      data: {
+        post: {
+          databaseId: '50',
+        },
+      },
+    }));
+
+    await act(async () => {
+      render(
+        <FaustProvider.FaustProvider pageProps={{}}>
+          <WordPressTemplate.WordPressTemplateInternal {...props} />
+        </FaustProvider.FaustProvider>,
+      );
+    });
+
+    expect(clientQueryMock).toHaveBeenCalledWith({
+      query: GET_TITLE_QUERY,
+    });
+
+    expect(clientQueryMock).toHaveBeenCalledWith({
+      query: GET_POST_QUERY,
+      variables: {
+        postId: '50',
+      },
+    });
+  });
 });
