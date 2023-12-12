@@ -28,7 +28,7 @@ As we work towards our first release, we will be introducing support for other f
 
 ## System Requirements
 
-- Node.js v16.0.0 or newer (v16.8.0 when using Next.js 13).
+- Node.js v16.0.0 or newer (v16.8.0 when using Next.js 13 and v18.17 when using Next.js 14).
 - MacOS, Windows (including WSL), and Linux are supported.
 
 ## Documentation

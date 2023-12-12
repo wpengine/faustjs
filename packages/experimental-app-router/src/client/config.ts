@@ -1,17 +1,16 @@
 import {
-  ApolloClient,
-  InMemoryCache,
+  ApolloLink,
   InMemoryCacheConfig,
   createHttpLink,
 } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { setContext } from '@apollo/client/link/context';
-// eslint-disable-next-line import/extensions
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-import { fetchAccessToken } from './server/auth/fetchAccessToken.js';
-import { getConfig, getGraphqlEndpoint } from './faust-core-utils.js';
+import { getConfig, getGraphqlEndpoint } from '../faust-core-utils.js';
+import { fetchAccessToken } from '../server/auth/fetchAccessToken.js';
 
-async function createFaustApolloClient(authenticated = false) {
+export function createApolloConfig(
+  authenticated = false,
+): [InMemoryCacheConfig, ApolloLink] {
   const { possibleTypes } = getConfig();
 
   const inMemoryCacheObject: InMemoryCacheConfig = {
@@ -56,28 +55,5 @@ async function createFaustApolloClient(authenticated = false) {
    * we may set config differently than how we currently do it.
    */
 
-  return new ApolloClient({
-    cache: new InMemoryCache(inMemoryCacheObject),
-    link: linkChain,
-  });
-}
-
-export async function getClient() {
-  const faustApolloClient = await createFaustApolloClient(false);
-  const client = registerApolloClient(() => faustApolloClient);
-
-  return client.getClient();
-}
-
-export async function getAuthClient() {
-  const token = await fetchAccessToken();
-
-  if (!token) {
-    return null;
-  }
-
-  const faustApolloClient = await createFaustApolloClient(true);
-  const client = registerApolloClient(() => faustApolloClient);
-
-  return client.getClient();
+  return [inMemoryCacheObject, linkChain];
 }
