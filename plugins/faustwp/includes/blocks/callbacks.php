@@ -42,9 +42,11 @@ function register_custom_blocks() {
 		$asset_file    = trailingslashit( $dir ) . 'index.asset.json';
 
 		if ( file_exists( $metadata_file ) ) {
-			$block_metadata = json_decode( wp_remote_get( $metadata_file ), true );
-			$asset_data     = file_exists( $asset_file ) ? json_decode( wp_remote_get( $asset_file ), true ) : array();
-			$block_name     = basename( $dir );
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$block_metadata = json_decode( file_get_contents( $metadata_file ), true );
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$asset_data = file_exists( $asset_file ) ? json_decode( file_get_contents( $asset_file ), true ) : array();
+			$block_name = basename( $dir );
 
 			$dependencies = $asset_data['dependencies'] ?? array();
 			$version      = $asset_data['version'] ?? '';
