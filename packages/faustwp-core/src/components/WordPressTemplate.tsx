@@ -65,6 +65,12 @@ export function WordPressTemplateInternal(
   const [data, setData] = useState<any | null>(templateQueryDataProp);
   const { setQueries } = useContext(FaustContext) || {};
 
+  if (template && template.queries && template.query) {
+    throw new Error(
+      '`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+    );
+  }
+
   /**
    * Fetch the template's queries if defined.
    */

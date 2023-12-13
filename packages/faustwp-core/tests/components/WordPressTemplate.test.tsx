@@ -209,11 +209,61 @@ describe('<WordPressTemplateInternal />', () => {
     __TEMPLATE_QUERY_DATA__: null,
   };
 
+  const GET_TITLE_QUERY = gql`
+    query GetTitle {
+      generalSettings {
+        title
+      }
+    }
+  `;
+
+  const GET_POST_QUERY = gql`
+    query GetPost($postId: ID!) {
+      post(id: $postId, idType: DATABASE_ID) {
+        title
+      }
+    }
+  `;
+
   test('it throws an error if templates are not defined in config', () => {
     const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({});
     expect(() =>
       render(<WordPressTemplate.WordPressTemplateInternal {...props} />),
     ).toThrow('Templates are required. Please add them to your config.');
+  });
+
+  test('it throws an error if the template has both queries and query defined', () => {
+    const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({
+      templates: {},
+    });
+
+    const MyTemplate = () => {
+      return <>My component</>;
+    };
+
+    MyTemplate.query = GET_TITLE_QUERY;
+    MyTemplate.variables = () => ({
+      databaseId: '5',
+    });
+
+    MyTemplate.queries = [
+      {
+        query: GET_POST_QUERY,
+        variables: () => ({
+          postId: '50',
+        }),
+      },
+    ];
+
+    const templateSpy = jest
+      .spyOn(getTemplate, 'getTemplate')
+      .mockReturnValue(MyTemplate);
+
+    expect(() =>
+      render(<WordPressTemplate.WordPressTemplateInternal {...props} />),
+    ).toThrow(
+      '`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+    );
   });
 
   test('it queries the template.query properly', async () => {
@@ -275,22 +325,6 @@ describe('<WordPressTemplateInternal />', () => {
     const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({
       templates: {},
     });
-
-    const GET_TITLE_QUERY = gql`
-      query GetTitle {
-        generalSettings {
-          title
-        }
-      }
-    `;
-
-    const GET_POST_QUERY = gql`
-      query GetPost($postId: ID!) {
-        post(id: $postId, idType: DATABASE_ID) {
-          title
-        }
-      }
-    `;
 
     const MyTemplate = () => {
       return <>My component</>;
