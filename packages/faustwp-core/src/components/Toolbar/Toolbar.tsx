@@ -59,7 +59,7 @@ export type FaustToolbarContext = {
  * Toolbar props.
  */
 export type ToolbarProps = {
-  seedNode?: SeedNode;
+  seedNode?: SeedNode | null;
 };
 /**
  * The component to actually render the toolbar. At this point we can assume
