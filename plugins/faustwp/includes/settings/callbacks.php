@@ -378,7 +378,7 @@ function display_enable_disable_fields() {
 	$enable_rewrites     = is_rewrites_enabled();
 	$enable_redirects    = is_redirects_enabled();
 	$enable_image_source = is_image_source_replacement_enabled();
-
+	$enable_telemetry    = is_telemetry_enabled();
 	?>
 	<fieldset>
 		<legend style="margin-bottom:5px;padding:0;">
@@ -408,12 +408,17 @@ function display_enable_disable_fields() {
 			<input type="checkbox" id="enable_redirects" name="faustwp_settings[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
 			<?php esc_html_e( 'Enable public route redirects', 'faustwp' ); ?>
 		</label>
-
 		<br />
 
 		<label for="enable_image_source">
 			<input type="checkbox" id="enable_image_source" name="faustwp_settings[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
 			<?php esc_html_e( 'Use the WordPress domain for media URLs in post content', 'faustwp' ); ?>
+		</label>
+		<br />
+
+		<label for="enable_telemetry">
+			<input type="checkbox" id="enable_telemetry" name="faustwp_settings[enable_telemetry]" value="1" <?php checked( $enable_telemetry ); ?> />
+			<?php esc_html_e( 'Enable Faust Telemetry', 'faustwp' ); ?>
 		</label>
 	</fieldset>
 	<?php

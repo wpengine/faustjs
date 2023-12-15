@@ -66,6 +66,15 @@ function use_wp_domain_for_media() {
 }
 
 /**
+ * Determine if Faust telemetry is enabled.
+ *
+ * @return bool True if telemetry is enabled, false if else.
+ */
+function is_telemetry_enabled() {
+	return '1' === faustwp_get_setting( 'enable_telemetry' );
+}
+
+/**
  * Get the secret key setting.
  *
  * @return string The secret key.
