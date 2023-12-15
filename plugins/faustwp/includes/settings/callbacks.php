@@ -408,6 +408,7 @@ function display_enable_disable_fields() {
 			<input type="checkbox" id="enable_redirects" name="faustwp_settings[enable_redirects]" value="1" <?php checked( $enable_redirects ); ?> />
 			<?php esc_html_e( 'Enable public route redirects', 'faustwp' ); ?>
 		</label>
+
 		<br />
 
 		<label for="enable_image_source">
