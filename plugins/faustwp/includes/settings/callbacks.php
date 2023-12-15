@@ -418,7 +418,7 @@ function display_enable_disable_fields() {
 
 		<label for="enable_telemetry">
 			<input type="checkbox" id="enable_telemetry" name="faustwp_settings[enable_telemetry]" value="1" <?php checked( $enable_telemetry ); ?> />
-			<?php esc_html_e( 'Enable Faust Telemetry', 'faustwp' ); ?>
+			<?php esc_html_e( 'Enable Faust telemetry', 'faustwp' ); ?>
 		</label>
 	</fieldset>
 	<?php
