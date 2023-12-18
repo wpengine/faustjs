@@ -59,6 +59,8 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $response = $this->server->dispatch( $this->request );
     $data = $response->get_data();
 
+    $response->
+
     $this->assertEquals( $data['http_response'], 401 );
   }
 
@@ -68,7 +70,12 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $this->request->set_body(json_encode($this->valid_body));
 
     $response = $this->server->dispatch( $this->request );
+
+    var_dump($response);
+
     $data = $response->get_data();
+
+    var_dump($data);
 
     $this->assertEquals( $data['http_response'], 204 );
   }
