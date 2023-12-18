@@ -79,16 +79,10 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
   public function testRequestWithTelemetryDisabled()
   {
     $this->request->add_header('Content-Type', 'application/json');
-    $this->request->add_header('x-faustwp-secret', 'valid-secret-key');
+    $this->request->add_header('x-faustwp-secret', $this->init_settings['secret_key']);
     $this->request->set_body(json_encode($this->valid_body));
 
-    var_dump(get_option($this->option));
-
-    var_dump(get_secret_key());
-
     $response = $this->server->dispatch( $this->request );
-
-    var_dump($response);
 
     $this->assertEquals( $response->status, 204 );
   }
@@ -96,7 +90,7 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
   public function testRequestWithTelemetryEnabled()
   {
     $this->request->add_header('Content-Type', 'application/json');
-    $this->request->add_header('x-faustwp-secret', 'valid-secret-key');
+    $this->request->add_header('x-faustwp-secret', $this->init_settings['secret_key']);
     $this->request->set_body(json_encode($this->valid_body));
 
     $response = $this->server->dispatch( $this->request );
