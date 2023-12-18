@@ -2,4 +2,4 @@
 '@faustwp/cli': major
 ---
 
-Removed telemetry CLI commands and functionality
+Removed telemetry CLI commands and functionality.
