@@ -55,6 +55,8 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $wp_rest_server = null;
 
     parent::tearDown();
+
+    delete_option( 'faustwp_settings' );
   }
 
   public function testRouteIsRegistered()
@@ -79,6 +81,8 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $this->request->add_header('Content-Type', 'application/json');
     $this->request->add_header('x-faustwp-secret', 'valid-secret-key');
     $this->request->set_body(json_encode($this->valid_body));
+
+    var_dump(get_option($this->option));
 
     var_dump(get_secret_key());
 
