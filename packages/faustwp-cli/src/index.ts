@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import { debugLog } from './stdout/index.js';
