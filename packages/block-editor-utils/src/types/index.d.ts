@@ -17,7 +17,7 @@ export interface FieldOption {
   value: string;
 }
 
-export type Field = BasicField | SelectableField | RangeField
+export type Field = BasicField | SelectableField | RangeField | RichTextField
 
 type BasicField = {
   name: string;
@@ -40,8 +40,13 @@ export type RangeField = BasicField & {
   max?: number;
 }
 
+export type RichTextField = BasicField & {
+  control: 'rich-text';
+  tagName?: keyof HTMLElementTagNameMap;
+}
+
 export type FieldType = "string" | "number" | "boolean" | "integer" | "object" | "array"
-export type FieldControl = "textarea" | "color" | "text" | "radio" | "select" | "range" | "number" | "checkbox"
+export type FieldControl = "textarea" | "color" | "text" | "radio" | "select" | "range" | "number" | "checkbox" | "rich-text"
 export type FieldLocation = "editor" | "inspector"
 
 export interface ControlProps<T extends Record<string, any>> {

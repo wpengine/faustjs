@@ -1,12 +1,16 @@
-import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
+// eslint-disable-next-line import/extensions
+import { print } from '@apollo/client/utilities';
 import type { DocumentNode } from 'graphql';
-import { SeedNode, SEED_QUERY } from './queries/seedQuery.js';
-import { getPossibleTemplates, getTemplate } from './getTemplate.js';
-import { FaustTemplateProps } from './components/WordPressTemplate.js';
+import { sha256 } from 'js-sha256';
+import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { addApolloState, getApolloClient } from './client.js';
+import { FaustTemplateProps } from './components/WordPressTemplate.js';
 import { getConfig } from './config/index.js';
+import { getPossibleTemplates, getTemplate } from './getTemplate.js';
+import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
+import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
-import { infoLog, debugLog } from './utils/log.js';
+import { FaustQueries } from './store/FaustContext.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
@@ -16,6 +20,14 @@ function isSSR(
   return (ctx as GetServerSidePropsContext).req !== undefined;
 }
 
+type QueryVariablesArgs = [
+  seedNode: SeedNode,
+  context?: {
+    asPreview?: boolean;
+    locale?: string;
+  },
+  extra?: Record<string, unknown>,
+];
 const createNotFound = (
   ctx: GetStaticPropsContext,
   revalidate?: number | boolean,
@@ -26,14 +38,15 @@ const createNotFound = (
 
 export type WordPressTemplate = React.FC & {
   query?: DocumentNode;
-  variables?: (
-    seedNode: SeedNode,
-    context?: {
-      asPreview?: boolean;
-      locale?: string;
-    },
-    extra?: Record<string, unknown>,
-  ) => { [key: string]: any };
+  queries?: {
+    query: DocumentNode;
+    variables?: (...args: QueryVariablesArgs) => {
+      [key: string]: any;
+    };
+  }[];
+  variables?: (...args: QueryVariablesArgs) => {
+    [key: string]: any;
+  };
 };
 
 export interface FaustTemplate<Data>
@@ -125,6 +138,12 @@ export async function getWordPressProps(
     return createNotFound(ctx, revalidate);
   }
 
+  if (template.query && template.queries) {
+    throw new Error(
+      '`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+    );
+  }
+
   let templateQueryRes;
   const templateVariables = template?.variables
     ? template?.variables(
@@ -144,6 +163,35 @@ export async function getWordPressProps(
     });
   }
 
+  let queries: FaustQueries | null = null;
+  if (template.queries) {
+    const queryCalls = template.queries.map(({ query, variables }) => {
+      const queryVariables = variables
+        ? variables(
+            seedNode,
+            {
+              asPreview: false,
+              locale: ctx.locale,
+            },
+            extra,
+          )
+        : undefined;
+      return client.query({
+        query,
+        variables: queryVariables,
+      });
+    });
+    const queriesRes = await Promise.all(queryCalls);
+
+    queries = {};
+
+    queriesRes.forEach((queryRes, index) => {
+      if (queries && template.queries) {
+        queries[sha256(print(template.queries[index].query))] = queryRes.data;
+      }
+    });
+  }
+
   const appProps = addApolloState(client, {
     props: {
       /**
@@ -153,6 +201,7 @@ export async function getWordPressProps(
       __SEED_NODE__: seedNode ?? null,
       __TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
       __TEMPLATE_VARIABLES__: templateVariables ?? null,
+      __FAUST_QUERIES__: queries ?? null,
       ...props,
     },
   });
