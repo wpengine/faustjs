@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\WPUnit\Routes;
+namespace WPE\FaustWP\Tests\Integration;
 
-use Codeception\TestCase\WPTestCase;
+use \WP_UnitTestCase;
 
-class ProcessTelemetryRouteTest extends WPTestCase
+class ProcessTelemetryRouteTest extends WP_UnitTestCase
 {
   private $request;
   private $route_name;
