@@ -3,6 +3,7 @@
 namespace WPE\FaustWP\Tests\Integration;
 
 use \WP_UnitTestCase;
+use function WPE\FaustWP\Settings\get_secret_key;
 
 class ProcessTelemetryRouteTest extends WP_UnitTestCase
 {
@@ -69,11 +70,8 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $this->request->set_body(json_encode($this->valid_body));
 
     $response = $this->server->dispatch( $this->request );
-    $data = $response->get_data();
 
-    $response->
-
-    $this->assertEquals( $data['http_response'], 401 );
+    $this->assertEquals( $response->status, 401 );
   }
 
   public function testRequestWithTelemetryDisabled()
@@ -82,28 +80,24 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $this->request->add_header('x-faustwp-secret', 'valid-secret-key');
     $this->request->set_body(json_encode($this->valid_body));
 
-    $response = $this->server->dispatch( $this->request );
+    var_dump(get_secret_key());
 
-    var_dump($response->status);
+    $response = $this->server->dispatch( $this->request );
 
     var_dump($response);
 
-    $data = $response->get_data();
-
-    var_dump($data);
-
-    $this->assertEquals( $data['http_response'], 204 );
+    $this->assertEquals( $response->status, 204 );
   }
 
   public function testRequestWithTelemetryEnabled()
   {
     $this->request->add_header('Content-Type', 'application/json');
+    $this->request->add_header('x-faustwp-secret', 'valid-secret-key');
     $this->request->set_body(json_encode($this->valid_body));
 
     $response = $this->server->dispatch( $this->request );
-    $data = $response->get_data();
 
-    $this->assertEquals( $data['http_response'], 201 );
+    $this->assertEquals( $response->status, 201 );
   }
 
 }
