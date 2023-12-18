@@ -1,17 +1,58 @@
 import { gql } from '@apollo/client';
-import * as MENUS from '../constants/menus';
-import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import { useFaustQuery } from '@faustwp/core';
 import {
-  Header,
-  Footer,
-  Main,
   Container,
-  EntryHeader,
-  NavigationMenu,
   ContentWrapper,
+  EntryHeader,
   FeaturedImage,
+  Footer,
+  Header,
+  Main,
+  NavigationMenu,
   SEO,
 } from '../components';
+import * as MENUS from '../constants/menus';
+import { BlogInfoFragment } from '../fragments/GeneralSettings';
+
+const GET_LAYOUT_QUERY = gql`
+  ${BlogInfoFragment}
+  ${NavigationMenu.fragments.entry}
+  query GetLayout(
+    $headerLocation: MenuLocationEnum
+    $footerLocation: MenuLocationEnum
+  ) {
+    generalSettings {
+      ...BlogInfoFragment
+    }
+    headerMenuItems: menuItems(where: { location: $headerLocation }) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
+    footerMenuItems: menuItems(where: { location: $footerLocation }) {
+      nodes {
+        ...NavigationMenuItemFragment
+      }
+    }
+  }
+`;
+
+const GET_POST_QUERY = gql`
+  ${FeaturedImage.fragments.entry}
+  query GetPost($databaseId: ID!, $asPreview: Boolean = false) {
+    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
+      title
+      content
+      date
+      author {
+        node {
+          name
+        }
+      }
+      ...FeaturedImageFragment
+    }
+  }
+`;
 
 export default function Component(props) {
   // Loading state for previews
@@ -19,11 +60,14 @@ export default function Component(props) {
     return <>Loading...</>;
   }
 
-  const { title: siteTitle, description: siteDescription } =
-    props?.data?.generalSettings;
-  const primaryMenu = props?.data?.headerMenuItems?.nodes ?? [];
-  const footerMenu = props?.data?.footerMenuItems?.nodes ?? [];
-  const { title, content, featuredImage, date, author } = props.data.post;
+  const { post } = useFaustQuery(GET_POST_QUERY);
+  const { generalSettings, headerMenuItems, footerMenuItems } =
+    useFaustQuery(GET_LAYOUT_QUERY);
+
+  const { title: siteTitle, description: siteDescription } = generalSettings;
+  const primaryMenu = headerMenuItems?.nodes ?? [];
+  const footerMenu = footerMenuItems?.nodes ?? [];
+  const { title, content, featuredImage, date, author } = post ?? {};
 
   return (
     <>
@@ -55,48 +99,19 @@ export default function Component(props) {
   );
 }
 
-Component.query = gql`
-  ${BlogInfoFragment}
-  ${NavigationMenu.fragments.entry}
-  ${FeaturedImage.fragments.entry}
-  query GetPost(
-    $databaseId: ID!
-    $headerLocation: MenuLocationEnum
-    $footerLocation: MenuLocationEnum
-    $asPreview: Boolean = false
-  ) {
-    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
-      title
-      content
-      date
-      author {
-        node {
-          name
-        }
-      }
-      ...FeaturedImageFragment
-    }
-    generalSettings {
-      ...BlogInfoFragment
-    }
-    headerMenuItems: menuItems(where: { location: $headerLocation }) {
-      nodes {
-        ...NavigationMenuItemFragment
-      }
-    }
-    footerMenuItems: menuItems(where: { location: $footerLocation }) {
-      nodes {
-        ...NavigationMenuItemFragment
-      }
-    }
-  }
-`;
-
-Component.variables = ({ databaseId }, ctx) => {
-  return {
-    databaseId,
-    headerLocation: MENUS.PRIMARY_LOCATION,
-    footerLocation: MENUS.FOOTER_LOCATION,
-    asPreview: ctx?.asPreview,
-  };
-};
+Component.queries = [
+  {
+    query: GET_LAYOUT_QUERY,
+    variables: (seedNode, ctx) => ({
+      headerLocation: MENUS.PRIMARY_LOCATION,
+      footerLocation: MENUS.FOOTER_LOCATION,
+    }),
+  },
+  {
+    query: GET_POST_QUERY,
+    variables: ({ databaseId }, ctx) => ({
+      databaseId,
+      asPreview: ctx?.asPreview,
+    }),
+  },
+];
