@@ -87,6 +87,11 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
     $this->assertEquals( $response->status, 204 );
   }
 
+
+  /**
+   * @TODO This test should be uncommented once get_telemetry_client_id()
+   * function has been properly setup.
+   */
   public function testRequestWithTelemetryEnabled()
   {
     $this->request->add_header('Content-Type', 'application/json');
