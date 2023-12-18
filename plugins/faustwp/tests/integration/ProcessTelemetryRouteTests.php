@@ -20,9 +20,21 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
       "command" => "xxxx"
   ];
 
+  protected $option = 'faustwp_settings';
+	protected $init_settings = [
+		'frontend_uri' => 'http://localhost:3000',
+		'secret_key' => 'valid-secret-key',
+		'menu_locations' => 'Primary, Footer',
+		'enable_redirects' => '1',
+		'enable_rewrites' => '1',
+		'disable_theme' => '1',
+	];
+
   public function setUp(): void
   {
     parent::setUp();
+
+    update_option( $this->option, $this->init_settings );
 
     // Set up a REST server instance.
     global $wp_rest_server;
@@ -67,9 +79,12 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
   public function testRequestWithTelemetryDisabled()
   {
     $this->request->add_header('Content-Type', 'application/json');
+    $this->request->add_header('x-faustwp-secret', 'valid-secret-key');
     $this->request->set_body(json_encode($this->valid_body));
 
     $response = $this->server->dispatch( $this->request );
+
+    var_dump($response->status);
 
     var_dump($response);
 
