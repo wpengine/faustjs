@@ -110,11 +110,11 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/process_telemetry',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_process_telemetry_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_process_telemetry_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_process_telemetry_permission_callback',
 		)
-		);
+	);
 
 	/**
 	 * Faust.js packages now use `faustwp/v1/authorize`.
@@ -200,68 +200,76 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
  * @return mixed A \WP_REST_Response, array, or \WP_Error.
  */
 function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
-	if(!get_telemetry_client_id()) {
-		return new \WP_REST_Response(null, 204);
+	if ( ! get_telemetry_client_id() ) {
+		return new \WP_REST_Response( null, 204 );
 	}
 
 	$body = $request->get_json_params();
 
-	$faust_plugin_data = get_anonymous_faustwp_data();
+	$faust_plugin_data          = get_anonymous_faustwp_data();
 	$content_blocks_plugin_data = get_anonymous_wpgraphql_content_blocks_data();
 
-	$GA_TRACKING_ENDPOINT = 'https://www.google-analytics.com/mp/collect';
-	$GA_TRACKING_ID = 'G-KPVSTHK1G4';
-	$GA_API_SECRET = '-SLuZb8JTbWkWcT5BD032w';
+	$ga_tracking_endpoint = 'https://www.google-analytics.com/mp/collect';
+	$ga_tracking_id       = 'G-KPVSTHK1G4';
+	$ga_key               = '-SLuZb8JTbWkWcT5BD032w';
 
-	$telemetry_data = [
-		'node_faustwp_core_version' => $body['node_faustwp_core_version'] ?? null,
-		'node_faustwp_cli_version' => $body['node_faustwp_cli_version'] ?? null,
-		'node_faustwp_blocks_version' => $body['node_faustwp_blocks_version'] ?? null,
-		'node_apollo_client_version' => $body['node_apollo_client_version'] ?? null,
-		'node_version' => $body['node_version'] ?? null,
-		'node_next_version' => $body['node_next_version'] ?? null,
-		'node_is_development' => $body['node_is_development'] ?? null,
-		'command' => $body['command'] ?? null,
+	$telemetry_data = array(
+		'node_faustwp_core_version'           => $body['node_faustwp_core_version'] ?? null,
+		'node_faustwp_cli_version'            => $body['node_faustwp_cli_version'] ?? null,
+		'node_faustwp_blocks_version'         => $body['node_faustwp_blocks_version'] ?? null,
+		'node_apollo_client_version'          => $body['node_apollo_client_version'] ?? null,
+		'node_version'                        => $body['node_version'] ?? null,
+		'node_next_version'                   => $body['node_next_version'] ?? null,
+		'node_is_development'                 => $body['node_is_development'] ?? null,
+		'command'                             => $body['command'] ?? null,
 
-		'setting_has_frontend_uri' => $faust_plugin_data['has_frontend_uri'],
-		'setting_redirects_enabled' => $faust_plugin_data['redirects_enabled'],
-		'setting_rewrites_enabled' => $faust_plugin_data['rewrites_enabled'],
-		'setting_themes_disabled' => $faust_plugin_data['themes_disabled'],
+		'setting_has_frontend_uri'            => $faust_plugin_data['has_frontend_uri'],
+		'setting_redirects_enabled'           => $faust_plugin_data['redirects_enabled'],
+		'setting_rewrites_enabled'            => $faust_plugin_data['rewrites_enabled'],
+		'setting_themes_disabled'             => $faust_plugin_data['themes_disabled'],
 		'setting_img_src_replacement_enabled' => $faust_plugin_data['image_source_replacement_enabled'],
-		'faustwp_version' => $faust_plugin_data['version'],
+		'faustwp_version'                     => $faust_plugin_data['version'],
 
-		'wpgraphql_content_blocks_version' => $content_blocks_plugin_data['version'],
+		'wpgraphql_content_blocks_version'    => $content_blocks_plugin_data['version'],
 
-		'is_wpe' => is_wpe(),
-		'multisite' => is_multisite(),
-		'php_version' => PHP_VERSION,
-		'wp_version' => get_wp_version(),
-	];
+		'is_wpe'                              => is_wpe(),
+		'multisite'                           => is_multisite(),
+		'php_version'                         => PHP_VERSION,
+		'wp_version'                          => get_wp_version(),
+	);
 
-	$ga_telemetry_url = add_query_arg([
-		'measurement_id' => $GA_TRACKING_ID,
-		'api_secret' => $GA_API_SECRET
-	], $GA_TRACKING_ENDPOINT);
+	$ga_telemetry_url = add_query_arg(
+		array(
+			'measurement_id' => $ga_tracking_id,
+			'api_secret'     => $ga_key,
+		),
+		$ga_tracking_endpoint
+	);
 
-	$telemetry_body = [
-			'client_id' => get_telemetry_client_id(),
-			'events' => [
-				[
-					'name' => 'telemetry_event',
-					'params' => $telemetry_data
-				]
-			]
-	];
+	$telemetry_body = array(
+		'client_id' => get_telemetry_client_id(),
+		'events'    => array(
+			array(
+				'name'   => 'telemetry_event',
+				'params' => $telemetry_data,
+			),
+		),
+	);
 
 	/**
-	 * @TODO This code should be uncommented once we can accept/decline the 
+	 * This code should be uncommented once we can accept/decline the
 	 * telemetry option and an appropriate clientID is generated for the site.
+	 *
+	 * @TODO
 	 */
-	// wp_remote_post($ga_telemetry_url, [
-	// 	'body' => $telemetry_body,
-	// ]);
 
-	return new \WP_REST_Response([$telemetry_body, $ga_telemetry_url], 201);
+	// @codingStandardsIgnoreStart
+	// wp_remote_post($ga_telemetry_url, [
+	// 'body' => $telemetry_body,
+	// ]);
+  // @codingStandardsIgnoreEnd
+
+	return new \WP_REST_Response( array( $telemetry_body, $ga_telemetry_url ), 201 );
 }
 
 /**
