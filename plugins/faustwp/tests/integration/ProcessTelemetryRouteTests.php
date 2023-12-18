@@ -24,7 +24,7 @@ class ProcessTelemetryRouteTest extends WP_UnitTestCase
   protected $option = 'faustwp_settings';
 	protected $init_settings = [
 		'frontend_uri' => 'http://localhost:3000',
-		'secret_key' => 'valid-secret-key',
+		'secret_key' => '2b9b7ec9-73f8-407d-b5b3-6f3e56bb555d',
 		'menu_locations' => 'Primary, Footer',
 		'enable_redirects' => '1',
 		'enable_rewrites' => '1',
