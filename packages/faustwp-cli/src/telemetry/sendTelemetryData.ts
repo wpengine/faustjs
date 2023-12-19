@@ -1,6 +1,7 @@
 import 'isomorphic-fetch';
 
 import { getWpUrl } from '../utils/getWpUrl.js';
+import { getWpSecret } from '../utils/getWpSecret.js';
 import { TelemetryData } from './marshallTelemetryData.js';
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemetry`;
@@ -12,11 +13,11 @@ const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemet
  */
 export const sendTelemetryData = (payload: TelemetryData) => {
   return fetch(WP_TELEMETRY_ENDPOINT, {
-    method: 'POST',
     headers: {
-      'x-faustwp-secret': getWpSecret(),
-      'Content-Type': 'application/json'
-    }
+      'x-faustwp-secret': getWpSecret() || '',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
     body: JSON.stringify(payload),
   });
 };
