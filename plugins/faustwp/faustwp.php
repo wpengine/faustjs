@@ -50,3 +50,4 @@ require FAUSTWP_DIR . '/includes/updates/upgrade-database.php';
 require FAUSTWP_DIR . '/includes/utilities/callbacks.php';
 require FAUSTWP_DIR . '/includes/detect-conflicts/callbacks.php';
 require FAUSTWP_DIR . '/includes/blocks/callbacks.php';
+require FAUSTWP_DIR . '/includes/telemetry/callbacks.php';
