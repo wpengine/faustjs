@@ -211,8 +211,17 @@ function sanitize_faustwp_settings( $settings, $option ) {
 			case 'enable_rewrites':
 			case 'disable_theme':
 			case 'enable_image_source':
+			case 'enable_telemetry':
 				if ( $value ) {
 					$settings[ $name ] = '1';
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
+
+			case 'telemetry_reminder':
+				if ( $value ) {
+					$settings[ $name ] = $value;
 				} else {
 					unset( $settings[ $name ] );
 				}
