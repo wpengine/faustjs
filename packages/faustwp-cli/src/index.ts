@@ -6,7 +6,12 @@ import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { blockset } from './blockset.js';
-import { getCliArgs, getNextCliArgs, isDebug } from './utils/index.js';
+import {
+  getCliArgs,
+  getNextCliArgs,
+  getWpSecret,
+  isDebug,
+} from './utils/index.js';
 import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 
 // eslint-disable-next-line func-names, @typescript-eslint/no-floating-promises
@@ -67,12 +72,14 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
     }
   }
 
-  try {
-    const telemetryData = marshallTelemetryData(arg1);
-    void sendTelemetryData(telemetryData);
-  } catch (err) {
-    // console.log(err);
-    // Fail silently
+  if (getWpSecret()) {
+    try {
+      const telemetryData = marshallTelemetryData(arg1);
+      void sendTelemetryData(telemetryData);
+    } catch (err) {
+      // console.log(err);
+      // Fail silently
+    }
   }
 
   /**
