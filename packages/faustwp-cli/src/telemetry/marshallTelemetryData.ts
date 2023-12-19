@@ -77,10 +77,14 @@ export const marshallTelemetryData = (
       packageJson?.dependencies?.['@faustwp/blocks'] as string | undefined,
     ),
     node_faustwp_block_editor_utils_version: sanitizePackageJsonVersion(
-      packageJson?.devDependencies?.['@faustwp/block-editor-utils'] as string | undefined,
+      packageJson?.devDependencies?.['@faustwp/block-editor-utils'] as
+        | string
+        | undefined,
     ),
     node_faustwp_experimental_app_router_version: sanitizePackageJsonVersion(
-      packageJson?.dependencies?.['@faustwp/experimental-app-router'] as string | undefined,
+      packageJson?.dependencies?.['@faustwp/experimental-app-router'] as
+        | string
+        | undefined,
     ),
 
     node_apollo_client_version: sanitizePackageJsonVersion(
