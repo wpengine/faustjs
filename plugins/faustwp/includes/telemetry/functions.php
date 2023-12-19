@@ -103,3 +103,22 @@ function get_plugin_version() {
 function get_wpgraphql_content_blocks_plugin_version() {
 	return defined( 'WPGRAPHQL_CONTENT_BLOCKS_VERSION' ) ? WPGRAPHQL_CONTENT_BLOCKS_VERSION : null;
 }
+
+/**
+ * Returns the anonymous client id for this site that has opted in for telemetry.
+ *
+ * @return string|null
+ */
+function get_telemetry_client_id(): string|null {
+	/**
+	 * Upon saving the site's telemetry decision, if they accept, we'll
+	 * also need to generate a unique, anonymous client ID for them to be sent
+	 * with GA requests.
+	 *
+	 * If a string is returned, telemetry is enabled and a client id has been generated.
+	 * If this function returns null, either telemetry is off, or a client ID is not created.
+	 *
+	 * @TODO
+	 */
+	return null;
+}
