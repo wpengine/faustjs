@@ -13,6 +13,10 @@ const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemet
 export const sendTelemetryData = (payload: TelemetryData) => {
   return fetch(WP_TELEMETRY_ENDPOINT, {
     method: 'POST',
+    headers: {
+      'x-faustwp-secret': getWpSecret(),
+      'Content-Type': 'application/json'
+    }
     body: JSON.stringify(payload),
   });
 };
