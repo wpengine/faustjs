@@ -2,4 +2,4 @@
 '@faustwp/cli': major
 ---
 
-Removed Google Analytics endpoint and replaced with updated plugin API endpoint.
+Removed telemetry CLI commands for `faust telemetry enable/disable/status` for opting in/out and enabling telemetry as well as receiving telemetry status. Telemetry functionality has been moved to the Faust WordPress plugin.
