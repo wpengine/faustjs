@@ -184,29 +184,3 @@ function get_icon( $icon ) {
 	return '';
 }
 
-/**
- * Show an admin user the telemetry prompt the first time.
- *
- * @param string $name  The setting name.
- * @param mixed  $value The setting value.
- *
- * @return void
- */
-if (current_user_can( 'manage_options' )) {
-	return;
-	// the JS admin notice
-}
-
-/**
- * Show an admin user the telemetry prompt after 90 days if the telemetry prompt value they selected was "Remind me again in 90 days.".
- *
- * @param string $name  The setting name.
- * @param mixed  $value The setting value.
- *
- * @return void
- */
-
- if (current_user_can( 'manage_options' ) && faustwp_update_setting( 'dismissed-analytics-opt-in', $current_time )) {
-	return;
-	// the JS admin notice
-}
