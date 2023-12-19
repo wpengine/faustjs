@@ -10,6 +10,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
+  <php>
+    <env name="LOAD_PATCHWORK" value="1"/>
+  </php>
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./includes</directory>

@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 add_action( 'init', __NAMESPACE__ . '\\register_custom_blocks' );
 /**
- * Register Gutenberg blocks from block.json files located in the specified paths.
+ * Register Gutenberg blocks from block.json and index.asset.json files located in the specified paths.
  */
 function register_custom_blocks() {
 	static $initialized = false;
@@ -38,12 +38,46 @@ function register_custom_blocks() {
 	$block_dirs = array_filter( glob( $base_dir . '*' ), 'is_dir' );
 
 	foreach ( $block_dirs as $dir ) {
-		// Path to the block.json file.
 		$metadata_file = trailingslashit( $dir ) . 'block.json';
+		$asset_file    = trailingslashit( $dir ) . 'index.asset.json';
 
-		// Check if block.json exists and register the block.
 		if ( file_exists( $metadata_file ) ) {
-			register_block_type( $metadata_file );
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$block_metadata = json_decode( file_get_contents( $metadata_file ), true );
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$asset_data = file_exists( $asset_file ) ? json_decode( file_get_contents( $asset_file ), true ) : array();
+			$block_name = basename( $dir );
+
+			$dependencies = $asset_data['dependencies'] ?? array();
+			$version      = $asset_data['version'] ?? '';
+
+			$block_args = array();
+
+			// Register editor script.
+			if ( isset( $block_metadata['editorScript'] ) ) {
+				$editor_script_handle = register_block_asset( $block_metadata, 'editorScript', $block_name, $dependencies, $version );
+				if ( $editor_script_handle ) {
+					$block_args['editor_script'] = $editor_script_handle;
+				}
+			}
+
+			// Register editor style.
+			if ( isset( $block_metadata['editorStyle'] ) ) {
+				$editor_style_handle = register_block_asset( $block_metadata, 'editorStyle', $block_name, array(), $version );
+				if ( $editor_style_handle ) {
+					$block_args['editor_style'] = $editor_style_handle;
+				}
+			}
+
+			// Register style.
+			if ( isset( $block_metadata['style'] ) ) {
+				$style_handle = register_block_asset( $block_metadata, 'style', $block_name, array(), $version );
+				if ( $style_handle ) {
+					$block_args['style'] = $style_handle;
+				}
+			}
+
+			register_block_type( $metadata_file, $block_args );
 		}
 	}
 
