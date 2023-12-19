@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { WPPageInfo } from 'client';
+import type { RootQueryToPostConnectionPageInfo } from 'client';
 
 interface NextPageNavigationProps {
   href: string;
@@ -26,7 +26,7 @@ function PreviousPageNavigation(props: PreviousPageNavigationProps) {
 }
 
 export interface PaginationProps {
-  pageInfo: WPPageInfo;
+  pageInfo: RootQueryToPostConnectionPageInfo;
   basePath: string;
 }
 
