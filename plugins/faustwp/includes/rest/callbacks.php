@@ -214,28 +214,30 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 	$ga_key               = '-SLuZb8JTbWkWcT5BD032w';
 
 	$telemetry_data = array(
-		'node_faustwp_core_version'           => $body['node_faustwp_core_version'] ?? null,
-		'node_faustwp_cli_version'            => $body['node_faustwp_cli_version'] ?? null,
-		'node_faustwp_blocks_version'         => $body['node_faustwp_blocks_version'] ?? null,
-		'node_apollo_client_version'          => $body['node_apollo_client_version'] ?? null,
-		'node_version'                        => $body['node_version'] ?? null,
-		'node_next_version'                   => $body['node_next_version'] ?? null,
-		'node_is_development'                 => $body['node_is_development'] ?? null,
-		'command'                             => $body['command'] ?? null,
+		'node_faustwp_core_version'                    => $body['node_faustwp_core_version'] ?? null,
+		'node_faustwp_cli_version'                     => $body['node_faustwp_cli_version'] ?? null,
+		'node_faustwp_blocks_version'                  => $body['node_faustwp_blocks_version'] ?? null,
+		'node_apollo_client_version'                   => $body['node_apollo_client_version'] ?? null,
+		'node_faustwp_block_editor_utils_version'      => $body['node_faustwp_block_editor_utils_version'] ?? null,
+		'node_faustwp_experimental_app_router_version' => $body['node_faustwp_experimental_app_router_version'] ?? null,
+		'node_version'                                 => $body['node_version'] ?? null,
+		'node_next_version'                            => $body['node_next_version'] ?? null,
+		'node_is_development'                          => $body['node_is_development'] ?? null,
+		'command'                                      => $body['command'] ?? null,
 
-		'setting_has_frontend_uri'            => $faust_plugin_data['has_frontend_uri'],
-		'setting_redirects_enabled'           => $faust_plugin_data['redirects_enabled'],
-		'setting_rewrites_enabled'            => $faust_plugin_data['rewrites_enabled'],
-		'setting_themes_disabled'             => $faust_plugin_data['themes_disabled'],
-		'setting_img_src_replacement_enabled' => $faust_plugin_data['image_source_replacement_enabled'],
-		'faustwp_version'                     => $faust_plugin_data['version'],
+		'setting_has_frontend_uri'                     => $faust_plugin_data['has_frontend_uri'],
+		'setting_redirects_enabled'                    => $faust_plugin_data['redirects_enabled'],
+		'setting_rewrites_enabled'                     => $faust_plugin_data['rewrites_enabled'],
+		'setting_themes_disabled'                      => $faust_plugin_data['themes_disabled'],
+		'setting_img_src_replacement_enabled'          => $faust_plugin_data['image_source_replacement_enabled'],
+		'faustwp_version'                              => $faust_plugin_data['version'],
 
-		'wpgraphql_content_blocks_version'    => $content_blocks_plugin_data['version'],
+		'wpgraphql_content_blocks_version'             => $content_blocks_plugin_data['version'],
 
-		'is_wpe'                              => is_wpe(),
-		'multisite'                           => is_multisite(),
-		'php_version'                         => PHP_VERSION,
-		'wp_version'                          => get_wp_version(),
+		'is_wpe'                                       => is_wpe(),
+		'multisite'                                    => is_multisite(),
+		'php_version'                                  => PHP_VERSION,
+		'wp_version'                                   => get_wp_version(),
 	);
 
 	$ga_telemetry_url = add_query_arg(
