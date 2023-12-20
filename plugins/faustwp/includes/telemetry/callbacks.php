@@ -40,17 +40,28 @@ function show_telemetry_prompt() {
 	if ( ! empty( $remind_me_later ) && $now->getTimestamp() < $remind_me_later ) {
 		return;
 	}
-	?>
-		<div class="notice notice-info">
-			<p>
-				<?php echo wp_kses_post( __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Toggling Telemetry - Faust.js™</a>.', 'faustwp' ) ); ?>
-				<?php esc_html_e( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ); ?>
-			</p>
-			<p>
-				<button class="button button-primary"><?php esc_html_e( 'Yes', 'faustwp' ); ?></button>
-				<button class="button"><?php esc_html_e( 'No', 'faustwp' ); ?></button>
-				<button class="button"><?php esc_html_e( 'Remind me later', 'faustwp' ); ?></button>
-			</p>
-		</div>
-	<?php
+
+	echo telemetry_notice_text();
+}
+
+/**
+ * Returns the anonymous opt-in telemetry text
+ * to be displayed in an admin notice.
+ *
+ * @return string
+ */
+function telemetry_notice_text() {
+	return <<<END
+	<div class="notice notice-info">
+		<p>
+			<?php echo wp_kses_post( __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Toggling Telemetry - Faust.js™</a>.', 'faustwp' ) ); ?>
+			<?php esc_html_e( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ); ?>
+		</p>
+		<p>
+			<button class="button button-primary"><?php esc_html_e( 'Yes', 'faustwp' ); ?></button>
+			<button class="button"><?php esc_html_e( 'No', 'faustwp' ); ?></button>
+			<button class="button"><?php esc_html_e( 'Remind me later', 'faustwp' ); ?></button>
+		</p>
+	</div>
+END;
 }
