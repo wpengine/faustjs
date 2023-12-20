@@ -11,7 +11,8 @@
   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
   <php>
-     <const name="WP_TESTS_MULTISITE" value="1" />
+    <const name="WP_TESTS_MULTISITE" value="1" />
+    <env name="LOAD_PATCHWORK" value="1"/>
   </php>
   <coverage processUncoveredFiles="true">
     <include>
