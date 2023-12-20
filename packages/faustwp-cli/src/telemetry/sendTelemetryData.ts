@@ -10,7 +10,9 @@ import { TelemetryData } from './marshallTelemetryData.js';
  * @param payload The data being sent to telemetry API
  */
 export const sendTelemetryData = (payload: TelemetryData) => {
-  if (!getWpSecret()) {
+  const secret = getWpSecret();
+
+  if (!secret) {
     throw new Error('Faust secret key is required');
   }
 
@@ -19,7 +21,7 @@ export const sendTelemetryData = (payload: TelemetryData) => {
 
   return fetch(WP_TELEMETRY_ENDPOINT, {
     headers: {
-      'x-faustwp-secret': getWpSecret(),
+      'x-faustwp-secret': secret,
       'Content-Type': 'application/json',
     },
     method: 'POST',
