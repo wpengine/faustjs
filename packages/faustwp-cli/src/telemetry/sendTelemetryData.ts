@@ -12,9 +12,13 @@ const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemet
  * @param payload The data being sent to telemetry API
  */
 export const sendTelemetryData = (payload: TelemetryData) => {
+  if(!getWpSecret()) {
+    throw new Error('Faust secret key is required');
+  }
+  
   return fetch(WP_TELEMETRY_ENDPOINT, {
     headers: {
-      'x-faustwp-secret': getWpSecret() || '',
+      'x-faustwp-secret': getWpSecret(),
       'Content-Type': 'application/json',
     },
     method: 'POST',
