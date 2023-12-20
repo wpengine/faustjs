@@ -41,7 +41,7 @@ function show_telemetry_prompt() {
 		return;
 	}
 
-	echo telemetry_notice_text();
+	echo wp_kses_post( telemetry_notice_text() );
 }
 
 /**
