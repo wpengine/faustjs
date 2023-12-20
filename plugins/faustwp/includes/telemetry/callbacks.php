@@ -16,28 +16,41 @@ add_action( 'admin_notices', __NAMESPACE__ . '\show_telemetry_prompt' );
  * @return void
  */
 function show_telemetry_prompt() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! should_show_telemetry_prompt() ) {
 		return;
+	}
+
+	echo wp_kses_post( telemetry_notice_text() );
+}
+
+/**
+ * Determines whether the telemetry prompt should be shown.
+ *
+ * @return boolean
+ */
+function should_show_telemetry_prompt() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return false;
 	}
 
 	$screens_to_show = array( 'plugins', 'settings_page_faustwp-settings' );
 	$current_screen  = get_current_screen();
 	if ( is_object( $current_screen ) && ! in_array( $current_screen->id, $screens_to_show, true ) ) {
-		return;
+		return false;
 	}
 
 	$remind_me_later  = faustwp_get_setting( 'telemetry_reminder', false );
 	$enable_telemetry = faustwp_get_setting( 'enable_telemetry', false );
 	if ( $enable_telemetry ) {
-		return;
+		return false;
 	}
 
 	$now = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
 	if ( ! empty( $remind_me_later ) && $now->getTimestamp() < $remind_me_later ) {
-		return;
+		return false;
 	}
 
-	echo wp_kses_post( telemetry_notice_text() );
+	return true;
 }
 
 /**
