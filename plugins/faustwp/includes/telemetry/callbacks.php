@@ -16,16 +16,12 @@ add_action( 'admin_notices', __NAMESPACE__ . '\show_telemetry_prompt' );
  * @return void
  */
 function show_telemetry_prompt() {
-	// how to tell if user is admin.
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
-	// which screens will have the prompt.
 	$screens_to_show = array( 'plugins', 'settings_page_faustwp-settings' );
-
-	// checks to see if the screen is either of the two options above.
-	$current_screen = get_current_screen();
+	$current_screen  = get_current_screen();
 	if ( is_object( $current_screen ) && ! in_array( $current_screen->id, $screens_to_show, true ) ) {
 		return;
 	}
@@ -52,9 +48,9 @@ function show_telemetry_prompt() {
  */
 function telemetry_notice_text() {
 	return '<div class="notice notice-info">
-		<p>' . __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Faust Telemetry</a>.', 'faustwp' ). '
+		<p>' . __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Faust Telemetry</a>.', 'faustwp' ) . '
 		</p>
-		<p>' . __( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ). '
+		<p>' . __( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ) . '
 		</p>
 		<p>
 			<button class="button button-primary">' . __( 'Yes', 'faustwp' ) . '</button>
