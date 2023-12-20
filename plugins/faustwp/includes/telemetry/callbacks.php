@@ -36,7 +36,9 @@ function show_telemetry_prompt() {
 		return;
 	}
 
-	$now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+    // $now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+	$now = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+    // echo "<script>console.log('Debug Objects: " . $now->getTimestamp() . "' );</script>";
 	if ( ! empty( $remind_me_later ) && $now->getTimestamp() < $remind_me_later ) {
 		return;
 	}
