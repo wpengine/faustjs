@@ -36,24 +36,23 @@ function show_telemetry_prompt() {
 		return;
 	}
 
-    // $now = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
 	$now = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
-    // echo "<script>console.log('Debug Objects: " . $now->getTimestamp() . "' );</script>";
 	if ( ! empty( $remind_me_later ) && $now->getTimestamp() < $remind_me_later ) {
 		return;
 	}
 
 	$dismiss_url = add_query_arg( 'dismiss_admin_notice_example', '1' );
 	?>
-		<div class="notice notice-warning">
-		  <p><em><?php esc_html_e( 'Telemetry Prompt:', 'faustwp' ); ?></em>
-		  <?php echo wp_kses_post( __( 'To help Faust.js make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Toggling Telemetry - Faust.js™</a>. If you are comfortable with sharing, please enable telemetry.', 'faustwp' ) ); ?>
-		  <a href="<?php echo esc_url( $dismiss_url ); ?>"><?php esc_html_e( 'Dismiss', 'faustwp' ); ?></a></p>
-          <p>
-            <button><?php esc_html_e( 'Yes, I consent to this data collection'); ?></button>
-            <button><?php esc_html_e( 'Not right now. Remind me again in 90 days'); ?></button>
-            <button><?php esc_html_e( 'Never Ask Again'); ?></button>
-          </p>
+		<div class="notice notice-info">
+			<p>
+				<?php echo wp_kses_post( __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Toggling Telemetry - Faust.js™</a>.', 'faustwp' ) ); ?>
+				<?php esc_html_e( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ); ?>
+			</p>
+			<p>
+				<button class="button button-primary"><?php esc_html_e( 'Yes', 'faustwp' ); ?></button>
+				<button class="button"><?php esc_html_e( 'No', 'faustwp' ); ?></button>
+				<button class="button"><?php esc_html_e( 'Remind me later', 'faustwp' ); ?></button>
+			</p>
 		</div>
 	<?php
 }
