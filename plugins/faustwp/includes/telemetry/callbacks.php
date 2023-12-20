@@ -40,8 +40,6 @@ function show_telemetry_prompt() {
 	if ( ! empty( $remind_me_later ) && $now->getTimestamp() < $remind_me_later ) {
 		return;
 	}
-
-	$dismiss_url = add_query_arg( 'dismiss_admin_notice_example', '1' );
 	?>
 		<div class="notice notice-info">
 			<p>
