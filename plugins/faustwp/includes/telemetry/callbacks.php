@@ -51,17 +51,15 @@ function show_telemetry_prompt() {
  * @return string
  */
 function telemetry_notice_text() {
-	return <<<END
-	<div class="notice notice-info">
-		<p>
-			<?php echo wp_kses_post( __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Toggling Telemetry - Faust.js™</a>.', 'faustwp' ) ); ?>
-			<?php esc_html_e( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ); ?>
+	return '<div class="notice notice-info">
+		<p>' . __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Faust Telemetry</a>.', 'faustwp' ). '
+		</p>
+		<p>' . __( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ). '
 		</p>
 		<p>
-			<button class="button button-primary"><?php esc_html_e( 'Yes', 'faustwp' ); ?></button>
-			<button class="button"><?php esc_html_e( 'No', 'faustwp' ); ?></button>
-			<button class="button"><?php esc_html_e( 'Remind me later', 'faustwp' ); ?></button>
+			<button class="button button-primary">' . __( 'Yes', 'faustwp' ) . '</button>
+			<button class="button">' . __( 'No', 'faustwp' ) . '</button>
+			<button class="button">' . __( 'Remind me later', 'faustwp' ) . '</button>
 		</p>
-	</div>
-END;
+	</div>';
 }
