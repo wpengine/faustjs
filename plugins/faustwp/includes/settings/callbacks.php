@@ -221,7 +221,7 @@ function sanitize_faustwp_settings( $settings, $option ) {
 
 			case 'telemetry_reminder':
 				if ( $value ) {
-					$settings[ $name ] = $value;
+					$settings[ $name ] = (int) $value;
 				} else {
 					unset( $settings[ $name ] );
 				}
