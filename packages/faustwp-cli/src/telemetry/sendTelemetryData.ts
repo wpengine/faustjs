@@ -3,8 +3,6 @@ import 'isomorphic-fetch';
 import { getWpUrl } from '../utils/getWpUrl.js';
 import { getWpSecret } from '../utils/getWpSecret.js';
 import { TelemetryData } from './marshallTelemetryData.js';
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemetry`;
 
 /**
  * Send the marshalled telemetry data to Faust Telemetry API.
@@ -12,10 +10,13 @@ const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemet
  * @param payload The data being sent to telemetry API
  */
 export const sendTelemetryData = (payload: TelemetryData) => {
-  if(!getWpSecret()) {
+  if (!getWpSecret()) {
     throw new Error('Faust secret key is required');
   }
-  
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemetry`;
+
   return fetch(WP_TELEMETRY_ENDPOINT, {
     headers: {
       'x-faustwp-secret': getWpSecret(),
