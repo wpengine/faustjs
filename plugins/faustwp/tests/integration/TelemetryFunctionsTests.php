@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GraphQLFunctionsTests
+ * Class TelemetryFunctionsTests
  *
  * @package FaustWP
  */
