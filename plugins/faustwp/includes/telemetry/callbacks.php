@@ -102,8 +102,8 @@ function load_telemetry_assets() {
 				'decision_yes'     => esc_html__( 'Enabling anonymous opt-in telemetry in Faust.', 'faustwp' ),
 				'decision_no'      => esc_html__( 'Disabling anonymous opt-in telemetry in Faust.', 'faustwp' ),
 				'decision_remind'  => esc_html__( "We'll remind you later about anonymous opt-in telemetry in Faust.", 'faustwp' ),
-				'decision_success' => esc_html__( 'Your telemetry decision has been saved.', 'faustwp' ),
-				'decision_fail'    => esc_html__( 'There was a problem saving your telemetry decision. Please refresh the page and try again.', 'faustwp' ),
+				'decision_success' => wp_kses_post( '<p>Your telemetry decision has been saved.</p>', 'faustwp' ),
+				'decision_fail'    => wp_kses_post( '<p>There was a problem saving your telemetry decision. Please refresh the page and try again.</p>', 'faustwp' ),
 			),
 		)
 	);
