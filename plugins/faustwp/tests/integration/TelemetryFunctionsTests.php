@@ -40,6 +40,8 @@ class TelemetryFunctionsTests extends WP_UnitTestCase {
 		self::assertNotEmpty( generate_telemetry_client_id() );
 		$id = get_telemetry_client_id();
 		self::assertTrue( wp_is_uuid( $id ) );
+		$options = get_option( 'faustwp_settings' );
+		self::assertSame( $options['telemetry_client_id'], $id );
 	}
 
 }
