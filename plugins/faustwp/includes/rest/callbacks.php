@@ -223,9 +223,6 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 	if ( ! is_telemetry_enabled() ) {
 		return new \WP_REST_Response( null, 204 );
 	}
-	if ( ! get_telemetry_client_id() ) {
-		return new \WP_REST_Response( null, 204 );
-	}
 
 	$body = $request->get_json_params();
 
