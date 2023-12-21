@@ -23,6 +23,8 @@ use function WPE\FaustWP\Telemetry\{
 	get_telemetry_client_id
 };
 use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
+use function WPE\FaustWP\Settings\faustwp_get_setting;
+use function WPE\FaustWP\Settings\faustwp_update_setting;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -83,6 +85,16 @@ function register_rest_routes() {
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\\handle_blockset_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_blockset_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
+		'/telemetry/decision',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_decision_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_decision_permission_callback',
 		)
 	);
 
@@ -159,7 +171,14 @@ function handle_blockset_callback( \WP_REST_Request $request ) {
 		return $result;
 	}
 
-	return new \WP_REST_Response( __( 'Blockset sync complete.', 'faustwp' ), 200 );
+	return new \WP_REST_Response(
+		sprintf(
+			/* Translators: %s is replaced with the emoji indicating a successful sync. */
+			esc_html__( '%s Blockset sync complete!', 'faustwp' ),
+			'✅'
+		),
+		200
+	);
 }
 
 /**
@@ -405,4 +424,54 @@ function wpac_authorize_permission_callback( \WP_REST_Request $request ) {
 	}
 
 	return false;
+}
+
+/**
+ * Handles permission checks for the telemetry decision REST route.
+ *
+ * @param \WP_REST_Request $request REST request object.
+ * @return bool Whether the user has permission to make telemetry decisions.
+ */
+function rest_telemetry_decision_permission_callback( \WP_REST_Request $request ) {
+	return current_user_can( 'manage_options' );
+}
+
+/**
+ * Handles user decisions for telemetry opt-in.
+ *
+ * @param \WP_REST_Request $request REST request object.
+ * @return \WP_REST_Response|\WP_Error
+ */
+function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
+	$body     = json_decode( $request->get_body(), true );
+	$decision = $body['decision'] ?? 'remind';
+	if ( ! in_array( $decision, array( 'yes', 'no', 'remind' ), true ) ) {
+		$decision = 'remind';
+	}
+	switch ( $decision ) {
+		case 'yes':
+			faustwp_update_setting( 'telemetry_reminder', '0' );
+			faustwp_update_setting( 'enable_telemetry', '1' );
+			break;
+		case 'no':
+			faustwp_update_setting( 'telemetry_reminder', '0' );
+			faustwp_update_setting( 'enable_telemetry', 'no' );
+			break;
+		case 'remind':
+		default:
+			$date = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
+			faustwp_update_setting( 'enable_telemetry', '0' );
+			faustwp_update_setting( 'telemetry_reminder', $date->getTimeStamp() );
+			break;
+	}
+
+	$response = array(
+		'decision' => $decision,
+		'settings' => array(
+			'enabled'  => faustwp_get_setting( 'enable_telemetry' ),
+			'reminder' => faustwp_get_setting( 'telemetry_reminder' ),
+		),
+		'success'  => true,
+	);
+	return rest_ensure_response( $response );
 }

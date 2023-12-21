@@ -226,7 +226,7 @@ textarea:focus {
 	box-shadow: 0 0 0 1px var(--brand-color);
 }
 
-.wp-core-ui .button-primary {
+.wp-core-ui .button-primary:not(.button-telemetry) {
 	background: var(--brand-color);
 	border-color: var(--brand-color);
 	color: #fff;
@@ -234,8 +234,8 @@ textarea:focus {
 	padding: 2px 14px;
 }
 
-.wp-core-ui .button-primary:focus,
-.wp-core-ui .button-primary:hover {
+.wp-core-ui .button-primary:focus:not(.button-telemetry),
+.wp-core-ui .button-primary:hover:not(.button-telemetry) {
 	background: var(--brand-color-darker);
 	border-color: var(--brand-color-darker);
 	color: #fff;
