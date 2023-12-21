@@ -112,7 +112,12 @@ function get_wpgraphql_content_blocks_plugin_version() {
  */
 function get_telemetry_client_id(): string {
 	// Use the default fallback param to generate and save the uuid if not already saved.
-	return faustwp_get_setting( 'telemetry_uuid', generate_telemetry_client_id() );
+	$id = faustwp_get_setting( 'telemetry_client_id', false );
+	if ( empty( $id ) ) {
+		$id = generate_telemetry_client_id();
+	}
+
+	return $id;
 }
 
 /**
