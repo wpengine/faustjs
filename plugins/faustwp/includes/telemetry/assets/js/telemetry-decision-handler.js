@@ -28,10 +28,15 @@ faustwp.handleTelemetryDecision = (() => {
 			data: {decision}
 		}
 
+		const faustNotice = document.getElementById('faustwp-telemetry-notice');
 		let response = await wp.apiFetch(request);
 		if (response.success) {
 			wp.a11y.speak(faustwp_telemetry.strings.decision_success, 'polite');
+			faustNotice.innerHTML = faustwp_telemetry.strings.decision_success;
+			// Toggle checkbox on settings page to match decision, since we don't reload the page.
+			document.getElementById('enable_telemetry').checked = decision === 'yes';
 		} else {
+			faustNotice.innerHTML = faustwp_telemetry.strings.decision_fail;
 			wp.a11y.speak(faustwp_telemetry.strings.decision_fail, 'polite');
 		}
 	}

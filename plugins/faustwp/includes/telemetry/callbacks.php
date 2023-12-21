@@ -61,7 +61,7 @@ function should_show_telemetry_prompt() {
  * @return string
  */
 function telemetry_notice_text() {
-	return '<div class="notice notice-info">
+	return '<div id="faustwp-telemetry-notice" class="notice notice-info">
 		<p>' . __( 'To help the Faust.js™ team make decisions on where to focus our efforts for you, we would like to collect anonymous information on how you are using the plugin’s features. You can read more on what we collect by reading <a href="https://faustjs.org/guide/how-to-toggle-telemetry">Faust Telemetry</a>.', 'faustwp' ) . '
 		</p>
 		<p>' . __( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ) . '
