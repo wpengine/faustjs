@@ -37,11 +37,10 @@ class TelemetryFunctionsTests extends WP_UnitTestCase {
 
 	public function test_generate_telemetry_client_id_generates_and_saves_a_valid_id_when_one_is_not_present(): void {
 		delete_option( 'faustwp_settings' );
-		self::assertNotEmpty( generate_telemetry_client_id() );
-		$id = get_telemetry_client_id();
+		$id = generate_telemetry_client_id();
+		self::assertNotEmpty( $id );
 		self::assertTrue( wp_is_uuid( $id ) );
-		$options = get_option( 'faustwp_settings' );
-		self::assertSame( $options['telemetry_client_id'], $id );
+		self::assertSame( $id, get_telemetry_client_id() );
 	}
 
 }
