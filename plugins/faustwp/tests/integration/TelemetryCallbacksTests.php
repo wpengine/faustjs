@@ -38,6 +38,12 @@ class TelemetryCallbacksTests extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'admin_notices', 'WPE\FaustWP\Telemetry\show_telemetry_prompt' ) );
 	}
 
+	public function test_telemetry_script_is_registered(): void {
+		set_current_screen( 'admin.php' );
+		do_action( 'admin_enqueue_scripts', 'settings_page_faustwp-settings' );
+		self::assertTrue( wp_script_is( 'faustwp-telemetry-handler', 'registered' ) );
+	}
+
 	public function test_should_show_telemetry_prompt_returns_true_by_default_for_admin_users(): void {
 		self::assertTrue( should_show_telemetry_prompt() );
 	}
