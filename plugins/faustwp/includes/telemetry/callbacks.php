@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\Telemetry;
 
 use function WPE\FaustWP\Settings\faustwp_get_setting;
+use function WPE\FaustWP\Utilities\plugin_version;
 
 add_action( 'admin_notices', __NAMESPACE__ . '\show_telemetry_prompt' );
 /**
@@ -71,4 +72,39 @@ function telemetry_notice_text() {
 			<button id="faustwp-telemetry-decision-remind" class="button button-telemetry" value="remind" aria-label="' . esc_html__( 'Remind me later about anonymous telemetry', 'faustwp' ) . '">' . __( 'Remind me later', 'faustwp' ) . '</button>
 		</p>
 	</div>';
+}
+
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\load_telemetry_assets' );
+/**
+ * Loads JS assets related to telemetry.
+ *
+ * @return void
+ */
+function load_telemetry_assets() {
+	wp_register_script(
+		'faustwp-telemetry-handler',
+		FAUSTWP_URL . 'includes/telemetry/assets/js/telemetry-decision-handler.js',
+		array( 'wp-a11y', 'wp-api-fetch' ),
+		plugin_version(),
+		array( 'in_footer' => true )
+	);
+
+	if ( ! should_show_telemetry_prompt() ) {
+		return;
+	}
+
+	wp_enqueue_script( 'faustwp-telemetry-handler' );
+	wp_localize_script(
+		'faustwp-telemetry-handler',
+		'faustwp_telemetry',
+		[
+			'strings' => [
+				'decision_yes'     => esc_html__( 'Enabling anonymous opt-in telemetry in Faust.', 'faustwp' ),
+				'decision_no'      => esc_html__( 'Disabling anonymous opt-in telemetry in Faust.', 'faustwp' ),
+				'decision_remind'  => esc_html__( "We'll remind you later about anonymous opt-in telemetry in Faust.", 'faustwp' ),
+				'decision_success' => esc_html__( 'Your telemetry decision has been saved.', 'faustwp' ),
+				'decision_fail'    => esc_html__( 'There was a problem saving your telemetry decision. Please refresh the page and try again.', 'faustwp' ),
+			]
+		]
+	);
 }
