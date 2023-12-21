@@ -186,9 +186,9 @@ function sanitize_faustwp_settings( $settings, $option ) {
 	$errors    = null;
 	$protocols = array( 'http', 'https' );
 	foreach ( $settings as $name => $value ) {
-
-		if ( ! isset( $settings['enable_telemetry'] ) && ! empty( $_POST['option_page'] ) && $_POST['option_page'] === 'faustwp_settings' ) {
-			$reminder_time = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified elsewhere.
+		if ( ! isset( $settings['enable_telemetry'] ) && ! empty( $_POST['option_page'] ) && 'faustwp_settings' === $_POST['option_page'] ) {
+			$reminder_time                  = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
 			$settings['telemetry_reminder'] = $reminder_time->getTimestamp();
 		}
 
