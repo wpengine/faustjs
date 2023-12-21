@@ -25,6 +25,7 @@ use function WPE\FaustWP\Telemetry\{
 use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
 use function WPE\FaustWP\Settings\faustwp_get_setting;
 use function WPE\FaustWP\Settings\faustwp_update_setting;
+use function WPE\FaustWP\Settings\is_telemetry_enabled;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -219,6 +220,9 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
  * @return mixed A \WP_REST_Response, array, or \WP_Error.
  */
 function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
+	if ( ! is_telemetry_enabled() ) {
+		return new \WP_REST_Response( null, 204 );
+	}
 	if ( ! get_telemetry_client_id() ) {
 		return new \WP_REST_Response( null, 204 );
 	}
