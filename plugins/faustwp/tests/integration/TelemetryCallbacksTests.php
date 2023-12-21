@@ -38,6 +38,10 @@ class TelemetryCallbacksTests extends WP_UnitTestCase {
 		self::assertSame( 10, has_action( 'admin_notices', 'WPE\FaustWP\Telemetry\show_telemetry_prompt' ) );
 	}
 
+	public function test_should_show_telemetry_prompt_returns_true_by_default_for_admin_users(): void {
+		self::assertTrue( should_show_telemetry_prompt() );
+	}
+
 	public function test_should_show_telemetry_prompt_returns_false_when_user_does_not_have_proper_capabilities(): void {
 		wp_set_current_user( null );
 		self::assertFalse( should_show_telemetry_prompt() );
@@ -52,6 +56,12 @@ class TelemetryCallbacksTests extends WP_UnitTestCase {
 		$reminder_time = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
 		faustwp_update_setting( 'telemetry_reminder', $reminder_time->getTimestamp() );
 		self::assertFalse( should_show_telemetry_prompt() );
+	}
+
+	public function test_should_show_telemetry_prompt_returns_true_when_user_selected_remind_me_later_and_current_time_is_after_reminder_time(): void {
+		$reminder_time = new \DateTime( '-1 day', new \DateTimeZone( 'UTC' ) );
+		faustwp_update_setting( 'telemetry_reminder', $reminder_time->getTimestamp() );
+		self::assertTrue( should_show_telemetry_prompt() );
 	}
 
 	public function test_show_telemetry_prompt_shows_notice_when_user_selected_remind_me_later_and_current_time_is_after_reminder_time(): void {
