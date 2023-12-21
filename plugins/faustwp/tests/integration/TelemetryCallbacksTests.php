@@ -58,6 +58,11 @@ class TelemetryCallbacksTests extends WP_UnitTestCase {
 		self::assertFalse( should_show_telemetry_prompt() );
 	}
 
+	public function test_should_show_telemetry_prompt_returns_false_when_user_already_opted_out(): void {
+		faustwp_update_setting( 'enable_telemetry', 'no' );
+		self::assertFalse( should_show_telemetry_prompt() );
+	}
+
 	public function test_should_show_telemetry_prompt_returns_false_when_user_selected_remind_me_later_and_current_time_is_before_reminder_time(): void {
 		$reminder_time = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
 		faustwp_update_setting( 'telemetry_reminder', $reminder_time->getTimestamp() );
