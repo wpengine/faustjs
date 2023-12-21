@@ -66,9 +66,9 @@ function telemetry_notice_text() {
 		<p>' . __( 'Would you like to opt into anonymous telemetry to help improve Faust.js?', 'faustwp' ) . '
 		</p>
 		<p>
-			<button class="button button-primary">' . __( 'Yes', 'faustwp' ) . '</button>
-			<button class="button">' . __( 'No', 'faustwp' ) . '</button>
-			<button class="button">' . __( 'Remind me later', 'faustwp' ) . '</button>
+			<button id="faustwp-telemetry-decision-yes" class="button button-primary button-telemetry" value="yes" aria-label="' . esc_html__( 'Opt into anonymous telemetry', 'faustwp' ) . '">' . __( 'Yes', 'faustwp' ) . '</button>
+			<button id="faustwp-telemetry-decision-no" class="button button-telemetry" value="no" aria-label="' . esc_html__( 'Opt out of anonymous telemetry', 'faustwp' ) . '">' . __( 'No', 'faustwp' ) . '</button>
+			<button id="faustwp-telemetry-decision-remind" class="button button-telemetry" value="remind" aria-label="' . esc_html__( 'Remind me later about anonymous telemetry', 'faustwp' ) . '">' . __( 'Remind me later', 'faustwp' ) . '</button>
 		</p>
 	</div>';
 }
