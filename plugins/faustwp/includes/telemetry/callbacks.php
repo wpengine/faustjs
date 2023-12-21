@@ -42,7 +42,7 @@ function should_show_telemetry_prompt() {
 
 	$remind_me_later  = faustwp_get_setting( 'telemetry_reminder', false );
 	$enable_telemetry = faustwp_get_setting( 'enable_telemetry', false );
-	if ( $enable_telemetry ) {
+	if ( '1' === $enable_telemetry || 'no' === $enable_telemetry ) {
 		return false;
 	}
 

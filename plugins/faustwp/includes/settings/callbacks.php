@@ -186,6 +186,12 @@ function sanitize_faustwp_settings( $settings, $option ) {
 	$errors    = null;
 	$protocols = array( 'http', 'https' );
 	foreach ( $settings as $name => $value ) {
+
+		if ( ! isset( $settings['enable_telemetry'] ) && ! empty( $_POST['option_page'] ) && $_POST['option_page'] === 'faustwp_settings' ) {
+			$reminder_time = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
+			$settings['telemetry_reminder'] = $reminder_time->getTimestamp();
+		}
+
 		switch ( $name ) {
 			case 'frontend_uri':
 				if ( '' === $value || preg_match( '#http(s?)://(.+)#i', $value ) ) {
@@ -211,7 +217,6 @@ function sanitize_faustwp_settings( $settings, $option ) {
 			case 'enable_rewrites':
 			case 'disable_theme':
 			case 'enable_image_source':
-			case 'enable_telemetry':
 				if ( $value ) {
 					$settings[ $name ] = '1';
 				} else {
@@ -219,6 +224,13 @@ function sanitize_faustwp_settings( $settings, $option ) {
 				}
 				break;
 
+			case 'enable_telemetry':
+				if ( $value ) {
+					$settings[ $name ] = sanitize_text_field( $value );
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
 			case 'telemetry_reminder':
 				if ( $value ) {
 					$settings[ $name ] = (int) $value;
@@ -230,6 +242,7 @@ function sanitize_faustwp_settings( $settings, $option ) {
 			default:
 				// Remove any settings we don't expect.
 				unset( $settings[ $name ] );
+				break;
 		}
 	}
 

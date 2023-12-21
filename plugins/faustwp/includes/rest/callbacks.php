@@ -344,7 +344,7 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
 			break;
 		case 'no':
 			faustwp_update_setting( 'telemetry_reminder', '0' );
-			faustwp_update_setting( 'enable_telemetry', '0' );
+			faustwp_update_setting( 'enable_telemetry', 'no' );
 			break;
 		case 'remind':
 		default:
