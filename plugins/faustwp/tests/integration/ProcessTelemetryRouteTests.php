@@ -5,7 +5,7 @@ namespace WPE\FaustWP\Tests\Integration;
 use \WP_UnitTestCase;
 use function WPE\FaustWP\Settings\get_secret_key;
 
-class ProcessTelemetryRouteTest extends WP_UnitTestCase
+class ProcessTelemetryRouteTests extends WP_UnitTestCase
 {
   private $request;
   private $route_name;
