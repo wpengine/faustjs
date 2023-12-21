@@ -239,6 +239,14 @@ function sanitize_faustwp_settings( $settings, $option ) {
 				}
 				break;
 
+			case 'telemetry_client_id':
+				if ( $value ) {
+					$settings[ $name ] = sanitize_text_field( $value );
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
+
 			default:
 				// Remove any settings we don't expect.
 				unset( $settings[ $name ] );
