@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup Node
+      - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -20,19 +20,19 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Setup PHP
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           coverage: pcov
           ini-values: pcov.directory=includes
-      - name: Setup Frontend
+      - name: Set up Frontend
         run: |
           NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
       - name: Composer install
         working-directory: plugins/faustwp
         run: composer install
-      - name: Setup Containers
+      - name: Set up Containers
         working-directory: plugins/faustwp
         run: docker-compose up -d
       - name: Sleep 15 seconds
@@ -44,10 +44,11 @@ jobs:
         working-directory: plugins/faustwp
         run: |
           docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
-      - name: Setup testing data
+      - name: Set up testing data
         working-directory: plugins/faustwp
         run: |
           docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root
+          cat tests/_data/dump.sql
       - name: Copy env file
         working-directory: plugins/faustwp
         run: cp .env.testing.example .env.testing
