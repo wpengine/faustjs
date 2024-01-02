@@ -13,6 +13,7 @@ use function WPE\FaustWP\Settings\{
 	is_themes_disabled,
 	is_image_source_replacement_enabled,
 	faustwp_get_setting,
+	faustwp_update_setting,
 };
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -107,18 +108,25 @@ function get_wpgraphql_content_blocks_plugin_version() {
 /**
  * Returns the anonymous client id for this site that has opted in for telemetry.
  *
- * @return string|null
+ * @return string
  */
-function get_telemetry_client_id(): string|null {
-	/**
-	 * Upon saving the site's telemetry decision, if they accept, we'll
-	 * also need to generate a unique, anonymous client ID for them to be sent
-	 * with GA requests.
-	 *
-	 * If a string is returned, telemetry is enabled and a client id has been generated.
-	 * If this function returns null, either telemetry is off, or a client ID is not created.
-	 *
-	 * @TODO
-	 */
-	return null;
+function get_telemetry_client_id(): string {
+	// Use the default fallback param to generate and save the uuid if not already saved.
+	$id = faustwp_get_setting( 'telemetry_client_id', false );
+	if ( empty( $id ) ) {
+		$id = generate_telemetry_client_id();
+	}
+
+	return $id;
+}
+
+/**
+ * Generates a random uuidv4 and saves it for use with telemetry collection.
+ *
+ * @return string
+ */
+function generate_telemetry_client_id(): string {
+	$id = wp_generate_uuid4();
+	faustwp_update_setting( 'telemetry_client_id', $id );
+	return $id;
 }

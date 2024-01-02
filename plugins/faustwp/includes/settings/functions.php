@@ -7,6 +7,9 @@
 
 namespace WPE\FaustWP\Settings;
 
+use function WPE\FaustWP\Telemetry\generate_telemetry_client_id;
+use function WPE\FaustWP\Telemetry\get_telemetry_client_id;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -148,8 +151,9 @@ function faustwp_get_settings() {
  * @return void
  */
 function maybe_set_default_settings() {
-	$secret_key = get_secret_key();
-	$settings   = faustwp_get_settings();
+	$secret_key          = get_secret_key();
+	$settings            = faustwp_get_settings();
+	$telemetry_client_id = get_telemetry_client_id();
 
 	if ( empty( $settings ) ) {
 		faustwp_update_setting( 'disable_theme', '0' );
@@ -165,6 +169,10 @@ function maybe_set_default_settings() {
 
 	if ( ! $secret_key ) {
 		faustwp_update_setting( 'secret_key', wp_generate_uuid4() );
+	}
+
+	if ( ! $telemetry_client_id ) {
+		generate_telemetry_client_id();
 	}
 }
 

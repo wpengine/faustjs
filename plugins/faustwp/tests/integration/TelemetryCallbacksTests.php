@@ -5,7 +5,7 @@
  * @package FaustWP
  */
 
-namespace WPE\FaustWP\Tests\Unit;
+namespace WPE\FaustWP\Tests\Integration;
 
 use \WP_UnitTestCase;
 use function \wp_set_current_user;

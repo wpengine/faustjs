@@ -7,6 +7,7 @@
 
 namespace WPE\FaustWP\Settings;
 
+use function WPE\FaustWP\Telemetry\get_telemetry_client_id;
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
 };
@@ -239,6 +240,12 @@ function sanitize_faustwp_settings( $settings, $option ) {
 				}
 				break;
 
+			case 'telemetry_client_id':
+				if ( $value ) {
+					$settings[ $name ] = sanitize_text_field( $value );
+				}
+				break;
+
 			default:
 				// Remove any settings we don't expect.
 				unset( $settings[ $name ] );
@@ -442,6 +449,7 @@ function display_enable_disable_fields() {
 			<input type="checkbox" id="enable_telemetry" name="faustwp_settings[enable_telemetry]" value="1" <?php checked( $enable_telemetry ); ?> />
 			<?php esc_html_e( 'Enable anonymous telemetry', 'faustwp' ); ?>
 		</label>
+		<input type="hidden" id="telemetry_client_id" name="faustwp_settings[telemetry_client_id]" value="<?php echo esc_attr( get_telemetry_client_id() ); ?>" />
 	</fieldset>
 	<?php
 }
