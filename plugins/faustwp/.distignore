@@ -21,3 +21,5 @@ vendor
 package.json
 .wordpress-org
 coverage
+phpstan.neon.dist
+/phpstan

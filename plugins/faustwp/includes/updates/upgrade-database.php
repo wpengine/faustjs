@@ -7,7 +7,13 @@
 
 namespace WPE\FaustWP\Updates;
 
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\upgrade_database' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\call_upgrade_database_action' );
+/**
+ * Calls the upgrade_database function as part of a wp action
+ */
+function call_upgrade_database_action(): void {
+	upgrade_database();
+}
 /**
  * Migrates the plugin's stored data to the latest format.
  *
