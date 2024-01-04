@@ -10,8 +10,7 @@ actor: AcceptanceTester
 extensions:
     enabled:
         - Codeception\Extension\RunProcess:
-            0: chromedriver --url-base=/wd/hub --whitelisted-ips=
-            1: npm run end2end
+            0: xvfb-run --server-args="-screen 0 1024x768x24" npm run end2end
             sleep: 3
 
 modules:
@@ -41,5 +40,6 @@ modules:
             port: 9515
             window_size: false
             capabilities:
+                enableVerboseLogging: true
                 chromeOptions:
-                    args: ["headless", "no-sandbox", "disable-gpu", "disable-dev-shm-usage"]
+                    args: ["headless", "no-sandbox", "disable-gpu", "disable-dev-shm-usage", "disable-infobars"]
