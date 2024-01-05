@@ -24,3 +24,6 @@ jobs:
       - name: Run PHPCS
         working-directory: plugins/faustwp
         run: composer phpcs
+      - name: Run PHPStan
+        run: composer phpstan
+        working-directory: plugins/faustwp
