@@ -31,7 +31,7 @@ jobs:
           NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
       - name: Composer install
         working-directory: plugins/faustwp
-        run: composer install
+        run: composer install --prefer-dist --no-progress --no-interaction --no-suggest
       - name: Setup Containers
         working-directory: plugins/faustwp
         run: docker-compose up -d

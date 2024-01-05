@@ -11,7 +11,6 @@ extensions:
     enabled:
         - Codeception\Extension\RunProcess:
             0: chromedriver --url-base=/wd/hub --whitelisted-ips=
-            1: npm run end2end
             sleep: 3
 
 modules:
@@ -43,4 +42,4 @@ modules:
             capabilities:
                 enableVerboseLogging: true
                 chromeOptions:
-                    args: [ "no-sandbox", "headless", "disable-gpu" ]
+                    args: [ "--no-sandbox", "--headless", "--disable-gpu" ]
