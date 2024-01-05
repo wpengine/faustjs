@@ -2,4 +2,4 @@
 '@faustwp/wordpress-plugin': minor
 ---
 
-Allow robots.txt on be accessible on the WP site and is not redirected.
+Requests to robots.txt on the WordPress site are now accessible and are no longer redirected to the front-end site.
