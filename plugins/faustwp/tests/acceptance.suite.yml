@@ -43,4 +43,4 @@ modules:
             capabilities:
                 enableVerboseLogging: true
                 chromeOptions:
-                    args: ["headless", "no-sandbox", "disable-gpu"]
+                    args: [ "no-sandbox", "headless", "disable-gpu" ]
