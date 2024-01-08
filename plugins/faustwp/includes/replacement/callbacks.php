@@ -223,12 +223,9 @@ function term_link( $term_link ) {
 		! is_rewrites_enabled()
 		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
 	) {
-		return equivalent_frontend_url( $term_link );
+		return $term_link;
 	}
-		! is_rewrites_enabled()
-		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
-	) {
-
+	
 	return equivalent_frontend_url( $term_link );
 }
 
