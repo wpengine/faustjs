@@ -225,7 +225,7 @@ function term_link( $term_link ) {
 	) {
 		return $term_link;
 	}
-	
+
 	return equivalent_frontend_url( $term_link );
 }
 
