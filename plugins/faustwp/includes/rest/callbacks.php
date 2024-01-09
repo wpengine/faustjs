@@ -286,9 +286,9 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 	 */
 
 	// @codingStandardsIgnoreStart
-	// wp_remote_post($ga_telemetry_url, [
-	// 'body' => $telemetry_body,
-	// ]);
+	wp_remote_post( $ga_telemetry_url, [
+		'body' => $telemetry_body,
+	] );
   // @codingStandardsIgnoreEnd
 
 	return new \WP_REST_Response( array( $telemetry_body, $ga_telemetry_url ), 201 );
