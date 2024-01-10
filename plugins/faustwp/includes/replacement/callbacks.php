@@ -279,7 +279,10 @@ add_filter( 'term_link', __NAMESPACE__ . '\\term_link', 1000 );
  * @return string
  */
 function term_link( $term_link ) {
-	if ( ! is_rewrites_enabled() ) {
+	if (
+		! is_rewrites_enabled()
+		|| ( function_exists( 'is_graphql_request' ) && is_graphql_request() )
+	) {
 		return $term_link;
 	}
 
