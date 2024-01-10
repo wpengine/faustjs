@@ -75,10 +75,9 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
   if (getWpSecret()) {
     try {
       const telemetryData = marshallTelemetryData(arg1);
-      void sendTelemetryData(telemetryData);
+      await sendTelemetryData(telemetryData);
     } catch (err) {
-      // console.log(err);
-      // Fail silently
+      console.log(err);
     }
   }
 
