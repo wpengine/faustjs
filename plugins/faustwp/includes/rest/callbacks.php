@@ -278,18 +278,13 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 		),
 	);
 
-	/**
-	 * This code should be uncommented once we can accept/decline the
-	 * telemetry option and an appropriate clientID is generated for the site.
-	 *
-	 * @TODO
-	 */
-
-	// @codingStandardsIgnoreStart
-	wp_remote_post( $ga_telemetry_url, [
-		'body' => $telemetry_body,
-	] );
-  // @codingStandardsIgnoreEnd
+	wp_remote_post(
+		$ga_telemetry_url,
+		array(
+			'body'     => wp_json_encode( $telemetry_body ),
+			'blocking' => false,
+		)
+	);
 
 	return new \WP_REST_Response( array( $telemetry_body, $ga_telemetry_url ), 201 );
 }
