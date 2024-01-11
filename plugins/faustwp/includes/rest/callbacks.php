@@ -258,7 +258,12 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 		'multisite'                                    => is_multisite(),
 		'php_version'                                  => PHP_VERSION,
 		'wp_version'                                   => get_wp_version(),
+		'engagement_time_msec'                         => 100,
+		'session_id'                                   => md5( get_telemetry_client_id() ),
 	);
+
+	// Remove null values since GA rejects them.
+	$telemetry_data = array_filter( $telemetry_data );
 
 	$ga_telemetry_url = add_query_arg(
 		array(
