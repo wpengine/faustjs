@@ -7,6 +7,7 @@
 
 namespace WPE\FaustWP\Settings;
 
+use function WPE\FaustWP\Telemetry\get_telemetry_client_id;
 use function WPE\FaustWP\Utilities\{
 	plugin_version,
 };
@@ -186,6 +187,12 @@ function sanitize_faustwp_settings( $settings, $option ) {
 	$errors    = null;
 	$protocols = array( 'http', 'https' );
 	foreach ( $settings as $name => $value ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified elsewhere.
+		if ( ! isset( $settings['enable_telemetry'] ) && ! empty( $_POST['option_page'] ) && 'faustwp_settings' === $_POST['option_page'] ) {
+			$reminder_time                  = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
+			$settings['telemetry_reminder'] = $reminder_time->getTimestamp();
+		}
+
 		switch ( $name ) {
 			case 'frontend_uri':
 				if ( '' === $value || preg_match( '#http(s?)://(.+)#i', $value ) ) {
@@ -218,9 +225,31 @@ function sanitize_faustwp_settings( $settings, $option ) {
 				}
 				break;
 
+			case 'enable_telemetry':
+				if ( $value ) {
+					$settings[ $name ] = sanitize_text_field( $value );
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
+			case 'telemetry_reminder':
+				if ( $value ) {
+					$settings[ $name ] = (int) $value;
+				} else {
+					unset( $settings[ $name ] );
+				}
+				break;
+
+			case 'telemetry_client_id':
+				if ( $value ) {
+					$settings[ $name ] = sanitize_text_field( $value );
+				}
+				break;
+
 			default:
 				// Remove any settings we don't expect.
 				unset( $settings[ $name ] );
+				break;
 		}
 	}
 
@@ -378,7 +407,7 @@ function display_enable_disable_fields() {
 	$enable_rewrites     = is_rewrites_enabled();
 	$enable_redirects    = is_redirects_enabled();
 	$enable_image_source = is_image_source_replacement_enabled();
-
+	$enable_telemetry    = is_telemetry_enabled();
 	?>
 	<fieldset>
 		<legend style="margin-bottom:5px;padding:0;">
@@ -414,6 +443,13 @@ function display_enable_disable_fields() {
 			<input type="checkbox" id="enable_image_source" name="faustwp_settings[enable_image_source]" value="1" <?php checked( $enable_image_source ); ?> />
 			<?php esc_html_e( 'Use the WordPress domain for media URLs in post content', 'faustwp' ); ?>
 		</label>
+		<br />
+
+		<label for="enable_telemetry">
+			<input type="checkbox" id="enable_telemetry" name="faustwp_settings[enable_telemetry]" value="1" <?php checked( $enable_telemetry ); ?> />
+			<?php esc_html_e( 'Enable anonymous telemetry', 'faustwp' ); ?>
+		</label>
+		<input type="hidden" id="telemetry_client_id" name="faustwp_settings[telemetry_client_id]" value="<?php echo esc_attr( get_telemetry_client_id() ); ?>" />
 	</fieldset>
 	<?php
 }
