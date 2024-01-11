@@ -258,7 +258,12 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 		'multisite'                                    => is_multisite(),
 		'php_version'                                  => PHP_VERSION,
 		'wp_version'                                   => get_wp_version(),
+		'engagement_time_msec'                         => 100,
+		'session_id'                                   => md5( get_telemetry_client_id() ),
 	);
+
+	// Remove null values since GA rejects them.
+	$telemetry_data = array_filter( $telemetry_data );
 
 	$ga_telemetry_url = add_query_arg(
 		array(
@@ -278,18 +283,13 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 		),
 	);
 
-	/**
-	 * This code should be uncommented once we can accept/decline the
-	 * telemetry option and an appropriate clientID is generated for the site.
-	 *
-	 * @TODO
-	 */
-
-	// @codingStandardsIgnoreStart
-	// wp_remote_post($ga_telemetry_url, [
-	// 'body' => $telemetry_body,
-	// ]);
-  // @codingStandardsIgnoreEnd
+	wp_remote_post(
+		$ga_telemetry_url,
+		array(
+			'body'     => wp_json_encode( $telemetry_body ),
+			'blocking' => false,
+		)
+	);
 
 	return new \WP_REST_Response( array( $telemetry_body, $ga_telemetry_url ), 201 );
 }
