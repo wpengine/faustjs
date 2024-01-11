@@ -77,10 +77,7 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
       const telemetryData = marshallTelemetryData(arg1);
       await sendTelemetryData(telemetryData);
     } catch (err) {
-      debugLog(
-      `Telemetry event failed: `,
-      err,
-    );
+      debugLog(`Telemetry event failed: `, err);
     }
   }
 
