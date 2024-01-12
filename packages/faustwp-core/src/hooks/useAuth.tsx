@@ -9,12 +9,14 @@ import {
 type RedirectStrategyConfig = {
   strategy: 'redirect';
   shouldRedirect?: boolean;
+  skip?: boolean;
 };
 
 type LocalStrategyConfig = {
   strategy: 'local';
   loginPageUrl: string;
   shouldRedirect?: boolean;
+  skip?: boolean;
 };
 
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
@@ -23,6 +25,7 @@ export function useAuth(_config?: UseAuthConfig) {
   const config = defaults(_config, {
     strategy: 'redirect',
     shouldRedirect: false,
+    skip: false,
   }) as UseAuthConfig;
 
   if (config.strategy === 'local' && !config.loginPageUrl) {
@@ -34,8 +37,19 @@ export function useAuth(_config?: UseAuthConfig) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isReady, setIsReady] = useState<boolean>(false);
   const [loginUrl, setLoginUrl] = useState<string | null>(null);
+  const [called, setCalled] = useState<boolean>(false);
 
   useEffect(() => {
+    if (config.skip === true) {
+      return;
+    }
+
+    if (called) {
+      return;
+    }
+
+    setCalled(true);
+
     const ensureAuthorizationConfig: EnsureAuthorizationOptions = {
       redirectUri: window.location.href,
     };
@@ -71,17 +85,17 @@ export function useAuth(_config?: UseAuthConfig) {
 
       setIsReady(true);
     })();
-
-    // NOTE: This effect should only be ran once on mount, so we are not
-    // providing the exhaustive deps to useEffect.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [called, config]);
 
   /**
    * Automatically redirect the user to the login page if the
    * shouldRedirect option is set to true.
    */
   useEffect(() => {
+    if (config.skip === true) {
+      return;
+    }
+
     if (
       !config.shouldRedirect ||
       !isReady ||
