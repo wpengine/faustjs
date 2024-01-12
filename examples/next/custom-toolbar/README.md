@@ -9,7 +9,12 @@ See the [Getting Started](https://faustjs.org/tutorial/get-started-with-faust) t
 To view the toolbar, make sure you have completed the Getting Started steps and then click `Login`. After you are logged in and authenticated you will see the toolbar at the top of the template.
 
 ### Troubleshooting
-If you don't see the toolbar and have already authenticated, make sure you have `experimentalToolbar` set to `true` in the `faust.config.js` file.
+
+If you don't see the toolbar and have already authenticated, make sure you have `experimentalToolbar` set to `true` in the [faust.config.js](./faust.config.js) file.
+
+## Customize the Example Plugin
+
+To customize the example plugin, go to the [CustomToolbar.tsx](./plugins/CustomToolbar.tsx) and experiment.
 
 ## References
 
