@@ -46,8 +46,8 @@ function AuthenticatedView() {
             <p>
               As long as you are authenticated you will see the toolbar. To
               customize me further, go to <code>plugins/CustomPlugin.tsx</code>.
-              To logout and go back to the unauthenticated page, click on the{' '}
-              <code>Logout</code> button.
+              To log out and go back to the unauthenticated page, click on the{' '}
+              <code>Log Out</code> button.
             </p>
             <code>wp-templates/front-page.js</code>
           </div>
