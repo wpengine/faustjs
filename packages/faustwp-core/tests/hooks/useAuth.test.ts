@@ -5,6 +5,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import fetchMock from 'fetch-mock';
 import { useAuth } from '../../src/hooks/useAuth';
+import { setAccessToken } from '../../src/auth';
 
 describe('useAuth hook', () => {
   const envBackup = process.env;
@@ -15,6 +16,10 @@ describe('useAuth hook', () => {
 
   afterAll(() => {
     process.env = envBackup;
+  });
+
+  afterEach(() => {
+    setAccessToken(undefined, undefined);
   });
 
   it('Provides the proper login url with redirect strategy', async () => {
