@@ -2,7 +2,25 @@
 
 ## Setup
 
-See the [Getting Started](https://faustjs.org/tutorial/get-started-with-faust) to setup your base Faust project.
+See the [Getting Started](https://faustjs.org/tutorial/get-started-with-faust) to setup your base Faust project. In the tutorial you will see in the Quick Start section's first step that it says `To create a Faust project, run`:
+
+```
+npx create-next-app \
+    -e https://github.com/wpengine/faustjs/tree/main \
+    --example-path examples/next/faustwp-getting-started \
+    --use-npm
+```
+
+You are going to modify the example used in the command. To use the Custom Toolbar example you must change `examples/next/faustwp-getting-started` to `examples/next/custom-toolbar`. It should look like this:
+
+```
+npx create-next-app \
+    -e https://github.com/wpengine/faustjs/tree/main \
+    --example-path examples/next/custom-toolbar \
+    --use-npm
+```
+
+After this one change you can continue the rest of the guide per the instructions.
 
 ## Viewing the Toolbar
 
