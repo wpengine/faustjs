@@ -104,7 +104,7 @@ export default function Component() {
             <p>
               This page is utilizing the "front-page" WordPress template. To
               authenticate and view the custom toolbar, click on the{' '}
-              <code>Login</code> button.
+              <code>Log In</code> button.
             </p>
             <code>wp-templates/front-page.js</code>
           </div>
