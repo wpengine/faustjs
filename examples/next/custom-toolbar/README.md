@@ -24,7 +24,7 @@ After this one change you can continue the rest of the guide per the instruction
 
 ## Viewing the Toolbar
 
-To view the toolbar, make sure you have completed the Getting Started steps and then click `Login`. After you are logged in and authenticated you will see the toolbar at the top of the template.
+To view the toolbar, make sure you have completed the Getting Started steps and then click `Log In`. After you are logged in and authenticated you will see the toolbar at the top of the template.
 
 ### Troubleshooting
 
