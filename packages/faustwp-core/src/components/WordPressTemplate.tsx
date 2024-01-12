@@ -41,7 +41,7 @@ export function WordPressTemplateInternal(
   props: WordPressTemplateProps & {
     seedNode: SeedNode;
     isPreview: boolean;
-    isAuthenticated: boolean;
+    isAuthenticated: boolean | null;
     loading: boolean;
     setLoading: (loading: boolean) => void;
   },
@@ -193,6 +193,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const { isAuthenticated, loginUrl } = useAuth({
     strategy: 'redirect',
     shouldRedirect: false,
+    skip: !isPreview,
   });
 
   /**
@@ -287,7 +288,11 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     })();
   }, [seedNode, isPreview, isAuthenticated, basePath]);
 
-  if (seedNode === null || isPreview === null || isAuthenticated === null) {
+  if (
+    seedNode === null ||
+    isPreview === null ||
+    (isPreview && isAuthenticated === null)
+  ) {
     return null;
   }
 
