@@ -2,7 +2,7 @@ import 'isomorphic-fetch';
 import isString from 'lodash/isString.js';
 import { getWpUrl } from '../lib/getWpUrl.js';
 import { getQueryParam, removeURLParam } from '../utils/index.js';
-import { fetchAccessToken } from './client/accessToken.js';
+import { fetchAccessToken, getAccessToken } from './client/accessToken.js';
 
 export interface EnsureAuthorizationOptions {
   redirectUri?: string;
@@ -23,6 +23,14 @@ export async function ensureAuthorization(
 ): Promise<
   true | { redirect?: string | undefined; login?: string | undefined }
 > {
+  /**
+   * If there is already an access token saved in memory, we can assume they
+   * are already authorized.
+   */
+  if (getAccessToken()) {
+    return true;
+  }
+
   const wpUrl = getWpUrl();
   const { redirectUri, loginPageUri } = options || {};
 
