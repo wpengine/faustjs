@@ -22,6 +22,43 @@ describe('useAuth hook', () => {
     setAccessToken(undefined, undefined);
   });
 
+  it('skips authentication check when skip is true', async () => {
+    // Set up the fetch mock but expect it not to be called
+    fetchMock.get(`/api/faust/auth/token`, {
+      status: 200,
+      body: JSON.stringify({ accessToken: 'at', refreshToken: 'rt' }),
+    });
+
+    const { result } = renderHook(() => useAuth({ skip: true }));
+
+    // The hook should skip the authentication check
+    expect(result.current.isAuthenticated).toStrictEqual(null);
+    expect(result.current.isReady).toStrictEqual(false);
+
+    // Ensure the token endpoint was not called
+    expect(fetchMock.called(`/api/faust/auth/token`)).toBe(false);
+
+    fetchMock.restore();
+  });
+
+  it('performs authentication check by default (skip not provided)', async () => {
+    // Mock a valid response
+    fetchMock.get(`/api/faust/auth/token`, {
+      status: 200,
+      body: JSON.stringify({ accessToken: 'at', refreshToken: 'rt' }),
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() => useAuth());
+
+    await waitForNextUpdate();
+
+    // Default behavior should perform authentication check
+    expect(result.current.isAuthenticated).toStrictEqual(true);
+    expect(result.current.isReady).toStrictEqual(true);
+
+    fetchMock.restore();
+  });
+
   it('Provides the proper login url with redirect strategy', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAuth());
     await waitForNextUpdate();
