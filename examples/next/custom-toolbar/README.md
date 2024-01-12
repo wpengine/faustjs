@@ -2,7 +2,7 @@
 
 ## Setup
 
-See the [Getting Started](https://faustjs.org/tutorial/get-started-with-faust) to setup your base Faust project. In the tutorial you will see in the Quick Start section's first step that it says `To create a Faust project, run`:
+See the [Getting Started](https://faustjs.org/tutorial/get-started-with-faust) to set up your base Faust project. In the tutorial you will see in the Quick Start section's first step that it says `To create a Faust project, run`:
 
 ```
 npx create-next-app \
