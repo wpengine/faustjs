@@ -1,5 +1,15 @@
 # @faustwp/cli
 
+## 2.0.0
+
+### Major Changes
+
+- c163fa5: **BREAKING**: Removed telemetry CLI commands for `faust telemetry enable/disable/status` for managing and viewing telemetry opt-in status. Telemetry functionality has been moved to the Faust WordPress plugin. Sites that previously opted in from CLI will no longer send telemetry data unless someone opts in from the WordPress side.
+
+### Patch Changes
+
+- c163fa5: Adds block_editor_utils and experimental_app_router to telemetry events.
+
 ## 1.2.1
 
 ### Patch Changes

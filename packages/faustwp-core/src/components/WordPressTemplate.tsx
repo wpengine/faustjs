@@ -1,17 +1,34 @@
 import { QueryOptions } from '@apollo/client';
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { ensureAuthorization, getAccessToken } from '../auth/index.js';
-import { getApolloClient } from '../client.js';
+// eslint-disable-next-line import/extensions
+import { print } from '@apollo/client/utilities';
+import { sha256 } from 'js-sha256';
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { getApolloAuthClient, getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
 import { getTemplate } from '../getTemplate.js';
-import { SeedNode, SEED_QUERY } from '../queries/seedQuery.js';
+import { useAuth } from '../hooks/useAuth.js';
+import { SEED_QUERY, SeedNode } from '../queries/seedQuery.js';
+import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 import { getQueryParam } from '../utils/convert.js';
 
-export type WordPressTemplateProps = PropsWithChildren<{
-  __SEED_NODE__: SeedNode | null;
-  __TEMPLATE_QUERY_DATA__: any | null;
-}>;
+export type FaustProps = {
+  __SEED_NODE__?: SeedNode | null;
+  __FAUST_QUERIES__?: FaustQueries | null;
+  __TEMPLATE_QUERY_DATA__?: any | null;
+  __TEMPLATE_VARIABLES__?: { [key: string]: any } | null;
+};
 
+export type WordPressTemplateProps = PropsWithChildren<FaustProps>;
+
+/**
+ * This is an external type for end users.
+ * @external
+ */
 export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
   data?: Data;
   loading?: boolean;
@@ -19,6 +36,139 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
   __TEMPLATE_QUERY_DATA__?: any | null;
   __TEMPLATE_VARIABLES__?: { [key: string]: any };
 };
+
+export function WordPressTemplateInternal(
+  props: WordPressTemplateProps & {
+    seedNode: SeedNode;
+    isPreview: boolean;
+    isAuthenticated: boolean | null;
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
+  },
+) {
+  const { templates } = getConfig();
+
+  if (!templates) {
+    throw new Error('Templates are required. Please add them to your config.');
+  }
+
+  const {
+    seedNode,
+    isAuthenticated,
+    isPreview,
+    __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
+    loading,
+    setLoading,
+    ...wordpressTemplateProps
+  } = props;
+  const template = getTemplate(seedNode, templates);
+  const [data, setData] = useState<any | null>(templateQueryDataProp);
+  const { setQueries } = useContext(FaustContext) || {};
+
+  if (template && template.queries && template.query) {
+    throw new Error(
+      '`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+    );
+  }
+
+  /**
+   * Fetch the template's queries if defined.
+   */
+  useEffect(() => {
+    void (async () => {
+      const client = isPreview ? getApolloAuthClient() : getApolloClient();
+
+      if (!template) {
+        return;
+      }
+
+      if (template.query) {
+        return;
+      }
+
+      if (!template.queries) {
+        return;
+      }
+
+      if (!setQueries) {
+        return;
+      }
+
+      let queries: FaustQueries | null = null;
+
+      const queryCalls = template.queries.map(({ query, variables }) => {
+        const queryVariables = variables
+          ? variables(seedNode, { asPreview: isPreview })
+          : undefined;
+        return client.query({
+          query,
+          variables: queryVariables,
+        });
+      });
+
+      const queriesRes = await Promise.all(queryCalls);
+
+      queries = {};
+
+      queriesRes.forEach((queryRes, index) => {
+        if (queries && template.queries) {
+          queries[sha256(print(template.queries[index].query))] = queryRes.data;
+        }
+      });
+
+      setQueries(queries);
+
+      setLoading(false);
+    })();
+  }, [isAuthenticated, isPreview, seedNode, template, setQueries, setLoading]);
+
+  /**
+   * Fetch the template's query if defined.
+   */
+  useEffect(() => {
+    void (async () => {
+      const client = isPreview ? getApolloAuthClient() : getApolloClient();
+
+      if (!template || !template?.query || template?.queries || !seedNode) {
+        return;
+      }
+
+      if (data) {
+        return;
+      }
+
+      setLoading(true);
+
+      const queryArgs: QueryOptions = {
+        query: template?.query,
+        variables: template?.variables
+          ? template?.variables(seedNode, { asPreview: isPreview })
+          : undefined,
+      };
+
+      const templateQueryRes = await client.query(queryArgs);
+
+      setData(templateQueryRes.data);
+
+      setLoading(false);
+    })();
+  }, [data, template, seedNode, isPreview, isAuthenticated, setLoading]);
+
+  if (!template) {
+    return null;
+  }
+
+  const Component = template as React.FC<{ [key: string]: any }>;
+
+  const newProps = {
+    ...wordpressTemplateProps,
+    __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
+    data,
+    loading,
+  };
+
+  return React.createElement(Component, newProps, null);
+}
 
 export function WordPressTemplate(props: WordPressTemplateProps) {
   const { basePath, templates } = getConfig();
@@ -32,21 +182,19 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     __TEMPLATE_QUERY_DATA__: templateQueryDataProp,
   } = props;
 
-  const [seedNode, setSeedNode] = useState<SeedNode | null>(seedNodeProp);
+  const [seedNode, setSeedNode] = useState<SeedNode | null>(
+    seedNodeProp ?? null,
+  );
   const template = getTemplate(seedNode, templates);
-  const [data, setData] = useState<any | null>(templateQueryDataProp);
   const [loading, setLoading] = useState(template === null);
   const [isPreview, setIsPreview] = useState<boolean | null>(
     templateQueryDataProp ? false : null,
   );
-  const [isAuthenticated, setIsAuthenticated] = useState<
-    | true
-    | {
-        redirect?: string | undefined;
-        login?: string | undefined;
-      }
-    | null
-  >(null);
+  const { isAuthenticated, loginUrl } = useAuth({
+    strategy: 'redirect',
+    shouldRedirect: false,
+    skip: !isPreview,
+  });
 
   /**
    * Determine if the URL we are on is for previews
@@ -60,25 +208,18 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   }, []);
 
   /**
-   * If the URL we are on is for previews, ensure we are authenticated.
+   * If we are on a preview route and there is no authenticated user, redirect
+   * them to the login page
    */
   useEffect(() => {
-    if (isPreview === null || isPreview === false) {
+    if (!window) {
       return;
     }
 
-    void (async () => {
-      const ensureAuthRes = await ensureAuthorization({
-        redirectUri: window.location.href,
-      });
-
-      if (ensureAuthRes !== true && ensureAuthRes?.redirect) {
-        window.location.replace(ensureAuthRes.redirect);
-      }
-
-      setIsAuthenticated(ensureAuthRes);
-    })();
-  }, [isPreview]);
+    if (isPreview && isAuthenticated === false && loginUrl) {
+      window.location.assign(loginUrl);
+    }
+  }, [isAuthenticated, isPreview, loginUrl]);
 
   /**
    * Execute the seed query.
@@ -95,8 +236,12 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       return;
     }
 
+    if (seedNode) {
+      return;
+    }
+
     void (async () => {
-      const client = getApolloClient();
+      const client = isPreview ? getApolloAuthClient() : getApolloClient();
 
       let seedQueryUri = window.location.href.replace(
         window.location.origin,
@@ -121,7 +266,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         }
       }
 
-      let queryArgs: QueryOptions = {
+      const queryArgs: QueryOptions = {
         query: SEED_QUERY,
         variables: {
           // Conditionally add relevant query args.
@@ -131,92 +276,35 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
         },
       };
 
-      if (isPreview) {
-        queryArgs = {
-          ...queryArgs,
-          context: {
-            headers: {
-              /**
-               * We know the access token is available here since we ensured
-               * authorization in the useEffect above
-               */
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              Authorization: `bearer ${getAccessToken()!}`,
-            },
-          },
-        };
-      }
+      setLoading(true);
 
-      if (!seedNode) {
-        setLoading(true);
+      const seedQueryRes = await client.query(queryArgs);
 
-        const seedQueryRes = await client.query(queryArgs);
+      const node = isPreview
+        ? (seedQueryRes?.data?.contentNode as SeedNode)
+        : (seedQueryRes?.data?.nodeByUri as SeedNode);
 
-        const node = isPreview
-          ? (seedQueryRes?.data?.contentNode as SeedNode)
-          : (seedQueryRes?.data?.nodeByUri as SeedNode);
-
-        setSeedNode(node);
-      }
+      setSeedNode(node);
     })();
   }, [seedNode, isPreview, isAuthenticated, basePath]);
 
-  /**
-   * Finally, get the template's query data.
-   */
-  useEffect(() => {
-    // We don't know yet if this is a preview route or not
-    if (isPreview === null) {
-      return;
-    }
-
-    // This is a preview route, but we are not authenticated yet.
-    if (isPreview === true && isAuthenticated !== true) {
-      return;
-    }
-
-    void (async () => {
-      const client = getApolloClient();
-
-      if (!template || !template?.query || !seedNode) {
-        return;
-      }
-
-      if (!data) {
-        setLoading(true);
-
-        let queryArgs: QueryOptions = {
-          query: template?.query,
-          variables: template?.variables
-            ? template?.variables(seedNode, { asPreview: isPreview })
-            : undefined,
-        };
-
-        if (isPreview) {
-          queryArgs = {
-            ...queryArgs,
-            context: {
-              headers: {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                Authorization: `bearer ${getAccessToken()!}`,
-              },
-            },
-          };
-        }
-
-        const templateQueryRes = await client.query(queryArgs);
-
-        setData(templateQueryRes.data);
-
-        setLoading(false);
-      }
-    })();
-  }, [data, template, seedNode, isPreview, isAuthenticated]);
-
-  if (!template) {
+  if (
+    seedNode === null ||
+    isPreview === null ||
+    (isPreview && isAuthenticated === null)
+  ) {
     return null;
   }
 
-  const Component = template as React.FC<{ [key: string]: any }>;
-  return React.createElement(Component, { ...props, data, loading }, null);
+  return (
+    <WordPressTemplateInternal
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      seedNode={seedNode}
+      isPreview={isPreview}
+      isAuthenticated={isAuthenticated}
+      loading={loading}
+      setLoading={setLoading}
+    />
+  );
 }

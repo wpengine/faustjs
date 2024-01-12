@@ -5,7 +5,7 @@ import { getAdminUrl } from '../../../lib/getAdminUrl.js';
 import { ToolbarItem } from '../index.js';
 
 type Props = {
-  seedNode?: SeedNode;
+  seedNode?: SeedNode | null;
 };
 
 export function Edit({ seedNode }: Props) {

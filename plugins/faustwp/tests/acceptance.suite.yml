@@ -10,8 +10,7 @@ actor: AcceptanceTester
 extensions:
     enabled:
         - Codeception\Extension\RunProcess:
-            0: chromedriver --url-base=/wd/hub --whitelisted-ips=
-            1: npm run end2end
+            0: chromedriver
             sleep: 3
 
 modules:
@@ -38,8 +37,14 @@ modules:
             adminPath: '%TEST_SITE_WP_ADMIN_PATH%'
             browser: chrome
             host: localhost
+            path: '/'
             port: 9515
             window_size: false
             capabilities:
-                chromeOptions:
-                    args: ["headless", "no-sandbox", "disable-gpu"]
+                enableVerboseLogging: true
+                "goog:chromeOptions":
+                    args:
+                        - "--headless"
+                        - "--disable-gpu"
+                        - "--disable-dev-shm-usage"
+                        - "--no-sandbox"

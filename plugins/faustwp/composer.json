@@ -4,6 +4,7 @@
   "type": "project",
   "minimum-stability": "stable",
   "require-dev": {
+    "antecedent/patchwork": "^2.1",
     "brain/monkey": "^2.6",
     "codeception/codeception": "^4.1",
     "codeception/module-asserts": "^1.0",
@@ -19,6 +20,10 @@
     "php-parallel-lint/php-parallel-lint": "^1.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1",
     "phpunit/phpunit": "^9.5",
+    "phpstan/phpstan": "^1.10",
+    "phpstan/extension-installer": "^1.3",
+    "axepress/wp-graphql-stubs": "^1.16",
+    "szepeviktor/phpstan-wordpress": "^1.3",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.5.8",
     "wp-coding-standards/wpcs": "^2.2",
@@ -38,6 +43,7 @@
     "lint": "parallel-lint -e php --no-colors --exclude vendor .",
     "phpcs": "phpcs",
     "phpcs:fix": "phpcbf",
+    "phpstan": "phpstan analyze --ansi --memory-limit=1G",
     "suite": [
       "@lint",
       "@phpcs",
@@ -50,7 +56,8 @@
     "sort-packages": true,
     "optimize-autoloader": true,
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
     }
   },
   "autoload-dev": {

@@ -10,6 +10,10 @@ const blockAttributeTypeToControlMap: Record<FieldType, FieldControl> = {
   array: 'textarea',
 };
 
+const isRichText = (attribute: any): boolean => {
+  return attribute?.source === 'html' && !!attribute?.selector;
+};
+
 /**
  * Returns a list of Field objects that describe how the Component Editor Fields configuration.
  * Uses both the Block.json and the blocks editorFields config to create the final list.
@@ -30,6 +34,7 @@ function getControlFields(
     })?.[1];
     const fieldType: FieldType = (value as any).type;
     const control = blockAttributeTypeToControlMap[fieldType] ?? 'text';
+    const finalControl = isRichText(value) ? 'rich-text' : control;
     // Set default field by merging both blockAttributes meta and editorFields hints.
     if (fieldConfig) {
       fields.push({
@@ -38,7 +43,7 @@ function getControlFields(
         label: fieldConfig.label ?? key,
         type: fieldType,
         location: fieldConfig.location ?? 'editor',
-        control: fieldConfig?.control ?? control,
+        control: fieldConfig?.control ?? finalControl,
         options: fieldConfig?.options ?? [],
       });
     } else {
@@ -48,7 +53,7 @@ function getControlFields(
         label: key,
         type: fieldType,
         location: 'editor',
-        control,
+        control: finalControl,
         options: [],
       });
     }

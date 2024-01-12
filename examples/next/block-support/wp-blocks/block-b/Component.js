@@ -6,11 +6,18 @@ function Component({ style, attributes, children, ...props }) {
   };
   const cssClassName = 'create-block-block-b-message';
   return (
+    <>
     <div
       style={styles}
       className={cssClassName}
       dangerouslySetInnerHTML={{ __html: attributes.message }}
     />
+    <div
+      style={styles}
+      className="rich-text"
+      dangerouslySetInnerHTML={{ __html: attributes.richText }}
+    />
+    </>
   );
 }
 
