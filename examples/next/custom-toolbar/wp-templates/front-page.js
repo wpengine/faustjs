@@ -52,7 +52,7 @@ function AuthenticatedView() {
             <code>wp-templates/front-page.js</code>
           </div>
           <div className="text-center">
-            <button onClick={() => logout()}>Logout</button>
+            <button onClick={() => logout()}>Log Out</button>
           </div>
         </Container>
       </Main>
