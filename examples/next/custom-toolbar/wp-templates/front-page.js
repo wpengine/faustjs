@@ -109,7 +109,7 @@ export default function Component() {
             <code>wp-templates/front-page.js</code>
           </div>
           <div className="text-center">
-            <button onClick={loginHandler}>Login</button>
+            <button onClick={loginHandler}>Log In</button>
           </div>
         </Container>
       </Main>
