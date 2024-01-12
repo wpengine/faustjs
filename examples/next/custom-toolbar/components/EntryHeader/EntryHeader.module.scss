@@ -1,0 +1,65 @@
+@import 'styles/breakpoints';
+
+.component {
+	color: var(--wpe--color--white);
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 2rem;
+
+	@media (min-width: $breakpoint-small) {
+		margin-bottom: 5rem;
+	}
+}
+
+.has-image {
+	--wpe--color--title: var(--wpe--color--white);
+}
+
+.text,
+.image {
+	margin: auto;
+	text-align: center;
+}
+
+.text {
+	width: 100%;
+	max-width: 72rem;
+	padding: 8.25rem 0;
+	position: relative;
+	z-index: 1; // Pull text to the foreground to sit above <FeaturedImage />.
+}
+
+.title {
+	line-height: 1.25;
+	font-size: 5rem;
+	color: var(--wpe--color--title);
+
+	@media (max-width: $breakpoint-small) {
+		font-size: 3rem;
+	}
+}
+
+.byline {
+	font-weight: var(--wpe--font-weight--medium);
+	font-size: 1.2rem;
+}
+
+.image {
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+
+	&::after {
+		content: '';
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.6);
+		position: absolute;
+	}
+}

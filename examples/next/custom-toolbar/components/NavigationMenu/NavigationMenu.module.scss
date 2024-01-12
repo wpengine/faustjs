@@ -1,0 +1,101 @@
+@import 'styles/breakpoints';
+
+%visible {
+	visibility: visible;
+	opacity: 1;
+}
+
+%hidden {
+	// Always visible for smaller viewports.
+	@media (min-width: $breakpoint-small) {
+		visibility: hidden;
+		opacity: 0;
+	}
+}
+
+.component {
+	background-color: var(--wpe--navigation-menu--background-color);
+}
+
+.menu {
+	list-style-type: none;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	gap: 0.5rem;
+
+	li {
+		display: flex;
+		align-items: center;
+		position: relative;
+		width: 100%;
+		flex-direction: column;
+
+		@media (min-width: $breakpoint-small) {
+			width: auto;
+			flex-direction: row;
+		}
+
+		&:focus-within ul,
+		a:hover + ul,
+		a:focus + ul {
+			@extend %visible;
+		}
+	}
+
+	a {
+		color: var(--wpe--navigation-menu--color);
+		padding: 0.5rem;
+		display: block;
+		transition: all 0.2s ease-out;
+		width: 100%;
+		white-space: nowrap;
+		text-align: center;
+
+		&:hover,
+		&:focus {
+			color: var(--wpe--navigation-menu--color--hover);
+		}
+
+		// Remove link underline when component is inside header.
+		header & {
+			text-decoration: none;
+		}
+	}
+
+	li ul {
+		@extend %hidden;
+		background-color: var(--wpe--dropdown--background-color);
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		width: 100%;
+
+		@media (min-width: $breakpoint-small) {
+			position: absolute;
+			left: -10px;
+			top: 100%;
+			text-align: left;
+			box-shadow: var(--wpe--shadow--large);
+			padding: 1rem;
+			border-radius: 8px;
+			transition: all 0.2s ease-out;
+			width: inherit;
+			border: var(--wpe--border--extra-light);
+		}
+
+		&:hover {
+			@extend %visible;
+		}
+
+		li + li {
+			@media (min-width: $breakpoint-small) {
+				border-top: var(--wpe--border--light);
+				margin-top: 3px; // Make room for default browser focus styles.
+			}
+		}
+	}
+}
