@@ -28,11 +28,20 @@ To view the toolbar, make sure you have completed the Getting Started steps and 
 
 ### Troubleshooting
 
-If you don't see the toolbar and have already authenticated, make sure you have `experimentalToolbar` set to `true` in the [faust.config.js](./faust.config.js) file.
+If you don't see the toolbar and have already authenticated, make sure you have `experimentalToolbar` set to `true` in the [faust.config.js](./faust.config.js) file like below:
+
+```
+export default setConfig({
+  templates,
+  experimentalPlugins: [new CustomToolbar()],
+  experimentalToolbar: true,
+  possibleTypes,
+});
+```
 
 ## Customize the Example Plugin
 
-To customize the example plugin, go to the [CustomToolbar.tsx](./plugins/CustomToolbar.tsx) and experiment.
+To customize the example plugin, go to the plugin file [CustomToolbar.tsx](./plugins/CustomToolbar.tsx) and experiment.
 
 ## References
 
