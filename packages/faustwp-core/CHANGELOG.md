@@ -1,5 +1,15 @@
 # @faustwp/core
 
+## 2.1.0
+
+### Minor Changes
+
+- 085c30d: Added a new `skip` config option to `useAuth` to conditionally invoke the hook
+
+### Patch Changes
+
+- 085c30d: Fixed a bug that made a request to the token endpoint on every page in `@faustwp/core@2.0.0`
+
 ## 2.0.0
 
 ### Minor Changes
