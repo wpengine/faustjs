@@ -30,7 +30,7 @@ module.exports = {
     announcementBar: {
       id: 'depreciation_notice',
       content:
-        '⭐️ This version of Faust.js is being deprecated. Visit the new version at <a target="_blank" rel="noopener noreferrer" href="https://faustjs.org/">faustjs.org</a> ⭐️',
+        '⭐️ This version of Faust.js (GQty) has been deprecated. Security updates will continue to be provided through 2024, but no new feature development will occur. Visit the new Faust.js with Apollo at <a target="_blank" rel="noopener noreferrer" href="https://faustjs.org/">faustjs.org</a> ⭐️',
       backgroundColor: '#7e5cef',
       textColor: '#FFF',
       isCloseable: false,

@@ -19,7 +19,9 @@
   </a>
 </p>
 
-⚠️ TRY THE NEW FAUST: We stopped supporting new feature development in favor of the recent version of Faust. We will provide ongoing support for critical bugs and vulnerabilities only. If you are using the old version of Faust, you will not see an interruption to your existing sites as the new Faust is in a separate “package”. Read the [following announcement](https://faustjs.org/blog/sprint-22-update) that explains the re-release of Faust.js.
+> **⚠️ This version of Faust (GQty) has been deprecated!**
+>
+> We have worked hard to update Faust.js to be a more standardized and performant framework using Apollo Client as its base. We believe that Faust.js with Apollo is more stable and easier to maintain than legacy Faust.js, and we recommend that all users currently on legacy Faust.js start planning their migration to Faust.js with Apollo. We have already updated our blueprints and other resources to reflect our current and forward-looking technology investments. **While security updates will continue to be provided through 2024, no new feature development will happen on legacy Faust.js.**
 
 `@faustjs/next` is part of the Faust.js framework. It aids in building Headless WordPress websites with Next.js.
 
