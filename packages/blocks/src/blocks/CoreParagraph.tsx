@@ -7,7 +7,7 @@ import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 
 export type CoreParagraphFragmentProps = ContentBlock & {
-  attributes: {
+  attributes?: {
     cssClassName?: string;
     backgroundColor?: string;
     content?: string;
