@@ -1,5 +1,13 @@
 # @faustjs/react
 
+## 0.15.13
+
+### Patch Changes
+
+- 6b71e32: Add deprecation notices
+- Updated dependencies [6b71e32]
+  - @faustjs/core@0.15.13
+
 ## 0.15.10
 
 ### Patch Changes

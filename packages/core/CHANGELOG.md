@@ -1,5 +1,11 @@
 # @faustjs/core
 
+## 0.15.13
+
+### Patch Changes
+
+- 6b71e32: Add deprecation notices
+
 ## 0.15.10
 
 ### Patch Changes
