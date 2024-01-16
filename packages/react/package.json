@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/react",
-  "version": "0.15.10",
+  "version": "0.15.13",
   "description": "This module helps you use WordPress as a Headless CMS with React",
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@gqty/react": "^2.1.0",
-    "@faustjs/core": "^0.15.10",
+    "@faustjs/core": "^0.15.13",
     "gqty": "^2.3.0",
     "graphql": ">=15.6",
     "lodash": "^4.17.21"

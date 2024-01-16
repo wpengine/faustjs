@@ -1,6 +1,6 @@
 {
   "name": "@faustjs/core",
-  "version": "0.15.10",
+  "version": "0.15.13",
   "description": "This module helps you use WordPress as a Headless CMS.",
   "main": "dist/cjs/export/index.js",
   "module": "dist/mjs/export/index.js",
