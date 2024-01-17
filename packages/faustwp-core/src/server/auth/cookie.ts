@@ -91,7 +91,7 @@ export class Cookies {
     this.response?.setHeader(
       'Set-Cookie',
       cookie.serialize(key, '', {
-        expires: new Date(0),
+        path: '/',
       }),
     );
   }

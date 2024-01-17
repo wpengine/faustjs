@@ -42,6 +42,8 @@ export class OAuth {
         path: '/',
         encoded: false,
       });
+
+      return;
     }
 
     let maxAge: number | undefined = 2592000;
@@ -59,7 +61,7 @@ export class OAuth {
       encoded: false,
     });
 
-    this.cookies.setCookie(this.tokenKey, token as string, {
+    this.cookies.setCookie(this.tokenKey, token, {
       expires: expiresIn,
       maxAge,
       path: '/',
