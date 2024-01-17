@@ -58,10 +58,31 @@ export class Cookies {
 
     this.cookies[key] = cookieValue;
 
-    this.response?.setHeader(
-      'Set-Cookie',
+    const existingCookieHeader = this.response?.getHeader('Set-Cookie');
+
+    if (!existingCookieHeader) {
+      this.response?.setHeader(
+        'Set-Cookie',
+        cookie.serialize(key, cookieValue, serializeOptions),
+      );
+
+      return;
+    }
+
+    // If there is already a Set-Cookie header, merge it.
+    let existingCookies: string[] = [];
+    if (Array.isArray(existingCookieHeader)) {
+      existingCookies = [...existingCookieHeader];
+    } else {
+      existingCookies = [existingCookieHeader as string];
+    }
+
+    existingCookies = [
+      ...existingCookies,
       cookie.serialize(key, cookieValue, serializeOptions),
-    );
+    ];
+
+    this.response?.setHeader('Set-Cookie', existingCookies);
   }
 
   public removeCookie(key: string): void {

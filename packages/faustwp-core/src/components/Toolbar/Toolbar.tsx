@@ -1,14 +1,16 @@
 import { gql, useQuery } from '@apollo/client';
+import cookies from 'js-cookie';
 import React, { useEffect, useMemo, useState } from 'react';
 import { getApolloAuthClient } from '../../client.js';
 import { useAuth } from '../../hooks/useAuth.js';
+import { getWpUrl } from '../../lib/getWpUrl.js';
 import { SeedNode } from '../../queries/seedQuery.js';
 import { hooks } from '../../wpHooks/index.js';
+import { ToolbarNode } from './ToolbarNode.js';
 import { Edit } from './nodes/Edit.js';
 import { GraphiQL } from './nodes/GraphiQL.js';
 import { MyAccount } from './nodes/MyAccount.js';
 import { SiteName } from './nodes/SiteName.js';
-import { ToolbarNode } from './ToolbarNode.js';
 
 /**
  * The available menu locations that nodes can be added to.
@@ -215,7 +217,12 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
  * Renders a Toolbar that is based on WordPress' own toolbar.
  */
 export function Toolbar({ seedNode }: ToolbarProps) {
-  const { isAuthenticated } = useAuth();
+  const hasAuthenticatedUser = cookies.get(`has-${getWpUrl()}-rt`);
+
+  const { isAuthenticated } = useAuth({
+    strategy: 'redirect',
+    skip: hasAuthenticatedUser === '0',
+  });
 
   if (isAuthenticated !== true) {
     return null;
