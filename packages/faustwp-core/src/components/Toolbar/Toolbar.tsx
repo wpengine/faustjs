@@ -221,6 +221,7 @@ export function Toolbar({ seedNode }: ToolbarProps) {
 
   const { isAuthenticated } = useAuth({
     strategy: 'redirect',
+    // If the has authed user cookie exist and it's "0", skip checking for an authed suer.
     skip: hasAuthenticatedUser === '0',
   });
 

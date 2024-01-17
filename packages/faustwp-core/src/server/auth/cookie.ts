@@ -70,19 +70,19 @@ export class Cookies {
     }
 
     // If there is already a Set-Cookie header, merge it.
-    let existingCookies: string[] = [];
+    let newCookies: string[] = [];
     if (Array.isArray(existingCookieHeader)) {
-      existingCookies = [...existingCookieHeader];
+      newCookies = [...existingCookieHeader];
     } else {
-      existingCookies = [existingCookieHeader as string];
+      newCookies = [existingCookieHeader as string];
     }
 
-    existingCookies = [
-      ...existingCookies,
+    newCookies = [
+      ...newCookies,
       cookie.serialize(key, cookieValue, serializeOptions),
     ];
 
-    this.response?.setHeader('Set-Cookie', existingCookies);
+    this.response?.setHeader('Set-Cookie', newCookies);
   }
 
   public removeCookie(key: string): void {
