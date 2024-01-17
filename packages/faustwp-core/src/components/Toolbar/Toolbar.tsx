@@ -217,7 +217,7 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
  * Renders a Toolbar that is based on WordPress' own toolbar.
  */
 export function Toolbar({ seedNode }: ToolbarProps) {
-  const hasAuthenticatedUser = cookies.get(`has-${getWpUrl()}-rt`);
+  const hasAuthenticatedUser = cookies.get(`${getWpUrl()}-has-rt`);
 
   const { isAuthenticated } = useAuth({
     strategy: 'redirect',
