@@ -36,18 +36,20 @@ export class OAuth {
   }
 
   public setRefreshToken(token?: string, expires?: number): void {
+    let maxAge: number | undefined = 2592000;
+    let expiresIn: Date | undefined;
+
     if (!isString(token) || token.length === 0) {
       this.cookies.removeCookie(this.tokenKey);
       this.cookies.setCookie(this.hasTokenKey, '0', {
         path: '/',
         encoded: false,
+        maxAge,
+        expires: expiresIn,
       });
 
       return;
     }
-
-    let maxAge: number | undefined = 2592000;
-    let expiresIn: Date | undefined;
 
     if (isNumber(expires)) {
       expiresIn = new Date(expires * 1000);
@@ -55,10 +57,10 @@ export class OAuth {
     }
 
     this.cookies.setCookie(this.hasTokenKey, '1', {
-      expires: expiresIn,
-      maxAge,
       path: '/',
       encoded: false,
+      maxAge,
+      expires: expiresIn,
     });
 
     this.cookies.setCookie(this.tokenKey, token, {
