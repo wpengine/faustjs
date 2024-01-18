@@ -139,9 +139,21 @@ export function useAuth(_config?: UseAuthConfig) {
             viewer {
               name
               username
-              avatar26: avatar(size: 26) {
-                url
-              }
+              capabilities
+              databaseId
+              description
+              email
+              firstName
+              id
+              lastName
+              nickname
+              locale
+              registeredDate
+              slug
+              templates
+              uri
+              url
+              userId
             }
           }
         `,
