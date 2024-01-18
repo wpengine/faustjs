@@ -1,0 +1,17 @@
+name: Build
+on: pull_request
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["16", "18"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install
+      - run: cp .env.local.sample .env.local
+      - run: npm run build
+        continue-on-error: FALSE

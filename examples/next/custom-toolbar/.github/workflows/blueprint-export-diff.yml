@@ -1,0 +1,26 @@
+name: Blueprint Export Diff
+on: pull_request
+jobs:
+  blueprint_export_diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Check for changes
+        id: check-for-export-changes
+        run: echo ::set-output name=check::$(git diff --name-only origin/main --exit-code -- acm-blueprint.zip)
+      - name: Setup
+        if: steps.check-for-export-changes.outputs.check != 0
+        run: |
+          wget https://github.com/wpengine/faust-scaffold/raw/main/acm-blueprint.zip -O /tmp/acm-blueprint-base.zip
+          unzip -j /tmp/acm-blueprint-base.zip -d /tmp/acm-blueprint-base
+          unzip -j ./acm-blueprint.zip -d /tmp/acm-blueprint-compare
+      - name: Create Diff
+        if: steps.check-for-export-changes.outputs.check != 0
+        run: |
+          diff -ry --suppress-common-lines /tmp/acm-blueprint-base/ /tmp/acm-blueprint-compare/ || true > /tmp/diff-output.txt
+          cat /tmp/diff-output.txt
