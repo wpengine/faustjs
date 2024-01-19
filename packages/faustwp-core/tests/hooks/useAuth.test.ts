@@ -140,4 +140,10 @@ describe('useAuth hook', () => {
 
     fetchMock.restore();
   });
+
+  it('returns the viewer object', () => {
+    const { result } = renderHook(() => useAuth());
+    expect(result.current.viewer).toBeDefined();
+  });
+
 });
