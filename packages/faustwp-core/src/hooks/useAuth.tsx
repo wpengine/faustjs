@@ -178,7 +178,7 @@ export function useAuth(_config?: UseAuthConfig) {
           }
         `,
       });
-      setViewer(data.viewer);
+      setViewer(data.viewer as ViewerType | null);
     })();
   }, [isAuthenticated, config.skip]);
 
