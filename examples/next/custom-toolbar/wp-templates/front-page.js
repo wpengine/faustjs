@@ -26,7 +26,7 @@ function AuthenticatedView() {
   return (
     <>
       <div className="container">
-        <h2>Custom Toolbar Example</h2>
+        <h2 style={{color: "#7e5cef"}}>Custom Toolbar Example</h2>
         <div className="text-center">
           <p>
             Welcome {data?.viewer?.name}! Look up! ^ Say hello to the
@@ -35,14 +35,14 @@ function AuthenticatedView() {
 
           <p>
             As long as you are authenticated you will see the toolbar. To
-            customize me further, go to <code>plugins/CustomPlugin.tsx/js</code>.
+            customize me further, go to <code>plugins/CustomPlugin.js</code>.
             To log out and go back to the unauthenticated page, click on the{' '}
             <code>Log Out</code> button.
           </p>
           <code>wp-templates/front-page.js</code>
         </div>
         <div className="text-center">
-          <button onClick={() => logout()}>Log Out</button>
+          <button style={{cursor: "pointer", padding: "10px 20px", color: "white", backgroundColor: "#7e5cef", border: "none", marginTop: "20px"}} onClick={() => logout()}>Log Out</button>
         </div>
       </div>
     </>
@@ -73,20 +73,18 @@ export default function Component(props) {
   return (
     <>
       <div className="container">
-        <section className={style.cardGrid}>
-          <h2>Custom Toolbar Example</h2>
-          <div className="text-center">
-            <p>
-              This page is utilizing the "front-page" WordPress template. To
-              authenticate and view the custom toolbar, click on the{' '}
-              <code>Log In</code> button.
-            </p>
-            <code>wp-templates/front-page.js</code>
-          </div>
-          <div className="text-center">
-            <button onClick={loginHandler}>Log In</button>
-          </div>
-        </section>
+        <h2 style={{color: "#7e5cef"}}>Custom Toolbar Example</h2>
+        <div className="text-center">
+          <p>
+            This page is utilizing the "front-page" WordPress template. To
+            authenticate and view the custom toolbar, click on the{' '}
+            <code>Log In</code> button.
+          </p>
+          <code>wp-templates/front-page.js</code>
+        </div>
+        <div className="text-center">
+          <button style={{cursor: "pointer", padding: "10px 20px", color: "white", backgroundColor: "#7e5cef", border: "none", marginTop: "20px"}} onClick={loginHandler}>Log In</button>
+        </div>
       </div>
     </>
   );
