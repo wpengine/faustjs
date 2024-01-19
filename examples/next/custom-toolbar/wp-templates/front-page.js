@@ -1,88 +1,93 @@
-import { gql } from "@apollo/client";
-import Head from "next/head";
-import Link from "next/link";
-import Header from "../components/header";
-import EntryHeader from "../components/entry-header";
-import Footer from "../components/footer";
+import { gql, useQuery } from "@apollo/client";
 import style from "../styles/front-page.module.css";
+import { getApolloAuthClient, useAuth } from '@faustwp/core';
+import { useLogout } from '@faustwp/core';
+import { useRouter } from 'next/router';
 
-export default function Component(props) {
-  const { title: siteTitle, description: siteDescription } =
-    props.data.generalSettings;
-  const menuItems = props.data.primaryMenuItems.nodes;
+function AuthenticatedView() {
+  const client = getApolloAuthClient();
+  const { logout } = useLogout();
+
+  const { data, loading } = useQuery(
+    gql`
+      {
+        viewer {
+          name
+        }
+      }
+    `,
+    { client },
+  );
+
+  if (loading) {
+    return <>Loading...</>;
+  }
 
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
+      <div className="container">
+        <h2>Custom Toolbar Example</h2>
+        <div className="text-center">
+          <p>
+            Welcome {data?.viewer?.name}! Look up! ^ Say hello to the
+            customized toolbar.
+          </p>
 
-      <Header
-        siteTitle={siteTitle}
-        siteDescription={siteDescription}
-        menuItems={menuItems}
-      />
-
-      <main className="container">
-        <EntryHeader title="Welcome to the Faust Scaffold Blueprint" />
-
-        <section className={style.cardGrid}>
-          <Link
-            href="https://faustjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={style.card}
-          >
-            <h3>Documentation →</h3>
-            <p>
-              Learn more about Faust.js through guides and reference
-              documentation.
-            </p>
-          </Link>
-
-          <Link
-            href="https://my.wpengine.com/atlas#/create/blueprint"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={style.card}
-          >
-            <h3>Blueprints →</h3>
-            <p>Explore production ready Faust.js starter projects.</p>
-          </Link>
-
-          <Link
-            href="https://wpengine.com/atlas"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={style.card}
-          >
-            <h3>Deploy →</h3>
-            <p>
-              Deploy your Faust.js app to Atlas along with your WordPress
-              instance.
-            </p>
-          </Link>
-
-          <Link
-            href="https://github.com/wpengine/faustjs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={style.card}
-          >
-            <h3>Contribute →</h3>
-            <p>Visit us on GitHub to explore how you can contribute!</p>
-          </Link>
-        </section>
-      </main>
-
-      <Footer />
+          <p>
+            As long as you are authenticated you will see the toolbar. To
+            customize me further, go to <code>plugins/CustomPlugin.tsx/js</code>.
+            To log out and go back to the unauthenticated page, click on the{' '}
+            <code>Log Out</code> button.
+          </p>
+          <code>wp-templates/front-page.js</code>
+        </div>
+        <div className="text-center">
+          <button onClick={() => logout()}>Log Out</button>
+        </div>
+      </div>
     </>
   );
 }
 
-Component.query = gql`
-  ${Header.fragments.entry}
-  query GetHomePage {
-    ...HeaderFragment
+export default function Component(props) {
+  const router = useRouter();
+
+  const { isAuthenticated, isReady, loginUrl } = useAuth({
+    strategy: 'redirect',
+    shouldRedirect: false,
+  });
+
+  if (!isReady) {
+    return <>Loading...</>;
   }
-`;
+
+  if (isAuthenticated === true) {
+    return <AuthenticatedView />;
+  }
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+    router.push(loginUrl);
+  };
+
+  return (
+    <>
+      <div className="container">
+        <section className={style.cardGrid}>
+          <h2>Custom Toolbar Example</h2>
+          <div className="text-center">
+            <p>
+              This page is utilizing the "front-page" WordPress template. To
+              authenticate and view the custom toolbar, click on the{' '}
+              <code>Log In</code> button.
+            </p>
+            <code>wp-templates/front-page.js</code>
+          </div>
+          <div className="text-center">
+            <button onClick={loginHandler}>Log In</button>
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}
