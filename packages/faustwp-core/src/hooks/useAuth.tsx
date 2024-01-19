@@ -141,14 +141,13 @@ export function useAuth(_config?: UseAuthConfig) {
    * Expose viewer options to the toolbar if the user is authenticated.
    */
   useEffect(() => {
-    // if (config.skip === true) {
-    //   // what does this mean? how/why do folks skip this?
-    //   return;
-    // }
+    if (config.skip === true) {
+      return;
+    }
 
-    // if (isAuthenticated !== true) {
-    //   return;
-    // }
+    if (isAuthenticated !== true) {
+      return;
+    }
 
     (async () => {
       const client = getApolloAuthClient();
