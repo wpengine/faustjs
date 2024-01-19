@@ -21,6 +21,26 @@ type LocalStrategyConfig = {
   skip?: boolean;
 };
 
+type ViewerType = {
+  name?: string;
+  username?: string;
+  capabilities?: string[];
+  databaseId?: number;
+  description?: string;
+  email?: string;
+  firstName?: string;
+  id?: number;
+  lastName?: string;
+  nickname?: string;
+  locale?: string;
+  registeredDate?: string;
+  slug?: string;
+  templates?: string[];
+  uri?: string;
+  url?: string;
+  userId?: number;
+};
+
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
 
 export function useAuth(_config?: UseAuthConfig) {
@@ -40,7 +60,7 @@ export function useAuth(_config?: UseAuthConfig) {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [loginUrl, setLoginUrl] = useState<string | null>(null);
   const [called, setCalled] = useState<boolean>(false);
-  const [viewer, setViewer] = useState<Array<any> | null>(null);
+  const [viewer, setViewer] = useState<ViewerType | null>(null);
 
   useEffect(() => {
     if (config.skip === true) {
