@@ -40,7 +40,7 @@ export function useAuth(_config?: UseAuthConfig) {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [loginUrl, setLoginUrl] = useState<string | null>(null);
   const [called, setCalled] = useState<boolean>(false);
-  const [viewer, setViewer] = useState<ViewerType | null>(null);
+  const [viewer, setViewer] = useState<Array<any> | null>(null);
 
   useEffect(() => {
     if (config.skip === true) {
