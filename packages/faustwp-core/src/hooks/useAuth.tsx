@@ -154,7 +154,7 @@ export function useAuth(_config?: UseAuthConfig) {
 
       const { data } = await client.query({
         query: gql`
-          query Viewer {
+          query GetFaustViewer {
             viewer {
               name
               username
