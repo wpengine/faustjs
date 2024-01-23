@@ -1,0 +1,22 @@
+name: Code Coverage
+description: Runs a Code Coverage Command within a package directory
+
+inputs:
+  working-directory:
+    required: true
+    description: "Working Directory"
+
+runs:
+  using: 'composite'
+  steps:
+    # We are currently fixed at 2.1.2 since 2.2 was throwing errors
+    # Remove this when the issue has been resolved.
+    - uses: ArtiomTr/jest-coverage-report-action@v2.1.2
+      with:
+        # tell to the action to not attach comment.
+        output: report-markdown
+        test-script: npm run test:coverage:ci
+        working-directory: ${{ inputs.working-directory }}
+        annotations: none
+      continue-on-error: FALSE
+

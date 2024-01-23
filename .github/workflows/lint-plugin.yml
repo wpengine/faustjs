@@ -1,0 +1,29 @@
+name: Lint Plugin
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  lint_plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - name: Install Dependencies
+        working-directory: plugins/faustwp
+        run: composer install
+      - name: Run Lint
+        working-directory: plugins/faustwp
+        run: composer lint
+      - name: Run PHPCS
+        working-directory: plugins/faustwp
+        run: composer phpcs
+      - name: Run PHPStan
+        run: composer phpstan
+        working-directory: plugins/faustwp
