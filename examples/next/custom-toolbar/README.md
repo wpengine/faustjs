@@ -1,6 +1,6 @@
-# Faust Scaffold
+# Custom Toolbar
 
-This repository contains a starter scaffolding to get you up and running quickly on [WP Engine's Atlas platform](https://wpengine.com/atlas/) with a WordPress site skeleton for more advanced developers.
+This repository uses a starter scaffolding to get you up and running quickly on [WP Engine's Atlas platform](https://wpengine.com/atlas/) with a WordPress site skeleton for more advanced developers and also includes the Custom Toolbar Example.
 
 ## For more information
 
