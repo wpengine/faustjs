@@ -126,7 +126,7 @@ describe('useAuth hook', () => {
         refreshToken: 'rt',
       }),
     });
-    fetchMock.get(`http://headless.local/index.php?graphql&query=query%20Viewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=Viewer&variables=%7B%7D`, {
+    fetchMock.get(`http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`, {
       status: 200,
       body: JSON.stringify({
         data: {
