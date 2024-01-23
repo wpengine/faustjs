@@ -1,5 +1,5 @@
 {
-  "name": "@faustwp/faust-scaffold",
+  "name": "@faustwp/custom-toolbar",
   "private": true,
   "scripts": {
     "dev": "faust dev",
