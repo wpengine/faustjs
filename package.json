@@ -19,6 +19,7 @@
       "examples/next/faustwp-getting-started",
       "examples/next/app-router",
       "examples/next/block-support",
+      "examples/next/custom-toolbar",
       "plugins/faustwp"
     ]
   },
