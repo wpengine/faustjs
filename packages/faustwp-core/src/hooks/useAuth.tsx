@@ -1,10 +1,12 @@
 import trim from 'lodash/trim.js';
 import defaults from 'lodash/defaults.js';
 import { useEffect, useState } from 'react';
+import { gql } from '@apollo/client';
 import {
   ensureAuthorization,
   EnsureAuthorizationOptions,
 } from '../auth/index.js';
+import { getApolloAuthClient } from '../client.js';
 
 type RedirectStrategyConfig = {
   strategy: 'redirect';
@@ -17,6 +19,26 @@ type LocalStrategyConfig = {
   loginPageUrl: string;
   shouldRedirect?: boolean;
   skip?: boolean;
+};
+
+type ViewerType = {
+  name?: string;
+  username?: string;
+  capabilities?: string[];
+  databaseId?: number;
+  description?: string;
+  email?: string;
+  firstName?: string;
+  id?: number;
+  lastName?: string;
+  nickname?: string;
+  locale?: string;
+  registeredDate?: string;
+  slug?: string;
+  templates?: string[];
+  uri?: string;
+  url?: string;
+  userId?: number;
 };
 
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
@@ -38,6 +60,7 @@ export function useAuth(_config?: UseAuthConfig) {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [loginUrl, setLoginUrl] = useState<string | null>(null);
   const [called, setCalled] = useState<boolean>(false);
+  const [viewer, setViewer] = useState<ViewerType | null>(null);
 
   useEffect(() => {
     if (config.skip === true) {
@@ -114,9 +137,54 @@ export function useAuth(_config?: UseAuthConfig) {
     }, 200);
   }, [isReady, isAuthenticated, loginUrl, config]);
 
+  /**
+   * Expose viewer options to the toolbar if the user is authenticated.
+   */
+  useEffect(() => {
+    if (config.skip === true) {
+      return;
+    }
+
+    if (isAuthenticated !== true) {
+      return;
+    }
+
+    (async () => {
+      const client = getApolloAuthClient();
+
+      const { data } = await client.query({
+        query: gql`
+          query GetFaustViewer {
+            viewer {
+              name
+              username
+              capabilities
+              databaseId
+              description
+              email
+              firstName
+              id
+              lastName
+              nickname
+              locale
+              registeredDate
+              slug
+              templates
+              uri
+              url
+              userId
+            }
+          }
+        `,
+      });
+      setViewer(data.viewer as ViewerType | null);
+    })();
+  }, [isAuthenticated, config.skip]);
+
   return {
     isAuthenticated,
     isReady,
     loginUrl,
+    viewer,
   };
 }
