@@ -11,6 +11,12 @@ ENV WP_VERSION=${WP_VERSION}
 # Needed for Codeception WPDB test integration.
 RUN docker-php-ext-install pdo pdo_mysql
 
+# Install Dockerize
+ENV DOCKERIZE_VERSION v0.7.0
+RUN curl -L -O https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
 # Install WP cli
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x wp-cli.phar \

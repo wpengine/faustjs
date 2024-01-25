@@ -16,14 +16,14 @@
     "wpe-build": "next build"
   },
   "dependencies": {
-    "@faustjs/core": "^0.15.10",
-    "@faustjs/next": "^0.15.12",
+    "@faustjs/core": "^0.15.13",
+    "@faustjs/next": "^0.15.13",
     "next": "^12.2.4",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sass": "^1.54.0",
-    "sharp": "^0.30.5"
+    "sharp": "^0.32.6"
   },
   "devDependencies": {
     "@gqty/cli": "^3.1.0",

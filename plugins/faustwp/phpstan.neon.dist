@@ -1,0 +1,14 @@
+parameters:
+		level: 1 # Gotta start somewhere
+		inferPrivatePropertyTypeFromConstructor: true
+		checkMissingIterableValueType: false
+		bootstrapFiles:
+			- phpstan/constants.php
+		scanFiles:
+			- vendor/axepress/wp-graphql-stubs/wp-graphql-stubs.php
+		paths:
+			- faustwp.php
+			- includes/
+		excludePaths:
+			analyseAndScan:
+				- */vendor/*

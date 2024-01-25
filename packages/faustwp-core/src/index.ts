@@ -31,6 +31,8 @@ import {
 import { useAuth } from './hooks/useAuth.js';
 import { useLogin } from './hooks/useLogin.js';
 import { useLogout } from './hooks/useLogout.js';
+import { useFaustQuery } from './hooks/useFaustContext.js';
+import { FaustContext } from './store/FaustContext.js';
 
 import {
   FaustToolbarNodes,
@@ -83,4 +85,6 @@ export {
   FaustTemplate,
   FaustPage,
   hooks,
+  useFaustQuery,
+  FaustContext,
 };

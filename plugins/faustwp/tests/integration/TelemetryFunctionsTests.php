@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GraphQLFunctionsTests
+ * Class TelemetryFunctionsTests
  *
  * @package FaustWP
  */
@@ -13,6 +13,8 @@ use function WPE\FaustWP\Settings\{
 };
 use function WPE\FaustWP\Telemetry\{
 	has_frontend_uri,
+	generate_telemetry_client_id,
+    get_telemetry_client_id,
 };
 
 class TelemetryFunctionsTests extends WP_UnitTestCase {
@@ -31,6 +33,14 @@ class TelemetryFunctionsTests extends WP_UnitTestCase {
 	public function test_has_frontend_uri_returns_true_if_frontend_uri_setting_has_valid_url() {
 		faustwp_update_setting( 'frontend_uri', 'https://example.org' );
 		$this->assertTrue( has_frontend_uri() );
+	}
+
+	public function test_generate_telemetry_client_id_generates_and_saves_a_valid_id_when_one_is_not_present(): void {
+		delete_option( 'faustwp_settings' );
+		$id = generate_telemetry_client_id();
+		self::assertNotEmpty( $id );
+		self::assertTrue( wp_is_uuid( $id ) );
+		self::assertSame( $id, get_telemetry_client_id() );
 	}
 
 }

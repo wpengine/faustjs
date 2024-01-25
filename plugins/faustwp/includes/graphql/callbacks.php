@@ -7,10 +7,10 @@
 
 namespace WPE\FaustWP\GraphQL;
 
-use function WPE\FaustWP\Auth\generate_authorization_code;
-use function WPE\FaustWP\Settings\get_secret_key;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
+use function WPE\FaustWP\Auth\generate_authorization_code;
+use function WPE\FaustWP\Settings\get_secret_key;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -64,7 +64,7 @@ function filter_introspection( $value, $default_value, $option_name, $section_fi
 	// check header for faust secret key.
 	if ( ! isset( $_SERVER['HTTP_X_FAUST_SECRET'] ) ) {
 		return $value;
-	};
+	}
 
 	$secret_key = get_secret_key();
 	if ( $secret_key !== $_SERVER['HTTP_X_FAUST_SECRET'] ) {
@@ -92,7 +92,7 @@ function register_faust_toolbar_field() {
 		'shouldShowFaustToolbar',
 		array(
 			'type'    => 'Boolean',
-			'resolve' => function() {
+			'resolve' => function () {
 				$user                    = wp_get_current_user();
 				$toolbar_preference_meta = get_user_meta( $user->ID, 'show_admin_bar_front', true );
 
@@ -149,7 +149,7 @@ function register_global_stylesheet_field() {
 				),
 			),
 			'description' => __( 'Returns the stylesheet resulting of merging core, theme, and user data.', 'faustwp' ),
-			'resolve'     => function( $root, $args, $context, $info ) {
+			'resolve'     => function ( $root, $args, $context, $info ) {
 				$types = $args['types'] ?? null;
 
 				return wp_get_global_stylesheet( $types );
@@ -339,7 +339,7 @@ function register_generate_ac_mutation() {
 					'description' => __( 'Error encountered during user authentication, if any', 'faustwp' ),
 				),
 			),
-			'mutateAndGetPayload' => function( $input, $context, $info ) {
+			'mutateAndGetPayload' => function ( $input, $context, $info ) {
 				$is_email = isset( $input['email'] ) ? true : false;
 				$username = isset( $input['username'] ) ? $input['username'] : null;
 				$email = isset( $input['email'] ) ? $input['email'] : null;

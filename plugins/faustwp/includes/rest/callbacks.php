@@ -20,8 +20,12 @@ use function WPE\FaustWP\Telemetry\{
 	is_wpe,
 	get_anonymous_faustwp_data,
 	get_anonymous_wpgraphql_content_blocks_data,
+	get_telemetry_client_id
 };
 use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
+use function WPE\FaustWP\Settings\faustwp_get_setting;
+use function WPE\FaustWP\Settings\faustwp_update_setting;
+use function WPE\FaustWP\Settings\is_telemetry_enabled;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -87,6 +91,16 @@ function register_rest_routes() {
 
 	register_rest_route(
 		'faustwp/v1',
+		'/telemetry/decision',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_decision_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_decision_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
 		'/telemetry',
 		array(
 			'methods'             => 'POST',
@@ -102,6 +116,16 @@ function register_rest_routes() {
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\\handle_rest_authorize_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
+		'/process_telemetry',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_process_telemetry_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_process_telemetry_permission_callback',
 		)
 	);
 
@@ -148,7 +172,14 @@ function handle_blockset_callback( \WP_REST_Request $request ) {
 		return $result;
 	}
 
-	return new \WP_REST_Response( __( 'Blockset sync complete.', 'faustwp' ), 200 );
+	return new \WP_REST_Response(
+		sprintf(
+			/* Translators: %s is replaced with the emoji indicating a successful sync. */
+			esc_html__( '%s Blockset sync complete!', 'faustwp' ),
+			'✅'
+		),
+		200
+	);
 }
 
 /**
@@ -177,6 +208,93 @@ function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 }
 
 /**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle POST /faustwp/v1/process_telemetry response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
+ *
+ * @return mixed A \WP_REST_Response, array, or \WP_Error.
+ */
+function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
+	if ( ! is_telemetry_enabled() ) {
+		return new \WP_REST_Response( null, 204 );
+	}
+
+	$body = $request->get_json_params();
+
+	$faust_plugin_data          = get_anonymous_faustwp_data();
+	$content_blocks_plugin_data = get_anonymous_wpgraphql_content_blocks_data();
+
+	$ga_tracking_endpoint = 'https://www.google-analytics.com/mp/collect';
+	$ga_tracking_id       = 'G-KPVSTHK1G4';
+	$ga_key               = '-SLuZb8JTbWkWcT5BD032w';
+
+	$telemetry_data = array(
+		'node_faustwp_core_version'                    => $body['node_faustwp_core_version'] ?? null,
+		'node_faustwp_cli_version'                     => $body['node_faustwp_cli_version'] ?? null,
+		'node_faustwp_blocks_version'                  => $body['node_faustwp_blocks_version'] ?? null,
+		'node_apollo_client_version'                   => $body['node_apollo_client_version'] ?? null,
+		'node_faustwp_block_editor_utils_version'      => $body['node_faustwp_block_editor_utils_version'] ?? null,
+		'node_faustwp_experimental_app_router_version' => $body['node_faustwp_experimental_app_router_version'] ?? null,
+		'node_version'                                 => $body['node_version'] ?? null,
+		'node_next_version'                            => $body['node_next_version'] ?? null,
+		'node_is_development'                          => $body['node_is_development'] ?? null,
+		'command'                                      => $body['command'] ?? null,
+
+		'setting_has_frontend_uri'                     => $faust_plugin_data['has_frontend_uri'],
+		'setting_redirects_enabled'                    => $faust_plugin_data['redirects_enabled'],
+		'setting_rewrites_enabled'                     => $faust_plugin_data['rewrites_enabled'],
+		'setting_themes_disabled'                      => $faust_plugin_data['themes_disabled'],
+		'setting_img_src_replacement_enabled'          => $faust_plugin_data['image_source_replacement_enabled'],
+		'faustwp_version'                              => $faust_plugin_data['version'],
+
+		'wpgraphql_content_blocks_version'             => $content_blocks_plugin_data['version'],
+
+		'is_wpe'                                       => is_wpe(),
+		'multisite'                                    => is_multisite(),
+		'php_version'                                  => PHP_VERSION,
+		'wp_version'                                   => get_wp_version(),
+		'engagement_time_msec'                         => 100,
+		'session_id'                                   => md5( get_telemetry_client_id() ),
+	);
+
+	// Remove null values since GA rejects them.
+	$telemetry_data = array_filter( $telemetry_data );
+
+	$ga_telemetry_url = add_query_arg(
+		array(
+			'measurement_id' => $ga_tracking_id,
+			'api_secret'     => $ga_key,
+		),
+		$ga_tracking_endpoint
+	);
+
+	$telemetry_body = array(
+		'client_id' => get_telemetry_client_id(),
+		'events'    => array(
+			array(
+				'name'   => 'telemetry_event',
+				'params' => $telemetry_data,
+			),
+		),
+	);
+
+	wp_remote_post(
+		$ga_telemetry_url,
+		array(
+			'body'     => wp_json_encode( $telemetry_body ),
+			'blocking' => false,
+		)
+	);
+
+	return new \WP_REST_Response( array( $telemetry_body, $ga_telemetry_url ), 201 );
+}
+
+/**
  * Callback to check permissions for requests to `faustwp/v1/blockset`.
  *
  * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
@@ -199,6 +317,19 @@ function rest_blockset_permission_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_telemetry_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/process_telemetry`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_process_telemetry_permission_callback( \WP_REST_Request $request ) {
 	return rest_authorize_permission_callback( $request );
 }
 
@@ -294,4 +425,54 @@ function wpac_authorize_permission_callback( \WP_REST_Request $request ) {
 	}
 
 	return false;
+}
+
+/**
+ * Handles permission checks for the telemetry decision REST route.
+ *
+ * @param \WP_REST_Request $request REST request object.
+ * @return bool Whether the user has permission to make telemetry decisions.
+ */
+function rest_telemetry_decision_permission_callback( \WP_REST_Request $request ) {
+	return current_user_can( 'manage_options' );
+}
+
+/**
+ * Handles user decisions for telemetry opt-in.
+ *
+ * @param \WP_REST_Request $request REST request object.
+ * @return \WP_REST_Response|\WP_Error
+ */
+function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
+	$body     = json_decode( $request->get_body(), true );
+	$decision = $body['decision'] ?? 'remind';
+	if ( ! in_array( $decision, array( 'yes', 'no', 'remind' ), true ) ) {
+		$decision = 'remind';
+	}
+	switch ( $decision ) {
+		case 'yes':
+			faustwp_update_setting( 'telemetry_reminder', '0' );
+			faustwp_update_setting( 'enable_telemetry', '1' );
+			break;
+		case 'no':
+			faustwp_update_setting( 'telemetry_reminder', '0' );
+			faustwp_update_setting( 'enable_telemetry', 'no' );
+			break;
+		case 'remind':
+		default:
+			$date = new \DateTime( '+90 days', new \DateTimeZone( 'UTC' ) );
+			faustwp_update_setting( 'enable_telemetry', '0' );
+			faustwp_update_setting( 'telemetry_reminder', $date->getTimeStamp() );
+			break;
+	}
+
+	$response = array(
+		'decision' => $decision,
+		'settings' => array(
+			'enabled'  => faustwp_get_setting( 'enable_telemetry' ),
+			'reminder' => faustwp_get_setting( 'telemetry_reminder' ),
+		),
+		'success'  => true,
+	);
+	return rest_ensure_response( $response );
 }

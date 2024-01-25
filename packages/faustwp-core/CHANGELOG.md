@@ -1,5 +1,51 @@
 # @faustwp/core
 
+## 2.1.1
+
+### Patch Changes
+
+- 1b495d7: Fixes a bug when navigating to a page client side that threw an error with multiple queries.
+
+## 2.1.0
+
+### Minor Changes
+
+- 085c30d: Added a new `skip` config option to `useAuth` to conditionally invoke the hook
+
+### Patch Changes
+
+- 085c30d: Fixed a bug that made a request to the token endpoint on every page in `@faustwp/core@2.0.0`
+
+## 2.0.0
+
+### Minor Changes
+
+- c79c8c2: Added the ability to provide multiple queries to a given Faust Template:
+
+  ```js
+  import {GET_POST, GET_LAYOUT} from './queries.js'
+
+  export default function Component(props) {
+  }
+
+  Component.queries = [
+    {
+      query: GET_LAYOUT
+    },
+    {
+      query: GET_POST,
+      variables: (seedNode, ctx) {
+        return {
+          id: seedNode.databaseId,
+          asPreview: ctx?.asPreview
+        }
+      }
+    }
+  ]
+  ```
+
+  **Note:** Your Faust template can use either `Component.queries` or `Component.query`, but not both.
+
 ## 1.2.0
 
 ### Patch Changes
