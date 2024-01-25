@@ -40,7 +40,7 @@ Component.query = gql`
     page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       content
-      editorBlocks(flat: false) {
+      editorBlocks {
         name
         __typename
         renderedHtml

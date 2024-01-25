@@ -1,7 +1,7 @@
 {
   "name": "@faustwp/block-support-example",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "predev": "faust generatePossibleTypes && faust generateGlobalStylesheet",
     "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet",
@@ -15,8 +15,6 @@
     "@faustwp/blocks": "2.0.0",
     "@faustwp/cli": "^2.0.0",
     "@faustwp/core": "^2.1.1",
-    "@wordpress/base-styles": "^4.38.0",
-    "@wordpress/block-library": "^8.24.0",
     "classnames": "^2.3.1",
     "graphql": "^16.8.1",
     "next": "^14.0.3",
@@ -26,7 +24,9 @@
   },
   "devDependencies": {
     "@wordpress/scripts": "26.18.0",
-    "@faustwp/block-editor-utils": "0.1.0"
+    "@faustwp/block-editor-utils": "0.1.0",
+    "@wordpress/base-styles": "^4.41.0",
+    "@wordpress/block-library": "^8.27.0"
   },
   "engines": {
     "node": ">=18",
