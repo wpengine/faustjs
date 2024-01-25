@@ -290,12 +290,12 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	/**
 	 * Tests get_permalink() does not modify original value when content replacement is enabled for Custom Post Types
 	 */
-	public function test_custom_post_type_post_link_returns_unfiltered_link_when_content_replacement_is_enabled()
+	public function test_custom_post_type_post_link_returns_filtered_link_when_content_replacement_is_enabled()
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		$post_id = $this->getCustomPostType();
-		$this->assertSame( 'http://example.org/?document=' . $post_id, get_permalink($post_id) );
+		$this->assertSame( 'http://moo/?document=' . $post_id, get_permalink($post_id) );
 		faustwp_update_setting( 'frontend_uri', null );
 		faustwp_update_setting( 'enable_redirects', false );
 	}
