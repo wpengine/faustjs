@@ -64,6 +64,10 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_term_link_filter() {
 		$this->assertSame( 1000, has_action( 'term_link', 'WPE\FaustWP\Replacement\term_link' ) );
 	}
+	
+	public function test_post_type_link_filter() {
+		$this->assertSame( 1000, has_filter( 'post_type_link', 'WPE\FaustWP\Replacement\post_link' ) );
+	}
 
 	public function test_enqueue_preview_scripts_action() {
 		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'WPE\FaustWP\Replacement\enqueue_preview_scripts' ) );
@@ -286,12 +290,12 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	/**
 	 * Tests get_permalink() does not modify original value when content replacement is enabled for Custom Post Types
 	 */
-	public function test_custom_post_type_post_link_returns_unfiltered_link_when_content_replacement_is_enabled()
+	public function test_custom_post_type_post_link_returns_filtered_link_when_content_replacement_is_enabled()
 	{
 		faustwp_update_setting( 'frontend_uri', 'http://moo' );
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		$post_id = $this->getCustomPostType();
-		$this->assertSame( 'http://example.org/?document=' . $post_id, get_permalink($post_id) );
+		$this->assertSame( 'http://moo/?document=' . $post_id, get_permalink($post_id) );
 		faustwp_update_setting( 'frontend_uri', null );
 		faustwp_update_setting( 'enable_redirects', false );
 	}
