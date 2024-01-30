@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 2.1.2
+
+### Patch Changes
+
+- e7745b8: Exposes viewer data for use during the useAuth hook call.
+
 ## 2.1.1
 
 ### Patch Changes
