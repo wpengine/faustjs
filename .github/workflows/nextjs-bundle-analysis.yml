@@ -7,6 +7,8 @@ name: 'Next.js Bundle Analysis'
 
 on:
   pull_request:
+    branches-ignore:
+      - 'main'
   push:
     branches:
       - 'canary'
