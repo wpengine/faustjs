@@ -1,5 +1,17 @@
 # @faustwp/core
 
+## 2.1.2
+
+### Patch Changes
+
+- e7745b8: Exposes viewer data for use during the useAuth hook call.
+
+## 2.1.1
+
+### Patch Changes
+
+- 1b495d7: Fixes a bug when navigating to a page client side that threw an error with multiple queries.
+
 ## 2.1.0
 
 ### Minor Changes
