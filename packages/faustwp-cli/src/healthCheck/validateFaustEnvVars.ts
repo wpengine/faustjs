@@ -1,10 +1,10 @@
-import { getWpSecret } from '../utils/index.js';
+import { getWpSecret, getWpUrl } from '../utils/index.js';
 import { errorLog, warnLog } from '../stdout/index.js';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
  */
-export const validateFaustEnvVars = () => {
+export const validateFaustEnvVars = async () => {
   if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
     errorLog('Could not find NEXT_PUBLIC_WORDPRESS_URL environment variable.');
 
@@ -27,5 +27,32 @@ export const validateFaustEnvVars = () => {
     warnLog(
       'Please make sure your production Faust app runs with a WordPress instance on https!',
     );
+  }
+  if (getWpSecret()) {
+    // send secret key
+
+    const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/check_key`;
+    const headers = {
+      'x-faustwp-secret': getWpSecret() || '',
+    };
+
+    try {
+      const response = await fetch(apiUrl, {
+        headers,
+        method: 'POST',
+        timeout: 30000, // 30 seconds timeout
+      } as unknown as RequestInit);
+      if (response.status === 204) {
+        // Success: User receives a 204 status code
+        // Handle the successful response here
+      } else if (response.status === 401) {
+        // Unauthorized: User receives a 401 status code
+        warnLog(
+          'Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings',
+        );
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 };
