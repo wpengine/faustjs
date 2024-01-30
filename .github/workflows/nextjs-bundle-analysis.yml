@@ -7,6 +7,8 @@ name: 'Next.js Bundle Analysis'
 
 on:
   pull_request:
+    branches-ignore:
+      - 'main'
   push:
     branches:
       - 'canary'
@@ -124,6 +126,7 @@ jobs:
 
       - name: Create Comment
         uses: peter-evans/create-or-update-comment@v2
+        continue-on-error: true
         if: success() && github.event.number && steps.fc.outputs.comment-id == 0
         with:
           issue-number: ${{ github.event.number }}
@@ -131,6 +134,7 @@ jobs:
 
       - name: Update Comment
         uses: peter-evans/create-or-update-comment@v2
+        continue-on-error: true
         if: success() && github.event.number && steps.fc.outputs.comment-id != 0
         with:
           issue-number: ${{ github.event.number }}
