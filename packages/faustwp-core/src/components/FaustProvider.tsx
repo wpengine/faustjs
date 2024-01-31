@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { useRouter } from 'next/router';
@@ -36,6 +36,15 @@ export function FaustProvider(props: {
     queries: pageProps.__FAUST_QUERIES__,
     setQueries,
   });
+
+  /**
+   * On page transitions, reset the queries state based on the new page props.
+   */
+  useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
+    if (pageProps.__FAUST_QUERIES__) setQueries(pageProps.__FAUST_QUERIES__);
+    // eslint-disable-next-line no-underscore-dangle
+  }, [pageProps.__FAUST_QUERIES__]);
 
   return (
     <FaustContext.Provider value={faustContext}>

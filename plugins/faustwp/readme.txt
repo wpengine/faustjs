@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.2.1 =
+
+### Patch Changes
+
+- 05cc940: Fix: swap traditional custom post type URLs in WordPress admin for the headless frontend custom post type URLs.
+
 = 1.2.0 =
 
 ### Minor Changes
@@ -74,11 +80,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 - 78a061a: Fixed a bug that caused links to files in wp-content to be rewritten to the Faust Front-end site URL when they should not have been.
 - 2559958: Bug Fix: Fixed missing call to autosave when using Post/Page previews.
 - 75f5c80: Fixed a bug where links were rewritten to the Faust Front-end Site URL when using the post editor, resulting in those rewritten links being saved to the post content and guid fields when they shouldn't be. These links are now saved with the URL pointing to the WP site, as they should be. They are still rewritten at runtime to link to the Front-end Site URL when appropriate.
-
-= 1.1.1 =
-
-### Patch Changes
-
-- b2c0fd3: Updated the settings page to improve descriptions and documentation links.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
