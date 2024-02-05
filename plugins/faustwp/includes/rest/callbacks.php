@@ -129,6 +129,17 @@ function register_rest_routes() {
 		)
 	);
 
+	// TODO: after initial set up of Postman call to auth, uncomment this.
+	register_rest_route(
+		'faustwp/v1',
+		'/validate_secret_key',
+		array(
+			'methods'             => 'GET',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_secret_key_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_validate_secret_key_permission_callback',
+		)
+	);
+
 	/**
 	 * Faust.js packages now use `faustwp/v1/authorize`.
 	 *
@@ -333,6 +344,8 @@ function rest_process_telemetry_permission_callback( \WP_REST_Request $request )
 	return rest_authorize_permission_callback( $request );
 }
 
+
+
 /**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
@@ -392,8 +405,13 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
+	
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
+
+	// Add console log for get_secret_key()
+	error_log( 'Secret Key: ' . $secret_key );
+
 
 	if ( $secret_key && $header_key ) {
 		return $secret_key === $header_key;
@@ -475,4 +493,72 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
 		'success'  => true,
 	);
 	return rest_ensure_response( $response );
+}
+
+//TODO: after initial set up of Postman call to auth, uncomment this.
+/**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle POST /faustwp/v1/validate)_secret_key response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
+ *
+ * @return mixed A \WP_REST_Response, array, or \WP_Error.
+ */
+function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
+	$code          = trim( $request->get_param( 'code' ) );
+	$refresh_token = trim( $request->get_param( 'refreshToken' ) );
+
+	if ( ! $code && ! $refresh_token ) {
+		return new \WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
+	}
+
+	if ( $refresh_token ) {
+		$user = get_user_from_refresh_token( $refresh_token );
+	} else {
+		$user = get_user_from_authorization_code( $code );
+	}
+
+	if ( ! $user ) {
+		return new \WP_Error( 'invalid_request', 'Invalid authorization code or refresh token.' );
+	}
+
+	$refresh_token_expiration = WEEK_IN_SECONDS * 2;
+	$access_token_expiration  = MINUTE_IN_SECONDS * 5;
+
+	$access_token  = generate_access_token( $user, $access_token_expiration );
+	$refresh_token = generate_refresh_token( $user, $refresh_token_expiration );
+
+	return array(
+		'accessToken'            => $access_token,
+		'accessTokenExpiration'  => ( time() + $access_token_expiration ),
+		'refreshToken'           => $refresh_token,
+		'refreshTokenExpiration' => ( time() + $refresh_token_expiration ),
+	);
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/authorize`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
+ *
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_validate_secret_key_permission_callback( \WP_REST_Request $request ) {
+	$secret_key = get_secret_key();
+	$header_key = $request->get_header( 'x-faustwp-secret' );
+
+	if ( $secret_key && $header_key ) {
+		return $secret_key === $header_key;
+	}
+
+	return false;
 }

@@ -30,12 +30,13 @@ export const validateFaustEnvVars = async () => {
   }
   if (getWpSecret()) {
     // send secret key
-
-    const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/check_key`;
+    console.log('NEW TESTING FOR SECRET KEY');
+    const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/authorize`;
+    console.log('apiUrl', apiUrl);
     const headers = {
       'x-faustwp-secret': getWpSecret() || '',
     };
-
+    console.log('headers', headers);
     try {
       const response = await fetch(apiUrl, {
         headers,
@@ -44,9 +45,8 @@ export const validateFaustEnvVars = async () => {
       } as unknown as RequestInit);
       if (response.status === 204) {
         // Success: User receives a 204 status code
-        // Handle the successful response here
       } else if (response.status === 401) {
-        // Unauthorized: User receives a 401 status code
+        // Unauthorized: User receives a 401 status code AND the message below
         warnLog(
           'Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings',
         );
