@@ -129,12 +129,11 @@ function register_rest_routes() {
 		)
 	);
 
-	// TODO: after initial set up of Postman call to auth, uncomment this.
 	register_rest_route(
 		'faustwp/v1',
 		'/validate_secret_key',
 		array(
-			'methods'             => 'GET',
+			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_secret_key_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_validate_secret_key_permission_callback',
 		)
@@ -495,53 +494,32 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
 	return rest_ensure_response( $response );
 }
 
-//TODO: after initial set up of Postman call to auth, uncomment this.
 /**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
- * Handle POST /faustwp/v1/validate)_secret_key response.
+ * Handle POST /faustwp/v1/validate_secret_key response.
  *
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
  *
  * @param \WP_REST_Request $request Current \WP_REST_Request object.
  *
- * @return mixed A \WP_REST_Response, array, or \WP_Error.
+ * @return mixed A \WP_REST_Response, or \WP_Error.
  */
 function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
-	$code          = trim( $request->get_param( 'code' ) );
-	$refresh_token = trim( $request->get_param( 'refreshToken' ) );
 
-	if ( ! $code && ! $refresh_token ) {
-		return new \WP_Error( 'invalid_request', 'Missing authorization code or refresh token.' );
-	}
-
-	if ( $refresh_token ) {
-		$user = get_user_from_refresh_token( $refresh_token );
-	} else {
-		$user = get_user_from_authorization_code( $code );
-	}
-
-	if ( ! $user ) {
-		return new \WP_Error( 'invalid_request', 'Invalid authorization code or refresh token.' );
-	}
-
-	$refresh_token_expiration = WEEK_IN_SECONDS * 2;
-	$access_token_expiration  = MINUTE_IN_SECONDS * 5;
-
-	$access_token  = generate_access_token( $user, $access_token_expiration );
-	$refresh_token = generate_refresh_token( $user, $refresh_token_expiration );
-
-	return array(
-		'accessToken'            => $access_token,
-		'accessTokenExpiration'  => ( time() + $access_token_expiration ),
-		'refreshToken'           => $refresh_token,
-		'refreshTokenExpiration' => ( time() + $refresh_token_expiration ),
+	return new \WP_REST_Response(
+		sprintf(
+			/* Translators: %s is replaced with the emoji indicating a successful sync. */
+			esc_html__( 'Secret key validated!', 'faustwp' ),
+			'✅'
+		),
+		200
 	);
 }
 
 /**
- * Callback to check permissions for requests to `faustwp/v1/authorize`.
+ * Callback to check permissions for requests to `faustwp/v1/validate_secret_key`.
  *
  * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
  *
