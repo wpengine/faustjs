@@ -1,5 +1,5 @@
 ---
-'@faustwp/blocks': patch
+'@faustwp/blocks': major
 ---
 
-Make attributes field optional to comply with the WordPressBlock interface
+**BREAKING**: Make `attributes` field on core blocks optional to comply with the `WordPressBlock` type interface. Thanks @traed!
