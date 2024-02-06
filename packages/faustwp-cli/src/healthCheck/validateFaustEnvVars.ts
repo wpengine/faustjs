@@ -30,13 +30,10 @@ export const validateFaustEnvVars = async () => {
   }
   if (getWpSecret()) {
     // send secret key
-    console.log('NEW TESTING FOR SECRET KEY');
-    const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/authorize`;
-    console.log('apiUrl', apiUrl);
+    const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/validate_secret_key`;
     const headers = {
       'x-faustwp-secret': getWpSecret() || '',
     };
-    console.log('headers', headers);
     try {
       const response = await fetch(apiUrl, {
         headers,
