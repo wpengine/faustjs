@@ -407,7 +407,7 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
 
-	// Add console log for get_secret_key()
+	// Add console log for get_secret_key().
 	error_log( 'Secret Key: ' . $secret_key );
 
 	if ( $secret_key && $header_key ) {
