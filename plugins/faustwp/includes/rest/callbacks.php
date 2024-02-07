@@ -404,13 +404,11 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
-	
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
 
 	// Add console log for get_secret_key()
 	error_log( 'Secret Key: ' . $secret_key );
-
 
 	if ( $secret_key && $header_key ) {
 		return $secret_key === $header_key;
@@ -507,7 +505,6 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
  * @return mixed A \WP_REST_Response, or \WP_Error.
  */
 function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
-
 	return new \WP_REST_Response(
 		sprintf(
 			/* Translators: %s is replaced with the emoji indicating a successful sync. */
