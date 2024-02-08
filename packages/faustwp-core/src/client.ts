@@ -23,6 +23,8 @@ import { hooks } from './wpHooks/index.js';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
+// Quiet change
+
 declare global {
   interface Window {
     [APOLLO_STATE_PROP_NAME]: NormalizedCacheObject;
