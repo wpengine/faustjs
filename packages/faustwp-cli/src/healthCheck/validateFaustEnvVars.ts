@@ -1,5 +1,6 @@
 import { getWpSecret, getWpUrl } from '../utils/index.js';
 import { errorLog, warnLog } from '../stdout/index.js';
+import { exit } from 'process';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
@@ -34,19 +35,22 @@ export const validateFaustEnvVars = async () => {
     const headers = {
       'x-faustwp-secret': getWpSecret() || '',
     };
+    console.log('GET WP SECRET CONTENTS', getWpSecret());
     try {
       const response = await fetch(apiUrl, {
         headers,
         method: 'POST',
-        timeout: 30000, // 30 seconds timeout
-      } as unknown as RequestInit);
+      });
+      console.log('THIS response', response);
+      console.log('response.status', response.status);
       if (response.status === 204) {
         // Success: User receives a 204 status code
       } else if (response.status === 401) {
         // Unauthorized: User receives a 401 status code AND the message below
-        warnLog(
+        errorLog(
           'Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings',
         );
+        exit(1);
       }
     } catch (error) {
       console.log('error', error);
