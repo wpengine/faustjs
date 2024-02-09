@@ -35,14 +35,11 @@ export const validateFaustEnvVars = async () => {
     const headers = {
       'x-faustwp-secret': getWpSecret() || '',
     };
-    console.log('GET WP SECRET CONTENTS', getWpSecret());
     try {
       const response = await fetch(apiUrl, {
         headers,
         method: 'POST',
       });
-      console.log('THIS response', response);
-      console.log('response.status', response.status);
       if (response.status === 204) {
         // Success: User receives a 204 status code
       } else if (response.status === 401) {
