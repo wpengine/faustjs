@@ -525,12 +525,5 @@ function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_validate_secret_key_permission_callback( \WP_REST_Request $request ) {
-	$secret_key = get_secret_key();
-	$header_key = $request->get_header( 'x-faustwp-secret' );
-
-	if ( $secret_key && $header_key ) {
-		return $secret_key === $header_key;
-	}
-
-	return false;
+	return rest_authorize_permission_callback( $request );
 }
