@@ -1,4 +1,5 @@
 import { validateFaustEnvVars } from '../../src/healthCheck/validateFaustEnvVars';
+import fetchMock from 'fetch-mock';
 /**
  * @jest-environment jsdom
  */
@@ -49,4 +50,19 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
     expect(mockExit).toBeCalledTimes(0);
   });
+
+  it('logs an error when the secret key validation fails', async () => {
+
+    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'https://headless.local';
+    process.env.FAUST_SECRET_KEY = 'invalid-secret-key';
+
+    fetchMock.post('https://headless.local/wp-json/faustwp/v1/validate_secret_key', {
+      status: 401,
+    });
+    
+    await validateFaustEnvVars();
+
+    return expect(Promise.resolve(validateFaustEnvVars())).toMatchSnapshot('Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings');
+  });
+
 });
