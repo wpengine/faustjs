@@ -62,7 +62,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
     
     await validateFaustEnvVars();
 
-    return expect(Promise.resolve(validateFaustEnvVars())).toMatchSnapshot('Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings');
+    return expect(Promise.resolve(validateFaustEnvVars())).toMatchSnapshot(`healthCheck/validateFaustEnvVars logs an error when the secret key validation fails: Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings 1`);
   });
 
 });
