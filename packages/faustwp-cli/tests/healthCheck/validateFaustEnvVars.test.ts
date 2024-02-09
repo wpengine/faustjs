@@ -17,7 +17,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
     process.env = envBackup;
   });
 
-  it('exits with a 1 exit code when the WordPress URL is undefined', () => {
+  it('exits with a 1 exit code when the WordPress URL is undefined', async () => {
     // @ts-ignore
     const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
       if (code && code !== 0) {
@@ -27,7 +27,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
     // Use try/catch block to mock process.exit
     try {
-      validateFaustEnvVars();
+      await validateFaustEnvVars();
     } catch (err) {
       console.log(err);
     }
@@ -35,7 +35,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
     expect(mockExit).toHaveBeenCalledWith(1);
   });
 
-  it('does not exit or throw an error when the WordPress URL is set', () => {
+  it('does not exit or throw an error when the WordPress URL is set', async () => {
     // @ts-ignore
     const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
       if (code && code !== 0) {
@@ -45,7 +45,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
     process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
 
-    validateFaustEnvVars();
+    await validateFaustEnvVars();
 
     expect(mockExit).toBeCalledTimes(0);
   });
