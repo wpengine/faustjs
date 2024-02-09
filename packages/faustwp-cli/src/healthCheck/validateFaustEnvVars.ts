@@ -1,6 +1,5 @@
 import { getWpSecret, getWpUrl } from '../utils/index.js';
 import { errorLog, warnLog } from '../stdout/index.js';
-import { exit } from 'process';
 
 /**
  * Validates that the appropriate Faust related environment variables are set.
@@ -47,7 +46,7 @@ export const validateFaustEnvVars = async () => {
         errorLog(
           'Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings',
         );
-        exit(1);
+        process.exit(1);
       }
     } catch (error) {
       console.log('error', error);
