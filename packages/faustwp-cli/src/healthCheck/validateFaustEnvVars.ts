@@ -39,7 +39,7 @@ export const validateFaustEnvVars = async () => {
         headers,
         method: 'POST',
         timeout: 30000, // 30 seconds timeout
-      } as unknown as RequestInit);
+      });
       if (response.status === 204) {
         // Success: User receives a 204 status code
       } else if (response.status === 401) {
