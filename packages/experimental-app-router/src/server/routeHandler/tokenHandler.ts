@@ -88,7 +88,7 @@ export async function tokenHandler(req: Request) {
       httpOnly: true,
       path: '/',
       expires: new Date(data.refreshTokenExpiration * 1000),
-      sameSite: 'strict',
+      sameSite: 'lax',
     });
 
     return res;
