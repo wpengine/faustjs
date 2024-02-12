@@ -20,7 +20,7 @@ body:
     attributes:
       label: Steps to reproduce
       description: >-
-        Please list the all the steps needed to reproduce the bug in an *isolated* way (e.g. a clonable GitHub repository, or a Faust.js snippet that works on a clean environment ).
+        Please list all the steps needed to reproduce the bug in an *isolated* way (e.g. a clonable GitHub repository, or a Faust.js snippet that works on a clean environment ).
       placeholder: >-
         1. Clone the `faustwp-getting-started` example project
         2. Navigate to the `wp-templates/single.js` Faust template
