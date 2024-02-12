@@ -12,7 +12,7 @@ on:
 
 jobs:
   release_plugin:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Discord Notification
         env:
@@ -33,6 +33,6 @@ jobs:
                 ]
               }
             ]
-        uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
+        uses: Ilshidur/action-discord@0.3.2
         with:
           args: '${{ github.ref_name }} has been released!'
