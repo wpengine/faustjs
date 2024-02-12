@@ -23,15 +23,15 @@ on:
 jobs:
   release_nightly_canary:
     name: Release Nightly Canary
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node.js 18.x
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
 
