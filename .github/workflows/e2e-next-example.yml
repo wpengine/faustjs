@@ -20,9 +20,9 @@ jobs:
         working-directory: ./
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
       # Get the PR branch so we can pull the correct Next.js example path
