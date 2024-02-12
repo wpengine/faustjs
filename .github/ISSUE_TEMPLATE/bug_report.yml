@@ -34,17 +34,17 @@ body:
         Add any other context about the problem here, such as screenshots, error logs, etc.
   - type: input
     attributes:
-      label: "@faustwp/core version"
+      label: "@faustwp/core Version"
     validations:
       required: true
   - type: input
     attributes:
-      label: "@faustwp/cli version"
+      label: "@faustwp/cli Version"
     validations:
       required: true
   - type: input
     attributes:
-      label: faustwp plugin version
+      label: FaustWP Plugin Version
     validations:
       required: true
   - type: input
