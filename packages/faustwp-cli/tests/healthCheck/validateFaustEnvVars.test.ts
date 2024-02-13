@@ -74,6 +74,5 @@ describe('isWPEngineComTLD', () => {
     expect(
       isWPEngineComSubdomain('https://my-site.wpenginepowered.com'),
     ).toBeFalsy();
-    expect(isWPEngineComSubdomain('https://my-site.wpengine.co'));
   });
 });
