@@ -1,6 +1,16 @@
 import { getWpSecret } from '../utils/index.js';
 import { errorLog, infoLog, warnLog } from '../stdout/index.js';
 
+export function isWPEngineComSubdomain(url: string) {
+  const regex = /\b\w+\.wpengine\.com\b/;
+
+  if (regex.test(url)) {
+    return true;
+  }
+
+  return false;
+}
+
 /**
  * Validates that the appropriate Faust related environment variables are set.
  */
@@ -11,8 +21,7 @@ export const validateFaustEnvVars = () => {
     process.exit(1);
   }
 
-  const regex = /\b\w+\.wpengine\.com\b/;
-  if (regex.test(process.env.NEXT_PUBLIC_WORDPRESS_URL)) {
+  if (isWPEngineComSubdomain(process.env.NEXT_PUBLIC_WORDPRESS_URL)) {
     infoLog(
       'We detected your NEXT_PUBLIC_WORDPRESS_URL is using wpengine.com. It is recommended to use the wpenginepowered.com TLD',
     );

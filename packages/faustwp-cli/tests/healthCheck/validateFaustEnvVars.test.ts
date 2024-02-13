@@ -1,4 +1,7 @@
-import { validateFaustEnvVars } from '../../src/healthCheck/validateFaustEnvVars';
+import {
+  isWPEngineComSubdomain,
+  validateFaustEnvVars,
+} from '../../src/healthCheck/validateFaustEnvVars';
 /**
  * @jest-environment jsdom
  */
@@ -48,5 +51,29 @@ describe('healthCheck/validateFaustEnvVars', () => {
     validateFaustEnvVars();
 
     expect(mockExit).toBeCalledTimes(0);
+  });
+});
+
+describe('isWPEngineComTLD', () => {
+  it('matches subdomains on wpengine.com', () => {
+    expect(isWPEngineComSubdomain('https://my-site.wpengine.com')).toBeTruthy();
+    expect(
+      isWPEngineComSubdomain('http://some-site.wpengine.com/graphql'),
+    ).toBeTruthy();
+    expect(isWPEngineComSubdomain('https://example.wpengine.com')).toBeTruthy();
+    expect(
+      isWPEngineComSubdomain('https://some-long-weird-subdomain.wpengine.com'),
+    );
+  });
+
+  it('does not match urls that are not subdomains of wpengine.com', () => {
+    expect(isWPEngineComSubdomain('https://example.com')).toBeFalsy();
+    expect(isWPEngineComSubdomain('https://wpengine.com')).toBeFalsy();
+    expect(isWPEngineComSubdomain('https://wpengine.com/plans')).toBeFalsy();
+    expect(isWPEngineComSubdomain('https://my-site.wpengine.co')).toBeFalsy();
+    expect(
+      isWPEngineComSubdomain('https://my-site.wpenginepowered.com'),
+    ).toBeFalsy();
+    expect(isWPEngineComSubdomain('https://my-site.wpengine.co'));
   });
 });
