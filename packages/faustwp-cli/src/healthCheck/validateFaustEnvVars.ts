@@ -22,8 +22,10 @@ export const validateFaustEnvVars = () => {
   }
 
   if (isWPEngineComSubdomain(process.env.NEXT_PUBLIC_WORDPRESS_URL)) {
+    infoLog(`Found NEXT_PUBLIC_WORDPRESS_URL using wpengine.com TLD.`);
+    infoLog(`It is recommended to use the wpenginepowered.com TLD instead.`);
     infoLog(
-      'We detected your NEXT_PUBLIC_WORDPRESS_URL is using wpengine.com. It is recommended to use the wpenginepowered.com TLD',
+      `Ex: https://example.wpengine.com -> https://example.wpenginepowered.com`,
     );
   }
 
