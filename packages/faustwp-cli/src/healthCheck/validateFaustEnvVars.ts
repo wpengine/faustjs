@@ -44,7 +44,7 @@ export const validateFaustEnvVars = async () => {
       } else if (response.status === 401) {
         // Unauthorized: User receives a 401 status code AND the message below
         errorLog(
-          'Check to ensure your FAUST_SECRET_KEY matches your Faust Secret Key under wp-admin settings',
+          'Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings',
         );
         process.exit(1);
       }
