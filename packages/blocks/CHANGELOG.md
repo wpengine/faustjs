@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 3.0.0
+
+### Major Changes
+
+- f6c6b0c: **BREAKING**: Make `attributes` field on core blocks optional to comply with the `WordPressBlock` type interface. Thanks @traed!
+
 ## 2.0.0
 
 ### Patch Changes

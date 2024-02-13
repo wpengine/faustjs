@@ -7,17 +7,17 @@ on:
 
 jobs:
   release_packages:
-    name: Release Packages
-    runs-on: ubuntu-latest
+    name: Release Packages
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
       - name: Setup Node.js 18.x
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
 

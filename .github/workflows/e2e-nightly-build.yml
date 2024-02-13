@@ -9,7 +9,7 @@ on:
 jobs:
   e2e-nightly-test:
     name: E2E app on Node ${{ matrix.node }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         node: ['16', '18', '20']
@@ -18,10 +18,10 @@ jobs:
         working-directory: ./
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
