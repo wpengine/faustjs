@@ -23,6 +23,9 @@ export const validateFaustEnvVars = () => {
     infoLog(
       `Ex: https://example.wpengine.com -> https://example.wpenginepowered.com`,
     );
+    infoLog(
+      `This will leverage WP Engine's Advanced Network CDN. See: https://wpengine.com/support/network/`,
+    );
   }
 
   if (!getWpSecret()) {
