@@ -2,4 +2,4 @@
 '@faustwp/experimental-app-router': minor
 ---
 
-Since app router requests are made server side and the preview post request originates from WordPress, the cookie isn’t reachable. Changing the cookie to SameSite=Lax resolves the problem.
+Changed the `sameSite` property on the refresh token cookie from `strict` to `lax` for requests originating from WordPress.
