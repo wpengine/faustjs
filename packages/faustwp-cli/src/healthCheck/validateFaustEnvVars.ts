@@ -4,11 +4,7 @@ import { errorLog, infoLog, warnLog } from '../stdout/index.js';
 export function isWPEngineComSubdomain(url: string) {
   const regex = /\b\w+\.wpengine\.com\b/;
 
-  if (regex.test(url)) {
-    return true;
-  }
-
-  return false;
+  return regex.test(url);
 }
 
 /**
