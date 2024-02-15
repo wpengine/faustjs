@@ -2,6 +2,8 @@ import {
   isWPEngineComSubdomain,
   validateFaustEnvVars,
 } from '../../src/healthCheck/validateFaustEnvVars';
+import fetchMock from 'fetch-mock';
+
 /**
  * @jest-environment jsdom
  */
@@ -20,7 +22,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
     process.env = envBackup;
   });
 
-  it('exits with a 1 exit code when the WordPress URL is undefined', () => {
+  it('exits with a 1 exit code when the WordPress URL is undefined', async () => {
     // @ts-ignore
     const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
       if (code && code !== 0) {
@@ -30,7 +32,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
     // Use try/catch block to mock process.exit
     try {
-      validateFaustEnvVars();
+      await validateFaustEnvVars();
     } catch (err) {
       console.log(err);
     }
@@ -38,7 +40,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
     expect(mockExit).toHaveBeenCalledWith(1);
   });
 
-  it('does not exit or throw an error when the WordPress URL is set', () => {
+  it('does not exit or throw an error when the WordPress URL is set', async () => {
     // @ts-ignore
     const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
       if (code && code !== 0) {
@@ -48,10 +50,25 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
     process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
 
-    validateFaustEnvVars();
+    await validateFaustEnvVars();
 
     expect(mockExit).toBeCalledTimes(0);
   });
+
+  it('logs an error when the secret key validation fails', async () => {
+
+    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'https://headless.local';
+    process.env.FAUST_SECRET_KEY = 'invalid-secret-key';
+
+    fetchMock.post('https://headless.local/wp-json/faustwp/v1/validate_secret_key', {
+      status: 401,
+    });
+    
+    await validateFaustEnvVars();
+
+    return expect(Promise.resolve(validateFaustEnvVars())).toMatchSnapshot(`Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings`);
+  });
+
 });
 
 describe('isWPEngineComTLD', () => {

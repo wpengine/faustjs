@@ -129,6 +129,16 @@ function register_rest_routes() {
 		)
 	);
 
+	register_rest_route(
+		'faustwp/v1',
+		'/validate_secret_key',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_secret_key_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_validate_secret_key_permission_callback',
+		)
+	);
+
 	/**
 	 * Faust.js packages now use `faustwp/v1/authorize`.
 	 *
@@ -333,6 +343,8 @@ function rest_process_telemetry_permission_callback( \WP_REST_Request $request )
 	return rest_authorize_permission_callback( $request );
 }
 
+
+
 /**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
@@ -475,4 +487,39 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
 		'success'  => true,
 	);
 	return rest_ensure_response( $response );
+}
+
+/**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle POST /faustwp/v1/validate_secret_key response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
+ *
+ * @return mixed A \WP_REST_Response, or \WP_Error.
+ */
+function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
+	return new \WP_REST_Response(
+		esc_html__( 'Secret key validated!', 'faustwp' ),
+		200
+	);
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/validate_secret_key`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
+ *
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_validate_secret_key_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
 }
