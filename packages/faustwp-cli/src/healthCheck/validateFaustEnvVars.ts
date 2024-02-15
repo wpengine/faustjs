@@ -47,7 +47,7 @@ export const validateFaustEnvVars = async () => {
   }
   if (getWpSecret()) {
     // send secret key
-    const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/validate_secret_key`;
+    const apiUrl = `${getWpUrl()}/?rest_route=/faustwp/v1/validate_secret_key`;
     const headers = {
       'x-faustwp-secret': getWpSecret(),
     };
