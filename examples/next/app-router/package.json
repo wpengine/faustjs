@@ -28,6 +28,7 @@
     "@types/node": "^20.6.3",
     "@types/react": "^18.2.36",
     "@types/react-dom": "^18.2.14",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "next-secure-headers": "^2.2.0"
   }
 }

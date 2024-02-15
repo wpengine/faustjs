@@ -1,4 +1,5 @@
 const { withFaust, getWpHostname } = require('@faustwp/core');
+const { createSecureHeaders } = require('next-secure-headers');
 
 /**
  * @type {import('next').NextConfig}
@@ -14,5 +15,8 @@ module.exports = withFaust({
   i18n: {
     locales: ['en'],
     defaultLocale: 'en',
+  },
+  async headers() {
+    return [{ source: '/(.*)', headers: createSecureHeaders() }];
   },
 });
