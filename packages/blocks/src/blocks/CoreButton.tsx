@@ -6,7 +6,7 @@ import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreButtonFragmentProps = ContentBlock & {
-  attributes: {
+  attributes?: {
     anchor?: string;
     backgroundColor?: string;
     cssClassName?: string;
@@ -28,7 +28,7 @@ export function CoreButton(props: CoreButtonFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
-  const linkTarget = attributes.linkTarget ? '_blank' : undefined;
+  const linkTarget = attributes?.linkTarget ? '_blank' : undefined;
   if (attributes?.url) {
     return (
       <div

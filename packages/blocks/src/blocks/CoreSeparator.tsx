@@ -5,7 +5,7 @@ import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreSeparatorFragmentProps = ContentBlock & {
-  attributes: {
+  attributes?: {
     align?: string;
     anchor?: string;
     backgroundColor?: string;

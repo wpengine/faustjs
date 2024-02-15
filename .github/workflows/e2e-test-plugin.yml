@@ -8,12 +8,12 @@ on:
 jobs:
   e2e_test_plugin:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '16'
       - name: Install NPM Deps
@@ -61,7 +61,7 @@ jobs:
         working-directory: plugins/faustwp
         run: vendor/bin/codecept run api
       - name: Upload Test Output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: failed-test-output
