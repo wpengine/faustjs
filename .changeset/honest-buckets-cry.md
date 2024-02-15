@@ -3,4 +3,4 @@
 "@faustwp/wordpress-plugin": patch
 ---
 
-Merl 1749 faust should warn if the secret key is invalid 
+Faust now warns you if the secret key in your environment is invalid or incorrect.
