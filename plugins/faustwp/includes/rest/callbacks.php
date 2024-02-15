@@ -503,11 +503,7 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
  */
 function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
 	return new \WP_REST_Response(
-		sprintf(
-			/* Translators: %s is replaced with the emoji indicating a successful sync. */
-			esc_html__( 'Secret key validated!', 'faustwp' ),
-			'✅'
-		),
+		esc_html__( 'Secret key validated!', 'faustwp' ),
 		200
 	);
 }
