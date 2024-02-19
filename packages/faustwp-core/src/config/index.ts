@@ -36,7 +36,10 @@ export function setConfig(_config: FaustConfig) {
 
     const { experimentalPlugins, plugins } = _config;
     // combine both sets of plugins until experimentalPlugins is fully deprecated
-    const allSupportedPlugins = [...experimentalPlugins, ...plugins];
+    const allSupportedPlugins = [
+      ...(experimentalPlugins || []),
+      ...(plugins || []),
+    ];
 
     allSupportedPlugins?.forEach((plugin) => {
       plugin?.apply?.(hooks);
