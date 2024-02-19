@@ -35,11 +35,19 @@ export function setConfig(_config: FaustConfig) {
     config = _config;
 
     const { experimentalPlugins, plugins } = _config;
+    // combine both sets of plugins until experimentalPlugins is fully deprecated
     const allSupportedPlugins = [...experimentalPlugins, ...plugins];
 
     allSupportedPlugins?.forEach((plugin) => {
       plugin?.apply?.(hooks);
     });
+
+    if (experimentalPlugins?.length) {
+      // log to cli if experimentalPlugins is used since it's being deprecated
+      console.warn(
+        'Plugin System: The "experimentalPlugins" configuration option will be deprecated in the near future. Please use "plugins" instead in the faust.config.js.',
+      );
+    }
   })();
 }
 
