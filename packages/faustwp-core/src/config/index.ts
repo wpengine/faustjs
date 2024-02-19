@@ -11,6 +11,7 @@ export interface FaustConfig {
   experimentalToolbar?: boolean;
   loginPagePath?: string;
   experimentalPlugins: FaustPlugin[];
+  plugins: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
   basePath?: string;
   /**
@@ -33,9 +34,11 @@ export function setConfig(_config: FaustConfig) {
   return once(() => {
     config = _config;
 
-    const { experimentalPlugins: plugins } = _config;
+    const { experimentalPlugins } = _config;
+    const { plugins } = _config;
+    const allPlugins = [...experimentalPlugins, ...plugins];
 
-    plugins?.forEach((plugin) => {
+    allPlugins?.forEach((plugin) => {
       plugin?.apply?.(hooks);
     });
   })();
