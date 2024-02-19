@@ -34,11 +34,10 @@ export function setConfig(_config: FaustConfig) {
   return once(() => {
     config = _config;
 
-    const { experimentalPlugins } = _config;
-    const { plugins } = _config;
-    const allPlugins = [...experimentalPlugins, ...plugins];
+    const { experimentalPlugins, plugins } = _config;
+    const allSupportedPlugins = [...experimentalPlugins, ...plugins];
 
-    allPlugins?.forEach((plugin) => {
+    allSupportedPlugins?.forEach((plugin) => {
       plugin?.apply?.(hooks);
     });
   })();
