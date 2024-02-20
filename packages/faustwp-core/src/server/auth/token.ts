@@ -40,7 +40,13 @@ export class OAuth {
     let expiresIn: Date | undefined;
 
     if (!isString(token) || token.length === 0) {
-      this.cookies.removeCookie(this.tokenKey);
+      this.cookies.setCookie(this.tokenKey, '', {
+        path: '/',
+        expires: new Date(0),
+        secure: true,
+        httpOnly: true,
+      });
+
       this.cookies.setCookie(this.hasTokenKey, '0', {
         path: '/',
         encoded: false,

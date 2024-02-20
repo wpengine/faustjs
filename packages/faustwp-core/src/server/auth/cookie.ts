@@ -99,22 +99,4 @@ export class Cookies {
 
     this.response?.setHeader('Set-Cookie', newCookies);
   }
-
-  public removeCookie(key: string): void {
-    delete this.cookies[key];
-
-    const existingCookieHeader = this.response?.getHeader('Set-Cookie');
-
-    const newCookies = mergeCookies(
-      existingCookieHeader,
-      cookie.serialize(key, '', {
-        path: '/',
-        expires: new Date(0),
-        secure: true,
-        httpOnly: true,
-      }),
-    );
-
-    this.response?.setHeader('Set-Cookie', newCookies);
-  }
 }
