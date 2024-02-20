@@ -16,7 +16,7 @@ export interface CookieOptions {
  * @param newCookie The new cookie string to be applied.
  * @returns A cookie string or array of cookie strings.
  */
-function mergeCookies(
+export function mergeCookies(
   setCookieHeader: string | string[] | number | undefined,
   newCookie: string,
 ) {
