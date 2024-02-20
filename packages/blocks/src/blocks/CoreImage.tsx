@@ -6,7 +6,7 @@ import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreImageFragmentProps = ContentBlock & {
-  attributes: {
+  attributes?: {
     align?: string;
     alt?: string;
     anchor?: string;
@@ -34,7 +34,7 @@ export type CoreImageFragmentProps = ContentBlock & {
 function LinkWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
   const { attributes, children } = props;
 
-  if (!attributes.href) {
+  if (!attributes?.href) {
     /**
      * Fragment is used to fix the following TS error:
      * 'LinkWrapper' cannot be used as a JSX component.
@@ -66,7 +66,7 @@ function ImgWrapper(props: PropsWithChildren<CoreImageFragmentProps>) {
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
 
-  if (!attributes.src) {
+  if (!attributes?.src) {
     return null;
   }
 

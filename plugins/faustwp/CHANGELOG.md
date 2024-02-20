@@ -1,5 +1,11 @@
 # Faust
 
+## 1.2.1
+
+### Patch Changes
+
+- 05cc940: Fix: swap traditional custom post type URLs in WordPress admin for the headless frontend custom post type URLs.
+
 ## 1.2.0
 
 ### Minor Changes

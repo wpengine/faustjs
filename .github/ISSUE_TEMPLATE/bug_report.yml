@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a bug in Faust
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thank you for taking the time to report a possible bug!
+
+        Please remember, a bug report is _not the place to ask questions_. You can
+        use [Discord](https://discord.gg/J2khkF9XYK) for that, or start a topic in [GitHub
+        Discussions](https://github.com/wpengine/faustjs/discussions).
+  - type: textarea
+    attributes:
+      label: Description
+      description: >-
+        Please write a brief description of the bug, including what you expected and what actually happened.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: >-
+        Please list all the steps needed to reproduce the bug in an *isolated* way (e.g. a clonable GitHub repository, or a Faust.js snippet that works on a clean environment ).
+      placeholder: >-
+        1. Clone the `faustwp-getting-started` example project
+        2. Navigate to the `wp-templates/single.js` Faust template
+        3. Result show X but should be Y
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: >-
+        Add any other context about the problem here, such as screenshots, error logs, etc.
+  - type: input
+    attributes:
+      label: "@faustwp/core Version"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: "@faustwp/cli Version"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: FaustWP Plugin Version
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: WordPress Version
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional environment details
+      description: Additional Faust.js packages and their versions (@faustwp/blocks, @faustwp/experimental-app-router, etc), PHP version, Hosting Platform, etc.
+  - type: checkboxes
+    attributes:
+      label: Please confirm that you have searched existing issues in the repo.
+      description: >-
+        You can do this by searching https://github.com/wpengine/faustjs/issues.
+      options:
+        - label: 'Yes'
+          required: true

@@ -5,10 +5,10 @@ on:
     - "@faustwp/wordpress-plugin@*"
 jobs:
   release_plugin:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
       - name: WordPress Plugin Deploy
         # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
         # to support our monorepo structure.

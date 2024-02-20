@@ -5,6 +5,9 @@ version_gt() {
     test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1";
 }
 
+# Ensure mysql is loaded
+dockerize -wait tcp://${WORDPRESS_DB_HOST}:3306 -timeout 1m
+
 cd /var/www/html/wp-content/plugins/$WP_PLUGIN_FOLDER
 
 # Setup WordPress test core files and database

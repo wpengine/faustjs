@@ -5,7 +5,7 @@ import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreCodeFragmentProps = ContentBlock & {
-  attributes: {
+  attributes?: {
     anchor?: string;
     backgroundColor?: string;
     borderColor?: string;

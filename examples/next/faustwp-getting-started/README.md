@@ -1,3 +1,3 @@
 # faust-getting-started
 
-Welcome to the experimental Faust getting started example.
+Welcome to the Faust getting started example.
