@@ -14,6 +14,7 @@ describe('auth/middleware', () => {
     const res: ServerResponse = {
       setHeader() {},
       writeHead() {},
+      getHeader() {},
       end() {},
     } as any;
 
@@ -36,6 +37,7 @@ describe('auth/middleware', () => {
     const res: ServerResponse = {
       setHeader() {},
       writeHead() {},
+      getHeader() {},
       end() {},
     } as any;
 
@@ -58,6 +60,7 @@ describe('auth/middleware', () => {
     const res: ServerResponse = {
       setHeader() {},
       writeHead() {},
+      getHeader() {},
       end() {},
     } as any;
 
@@ -99,6 +102,7 @@ describe('auth/middleware', () => {
     const res: ServerResponse = {
       setHeader() {},
       writeHead() {},
+      getHeader() {},
       end() {},
     } as any;
 
