@@ -20,7 +20,8 @@
     "jest-environment-jsdom": "29.6.4",
     "rimraf": "5.0.5",
     "ts-jest": "^29.1.1",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "fetch-mock-jest": "^1.5.1"
   },
   "dependencies": {
     "archiver": "^6.0.1",

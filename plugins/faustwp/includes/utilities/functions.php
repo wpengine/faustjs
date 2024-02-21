@@ -43,3 +43,23 @@ function plugin_version() {
 
 	return $plugin['Version'];
 }
+
+/**
+ * Checks if two domain strings represent the same domain.
+ *
+ * @param string $domain1 The first domain string.
+ * @param string $domain2 The second domain string.
+ * @return bool True if the domains match, false otherwise.
+ */
+function domains_match( $domain1, $domain2 ) {
+    // Remove leading "http://" or "https://" if present
+    $first = preg_replace('/^(https?:\/\/)?/', '', $domain1);
+    $second = preg_replace('/^(https?:\/\/)?/', '', $domain2);
+
+    // Extract the domain part (remove path and query parameters)
+    $extractDomain = function ($url) {
+        return explode('/', parse_url($url, PHP_URL_HOST))[0];
+    };
+
+    return $extractDomain($first) === $extractDomain($second);
+}

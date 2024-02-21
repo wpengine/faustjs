@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import 'isomorphic-fetch';
-import fetchMock from 'fetch-mock';
+import fetchMock from 'fetch-mock-jest';
 import { verifyGraphQLEndpoint } from '../../src/healthCheck/verifyGraphQLEndpoint.js';
 import { getGraphqlEndpoint } from '../../src/utils/index.js';
 
