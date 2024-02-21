@@ -5,6 +5,7 @@ import isString from 'lodash/isString.js';
 import once from 'lodash/once.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { hooks, FaustPlugin } from '../wpHooks/index.js';
+import { warnLog } from '../utils/log.js';
 
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
@@ -47,7 +48,7 @@ export function setConfig(_config: FaustConfig) {
 
     if (experimentalPlugins?.length) {
       // log to cli if experimentalPlugins is used since it's being deprecated
-      console.warn(
+      warnLog(
         'Plugin System: The "experimentalPlugins" configuration option will be deprecated in the near future. Please use "plugins" instead in the faust.config.js.',
       );
     }
