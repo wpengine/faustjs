@@ -52,11 +52,11 @@ function plugin_version() {
  * @return bool True if the domains match, false otherwise.
  */
 function domains_match( $domain1, $domain2 ) {
-	// Remove leading "http://" or "https://" if present
+	// Remove leading "http://" or "https://" if present.
 	$first  = preg_replace( '/^(https?:\/\/)?/', '', $domain1 );
 	$second = preg_replace( '/^(https?:\/\/)?/', '', $domain2 );
 
-	// Extract the domain part (remove path and query parameters)
+	// Extract the domain part (remove path and query parameters).
 	$extract_domain = function ( $url ) {
 		return explode( '/', wp_parse_url( $url, PHP_URL_HOST ) )[0];
 	};
