@@ -24,7 +24,7 @@ export async function validateNextWordPressUrl(): Promise<void> {
 
     if (!response.ok) {
       errorLog(
-        'Validation Failed: Ensure your NEXT_PUBLIC_WORDPRESS_URL does not match with Headless URL in the Faust WordPress plugin settings',
+        'Validation Failed: Your NEXT_PUBLIC_WORDPRESS_URL value is misconfigured. It should match your WordPress site URL and not your Faust front-end site URL.',
       );
       process.exit(1);
     }
