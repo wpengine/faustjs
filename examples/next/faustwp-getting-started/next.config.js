@@ -17,6 +17,6 @@ module.exports = withFaust({
     defaultLocale: 'en',
   },
   async headers() {
-    return [{ source: '/(.*)', headers: createSecureHeaders() }];
+    return [{ source: '/:path*', headers: createSecureHeaders() }];
   },
 });
