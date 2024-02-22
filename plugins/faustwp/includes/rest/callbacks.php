@@ -548,29 +548,29 @@ function rest_validate_secret_key_permission_callback( \WP_REST_Request $request
  * @return mixed A \WP_REST_Response, or \WP_Error.
  */
 function handle_rest_validate_public_wordpress_url_callback( \WP_REST_Request $request ) {
-	// Get the frontend URI setting from WordPress
-    $frontendUri = faustwp_get_setting('frontend_uri');
+	// Get the frontend URI setting from WordPress.
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
 
-    // Retrieve the parameters from the request
+	// Retrieve the parameters from the request.
 	$parameters = $request->get_params();
 
-	// Check if the public_wordpress_url parameter is present in the request
-	if (isset($parameters['public_wordpress_url'])) {
-		// Retrieve the value of the public_wordpress_url parameter
-    	$publicWordpressUrl = $parameters['public_wordpress_url'];
+	// Check if the public_wordpress_url parameter is present in the request.
+	if ( isset( $parameters['public_wordpress_url'] ) ) {
+		// Retrieve the value of the public_wordpress_url parameter.
+		$public_wordpress_url = $parameters['public_wordpress_url'];
 
-        // Check if the provided WordPress URL does not match the frontend URI
-        if ( ! domains_match( $publicWordpressUrl, $frontendUri ) ) {
-            // Return 200 OK if the URLs match
-            $response = new \WP_REST_Response('OK', 200);
-        } else {
-            // Return 400 Bad Request if the URLs match
-            $response = new \WP_REST_Response('Bad Request: Provided URL matches the frontend URI setting.', 400);
-        }
-    } else {
-        // Return 400 Bad Request if the public_wordpress_url parameter is missing
-        $response = new \WP_REST_Response('Bad Request: public_wordpress_url parameter is missing.', 400);
-    }
+		// Check if the provided WordPress URL does not match the frontend URI.
+		if ( ! domains_match( $public_wordpress_url, $frontend_uri ) ) {
+			// Return 200 OK if the URLs do not match.
+			$response = new \WP_REST_Response( 'OK', 200 );
+		} else {
+			// Return 400 Bad Request if the URLs match.
+			$response = new \WP_REST_Response( 'Bad Request: Provided URL matches the frontend URI setting.', 400 );
+		}
+	} else {
+		// Return 400 Bad Request if the public_wordpress_url parameter is missing.
+		$response = new \WP_REST_Response( 'Bad Request: public_wordpress_url parameter is missing.', 400 );
+	}
 
-    return $response;
+	return $response;
 }
