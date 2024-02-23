@@ -1,5 +1,5 @@
 import { getWpSecret, getWpUrl } from '../utils/index.js';
-import { errorLog } from '../stdout/index.js';
+import { errorLog, warnLog } from '../stdout/index.js';
 
 /**
  * Validates the NEXT_PUBLIC_WORDPRESS_URL environment variable by sending a POST request to the Faust Plugin API.
@@ -23,10 +23,17 @@ export async function validateNextWordPressUrl(): Promise<void> {
     });
 
     if (!response.ok) {
-      errorLog(
-        'Validation Failed: Your NEXT_PUBLIC_WORDPRESS_URL value is misconfigured. It should match your WordPress site URL and not your Faust front-end site URL.',
-      );
-      process.exit(1);
+      if (response.status === 404) {
+        // Handle the case when the route does not exist
+        warnLog(
+          'Route not found: Please update your FaustWP plugin to the latest version.',
+        );
+      } else {
+        errorLog(
+          'Validation Failed: Your NEXT_PUBLIC_WORDPRESS_URL value is misconfigured. It should match your WordPress site URL and not your Faust front-end site URL.',
+        );
+        process.exit(1);
+      }
     }
   } catch (error) {
     console.log('error', error);

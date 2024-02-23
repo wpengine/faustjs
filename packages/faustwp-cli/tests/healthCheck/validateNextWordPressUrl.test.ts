@@ -39,7 +39,9 @@ describe('healthCheck/validateNextWordPressUrl', () => {
       'https://headless.local/wp-json/faustwp/v1/validate_public_wordpress_url',
       {
         headers,
-	      body: JSON.stringify({ public_wordpress_url: process.env.NEXT_PUBLIC_WORDPRESS_URL }),
+        body: JSON.stringify({
+          public_wordpress_url: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+        }),
         status: 400,
       },
     );
@@ -51,8 +53,51 @@ describe('healthCheck/validateNextWordPressUrl', () => {
       ),
     );
     expect(mockExit).toHaveBeenCalledWith(1);
-    expect(fetchMock).toHaveFetched('https://headless.local/wp-json/faustwp/v1/validate_public_wordpress_url');
+    expect(fetchMock).toHaveFetched(
+      'https://headless.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+    );
 
     consoleLogSpy.mockClear();
+  });
+
+  it('continues silently when the route does not exist', async () => {
+    // @ts-ignore
+    const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
+      if (code && code !== 0) {
+        throw new Error(`Exit code: ${code}`);
+      }
+    });
+    // Mock environment variables
+    process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://mysite.local';
+    process.env.FAUST_SECRET_KEY = 'e9d5963e-bb41-4c94-a3f3-292e8903d5ea';
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-faustwp-secret': process.env.FAUST_SECRET_KEY,
+    };
+
+    fetchMock.postOnce(
+      'http://mysite.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+      {
+        status: 404,
+      },
+    );
+
+    const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+
+    await validateNextWordPressUrl();
+
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'Route not found: Please update your FaustWP plugin to the latest version.',
+      ),
+    );
+
+    expect(mockExit).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveFetched(
+      'http://mysite.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+    );
+
+    consoleLogSpy.mockRestore();
   });
 });
