@@ -52,7 +52,7 @@ function plugin_version() {
  * @return bool True if the domains match, false otherwise.
  */
 function domains_match( $domain1, $domain2 ) {
-	// Extract the domain part
+	// Extract the domain part.
 	$extract_domain = function ( $url ) {
 		$parsed_url = wp_parse_url( $url, PHP_URL_HOST );
 		return $parsed_url ? $parsed_url : null;
@@ -61,9 +61,9 @@ function domains_match( $domain1, $domain2 ) {
 	$domain1 = $extract_domain( $domain1 );
 	$domain2 = $extract_domain( $domain2 );
 
-	// Remove "www" prefix from domain if present
+	// Remove "www" prefix from domain if present.
 	$domain1 = preg_replace( '/^www\./i', '', $domain1 );
 	$domain2 = preg_replace( '/^www\./i', '', $domain2 );
 
-	return $domain1 !== null && $domain2 !== null && $domain1 === $domain2;
+	return null !== $domain1 && null !== $domain2 && $domain1 === $domain2;
 }
