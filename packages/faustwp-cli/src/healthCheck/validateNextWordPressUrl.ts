@@ -30,7 +30,7 @@ export async function validateNextWordPressUrl(): Promise<void> {
         );
       } else {
         errorLog(
-          'Validation Failed: Your NEXT_PUBLIC_WORDPRESS_URL value is misconfigured. It should match your WordPress site URL and not your Faust front-end site URL.',
+          'Validation Failed: Your Faust front-end site URL value is misconfigured. It should NOT match the `NEXT_PUBLIC_WORDPRESS_URL.`',
         );
         process.exit(1);
       }

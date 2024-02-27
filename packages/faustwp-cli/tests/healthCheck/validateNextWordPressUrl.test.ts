@@ -49,7 +49,7 @@ describe('healthCheck/validateNextWordPressUrl', () => {
     await validateNextWordPressUrl();
     expect(consoleLogSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        'Validation Failed: Your NEXT_PUBLIC_WORDPRESS_URL value is misconfigured. It should match your WordPress site URL and not your Faust front-end site URL.',
+        'Validation Failed: Your Faust front-end site URL value is misconfigured. It should NOT match the `NEXT_PUBLIC_WORDPRESS_URL.',
       ),
     );
     expect(mockExit).toHaveBeenCalledWith(1);
