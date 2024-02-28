@@ -14,7 +14,7 @@ jobs:
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
     strategy:
       matrix:
-        node: ['18, '20]
+        node: ['18', '20']
     defaults:
       run:
         working-directory: ./
