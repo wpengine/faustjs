@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.2.2 =
+
+### Patch Changes
+
+- 47f6bd0: Faust now warns you if the secret key in your environment is invalid or incorrect.
+
 = 1.2.1 =
 
 ### Patch Changes
@@ -72,13 +78,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 - 205fb09: Improved plugin's process for handling blockset file uploads by leveraging WordPress' native [unzip_file](https://developer.wordpress.org/reference/functions/unzip_file/) function.
 - 41a6d9c: Fixed issue where term URIs were rewritten from relative to absolute during GraphQL requests when they should not have been. This was causing nodeByUri queries for terms to fail.
 - e725bda: Adds phpstan to CI/CD workflow. Runs as part of the lint step.
-
-= 1.1.2 =
-
-### Patch Changes
-
-- 78a061a: Fixed a bug that caused links to files in wp-content to be rewritten to the Faust Front-end site URL when they should not have been.
-- 2559958: Bug Fix: Fixed missing call to autosave when using Post/Page previews.
-- 75f5c80: Fixed a bug where links were rewritten to the Faust Front-end Site URL when using the post editor, resulting in those rewritten links being saved to the post content and guid fields when they shouldn't be. These links are now saved with the URL pointing to the WP site, as they should be. They are still rewritten at runtime to link to the Front-end Site URL when appropriate.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

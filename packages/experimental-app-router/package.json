@@ -1,7 +1,7 @@
 {
   "name": "@faustwp/experimental-app-router",
   "type": "module",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Experimental: A Faust package to support Next.js' App Router",
   "exports": {
     ".": "./dist/index.js",
@@ -58,8 +58,8 @@
   "devDependencies": {
     "@apollo/client": "^3.8.0",
     "@apollo/experimental-nextjs-app-support": "^0.8.0",
-    "@faustwp/cli": "^2.0.0",
-    "@faustwp/core": "^2.0.0",
+    "@faustwp/cli": "^3.0.0",
+    "@faustwp/core": "^3.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@types/node": "^20.4.6",
     "concurrently": "^8.2.0",

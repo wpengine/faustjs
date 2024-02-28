@@ -1,5 +1,11 @@
 # @faustwp/experimental-app-router
 
+## 0.3.0
+
+### Minor Changes
+
+- 4cba024: Changed the `sameSite` property on the refresh token cookie from `strict` to `lax` for requests originating from WordPress.
+
 ## 0.2.2
 
 ### Patch Changes

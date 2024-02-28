@@ -1,5 +1,15 @@
 # @faustwp/core
 
+## 3.0.0
+
+### Major Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
+### Minor Changes
+
+- 0b0a88e: The Faust.js plugin system is no longer experimental. We have maintained backward compatibility as we move towards deprecating `experimentalPlugins` in favor of `plugins` in the Faust config file `faust.config.js`. We recommend moving over to using `plugins` instead of `experimentalPlugins` as soon as possible as a future version will remove the experimental config option.
+
 ## 2.1.2
 
 ### Patch Changes
