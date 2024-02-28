@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 4.0.0
+
+### Major Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
 ## 3.0.0
 
 ### Major Changes

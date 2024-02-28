@@ -1,5 +1,19 @@
 # @faustwp/cli
 
+## 3.0.0
+
+### Major Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
+### Minor Changes
+
+- 572b253: Added: Detect if the `NEXT_PUBLIC_WORDPRESS_URL` is a `wpengine.com` TLD and if so recommend a switch to `wpenginepowered.com`
+
+### Patch Changes
+
+- 47f6bd0: Faust now warns you if the secret key in your environment is invalid or incorrect.
+
 ## 2.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # Faust
 
+## 1.2.2
+
+### Patch Changes
+
+- 47f6bd0: Faust now warns you if the secret key in your environment is invalid or incorrect.
+
 ## 1.2.1
 
 ### Patch Changes
