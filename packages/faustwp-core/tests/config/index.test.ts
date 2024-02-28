@@ -23,10 +23,7 @@ describe('config', () => {
       // @ts-ignore
       templates: [],
       // @ts-ignore
-      experimentalPlugins: [
-        new HelloWorldTestPlugin(),
-        new HelloWorldTestPlugin(),
-      ],
+      plugins: [new HelloWorldTestPlugin(), new HelloWorldTestPlugin()],
     });
 
     expect(consoleLogSpy).toBeCalledTimes(2);
@@ -37,7 +34,7 @@ describe('config', () => {
       setConfig({
         // @ts-ignore
         templates: [],
-        experimentalPlugins: [
+        plugins: [
           new HelloWorldTestPlugin(),
           new InvalidPlugin() as FaustPlugin,
         ],
