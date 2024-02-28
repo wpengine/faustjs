@@ -23,9 +23,12 @@ export class OAuth {
 
   private tokenKey: string;
 
+  private hasTokenKey: string;
+
   constructor(cookies: Cookies) {
     this.cookies = cookies;
     this.tokenKey = `${getWpUrl()}-rt`;
+    this.hasTokenKey = `${getWpUrl()}-has-rt`;
   }
 
   public getRefreshToken(): string | undefined {
@@ -33,19 +36,40 @@ export class OAuth {
   }
 
   public setRefreshToken(token?: string, expires?: number): void {
-    if (!isString(token) || token.length === 0) {
-      this.cookies.removeCookie(this.tokenKey);
-    }
-
     let maxAge: number | undefined = 2592000;
     let expiresIn: Date | undefined;
+
+    if (!isString(token) || token.length === 0) {
+      this.cookies.setCookie(this.tokenKey, '', {
+        path: '/',
+        expires: new Date(0),
+        secure: true,
+        httpOnly: true,
+      });
+
+      this.cookies.setCookie(this.hasTokenKey, '0', {
+        path: '/',
+        encoded: false,
+        maxAge,
+        expires: expiresIn,
+      });
+
+      return;
+    }
 
     if (isNumber(expires)) {
       expiresIn = new Date(expires * 1000);
       maxAge = undefined;
     }
 
-    this.cookies.setCookie(this.tokenKey, token as string, {
+    this.cookies.setCookie(this.hasTokenKey, '1', {
+      path: '/',
+      encoded: false,
+      maxAge,
+      expires: expiresIn,
+    });
+
+    this.cookies.setCookie(this.tokenKey, token, {
       expires: expiresIn,
       maxAge,
       path: '/',
