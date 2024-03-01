@@ -25,11 +25,20 @@ export function useLogout() {
       return;
     }
 
+    const isPreview = window.location.search.includes('preview=true');
+
     if (redirectUrl) {
       window.location.assign(redirectUrl);
-    } else {
-      window.location.reload();
     }
+
+    if (isPreview) {
+      const publicUrlPath = process.env.NEXT_PUBLIC_URL;
+      if (publicUrlPath) {
+        window.location.assign(publicUrlPath);
+      }
+    }
+
+    window.location.reload();
 
     setLoading(false);
   }
