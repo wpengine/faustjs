@@ -565,11 +565,11 @@ function handle_rest_validate_public_wordpress_url_callback( \WP_REST_Request $r
 			$response = new \WP_REST_Response( 'OK', 200 );
 		} else {
 			// Return 400 Bad Request if the URLs match.
-			$response = new \WP_REST_Response( 'Bad Request: Provided URL matches the frontend URI setting.', 400 );
+			$response = new \WP_REST_Response( 'Bad Request', 400 );
 		}
 	} else {
 		// Return 400 Bad Request if the public_wordpress_url parameter is missing.
-		$response = new \WP_REST_Response( 'Bad Request: public_wordpress_url parameter is missing.', 400 );
+		$response = new \WP_REST_Response( 'Bad Request', 400 );
 	}
 
 	return $response;
