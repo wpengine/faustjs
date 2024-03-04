@@ -25,7 +25,7 @@ export function useLogout() {
       return;
     }
 
-    const isPreview = window.location.search.includes('preview=true');
+    const isPreview = window?.location?.search?.includes('preview=true');
 
     if (redirectUrl) {
       window.location.assign(redirectUrl);
