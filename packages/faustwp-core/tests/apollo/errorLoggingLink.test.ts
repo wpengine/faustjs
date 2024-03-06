@@ -46,7 +46,7 @@ describe('ErrorLoggingLink', () => {
         done();
       },
       error: () => {
-        // We shouldn't reach here for an error
+        // We shouldn't reach here
         expect(true).toBe(false);
         done();
       },
@@ -71,7 +71,7 @@ describe('ErrorLoggingLink', () => {
 
     link.request(mockOperation as any, mockNextLink as any).subscribe({
       next: () => {
-        // We shouldn't reach here for an error
+        // We shouldn't reach here
         expect(true).toBe(false);
         done();
       },
@@ -101,7 +101,7 @@ describe('ErrorLoggingLink', () => {
 
     link.request(mockOperation as any, mockNextLink as any).subscribe({
       next: () => {
-        // We shouldn't reach here for an error
+        // We shouldn't reach here
         expect(true).toBe(false);
         done();
       },
