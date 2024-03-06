@@ -2,9 +2,6 @@ import { ApolloError } from '@apollo/client/core';
 import { Observable } from 'zen-observable-ts';
 import { ErrorLoggingLink } from '../../src/apollo/errorLoggingLink';
 
-// Mock console.error to prevent actual logging during tests
-jest.spyOn(console, 'error').mockImplementation(() => {});
-
 describe('ErrorLoggingLink', () => {
   let link: ErrorLoggingLink;
   let mockNextLink: jest.Mock;
