@@ -64,10 +64,9 @@ export const validateFaustEnvVars = async () => {
         );
         process.exit(1);
       }
+      await validateNextWordPressUrl();
     } catch (error) {
       console.log('error', error);
     }
   }
-
-  await validateNextWordPressUrl();
 };
