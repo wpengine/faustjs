@@ -15,7 +15,7 @@ describe('ErrorLoggingLink', () => {
     jest.clearAllMocks();
   });
 
-  it('should log GraphQL errors', (done) => {
+  it('logs GraphQL errors', (done) => {
     const mockErrors = [
       new ApolloError({ errorMessage: 'Test GraphQL error' }),
     ];
