@@ -3,7 +3,7 @@ import * as tokenHandler from '../../../src/server/routeHandler/tokenHandler';
 jest.mock('next/headers.js');
 import { cookies } from 'next/headers.js';
 import fetchMock from 'fetch-mock';
-import { NextRequest } from 'next/server';
+import * as server from 'next/server';
 
 // // https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-893763840
 const nextHeaders = { cookies };
@@ -27,7 +27,7 @@ describe('tokenHandler', () => {
   it('throws a 500 error if the secret key is not set', async () => {
     const req = new Request('http://localhost:3000/api/faust/token');
 
-    const response = await tokenHandler.tokenHandler(req);
+    const response = await tokenHandler.tokenHandler(req,);
 
     expect(response.status).toBe(500);
     expect(await response.json()).toStrictEqual({
@@ -49,7 +49,7 @@ describe('tokenHandler', () => {
 
     const req = new Request('http://localhost:3000/api/faust/token');
 
-    const response = await tokenHandler.tokenHandler(req);
+    const response = await tokenHandler.tokenHandler(req, server);
 
     expect(response.status).toBe(401);
     expect(await response.json()).toStrictEqual({
@@ -74,11 +74,11 @@ describe('tokenHandler', () => {
       status: 401,
     });
 
-    const req = new NextRequest(
+    const req = new server.NextRequest(
       new Request('http://localhost:3000/api/faust/token'),
     );
 
-    const response = await tokenHandler.tokenHandler(req);
+    const response = await tokenHandler.tokenHandler(req, server);
 
     expect(response.status).toBe(401);
     expect(await response.json()).toStrictEqual({ error: 'Unauthorized' });
@@ -122,11 +122,11 @@ describe('tokenHandler', () => {
       },
     );
 
-    const req = new NextRequest(
+    const req = new server.NextRequest(
       new Request('http://localhost:3000/api/faust/token?code=my-code'),
     );
 
-    const response = await tokenHandler.tokenHandler(req);
+    const response = await tokenHandler.tokenHandler(req, server);
 
     expect(response.status).toBe(200);
     expect(await response.json()).toStrictEqual(validResponse);
