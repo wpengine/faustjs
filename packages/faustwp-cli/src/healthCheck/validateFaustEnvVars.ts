@@ -1,5 +1,6 @@
 import { getWpSecret, getWpUrl } from '../utils/index.js';
 import { errorLog, infoLog, warnLog } from '../stdout/index.js';
+import { validateNextWordPressUrl } from './validateNextWordPressUrl.js';
 
 export function isWPEngineComSubdomain(url: string) {
   const regex = /\b\w+\.wpengine\.com\b/;
@@ -63,6 +64,7 @@ export const validateFaustEnvVars = async () => {
         );
         process.exit(1);
       }
+      await validateNextWordPressUrl();
     } catch (error) {
       console.log('error', error);
     }
