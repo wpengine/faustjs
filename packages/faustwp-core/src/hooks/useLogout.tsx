@@ -34,7 +34,7 @@ export function useLogout() {
       if (publicUrlPath) {
         window.location.assign(publicUrlPath);
       } else {
-        window.location.reload();
+        window.location.assign('/');
       }
     } else {
       window.location.reload();
