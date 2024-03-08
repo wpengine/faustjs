@@ -1,5 +1,5 @@
 ---
-'@faustwp/experimental-app-router': minor
+'@faustwp/experimental-app-router': patch
 ---
 
-handle trailing slash into routehandler to retieve wp token
+Fixed issue where Faust's router handler failed to retrieve a token when trailingSlash is set to true in next.config.js.
