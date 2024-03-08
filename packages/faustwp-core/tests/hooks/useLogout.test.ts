@@ -85,7 +85,7 @@ describe('useLogout hook', () => {
 
     global.window.location.search = 'preview=true';
 
-    process.env.NEXT_PUBLIC_URL = null;
+    process.env.NEXT_PUBLIC_URL = '';
 
     const { result } = renderHook(() => useLogout());
 
