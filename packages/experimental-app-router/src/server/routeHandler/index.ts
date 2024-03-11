@@ -5,6 +5,7 @@ export async function GetFn(req: Request) {
   const { pathname } = new URL(req.url);
 
   switch (pathname) {
+    case '/api/faust/token/':
     case '/api/faust/token': {
       return tokenHandler(req);
     }
