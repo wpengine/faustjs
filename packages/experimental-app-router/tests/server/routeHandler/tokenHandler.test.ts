@@ -27,7 +27,7 @@ describe('tokenHandler', () => {
   it('throws a 500 error if the secret key is not set', async () => {
     const req = new Request('http://localhost:3000/api/faust/token');
 
-    const response = await tokenHandler.tokenHandler(req,);
+    const response = await tokenHandler.tokenHandler(req, server);
 
     expect(response.status).toBe(500);
     expect(await response.json()).toStrictEqual({
