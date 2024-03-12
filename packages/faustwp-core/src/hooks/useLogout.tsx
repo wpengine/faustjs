@@ -25,8 +25,12 @@ export function useLogout() {
       return;
     }
 
+    const isPreview = window?.location?.search?.includes('preview=true');
+
     if (redirectUrl) {
       window.location.assign(redirectUrl);
+    } else if (isPreview) {
+      window.location.assign('/');
     } else {
       window.location.reload();
     }

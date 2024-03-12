@@ -60,6 +60,22 @@ describe('useLogout hook', () => {
     fetchMock.restore();
   });
 
+  it('calls window.location.assign to / if there is a preview url and no redirectUrl', async () => {
+    fetchMock.post(`/api/faust/auth/logout`, {
+      status: 205,
+    });
+
+    global.window.location.search = 'preview=true';
+
+    const { result } = renderHook(() => useLogout());
+
+    await act(() => result.current.logout());
+
+    expect(window.location.assign).toBeCalledWith('/');
+
+    fetchMock.restore();
+  });
+
   it('calls window.location.assign if there is a redirect url', async () => {
     fetchMock.post(`/api/faust/auth/logout`, {
       status: 205,
