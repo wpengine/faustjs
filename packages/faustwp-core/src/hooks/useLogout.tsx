@@ -30,12 +30,7 @@ export function useLogout() {
     if (redirectUrl) {
       window.location.assign(redirectUrl);
     } else if (isPreview) {
-      const publicUrlPath = process.env.NEXT_PUBLIC_URL;
-      if (publicUrlPath) {
-        window.location.assign(publicUrlPath);
-      } else {
-        window.location.assign('/');
-      }
+      window.location.assign('/');
     } else {
       window.location.reload();
     }

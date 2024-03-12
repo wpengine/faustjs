@@ -60,32 +60,12 @@ describe('useLogout hook', () => {
     fetchMock.restore();
   });
 
-  it('calls window.location.assign if there is a preview url and public path', async () => {
+  it('calls window.location.assign to / if there is a preview url and no redirectUrl', async () => {
     fetchMock.post(`/api/faust/auth/logout`, {
       status: 205,
     });
 
     global.window.location.search = 'preview=true';
-
-    process.env.NEXT_PUBLIC_URL = 'test';
-
-    const { result } = renderHook(() => useLogout());
-
-    await act(() => result.current.logout());
-
-    expect(window.location.assign).toBeCalledWith('test');
-
-    fetchMock.restore();
-  });
-
-  it('calls window.location.assign to / if there is a preview url and not a public path', async () => {
-    fetchMock.post(`/api/faust/auth/logout`, {
-      status: 205,
-    });
-
-    global.window.location.search = 'preview=true';
-
-    process.env.NEXT_PUBLIC_URL = '';
 
     const { result } = renderHook(() => useLogout());
 
