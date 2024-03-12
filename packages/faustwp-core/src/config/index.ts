@@ -11,8 +11,11 @@ export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
   experimentalToolbar?: boolean;
   loginPagePath?: string;
-  experimentalPlugins: FaustPlugin[];
-  plugins: FaustPlugin[];
+  /**
+   * @deprecated Plugins are no longer experimental, use "plugins" instead.
+   */
+  experimentalPlugins?: FaustPlugin[];
+  plugins?: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
   basePath?: string;
   /**
