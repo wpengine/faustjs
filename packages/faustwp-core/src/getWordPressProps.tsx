@@ -1,3 +1,5 @@
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+
 // eslint-disable-next-line import/extensions
 import { print } from '@apollo/client/utilities';
 import type { DocumentNode } from 'graphql';
@@ -8,9 +10,9 @@ import { FaustTemplateProps } from './components/WordPressTemplate.js';
 import { getConfig } from './config/index.js';
 import { getPossibleTemplates, getTemplate } from './getTemplate.js';
 import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
+import { FaustQueries } from './store/FaustContext.js';
 import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
-import { FaustQueries } from './store/FaustContext.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
@@ -57,6 +59,7 @@ export interface FaustTemplate<Data>
 
 export interface GetWordPressPropsConfig<Props = Record<string, unknown>> {
   ctx: GetServerSidePropsContext | GetStaticPropsContext;
+  client?: ApolloClient<NormalizedCacheObject>;
   props?: Props;
   revalidate?: number | boolean;
   /**
@@ -86,7 +89,7 @@ export async function getWordPressProps(
 
   const { ctx, props, revalidate, extra } = options;
 
-  const client = getApolloClient();
+  const client = options.client ?? getApolloClient();
 
   let resolvedUrl = null;
   if (!isSSR(ctx)) {
