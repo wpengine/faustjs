@@ -58,26 +58,28 @@ export function AuthenticatedAccount() {
     <>
       <ToolbarItem aria-haspopup="true">
         Howdy, <span className="display-name">{data?.viewer?.name}</span>
-        <img
-          alt=""
-          src={data?.viewer?.avatar26.url}
-          srcSet={`${data?.viewer?.avatar52.url as string} 2x`}
-          className="avatar avatar-26 photo"
-          height="26"
-          width="26"
-          loading="lazy"
-          decoding="async"
-        />
+        {data?.viewer?.avatar64?.url ? (
+          <img
+            alt=""
+            src={data?.viewer?.avatar26?.url}
+            srcSet={`${data?.viewer?.avatar52?.url as string} 2x`}
+            className="avatar avatar-26 photo"
+            height="26"
+            width="26"
+            loading="lazy"
+            decoding="async"
+          />
+        ) : null}
       </ToolbarItem>
       <ToolbarSubmenuWrapper>
         <ToolbarSubmenu id="wp-admin-bar-user-actions">
           <li id="wp-admin-bar-user-info">
             <ToolbarItem tabIndex={-1} href={getAdminUrl('profile.php')}>
-              {data?.viewer?.avatar64.url ? (
+              {data?.viewer?.avatar64?.url ? (
                 <img
                   alt=""
-                  src={data?.viewer?.avatar64.url}
-                  srcSet={`${data?.viewer?.avatar128.url as string} 2x`}
+                  src={data?.viewer?.avatar64?.url}
+                  srcSet={`${data?.viewer?.avatar128?.url as string} 2x`}
                   className="avatar avatar-64 photo"
                   height="64"
                   width="64"
