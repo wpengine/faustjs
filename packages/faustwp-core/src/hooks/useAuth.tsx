@@ -40,7 +40,7 @@ type ViewerType = {
   url?: string;
   userId?: number;
   avatar?: {
-    url: string;
+    url?: string;
   };
 };
 
@@ -177,8 +177,6 @@ export function useAuth(_config?: UseAuthConfig) {
               url
               userId
               avatar {
-                forceDefault
-                isRestricted
                 url
               }
             }
