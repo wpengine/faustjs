@@ -2,4 +2,4 @@
 "@faustwp/core": patch
 ---
 
-Toolbar should respect show avatars setting in wp
+Faust Toolbar will now respect the Show Avatars setting in WordPress.
