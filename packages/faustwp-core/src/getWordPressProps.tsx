@@ -52,6 +52,12 @@ export type WordPressTemplate = React.FC & {
 export interface FaustTemplate<Data>
   extends React.FC<FaustTemplateProps<Data>> {
   query?: WordPressTemplate['query'];
+  queries?: {
+    query: DocumentNode;
+    variables?: (...args: QueryVariablesArgs) => {
+      [key: string]: any;
+    };
+  }[];
   variables?: WordPressTemplate['variables'];
 }
 
