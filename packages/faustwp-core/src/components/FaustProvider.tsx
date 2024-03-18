@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  NormalizedCacheObject,
+} from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { useRouter } from 'next/router';
 // eslint-disable-next-line import/extensions
@@ -15,11 +19,12 @@ export type FaustPageProps = AppProps['pageProps'] & FaustProps;
 export function FaustProvider(props: {
   children: React.ReactNode;
   pageProps: FaustPageProps;
+  client?: ApolloClient<NormalizedCacheObject>;
 }) {
-  const { pageProps, children } = props;
+  const { pageProps, children, client } = props;
   const { experimentalToolbar } = getConfig();
   const router = useRouter();
-  const apolloClient = useApollo(pageProps);
+  const apolloClient = useApollo(pageProps, client);
 
   const setQueries = (newQueries: FaustQueries) => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define

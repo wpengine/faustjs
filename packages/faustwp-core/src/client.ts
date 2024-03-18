@@ -111,9 +111,12 @@ export function createApolloClient(authenticated = false) {
   return new ApolloClient(apolloClientOptions);
 }
 
-export function getApolloClient(initialState = null) {
+export function getApolloClient(
+  initialState = null,
+  client?: ApolloClient<NormalizedCacheObject>,
+) {
   // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
-  const _apolloClient = apolloClient ?? createApolloClient();
+  const _apolloClient = client ?? apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -135,8 +138,11 @@ export function getApolloClient(initialState = null) {
   }
   // For SSG and SSR always create a new Apollo Client
   if (typeof window === 'undefined') return _apolloClient;
-  // Create the Apollo Client once in the client
-  if (!apolloClient) apolloClient = _apolloClient;
+
+  if (!client) {
+    // Create the Apollo Client once in the client
+    if (!apolloClient) apolloClient = _apolloClient;
+  }
 
   return _apolloClient;
 }
@@ -170,9 +176,10 @@ export function addApolloState(
 
 export function useApollo(
   pageProps: AppProps<{ [key: string]: any }>['pageProps'],
+  client?: ApolloClient<NormalizedCacheObject>,
 ) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const store = useMemo(() => getApolloClient(state), [state]);
+  const store = useMemo(() => getApolloClient(state, client), [state, client]);
   return store;
 }
