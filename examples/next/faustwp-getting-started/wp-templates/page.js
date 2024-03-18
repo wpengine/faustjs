@@ -12,6 +12,7 @@ import {
   FeaturedImage,
   SEO,
 } from '../components';
+import { FaustProvider } from '@faustwp/core';
 
 export default function Component(props) {
   // Loading state for previews
@@ -26,7 +27,7 @@ export default function Component(props) {
   const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
 
   return (
-    <>
+    <FaustProvider pageProps={props}>
       <SEO
         title={siteTitle}
         description={siteDescription}
@@ -46,7 +47,7 @@ export default function Component(props) {
         </>
       </Main>
       <Footer title={siteTitle} menuItems={footerMenu} />
-    </>
+    </FaustProvider>
   );
 }
 

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
-import { useFaustQuery } from '@faustwp/core';
+import { FaustProvider, useFaustQuery } from '@faustwp/core';
+import { getResourcesClient } from '../clients/resources/client';
 import {
   Container,
   ContentWrapper,
@@ -54,7 +55,17 @@ const GET_POST_QUERY = gql`
   }
 `;
 
-export default function Component(props) {
+export default function Wrapper(props) {
+  const client = getResourcesClient();
+
+  return (
+    <FaustProvider pageProps={props} client={client}>
+      <Component props={props} />
+    </FaustProvider>
+  );
+}
+
+export function Component(props) {
   // Loading state for previews
   if (props.loading) {
     return <>Loading...</>;
@@ -70,7 +81,7 @@ export default function Component(props) {
   const { title, content, featuredImage, date, author } = post ?? {};
 
   return (
-    <>
+    <FaustProvider pageProps={props}>
       <SEO
         title={siteTitle}
         description={siteDescription}
@@ -95,11 +106,11 @@ export default function Component(props) {
         </>
       </Main>
       <Footer title={siteTitle} menuItems={footerMenu} />
-    </>
+    </FaustProvider>
   );
 }
 
-Component.queries = [
+Wrapper.queries = [
   {
     query: GET_LAYOUT_QUERY,
     variables: (seedNode, ctx) => ({
