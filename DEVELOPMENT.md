@@ -149,16 +149,6 @@ FAUST_SECRET_KEY=00000000-0000-4000-8000-000000000001
 - [WPBrowser](https://wpbrowser.wptestkit.dev/)
   - WordPress framework wrapping Codeception for browser testing WordPress.
 
-## Documentation (Old Faustjs docs)
-
-The old documentation site uses [Docusaurus](https://docusaurus.io/). Content lives primarily in MDX files under `internal/legacy.faustjs.org/docs`. The following commands will get you up and running with a local copy of the docs.
-
-```sh
-npm run docs-legacy:install # Install docs dependencies
-npm run docs-legacy:build   # Build the docs site
-npm run docs-legacy         # Serve the site on http://localhost:3000
-```
-
 ## Git Workflows
 
 We have three notable branches:
