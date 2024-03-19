@@ -206,3 +206,29 @@ Once deployed, the updated packages and plugin will be visible here:
 - https://www.npmjs.com/package/@faustwp/block-editor-utils
 - https://www.npmjs.com/package/@faustwp/blocks
 - https://plugins.trac.wordpress.org/browser/faustwp/tags
+
+
+### Working with the Monorepo
+This section offers guidance for developers working within the monorepo environment, which utilizes npm for package management.
+
+#### Navigation:
+
+* Use your terminal or IDE to navigate the file structure.
+* To locate a specific project, navigate to its directory within the packages folder. For example, `cd packages/faustwp-core` would take you to the `faustwp-core` project directory.
+
+#### Building and Deploying:
+
+* We use npm for managing dependencies and running build scripts.
+* Individual projects often have their own package.json file with project-specific scripts for building and deploying. You can run these scripts using commands like `npm run build` or `npm run test` within the project directory (e.g., `packages/faustwp-core`).
+* Refer to the project's README file or internal documentation for specific build and deploy instructions.
+For deploying the entire monorepo, there might be a top-level build script which you can invoke with `npm run build`.
+
+#### Additional Considerations:
+
+Use the `--workspaces` or `-w` flag to run a specific script command of a specified workspace. For example:
+
+```bash
+$ npm run build -w examples/next/faustwp-getting-started
+```
+It runs the `build` npm script for the `faustwp-getting-started` example project.
+
