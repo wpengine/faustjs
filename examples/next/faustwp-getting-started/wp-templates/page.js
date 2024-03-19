@@ -1,18 +1,17 @@
 import { gql } from '@apollo/client';
-import * as MENUS from '../constants/menus';
-import { BlogInfoFragment } from '../fragments/GeneralSettings';
 import {
-  Header,
-  Footer,
-  Main,
   Container,
   ContentWrapper,
   EntryHeader,
-  NavigationMenu,
   FeaturedImage,
+  Footer,
+  Header,
+  Main,
+  NavigationMenu,
   SEO,
 } from '../components';
-import { FaustProvider } from '@faustwp/core';
+import * as MENUS from '../constants/menus';
+import { BlogInfoFragment } from '../fragments/GeneralSettings';
 
 export default function Component(props) {
   // Loading state for previews
@@ -27,7 +26,7 @@ export default function Component(props) {
   const { title, content, featuredImage } = props?.data?.page ?? { title: '' };
 
   return (
-    <FaustProvider pageProps={props}>
+    <>
       <SEO
         title={siteTitle}
         description={siteDescription}
@@ -47,7 +46,7 @@ export default function Component(props) {
         </>
       </Main>
       <Footer title={siteTitle} menuItems={footerMenu} />
-    </FaustProvider>
+    </>
   );
 }
 
