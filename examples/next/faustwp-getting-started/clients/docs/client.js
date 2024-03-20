@@ -3,13 +3,13 @@ import possibleTypes from './possibleTypes.json';
 
 let _client = undefined;
 
-export function getResourcesClient() {
+export function getDocsClient() {
   if (_client) {
     return _client;
   }
 
   const newClient = new ApolloClient({
-    uri: 'https://blakewilson77.wpengine.com/graphql',
+    uri: 'http://headless-docs.local/graphql',
     cache: new InMemoryCache({
       possibleTypes,
       typePolicies: {
@@ -21,7 +21,7 @@ export function getResourcesClient() {
         },
       },
     }),
-    name: 'resources-client',
+    name: 'docs-client',
     // defaultOptions: {
     //   watchQuery: {
     //     fetchPolicy: 'no-cache',
