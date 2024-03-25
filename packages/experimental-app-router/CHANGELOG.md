@@ -1,5 +1,11 @@
 # @faustwp/experimental-app-router
 
+## 0.3.1
+
+### Patch Changes
+
+- aee31a5: Fixed issue where Faust's route handler failed to retrieve a token when trailingSlash is set to true in next.config.js.
+
 ## 0.3.0
 
 ### Minor Changes

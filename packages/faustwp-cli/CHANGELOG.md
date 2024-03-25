@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.0.1
+
+### Patch Changes
+
+- 4724719: Faust now errors if the NEXT_PUBLIC_WORDPRESS_URL matches the Headless URL in Faust Plugin settings.
+
 ## 3.0.0
 
 ### Major Changes
