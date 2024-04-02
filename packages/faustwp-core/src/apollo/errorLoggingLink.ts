@@ -3,9 +3,9 @@ import {
   FetchResult,
   NextLink,
   Operation,
+  Observable,
   ServerError,
 } from '@apollo/client';
-import { Observable } from 'zen-observable-ts';
 import { errorLog } from '../utils/log.js';
 
 /**
