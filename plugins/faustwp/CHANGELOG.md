@@ -1,5 +1,11 @@
 # Faust
 
+## 1.2.3
+
+### Patch Changes
+
+- 4724719: Faust now errors if the NEXT_PUBLIC_WORDPRESS_URL matches the Headless URL in Faust Plugin settings.
+
 ## 1.2.2
 
 ### Patch Changes
