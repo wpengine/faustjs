@@ -1,5 +1,15 @@
 # @faustwp/core
 
+## 3.0.1
+
+### Patch Changes
+
+- a54ce69: Fixed: FaustConfig no longer requires `plugins` or `experimentalPlugins` properties
+- 50c30cb: Fixed issue where on a preview page the user could be stuck in a logout/login loop.
+- 16b2384: Added `queries` property to FaustTemplate interface. Fixes an error when using multiple queries with TypeScript.
+- 8e1b5db: Faust Toolbar will now respect the Show Avatars setting in WordPress. Requires WPGraphQL version 1.22.1 or higher.
+- 9a43d50: Implemented ErrorLoggingLink class to capture GraphQL errors and server errors, providing enhanced error handling and logging capabilities.
+
 ## 3.0.0
 
 ### Major Changes
