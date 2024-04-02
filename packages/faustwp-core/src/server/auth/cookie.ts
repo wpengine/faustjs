@@ -9,38 +9,6 @@ export interface CookieOptions {
   isJson?: boolean;
 }
 
-/**
- * Merge cookies from current Set-Cookie header with a new cookie string.
- *
- * @param setCookieHeader Current Set-Cookie header if exists.
- * @param newCookie The new cookie string to be applied.
- * @returns A cookie string or array of cookie strings.
- */
-export function mergeCookies(
-  setCookieHeader: string | string[] | number | undefined,
-  newCookie: string,
-) {
-  // If there is no setCookieHeader, return the newCookie early.
-  if (!setCookieHeader) {
-    return newCookie;
-  }
-
-  /**
-   * If there is already a Set-Cookie header, create an array and merge
-   * the existing ones with the new cookie.
-   */
-  let newCookies: string[] = [];
-  if (Array.isArray(setCookieHeader)) {
-    newCookies = [...setCookieHeader];
-  } else {
-    newCookies = [setCookieHeader as string];
-  }
-
-  newCookies = [...newCookies, newCookie];
-
-  return newCookies;
-}
-
 export class Cookies {
   private request: IncomingMessage;
 
@@ -90,13 +58,20 @@ export class Cookies {
 
     this.cookies[key] = cookieValue;
 
-    const existingCookieHeader = this.response?.getHeader('Set-Cookie');
-
-    const newCookies = mergeCookies(
-      existingCookieHeader,
+    this.response?.setHeader(
+      'Set-Cookie',
       cookie.serialize(key, cookieValue, serializeOptions),
     );
+  }
 
-    this.response?.setHeader('Set-Cookie', newCookies);
+  public removeCookie(key: string): void {
+    delete this.cookies[key];
+
+    this.response?.setHeader(
+      'Set-Cookie',
+      cookie.serialize(key, '', {
+        expires: new Date(0),
+      }),
+    );
   }
 }
