@@ -20,6 +20,7 @@
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",
     "@types/node": "^17.0.17",
+    "@types/js-cookie": "^3.0.6",
     "@types/testing-library__react": "10.2.0",
     "concurrently": "^7.6.0",
     "fetch-mock": "9.11.0",
@@ -40,7 +41,8 @@
     "isomorphic-fetch": "^3.0.0",
     "js-sha256": "^0.9.0",
     "lodash": "^4.17.21",
-    "zen-observable-ts": "^1.1.0"
+    "zen-observable-ts": "^1.1.0",
+    "js-cookie": "^3.0.5"
   },
   "scripts": {
     "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
