@@ -32,7 +32,6 @@ export async function authorizeHandler(
 
   if (!refreshToken && !code) {
     res.statusCode = 401;
-    oauth.setRefreshToken(undefined);
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ error: 'Unauthorized' }));
 
