@@ -45,6 +45,11 @@ export function createApolloClient(authenticated = false) {
     typePolicies: {
       RootQuery: {
         queryType: true,
+        fields: {
+          viewer: {
+            merge: true,
+          },
+        },
       },
       RootMutation: {
         mutationType: true,
