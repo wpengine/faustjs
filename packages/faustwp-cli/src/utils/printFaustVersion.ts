@@ -37,6 +37,7 @@ export function printFaustVersion(): void {
   const cliVersion = sanitizePackageJsonVersion(
     packageJson?.dependencies?.['@faustwp/cli'] as string | undefined,
   );
-  infoLog(`Faust.js v${coreVersion}`);
-  infoLog(`Faust.js CLI v${cliVersion}`);
+  // eslint-disable-next-line
+  infoLog(`Faust.js v${coreVersion || 'unknown'}`);
+  infoLog(`Faust.js CLI v${cliVersion || 'unknown'}`);
 }
