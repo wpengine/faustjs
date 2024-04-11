@@ -11,6 +11,7 @@ import {
   getNextCliArgs,
   getWpSecret,
   isDebug,
+  printFaustVersion,
 } from './utils/index.js';
 import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 
@@ -80,6 +81,8 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
       debugLog(`Telemetry event failed: `, err);
     }
   }
+
+  printFaustVersion();
 
   /**
    * Spawn a child process using the args captured in argv and continue the
