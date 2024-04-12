@@ -47,6 +47,7 @@ class CustomPostTypeCest
 		$I->click('Preview in new tab');
 		$I->switchToNextTab();
 		$I->wait(14); // Wait for authentication
-        $I->see($post_title, 'section h1');
+        $I->see($cpt_title, 'section h1');
+		$I->see($cpt_content, 'main.content-single .wrap p');
 	}
 }
