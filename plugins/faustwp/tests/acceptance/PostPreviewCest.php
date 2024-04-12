@@ -23,7 +23,6 @@ class PostPreviewCest
 
         $I->loginAsAdmin();
         $I->amEditingPostWithId($post_id);
-        $I->click('div.components-modal__header > button');
         $I->click('button.editor-preview-dropdown__toggle');
         $I->wait(4); // Wait for previewlinks.js to modify button href.
         $I->seeLink(
