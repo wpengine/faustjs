@@ -38,7 +38,7 @@ class CustomPostTypeCest
 		$I->amEditingPostWithId($cpt_id);
 
 		$I->click('div.components-guide .components-modal__header button.components-button');
-		$I->click('button.block-editor-post-preview__button-toggle');
+		$I->click('button.editor-preview-dropdown__toggle');
 		$I->wait(4); // Wait for previewlinks.js to modify button href.
 		$I->seeLink(
 			'Preview in new tab',

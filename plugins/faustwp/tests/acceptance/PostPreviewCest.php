@@ -23,7 +23,7 @@ class PostPreviewCest
 
         $I->loginAsAdmin();
         $I->amEditingPostWithId($post_id);
-        $I->click('button.block-editor-post-preview__button-toggle');
+        $I->click('button.editor-preview-dropdown__toggle');
         $I->wait(4); // Wait for previewlinks.js to modify button href.
         $I->seeLink(
             'Preview in new tab',
