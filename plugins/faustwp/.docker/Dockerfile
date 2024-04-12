@@ -1,4 +1,4 @@
-ARG WP_VERSION=latest
+ARG WP_VERSION=6.4
 
 FROM wordpress:${WP_VERSION}
 
