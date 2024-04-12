@@ -36,13 +36,13 @@ class CustomPostTypeCest
 
 		$I->loginAsAdmin();
 		$I->amEditingPostWithId($cpt_id);
+		$I->click('div.components-modal__header > button');
 		$I->click('button.editor-preview-dropdown__toggle');
 		$I->wait(4); // Wait for previewlinks.js to modify button href.
 		$I->seeLink(
             'Preview in new tab',
-            "${front_end_url}/${cpt_name}/?preview=true",
+            "${front_end_url}/document/${cpt_name}/?preview=true",
         );
-
 		$I->click('Preview in new tab');
 		$I->switchToNextTab();
 		$I->wait(14); // Wait for authentication
