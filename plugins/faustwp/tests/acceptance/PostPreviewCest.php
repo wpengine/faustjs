@@ -2,14 +2,6 @@
 
 class PostPreviewCest
 {
-    private function _clickElementIfPresent($I, $element)
-    {
-        try {
-            $I->click($element);
-        } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
-        }
-        return;
-    }
     /**
      * Ensure the nodejs site url is set as the post preview url.
      */
@@ -31,12 +23,11 @@ class PostPreviewCest
 
         $I->loginAsAdmin();
         $I->amEditingPostWithId($post_id);
-        $this->_clickElementIfPresent($I, 'div.components-modal__header > button');
-        $I->click('button.editor-preview-dropdown__toggle');
+        $I->click('button.block-editor-post-preview__button-toggle');
         $I->wait(4); // Wait for previewlinks.js to modify button href.
         $I->seeLink(
             'Preview in new tab',
-            "${front_end_url}/${post_name}/?preview=true",
+            "${front_end_url}/${post_name}/?preview=true&previewPathname=" . rawurlencode("/post-preview-post/") . "&p=${post_id}&typeName=Post",
         );
 
 		$I->click('Preview in new tab');

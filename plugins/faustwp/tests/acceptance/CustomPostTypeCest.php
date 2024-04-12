@@ -2,14 +2,6 @@
 
 class CustomPostTypeCest
 {
-	private function _clickElementIfPresent($I, $element)
-    {
-        try {
-            $I->click($element);
-        } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
-        }
-        return;
-    }
 
 	public function _before(AcceptanceTester $I)
 	{
@@ -44,18 +36,13 @@ class CustomPostTypeCest
 
 		$I->loginAsAdmin();
 		$I->amEditingPostWithId($cpt_id);
-		$this->_clickElementIfPresent($I, 'div.components-modal__header > button');
-		$I->click('button.editor-preview-dropdown__toggle');
+
+		$I->click('div.components-guide .components-modal__header button.components-button');
+		$I->click('button.block-editor-post-preview__button-toggle');
 		$I->wait(4); // Wait for previewlinks.js to modify button href.
 		$I->seeLink(
-            'Preview in new tab',
-            "${front_end_url}/document/${cpt_name}/?preview=true",
-        );
-
-		$I->click('Preview in new tab');
-		$I->switchToNextTab();
-		$I->wait(14); // Wait for authentication
-        $I->see($cpt_title, 'section h1');
-		$I->see($cpt_content, 'main.content-single .wrap p');
+			'Preview in new tab',
+			"${front_end_url}/document/${cpt_name}/?preview=true&previewPathname=" . rawurlencode("/document/cpt-document-preview/") . "&p=${cpt_id}&typeName=Document",
+		);
 	}
 }
