@@ -41,7 +41,7 @@ class CustomPostTypeCest
 		$I->wait(4); // Wait for previewlinks.js to modify button href.
 		$I->seeLink(
             'Preview in new tab',
-            "${front_end_url}/${post_name}/?preview=true",
+            "${front_end_url}/${cpt_name}/?preview=true",
         );
 
 		$I->click('Preview in new tab');
