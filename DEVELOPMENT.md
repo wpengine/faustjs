@@ -133,14 +133,15 @@ FAUST_SECRET_KEY=00000000-0000-4000-8000-000000000001
 ### 3. WordPress Setup
 
 1. Leave the node server running and open a new shell.
-1. Move into the FaustWP plugin directory `plugins/faustwp`.
-1. Run `composer install` if you haven't already.
-1. Prepare a test WordPress site.
+2. Move into the FaustWP plugin directory `plugins/faustwp`.
+3. Run `composer install` if you haven't already.
+4. Prepare a test WordPress site.
    1. Run `docker-compose up -d --build`. If building for the first time, it could take some time to download and build the images.
-   1. Run `docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root`
-   1. Run `docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root`
-1. Copy `.env.testing.example` to `.env.testing`.
-1. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
+   2. Run `docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root`
+   3. Run `docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp core update-db --allow-root `
+   4. Run `docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root`
+5. Copy `.env.testing.example` to `.env.testing`.
+6. Run `vendor/bin/codecept run acceptance` to start the end-2-end tests.
 
 ### Browser testing documentation
 
@@ -207,21 +208,21 @@ Once deployed, the updated packages and plugin will be visible here:
 - https://www.npmjs.com/package/@faustwp/blocks
 - https://plugins.trac.wordpress.org/browser/faustwp/tags
 
-
 ### Working with the Monorepo
+
 This section offers guidance for developers working within the monorepo environment, which utilizes npm for package management.
 
 #### Navigation:
 
-* Use your terminal or IDE to navigate the file structure.
-* To locate a specific project, navigate to its directory within the packages folder. For example, `cd packages/faustwp-core` would take you to the `faustwp-core` project directory.
+- Use your terminal or IDE to navigate the file structure.
+- To locate a specific project, navigate to its directory within the packages folder. For example, `cd packages/faustwp-core` would take you to the `faustwp-core` project directory.
 
 #### Building and Deploying:
 
-* We use npm for managing dependencies and running build scripts.
-* Individual projects often have their own package.json file with project-specific scripts for building and deploying. You can run these scripts using commands like `npm run build` or `npm run test` within the project directory (e.g., `packages/faustwp-core`).
-* Refer to the project's README file or internal documentation for specific build and deploy instructions.
-For deploying the entire monorepo, there might be a top-level build script which you can invoke with `npm run build`.
+- We use npm for managing dependencies and running build scripts.
+- Individual projects often have their own package.json file with project-specific scripts for building and deploying. You can run these scripts using commands like `npm run build` or `npm run test` within the project directory (e.g., `packages/faustwp-core`).
+- Refer to the project's README file or internal documentation for specific build and deploy instructions.
+  For deploying the entire monorepo, there might be a top-level build script which you can invoke with `npm run build`.
 
 #### Additional Considerations:
 
@@ -230,5 +231,5 @@ Use the `--workspaces` or `-w` flag to run a specific script command of a specif
 ```bash
 $ npm run build -w examples/next/faustwp-getting-started
 ```
-It runs the `build` npm script for the `faustwp-getting-started` example project.
 
+It runs the `build` npm script for the `faustwp-getting-started` example project.

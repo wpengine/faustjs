@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { getCliArgs } from '../utils/index.js';
+import { sanitizePackageJsonVersion } from '../utils/printFaustVersion.js';
 
 export interface TelemetryData {
   node_faustwp_core_version?: string;
@@ -13,34 +14,6 @@ export interface TelemetryData {
   node_is_development?: boolean;
   command?: string;
 }
-
-/**
- * Sanitizes the version from a dependency in package.json.
- *
- * @param version The dependency version.
- * @returns A sanitized version or undefined if the version is a path.
- */
-const sanitizePackageJsonVersion = (_version: string | undefined) => {
-  let version = _version;
-
-  if (!version) {
-    return undefined;
-  }
-
-  if (version.charAt(0) === '^' || version.charAt(0) === '~') {
-    version = version.substring(1);
-  }
-
-  /**
-   * If a dependency is a file path set the value to undefined as we
-   * don't want to collect file paths in telemetry
-   */
-  if (version.startsWith('file:')) {
-    version = undefined;
-  }
-
-  return version;
-};
 
 /**
  * Marshall the JS telemetry data.
