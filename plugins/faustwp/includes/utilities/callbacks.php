@@ -92,3 +92,15 @@ function handle_new_site_creation( $new_site ) {
 	maybe_set_default_settings();
 	restore_current_blog();
 }
+
+add_action( 'init', __NAMESPACE__ . '\\load_faustwp_textdomain' );
+/**
+ * Load the plugin text domain for translation.
+ *
+ * @link https://developer.wordpress.org/reference/hooks/init/
+ *
+ * @return void
+ */
+function load_faustwp_textdomain() {
+	load_plugin_textdomain( 'faustwp', false, FAUSTWP_DIR . '/languages' );
+}
