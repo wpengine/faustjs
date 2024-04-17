@@ -37,7 +37,7 @@ class SettingsCest
         $I->dontSeeCheckboxIsChecked('#disable_theme');
         $I->seeCheckboxIsChecked('#enable_rewrites');
         $I->seeCheckboxIsChecked('#enable_redirects');
-        $I->dontSeeCheckboxIsChecked('#enable_image_source');
+        $I->seeCheckboxIsChecked('#enable_image_source');
     }
 
     /**

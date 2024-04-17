@@ -159,6 +159,7 @@ function maybe_set_default_settings() {
 		faustwp_update_setting( 'disable_theme', '0' );
 		faustwp_update_setting( 'enable_rewrites', '1' );
 		faustwp_update_setting( 'enable_redirects', '1' );
+		faustwp_update_setting( 'enable_image_source', '1' );
 
 		// Force WP to regenerate rewrite rules without calling flush_rewrite_rules which breaks
 		// things when used inside of `switch_to_blog()`.
@@ -191,4 +192,3 @@ function get_icon( $icon ) {
 
 	return '';
 }
-
