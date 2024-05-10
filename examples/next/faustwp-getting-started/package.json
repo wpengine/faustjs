@@ -17,7 +17,7 @@
     "@wordpress/block-library": "^7.19.0",
     "classnames": "^2.3.1",
     "graphql": "^16.6.0",
-    "next": "^12.1.6",
+    "next": "^14.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sass": "^1.54.9"
