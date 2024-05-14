@@ -87,4 +87,4 @@ jobs:
         if: failure()
         with:
           name: failed-test-output
-          path: ${{ github.workspace }}/plugins/faustwp/tests/_output/${{ matrix.wordpress }}
+          path: ${{ github.workspace }}/plugins/faustwp/tests/_output
