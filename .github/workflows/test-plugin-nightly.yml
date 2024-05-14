@@ -1,4 +1,4 @@
-name: Test Plugin / WordPress Nightly, PHP 8.2
+name: Test Plugin / WordPress Nightly
 
 on:
   pull_request:
