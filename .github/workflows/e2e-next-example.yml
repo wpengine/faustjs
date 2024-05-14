@@ -1,4 +1,4 @@
-name: E2E Test
+name: E2E Test Packages (Legacy)
 
 on:
   pull_request:

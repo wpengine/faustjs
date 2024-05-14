@@ -1,4 +1,4 @@
-name: Test Plugin / WordPress Nightly
+name: Unit Test Plugin / WordPress Nightly
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '**/*.md'
 
 jobs:
-  test_plugin:
+  unit_test_plugin:
     runs-on: ubuntu-22.04
 
     steps:

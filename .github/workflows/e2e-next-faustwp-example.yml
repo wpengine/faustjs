@@ -1,4 +1,4 @@
-name: E2E Test
+name: E2E Test Packages
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '**/*.md'
 
 jobs:
-  e2e-test-next-getting-started-example:
+  e2e-test-faustwp-getting-started-example:
     name: (faustwp) Next Getting Started Example on Node ${{ matrix.node }}
     runs-on: ubuntu-22.04
     env:
