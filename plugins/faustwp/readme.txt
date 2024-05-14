@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.5
-Stable tag: 1.2.3
+Stable tag: 1.3.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,16 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.3.0 =
+
+### Minor Changes
+
+- a478997: The default settings for `enable_image_source` has been changed to "on" for new installs.
+
+### Patch Changes
+
+- bced682: Ensure's any related translations will properly load by calling `load_text_domain`
+
 = 1.2.3 =
 
 ### Patch Changes
@@ -65,11 +75,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 47f6bd0: Faust now warns you if the secret key in your environment is invalid or incorrect.
-
-= 1.2.1 =
-
-### Patch Changes
-
-- 05cc940: Fix: swap traditional custom post type URLs in WordPress admin for the headless frontend custom post type URLs.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
