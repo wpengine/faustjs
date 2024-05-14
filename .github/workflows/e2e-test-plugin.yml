@@ -30,7 +30,7 @@ jobs:
         working-directory: plugins/faustwp
         run: |
           docker-compose build \
-            --build-arg WP_VERSION=6.5
+            --build-arg WP_VERSION=6.4
           docker-compose up -d
       - name: Sleep 15 seconds
         run: sleep 15
