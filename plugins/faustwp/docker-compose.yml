@@ -11,7 +11,7 @@ services:
     links:
       - db
     environment:
-      WP_VERSION: ${WP_VERSION:-6.2}
+      WP_VERSION: ${WP_VERSION:-6.5}
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: root
