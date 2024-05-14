@@ -31,10 +31,6 @@ jobs:
             sleep 1
           done
 
-      - name: Maybe upgrade WP DB
-        working-directory: ./plugins/faustwp
-        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp core update-db --allow-root
-
       - name: Setup testing framework
         working-directory: ./plugins/faustwp
         run: docker exec -e COVERAGE=1 $(docker-compose ps -q wordpress) init-testing-environment.sh
