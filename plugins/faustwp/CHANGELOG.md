@@ -1,5 +1,15 @@
 # Faust
 
+## 1.3.0
+
+### Minor Changes
+
+- a478997: The default settings for `enable_image_source` has been changed to "on" for new installs.
+
+### Patch Changes
+
+- bced682: Ensure's any related translations will properly load by calling `load_text_domain`
+
 ## 1.2.3
 
 ### Patch Changes

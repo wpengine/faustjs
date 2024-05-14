@@ -9,7 +9,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: faustwp
  * Domain Path: /languages
- * Version: 1.2.3
+ * Version: 1.3.0
  * Requires PHP: 7.2
  * Requires at least: 5.7
  *
