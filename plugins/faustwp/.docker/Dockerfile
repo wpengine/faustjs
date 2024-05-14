@@ -1,11 +1,9 @@
 ARG WP_VERSION
-ARG PHP_VERSION
-
-FROM wordpress:${WP_VERSION}-php${PHP_VERSION}
 
 # Save the build args for use by the runtime environment
 ENV WP_VERSION=${WP_VERSION}
-ENV PHP_VERSION=${PHP_VERSION}
+
+FROM wordpress:${WP_VERSION}
 
 # Needed for Codeception WPDB test integration.
 RUN docker-php-ext-install pdo pdo_mysql

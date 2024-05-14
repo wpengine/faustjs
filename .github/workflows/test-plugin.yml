@@ -7,36 +7,22 @@ on:
 
 jobs:
   test_plugin:
-    name: WordPress ${{ matrix.wordpress }}, PHP ${{ matrix.php }}
+    name: WordPress ${{ matrix.wordpress }}
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php: [ '8.2', '7.4' ]
         wordpress: [ '6.5', '6.4', '6.3', '6.2', '6.1' ]
-        exclude:
-        - php: 8.2
-          wordpress: 6.1
-        - php: 7.4
-          wordpress: 6.2
-        - php: 7.4
-          wordpress: 6.3
-        - php: 7.4
-          wordpress: 6.4
-        - php: 7.4
-          wordpress: 6.5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Create Docker Containers
         env:
-          PHP_VERSION: ${{ matrix.php }}
           WP_VERSION: ${{ matrix.wordpress }}
         working-directory: ./plugins/faustwp
         run: |
           docker-compose build \
             --build-arg WP_VERSION=${{ matrix.wordpress }} \
-            --build-arg PHP_VERSION=${{ matrix.php }}
           docker-compose up -d
 
       - name: Wait for db
