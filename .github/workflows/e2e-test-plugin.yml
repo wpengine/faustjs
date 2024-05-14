@@ -1,4 +1,4 @@
-name: E2E Test Plugin
+name: E2E Test Plugin (Legacy)
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '**/*.md'
 
 jobs:
-  e2e_test_plugin:
+  e2e_test_plugin_legacy:
     timeout-minutes: 10
     runs-on: ubuntu-22.04
     steps:
