@@ -2,23 +2,31 @@
 
 namespace WPE\FaustWP\Tests\Unit;
 
-use function WPE\FaustWP\Utilities\{domains_match};
+use function WPE\FaustWP\Utilities\{strict_domain_match};
 
 class FunctionsTests extends FaustUnitTest {
-	public function test_domains_match() {
-		// Test case 1: Same domains with different protocols
-		$this->assertTrue(domains_match("http://example.com", "https://example.com"));
+	public function testMatchValidDomainsWithPorts() {
+		$this->assertTrue( strict_domain_match( 'https://example.com:443', 'https://example.com:443' ) );
+		$this->assertTrue( strict_domain_match( 'https://www.example.org:443', 'https://example.org:443' ) );
+	}
 
-		// Test case 2: Same domains with trailing slashes
-		$this->assertTrue(domains_match("http://example.com/", "http://example.com"));
+	public function testMatchWithoutPorts() {
+		$this->assertTrue( strict_domain_match( 'https://example.com', 'https://example.com' ) );
+		$this->assertTrue( strict_domain_match( 'http://www.example.org', 'http://example.org' ) );
+	}
 
-		// Test case 3: Same domains with www prefix
-		$this->assertTrue(domains_match("http://www.example.com", "http://example.com"));
+	public function testMatchDifferentPorts() {
+		$this->assertFalse( strict_domain_match( 'https://example.com:443', 'https://example.com:80' ) );
+		$this->assertFalse( strict_domain_match( 'http://example.com:8080', 'http://example.com:80' ) );
+		$this->assertFalse( strict_domain_match( 'http://www.example.org:8080', 'http://example.org:80' ) );
+	}
 
-		// Test case 4: Different domains
-		$this->assertFalse(domains_match("http://example1.com", "http://example2.com"));
+	public function testMatchDifferentProtocols() {
+		$this->assertFalse( strict_domain_match( 'https://example.com', 'http://example.com' ) );
+		$this->assertFalse( strict_domain_match( 'http://www.example.org', 'https://example.org' ) );
+	}
 
-		// Test case 5: Same domains with different subdomains
-		$this->assertFalse(domains_match("http://1.example.com", "http://2.example.com"));
+	public function testSchemeMismatchSameDomainPort() {
+		$this->assertFalse( strict_domain_match( 'http://example.com:80', 'https://example.com:80' ) );
 	}
 }
