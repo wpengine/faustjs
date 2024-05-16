@@ -58,12 +58,12 @@ function strict_domain_match( string $domain1, string $domain2 ): bool {
 	$parsed_domain2 = wp_parse_url( $domain2 );
 
 	// Extract components
-	$host1 = isset( $parsed_domain1['host'] ) ? $parsed_domain1['host'] : null;
-	$host2 = isset( $parsed_domain2['host'] ) ? $parsed_domain2['host'] : null;
+	$host1   = isset( $parsed_domain1['host'] ) ? $parsed_domain1['host'] : null;
+	$host2   = isset( $parsed_domain2['host'] ) ? $parsed_domain2['host'] : null;
 	$scheme1 = isset( $parsed_domain1['scheme'] ) ? $parsed_domain1['scheme'] : 'http';
 	$scheme2 = isset( $parsed_domain2['scheme'] ) ? $parsed_domain2['scheme'] : 'http';
-	$port1 = isset( $parsed_domain1['port'] ) ? (int) $parsed_domain1['port'] : ( $scheme1 === 'https' ? 443 : 80 );
-	$port2 = isset( $parsed_domain2['port'] ) ? (int) $parsed_domain2['port'] : ( $scheme2 === 'https' ? 443 : 80 );
+	$port1   = isset( $parsed_domain1['port'] ) ? (int) $parsed_domain1['port'] : ( $scheme1 === 'https' ? 443 : 80 );
+	$port2   = isset( $parsed_domain2['port'] ) ? (int) $parsed_domain2['port'] : ( $scheme2 === 'https' ? 443 : 80 );
 
 	if ( empty( $host1 ) || empty( $host2 ) ) {
 		return false;

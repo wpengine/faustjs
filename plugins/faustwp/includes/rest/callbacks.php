@@ -84,8 +84,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/blockset',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_blockset_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_blockset_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_blockset_permission_callback',
 		)
 	);
@@ -94,8 +94,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/telemetry/decision',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_telemetry_decision_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_decision_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_decision_permission_callback',
 		)
 	);
@@ -104,8 +104,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/telemetry',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_telemetry_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_telemetry_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_telemetry_permission_callback',
 		)
 	);
@@ -114,8 +114,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/authorize',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_authorize_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_authorize_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
 		)
 	);
@@ -124,8 +124,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/process_telemetry',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_process_telemetry_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_process_telemetry_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_process_telemetry_permission_callback',
 		)
 	);
@@ -134,8 +134,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/validate_secret_key',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_validate_secret_key_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_secret_key_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_validate_secret_key_permission_callback',
 		)
 	);
@@ -144,8 +144,8 @@ function register_rest_routes() {
 		'faustwp/v1',
 		'/validate_public_wordpress_url',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_validate_public_wordpress_url_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_public_wordpress_url_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
 		)
 	);
@@ -159,8 +159,8 @@ function register_rest_routes() {
 		'wpac/v1',
 		'/authorize',
 		array(
-			'methods' => 'POST',
-			'callback' => __NAMESPACE__ . '\\handle_rest_authorize_callback',
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_authorize_callback',
 			'permission_callback' => __NAMESPACE__ . '\\wpac_authorize_permission_callback',
 		)
 	);
@@ -217,12 +217,12 @@ function handle_blockset_callback( \WP_REST_Request $request ) {
  */
 function handle_rest_telemetry_callback( \WP_REST_Request $request ) {
 	$data = array(
-		'faustwp' => get_anonymous_faustwp_data(),
+		'faustwp'                  => get_anonymous_faustwp_data(),
 		'wpgraphql_content_blocks' => get_anonymous_wpgraphql_content_blocks_data(),
-		'is_wpe' => is_wpe(),
-		'multisite' => is_multisite(),
-		'php_version' => PHP_VERSION,
-		'wp_version' => get_wp_version(),
+		'is_wpe'                   => is_wpe(),
+		'multisite'                => is_multisite(),
+		'php_version'              => PHP_VERSION,
+		'wp_version'               => get_wp_version(),
 	);
 
 	return new \WP_REST_Response( $data );
@@ -247,40 +247,40 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 
 	$body = $request->get_json_params();
 
-	$faust_plugin_data = get_anonymous_faustwp_data();
+	$faust_plugin_data          = get_anonymous_faustwp_data();
 	$content_blocks_plugin_data = get_anonymous_wpgraphql_content_blocks_data();
 
 	$ga_tracking_endpoint = 'https://www.google-analytics.com/mp/collect';
-	$ga_tracking_id = 'G-KPVSTHK1G4';
-	$ga_key = '-SLuZb8JTbWkWcT5BD032w';
+	$ga_tracking_id       = 'G-KPVSTHK1G4';
+	$ga_key               = '-SLuZb8JTbWkWcT5BD032w';
 
 	$telemetry_data = array(
-		'node_faustwp_core_version' => $body['node_faustwp_core_version'] ?? null,
-		'node_faustwp_cli_version' => $body['node_faustwp_cli_version'] ?? null,
-		'node_faustwp_blocks_version' => $body['node_faustwp_blocks_version'] ?? null,
-		'node_apollo_client_version' => $body['node_apollo_client_version'] ?? null,
-		'node_faustwp_block_editor_utils_version' => $body['node_faustwp_block_editor_utils_version'] ?? null,
+		'node_faustwp_core_version'                    => $body['node_faustwp_core_version'] ?? null,
+		'node_faustwp_cli_version'                     => $body['node_faustwp_cli_version'] ?? null,
+		'node_faustwp_blocks_version'                  => $body['node_faustwp_blocks_version'] ?? null,
+		'node_apollo_client_version'                   => $body['node_apollo_client_version'] ?? null,
+		'node_faustwp_block_editor_utils_version'      => $body['node_faustwp_block_editor_utils_version'] ?? null,
 		'node_faustwp_experimental_app_router_version' => $body['node_faustwp_experimental_app_router_version'] ?? null,
-		'node_version' => $body['node_version'] ?? null,
-		'node_next_version' => $body['node_next_version'] ?? null,
-		'node_is_development' => $body['node_is_development'] ?? null,
-		'command' => $body['command'] ?? null,
+		'node_version'                                 => $body['node_version'] ?? null,
+		'node_next_version'                            => $body['node_next_version'] ?? null,
+		'node_is_development'                          => $body['node_is_development'] ?? null,
+		'command'                                      => $body['command'] ?? null,
 
-		'setting_has_frontend_uri' => $faust_plugin_data['has_frontend_uri'],
-		'setting_redirects_enabled' => $faust_plugin_data['redirects_enabled'],
-		'setting_rewrites_enabled' => $faust_plugin_data['rewrites_enabled'],
-		'setting_themes_disabled' => $faust_plugin_data['themes_disabled'],
-		'setting_img_src_replacement_enabled' => $faust_plugin_data['image_source_replacement_enabled'],
-		'faustwp_version' => $faust_plugin_data['version'],
+		'setting_has_frontend_uri'                     => $faust_plugin_data['has_frontend_uri'],
+		'setting_redirects_enabled'                    => $faust_plugin_data['redirects_enabled'],
+		'setting_rewrites_enabled'                     => $faust_plugin_data['rewrites_enabled'],
+		'setting_themes_disabled'                      => $faust_plugin_data['themes_disabled'],
+		'setting_img_src_replacement_enabled'          => $faust_plugin_data['image_source_replacement_enabled'],
+		'faustwp_version'                              => $faust_plugin_data['version'],
 
-		'wpgraphql_content_blocks_version' => $content_blocks_plugin_data['version'],
+		'wpgraphql_content_blocks_version'             => $content_blocks_plugin_data['version'],
 
-		'is_wpe' => is_wpe(),
-		'multisite' => is_multisite(),
-		'php_version' => PHP_VERSION,
-		'wp_version' => get_wp_version(),
-		'engagement_time_msec' => 100,
-		'session_id' => md5( get_telemetry_client_id() ),
+		'is_wpe'                                       => is_wpe(),
+		'multisite'                                    => is_multisite(),
+		'php_version'                                  => PHP_VERSION,
+		'wp_version'                                   => get_wp_version(),
+		'engagement_time_msec'                         => 100,
+		'session_id'                                   => md5( get_telemetry_client_id() ),
 	);
 
 	// Remove null values since GA rejects them.
@@ -289,16 +289,16 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 	$ga_telemetry_url = add_query_arg(
 		array(
 			'measurement_id' => $ga_tracking_id,
-			'api_secret' => $ga_key,
+			'api_secret'     => $ga_key,
 		),
 		$ga_tracking_endpoint
 	);
 
 	$telemetry_body = array(
 		'client_id' => get_telemetry_client_id(),
-		'events' => array(
+		'events'    => array(
 			array(
-				'name' => 'telemetry_event',
+				'name'   => 'telemetry_event',
 				'params' => $telemetry_data,
 			),
 		),
@@ -307,7 +307,7 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 	wp_remote_post(
 		$ga_telemetry_url,
 		array(
-			'body' => wp_json_encode( $telemetry_body ),
+			'body'     => wp_json_encode( $telemetry_body ),
 			'blocking' => false,
 		)
 	);
@@ -371,7 +371,7 @@ function rest_process_telemetry_permission_callback( \WP_REST_Request $request )
  * @return mixed A \WP_REST_Response, array, or \WP_Error.
  */
 function handle_rest_authorize_callback( \WP_REST_Request $request ) {
-	$code = trim( $request->get_param( 'code' ) );
+	$code          = trim( $request->get_param( 'code' ) );
 	$refresh_token = trim( $request->get_param( 'refreshToken' ) );
 
 	if ( ! $code && ! $refresh_token ) {
@@ -389,15 +389,15 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 	}
 
 	$refresh_token_expiration = WEEK_IN_SECONDS * 2;
-	$access_token_expiration = MINUTE_IN_SECONDS * 5;
+	$access_token_expiration  = MINUTE_IN_SECONDS * 5;
 
-	$access_token = generate_access_token( $user, $access_token_expiration );
+	$access_token  = generate_access_token( $user, $access_token_expiration );
 	$refresh_token = generate_refresh_token( $user, $refresh_token_expiration );
 
 	return array(
-		'accessToken' => $access_token,
-		'accessTokenExpiration' => ( time() + $access_token_expiration ),
-		'refreshToken' => $refresh_token,
+		'accessToken'            => $access_token,
+		'accessTokenExpiration'  => ( time() + $access_token_expiration ),
+		'refreshToken'           => $refresh_token,
 		'refreshTokenExpiration' => ( time() + $refresh_token_expiration ),
 	);
 }
@@ -467,7 +467,7 @@ function rest_telemetry_decision_permission_callback( \WP_REST_Request $request 
  * @return \WP_REST_Response|\WP_Error
  */
 function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
-	$body = json_decode( $request->get_body(), true );
+	$body     = json_decode( $request->get_body(), true );
 	$decision = $body['decision'] ?? 'remind';
 	if ( ! in_array( $decision, array( 'yes', 'no', 'remind' ), true ) ) {
 		$decision = 'remind';
@@ -492,10 +492,10 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
 	$response = array(
 		'decision' => $decision,
 		'settings' => array(
-			'enabled' => faustwp_get_setting( 'enable_telemetry' ),
+			'enabled'  => faustwp_get_setting( 'enable_telemetry' ),
 			'reminder' => faustwp_get_setting( 'telemetry_reminder' ),
 		),
-		'success' => true,
+		'success'  => true,
 	);
 	return rest_ensure_response( $response );
 }
