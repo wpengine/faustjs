@@ -62,8 +62,8 @@ function strict_domain_match( string $domain1, string $domain2 ): bool {
 	$host2   = isset( $parsed_domain2['host'] ) ? $parsed_domain2['host'] : null;
 	$scheme1 = isset( $parsed_domain1['scheme'] ) ? $parsed_domain1['scheme'] : 'http';
 	$scheme2 = isset( $parsed_domain2['scheme'] ) ? $parsed_domain2['scheme'] : 'http';
-	$port1   = ( $scheme1 === 'https' ? 443 : 80 ) === isset( $parsed_domain1['port'] ) ? (int) $parsed_domain1['port'] : null;
-	$port2   = ( $scheme2 === 'https' ? 443 : 80 ) === isset( $parsed_domain2['port'] ) ? (int) $parsed_domain2['port'] : null;
+	$port1   = isset( $parsed_domain1['port'] ) ? (int) $parsed_domain1['port'] : ( 'https' === $scheme1 ? 443 : 80 );
+	$port2   = isset( $parsed_domain2['port'] ) ? (int) $parsed_domain2['port'] : ( 'https' === $scheme2 ? 443 : 80 );
 
 	if ( empty( $host1 ) || empty( $host2 ) ) {
 		return false;
