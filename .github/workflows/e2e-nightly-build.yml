@@ -1,4 +1,4 @@
-name: E2E Nightly Test
+name: E2E Test Packages (Nightly)
 
 on:
   workflow_run:

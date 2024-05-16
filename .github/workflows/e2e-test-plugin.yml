@@ -1,4 +1,4 @@
-name: E2E Test Plugin
+name: E2E Test Plugin (Legacy)
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '**/*.md'
 
 jobs:
-  e2e_test_plugin:
+  e2e_test_plugin_legacy:
     timeout-minutes: 10
     runs-on: ubuntu-22.04
     steps:
@@ -20,12 +20,6 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-          coverage: pcov
-          ini-values: pcov.directory=includes
       - name: Setup Frontend
         run: |
           NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080 FAUSTWP_SECRET_KEY=00000000-0000-4000-8000-000000000001 npm run dev:next:getting-started &
@@ -34,7 +28,10 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction --no-suggest
       - name: Setup Containers
         working-directory: plugins/faustwp
-        run: docker-compose up -d
+        run: |
+          docker-compose build \
+            --build-arg WP_VERSION=6.4
+          docker-compose up -d
       - name: Sleep 15 seconds
         run: sleep 15
       - name: Maybe upgrade WP DB
