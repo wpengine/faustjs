@@ -45,25 +45,33 @@ function plugin_version() {
 }
 
 /**
- * Checks if two domain strings represent the same domain.
+ * Performs a strict domain comparison
+ * Also checks for matching ports (if present).
  *
  * @param string $domain1 The first domain string.
  * @param string $domain2 The second domain string.
- * @return bool True if the domains match, false otherwise.
+ * @return bool True if the domains match (including localhost, loopback, and ports), false otherwise.
  */
-function domains_match( $domain1, $domain2 ) {
-	// Extract the domain part.
-	$extract_domain = function ( $url ) {
-		$parsed_url = wp_parse_url( $url, PHP_URL_HOST );
-		return $parsed_url ? $parsed_url : null;
-	};
+function strict_domain_match( string $domain1, string $domain2 ): bool {
+	// Parse URLs.
+	$parsed_domain1 = wp_parse_url( $domain1 );
+	$parsed_domain2 = wp_parse_url( $domain2 );
 
-	$domain1 = $extract_domain( $domain1 );
-	$domain2 = $extract_domain( $domain2 );
+	// Extract components.
+	$host1   = isset( $parsed_domain1['host'] ) ? $parsed_domain1['host'] : null;
+	$host2   = isset( $parsed_domain2['host'] ) ? $parsed_domain2['host'] : null;
+	$scheme1 = isset( $parsed_domain1['scheme'] ) ? $parsed_domain1['scheme'] : 'http';
+	$scheme2 = isset( $parsed_domain2['scheme'] ) ? $parsed_domain2['scheme'] : 'http';
+	$port1   = isset( $parsed_domain1['port'] ) ? (int) $parsed_domain1['port'] : ( 'https' === $scheme1 ? 443 : 80 );
+	$port2   = isset( $parsed_domain2['port'] ) ? (int) $parsed_domain2['port'] : ( 'https' === $scheme2 ? 443 : 80 );
 
-	// Remove "www" prefix from domain if present.
-	$domain1 = preg_replace( '/^www\./i', '', $domain1 );
-	$domain2 = preg_replace( '/^www\./i', '', $domain2 );
+	if ( empty( $host1 ) || empty( $host2 ) ) {
+		return false;
+	}
 
-	return null !== $domain1 && null !== $domain2 && $domain1 === $domain2;
+	// Normalize the hosts by removing 'www.' if present.
+	$normalized_host1 = preg_replace( '/^www\./', '', $host1 );
+	$normalized_host2 = preg_replace( '/^www\./', '', $host2 );
+
+	return ( $normalized_host1 === $normalized_host2 ) && ( $scheme1 === $scheme2 ) && ( $port1 === $port2 );
 }

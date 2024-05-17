@@ -26,7 +26,7 @@ use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
 use function WPE\FaustWP\Settings\faustwp_get_setting;
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 use function WPE\FaustWP\Settings\is_telemetry_enabled;
-use function WPE\FaustWP\Utilities\domains_match;
+use function WPE\FaustWP\Utilities\strict_domain_match;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -560,7 +560,7 @@ function handle_rest_validate_public_wordpress_url_callback( \WP_REST_Request $r
 		$public_wordpress_url = $parameters['public_wordpress_url'];
 
 		// Check if the provided WordPress URL does not match the frontend URI.
-		if ( ! domains_match( $public_wordpress_url, $frontend_uri ) ) {
+		if ( ! strict_domain_match( $public_wordpress_url, $frontend_uri ) ) {
 			// Return 200 OK if the URLs do not match.
 			$response = new \WP_REST_Response( 'OK', 200 );
 		} else {
