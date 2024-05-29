@@ -1,5 +1,11 @@
 # Faust
 
+## 1.3.1
+
+### Patch Changes
+
+- c28624c: Improve domain_match function to handle port checks and Add Comprehensive Test Cases
+
 ## 1.3.0
 
 ### Minor Changes
