@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'FAUSTWP_FILE', __FILE__ );
-define( 'FAUSTWP_DIR', dirname( __FILE__ ) );
+define( 'FAUSTWP_DIR', __DIR__ );
 define( 'FAUSTWP_URL', plugin_dir_url( __FILE__ ) );
 define( 'FAUSTWP_PATH', plugin_basename( FAUSTWP_FILE ) );
 define( 'FAUSTWP_SLUG', dirname( plugin_basename( FAUSTWP_FILE ) ) );

@@ -89,13 +89,13 @@ function get_secret_key() {
 /**
  * Get a Faust setting by name.
  *
- * @param string $name    The setting name.
- * @param mixed  $default Optional setting value. Default false.
+ * @param string $name          The setting name.
+ * @param mixed  $default_value Optional setting value. Default false.
  *
  * @return mixed The setting value.
  */
-function faustwp_get_setting( $name, $default = false ) {
-	$value    = $default;
+function faustwp_get_setting( $name, $default_value = false ) {
+	$value    = $default_value;
 	$settings = faustwp_get_settings();
 
 	if ( isset( $settings[ $name ] ) ) {
@@ -107,9 +107,9 @@ function faustwp_get_setting( $name, $default = false ) {
 	 *
 	 * @param mixed  $value   The setting value.
 	 * @param string $name    The setting name.
-	 * @param mixed  $default Optional setting value.
+	 * @param mixed  $default_value Optional setting value.
 	 */
-	return apply_filters( 'faustwp_get_setting', $value, $name, $default );
+	return apply_filters( 'faustwp_get_setting', $value, $name, $default_value );
 }
 
 /**
