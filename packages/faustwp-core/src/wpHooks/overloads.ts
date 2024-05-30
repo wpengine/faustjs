@@ -70,7 +70,7 @@ type FaustCoreFilters = {
     callback: (wpUrl: string, context: Record<string, never>) => string,
     priority?: number | undefined,
   ): void;
-  
+
   addFilter(
     hookName: 'wpAdminUrl',
     namespace: string,
