@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "faust dev",
-    "build": "faust build",
-    "generate": "faust generatePossibleTypes",
-    "stylesheet": "faust generateGlobalStylesheet",
-    "start": "faust start"
+    "dev": "npx faust dev",
+    "build": "npx faust build",
+    "generate": "npx faust generatePossibleTypes",
+    "stylesheet": "npx faust generateGlobalStylesheet",
+    "start": "npx faust start"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",

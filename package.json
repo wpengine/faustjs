@@ -45,14 +45,14 @@
     "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
     "test:coverage": "npm run build && npm run test:coverage --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/block-editor-utils",
     "wpe-build": "exit 1",
-    "changeset": "changeset",
-    "version": "changeset version && node scripts/versionPlugin.js",
+    "changeset": "npx changeset",
+    "version": "npx changeset version && node scripts/versionPlugin.js",
     "version:nightly": "changeset version --snapshot && node scripts/versionPlugin.js",
     "version:status": "changeset status",
     "release": "npm run build && npm run build:experimental-app-router && changeset publish",
     "release:nightly": "npm run build && npm run build:experimental-app-router && changeset publish --tag canary",
-    "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",
-    "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
+    "lint": "npx eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",
+    "lint:fix": "npx eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",

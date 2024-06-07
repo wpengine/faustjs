@@ -7,13 +7,13 @@
     "npm": ">=6.0.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "clean": "rimraf .next node_modules",
-    "lint": "next lint",
-    "generate": "gqty generate",
-    "wpe-build": "next build"
+    "dev": "npx next dev",
+    "build": "npx next build",
+    "start": "npx next start",
+    "clean": "npx rimraf .next node_modules",
+    "lint": "npx next lint",
+    "generate": "npx gqty generate",
+    "wpe-build": "npx next build"
   },
   "dependencies": {
     "@faustjs/core": "^0.15.13",

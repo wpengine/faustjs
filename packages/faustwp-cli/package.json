@@ -35,14 +35,14 @@
     "webpack-cli": "5.1.4"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "clean": "rimraf dist",
-    "dev": "tsc -p tsconfig.json --watch",
-    "format": "prettier --write .",
-    "test": "jest",
-    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --passWithNoTests --outputFile=report.json",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "build": "npx tsc -p tsconfig.json",
+    "clean": "npx rimraf dist",
+    "dev": "npx tsc -p tsconfig.json --watch",
+    "format": "npx prettier --write .",
+    "test": "npx jest",
+    "test:coverage:ci": "npx jest --ci --json --coverage --testLocationInResults --passWithNoTests --outputFile=report.json",
+    "test:coverage": "npx jest --coverage",
+    "test:watch": "npx jest --watch"
   },
   "repository": {
     "type": "git",

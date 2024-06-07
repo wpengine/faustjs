@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.2.0",
   "scripts": {
-    "predev": "faust generatePossibleTypes && faust generateGlobalStylesheet",
-    "prebuild": "faust generatePossibleTypes && faust generateGlobalStylesheet",
-    "dev": "faust dev",
-    "build": "faust build",
-    "blockset": "faust blockset",
-    "start": "faust start"
+    "predev": "npx faust generatePossibleTypes && faust generateGlobalStylesheet",
+    "prebuild": "npx faust generatePossibleTypes && faust generateGlobalStylesheet",
+    "dev": "npx faust dev",
+    "build": "npx faust build",
+    "blockset": "npx faust blockset",
+    "start": "npx faust start"
   },
   "dependencies": {
     "@apollo/client": "^3.8.8",

@@ -24,13 +24,13 @@
   "scripts": {
     "prebuild": "npm run clean",
     "postbuild": "npm run package",
-    "clean": "rimraf dist",
+    "clean": "npx rimraf dist",
     "package": "node ../../scripts/package.js",
-    "test": "jest",
+    "test": "npx jest",
     "build": "npm run build-esm && npm run build-cjs",
-    "build-esm": "tsc -p .",
-    "build-cjs": "tsc -p tsconfig.cjs.json",
-    "dev": "tsc -p tsconfig.json --watch"
+    "build-esm": "npx tsc -p .",
+    "build-cjs": "npx tsc -p tsconfig.cjs.json",
+    "dev": "npx tsc -p tsconfig.json --watch"
   },
   "repository": {
     "type": "git",
