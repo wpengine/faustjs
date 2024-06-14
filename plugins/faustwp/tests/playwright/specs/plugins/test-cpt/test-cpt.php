@@ -26,10 +26,7 @@ function test_cpt_register_cpt() {
 	register_post_type( 'document', $args );
 }
 
-register_activation_hook(
-	__FILE__,
-	'test_cpt_activate_test_cpt'
-);
+register_activation_hook(__FILE__,'test_cpt_activate_test_cpt' );
 
 
 /**
@@ -38,28 +35,26 @@ register_activation_hook(
  * @return void
  */
 function test_cpt_activate_test_cpt() {
-	// Set the permalinks
-	update_option( 'permalink_structure', '/%postname%/' );
-
 	// Register the CPT
 	test_cpt_register_cpt();
 	flush_rewrite_rules();
 
 	// Create post object
 	$test_post = array(
-		'post_title'    => 'CPT Document Preview',
-		'post_content'  => 'Unpublished preview document content.',
-		'post_name' => 'cpt-document-preview',
-		'post_type' => 'document'
+		'post_title'   => 'CPT Document Preview',
+		'post_content' => 'Unpublished preview document content.',
+		'post_name'    => 'cpt-document-preview',
+		'post_type'    => 'document'
 	);
 
 	// Insert the post into the database
 	wp_insert_post( $test_post );
 
 	// Configure Faust settings
-	$faust_settings = get_option( 'faustwp_settings');
+	$faust_settings = get_option( 'faustwp_settings' );
 
-	$faust_settings['secret_key'] = '00000000-0000-0000-0000-000000000001';
+	$faust_settings['secret_key'] = '00000000-0000-4000-8000-000000000001';
+	$faust_settings['frontend_uri'] = 'http://localhost:3000';
 
 	update_option( 'faustwp_settings', $faust_settings );
 }
