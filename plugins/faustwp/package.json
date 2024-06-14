@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "npx wp-env start",
-    "test": "wp-scripts test-playwright --config tests/playwright/playwright.config.js"
+    "test": "wp-scripts test-playwright --config tests/playwright/playwright.config.js",
+    "destroy": "npx wp-env destroy"
   }
 }
