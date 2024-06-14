@@ -33,7 +33,8 @@ jobs:
 
     - name: Build the example project
       run: |
-        npm run --workspace=examples/next/faustwp-getting-started build
+        npm install --workspace=examples/next/faustwp-getting-started
+        NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8889 npm run --workspace=examples/next/faustwp-getting-started build
 
     - name: Run E2E tests
       run: npm run test

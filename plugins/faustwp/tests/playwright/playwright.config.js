@@ -10,7 +10,7 @@ const config = defineConfig({
     ['github']
   ],
   webServer: {
-    command: 'npm run --workspace=examples/next/faustwp-getting-started start',
+    command: 'NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8889 npm run --workspace=examples/next/faustwp-getting-started start',
     port: 8889,
     timeout: 120_000, // 120 seconds.
     reuseExistingServer: true,
