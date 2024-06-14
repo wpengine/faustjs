@@ -35,6 +35,10 @@ export const wpAdminUrl = 'http://localhost:8889/wp-admin';
  * @param {import('@playwright/test').Page} page The Playwright page object.
  */
 export async function loginToWordPressAdmin(page) {
+    await page.goto('http://localhost:8889/wp-admin', {
+        waitUntil: 'networkidle',
+    });
+
     const isLoggedIn = await page.$('#wpadminbar');
 
     // If already logged in, return early
@@ -42,9 +46,6 @@ export async function loginToWordPressAdmin(page) {
         return;
     }
 
-    await page.goto('http://localhost:8888/wp-admin', {
-        waitUntil: 'networkidle',
-    });
     await page.fill(selectors.loginUsername, 'admin');
     await page.fill(selectors.loginPassword, 'password');
     await page.click(selectors.submitButton);
