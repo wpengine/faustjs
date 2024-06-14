@@ -1,0 +1,10 @@
+{
+    "plugins": [
+        "https://downloads.wordpress.org/plugin/wp-graphql.zip",
+        "."
+    ],
+    "port": 8888,
+    "config": {
+        "WP_DEBUG": true
+    }
+}

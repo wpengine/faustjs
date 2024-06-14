@@ -16,3 +16,10 @@ faustjs.code-workspace
 
 # Ignore the WordPress source where used by various development environments
 wordpress/
+
+# Ignore Playwright test results
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+artifacts/

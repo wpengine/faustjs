@@ -1,5 +1,14 @@
 {
   "name": "@faustwp/wordpress-plugin",
   "version": "1.3.1",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@wordpress/e2e-test-utils-playwright": "^1.0.0",
+    "@wordpress/env": "^10.0.0",
+    "@wordpress/scripts": "^28.0.0"
+  },
+  "scripts": {
+    "start": "npx wp-env start",
+    "test": "wp-scripts test-playwright --config tests/playwright/playwright.config.js"
+  }
 }

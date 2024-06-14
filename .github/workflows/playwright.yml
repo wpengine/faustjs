@@ -1,0 +1,47 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, canary ]
+
+jobs:
+  e2e-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install Node dependencies
+      run: npm ci
+
+    - name: Build CSS and JS
+      run: npm run build
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Start WordPress Environment and activate theme
+      run: |
+        npm run --workspace=plugins/faustwp start
+
+    - name: Build the example project
+      run: |
+        npm run --workspace=examples/next/faustwp-getting-started build
+
+    - name: Run E2E tests
+      run: npm run test
+
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-report
+        path: artifacts/
+        retention-days: 30
