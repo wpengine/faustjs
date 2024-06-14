@@ -19,7 +19,7 @@ jobs:
         node-version: 18
 
     - name: Install Node dependencies
-      run: npm ci
+      run: npm i
 
     - name: Build CSS and JS
       run: npm run build
@@ -27,7 +27,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Start WordPress Environment and activate theme
+    - name: Start and Configure WordPress Environment
       run: |
         npm run --workspace=plugins/faustwp start
 
