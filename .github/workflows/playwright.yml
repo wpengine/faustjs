@@ -37,11 +37,11 @@ jobs:
         NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8889 npm run --workspace=examples/next/faustwp-getting-started build
 
     - name: Run E2E tests
-      run: npm run test
+      run: npm run --workspace=plugins/faustwp test
 
     - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: e2e-report
-        path: artifacts/
+        path: plugins/faustwp/artifacts/
         retention-days: 30
