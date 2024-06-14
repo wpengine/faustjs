@@ -16,10 +16,10 @@ jobs:
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: '18'
 
     - name: Install Node dependencies
-      run: npm i
+      run: npm ci
 
     - name: Build CSS and JS
       run: npm run build
