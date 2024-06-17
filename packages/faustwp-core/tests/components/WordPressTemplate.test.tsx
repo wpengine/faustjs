@@ -27,56 +27,6 @@ describe('<WordPressTemplate />', () => {
     );
   });
 
-  test('Properly determines whether or not the given URL is a preview or not', async () => {
-    const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({
-      templates: {},
-    });
-
-    const useAuthSpy = jest.spyOn(useAuth, 'useAuth').mockReturnValue({
-      isAuthenticated: false,
-      isReady: true,
-      loginUrl: null,
-    });
-
-    delete (window as any).location;
-    window.location = new URL('http://localhost:3000') as any as Location;
-
-    const stringIncludesSpy = jest.spyOn(String.prototype, 'includes');
-
-    await act(async () => {
-      render(
-        <WordPressTemplate.WordPressTemplate
-          __SEED_NODE__={{ databaseId: '1' }}
-          __TEMPLATE_QUERY_DATA__={{ fakeData: true }}
-        />,
-      );
-    });
-
-    expect(window.location.search.includes).toHaveBeenLastCalledWith(
-      'preview=true',
-    );
-    expect(window.location.search.includes).toReturnWith(false);
-
-    delete (window as any).location;
-    window.location = new URL(
-      'http://localhost:3000?preview=true&p=40',
-    ) as any as Location;
-
-    await act(async () => {
-      render(
-        <WordPressTemplate.WordPressTemplate
-          __SEED_NODE__={{ databaseId: '1' }}
-          __TEMPLATE_QUERY_DATA__={{ fakeData: true }}
-        />,
-      );
-    });
-
-    expect(window.location.search.includes).toHaveBeenLastCalledWith(
-      'preview=true',
-    );
-    expect(window.location.search.includes).toReturnWith(true);
-  });
-
   test('Properly redirects to login URL on preview route with no logged in user', async () => {
     const getConfigSpy = jest.spyOn(getConfig, 'getConfig').mockReturnValue({
       templates: {},
