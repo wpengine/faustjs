@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.0.3
+
+### Patch Changes
+
+- beb546a5: Bug: Fixes issue with review detection via query string is too greedy and catches non WP previews
+
 ## 3.0.1
 
 ### Patch Changes
