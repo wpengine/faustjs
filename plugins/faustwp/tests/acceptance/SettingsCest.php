@@ -133,7 +133,7 @@ class SettingsCest
 		$I->amOnFaustWPSettingsPage();
 
 		$I->dontSeeCheckboxIsChecked('#remove_additional_menu_locations');
-		$I->checkField('#remove_additional_menu_locations');
+		$I->checkOption('#remove_additional_menu_locations');
 		$I->click("Save Changes");
 
 		$I->see("Settings saved.");
