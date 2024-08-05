@@ -21,9 +21,9 @@ jobs:
           WP_VERSION: ${{ matrix.wordpress }}
         working-directory: ./plugins/faustwp
         run: |
-          docker-compose build \
+          docker compose build \
             --build-arg WP_VERSION=${{ matrix.wordpress }}
-          docker-compose up -d
+          docker compose up -d
 
       - name: Wait for db
         run: |
