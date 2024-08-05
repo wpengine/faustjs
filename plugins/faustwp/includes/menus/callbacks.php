@@ -23,7 +23,7 @@ function remove_menu_locations() {
 
 	$remove_menus = faustwp_get_setting( 'remove_additional_menu_locations', false );
 
-	// If additional menus are not set to be removed, do nothing
+	// If additional menus are not set to be removed, do nothing.
 	if ( false === $remove_menus ) {
 		return;
 	}

@@ -164,7 +164,7 @@ function register_settings_fields() {
 		__( 'Remove Additional Nav Menu Locations', 'faustwp' ),
 		__NAMESPACE__ . '\\display_remove_additional_menu_locations_field',
 		'faustwp-settings',
-		'settings_section',
+		'settings_section'
 	);
 
 	add_settings_field(
@@ -336,6 +336,13 @@ function display_menu_locations_field() {
 	<?php
 }
 
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "Remove Additional Menu Locations" checkbox field.
+ *
+ * @return void
+ */
 function display_remove_additional_menu_locations_field() {
 	$removed = faustwp_get_setting( 'remove_additional_menu_locations', false );
 	?>
