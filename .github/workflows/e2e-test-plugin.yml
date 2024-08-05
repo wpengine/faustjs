@@ -29,25 +29,25 @@ jobs:
       - name: Setup Containers
         working-directory: plugins/faustwp
         run: |
-          docker-compose build \
+          docker compose build \
             --build-arg WP_VERSION=6.4
-          docker-compose up -d
+          docker compose up -d
       - name: Sleep 15 seconds
         run: sleep 15
       - name: Maybe upgrade WP DB
         working-directory: plugins/faustwp
-        run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp core update-db --allow-root
+        run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp core update-db --allow-root
       - name: Init Testing Environment
         working-directory: plugins/faustwp
-        run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) init-testing-environment.sh
+        run: docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) init-testing-environment.sh
       - name: Install WP GraphQL
         working-directory: plugins/faustwp
         run: |
-          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
+          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
       - name: Setup testing data
         working-directory: plugins/faustwp
         run: |
-          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root
+          docker exec --workdir=/var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp db export tests/_data/dump.sql --allow-root
       - name: Copy env file
         working-directory: plugins/faustwp
         run: cp .env.testing.example .env.testing
