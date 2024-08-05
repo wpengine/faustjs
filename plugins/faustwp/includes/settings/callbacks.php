@@ -339,8 +339,8 @@ function display_menu_locations_field() {
 function display_remove_additional_menu_locations_field() {
 	$removed = faustwp_get_setting( 'remove_additional_menu_locations', false );
 	?>
-	<label for="disable_theme">
-		<input type="checkbox" id="disable_theme" name="faustwp_settings[remove_additional_menu_locations]" value="1" <?php checked( $removed ); ?> /><?php esc_html_e( 'Remove all Nav Menu locations that are not registered on this screen.', 'faustwp' ); ?>
+	<label for="remove_additional_menu_locations">
+		<input type="checkbox" id="remove_additional_menu_locations" name="faustwp_settings[remove_additional_menu_locations]" value="1" <?php checked( $removed ); ?> /><?php esc_html_e( 'Remove all Nav Menu locations that are not registered on this screen.', 'faustwp' ); ?>
 		<p class="description"><?php esc_html_e( 'By checking this, the only Nav Menu locations will be the ones registered on this page. Leaving this un-checked will combine the menu locations on this page with menu locations registered by other plugins or themes. This has an impact on the nav menu manager in the WordPress admin and API access to menus.', 'faustwp' ); ?></p>
 	</label>
 	<?php
