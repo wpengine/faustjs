@@ -126,4 +126,17 @@ class SettingsCest
         $I->cancelPopup();
         $I->seeInField('faustwp_settings[secret_key]', $secret_key);
     }
+
+	public function i_can_check_remove_all_nav_menus_not_registered_by_faust(AcceptanceTester $I)
+	{
+		$I->loginAsAdmin();
+		$I->amOnFaustWPSettingsPage();
+
+		$I->dontSeeCheckboxIsChecked('#remove_additional_menu_locations');
+		$I->checkOption('#remove_additional_menu_locations');
+		$I->click("Save Changes");
+
+		$I->see("Settings saved.");
+		$I->seeCheckboxIsChecked('#remove_additional_menu_locations');
+	}
 }

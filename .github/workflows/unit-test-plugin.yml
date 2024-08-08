@@ -21,9 +21,9 @@ jobs:
           WP_VERSION: ${{ matrix.wordpress }}
         working-directory: ./plugins/faustwp
         run: |
-          docker-compose build \
+          docker compose build \
             --build-arg WP_VERSION=${{ matrix.wordpress }}
-          docker-compose up -d
+          docker compose up -d
 
       - name: Wait for db
         run: |
@@ -33,16 +33,16 @@ jobs:
 
       - name: Setup testing framework
         working-directory: ./plugins/faustwp
-        run: docker exec -e COVERAGE=1 $(docker-compose ps -q wordpress) init-testing-environment.sh
+        run: docker exec -e COVERAGE=1 $(docker compose ps -q wordpress) init-testing-environment.sh
 
       - name: Install and activate WP GraphQL
         working-directory: ./plugins/faustwp
-        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
+        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
 
       - name: Install Dependencies
         working-directory: ./plugins/faustwp
-        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) composer install
+        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) composer install
 
       - name: Run unit tests
         working-directory: ./plugins/faustwp
-        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker-compose ps -q wordpress) composer test
+        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) composer test
