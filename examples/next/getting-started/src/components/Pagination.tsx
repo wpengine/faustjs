@@ -7,8 +7,8 @@ interface NextPageNavigationProps {
 
 function NextPageNavigation(props: NextPageNavigationProps) {
   return (
-    <Link href={props.href}>
-      <a aria-label={'Next page.'}>Next Page →</a>
+    <Link href={props.href} aria-label={'Next page.'}>
+      Next Page →
     </Link>
   );
 }
@@ -19,8 +19,8 @@ interface PreviousPageNavigationProps {
 
 function PreviousPageNavigation(props: PreviousPageNavigationProps) {
   return (
-    <Link href={props.href}>
-      <a aria-label={'Previous page.'}>← Previous Page</a>
+    <Link href={props.href} aria-label={'Previous page.'}>
+      ← Previous Page
     </Link>
   );
 }

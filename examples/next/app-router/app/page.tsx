@@ -26,7 +26,7 @@ export default async function Home() {
       <ul>
         {data.posts.nodes.map((post) => (
           <li>
-            <Link href={`/${post.slug}`}>{post.title}</Link>
+            <Link href={`/${post.slug}`} legacyBehavior>{post.title}</Link>
           </li>
         ))}
       </ul>

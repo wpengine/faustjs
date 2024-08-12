@@ -38,7 +38,7 @@ export default async function RootLayout({ children }) {
           <header>
             <div>
               <h1>
-                <Link href="/">{data.generalSettings.title}</Link>
+                <Link href="/" legacyBehavior>{data.generalSettings.title}</Link>
               </h1>
 
               <h5>{data.generalSettings.description}</h5>
@@ -47,7 +47,7 @@ export default async function RootLayout({ children }) {
             <ul>
               {data.primaryMenuItems.nodes.map((node) => (
                 <li>
-                  <Link href={node.uri}>{node.label}</Link>
+                  <Link href={node.uri} legacyBehavior>{node.label}</Link>
                 </li>
               ))}
             </ul>

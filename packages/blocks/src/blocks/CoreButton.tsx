@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import Link from 'next/link.js';
+import Link from 'next';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
-import { getStyles } from '../utils/index.js';
+import { getStyles } from '../utils';
 
 export type CoreButtonFragmentProps = ContentBlock & {
   attributes?: {
@@ -35,14 +35,13 @@ export function CoreButton(props: CoreButtonFragmentProps) {
         aria-label={attributes?.text}
         id={attributes?.anchor}
         className={attributes?.cssClassName}>
-        <Link href={attributes?.url}>
-          <a
-            target={linkTarget}
-            className={attributes?.linkClassName}
-            rel={attributes?.rel}
-            style={style}>
-            <span>{attributes?.text}</span>
-          </a>
+        <Link
+          href={attributes?.url}
+          target={linkTarget}
+          className={attributes?.linkClassName}
+          rel={attributes?.rel}
+          style={style}>s
+          <span>{attributes?.text}</span>
         </Link>
       </div>
     );

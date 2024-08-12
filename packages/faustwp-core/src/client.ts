@@ -177,6 +177,10 @@ export function useApollo(
   pageProps: AppProps<{ [key: string]: any }>['pageProps'],
 ) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
+  console.log( `hello world 22222` )
+  console.log({
+    state
+  });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const store = useMemo(() => getApolloClient(state), [state]);
   return store;

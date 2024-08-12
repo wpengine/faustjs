@@ -44,22 +44,22 @@
   "author": "WP Engine",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=17.0.2",
-    "react-dom": ">=17.0.2"
+    "react": "^17.0.2 || ^18 || ^19",
+    "react-dom": ">=17.0.2 || ^18 || ^19"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
-    "@testing-library/react": "^12.1.2",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.176",
     "@types/node": "^17.0.17",
-    "@types/react": "^17.0.34",
+    "@types/react": "^18.3.1s",
     "jest": "^27.3.1",
     "bs-logger": "^0.2.6",
     "make-error": "^1.3.6",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@gqty/react": "^2.1.0",
-    "@faustjs/core": "^0.15.13",
+    "@faustjs/core": "file:../core",
     "gqty": "^2.3.0",
     "graphql": ">=15.6",
     "lodash": "^4.17.21"
