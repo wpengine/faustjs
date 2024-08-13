@@ -76,7 +76,9 @@
   "peerDependencies": {
     "next": ">=11.1.2",
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2"
+    "react-dom": ">=17.0.2",
+    "@faustjs/core": ">=0.15.13",
+    "@faustjs/react": ">=0.15.13"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
@@ -90,9 +92,6 @@
     "gqty": "^2.3.0",
     "jest": "^27.3.1",
     "make-error": "^1.3.6",
-    "next": "^12.3.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
@@ -103,8 +102,6 @@
     "./dist/cjs/export/log.js"
   ],
   "dependencies": {
-    "@faustjs/core": "^0.15.13",
-    "@faustjs/react": "^0.15.13",
     "@gqty/logger": "^2.0.1",
     "@gqty/react": "^2.1.0",
     "common-tags": "^1.8.2",

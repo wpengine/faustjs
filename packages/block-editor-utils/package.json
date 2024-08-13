@@ -30,8 +30,6 @@
     "@types/wordpress__block-editor": "11.5.5",
     "ts-jest": "29.1.1",
     "jest": "29.7.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "@react-spring/web": "9.7.3"
   },
   "scripts": {
