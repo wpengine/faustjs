@@ -74,11 +74,11 @@
   "author": "WP Engine",
   "license": "MIT",
   "peerDependencies": {
+    "@faustjs/core": ">=0.15.13",
+    "@faustjs/react": ">=0.15.13",
     "next": ">=11.1.2",
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2",
-    "@faustjs/core": ">=0.15.13",
-    "@faustjs/react": ">=0.15.13"
+    "react-dom": ">=17.0.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.0",
