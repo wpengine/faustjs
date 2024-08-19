@@ -290,8 +290,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
   if (
     seedNode === null ||
-    isPreview === null ||
-    (isPreview && isAuthenticated === null)
+    (isPreview === true && isAuthenticated === null)
   ) {
     return null;
   }
@@ -301,7 +300,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       seedNode={seedNode}
-      isPreview={isPreview}
+      isPreview={isPreview === true}
       isAuthenticated={isAuthenticated}
       loading={loading}
       setLoading={setLoading}
