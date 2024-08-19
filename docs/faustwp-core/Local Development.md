@@ -106,7 +106,7 @@ This will remove the symlink from the `node_modules` directory of the project an
 ## Troubleshooting
 
 - **Issue:** `yarn link` command not working.
-  - **Solution:** Ensure the path to `@faustwp/core` is correct and that you have the necessary permissions.
+  - **Solution:** Ensure the path to `@faustwp/core` and `@faustwp/cli` are correct and that you have the necessary permissions.
 - **Issue:** Development server not starting.
   - **Solution:** Check for any errors in the terminal and ensure all dependencies are installed correctly.
 - **Issue:** Build errors when running `npm install`
