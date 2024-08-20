@@ -66,7 +66,10 @@ export async function createRootSitemapIndex(
   // fetch sitemap from WP
   const trimmedWpUrl = trim(getWpUrl(), '/');
   const trimmedFrontendUrl = trim(frontendUrl, '/');
-  const trimmedSitemapIndexPath = trim(sitemapIndexPath || SITEMAP_INDEX_PATH, '/');
+  const trimmedSitemapIndexPath = trim(
+    sitemapIndexPath || SITEMAP_INDEX_PATH,
+    '/',
+  );
   const wpSitemapUrl = `${trimmedWpUrl}/${trimmedSitemapIndexPath}`;
 
   let sitemaps: SitemapSchemaSitemapElement[] = [];
@@ -90,10 +93,14 @@ export async function createRootSitemapIndex(
 
   // Don't proxy the sitemap index if the response was not ok.
   if (!res.ok) {
-    console.error(`Failed to fetch sitemap index from WordPress at ${wpSitemapUrl}`);
+    console.error(
+      `Failed to fetch sitemap index from WordPress at ${wpSitemapUrl}`,
+    );
     console.error('Possible solutions:');
-    console.error('- Check that sitemapIndexPath is correct in the options passed to getSitemapProps. (some WordPress plugins change the default sitemap path)');
-    console.error(`- Consider flushing permalinks in WordPress.`)
+    console.error(
+      '- Check that sitemapIndexPath is correct in the options passed to getSitemapProps. (some WordPress plugins change the default sitemap path)',
+    );
+    console.error(`- Consider flushing permalinks in WordPress.`);
 
     return undefined;
   }
