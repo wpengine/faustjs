@@ -232,7 +232,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       return;
     }
 
-    if (isPreview === true && isAuthenticated !== true) {
+    if (isPreview && !isAuthenticated) {
       return;
     }
 
@@ -288,10 +288,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     })();
   }, [seedNode, isPreview, isAuthenticated, basePath]);
 
-  if (
-    seedNode === null ||
-    (isPreview === true && isAuthenticated === null)
-  ) {
+  if (!seedNode || (isPreview && !isAuthenticated)) {
     return null;
   }
 
@@ -301,7 +298,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       {...props}
       seedNode={seedNode}
       isPreview={isPreview === true}
-      isAuthenticated={isAuthenticated}
+      isAuthenticated={isAuthenticated === true}
       loading={loading}
       setLoading={setLoading}
     />
