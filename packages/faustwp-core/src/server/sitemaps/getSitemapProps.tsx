@@ -44,6 +44,10 @@ export type GetSitemapPropsConfig = {
    */
   sitemapPathsToIgnore?: string[];
   /**
+   * The path to the sitemap index file in WordPress.
+   */
+  sitemapIndexPath?: string;
+  /**
    * Next.js pages you want included in you sitemap. When provided, an index
    * will be created specifically for these pages.
    */
