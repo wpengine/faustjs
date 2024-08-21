@@ -17,7 +17,6 @@ This guide will walk you through setting up a local development environment for 
 - [Node.js](https://nodejs.org/en/) (v14 or higher)
 - [Yarn](https://yarnpkg.com/) (v4.4 or higher)
 - [Git](https://git-scm.com/) (v2.33 or higher)
-- [LocalWP](https://localwp.com/) (v6.1 or higher)
 
 > [!NOTE]
 > We will be using both `yarn` and `npm` in this guide.
