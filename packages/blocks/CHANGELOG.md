@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 4.1.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
 ## 4.0.0
 
 ### Major Changes

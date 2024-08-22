@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.1.0
+
+### Patch Changes
+
+- 031c2393: Added "glob" as a dependency
+
 ## 3.0.2
 
 ### Patch Changes
