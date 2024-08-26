@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.3.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
 ## 0.2.1
 
 ### Patch Changes

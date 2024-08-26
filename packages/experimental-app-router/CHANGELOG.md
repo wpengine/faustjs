@@ -1,5 +1,11 @@
 # @faustwp/experimental-app-router
 
+## 0.4.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
 ## 0.3.1
 
 ### Patch Changes
