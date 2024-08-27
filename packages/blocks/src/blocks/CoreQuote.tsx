@@ -6,7 +6,7 @@ import { getStyles } from '../utils/index.js';
 
 export type CoreQuoteFragmentProps = ContentBlock & {
   attributes?: {
-    align?: string;
+    textAlign?: string;
     anchor?: string;
     backgroundColor?: string;
     citation?: string;
