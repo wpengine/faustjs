@@ -1,5 +1,11 @@
 # Faust
 
+## 1.4.1
+
+### Patch Changes
+
+- e80d80af: Tested up to WordPress v6.6.1
+
 ## 1.4.0
 
 ### Minor Changes
