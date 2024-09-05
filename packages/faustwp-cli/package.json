@@ -29,7 +29,7 @@
     "dotenv-flow": "^3.2.0",
     "form-data": "^4.0.0",
     "fs-extra": "^11.1.1",
-    "glob": "^10.3",
+    "glob": "^8",
     "glob-promise": "^6.0.5",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21",
