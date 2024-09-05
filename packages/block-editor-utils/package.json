@@ -6,8 +6,8 @@
   "module": "dist/mjs/index.js",
   "types": "dist/mjs/index.d.ts",
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
   },
   "dependencies": {
     "@wordpress/block-editor": "^12.11.1",
