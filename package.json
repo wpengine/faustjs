@@ -7,23 +7,20 @@
   },
   "workspaces": {
     "packages": [
-      "packages/core",
-      "packages/react",
-      "packages/next",
-      "packages/blocks",
-      "packages/experimental-app-router",
-      "packages/block-editor-utils",
-      "packages/faustwp-cli",
-      "packages/faustwp-core",
-      "examples/next/getting-started",
-      "examples/next/faustwp-getting-started",
-      "examples/next/app-router",
-      "examples/next/block-support",
+      "packages/*",
       "plugins/faustwp"
+    ],
+    "legacy-packages": [
+      "legacy-packages/*"
+    ],
+    "experimental-packages": [
+      "experimental-packages/*"
     ]
   },
   "scripts": {
-    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils --workspace=@faustwp/experimental-app-router",
+    "build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+    "build:experimental": "npm run build --workspace=experimental-packages/experimental-app-router",
+    "build:legacy": "npm run build --workspace=legacy-packages/core --workspace=legacy-packages/react --workspace=legacy-packages/next",
     "build:core": "npm run build --workspace=@faustjs/core",
     "build:next": "npm run build --workspace=@faustjs/next",
     "build:react": "npm run build --workspace=@faustjs/react",
@@ -42,7 +39,8 @@
     "docs-legacy:clear": "npm run clear --prefix internal/legacy.faustjs.org",
     "docs-legacy:install": "cd internal/legacy.faustjs.org && npm i && cd ..",
     "docs-legacy:start": "npm start --prefix internal/legacy.faustjs.org",
-    "test": "npm run build && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+    "test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+    "test:legacy": "npm run build:legacy && npm test --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next",
     "test:coverage": "npm run build && npm run test:coverage --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/block-editor-utils",
     "wpe-build": "exit 1",
     "changeset": "changeset",
@@ -72,7 +70,9 @@
     "prettier": "^2.4.1",
     "prettier-linter-helpers": "^1.0.0",
     "react-refresh": "^0.14.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.8.1",
+    "sass": "^1.78.0"
   },
   "overrides": {
     "semver": "~7.5.2",
