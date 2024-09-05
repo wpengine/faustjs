@@ -87,8 +87,8 @@ describe('useAuth hook', () => {
   it('Provides the proper login url with local strategy', async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
       useAuth({
-        strategy: 'local',
-        loginPageUrl: '/login',
+        strategy: "local",
+        loginPageUrl: "/login"
       }),
     );
     await waitForNextUpdate();
@@ -112,7 +112,7 @@ describe('useAuth hook', () => {
   it('ensures strategy local requires a "loginPageUrl"', () => {
     expect(() =>
       useAuth({
-        strategy: 'local',
+        strategy: "local"
       } as any),
     ).toThrowError('useAuth: Local strategies must specify the "loginPageUrl"');
   });
