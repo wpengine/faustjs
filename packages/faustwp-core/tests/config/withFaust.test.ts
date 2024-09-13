@@ -29,11 +29,11 @@ describe('withFaust', () => {
     );
     const redirects = await finalConfig.redirects!();
     expect(redirects).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "destination": "/preview",
-          "has": Array [
-            Object {
+          "has": [
+            {
               "key": "preview",
               "type": "query",
               "value": "true",
@@ -42,10 +42,10 @@ describe('withFaust', () => {
           "permanent": false,
           "source": "/((?!preview).*)",
         },
-        Object {
+        {
           "destination": "/preview",
-          "has": Array [
-            Object {
+          "has": [
+            {
               "key": "preview",
               "type": "query",
               "value": "true",
@@ -64,11 +64,11 @@ describe('withFaust', () => {
     });
     const redirects = await finalConfig.redirects!();
     expect(redirects).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "destination": "/demo",
-          "has": Array [
-            Object {
+          "has": [
+            {
               "key": "preview",
               "type": "query",
               "value": "true",
@@ -77,10 +77,10 @@ describe('withFaust', () => {
           "permanent": false,
           "source": "/((?!demo).*)",
         },
-        Object {
+        {
           "destination": "/preview",
-          "has": Array [
-            Object {
+          "has": [
+            {
               "key": "preview",
               "type": "query",
               "value": "true",
@@ -89,10 +89,10 @@ describe('withFaust', () => {
           "permanent": false,
           "source": "/((?!preview).*)",
         },
-        Object {
+        {
           "destination": "/preview",
-          "has": Array [
-            Object {
+          "has": [
+            {
               "key": "preview",
               "type": "query",
               "value": "true",
