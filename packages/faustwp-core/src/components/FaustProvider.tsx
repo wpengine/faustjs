@@ -21,19 +21,20 @@ export function FaustProvider(props: {
   const router = useRouter();
   const apolloClient = useApollo(pageProps);
 
-  const setQueries = (newQueries: FaustQueries) => {
+  const setQueries = (newQueries: FaustQueries | null) => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    setFaustContext((prevContext) => {
-      return {
-        ...prevContext,
-        queries: newQueries,
-      };
-    });
+    setFaustContext((prevContext) => ({
+      ...prevContext,
+      queries: newQueries,
+    }));
   };
 
-  const [faustContext, setFaustContext] = useState({
+  const [faustContext, setFaustContext] = useState<{
+    queries: FaustQueries | null;
+    setQueries: (newQueries: FaustQueries | null) => void;
+  }>({
     // eslint-disable-next-line no-underscore-dangle
-    queries: pageProps.__FAUST_QUERIES__,
+    queries: pageProps.__FAUST_QUERIES__ || null,
     setQueries,
   });
 
@@ -42,7 +43,10 @@ export function FaustProvider(props: {
    */
   useEffect(() => {
     // eslint-disable-next-line no-underscore-dangle
-    if (pageProps.__FAUST_QUERIES__) setQueries(pageProps.__FAUST_QUERIES__);
+    if (pageProps.__FAUST_QUERIES__) {
+      // eslint-disable-next-line no-underscore-dangle
+      setQueries(pageProps.__FAUST_QUERIES__ as FaustQueries);
+    }
     // eslint-disable-next-line no-underscore-dangle
   }, [pageProps.__FAUST_QUERIES__]);
 
