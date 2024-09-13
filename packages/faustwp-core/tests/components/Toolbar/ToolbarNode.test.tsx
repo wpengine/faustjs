@@ -6,6 +6,6 @@ import { ToolbarNode } from '../../../src/components/Toolbar';
 
 test('renders the component correctly', () => {
   render(<ToolbarNode id="1" />);
-  const aElement = screen.getByRole(/listitem/i);
+  const aElement = screen.getByRole('listitem');
   expect(aElement).toBeInTheDocument();
 });
