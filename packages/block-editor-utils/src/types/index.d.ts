@@ -17,11 +17,11 @@ export interface FieldOption {
   value: string;
 }
 
-export type Field = BasicField | SelectableField | RangeField | RichTextField
+export type Field = BasicField | SelectableField | RangeField | RichTextField;
 
 type BasicField = {
   name: string;
-  type: FieldType
+  type: FieldType;
   control: FieldControl;
   location: FieldLocation;
   label?: string;
@@ -32,22 +32,37 @@ type BasicField = {
 export type SelectableField = BasicField & {
   control: 'select' | 'radio';
   options?: FieldOption[];
-}
+};
 
 export type RangeField = BasicField & {
   control: 'range';
   min?: number;
   max?: number;
-}
+};
 
 export type RichTextField = BasicField & {
   control: 'rich-text';
   tagName?: keyof HTMLElementTagNameMap;
-}
+};
 
-export type FieldType = "string" | "number" | "boolean" | "integer" | "object" | "array"
-export type FieldControl = "textarea" | "color" | "text" | "radio" | "select" | "range" | "number" | "checkbox" | "rich-text"
-export type FieldLocation = "editor" | "inspector"
+export type FieldType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'integer'
+  | 'object'
+  | 'array';
+export type FieldControl =
+  | 'textarea'
+  | 'color'
+  | 'text'
+  | 'radio'
+  | 'select'
+  | 'range'
+  | 'number'
+  | 'checkbox'
+  | 'rich-text';
+export type FieldLocation = 'editor' | 'inspector';
 
 export interface ControlProps<T extends Record<string, any>> {
   config: Field;

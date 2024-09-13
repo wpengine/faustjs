@@ -1,7 +1,8 @@
-import { getSpacingOptions, SpacingProperties } from '../../../src/utils/from-theme-json/getSpacingOptions';
-import type {
-  ThemePropertiesSpacing,
-} from '../../../src/types/spacing';
+import {
+  getSpacingOptions,
+  SpacingProperties,
+} from '../../../src/utils/from-theme-json/getSpacingOptions';
+import type { ThemePropertiesSpacing } from '../../../src/types/spacing';
 
 describe('getSpacingOptions()', () => {
   it.each([

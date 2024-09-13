@@ -51,7 +51,7 @@ import { WordPressBlocksProvider } from '@faustwp/blocks';
     }}>
     <Component {...pageProps} key={router.asPath} />
   </WordPressBlocksProvider>
-</FaustProvider>
+</FaustProvider>;
 ```
 
 Then, inside your templates you need to pass on the `editorBlocks` data in your `WordPressBlocksViewer`.
@@ -64,10 +64,13 @@ import { WordPressBlocksViewer } from '@faustwp/blocks';
 import blocks from '../wp-blocks';
 
 const { editorBlocks } = props.data.post;
-const blocks = flatListToHierarchical(editorBlocks, {childrenKey: 'innerBlocks'});
+const blocks = flatListToHierarchical(editorBlocks, {
+  childrenKey: 'innerBlocks',
+});
 
-return <WordPressBlocksViewer blocks={blocks}/>
+return <WordPressBlocksViewer blocks={blocks} />;
 ```
+
 By default the API brings all the nodes back in one array instead of a bunch of separate nodes with their own arrays. Therefore we use the `flatListToHierarchical` to convert the list back to the hierarchical tree type.
 
 Example `editorBlocks` GraphQL query fragment:
@@ -85,6 +88,7 @@ editorBlocks {
 ```
 
 ## A Simple Block Example
+
 This is a simple block called `CoreParagraph`. The block is a `p` tag that sets its content to `attributes.content` which is passed in from the props.
 
 `CoreParagraph.fragments` does a WPGraphQL query for the `content` and `cssClassName` and sets it as the fragment `CoreParagraphFragment`.
@@ -114,12 +118,13 @@ CoreParagraph.fragments = {
   key: `CoreParagraphFragment`,
 };
 ```
+
 Use a default barrel export of the CoreParagraph Block in `index.js`:
 
 ```js
 import CoreParagraph from './CoreParagraph';
 export default {
-  'CoreParagraph': CoreParagraph,
+  CoreParagraph: CoreParagraph,
 };
 ```
 

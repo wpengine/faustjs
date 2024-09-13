@@ -9,9 +9,7 @@ import {
 } from '../../src/blocks/CoreSeparator.js';
 import { BlockWithAttributes } from '../../src/components/WordPressBlocksViewer';
 
-function renderProvider(
-  props: CoreSeparatorFragmentProps,
-) {
+function renderProvider(props: CoreSeparatorFragmentProps) {
   return render(
     <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreSeparator {...props} />

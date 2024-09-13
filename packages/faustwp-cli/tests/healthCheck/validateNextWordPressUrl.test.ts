@@ -93,7 +93,7 @@ describe('healthCheck/validateNextWordPressUrl', () => {
       ),
     );
 
-    expect(mockExit).not.toHaveBeenCalled()
+    expect(mockExit).not.toHaveBeenCalled();
     expect(fetchMock).toHaveFetched(
       'http://mysite.local/wp-json/faustwp/v1/validate_public_wordpress_url',
     );

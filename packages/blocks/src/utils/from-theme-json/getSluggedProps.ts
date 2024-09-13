@@ -12,9 +12,12 @@ export function getSluggedProps<T extends Slugged, Key extends keyof T>(
   listProps: T[],
   valueProp: Key,
 ): Record<string, unknown> {
-  const res = Object.entries(listProps).reduce((acc, [, value]) => {
-    acc[value.slug] = value[valueProp];
-    return acc;
-  }, {} as Record<string, unknown>);
+  const res = Object.entries(listProps).reduce(
+    (acc, [, value]) => {
+      acc[value.slug] = value[valueProp];
+      return acc;
+    },
+    {} as Record<string, unknown>,
+  );
   return res;
 }

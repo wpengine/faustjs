@@ -43,7 +43,7 @@ describe('RangeField', () => {
     expect(
       screen.getByRole('spinbutton', {
         name: /rangefield/i,
-      })
+      }),
     ).toHaveValue(props.attributes.rangeField);
   });
 });

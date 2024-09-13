@@ -85,7 +85,7 @@ describe('getProps', () => {
         `,
         variables: (ctx: any, extra?: Record<string, unknown>) => ({
           testVar: true,
-          extra
+          extra,
         }),
       };
 
@@ -95,7 +95,7 @@ describe('getProps', () => {
         props: {
           __APOLLO_STATE__: { testing: true },
           data: { generalSettings: { title: 'My test site' } },
-          __PAGE_VARIABLES__: { testVar: true,  extra: { custom: 'data' } },
+          __PAGE_VARIABLES__: { testVar: true, extra: { custom: 'data' } },
         },
         revalidate: 900,
       });
@@ -125,7 +125,7 @@ describe('getProps', () => {
         `,
         variables: (ctx: any, extra?: Record<string, unknown>) => ({
           testVar: true,
-          extra
+          extra,
         }),
       };
 

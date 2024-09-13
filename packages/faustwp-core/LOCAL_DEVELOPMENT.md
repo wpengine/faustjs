@@ -5,11 +5,14 @@
 This guide will walk you through setting up a local development environment for `@faustwp/core`.
 
 ## Table of Contents
+
 1. [Requirements](#requirements)
 2. [Setup](#setup)
-  - [Link `@faustwp/core`](#link-faustwp-core)
-  - [Start the `@faustwp/core` development server](#start-the-faustwp-core-development-server)
-  - [Start the project site](#start-the-project-site)
+
+- [Link `@faustwp/core`](#link-faustwp-core)
+- [Start the `@faustwp/core` development server](#start-the-faustwp-core-development-server)
+- [Start the project site](#start-the-project-site)
+
 3. [Troubleshooting](#troubleshooting)
 
 ## Requirements
@@ -22,7 +25,6 @@ This guide will walk you through setting up a local development environment for 
 > We will be using both `yarn` and `npm` in this guide.
 > The `faustjs` repo uses `npm` for installing dependencies and running scripts.
 > The project using faust will use `yarn` to create a link to Faust for local development with "fast refresh" support.
-
 
 ## Project Site Setup
 
@@ -110,4 +112,3 @@ This will remove the symlink from the `node_modules` directory of the project an
   - **Solution:** Check for any errors in the terminal and ensure all dependencies are installed correctly.
 - **Issue:** Build errors when running `npm install`
   - **Solution:** Make sure all `node_modules` directories within the repo have been removed before running `npm install`.
-

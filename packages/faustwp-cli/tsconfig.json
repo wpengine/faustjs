@@ -7,7 +7,7 @@
     "target": "ES2017",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "declaration": true,
+    "declaration": true
   },
   "exclude": ["node_modules", "dist"],
   "include": ["src"]

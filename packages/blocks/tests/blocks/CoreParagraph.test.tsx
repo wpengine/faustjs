@@ -8,9 +8,7 @@ import {
   CoreParagraphFragmentProps,
 } from '../../src/blocks/CoreParagraph.js';
 
-function renderProvider(
-  props: CoreParagraphFragmentProps,
-) {
+function renderProvider(props: CoreParagraphFragmentProps) {
   return render(
     <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
       <CoreParagraph {...props} />
