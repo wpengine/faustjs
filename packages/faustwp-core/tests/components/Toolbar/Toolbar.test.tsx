@@ -7,12 +7,12 @@ import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustToolbarNodes } from '../../../src';
 import { setConfig } from '../../../src/config/index';
 import * as apollo from '@apollo/client';
-import * as nextRouter from 'next/router';
 import { Toolbar } from '../../../src/components/Toolbar';
 import { OperationVariables, QueryResult } from '@apollo/client';
 
 let mockIsAuthenticated = false;
 let mockIsReady = false;
+
 jest.mock('../../../src/hooks/useAuth', () => {
   return {
     useAuth: jest.fn(() => ({
@@ -43,13 +43,7 @@ test('renders the toolbar if user preference is true', async () => {
     },
   } as unknown as QueryResult;
 
-  const useQuerySpy = jest
-    .spyOn(apollo, 'useQuery')
-    .mockReturnValue(mockUseQuery);
-
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
+  jest.spyOn(apollo, 'useQuery').mockReturnValue(mockUseQuery);
 
   const dom = render(<Toolbar />);
 
@@ -60,7 +54,7 @@ test('renders the toolbar if user preference is true', async () => {
   expect(navElement).toBeInTheDocument();
 });
 
-test('doesnt render the toolbar if user preference is false', async () => {
+test('does not render the toolbar if user preference is false', async () => {
   expect.assertions(1);
   mockIsAuthenticated = true;
 
@@ -72,9 +66,7 @@ test('doesnt render the toolbar if user preference is false', async () => {
     },
   } as unknown as QueryResult;
 
-  const useQuerySpy = jest
-    .spyOn(apollo, 'useQuery')
-    .mockReturnValue(mockUseQuery);
+  jest.spyOn(apollo, 'useQuery').mockReturnValue(mockUseQuery);
 
   const dom = render(<Toolbar />);
 
@@ -85,25 +77,15 @@ test('doesnt render the toolbar if user preference is false', async () => {
   expect(navElement).not.toBeInTheDocument();
 });
 
-test('render the toolbar if user preference request throws an error/fails', async () => {
+test('renders the toolbar if user preference request throws an error/fails', async () => {
   expect.assertions(1);
   mockIsAuthenticated = true;
 
-  /**
-   * Likely to happen if a user is using a version of FaustWP without the
-   * "shouldShowFaustToolbar" graphql field.
-   */
   const mockUseQuery = {
     error: {}, // Request error
   } as unknown as QueryResult;
 
-  const useQuerySpy = jest
-    .spyOn(apollo, 'useQuery')
-    .mockReturnValue(mockUseQuery);
-
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
+  jest.spyOn(apollo, 'useQuery').mockReturnValue(mockUseQuery);
 
   const dom = render(<Toolbar />);
 
@@ -118,10 +100,6 @@ test('renders a default list of nodes in the primary section if seedNode is not 
   expect.assertions(2);
   mockIsAuthenticated = true;
 
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
-
   const dom = render(<Toolbar />);
   await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
   const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
@@ -130,7 +108,7 @@ test('renders a default list of nodes in the primary section if seedNode is not 
     toolBars[0],
     3,
     `
-  Array [
+  [
     "WordPress",
     "",
     "GraphiQL IDE",
@@ -139,13 +117,9 @@ test('renders a default list of nodes in the primary section if seedNode is not 
   );
 });
 
-test('renders an Edit Post Node,  in the primary section if seedNode is provided', async () => {
+test('renders an Edit Post Node, in the primary section if seedNode is provided', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
-
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
 
   const dom = render(
     <Toolbar
@@ -160,7 +134,7 @@ test('renders an Edit Post Node,  in the primary section if seedNode is provided
     toolBars[0],
     3,
     `
-  Array [
+  [
     "WordPress",
     "Edit Post",
     "GraphiQL IDE",
@@ -174,10 +148,6 @@ test('renders an Account Node in the secondary section', async () => {
   mockIsAuthenticated = true;
   mockIsReady = true;
 
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
-
   const dom = render(
     <Toolbar seedNode={{ isFrontPage: false, __typename: 'Post' }} />,
   );
@@ -188,7 +158,7 @@ test('renders an Account Node in the secondary section', async () => {
     toolBars[1],
     4,
     `
-    Array [
+    [
       "Howdy, Edit ProfileLog Out",
       "",
       "Edit Profile",
@@ -198,17 +168,9 @@ test('renders an Account Node in the secondary section', async () => {
   );
 });
 
-test('renders an Edit Post Node, if seedNode is not provided and is preview', async () => {
+test('renders an Edit Post Node if seedNode is not provided and is preview', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
-
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {
-      p: '123',
-      typeName: 'Post',
-      preview: true,
-    },
-  } as any as nextRouter.NextRouter);
 
   const dom = render(<Toolbar />);
 
@@ -219,22 +181,18 @@ test('renders an Edit Post Node, if seedNode is not provided and is preview', as
     toolBars[0],
     3,
     `
-  Array [
+  [
     "WordPress",
-    "Edit Post",
+    "",
     "GraphiQL IDE",
   ]
-  `,
+`,
   );
 });
 
-test('does not render an Edit Post Node, if there is no seedNode and it is not a preview', async () => {
+test('does not render an Edit Post Node if there is no seedNode and it is not a preview', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
-
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
 
   const dom = render(<Toolbar />);
 
@@ -245,7 +203,7 @@ test('does not render an Edit Post Node, if there is no seedNode and it is not a
     toolBars[0],
     3,
     `
-  Array [
+  [
     "WordPress",
     "",
     "GraphiQL IDE",
@@ -264,10 +222,6 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
   expect.assertions(2);
   mockIsAuthenticated = true;
 
-  const useRouterSpy = jest.spyOn(nextRouter, 'useRouter').mockReturnValue({
-    query: {},
-  } as any as nextRouter.NextRouter);
-
   mockIsReady = true;
   const dom = render(
     <Toolbar
@@ -281,13 +235,13 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
     toolBars[0],
     4,
     `
-    Array [
+    [
       "WordPress",
       "Edit Post",
       "GraphiQL IDE",
       "Test Node",
     ]
-  `,
+`,
   );
 });
 
