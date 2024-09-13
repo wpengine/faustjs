@@ -7,8 +7,10 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*",
-      "plugins/faustwp"
+      "packages/*"
+    ],
+    "plugins": [
+      "plugins/*"
     ],
     "legacy-packages": [
       "legacy-packages/*"
@@ -18,7 +20,7 @@
     ]
   },
   "scripts": {
-    "build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+    "build": "npm run build --workspaces",
     "build:experimental": "npm run build --workspace=experimental-packages/experimental-app-router",
     "build:legacy": "npm run build --workspace=legacy-packages/core --workspace=legacy-packages/react --workspace=legacy-packages/next",
     "build:core": "npm run build --workspace=@faustjs/core",
@@ -28,9 +30,9 @@
     "build:faust-core": "npm run build --workspace=@faustwp/core",
     "build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
     "build:experimental-app-router": "npm run build --workspace=@faustwp/experimental-app-router",
-    "clean": "npm run clean --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
+    "clean": "npm run clean --workspaces",
     "clean:examples": "rimraf examples/**/node_modules",
-    "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
+    "format": "npm run format --workspaces",
     "build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",
     "dev": "npm run build && npm run dev:next:getting-started",
     "dev:next:getting-started": "rimraf examples/next/getting-started/.next && npm run dev ---workspace=examples/next/getting-started",

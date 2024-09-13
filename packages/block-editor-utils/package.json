@@ -29,13 +29,15 @@
     "@wordpress/jest-preset-default": "^11.14.0",
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
+    "prettier": "^3.3.3",
     "rimraf": "^4.4.0",
     "ts-jest": "29.1.1"
   },
   "scripts": {
     "prebuild": "npm run clean",
     "postbuild": "npm run package",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist node_modules",
+    "format": "prettier --write .",
     "package": "node ../../scripts/package.js",
     "test": "jest",
     "build": "npm run build-esm && npm run build-cjs",
