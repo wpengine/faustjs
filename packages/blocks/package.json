@@ -16,9 +16,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@types/node": "^18.0.6",
-    "@types/react": "^17.0.34",
-    "prettier": "^3.3.3",
-    "rimraf": "^4.4.0"
+    "@types/react": "^17.0.34"
   },
   "scripts": {
     "prebuild": "npm run clean",

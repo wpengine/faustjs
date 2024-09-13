@@ -79,7 +79,7 @@ describe('<WordPressTemplate />', () => {
         () =>
           ({
             query: clientQueryMock,
-          }) as any as ApolloClient<NormalizedCacheObject>,
+          } as any as ApolloClient<NormalizedCacheObject>),
       );
 
     delete (window as any).location;
@@ -117,7 +117,7 @@ describe('<WordPressTemplate />', () => {
         () =>
           ({
             query: clientQueryMock,
-          }) as any as ApolloClient<NormalizedCacheObject>,
+          } as any as ApolloClient<NormalizedCacheObject>),
       );
 
     delete (window as any).location;
@@ -249,7 +249,7 @@ describe('<WordPressTemplateInternal />', () => {
         () =>
           ({
             query: clientQueryMock,
-          }) as any as ApolloClient<NormalizedCacheObject>,
+          } as any as ApolloClient<NormalizedCacheObject>),
       );
     clientQueryMock.mockImplementation(() => ({
       data: {
@@ -303,7 +303,7 @@ describe('<WordPressTemplateInternal />', () => {
         () =>
           ({
             query: clientQueryMock,
-          }) as any as ApolloClient<NormalizedCacheObject>,
+          } as any as ApolloClient<NormalizedCacheObject>),
       );
 
     clientQueryMock.mockImplementationOnce(() => ({

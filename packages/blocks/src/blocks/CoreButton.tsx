@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import Link from 'next/link';
+import Link from 'next/link.js';
 import { useBlocksTheme } from '../components/WordPressBlocksProvider.js';
 import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
