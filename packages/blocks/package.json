@@ -16,7 +16,8 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@types/node": "^18.0.6",
-    "@types/react": "^17.0.34"
+    "@types/react": "^17.0.34",
+    "@faustwp/core": "file:../faustwp-core"
   },
   "scripts": {
     "prebuild": "npm run clean",
