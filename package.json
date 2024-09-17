@@ -7,7 +7,10 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/faustwp-core",
+      "packages/faustwp-cli",
+      "packages/blocks",
+      "packages/block-editor-utils"
     ],
     "plugins": [
       "plugins/*"
@@ -30,7 +33,7 @@
     "build:faust-core": "npm run build --workspace=@faustwp/core",
     "build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
     "build:experimental-app-router": "npm run build --workspace=@faustwp/experimental-app-router",
-    "clean": "npm run clean --workspaces",
+    "clean": "rimraf node_modules && npm run clean --workspaces",
     "clean:examples": "rimraf examples/**/node_modules",
     "format": "npm run format --workspaces",
     "build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",

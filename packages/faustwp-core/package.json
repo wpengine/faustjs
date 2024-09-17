@@ -26,6 +26,7 @@
     "concurrently": "^7.6.0",
     "fetch-mock": "9.11.0",
     "jest": "^27.3.1",
+    "sass": "^1.78.0",
     "shx": "^0.3.4",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
