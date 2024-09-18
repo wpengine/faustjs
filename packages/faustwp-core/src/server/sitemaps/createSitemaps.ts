@@ -62,8 +62,7 @@ export async function createRootSitemapIndex(
     throw new Error('Request object must have URL');
   }
 
-  // get sitemapIndexPath config param
-  // fetch sitemap from WP
+  // Get the trimmed sitemap index path
   const trimmedWpUrl = trim(getWpUrl(), '/');
   const trimmedFrontendUrl = trim(frontendUrl, '/');
   const trimmedSitemapIndexPath = trim(
@@ -75,10 +74,10 @@ export async function createRootSitemapIndex(
   let sitemaps: SitemapSchemaSitemapElement[] = [];
 
   if (!isUndefined(pages) && isArray(pages) && pages.length) {
-    const trimmedFaustPagesPart = `${trim(
-      SITEMAP_INDEX_PATH,
+    const trimmedFaustPagesPart = `${trimmedSitemapIndexPath}?sitemap=${trim(
+      FAUST_PAGES_PATHNAME,
       '/',
-    )}?sitemap=${trim(FAUST_PAGES_PATHNAME, '/')}`;
+    )}`;
     const sitemapFaustPagesUrl = `${trimmedFrontendUrl}/${trimmedFaustPagesPart}`;
 
     sitemaps = [
@@ -170,11 +169,11 @@ export async function createRootSitemapIndex(
    *
    * @example
    * Replaces http://headless.local/wp-sitemap-posts-page-1.xml with
-   * http://localhost:3000/wp-sitemap-posts-page-1.xml
+   * http://localhost:3000/sitemap_index.xml?sitemap=wp-sitemap-posts-page-1.xml
    */
   wpSitemaps.forEach((sitemap) => {
     const url = new URL(sitemap.loc);
-    const sitemapUrl = `${trim(frontendUrl, '/')}/sitemap.xml?sitemap=${trim(
+    const sitemapUrl = `${trimmedFrontendUrl}/${trimmedSitemapIndexPath}?sitemap=${trim(
       url.pathname,
       '/',
     )}`;
@@ -293,11 +292,11 @@ export async function handleSitemapPath(
   let urls: SitemapSchemaUrlElement[] = [];
 
   /**
-   * Replace the existing WordPress URL in each "loc" with the headless URL
+   * Replace the existing WordPress URL in each "loc" with the frontend URL
    *
    * @example
-   * Replaces http://headless.local/wp-sitemap-posts-page-1.xml with
-   * http://localhost:3000/wp-sitemap-posts-page-1.xml
+   * Replaces http://headless.local/page-1/ with
+   * http://localhost:3000/page-1/
    */
   wpSitemapUrls.forEach((url) => {
     urls = [
