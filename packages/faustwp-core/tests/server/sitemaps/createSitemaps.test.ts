@@ -229,8 +229,6 @@ describe('createRootSitemapIndex', () => {
     expect(createSitemapIndexSpy).toHaveBeenCalledWith(expectedSitemaps);
   });
 
-  // New tests for sitemapIndexPath feature
-
   it('uses the default sitemapIndexPath when none is provided', async () => {
     const createSitemapIndexSpy = jest.spyOn(sitemapUtils, 'createSitemapIndex');
     jest.spyOn(global, 'fetch').mockImplementationOnce((url) => {
