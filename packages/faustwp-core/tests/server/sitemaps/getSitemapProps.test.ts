@@ -105,4 +105,35 @@ describe('validateConfig', () => {
       'The pages path property must be a string',
     );
   });
+
+  it('throws an error if sitemapIndexPath is not a string', () => {
+    const config: any = {
+      frontendUrl: 'http://localhost:3000',
+      sitemapIndexPath: 123,
+    };
+
+    expect(() => getSitemapProps.validateConfig(config)).toThrow(
+      'sitemapIndexPath must be a string',
+    );
+  });
+
+  it('throws an error if sitemapIndexPath does not start with a forward slash', () => {
+    const config: any = {
+      frontendUrl: 'http://localhost:3000',
+      sitemapIndexPath: 'sitemap_index.xml',
+    };
+
+    expect(() => getSitemapProps.validateConfig(config)).toThrow(
+      'sitemapIndexPath must start with a forward slash',
+    );
+  });
+
+  it('passes validation when sitemapIndexPath is a valid string', () => {
+    const config: any = {
+      frontendUrl: 'http://localhost:3000',
+      sitemapIndexPath: '/sitemap_index.xml',
+    };
+
+    expect(() => getSitemapProps.validateConfig(config)).not.toThrow();
+  });
 });
