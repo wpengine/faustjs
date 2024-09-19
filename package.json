@@ -80,6 +80,7 @@
     "postcss": "8.4.31",
     "axios": "^1.7.4",
     "ws": "8.17.1",
-    "path-to-regexp": "8.1.0"
+    "express": "4.20.0",
+    "webpack": "5.94.0"
   }
 }
