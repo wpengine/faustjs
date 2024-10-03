@@ -12,6 +12,7 @@
  * Version: 1.4.1
  * Requires PHP: 7.2
  * Requires at least: 5.7
+ * Update URI: false 
  *
  * @package FaustWP
  */
@@ -28,6 +29,7 @@ define( 'FAUSTWP_URL', plugin_dir_url( __FILE__ ) );
 define( 'FAUSTWP_PATH', plugin_basename( FAUSTWP_FILE ) );
 define( 'FAUSTWP_SLUG', dirname( plugin_basename( FAUSTWP_FILE ) ) );
 
+require FAUSTWP_DIR . '/includes/updates/plugin-updater.php';
 require FAUSTWP_DIR . '/includes/auth/functions.php';
 require FAUSTWP_DIR . '/includes/telemetry/functions.php';
 require FAUSTWP_DIR . '/includes/replacement/functions.php';
