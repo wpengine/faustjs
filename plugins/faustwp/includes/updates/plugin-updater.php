@@ -1,7 +1,7 @@
 <?php
 /**
  * The PluginUpdater class which can be used to pull plugin updates from a new location.
- * @package your-plugin-package-name
+ * @package FaustWP
  */
 
 namespace WPE\FaustWP\Updates;
