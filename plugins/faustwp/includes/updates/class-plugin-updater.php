@@ -108,12 +108,12 @@ class Plugin_Updater {
 	/**
 	 * Filter the plugin update transient to take over update notifications.
 	 *
-	 * @param ?object $transient_value The value of the `site_transient_update_plugins` transient.
+	 * @param ?object $transient The value of the `site_transient_update_plugins` transient.
 	 *
 	 * @handles site_transient_update_plugins
 	 * @return object
 	 */
-	public function filter_plugin_update_transient( $transient_value ) {
+	public function filter_plugin_update_transient( $transient ) {
 		// No update object exists. Return early.
 		if ( empty( $transient ) ) {
 			return $transient;
