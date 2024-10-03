@@ -1,6 +1,7 @@
 <?php
 /**
- * The PluginUpdater class which can be used to pull plugin updates from a new location.
+ * The Plugin_Updater class which can be used to pull plugin updates from a new location.
+ *
  * @package FaustWP
  */
 
@@ -14,23 +15,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 use stdClass;
 
 /**
- * The PluginUpdater class which can be used to pull plugin updates from a new location.
+ * The Plugin_Updater class which can be used to pull plugin updates from a new location.
  */
-class PluginUpdater {
+class Plugin_Updater {
 	/**
 	 * The URL where the api is located.
+	 *
 	 * @var ApiUrl
 	 */
 	private $api_url;
 
 	/**
 	 * The amount of time to wait before checking for new updates.
+	 *
 	 * @var CacheTime
 	 */
 	private $cache_time;
 
 	/**
 	 * These properties are passed in when instantiating to identify the plugin and it's update location.
+	 *
 	 * @var Properties
 	 */
 	private $properties;
@@ -242,16 +246,3 @@ class PluginUpdater {
 		return $res;
 	}
 }
-
-/**
- * Initialize the checking for plugin updates.
- */
-function check_for_upgrades() {
-	$properties = array(
-		'plugin_slug'     => 'faustwp', // This must match the key in "https://wpe-plugin-updates.wpengine.com/plugins.json".
-		'plugin_basename' => FAUSTWP_PATH, 
-	);
-
-	new PluginUpdater( $properties );
-}
-add_action( 'admin_init', __NAMESPACE__ . '\check_for_upgrades' );

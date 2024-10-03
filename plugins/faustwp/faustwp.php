@@ -9,10 +9,10 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: faustwp
  * Domain Path: /languages
- * Version: 1.4.1
+ * Version: 1.0.0
  * Requires PHP: 7.2
  * Requires at least: 5.7
- * Update URI: false 
+ * Update URI: false
  *
  * @package FaustWP
  */
@@ -29,7 +29,8 @@ define( 'FAUSTWP_URL', plugin_dir_url( __FILE__ ) );
 define( 'FAUSTWP_PATH', plugin_basename( FAUSTWP_FILE ) );
 define( 'FAUSTWP_SLUG', dirname( plugin_basename( FAUSTWP_FILE ) ) );
 
-require FAUSTWP_DIR . '/includes/updates/plugin-updater.php';
+require FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php';
+require FAUSTWP_DIR . '/includes/updates/check-for-updates.php';
 require FAUSTWP_DIR . '/includes/auth/functions.php';
 require FAUSTWP_DIR . '/includes/telemetry/functions.php';
 require FAUSTWP_DIR . '/includes/replacement/functions.php';
