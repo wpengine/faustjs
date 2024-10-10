@@ -63,7 +63,7 @@
   "author": "WP Engine",
   "license": "MIT",
   "dependencies": {
-    "cookie": "^0.4.1",
+    "cookie": "^0.7.0",
     "deepmerge": "^4.2.2",
     "gqty": "^2.3.0",
     "isomorphic-fetch": "^3.0.0",
