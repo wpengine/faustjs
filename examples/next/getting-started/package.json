@@ -18,7 +18,7 @@
   "dependencies": {
     "@faustjs/core": "^0.15.13",
     "@faustjs/next": "^0.16.0",
-    "next": "^12.3.4",
+    "next": "^14.2.10",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
