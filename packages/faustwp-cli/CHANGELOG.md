@@ -1,10 +1,5 @@
 # @faustwp/cli
 
-## 3.1.2
-
-### Patch Changes
-
-- Migrates blockset command dependency to use glob now supporting Promises and resolving error coming from now deprecated glob-promise dependency
 
 ## 3.1.0
 
