@@ -1,6 +1,5 @@
 # @faustwp/cli
 
-
 ## 3.1.0
 
 ### Patch Changes
