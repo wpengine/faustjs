@@ -108,7 +108,7 @@ class Plugin_Updater {
 	/**
 	 * Filter the plugin update transient to take over update notifications.
 	 *
-	 * @param object $transient The site_transient_update_plugins transient.
+	 * @param ?object $transient The value of the `site_transient_update_plugins` transient.
 	 *
 	 * @handles site_transient_update_plugins
 	 * @return object
