@@ -44,6 +44,9 @@
     ]
   },
   "overrides": {
-    "path-to-regexp": "^6.3.0"
+    "express": "^4.17.1",
+    "serve-handler": {
+      "path-to-regexp": "3.3.0"
+    }
   }
 }
