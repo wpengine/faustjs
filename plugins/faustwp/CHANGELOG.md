@@ -1,5 +1,11 @@
 # Faust
 
+## 1.5.0
+
+### Minor Changes
+
+- 011cd931: - Added a custom PluginUpdater class to enable FaustWP plugin updates from an external API endpoint.
+
 ## 1.4.1
 
 ### Patch Changes
