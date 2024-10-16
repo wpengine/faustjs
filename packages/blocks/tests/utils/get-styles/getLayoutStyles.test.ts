@@ -26,9 +26,9 @@ describe('getLayoutStyles()', () => {
         },
       },
       {
-        flexBasis: "50%",
-        height: "200px",
-        maxWidth: "800px",
+        flexBasis: '50%',
+        height: '200px',
+        maxWidth: '800px',
         marginLeft: '0 !important',
         marginRight: 'auto !important',
       },
@@ -48,8 +48,8 @@ describe('getLayoutStyles()', () => {
         },
       },
       {
-        flexBasis: "50%",
-        height: "200px",
+        flexBasis: '50%',
+        height: '200px',
         maxWidth: '800px',
         marginLeft: 'auto !important',
         marginRight: '0 !important',

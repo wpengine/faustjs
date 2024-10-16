@@ -11,7 +11,7 @@ import {
   parsePhpAssetFile,
   processBlockFiles,
   BLOCKS_DIR,
-  FAUST_DIR
+  FAUST_DIR,
 } from '../../src/blockset';
 import fs from 'fs-extra';
 import path from 'path';
@@ -114,16 +114,16 @@ return array(
 
     it('should convert PHP file to JSON and remove the original PHP file', async () => {
       await processBlockFiles([mockPhpFilePath]);
-    
+
       // Use the BLOCKS_DIR for locating the JSON file
       const blockName = path.basename(path.dirname(mockPhpFilePath));
       const jsonFilePath = path.join(BLOCKS_DIR, blockName, 'index.asset.json');
       expect(await fs.pathExists(jsonFilePath)).toBeTruthy();
-    
+
       // Check JSON file content
       const jsonContent = await fs.readJson(jsonFilePath);
       expect(jsonContent).toEqual(expectedJson);
-    
+
       // Check PHP file removal
       expect(await fs.pathExists(mockPhpFilePath)).toBeFalsy();
     });
@@ -143,7 +143,7 @@ return array(
     `;
     const expectedJson = {
       dependencies: ['react', 'wp-block-editor'],
-      version: '1.0.0'
+      version: '1.0.0',
     };
     expect(parsePhpAssetFile(validPhpContent)).toEqual(expectedJson);
   });
@@ -165,7 +165,9 @@ return array(
           'version' => '1.0.0'
       );
     `;
-    expect(parsePhpAssetFile(missingDependencies)).toEqual({ version: '1.0.0' });
+    expect(parsePhpAssetFile(missingDependencies)).toEqual({
+      version: '1.0.0',
+    });
   });
 
   it('handles missing version', () => {
@@ -175,7 +177,9 @@ return array(
           'dependencies' => array('react')
       );
     `;
-    expect(parsePhpAssetFile(missingVersion)).toEqual({ dependencies: ['react'] });
+    expect(parsePhpAssetFile(missingVersion)).toEqual({
+      dependencies: ['react'],
+    });
   });
 
   it('parses content with extra whitespace and different formatting', () => {
@@ -185,7 +189,7 @@ return array(
     `;
     const expectedJson = {
       dependencies: ['react', 'wp-editor'],
-      version: '2.0.0'
+      version: '2.0.0',
     };
     expect(parsePhpAssetFile(formattedPhpContent)).toEqual(expectedJson);
   });

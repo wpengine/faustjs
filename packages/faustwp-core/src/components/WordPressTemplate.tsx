@@ -194,7 +194,6 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
   const { isAuthenticated, loginUrl } = useAuth({
     strategy: 'redirect',
     shouldRedirect: false,
-    skip: !isPreview,
   });
 
   /**

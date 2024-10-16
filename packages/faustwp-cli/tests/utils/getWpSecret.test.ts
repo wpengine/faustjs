@@ -9,7 +9,7 @@ describe('utils/getWpSecret', () => {
 
   beforeAll(() => {
     process.env.NEXT_PUBLIC_WORDPRESS_URL = 'http://headless.local';
-    process.env.FAUST_SECRET_KEY   = 'fAuST-sup3r-s3cr3t-k3y';
+    process.env.FAUST_SECRET_KEY = 'fAuST-sup3r-s3cr3t-k3y';
     process.env.FAUSTWP_SECRET_KEY = 'fAuST-sup3r-s3cr3t-k3y'; // deprecated
   });
 
@@ -26,5 +26,4 @@ describe('utils/getWpSecret', () => {
     const deprecatedFaustSecretKeyFromEnv = process.env.FAUSTWP_SECRET_KEY;
     expect(getWpSecret()).toEqual(deprecatedFaustSecretKeyFromEnv);
   });
-
 });

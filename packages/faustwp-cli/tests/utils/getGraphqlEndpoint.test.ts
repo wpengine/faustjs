@@ -19,5 +19,4 @@ describe('utils/getGraphqlEndpoint', () => {
     const wpUrlFromEnv = process.env.NEXT_PUBLIC_WORDPRESS_URL;
     expect(getGraphqlEndpoint()).toEqual(wpUrlFromEnv + '/index.php?graphql');
   });
-
 });

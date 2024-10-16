@@ -96,7 +96,7 @@ describe('auth/client/accessToken', () => {
   });
 
   test('fetchAccessToken() should url encode the code parameter if provided', async () => {
-    const code = "//+\\==asdasdadasd:*&^%$))!£!";
+    const code = '//+\\==asdasdadasd:*&^%$))!£!';
     fetchMock.get(`/api/faust/auth/token?code=${encodeURIComponent(code)}`, {
       status: 200,
       body: JSON.stringify({

@@ -15,7 +15,7 @@ describe('utils/getWpUrl', () => {
     process.env = envBackup;
   });
 
-  it('provides the (unfiltered) WordPress URL from the project\'s .env', async () => {
+  it("provides the (unfiltered) WordPress URL from the project's .env", async () => {
     const wpUrlFromEnv = process.env.NEXT_PUBLIC_WORDPRESS_URL;
     expect(getWpUrl()).toEqual(wpUrlFromEnv);
   });
@@ -29,5 +29,4 @@ describe('utils/getWpUrl', () => {
     const wpUrlFromEnv = process.env.NEXT_PUBLIC_WORDPRESS_URL;
     expect(getWpUrl('/with/path/')).toEqual(wpUrlFromEnv + '/with/path');
   });
-
 });

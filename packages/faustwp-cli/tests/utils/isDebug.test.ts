@@ -8,15 +8,15 @@ describe('utils/isDebug', () => {
   const envBackup = process.env;
 
   afterAll(() => {
-   process.env = envBackup;
+    process.env = envBackup;
   });
 
-  it('returns true when FAUST_DEBUG is set to \'1\'', async () => {
+  it("returns true when FAUST_DEBUG is set to '1'", async () => {
     process.env.FAUST_DEBUG = '1';
     expect(isDebug()).toEqual(true);
   });
 
-  it('returns true when FAUST_DEBUG is set to \'true\'', async () => {
+  it("returns true when FAUST_DEBUG is set to 'true'", async () => {
     process.env.FAUST_DEBUG = 'true';
     expect(isDebug()).toEqual(true);
   });
