@@ -40,7 +40,7 @@ jobs:
         run: npm install -g @next/bundle-analyzer
 
       - name: Install dependencies
-        run: npm i --include=dev
+        run: npm i -D next-secure-headers
 
       - name: Build packages
         run: npm run build
