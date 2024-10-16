@@ -42,8 +42,8 @@ jobs:
       - name: Install dependencies
         run: npm i
       
-      - name: Install next-bundle-analysis
-        run: npm i --save-dev next-bundle-analysis
+      - name: Install next-secure-headers
+        run: npm i --save-dev next-secure-headers
 
       - name: Build packages
         run: npm run build
