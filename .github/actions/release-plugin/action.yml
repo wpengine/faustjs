@@ -1,22 +1,41 @@
-name: 'WordPress Plugin Deploy'
-description: 'Deploy to the WordPress Plugin Repository'
-author: '10up'
+name: 'Plugin Deploy'
+description: 'Upload zip file to releases tab'
 branding:
   icon: 'upload-cloud'
   color: 'blue'
-inputs:
-  generate-zip:
-    description: 'Generate package zip file?'
-    default: false
+
 outputs:
   zip-path:
     description: 'Path to zip file'
-    value: ${{ steps.deploy.outputs.zip-path }}
+    value: ${{ steps.zip.outputs.zip-path }}
+
 runs:
   using: 'composite'
   steps:
-    - id: deploy
-      env:
-        INPUT_GENERATE_ZIP: ${{ inputs.generate-zip }}
-      run: ${{ github.action_path }}/deploy.sh
+    - id: prepare
+      name: Prepare Environment
+      run: |
+        sudo apt-get update && sudo apt-get install zip rsync -y
+    - id: zip
+      name: Zip Plugin (optional)
+      run: |
+        # Create dist folder and copy files while excluding .distignore items
+        mkdir -p dist
+        rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" ${{ env.PLUGIN_DIR }}/ dist/${{ env.SLUG }}
+
+        # Zip the plugin directory
+        zip_file="faustwp-${{ env.VERSION }}.zip"
+        zip -r $zip_file dist/${{ env.SLUG }}
+
+        # Save zip path to output
+        echo "::set-output name=zip-path::$PWD/$zip_file"
       shell: bash
+
+    - id: upload
+      name: Upload Zip File to Release
+      uses: softprops/action-gh-release@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        files: ${{ steps.zip.outputs.zip-path }}  # Updated to use zip-path output
+        asset_name: faustwp-${{ env.VERSION }}.zip  # Set asset name to the correct versioned name
+        overwrite: true
