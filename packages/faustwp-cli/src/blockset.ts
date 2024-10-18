@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import path from 'path';
 import fs from 'fs-extra';
-import glob from 'glob-promise';
+import { glob } from 'glob';
 import FormData from 'form-data';
 import archiver from 'archiver';
 import { spawnSync } from 'child_process';
