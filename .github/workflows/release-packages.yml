@@ -52,12 +52,8 @@ jobs:
         # Then deploy the WordPress plugin
         # https://github.com/changesets/action#outputs
         if: steps.changesets.outputs.published && contains(steps.changesets.outputs.publishedPackages, '"@faustwp/wordpress-plugin"')
-        # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
-        # to support our monorepo structure.
         uses: ./.github/actions/release-plugin
         env:
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           PLUGIN_DIR: plugins/faustwp
           SLUG: faustwp
           VERSION: ${{ env.PLUGIN_VERSION }}
