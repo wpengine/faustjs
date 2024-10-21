@@ -17,12 +17,13 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@types/node": "^18.0.6",
     "@types/react": "^17.0.34",
-    "rimraf": "^4.4.0"
+    "@faustwp/core": "file:../faustwp-core"
   },
   "scripts": {
     "prebuild": "npm run clean",
     "postbuild": "npm run package",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist node_modules",
+    "format": "prettier --write .",
     "package": "node ../../scripts/package.js",
     "test": "jest",
     "build": "npm run build-esm && npm run build-cjs",

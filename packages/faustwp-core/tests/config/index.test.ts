@@ -52,41 +52,41 @@ describe('config', () => {
   });
 
   test('config sets useGETForRequests to true by default', () => {
-    setConfig({} as any as FaustConfig);
+    setConfig({});
 
     expect(getConfig().useGETForQueries).toBeTruthy();
   });
 
   test('useGETForRequests can be modified', () => {
-    setConfig({ useGETForQueries: false } as any as FaustConfig);
+    setConfig({ useGETForQueries: false });
     expect(getConfig().useGETForQueries).toBeFalsy();
 
-    setConfig({ useGETForQueries: true } as any as FaustConfig);
+    setConfig({ useGETForQueries: true });
     expect(getConfig().useGETForQueries).toBeTruthy();
   });
 
   test('config sets usePersistedQueries to false by default', () => {
-    setConfig({} as any as FaustConfig);
+    setConfig({});
 
     expect(getConfig().usePersistedQueries).toBeFalsy();
   });
 
   test('usePersistedQueries can be modified', () => {
-    setConfig({ usePersistedQueries: false } as any as FaustConfig);
+    setConfig({ usePersistedQueries: false });
     expect(getConfig().usePersistedQueries).toBeFalsy();
 
-    setConfig({ usePersistedQueries: true } as any as FaustConfig);
+    setConfig({ usePersistedQueries: true });
     expect(getConfig().usePersistedQueries).toBeTruthy();
   });
 
   test('config does not use basePath by default', () => {
-    setConfig({} as any as FaustConfig);
+    setConfig({});
     expect(getConfig().basePath).toBeFalsy();
   });
 
   test('basePath can be modified', () => {
     const mockBasePath = '/blog';
-    setConfig({ basePath: mockBasePath } as any as FaustConfig);
+    setConfig({ basePath: mockBasePath });
     expect(getConfig().basePath).toEqual(mockBasePath);
   });
 });

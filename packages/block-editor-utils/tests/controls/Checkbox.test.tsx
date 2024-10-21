@@ -56,12 +56,7 @@ describe('Checkbox', () => {
   });
 
   it('checks that checkbox gets checked', () => {
-    render(
-      <input
-        type="checkbox"
-        aria-label="checkbox"
-      />,
-    );
+    render(<input type="checkbox" aria-label="checkbox" />);
 
     const checkbox = screen.getByRole('checkbox', { name: 'checkbox' });
     expect(checkbox).not.toBeChecked();

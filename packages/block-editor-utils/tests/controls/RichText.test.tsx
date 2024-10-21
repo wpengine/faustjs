@@ -60,6 +60,7 @@ describe('RichText', () => {
       <div
         aria-label="richtextfield"
         aria-multiline="true"
+        aria-readonly="false"
         class="block-editor-rich-text__editable components-text-control__input rich-text"
         contenteditable="true"
         id="wp-components-base-control-1"

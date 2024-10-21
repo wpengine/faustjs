@@ -4,7 +4,7 @@ describe('getInlineStyles()', () => {
   it.each([
     [{ style: null }, undefined],
     [{ style: undefined }, undefined],
-    [{ style: "invalid" }, undefined],
+    [{ style: 'invalid' }, undefined],
     [{ style: {} }, undefined],
     [
       {

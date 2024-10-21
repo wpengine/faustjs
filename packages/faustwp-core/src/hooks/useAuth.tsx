@@ -46,7 +46,10 @@ type ViewerType = {
 
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
 
-export function useAuth(_config?: UseAuthConfig) {
+export function useAuth(_config?: {
+  shouldRedirect: boolean;
+  strategy: string;
+}) {
   const config = defaults(_config, {
     strategy: 'redirect',
     shouldRedirect: false,

@@ -94,7 +94,7 @@ describe('ErrorLoggingLink', () => {
     mockNextLink.mockReturnValueOnce(
       new Observable((observer) => {
         observer.error(mockNetworkError); // Emit a network error instead of a server error
-      })
+      }),
     );
 
     const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();

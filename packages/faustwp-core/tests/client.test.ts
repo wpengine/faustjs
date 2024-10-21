@@ -47,7 +47,7 @@ describe('createApolloClient', () => {
 
     setConfig({
       useGETForQueries: false,
-    } as any as FaustConfig);
+    });
 
     client.createApolloClient();
 
@@ -58,7 +58,7 @@ describe('createApolloClient', () => {
 
     setConfig({
       useGETForQueries: true,
-    } as any as FaustConfig);
+    });
 
     client.createApolloClient();
 
@@ -73,7 +73,7 @@ describe('createApolloClient', () => {
   it('invokes the persisted queries link if the option is enabled', () => {
     setConfig({
       usePersistedQueries: true,
-    } as any as FaustConfig);
+    });
 
     client.createApolloClient();
 
@@ -86,7 +86,7 @@ describe('createApolloClient', () => {
 
     setConfig({
       usePersistedQueries: true,
-    } as any as FaustConfig);
+    });
 
     client.createApolloClient();
 

@@ -31,6 +31,8 @@ module.exports = {
       // e.g. "@typescript-eslint/explicit-function-return-type": "off",
       '@typescript-eslint/unbound-method': 0,
       '@typescript-eslint/no-explicit-any': 0,
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
       'no-void': 0,
       'import/named': 0,
       'import/no-extraneous-dependencies': [

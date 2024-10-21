@@ -29,8 +29,8 @@ jobs:
 
       - name: Build
         run: npm run build
-        working-directory: packages/experimental-app-router
+        working-directory: experimental-packages/experimental-app-router
 
       - name: Tests
         run: npm run test
-        working-directory: packages/experimental-app-router
+        working-directory: experimental/experimental-app-router
