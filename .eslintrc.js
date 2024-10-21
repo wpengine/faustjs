@@ -55,6 +55,8 @@ module.exports = {
       'react/require-default-props': 0,
       '@typescript-eslint/no-unsafe-assignment': 0,
       '@typescript-eslint/no-unsafe-member-access': 0,
+      '@typescript-eslint/no-unsafe-call': 0,
+      '@typescript-eslint/no-unsafe-argument': 0,
       'jsx-a11y/anchor-is-valid': 0,
       'no-console': ['error', { allow: ['warn', 'error', 'debug'] }],
       'no-underscore-dangle': ['error', { 'allow': ['__schema'] }],
