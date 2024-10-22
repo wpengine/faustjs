@@ -27,7 +27,6 @@
     "fetch-mock": "9.11.0",
     "jest": "29.7.0",
     "rimraf": "^3.0.2",
-    "sass": "^1.78.0",
     "shx": "^0.3.4",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
@@ -36,7 +35,8 @@
     "throat": "^6.0.2",
     "w3c-hr-time": "^1.0.2",
     "is-typedarray": "1.0.0",
-    "typedarray-to-buffer": "4.0.0"
+    "typedarray-to-buffer": "4.0.0",
+    "sass": "^1.78.0"
   },
   "dependencies": {
     "@wordpress/hooks": "^3.14.0",
@@ -48,7 +48,8 @@
     "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^3.0.5",
     "js-sha256": "^0.9.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "@parcel/watcher": "2.4.1"
   },
   "scripts": {
     "dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
