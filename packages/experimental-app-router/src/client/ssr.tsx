@@ -3,17 +3,17 @@
 // eslint-disable-next-line import/extensions
 import {
   ApolloNextAppProvider,
-  NextSSRApolloClient,
-  NextSSRInMemoryCache,
+  ApolloClient,
+  InMemoryCache,
   // eslint-disable-next-line import/extensions
-} from '@apollo/experimental-nextjs-app-support/ssr';
+} from '@apollo/experimental-nextjs-app-support';
 import React, { PropsWithChildren } from 'react';
 import { createApolloConfig } from './config.js';
 
 export function createSSRApolloClient(authenticated = false) {
   const [inMemoryCacheObject, linkChain] = createApolloConfig(authenticated);
-  return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(inMemoryCacheObject),
+  return new ApolloClient({
+    cache: new InMemoryCache(inMemoryCacheObject),
     link: linkChain,
   });
 }

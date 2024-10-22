@@ -10,6 +10,7 @@
       "packages/blocks",
       "packages/block-editor-utils",
       "packages/faustwp-cli",
+      "packages/experimental-app-router",
       "packages/faustwp-core",
       "examples/next/faustwp-getting-started",
       "plugins/faustwp"
