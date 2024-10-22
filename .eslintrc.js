@@ -34,6 +34,7 @@ module.exports = {
       '@typescript-eslint/no-unsafe-call': 0,
       '@typescript-eslint/no-unsafe-return': 0,
       '@typescript-eslint/no-unsafe-argument': 0,
+      '@typescript-eslint/restrict-template-expressions': 0,
       'no-void': 0,
       'import/named': 0,
       'import/no-extraneous-dependencies': [
