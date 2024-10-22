@@ -1,4 +1,5 @@
 import { getWpUrl } from './getWpUrl.js';
+import { hooks } from '../wpHooks/index.js';
 
 /**
  * Retrieves the URL to the admin area for the current site.
@@ -8,7 +9,9 @@ import { getWpUrl } from './getWpUrl.js';
  * @param {string} path Path relative to the admin URL.
  */
 export function getAdminUrl(path = ''): string {
-  const adminUrl = getWpUrl('wp-admin');
+  let adminUrl = getWpUrl('wp-admin');
+
+  adminUrl = hooks.applyFilters('wpAdminUrl', adminUrl, {}) as string;
 
   if (!path) {
     return adminUrl;
