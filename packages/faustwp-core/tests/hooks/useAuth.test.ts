@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, waitFor } from '@testing-library/react';
 import fetchMock from 'fetch-mock';
 import { useAuth } from '../../src/hooks/useAuth';
 import { setAccessToken } from '../../src/auth';
@@ -20,6 +20,7 @@ describe('useAuth hook', () => {
 
   afterEach(() => {
     setAccessToken(undefined, undefined);
+    fetchMock.restore();
   });
 
   it('skips authentication check when skip is true', async () => {
@@ -37,8 +38,6 @@ describe('useAuth hook', () => {
 
     // Ensure the token endpoint was not called
     expect(fetchMock.called(`/api/faust/auth/token`)).toBe(false);
-
-    fetchMock.restore();
   });
 
   it('performs authentication check by default (skip not provided)', async () => {
@@ -63,50 +62,49 @@ describe('useAuth hook', () => {
       }),
     });
 
-    const { result, waitForNextUpdate } = renderHook(() => useAuth());
+    const { result } = renderHook(() => useAuth());
 
-    await waitForNextUpdate();
-
-    // Default behavior should perform authentication check
-    expect(result.current.isAuthenticated).toStrictEqual(true);
-    expect(result.current.isReady).toStrictEqual(true);
-
-    fetchMock.restore();
+    await waitFor(() => {
+      expect(result.current.isAuthenticated).toStrictEqual(true);
+      expect(result.current.isReady).toStrictEqual(true);
+    });
   });
 
   it('Provides the proper login url with redirect strategy', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAuth());
-    await waitForNextUpdate();
-    const { loginUrl } = result.current;
+    const { result } = renderHook(() => useAuth());
 
-    expect(loginUrl).toEqual(
-      'http://headless.local/generate?redirect_uri=http%3A%2F%2Flocalhost%2F',
-    );
+    await waitFor(() => {
+      expect(result.current.loginUrl).toEqual(
+        'http://headless.local/generate?redirect_uri=http%3A%2F%2Flocalhost%2F',
+      );
+    });
   });
 
   it('Provides the proper login url with local strategy', async () => {
-    const { result, waitForNextUpdate } = renderHook(() =>
+    const { result } = renderHook(() =>
       useAuth({
         strategy: 'local',
         loginPageUrl: '/login',
       }),
     );
-    await waitForNextUpdate();
-    const { loginUrl } = result.current;
 
-    expect(loginUrl).toEqual('/login?redirect_uri=http%3A%2F%2Flocalhost%2F');
+    await waitFor(() => {
+      expect(result.current.loginUrl).toEqual(
+        '/login?redirect_uri=http%3A%2F%2Flocalhost%2F',
+      );
+    });
   });
 
   it('ensures isAuthenticated is not available until isReady', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAuth());
+    const { result } = renderHook(() => useAuth());
 
     expect(result.current.isAuthenticated).toStrictEqual(null);
     expect(result.current.isReady).toStrictEqual(false);
 
-    await waitForNextUpdate();
-
-    expect(result.current.isAuthenticated).toStrictEqual(false);
-    expect(result.current.isReady).toStrictEqual(true);
+    await waitFor(() => {
+      expect(result.current.isAuthenticated).toStrictEqual(false);
+      expect(result.current.isReady).toStrictEqual(true);
+    });
   });
 
   it('ensures strategy local requires a "loginPageUrl"', () => {
@@ -126,6 +124,7 @@ describe('useAuth hook', () => {
         refreshToken: 'rt',
       }),
     });
+
     fetchMock.get(`http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20avatar%20%7B%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20__typename%0A%20%20%20%20%7D%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`, {
       status: 200,
       body: JSON.stringify({
@@ -142,15 +141,13 @@ describe('useAuth hook', () => {
       }),
     });
 
-    const { result, waitForNextUpdate } = renderHook(() => useAuth());
+    const { result } = renderHook(() => useAuth());
 
     expect(result.current.isAuthenticated).toStrictEqual(null);
 
-    await waitForNextUpdate();
-
-    expect(result.current.isAuthenticated).toStrictEqual(true);
-
-    fetchMock.restore();
+    await waitFor(() => {
+      expect(result.current.isAuthenticated).toStrictEqual(true);
+    });
   });
 
   it('returns isAuthenticated false when token endpoint returns 401', async () => {
@@ -160,20 +157,17 @@ describe('useAuth hook', () => {
       body: JSON.stringify({ error: 'Unauthorized' }),
     });
 
-    const { result, waitForNextUpdate } = renderHook(() => useAuth());
+    const { result } = renderHook(() => useAuth());
 
     expect(result.current.isAuthenticated).toStrictEqual(null);
 
-    await waitForNextUpdate();
-
-    expect(result.current.isAuthenticated).toStrictEqual(false);
-
-    fetchMock.restore();
+    await waitFor(() => {
+      expect(result.current.isAuthenticated).toStrictEqual(false);
+    });
   });
 
   it('returns the viewer object', () => {
     const { result } = renderHook(() => useAuth());
     expect(result.current.viewer).toBeDefined();
   });
-
 });
