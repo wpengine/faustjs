@@ -19,7 +19,7 @@ export default function Header({
         <Container>
           <div className={cx('navbar')}>
             <div className={cx('brand')}>
-              <Link href="/">
+              <Link legacyBehavior href="/">
                 <a className={cx('title')}>{title}</a>
               </Link>
               {description && <p className={cx('description')}>{description}</p>}

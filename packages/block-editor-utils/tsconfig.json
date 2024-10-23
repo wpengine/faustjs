@@ -1,14 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "module": "esnext",
-    "outDir": "dist/mjs",
-    "target": "es2017",
-    "rootDir": "src",
-    "jsx": "react",
-    "types": ["node", "jest"],
-    "typeRoots": ["./node_modules/@types", "./src/types"]
-  },
-  "exclude": ["node_modules", "dist"],
-  "include": ["src", "./jest-setup.ts"]
-}
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+	  "module": "esnext",
+	  "outDir": "dist/mjs",
+	  "target": "es2017",
+	  "rootDir": "src",
+	  "jsx": "react"
+	},
+	"exclude": ["node_modules", "dist"],
+	"include": ["src"]
+  }

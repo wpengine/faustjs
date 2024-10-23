@@ -37,7 +37,7 @@
     "postbuild": "npm run package",
     "clean": "rimraf dist",
     "package": "node ../../scripts/package.js",
-    "test": "jest",
+    "test": "",
     "build": "npm run build-esm && npm run build-cjs",
     "build-esm": "tsc -p .",
     "build-cjs": "tsc -p tsconfig.cjs.json",

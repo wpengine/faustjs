@@ -3,7 +3,6 @@
   "changelog": "@changesets/cli/changelog",
   "commit": false,
   "linked": [
-    ["@faustjs/core", "@faustjs/next", "@faustjs/react"],
     ["@faustwp/core", "@faustwp/cli"]
   ],
   "privatePackages": {
@@ -14,10 +13,7 @@
   "baseBranch": "canary",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@faustjs/next-headless-getting-started",
-    "@faustwp/getting-started-example",
-    "@faustwp/app-router-example",
-    "@faustwp/block-support-example"
+    "@faustwp/getting-started-example"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
