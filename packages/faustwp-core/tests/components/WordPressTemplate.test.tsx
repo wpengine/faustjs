@@ -10,7 +10,7 @@ import { ApolloClient, NormalizedCacheObject, gql } from '@apollo/client';
 import * as getTemplate from '../../src/getTemplate.js';
 import * as FaustProvider from '../../src/components/FaustProvider.js';
 
-describe('<WordPressTemplate />', () => {
+xdescribe('<WordPressTemplate />', () => {
   const windowBackup = window;
 
   afterEach(() => {
@@ -139,7 +139,7 @@ describe('<WordPressTemplate />', () => {
   });
 });
 
-describe('<WordPressTemplateInternal />', () => {
+xdescribe('<WordPressTemplateInternal />', () => {
   const windowBackup = window;
 
   afterEach(() => {

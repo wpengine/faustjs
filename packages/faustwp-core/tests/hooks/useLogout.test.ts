@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import fetchMock from 'fetch-mock';
 import { useLogout } from '../../src/hooks/useLogout';
 import { act } from 'react-dom/test-utils';

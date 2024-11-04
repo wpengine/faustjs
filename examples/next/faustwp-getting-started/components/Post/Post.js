@@ -14,7 +14,7 @@ export default function Post({
   return (
     <article className={styles.component}>
       {featuredImage && (
-        <Link href={uri}>
+        <Link legacyBehavior href={uri}>
           <a>
             <FeaturedImage
               image={featuredImage}
@@ -25,7 +25,7 @@ export default function Post({
         </Link>
       )}
 
-      <Link href={uri}>
+      <Link legacyBehavior href={uri}>
         <a>
           <h2>{title}</h2>
         </a>

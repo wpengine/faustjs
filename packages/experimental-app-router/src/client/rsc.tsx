@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/extensions
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 // eslint-disable-next-line import/extensions
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
+import { registerApolloClient } from '@apollo/experimental-nextjs-app-support';
 import { fetchAccessToken } from '../server/auth/fetchAccessToken.js';
 import { createApolloConfig } from './config.js';
 
