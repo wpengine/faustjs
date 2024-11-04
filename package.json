@@ -30,7 +30,7 @@
     "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
     "build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",
     "dev": "npm run build && npm run dev:next:getting-started",
-    "dev:next:getting-started": "rimraf examples/next/getting-started/.next && npm run dev ---workspace=examples/next/getting-started",
+    "dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
     "docs-legacy": "npm start --prefix internal/legacy.faustjs.org",
     "docs-legacy:build": "npm run build --prefix internal/legacy.faustjs.org",
     "docs-legacy:clear": "npm run clear --prefix internal/legacy.faustjs.org",
