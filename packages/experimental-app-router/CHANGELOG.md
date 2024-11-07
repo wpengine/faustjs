@@ -1,5 +1,13 @@
 # @faustwp/experimental-app-router
 
+## 0.5.0
+
+### Minor Changes
+
+- e22b87d: **@faustwp/cli**: Migrates `glob-promise` dependency to Promise support.
+
+  **@faustwp/experimental-app-router**: Update peer dependency of `@apollo/experimental-nextjs-app-support >=0.11.5`.
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @faustwp/blocks
 
+## 5.0.0
+
+### Major Changes
+
+- 9011492: Updates the GraphQL fragment associated with the CoreQuote component to be compatible with WordPress 6.6
+
+  Adds `legacyBehavior` to CoreButton link to work on Next.js v13.
+
 ## 4.1.0
 
 ### Minor Changes
