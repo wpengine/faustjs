@@ -1,5 +1,31 @@
 # @faustwp/blocks
 
+## 5.0.0
+
+### Major Changes
+
+- 9011492: Updates the GraphQL fragment associated with the CoreQuote component to be compatible with WordPress 6.6
+
+  Adds `legacyBehavior` to CoreButton link to work on Next.js v13.
+
+## 4.1.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
+## 4.0.0
+
+### Major Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
+## 3.0.0
+
+### Major Changes
+
+- f6c6b0c: **BREAKING**: Make `attributes` field on core blocks optional to comply with the `WordPressBlock` type interface. Thanks @traed!
+
 ## 2.0.0
 
 ### Patch Changes

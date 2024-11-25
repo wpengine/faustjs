@@ -5,8 +5,8 @@ import { ContentBlock } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
 export type CoreQuoteFragmentProps = ContentBlock & {
-  attributes: {
-    align?: string;
+  attributes?: {
+    textAlign?: string;
     anchor?: string;
     backgroundColor?: string;
     citation?: string;
@@ -27,19 +27,19 @@ export function CoreQuote(props: CoreQuoteFragmentProps) {
   const style = getStyles(theme, { ...props });
   const { attributes } = props;
 
-  if (!attributes.value) {
+  if (!attributes?.value) {
     return null;
   }
 
   let innerHtml = attributes.value;
 
-  if (attributes.citation) {
+  if (attributes?.citation) {
     innerHtml += `<cite>${attributes.citation}</cite>`;
   }
 
   return (
     <blockquote
-      className={attributes.cssClassName}
+      className={attributes?.cssClassName}
       style={style}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: innerHtml }}
@@ -52,7 +52,7 @@ CoreQuote.fragments = {
   entry: gql`
     fragment CoreQuoteBlockFragment on CoreQuote {
       attributes {
-        align
+        textAlign
         anchor
         backgroundColor
         citation

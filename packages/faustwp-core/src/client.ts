@@ -1,6 +1,7 @@
 import {
   ApolloClient,
   ApolloClientOptions,
+  ApolloLink,
   createHttpLink,
   InMemoryCache,
   InMemoryCacheConfig,
@@ -16,6 +17,7 @@ import { createPersistedQueryLink } from '@apollo/client/link/persisted-queries'
 import { sha256 } from 'js-sha256';
 // eslint-disable-next-line import/extensions
 import { AppProps } from 'next/app';
+import { ErrorLoggingLink } from './apollo/errorLoggingLink.js';
 import { getAccessToken } from './auth/index.js';
 import { getConfig } from './config/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
@@ -43,6 +45,11 @@ export function createApolloClient(authenticated = false) {
     typePolicies: {
       RootQuery: {
         queryType: true,
+        fields: {
+          viewer: {
+            merge: true,
+          },
+        },
       },
       RootMutation: {
         mutationType: true,
@@ -56,15 +63,18 @@ export function createApolloClient(authenticated = false) {
     {},
   ) as InMemoryCacheConfig;
 
-  let linkChain = createHttpLink({
-    uri: getGraphqlEndpoint(),
-    /**
-     * Only add this option if usePersistedQueries is not set/false.
-     * When persisted queries is enabled and this flag and useGETForHashedQueries
-     * are both set, there is a conflict and persisted queries does not work.
-     */
-    useGETForQueries: useGETForQueries && !usePersistedQueries,
-  });
+  let linkChain = ApolloLink.from([
+    new ErrorLoggingLink(),
+    createHttpLink({
+      uri: getGraphqlEndpoint(),
+      /**
+       * Only add this option if usePersistedQueries is not set/false.
+       * When persisted queries is enabled and this flag and useGETForHashedQueries
+       * are both set, there is a conflict and persisted queries does not work.
+       */
+      useGETForQueries: useGETForQueries && !usePersistedQueries,
+    }),
+  ]);
 
   // If the user requested to use persisted queries, apply the link.
   if (usePersistedQueries) {

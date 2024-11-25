@@ -1,12 +1,14 @@
 import { notFound } from 'next/navigation.js';
+import * as server from 'next/server.js';
 import { tokenHandler } from './tokenHandler.js';
 
 export async function GetFn(req: Request) {
   const { pathname } = new URL(req.url);
 
   switch (pathname) {
+    case '/api/faust/token/':
     case '/api/faust/token': {
-      return tokenHandler(req);
+      return tokenHandler(req, server);
     }
     default: {
       return notFound();

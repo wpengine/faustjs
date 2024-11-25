@@ -1,5 +1,55 @@
 # @faustwp/cli
 
+## 3.1.1
+
+### Patch Changes
+
+- e22b87d: **@faustwp/cli**: Migrates `glob-promise` dependency to Promise support.
+
+  **@faustwp/experimental-app-router**: Update peer dependency of `@apollo/experimental-nextjs-app-support >=0.11.5`.
+
+## 3.1.0
+
+### Patch Changes
+
+- 031c2393: Added "glob" as a dependency
+
+## 3.0.2
+
+### Patch Changes
+
+- f946d7a: Faust CLI now outputs version number when running dev|build|start commands.
+
+  When running those commands it will print the current Faust core and cli versions in the console:
+
+  ```bash
+  % npm run dev -w examples/next/faustwp-getting-started
+  info - Faust.js v3.0.1
+  info - Faust.js CLI v3.0.1
+  ready - started server on 0.0.0.0:3000, url: http://localhost:3000
+  ...
+  ```
+
+## 3.0.1
+
+### Patch Changes
+
+- 4724719: Faust now errors if the NEXT_PUBLIC_WORDPRESS_URL matches the Headless URL in Faust Plugin settings.
+
+## 3.0.0
+
+### Major Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
+### Minor Changes
+
+- 572b253: Added: Detect if the `NEXT_PUBLIC_WORDPRESS_URL` is a `wpengine.com` TLD and if so recommend a switch to `wpenginepowered.com`
+
+### Patch Changes
+
+- 47f6bd0: Faust now warns you if the secret key in your environment is invalid or incorrect.
+
 ## 2.0.0
 
 ### Major Changes

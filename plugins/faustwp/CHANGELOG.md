@@ -1,5 +1,57 @@
 # Faust
 
+## 1.5.0
+
+### Minor Changes
+
+- 011cd931: - Added a custom PluginUpdater class to enable FaustWP plugin updates from an external API endpoint.
+
+## 1.4.1
+
+### Patch Changes
+
+- e80d80af: Tested up to WordPress v6.6.1
+
+## 1.4.0
+
+### Minor Changes
+
+- 9ff1df86: Introduces a new setting on the Faust settings page that allows users to opt-in or out of Faust removing Nav Menu Locations that are not registered on the Faust Settings page.
+
+## 1.3.2
+
+### Patch Changes
+
+- 84076cd1: Bug: Fixes issue with blocks not showing in the block editor when running blockset command on WP >=v6.5
+
+## 1.3.1
+
+### Patch Changes
+
+- c28624c: Improve domain_match function to handle port checks and Add Comprehensive Test Cases
+
+## 1.3.0
+
+### Minor Changes
+
+- a478997: The default settings for `enable_image_source` has been changed to "on" for new installs.
+
+### Patch Changes
+
+- bced682: Ensure's any related translations will properly load by calling `load_text_domain`
+
+## 1.2.3
+
+### Patch Changes
+
+- 4724719: Faust now errors if the NEXT_PUBLIC_WORDPRESS_URL matches the Headless URL in Faust Plugin settings.
+
+## 1.2.2
+
+### Patch Changes
+
+- 47f6bd0: Faust now warns you if the secret key in your environment is invalid or incorrect.
+
 ## 1.2.1
 
 ### Patch Changes

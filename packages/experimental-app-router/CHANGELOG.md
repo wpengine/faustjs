@@ -1,5 +1,31 @@
 # @faustwp/experimental-app-router
 
+## 0.5.0
+
+### Minor Changes
+
+- e22b87d: **@faustwp/cli**: Migrates `glob-promise` dependency to Promise support.
+
+  **@faustwp/experimental-app-router**: Update peer dependency of `@apollo/experimental-nextjs-app-support >=0.11.5`.
+
+## 0.4.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
+## 0.3.1
+
+### Patch Changes
+
+- aee31a5: Fixed issue where Faust's route handler failed to retrieve a token when trailingSlash is set to true in next.config.js.
+
+## 0.3.0
+
+### Minor Changes
+
+- 4cba024: Changed the `sameSite` property on the refresh token cookie from `strict` to `lax` for requests originating from WordPress.
+
 ## 0.2.2
 
 ### Patch Changes

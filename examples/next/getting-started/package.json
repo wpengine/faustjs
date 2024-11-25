@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@faustjs/core": "^0.15.13",
-    "@faustjs/next": "^0.15.13",
-    "next": "^12.2.4",
+    "@faustjs/next": "^0.16.0",
+    "next": "^12.3.4",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -35,5 +35,8 @@
     "eslint-config-next": "^12.0.7",
     "rimraf": "^3.0.2",
     "typescript": "^4.5.2"
+  },
+  "overrides": {
+    "postcss": "^8.4.31"
   }
 }

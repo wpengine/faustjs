@@ -1,5 +1,17 @@
 # @faustjs/next
 
+## 0.16.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
+## 0.15.14
+
+### Patch Changes
+
+- 3c78b75: Update Next.js dependency to 12.3.4
+
 ## 0.15.13
 
 ### Patch Changes

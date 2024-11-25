@@ -20,6 +20,6 @@ export async function setRefreshToken(
     httpOnly: true,
     path: '/',
     expires: new Date(refreshTokenExpiration),
-    sameSite: 'strict',
+    sameSite: 'lax',
   });
 }

@@ -1,5 +1,41 @@
 # @faustwp/block-editor-utils
 
+## 0.3.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
+## 0.2.1
+
+### Patch Changes
+
+- f0543e0e: Adds missing TextAreaControl handler when specifing a `control: 'textarea'` in Component.config.editorFields.
+
+  Adding this configuration to your blocks will render TextAreaControls component in the editor.
+
+  ```js
+  // Component.js
+
+  Component.config = {
+    name: 'CreateBlockBlockB',
+    editorFields: {
+      textArea: {
+        type: 'string',
+        label: 'My Message',
+        location: 'editor',
+        control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
+      },
+    },
+  };
+  ```
+
+## 0.2.0
+
+### Minor Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
 ## 0.1.0
 
 ### Minor Changes

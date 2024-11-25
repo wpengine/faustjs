@@ -7,6 +7,6 @@ import possibleTypes from './possibleTypes.json';
  **/
 export default setConfig({
   templates,
-  experimentalPlugins: [],
+  plugins: [],
   possibleTypes,
 });

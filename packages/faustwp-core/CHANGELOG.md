@@ -1,5 +1,55 @@
 # @faustwp/core
 
+## 3.1.0
+
+### Minor Changes
+
+- 2b7949bb: - Added support for configuring a custom sitemap index path via the `sitemapIndexPath` option in `getSitemapProps`, enhancing compatibility with plugins like RankMath that modify the default sitemap path.
+
+  ```javascript
+  import { getSitemapProps } from '@faustwp/core';
+
+  export default function Sitemap() {}
+
+  export function getServerSideProps(ctx) {
+    return getSitemapProps(ctx, {
+      sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
+      frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
+      sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+    });
+  }
+  ```
+
+### Patch Changes
+
+- 031c2393: Fixes a bug where the WordPressTemplate component would return `null` on the server when `isPreview` was null.
+
+## 3.0.3
+
+### Patch Changes
+
+- beb546a5: Bug: Fixes issue with review detection via query string is too greedy and catches non WP previews
+
+## 3.0.1
+
+### Patch Changes
+
+- a54ce69: Fixed: FaustConfig no longer requires `plugins` or `experimentalPlugins` properties
+- 50c30cb: Fixed issue where on a preview page the user could be stuck in a logout/login loop.
+- 16b2384: Added `queries` property to FaustTemplate interface. Fixes an error when using multiple queries with TypeScript.
+- 8e1b5db: Faust Toolbar will now respect the Show Avatars setting in WordPress. Requires WPGraphQL version 1.22.1 or higher.
+- 9a43d50: Implemented ErrorLoggingLink class to capture GraphQL errors and server errors, providing enhanced error handling and logging capabilities.
+
+## 3.0.0
+
+### Major Changes
+
+- aad3bbc: BREAKING CHANGE: With the deprecation of node version 16.x and it no longer being maintained we have updated our engines and workflows to only use 18+. Please update to use node version 18+.
+
+### Minor Changes
+
+- 0b0a88e: The Faust.js plugin system is no longer experimental. We have maintained backward compatibility as we move towards deprecating `experimentalPlugins` in favor of `plugins` in the Faust config file `faust.config.js`. We recommend moving over to using `plugins` instead of `experimentalPlugins` as soon as possible as a future version will remove the experimental config option.
+
 ## 2.1.2
 
 ### Patch Changes

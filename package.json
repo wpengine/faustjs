@@ -2,28 +2,22 @@
   "name": "@faustjs/root",
   "private": true,
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": ">=8"
   },
   "workspaces": {
     "packages": [
-      "packages/core",
-      "packages/react",
-      "packages/next",
       "packages/blocks",
-      "packages/experimental-app-router",
       "packages/block-editor-utils",
       "packages/faustwp-cli",
+      "packages/experimental-app-router",
       "packages/faustwp-core",
-      "examples/next/getting-started",
       "examples/next/faustwp-getting-started",
-      "examples/next/app-router",
-      "examples/next/block-support",
       "plugins/faustwp"
     ]
   },
   "scripts": {
-    "build": "npm run build --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+    "build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils --workspace=@faustwp/experimental-app-router",
     "build:core": "npm run build --workspace=@faustjs/core",
     "build:next": "npm run build --workspace=@faustjs/next",
     "build:react": "npm run build --workspace=@faustjs/react",
@@ -36,7 +30,7 @@
     "format": "npm run format --workspace=@faustjs/core --workspace=@faustjs/react --workspace=@faustjs/next --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/experimental-app-router --workspace=@faustwp/block-editor-utils",
     "build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",
     "dev": "npm run build && npm run dev:next:getting-started",
-    "dev:next:getting-started": "rimraf examples/next/getting-started/.next && npm run dev ---workspace=examples/next/getting-started",
+    "dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
     "docs-legacy": "npm start --prefix internal/legacy.faustjs.org",
     "docs-legacy:build": "npm run build --prefix internal/legacy.faustjs.org",
     "docs-legacy:clear": "npm run clear --prefix internal/legacy.faustjs.org",
@@ -71,12 +65,17 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "prettier": "^2.4.1",
     "prettier-linter-helpers": "^1.0.0",
+    "react-refresh": "^0.14.2",
     "rimraf": "^3.0.2"
   },
   "overrides": {
     "semver": "~7.5.2",
     "optionator": "0.9.3",
     "postcss": "8.4.31",
-    "axios": "^1.6.1"
+    "axios": "^1.7.4",
+    "ws": "8.17.1",
+    "express": "4.20.0",
+    "webpack": "5.94.0",
+    "next": "14.2.15"
   }
 }

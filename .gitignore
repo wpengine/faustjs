@@ -13,3 +13,6 @@ process.yml
 build/
 examples/next/getting-started/package-lock.json
 faustjs.code-workspace
+
+# Ignore the WordPress source where used by various development environments
+wordpress/

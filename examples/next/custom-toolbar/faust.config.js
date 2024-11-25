@@ -8,7 +8,7 @@ import { CustomToolbar } from "./plugins/CustomToolbar";
  **/
 export default setConfig({
   templates,
-  experimentalPlugins: [new CustomToolbar()],
+  plugins: [new CustomToolbar()],
   experimentalToolbar: true,
   possibleTypes,
 });

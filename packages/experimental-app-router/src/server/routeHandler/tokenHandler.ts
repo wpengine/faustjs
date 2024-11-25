@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers.js';
-import { NextResponse } from 'next/server.js';
+import * as server from 'next/server.js';
 import { getWpUrl, getWpSecret } from '../../faust-core-utils.js';
 
 export type AuthorizeResponse = {
@@ -9,7 +9,7 @@ export type AuthorizeResponse = {
   refreshTokenExpiration: number;
 };
 
-export async function tokenHandler(req: Request) {
+export async function tokenHandler(req: Request, s: typeof server) {
   try {
     const secretKey = getWpSecret();
 
@@ -79,7 +79,7 @@ export async function tokenHandler(req: Request) {
      * and expiration.
      */
 
-    const res = new NextResponse(JSON.stringify(data), {
+    const res = new s.NextResponse(JSON.stringify(data), {
       status: 200,
     });
 
@@ -88,7 +88,7 @@ export async function tokenHandler(req: Request) {
       httpOnly: true,
       path: '/',
       expires: new Date(data.refreshTokenExpiration * 1000),
-      sameSite: 'strict',
+      sameSite: 'lax',
     });
 
     return res;

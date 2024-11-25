@@ -5,12 +5,17 @@ import isString from 'lodash/isString.js';
 import once from 'lodash/once.js';
 import { WordPressTemplate } from '../getWordPressProps.js';
 import { hooks, FaustPlugin } from '../wpHooks/index.js';
+import { warnLog } from '../utils/log.js';
 
 export interface FaustConfig {
   templates: { [key: string]: WordPressTemplate };
   experimentalToolbar?: boolean;
   loginPagePath?: string;
-  experimentalPlugins: FaustPlugin[];
+  /**
+   * @deprecated Plugins are no longer experimental, use "plugins" instead.
+   */
+  experimentalPlugins?: FaustPlugin[];
+  plugins?: FaustPlugin[];
   possibleTypes: PossibleTypesMap;
   basePath?: string;
   /**
@@ -33,11 +38,23 @@ export function setConfig(_config: FaustConfig) {
   return once(() => {
     config = _config;
 
-    const { experimentalPlugins: plugins } = _config;
+    const { experimentalPlugins, plugins } = _config;
+    // combine both sets of plugins until experimentalPlugins is fully deprecated
+    const allSupportedPlugins = [
+      ...(experimentalPlugins || []),
+      ...(plugins || []),
+    ];
 
-    plugins?.forEach((plugin) => {
+    allSupportedPlugins?.forEach((plugin) => {
       plugin?.apply?.(hooks);
     });
+
+    if (experimentalPlugins?.length) {
+      // log to cli if experimentalPlugins is used since it's being deprecated
+      warnLog(
+        'Plugin System: The "experimentalPlugins" configuration option will be deprecated in the near future. Please use "plugins" instead in the faust.config.js.',
+      );
+    }
   })();
 }
 

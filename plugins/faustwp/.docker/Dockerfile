@@ -1,9 +1,6 @@
-ARG WP_VERSION=latest
-
-FROM wordpress:${WP_VERSION}
-
-# Needed to specify the build args again after the FROM command.
 ARG WP_VERSION
+
+FROM wordpress:${WP_VERSION}-php8.2
 
 # Save the build args for use by the runtime environment
 ENV WP_VERSION=${WP_VERSION}

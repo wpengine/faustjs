@@ -39,6 +39,9 @@ type ViewerType = {
   uri?: string;
   url?: string;
   userId?: number;
+  avatar?: {
+    url?: string;
+  };
 };
 
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
@@ -173,6 +176,9 @@ export function useAuth(_config?: UseAuthConfig) {
               uri
               url
               userId
+              avatar {
+                url
+              }
             }
           }
         `,

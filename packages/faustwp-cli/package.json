@@ -1,6 +1,6 @@
 {
   "name": "@faustwp/cli",
-  "version": "2.0.0",
+  "version": "3.1.1",
   "description": "This modules provides a CLI to develop, build, and serve your Faust apps",
   "main": "dist/index.js",
   "type": "module",
@@ -17,6 +17,7 @@
     "@types/jest": "^29.5.5",
     "@types/node": "^18.15.11",
     "@types/prompt": "1.1.2",
+    "fetch-mock-jest": "^1.5.1",
     "jest-environment-jsdom": "29.6.4",
     "rimraf": "5.0.5",
     "ts-jest": "^29.1.1",
@@ -28,7 +29,7 @@
     "dotenv-flow": "^3.2.0",
     "form-data": "^4.0.0",
     "fs-extra": "^11.1.1",
-    "glob-promise": "^6.0.5",
+    "glob": "^11.0.0",
     "isomorphic-fetch": "^3.0.0",
     "lodash": "^4.17.21",
     "webpack-cli": "5.1.4"
@@ -54,7 +55,7 @@
   },
   "homepage": "https://github.com/wpengine/faustjs#readme",
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": ">=8"
   }
 }

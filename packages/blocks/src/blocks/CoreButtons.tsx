@@ -10,7 +10,7 @@ import {
 } from '../components/WordPressBlocksViewer.js';
 
 export type CoreButtonsFragmentProps = ContentBlock & {
-  attributes: {
+  attributes?: {
     cssClassName?: string;
     align?: string;
     anchor?: string;

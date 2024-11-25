@@ -6,20 +6,20 @@ on:
       - '**/*.md'
 
 jobs:
-  test_packages:
+  unit-test_packages:
     name: "Test packages on Node.js ${{ matrix.node }} ${{ matrix.os }}"
     strategy:
       matrix:
-        os: ['ubuntu-latest']
-        node: ['16', '18', '20']
+        os: ['ubuntu-22.04']
+        node: ['18', '20', '22']
     permissions:
       checks: write
       pull-requests: write
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 

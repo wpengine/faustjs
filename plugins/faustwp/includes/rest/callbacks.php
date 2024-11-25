@@ -26,6 +26,7 @@ use function WPE\FaustWP\Blocks\handle_uploaded_blockset;
 use function WPE\FaustWP\Settings\faustwp_get_setting;
 use function WPE\FaustWP\Settings\faustwp_update_setting;
 use function WPE\FaustWP\Settings\is_telemetry_enabled;
+use function WPE\FaustWP\Utilities\strict_domain_match;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -126,6 +127,26 @@ function register_rest_routes() {
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\\handle_rest_process_telemetry_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_process_telemetry_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
+		'/validate_secret_key',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_secret_key_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_validate_secret_key_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
+		'/validate_public_wordpress_url',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_validate_public_wordpress_url_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
 		)
 	);
 
@@ -333,6 +354,8 @@ function rest_process_telemetry_permission_callback( \WP_REST_Request $request )
 	return rest_authorize_permission_callback( $request );
 }
 
+
+
 /**
  * Callback for WordPress register_rest_route() 'callback' parameter.
  *
@@ -475,4 +498,79 @@ function handle_rest_telemetry_decision_callback( \WP_REST_Request $request ) {
 		'success'  => true,
 	);
 	return rest_ensure_response( $response );
+}
+
+/**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle POST /faustwp/v1/validate_secret_key response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
+ *
+ * @return mixed A \WP_REST_Response, or \WP_Error.
+ */
+function handle_rest_validate_secret_key_callback( \WP_REST_Request $request ) {
+	return new \WP_REST_Response(
+		esc_html__( 'Secret key validated!', 'faustwp' ),
+		200
+	);
+}
+
+/**
+ * Callback to check permissions for requests to `faustwp/v1/validate_secret_key`.
+ *
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
+ *
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
+ *
+ * @return bool True if current user can, false if else.
+ */
+function rest_validate_secret_key_permission_callback( \WP_REST_Request $request ) {
+	return rest_authorize_permission_callback( $request );
+}
+
+/**
+ * Callback for WordPress register_rest_route() 'callback' parameter.
+ *
+ * Handle POST /faustwp/v1/validate_public_wordpress_url response.
+ *
+ * @link https://developer.wordpress.org/reference/functions/register_rest_route/
+ * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#endpoint-callback
+ *
+ * @param \WP_REST_Request $request Current \WP_REST_Request object.
+ *
+ * @return mixed A \WP_REST_Response, or \WP_Error.
+ */
+function handle_rest_validate_public_wordpress_url_callback( \WP_REST_Request $request ) {
+	// Get the frontend URI setting from WordPress.
+	$frontend_uri = faustwp_get_setting( 'frontend_uri' );
+
+	// Retrieve the parameters from the request.
+	$parameters = $request->get_params();
+
+	// Check if the public_wordpress_url parameter is present in the request.
+	if ( isset( $parameters['public_wordpress_url'] ) ) {
+		// Retrieve the value of the public_wordpress_url parameter.
+		$public_wordpress_url = $parameters['public_wordpress_url'];
+
+		// Check if the provided WordPress URL does not match the frontend URI.
+		if ( ! strict_domain_match( $public_wordpress_url, $frontend_uri ) ) {
+			// Return 200 OK if the URLs do not match.
+			$response = new \WP_REST_Response( 'OK', 200 );
+		} else {
+			// Return 400 Bad Request if the URLs match.
+			$response = new \WP_REST_Response( 'Bad Request', 400 );
+		}
+	} else {
+		// Return 400 Bad Request if the public_wordpress_url parameter is missing.
+		$response = new \WP_REST_Response( 'Bad Request', 400 );
+	}
+
+	return $response;
 }

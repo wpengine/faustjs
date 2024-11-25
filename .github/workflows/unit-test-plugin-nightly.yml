@@ -1,0 +1,50 @@
+name: Unit Test Plugin / WordPress Nightly
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  unit_test_plugin:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Docker Containers
+        working-directory: ./plugins/faustwp
+        run: |
+          docker compose build \
+            --build-arg WP_VERSION=6.5
+          docker compose up -d
+
+      - name: Wait for db
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --port=33066 --password=$MYSQL_ROOT_PASSWORD --silent; do
+            sleep 1
+          done
+
+      - name: Setup testing framework
+        working-directory: ./plugins/faustwp
+        run: docker exec -e COVERAGE=1 $(docker compose ps -q wordpress) init-testing-environment.sh
+
+      - name: Ensure Correct WordPress version
+        working-directory: ./plugins/faustwp
+        run: |
+            docker exec -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp core version --allow-root
+            docker exec -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp core upgrade --version=nightly --force --allow-root
+            docker exec -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp core version --allow-root
+
+      - name: Install and activate WP GraphQL
+        working-directory: ./plugins/faustwp
+        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) wp plugin install wp-graphql --activate --allow-root
+
+      - name: Install Dependencies
+        working-directory: ./plugins/faustwp
+        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) composer install
+
+      - name: Run unit tests
+        working-directory: ./plugins/faustwp
+        run: docker exec -e COVERAGE=1 -w /var/www/html/wp-content/plugins/faustwp $(docker compose ps -q wordpress) composer test

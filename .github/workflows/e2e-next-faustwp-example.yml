@@ -1,4 +1,4 @@
-name: E2E Test
+name: E2E Test Packages
 
 on:
   pull_request:
@@ -6,23 +6,23 @@ on:
       - '**/*.md'
 
 jobs:
-  e2e-test-next-getting-started-example:
+  e2e-test-faustwp-getting-started-example:
     name: (faustwp) Next Getting Started Example on Node ${{ matrix.node }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
       PR_BRANCH: ${{github.event.pull_request.head.ref}}
     strategy:
       matrix:
-        node: ['16', '18', '20']
+        node: ['18', '20', '22']
     defaults:
       run:
         working-directory: ./
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
       # Get the PR branch so we can pull the correct Next.js example path

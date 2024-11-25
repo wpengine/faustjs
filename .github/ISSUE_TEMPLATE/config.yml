@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General Help Request
+    url: https://github.com/wpengine/faustjs/discussions
+    about: For general questions and help requests, create a new topic in GitHub Discussions
+  - name: Headless WordPress Discord Community
+    url: https://discord.gg/J2khkF9XYK
+    about: Ask questions, discuss features, and meet new people in the Headless WordPress Discord community

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import fetchMock from 'fetch-mock';
 import { useLogout } from '../../src/hooks/useLogout';
 import { act } from 'react-dom/test-utils';
@@ -56,6 +56,22 @@ describe('useLogout hook', () => {
     await act(() => result.current.logout());
 
     expect(window.location.reload).toBeCalled();
+
+    fetchMock.restore();
+  });
+
+  it('calls window.location.assign to / if there is a preview url and no redirectUrl', async () => {
+    fetchMock.post(`/api/faust/auth/logout`, {
+      status: 205,
+    });
+
+    global.window.location.search = 'preview=true';
+
+    const { result } = renderHook(() => useLogout());
+
+    await act(() => result.current.logout());
+
+    expect(window.location.assign).toBeCalledWith('/');
 
     fetchMock.restore();
   });

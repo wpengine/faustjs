@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`healthCheck/validateFaustEnvVars logs an error when the secret key validation fails: Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings 1`] = `Promise {}`;

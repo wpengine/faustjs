@@ -10,20 +10,23 @@
     "start": "faust start"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.6",
-    "@faustwp/cli": "^2.0.0",
-    "@faustwp/core": "^2.1.2",
-    "@wordpress/base-styles": "^4.36.0",
-    "@wordpress/block-library": "^7.19.0",
-    "classnames": "^2.3.1",
-    "graphql": "^16.6.0",
-    "next": "^12.1.6",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "sass": "^1.54.9"
+    "@apollo/client": "^3.10.4",
+    "@faustwp/cli": "^3.1.1",
+    "@faustwp/core": "^3.1.0",
+    "@wordpress/base-styles": "^5.10.0",
+    "@wordpress/block-library": "^9.10.0",
+    "classnames": "^2.5.1",
+    "graphql": "^16.8.1",
+    "next": "^14.2.15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.77.3"
+  },
+  "devDependencies": {
+    "next-secure-headers": "^2.2.0"
   },
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": ">=8"
   }
 }

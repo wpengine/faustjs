@@ -7,17 +7,17 @@ on:
 
 jobs:
   release_packages:
-    name: Release Packages
-    runs-on: ubuntu-latest
+    name: Release Packages
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
       - name: Setup Node.js 18.x
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
 
@@ -52,12 +52,8 @@ jobs:
         # Then deploy the WordPress plugin
         # https://github.com/changesets/action#outputs
         if: steps.changesets.outputs.published && contains(steps.changesets.outputs.publishedPackages, '"@faustwp/wordpress-plugin"')
-        # Use a variant of 10up/action-wordpress-plugin-deploy that allows us to specify a PLUGIN_DIR
-        # to support our monorepo structure.
         uses: ./.github/actions/release-plugin
         env:
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           PLUGIN_DIR: plugins/faustwp
           SLUG: faustwp
           VERSION: ${{ env.PLUGIN_VERSION }}

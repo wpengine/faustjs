@@ -15,6 +15,7 @@ import { useAuth } from '../hooks/useAuth.js';
 import { SEED_QUERY, SeedNode } from '../queries/seedQuery.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 import { getQueryParam } from '../utils/convert.js';
+import { isWordPressPreview } from '../utils/isWordPressPreview.js';
 
 export type FaustProps = {
   __SEED_NODE__?: SeedNode | null;
@@ -204,9 +205,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       return;
     }
 
-    setIsPreview(window.location.search.includes('preview=true'));
+    setIsPreview(isWordPressPreview(window.location.search));
   }, []);
-
   /**
    * If we are on a preview route and there is no authenticated user, redirect
    * them to the login page
@@ -232,7 +232,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       return;
     }
 
-    if (isPreview === true && isAuthenticated !== true) {
+    if (isPreview && !isAuthenticated) {
       return;
     }
 
@@ -288,11 +288,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
     })();
   }, [seedNode, isPreview, isAuthenticated, basePath]);
 
-  if (
-    seedNode === null ||
-    isPreview === null ||
-    (isPreview && isAuthenticated === null)
-  ) {
+  if (!seedNode || (isPreview && !isAuthenticated)) {
     return null;
   }
 
@@ -301,8 +297,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       seedNode={seedNode}
-      isPreview={isPreview}
-      isAuthenticated={isAuthenticated}
+      isPreview={isPreview === true}
+      isAuthenticated={isAuthenticated === true}
       loading={loading}
       setLoading={setLoading}
     />

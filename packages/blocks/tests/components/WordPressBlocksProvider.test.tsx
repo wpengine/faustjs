@@ -8,18 +8,18 @@ import {
   useBlocksTheme,
 } from '../../src/components/WordPressBlocksProvider';
 import type { BlocksTheme } from '../../src/types/theme';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';  // Import from @testing-library/react
 
 describe('useBlocksTheme', () => {
-  it('Throws an error if not used within WordPressBlocksProvider', async () => {
-    const { result } = renderHook(() => useBlocksTheme());
-
-    expect(result.error?.message).toBe(
-      'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
-    );
+  it('Throws an error if not used within WordPressBlocksProvider', () => {
+    // Assert that renderHook throws an error when used outside of WordPressBlocksProvider
+    expect(() => {
+      renderHook(() => useBlocksTheme());
+    }).toThrow('useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider');
   });
 
-  it('returns the passed in theme from WordPressBlocksProvider', async () => {
+  it('returns the passed in theme from WordPressBlocksProvider', () => {
+    // Wrapping component to provide context
     const wrapper = ({ children }: PropsWithChildren<{}>) => {
       const theme: BlocksTheme = {
         colors: {
@@ -37,13 +37,13 @@ describe('useBlocksTheme', () => {
       );
     };
 
+    // Rendering the hook with the wrapper
     const { result } = renderHook(() => useBlocksTheme(), {
       wrapper,
     });
 
     const theme = result.current;
-
-    expect(result.error).toBeUndefined();
+    // Check the correct theme is returned
     expect(theme?.colors?.palette).toStrictEqual({ primary: 'black' });
   });
 });
