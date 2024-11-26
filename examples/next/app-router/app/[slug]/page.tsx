@@ -7,8 +7,7 @@ export default async function Page(props) {
   const { searchParams, params } = await props;
   const { slug } = await params;
   const { p } = await searchParams;
-  const awaitedProps = await props;
-  const isPreview = await hasPreviewProps(awaitedProps);
+  const isPreview = await hasPreviewProps(props);
   const id = isPreview ? p : slug;
 
   let client = isPreview ? await getAuthClient() : await getClient();
