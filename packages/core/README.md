@@ -25,4 +25,4 @@
 
 `@faustjs/core` is the core library for the Faust.js framework. It contains the core classes and interfaces that are used by other libraries in the framework.
 
-[View legacy Faust.js Documentation](https://legacy.faustjs.org/)
+[View legacy Faust.js Documentation](https://faustjs.org/legacy)
