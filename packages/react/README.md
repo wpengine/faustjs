@@ -25,4 +25,4 @@
 
 `@faustjs/react` is part of the Faust.js framework. It aids in building Headless WordPress websites with React.js.
 
-[View legacy Faust.js Documentation](https://faustjs.org/legacy)
+[View legacy Faust.js Documentation](https://legacy.faustjs.org/)
