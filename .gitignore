@@ -9,7 +9,6 @@ process.yml
 .env
 .env.*
 !.env.local.sample
-.docusaurus
 build/
 faustjs.code-workspace
 
