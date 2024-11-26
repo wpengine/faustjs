@@ -1,19 +1,10 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
 import { loginAction } from './action';
-
-function SubmitButton() {
-  const status = useFormStatus();
-  return (
-    <button disabled={status.pending}>
-      {status.pending ? 'Loading...' : 'Login'}
-    </button>
-  );
-}
+import { useActionState } from 'react';
 
 export default function Page() {
-  const [state, formAction] = useFormState(loginAction, {});
+  const [state, formAction, isPending] = useActionState(loginAction, {});
 
   return (
     <>
@@ -30,7 +21,9 @@ export default function Page() {
           <input type="password" name="password" />
         </fieldset>
 
-        <SubmitButton />
+        <button disabled={isPending}>
+          {isPending ? 'Loading...' : 'Login'}
+        </button>
 
         {state.error && (
           <p dangerouslySetInnerHTML={{ __html: state.error }}></p>
