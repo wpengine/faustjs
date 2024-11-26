@@ -1,0 +1,208 @@
+---
+slug: /next/reference/getClient
+title: getClient()
+description: The getClient() function returns the GQty client that is used to query data.
+---
+
+## Description
+
+The `getClient()` function returns the GQty client that is used to query data.
+You need to export the instance of the client and then pass it to [FaustProvider](/docs/next/reference/faust-provider) `client` parameter.
+Behind the scenes, Faust.js will configure the client to perform SSR and SSG operations.
+
+## Parameters
+
+`getClient` accepts several optional parameters. We go through them one by one:
+
+### `schema`
+
+type: `object`
+
+Required: `false`
+
+This is the typescript schema object that is generated out of the `npm run generate` script. This is basically the GraphQL types, based on the structure of your WordPress site.
+You only want to run this script everytime you update the GraphQL schema in WordPress or when adding new CPTs.
+The `.schema.generated.ts` file contains several exported objects including the `generatedSchema` that you can import.
+
+### `scalarsEnumsHash`
+
+type: `object`
+
+Required: `false`
+
+This is the typescript object containing the [GraphQL scalar](https://graphql.org/learn/schema/) types that is generated out of the `npm run generate` script. GQty will use those scalars when querying the GraphQL endpoint.
+You only want to run this script everytime you update the GraphQL schema in WordPress or when adding new CPTs.
+The `.schema.generated.ts` file contains several exported objects including the `scalarsEnumsHash` that you can import.
+
+### `context`
+
+type: `object`
+
+Required: `false`
+
+This is an optional object that is of type [IncomingMessage](https://nodejs.org/api/http.html#class-httpincomingmessage).
+This represents the server context that contains information about the current incoming request.
+You want to use this parameter only when creating an instance of the client for server operations.
+
+```ts
+export function serverClient(req: IncomingMessage) {
+  return getClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
+    context: req,
+  });
+}
+```
+
+### `applyRequestContext`
+
+type: `(url: string, init: RequestInit): Promise<RequestContext> | RequestContext`
+
+Required: `false`
+
+A function that will be called just before the request made to the GraphQL endpoint. If you find yourself needing to add headers or other information to the request,
+then you can use this function to do that. You will need to return an object or a promise that returns the modified parameters.
+
+```ts
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+  applyRequestContext: async (url, init) => {
+    // Make modifications to the request here as you see fit
+    console.log('url', url);
+    console.log('init', init);
+
+    return { url, init };
+  },
+});
+```
+
+### `queryFetcher`
+
+type: `(query: string, variables?: Record<string, any>) => Promise<ExecutionResult> | ExecutionResult;`
+
+Required: `false`
+
+For already generated clients and for un-authenticated requests, you will be able to use this function if you want to manually modify the existing query function.
+
+```ts
+import { getGqlUrl } from 'faust.config';
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+  queryFetcher: async (query, variables) => {
+    const endpoint = getGqlUrl();
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+    });
+    const json = await response.json();
+    return json;
+  },
+});
+```
+
+### `authQueryFetcher`
+
+type: `(query: string, variables?: Record<string, any>) => Promise<ExecutionResult> | ExecutionResult;`
+
+Required: `false`
+
+Same as `queryFetcher` but this is for authenticated requests. You will be able to use this function if you want to manually modify the existing query function. Follow [this guide](/docs/next/guides/auth#making-authenticated-requests) to learn how to make authenticated requests.
+
+```ts
+import { getAccessToken } from '@faustjs/core/auth';
+import { getGqlUrl } from 'faust.config';
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+  authQueryFetcher: async (query, variables) => {
+    const token = getAccessToken();
+    const endpoint = getGqlUrl();
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+    });
+    const json = await response.json();
+    return json;
+  },
+});
+```
+
+## Return
+
+An Instance of `GQty` client for performing queries or mutations.
+
+## Usage
+
+To use `getClient`, create a `index.ts` file or any file name you want to use and call the `getClient` function with the provided parameters:
+
+```ts title="src/client/index.ts"
+import type { IncomingMessage } from 'http';
+import { getClient } from '@faustjs/next';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  GeneratedSchema,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
+} from './schema.generated';
+
+export const client = getClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+});
+
+export function serverClient(req: IncomingMessage) {
+  return getClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
+    context: req,
+  });
+}
+```
+
+Then do not forget to pass this instance to the `FaustProvider`:
+
+```ts title=_app.tsx
+import { FaustProvider } from '@faustjs/next';
+import { client } from 'client';
+import type { AppProps } from 'next/app';
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <FaustProvider client={client} pageProps={pageProps}>
+      <Component {...pageProps} />
+    </FaustProvider>
+  );
+}
+```

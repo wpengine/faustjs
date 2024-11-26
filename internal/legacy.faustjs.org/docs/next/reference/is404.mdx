@@ -1,0 +1,29 @@
+---
+slug: /next/reference/is404
+title: is404()
+description: The is404() function helps you determine when Next.js should return a 404 response.
+---
+
+## Description
+
+Determines when a dynamic post, page, or category route is requested for which no corresponding WordPress post, page, or category exists.
+
+See [Expected URL Params](./expected-url-params) for more on how dynamic routes are mapped to a specific page, post, or category in WordPress.
+
+:::note
+This function is only useful on routes that include one of the [expected URL params](./expected-url-params).
+If none of the expected URL params are present in the provided context, `is404()` will always return `true`.
+:::
+
+## Parameters
+
+- `Context`: Either the `GetStaticPropsContext` or the `GetServerSidePropsContext` from Next.js, depending on which function you are resolving props from.
+- `Is404Config`: An object with a `client` property containing [your GQty client](../guides/fetching-data#setting-up-your-client).
+
+## Return
+
+Returns `true` when the requested WordPress post, page, or category does not exist.
+
+## Usage
+
+View the guide on [Handling 404s with is404](../guides/handle-404s) for a detailed description and example code.

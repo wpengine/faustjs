@@ -1,0 +1,41 @@
+---
+slug: /next/reference/getNextStaticProps
+title: getNextStaticProps
+description: The getNextStaticProps function lets you build a static site with your WordPress data.
+---
+
+The `getNextStaticProps` function lets you build a static site with your WordPress data. The function should be returned from `getStaticProps`:
+
+```tsx
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+  });
+}
+```
+
+The `getNextStaticProps` function accepts two arguments: the server side props `context`, and an object (type `GetNextStaticPropsConfig` which extends the `GetNextServerSidePropsConfig` type) with a `Page` key.
+This should be your Next.js page component.
+
+The reason `MyPage` and `client` are passed to `getNextStaticProps` is because
+under the hood Faust.js perform a skeleton render of the page component to know what data to fetch and what queries to build.
+
+## Context parameter
+
+This is the same object that Next.js provides in `getStaticProps`. You can read the [list of parameters here](https://nextjs.org/docs/api-reference/data-fetching/get-static-props#context-parameter).
+
+## GetNextServerSidePropsConfig parameter
+
+The second argument of `getNextStaticProps` is of type `GetNextStaticPropsConfig` and accepts the following parameters:
+
+* `Page`: The current page component. It can be any valid React Element.
+* `client`: The GQty client.
+* `revalidate`: The revalidate property is the amount in seconds after which a page re-generation can occur. By default, it is set to 900 seconds(15 minutes).
+* `props`: The `props` object is any other key value pairs of properties where each value is received by the `Page` component.
+
+Because the `GetNextStaticPropsConfig` type extends `GetNextServerSidePropsConfig`, it can also accept any other properties of the [getNextServerSideProps](/docs/next/reference/getNextServerSideProps).
+
+## getNextServerSideProps return values
+
+The `getNextStaticProps` function returns an object that is required by the `getStaticProps` function.

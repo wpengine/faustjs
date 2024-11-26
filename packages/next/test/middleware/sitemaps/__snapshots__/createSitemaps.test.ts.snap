@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleRobotsTxt returns the proper robots.txt content specified in the robotsTxt() config function 1`] = `
+"User-agent: *
+Disallow: /
+Sitemap: http://localhost:3000/wp-sitemap.xml"
+`;

@@ -1,0 +1,50 @@
+@import "variables";
+
+body {
+	font-family: $font-family;
+	font-weight: $font-weight-normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: $font-family;
+	font-weight: $font-weight-bold;
+	line-height: 1.2;
+	margin-bottom: 0.5em;
+}
+
+h1 {
+	font-size: 3.5em;
+}
+
+h2 {
+	font-size: 2.5em;
+}
+
+h3 {
+	font-size: 1.4em;
+}
+
+h4 {
+	font-size: 1.2em;
+}
+
+h5 {
+	font-size: 1.1em;
+}
+
+h6 {
+	font-size: 1em;
+}
+
+p {
+	margin-bottom: 1.2em;
+}
+
+a {
+	color: $color-primary;
+}
+
+a:focus,
+a:hover {
+	color: lighten($color-primary, 15);
+}

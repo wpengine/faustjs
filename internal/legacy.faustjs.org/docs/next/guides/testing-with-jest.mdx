@@ -1,0 +1,228 @@
+---
+slug: /next/guides/testing-with-jest
+title: Testing with Jest
+description: How to test Faust.js apps with Jest
+---
+
+We recommend using Jest to test Faust.js apps. [Jest](https://jestjs.io/) is a JavaScript testing framework that uses minimal config, and provides a simple API for writing tests.
+
+## Setup
+
+The fastest way to get started is to clone our Faust.js example in the [Getting Started](/docs/next/getting-started) section. We'll assume you are starting from there. Now, let's setup Jest!
+
+### Install Dependencies
+
+Our Getting Started example uses Next.js 12, which has a built in configuration for Jest.
+
+To setup Jest, install the following dependencies:
+
+```bash
+npm install --save-dev jest@next jest-environment-jsdom@next @testing-library/react @testing-library/jest-dom
+```
+
+:::note
+
+We are installing `jest` and `jest-environment-jsdom` at the `next` tag. Faust.js uses ES modules under the hood, which is only supported in `jest@next` and `jest-environment-jsdom@next` currently.
+
+:::
+
+### Create The Jest Config File
+
+In your root directory, create a `jest.config.js` file with the following contents:
+
+```js title="jest.config.js"
+// jest.config.js
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: './',
+});
+
+// Add any custom config to be passed to Jest
+const customJestConfig = {
+  // Add more setup options before each test is run
+  // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
+  moduleDirectories: ['node_modules', '<rootDir>/src'],
+  testEnvironment: 'jest-environment-jsdom',
+};
+
+// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+module.exports = createJestConfig(customJestConfig);
+```
+
+### Create Test Script
+
+Finally, add a script in your `package.json` file to run Jest tests:
+
+```json title="package.json" {4}
+{
+  // ... Rest of package.json
+  "scripts": {
+    "test": "jest"
+  }
+}
+```
+
+That's it! Now you can create tests and run Jest with `npm test`.
+
+## Example
+
+Let's create a basic test case to see how testing works in a Faust.js app with Jest.
+
+Take the following `Header.tsx` component:
+
+```tsx title="src/components/Header.tsx"
+import React from 'react';
+import styles from 'scss/components/Header.module.scss';
+import Link from 'next/link';
+import { client, MenuLocationEnum } from 'client';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+function Header({
+  title = 'Headless by WP Engine',
+  description,
+}: Props): JSX.Element {
+  const { menuItems } = client.useQuery();
+  const links = menuItems({
+    where: { location: MenuLocationEnum.PRIMARY },
+  }).nodes;
+
+  return (
+    <header>
+      <div className={styles.wrap}>
+        <div className={styles['title-wrap']}>
+          <p className={styles['site-title']}>
+            <Link href="/">
+              <a>{title}</a>
+            </Link>
+          </p>
+          {description && <p className={styles.description}>{description}</p>}
+        </div>
+        <div className={styles.menu}>
+          <ul>
+            {links?.map((link) => (
+              <li key={`${link.label}$-menu`}>
+                <Link href={link.url ?? ''}>
+                  <a href={link.url}>{link.label}</a>
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="https://github.com/wpengine/faustjs">
+                <a
+                  className="button"
+                  href="https://github.com/wpengine/faustjs"
+                >
+                  GitHub
+                </a>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default Header;
+```
+
+As a generic example, let's create a test case that checks for the rendered navigation items. We'll test both the hardcoded items and the items received from GraphQL via GQty. Create a file called `src/components/Header.test.tsx`.
+
+We'll start off by mocking the Faust.js `client` module to return a mock GraphQL query result:
+
+```tsx {5-27}
+import React from 'react';
+import { render } from '@testing-library/react';
+import Header from './Header';
+
+jest.mock('client', () => {
+  const { MenuLocationEnum } = jest.requireActual('../client');
+
+  return {
+    client: {
+      useQuery: () => ({
+        menuItems: () => ({
+          nodes: [
+            {
+              label: 'Home',
+              url: 'http://localhost:3000/',
+            },
+            {
+              label: 'About',
+              url: 'http://localhost:3000/about',
+            },
+          ],
+        }),
+      }),
+    },
+    MenuLocationEnum,
+  };
+});
+```
+
+Then, we'll add a test case to ensure that our navigation items are accounted for:
+
+```tsx
+test('Header component renders menu items', () => {
+  const { getAllByRole } = render(<Header />);
+
+  const menuItems = getAllByRole('listitem');
+  expect(menuItems).toHaveLength(3);
+
+  const menuNames = menuItems.map((item) => item.textContent);
+
+  expect(menuNames).toEqual(['Home', 'About', 'GitHub']);
+});
+```
+
+This leaves you with a final `Header.test.tsx` file that looks like:
+
+```tsx title="src/components/Header.test.tsx"
+import React from 'react';
+import { render } from '@testing-library/react';
+import Header from './Header';
+
+jest.mock('client', () => {
+  const { MenuLocationEnum } = jest.requireActual('../client');
+
+  return {
+    client: {
+      useQuery: () => ({
+        menuItems: () => ({
+          nodes: [
+            {
+              label: 'Home',
+              url: 'http://localhost:3000/',
+            },
+            {
+              label: 'About',
+              url: 'http://localhost:3000/about',
+            },
+          ],
+        }),
+      }),
+    },
+    MenuLocationEnum,
+  };
+});
+
+it('Header component renders menu items', () => {
+  const { getAllByRole } = render(<Header />);
+
+  const menuItems = getAllByRole('listitem');
+  expect(menuItems).toHaveLength(3);
+
+  const menuNames = menuItems.map((item) => item.textContent);
+
+  expect(menuNames).toEqual(['Home', 'About', 'GitHub']);
+});
+```
+
+Finally, Use `npm run test` to run the test and see that it passes.

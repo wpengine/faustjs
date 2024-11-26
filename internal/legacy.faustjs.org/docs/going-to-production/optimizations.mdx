@@ -1,0 +1,55 @@
+---
+slug: /going-to-production/optimizations
+title: Production Optimizations
+---
+
+Below you'll find some recommendations for optimizing your Faust.js app for production.
+
+- [Atlas Specific Optimizations](/docs/going-to-production/optimizations#atlas-specific-optimizations)
+- [Use Static Site Generation (SSG) When Possible](/docs/going-to-production/optimizations#use-static-site-generation-ssg-when-possible)
+- [Ensure Data Selections Are Placed Outside Conditionals](/docs/going-to-production/optimizations#ensure-data-selections-are-placed-outside-conditionals)
+- [Next.js Production Optimizations](/docs/going-to-production/optimizations#nextjs-production-optimizations)
+
+## Atlas Specific Optimizations
+
+Atlas is the most effortless way to deploy a Faust.js app. Below are some recommendations for optimizing your app for production.
+
+### Disable Next.js Compression
+
+Compression is already handled for you in Atlas, so disabling it in your Faust.js app will offload the responsibility from the Node.js process.
+
+```js title="next.config.js"
+const { withFaust } = require('@faustjs/next');
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+module.exports = withFaust({
+  compress: false,
+});
+```
+
+## Use Static Site Generation (SSG) When Possible
+
+Static Site Generation (SSG) is a Next.js concept that generates a static HTML page for each page in your app that uses `getStaticProps`. This is incredibly efficient as you are not making wasteful requests to the WordPress GraphQL API, as your pages are already cached. Pairing SSG with Incremental Static Regeneration (ISR) will cause your pages to be regenerated in the background after a certain amount of time. [By default, Faust.js will revalidate your pages every 15 minutes.](/docs/next/guides/ssr-ssg#setting-up-incremental-static-regeneration-isr)
+
+Learn more:
+
+- [Next.js: Static Site Generation (SSG)](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)
+- [Next.js: Incremental Static Regeneration (ISR)](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)
+
+## Ensure Data Selections Are Placed Outside Conditionals
+
+Faust.js uses [GQty](https://gqty.dev/) as it's GraphQL client. GQty works by using [proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) to determine what data selections you access from the `client`, and from there, constructs a GraphQL query.
+
+You should ensure that your data selections are all performed outside of conditionals (`if`, `switch`, etc. statements) so that GQty can detect them sever side. Data selections made inside of conditionals result in some GraphQL requests cascading to the client. This is appropriate when you need to fetch data specifically on the client side, but often times you wan't this data to be fetched server side where it can be cached.
+
+Refer to this GQty troubleshooting guide for ensuring that your data selections are outside of conditionals:
+
+- [GQty Troubleshooting: Data Selections & Conditionals](https://gqty.dev/docs/react/troubleshooting#data-selections--conditionals)
+
+## Next.js Production Optimizations
+
+Next.js has a "Going to Production" guide that goes into further detail on the optimizations you can make for your Faust.js app built on top of Next.js:
+
+- [Next.js: Going to Production](https://nextjs.org/docs/going-to-production#loading-performance)

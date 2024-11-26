@@ -1,0 +1,102 @@
+---
+slug: /core/reference/config
+title: Faust.js core package config
+description: Faust.js provides a default configuration object for your site.
+---
+
+Faust.js provides a default configuration object for your site.
+This object uses as a parameter when exporting the result of the
+`coreConfig` in `faust.config.js`:
+
+```tsx
+import { config as coreConfig } from '@faustjs/core';
+
+if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
+  console.error(
+    'You must provide a NEXT_PUBLIC_WORDPRESS_URL environment variable, did you forget to load your .env.local file?',
+  );
+}
+
+/**
+ * @type {import("@faustjs/core").Config}
+ */
+export default coreConfig({
+  wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  apiClientSecret: process.env.FAUSTWP_SECRET_KEY,
+});
+```
+
+## Config
+
+The Config object has the following properties:
+
+### `wpUrl`
+
+type: `string`
+
+Required: `true`
+
+This is your WordPress URL. This is typically defined in your `.env` file as `NEXT_PUBLIC_WORDPRESS_URL`.
+
+### `apiClientSecret`
+
+type: `string`
+
+Required: `true`
+
+This is your Headless Secret key that can be retrieved from the FaustWP settings Dashboard. This is typically defined in your `.env` file as `FAUSTWP_SECRET_KEY`.
+
+### `gqlUrl`
+
+type: `string`
+
+Required: `false`
+
+This is the value to the URL pathname of your GraphQL endpoint. This defaults to [wpurl](#wpurl) + `/graphql`.
+
+### `apiBasePath`
+
+type: `string`
+
+Required: `false`
+
+This is the value of the base API path of your endpoints for this application. This defaults to `/api/faust`.
+
+### `authType`
+
+type: `redirect | local`
+
+Required: `false`
+
+This is the value of the type of authentication you want to use. It can have two possible values: `redirect` or `local`.
+When `redirect` is set, the user being redirected to WordPress to authenticate. When `local` is set,
+the user initiating a login request from the Next.js application, uses the `useLogin` returns an authorization code used to request a refresh and access token.
+You can read more about the authentication strategies in the [auth guide](http://localhost:3000/docs/next/guides/auth) section of the docs.
+
+This defaults to `redirect`.
+
+### `loginPagePath`
+
+type: `string`
+
+Required: `false`
+
+This is the relative URL path of your frontend login page. This defaults to `/login`.
+
+### `disableLogging`
+
+type: `boolean`
+
+Required: `false`
+
+Set this value to `true` if you want to disable internal `console.log` statements. This defaults to `false`.
+
+### `applyRequestContext`
+
+type: `(url: string, init: RequestInit): Promise<RequestContext> | RequestContext`
+
+Required: `false`
+
+Deprecated: `true`
+
+This property is not used anymore and has no effect. You should use this function in [getClient](/docs/next/guides/modifying-the-graphql-request) instead. This will be removed in subsequent versions of Faust.js.

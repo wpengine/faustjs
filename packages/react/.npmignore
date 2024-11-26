@@ -1,0 +1,12 @@
+src/**/*
+.eslintrc.js
+.prettierrc.js
+.eslintignore
+.prettierignore
+.gitignore
+tsconfig.json
+tsconfig-cjs.json
+jest.config.js
+jest.setup.ts
+test/**/*
+coverage

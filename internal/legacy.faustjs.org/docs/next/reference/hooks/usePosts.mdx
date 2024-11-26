@@ -1,0 +1,69 @@
+---
+slug: /next/reference/hooks/usePosts
+title: usePosts Hook
+description: The usePosts hook provides a standard way to get multiple WordPress posts
+---
+
+import BaseUrlNotice from '@site/src/mdx/base-url-notice.mdx';
+
+<BaseUrlNotice />
+
+The `usePosts` hook provides the standard interface for getting a list of posts from your Headless WordPress API. It also allows you to pass-in no arguments. When you do not pass arguments into `usePosts` it will attempt to look at the URL params in order to determine how to get a list of posts from your Headless WordPress API. In Next.js this means you will need to name your post page file in a particular way in order to get the proper URL params. Below are the possible names that will work automatically with Faust.js:
+
+1. If `categoryId` is found in the URL params, a request is made to retrieve a list of posts for a `category` by `ID`
+1. If `categorySlug` is found in the URL params, a request is made to retrieve a list of posts for a `category` by `SLUG`
+1. If no URL params are found, a request is made to retrieve a list of posts without any filters
+
+The following is an example of how to use the `usePosts` hook with no URL params:
+
+```tsx title=src/pages/index.tsx {6-8,14-16}
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function Home() {
+  const { usePosts } = client;
+  const posts = usePosts({
+    first: 6,
+  });
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      <ul>
+        {posts?.nodes.map((post) => (
+          <li key={post.id}>{post.title()}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+The code above will get the first 6 posts from the Headless WordPress API. If you want to create a page that would pull posts associated with a specific category you can use the following code:
+
+```tsx title=src/pages/category/[categorySlug].tsx {6-8,14-16}
+import { getNextStaticProps } from '@faustjs/next';
+import { client } from 'client';
+
+export default function Home() {
+  const { usePosts } = client;
+  const posts = usePosts({
+    first: 6,
+  });
+
+  return (
+    <>
+      <h2>Recent Posts</h2>
+      <ul>
+        {posts?.nodes.map((post) => (
+          <li key={post.id}>{post.title()}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+The code above will get the first 6 posts from the Headless WordPress API that are for the `categorySlug` defined in the URL params.
+
+For an example of `usePosts` with pagination, [take a look at our Next.js getting started example.](https://github.com/wpengine/faustjs/blob/main/examples/next/getting-started/src/pages/posts/index.tsx#L18-L23)

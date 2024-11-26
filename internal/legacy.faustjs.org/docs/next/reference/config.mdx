@@ -1,0 +1,28 @@
+---
+slug: /next/reference/config
+title: Faust.js Next.js config
+description: Faust.js provides a default configuration object regarding Static Site Generation with Next.js
+---
+
+Faust.js provides a default configuration object regarding Static Site Generation when using the `getNextStaticProps`.
+
+The `config` object provides a default value for the [revalidate](https://nextjs.org/docs/api-reference/data-fetching/get-static-props#revalidate) property.
+By default, in Next.js this is `false` and the page re-generation will not happen.
+Using Faust.js when using the `getNextStaticProps` function it applies the `config` object to the result.
+
+```tsx
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return getNextStaticProps(context, {
+    Page: MyPage,
+    client,
+    props: {
+      title: 'Recent Posts',
+    },
+  }); // here revalidate property is set to 15 minutes
+}
+```
+
+## Config
+The Config object has the following properties:
+
+* `revalidate`: The revalidate property is the amount in seconds after which a page re-generation can occur (defaults to 900 seconds).
