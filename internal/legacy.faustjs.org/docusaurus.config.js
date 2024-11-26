@@ -156,7 +156,7 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/wpengine/faustjs/edit/canary/internal/legacy.faustjs.org/',
+            'https://github.com/wpengine/faustjs/edit/archive-legacy/internal/legacy.faustjs.org/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
