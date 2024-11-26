@@ -1,3 +1,6 @@
-export function hasPreviewProps(props: any) {
-  return props?.searchParams?.preview === 'true' && !!props?.searchParams?.p;
+export async function hasPreviewProps(props: any) {
+  const { searchParams } = await props;
+  const { preview, p } = await searchParams;
+
+  return preview === 'true' && !!p;
 }
