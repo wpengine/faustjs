@@ -31,6 +31,9 @@ export default async function Page() {
 
 - Updated Next App Router example to use latest next version and React 19 RC.
 - Updated Example Login form using React 19s useActionState
+- Updated Awaiting of params for Next 15
 - Files Changed:
   - examples/next/app-router/app/login/page.tsx
   - examples/next/app-router/package.json
+  - examples/next/app-router/[slug]hasPreviewProps.ts (made async)
+  - examples/next/app-router/[slug]page.tsx
