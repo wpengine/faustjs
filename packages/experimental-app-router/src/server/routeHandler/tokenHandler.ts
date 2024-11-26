@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers.js';
-import * as server from 'next/server.js';
+import { NextResponse } from 'next/server.js';
 import { getWpUrl, getWpSecret } from '../../faust-core-utils.js';
 
 export type AuthorizeResponse = {
@@ -9,7 +9,7 @@ export type AuthorizeResponse = {
   refreshTokenExpiration: number;
 };
 
-export async function tokenHandler(req: Request, s: typeof server) {
+export async function tokenHandler(req: Request) {
   try {
     const secretKey = getWpSecret();
 
@@ -19,8 +19,8 @@ export async function tokenHandler(req: Request, s: typeof server) {
 
     const { url } = req;
     const code = new URL(url).searchParams.get('code') ?? undefined;
-
-    const cookieStore = cookies();
+    // eslint-disable-next-line @typescript-eslint/await-thenable
+    const cookieStore = await cookies();
     const cookieName = `${getWpUrl()}-rt`;
     const refreshToken = cookieStore.get(cookieName)?.value;
 
@@ -79,7 +79,7 @@ export async function tokenHandler(req: Request, s: typeof server) {
      * and expiration.
      */
 
-    const res = new s.NextResponse(JSON.stringify(data), {
+    const res = new NextResponse(JSON.stringify(data), {
       status: 200,
     });
 

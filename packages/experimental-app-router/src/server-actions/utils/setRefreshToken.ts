@@ -12,7 +12,8 @@ export async function setRefreshToken(
   refreshToken: string,
   refreshTokenExpiration: number,
 ) {
-  const cookieStore = cookies();
+  // eslint-disable-next-line @typescript-eslint/await-thenable
+  const cookieStore = await cookies();
   const cookieName = `${getWpUrl()}-rt`;
 
   cookieStore.set(cookieName, refreshToken, {

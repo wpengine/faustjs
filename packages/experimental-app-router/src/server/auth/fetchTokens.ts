@@ -12,7 +12,8 @@ import { getWpUrl } from '../../faust-core-utils.js';
  * @returns string|null
  */
 export async function fetchTokens(code?: string) {
-  const cookieStore = cookies();
+  // eslint-disable-next-line @typescript-eslint/await-thenable
+  const cookieStore = await cookies();
   const cookieName = `${getWpUrl()}-rt`;
 
   if (!cookieStore.get(cookieName)?.value && !code) {

@@ -5,7 +5,7 @@ export async function onLogout() {
   'use server';
 
   const wpCookieName = `${getWpUrl()}-rt`;
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const wpCookie = cookieStore.get(wpCookieName);
 
   if (wpCookie?.name) {
