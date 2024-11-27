@@ -51,7 +51,7 @@
     "@apollo/experimental-nextjs-app-support": ">=0.11.5",
     "@faustwp/cli": ">=1.1.3",
     "@faustwp/core": ">=1.1.2",
-    "next": ">=15.0.3",
+    "next": ">=13.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
