@@ -9,7 +9,6 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 
 ## Project Structure
 
-- `/internal/legacy.faustjs.org` - legacy faustjs documentation site
 - `/packages` - NPM packages
 - `/examples` - Example projects
 - `/plugins` - WordPress Plugins

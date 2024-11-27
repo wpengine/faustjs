@@ -9,9 +9,7 @@ process.yml
 .env
 .env.*
 !.env.local.sample
-.docusaurus
 build/
-examples/next/getting-started/package-lock.json
 faustjs.code-workspace
 
 # Ignore the WordPress source where used by various development environments
