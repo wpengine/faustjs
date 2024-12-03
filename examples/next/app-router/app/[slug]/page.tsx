@@ -4,8 +4,11 @@ import { hasPreviewProps } from './hasPreviewProps';
 import { PleaseLogin } from '@/components/please-login';
 
 export default async function Page(props) {
-  const isPreview = hasPreviewProps(props);
-  const id = isPreview ? props.searchParams.p : props.params.slug;
+  const { searchParams, params } = await props;
+  const { slug } = await params;
+  const { p } = await searchParams;
+  const isPreview = await hasPreviewProps(props);
+  const id = isPreview ? p : slug;
 
   let client = isPreview ? await getAuthClient() : await getClient();
 

@@ -5,7 +5,9 @@
       "dom.iterable",
       "esnext"
     ],
-    "types": ["react-dom/experimental"],
+    "types": [
+      "react-dom/experimental"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -19,13 +21,16 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",

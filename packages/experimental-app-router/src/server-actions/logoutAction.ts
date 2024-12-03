@@ -5,7 +5,8 @@ export async function onLogout() {
   'use server';
 
   const wpCookieName = `${getWpUrl()}-rt`;
-  const cookieStore = cookies();
+  // eslint-disable-next-line @typescript-eslint/await-thenable
+  const cookieStore = await cookies();
   const wpCookie = cookieStore.get(wpCookieName);
 
   if (wpCookie?.name) {

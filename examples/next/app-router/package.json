@@ -16,7 +16,7 @@
     "@faustwp/core": "^3.1.0",
     "@faustwp/experimental-app-router": "^0.4.0",
     "graphql": "^16.7.1",
-    "next": "^14.2.3",
+    "next": "^15.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -26,9 +26,13 @@
   },
   "devDependencies": {
     "@types/node": "^20.6.3",
-    "@types/react": "^18.2.36",
-    "@types/react-dom": "^18.2.14",
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc",
     "next-secure-headers": "^2.2.0",
     "typescript": "^5.2.2"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc"
   }
 }
