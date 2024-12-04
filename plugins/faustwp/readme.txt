@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.6.1
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.6.0 =
+
+### Minor Changes
+
+- 28f1f83: Added new filter `faustwp_public_redirect_status_code`, allowing WordPress plugins and themes to choose the [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) to use when generating redirects when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
+
 = 1.5.0 =
 
 ### Minor Changes
@@ -65,11 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - e80d80af: Tested up to WordPress v6.6.1
-
-= 1.4.0 =
-
-### Minor Changes
-
-- 9ff1df86: Introduces a new setting on the Faust settings page that allows users to opt-in or out of Faust removing Nav Menu Locations that are not registered on the Faust Settings page.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
