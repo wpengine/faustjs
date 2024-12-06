@@ -65,5 +65,8 @@
       "WPE\\FaustWP\\Tests\\Unit\\": "tests/unit/",
       "WPE\\FaustWP\\Tests\\Integration\\": "tests/integration/"
     }
+  },
+  "require": {
+    "symfony/process": "^6.4.14"
   }
 }
