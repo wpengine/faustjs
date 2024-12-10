@@ -72,6 +72,13 @@ type FaustCoreFilters = {
   ): void;
 
   addFilter(
+    hookName: 'wpAdminUrl',
+    namespace: string,
+    callback: (wpAdminUrl: string, context: Record<string, never>) => string,
+    priority?: number | undefined,
+  ): void;
+
+  addFilter(
     hookName: 'toolbarNodes',
     namespace: string,
     callback: (
