@@ -32,6 +32,7 @@ Component.query = gql`
   ${blocks.CoreSeparator.fragments.entry}
   ${blocks.CoreList.fragments.entry}
   ${blocks.CoreHeading.fragments.entry}
+  ${blocks.CreateBlockBlockB.fragments.entry}
   query GetPage(
     $databaseId: ID!
     $asPreview: Boolean = false
@@ -56,6 +57,7 @@ Component.query = gql`
         ...${blocks.CoreSeparator.fragments.key}
         ...${blocks.CoreList.fragments.key}
         ...${blocks.CoreHeading.fragments.key}
+        ...${blocks.CreateBlockBlockB.fragments.key}
       }
     }
   }
