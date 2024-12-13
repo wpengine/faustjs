@@ -7,7 +7,7 @@ Example showcasing Faust.js block editor support.
 
 ## Pre-requisites
 
-See <https://github.com/wpengine/faustjs/blob/canary/examples/next/block-support/wp-blocks/block-b/block.json> and <https://faustjs.org/tutorial/get-started-with-wp-graphql-content-blocks> for reference
+See <https://faustjs.org/tutorial/get-started-with-faust> and <https://faustjs.org/tutorial/get-started-with-wp-graphql-content-blocks> for reference
 
 You have a WordPress instance with tne following plugins installed and active on your WordPress instance:
 
@@ -29,7 +29,7 @@ Update the .env.local as per setup guide
 
 ```.env.local
 # Your WordPress site URL
-NEXT_PUBLIC_WORDPRESS_URL=https://bpheadlessb559.wpenginepowered.com
+NEXT_PUBLIC_WORDPRESS_URL=https://faustexample.wpengine.com
 
 # Plugin secret found in WordPress Settings->Headless
 #FAUST_SECRET_KEY=
