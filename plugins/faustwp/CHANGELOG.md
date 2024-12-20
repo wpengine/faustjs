@@ -1,5 +1,11 @@
 # Faust
 
+## 1.6.0
+
+### Minor Changes
+
+- 28f1f83: Added new filter `faustwp_public_redirect_status_code`, allowing WordPress plugins and themes to choose the [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) to use when generating redirects when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
+
 ## 1.5.0
 
 ### Minor Changes
