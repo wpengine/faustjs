@@ -68,21 +68,23 @@ export function WordPressBlocksProvider(props: {
  * const theme = useBlocksTheme();
  * ```
  */
-export function useBlocksTheme(): BlocksTheme {
+export function useBlocksTheme(): BlocksTheme | null {
 
-
-  // If it's an empty object, the provider hasn't been initialized.
-  if (WordPressBlocksContext == null || WordPressThemeContext == null) {
-    throw new Error(
+  // If it's an empty object, the provider hasn't been initialized.±
+	if (typeof WordPressBlocksContext === 'undefined') {
+		throw new Error(
       'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
     );
+	}
+
+	// Theme is optional
+	if (typeof WordPressBlocksContext === 'undefined' || WordPressBlocksContext === null) {
+		return null;
   }
 
   const themeContext = React.useContext(WordPressThemeContext);
-  if (themeContext == null) {
-    throw new Error(
-      'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
-    );
+	if (typeof themeContext === 'undefined' || themeContext === null) {
+		return null;
   }
 
   return themeContext;
