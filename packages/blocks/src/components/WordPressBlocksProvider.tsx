@@ -77,5 +77,5 @@ export function useBlocksTheme(): BlocksTheme {
     );
   }
 
-  return React.useContext(WordPressThemeContext);;
+  return React.useContext(WordPressThemeContext);
 }
