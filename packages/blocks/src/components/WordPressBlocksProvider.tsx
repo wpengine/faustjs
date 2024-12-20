@@ -70,6 +70,7 @@ export function WordPressBlocksProvider(props: {
  */
 export function useBlocksTheme(): BlocksTheme {
 
+
   // If it's an empty object, the provider hasn't been initialized.
   if (WordPressBlocksContext == null || WordPressThemeContext == null) {
     throw new Error(
@@ -77,5 +78,12 @@ export function useBlocksTheme(): BlocksTheme {
     );
   }
 
-  return React.useContext(WordPressThemeContext);
+  const themeContext = React.useContext(WordPressThemeContext);
+  if (themeContext == null) {
+    throw new Error(
+      'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
+    );
+  }
+
+  return themeContext;
 }
