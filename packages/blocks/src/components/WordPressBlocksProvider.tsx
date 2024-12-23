@@ -72,7 +72,7 @@ export function useBlocksTheme(): BlocksTheme {
   // If it's an empty object, the provider hasn't been initialized.±
   if (
     typeof WordPressBlocksContext === 'undefined' ||
-    typeof WordPressBlocksContext === 'undefined'
+    typeof WordPressThemeContext === 'undefined'
   ) {
     throw new Error(
       'useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider',
