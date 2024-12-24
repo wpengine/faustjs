@@ -11,6 +11,9 @@ process.yml
 !.env.local.sample
 build/
 faustjs.code-workspace
+plugins/faustwp/.docker/plugins/akismet/
+plugins/faustwp/.docker/plugins/hello.php
+plugins/faustwp/.docker/plugins/index.php
 
 # Ignore the WordPress source where used by various development environments
 wordpress/

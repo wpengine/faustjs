@@ -131,3 +131,65 @@ function is_wp_link_ajax_request(): bool {
 		&& ! empty( $_POST['action'] )
 		&& 'wp-link-ajax' === $_POST['action'] );
 }
+
+/**
+ * Get all site URLs for each HTTP schema
+ *
+ * @return array
+ */
+function faustwp_get_wp_site_urls() {
+
+	$site_url = site_url();
+	$host_url = parse_url( $site_url, PHP_URL_HOST );
+
+	if ( is_string( $host_url ) ) {
+		$urls = [
+			'https://' . $host_url,
+			'http://' . $host_url,
+			'//' . $host_url,
+		];
+	} else {
+		$urls = [ $site_url ];
+	}
+
+
+	return apply_filters( 'faustwp_get_wp_site_urls', $urls );
+}
+
+/**
+ * Get all media urls based off the available site urls
+ *
+ * @return array
+ */
+function faustwp_get_wp_media_urls() {
+	$site_urls  = faustwp_get_wp_site_urls();
+	$upload_url = faustwp_get_relative_upload_url( $site_urls );
+
+	if ( ! is_string( $upload_url ) ) {
+		return apply_filters( 'faustwp_get_wp_site_media_urls', [] );
+	}
+
+	$media_urls = [];
+	foreach ( $site_urls as $site_url ) {
+		$media_urls[] = $site_url . $upload_url;
+	}
+
+	return apply_filters( 'faustwp_get_wp_site_media_urls', $media_urls );
+}
+
+
+/**
+ * @param array $site_urls
+ *
+ * @return false|string
+ */
+function faustwp_get_relative_upload_url( array $site_urls ) {
+	$upload_dir = wp_upload_dir()['baseurl'];
+	foreach ( $site_urls as $site_url ) {
+		if ( strpos( $upload_dir, $site_url ) !== false ) {
+			return (string) str_replace( $site_url, '', $upload_dir );
+		}
+	}
+
+	return false;
+}
