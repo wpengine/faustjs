@@ -133,25 +133,22 @@ function is_wp_link_ajax_request(): bool {
 }
 
 /**
- * Get all site URLs for each HTTP schema
- *
- * @return array
+ * Get all site URLs for each HTTP protocol
  */
 function faustwp_get_wp_site_urls() {
 
 	$site_url = site_url();
-	$host_url = parse_url( $site_url, PHP_URL_HOST );
+	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
 	if ( is_string( $host_url ) ) {
-		$urls = [
+		$urls = array(
 			'https://' . $host_url,
 			'http://' . $host_url,
 			'//' . $host_url,
-		];
+		);
 	} else {
-		$urls = [ $site_url ];
+		$urls = array( $site_url );
 	}
-
 
 	return apply_filters( 'faustwp_get_wp_site_urls', $urls );
 }
@@ -166,10 +163,10 @@ function faustwp_get_wp_media_urls() {
 	$upload_url = faustwp_get_relative_upload_url( $site_urls );
 
 	if ( ! is_string( $upload_url ) ) {
-		return apply_filters( 'faustwp_get_wp_site_media_urls', [] );
+		return apply_filters( 'faustwp_get_wp_site_media_urls', array() );
 	}
 
-	$media_urls = [];
+	$media_urls = array();
 	foreach ( $site_urls as $site_url ) {
 		$media_urls[] = $site_url . $upload_url;
 	}
@@ -179,11 +176,12 @@ function faustwp_get_wp_media_urls() {
 
 
 /**
- * @param array $site_urls
+ * Gets the relative wp-content upload URL.
  *
- * @return false|string
+ * @param array<string> $site_urls An array of site URLs.
+ * @return string The relative upload URL.
  */
-function faustwp_get_relative_upload_url( array $site_urls ) {
+function faustwp_get_relative_upload_url( $site_urls ) {
 	$upload_dir = wp_upload_dir()['baseurl'];
 	foreach ( $site_urls as $site_url ) {
 		if ( strpos( $upload_dir, $site_url ) !== false ) {

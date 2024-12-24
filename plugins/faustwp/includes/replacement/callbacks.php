@@ -40,8 +40,8 @@ function content_replacement( string $content ): string {
 		return $content;
 	}
 
-	$wp_site_urls        = faustwp_get_wp_site_urls();
-	if (empty($wp_site_urls)) {
+	$wp_site_urls = faustwp_get_wp_site_urls();
+	if ( empty( $wp_site_urls ) ) {
 		return $content;
 	}
 
@@ -53,14 +53,12 @@ function content_replacement( string $content ): string {
 	}
 
 	if ( $replace_content_urls && $replace_media_urls ) {
-
 		foreach ( $wp_site_urls as $site_url ) {
 			$content = str_replace( $site_url, $frontend_uri, $content );
 		}
 
 		return $content;
 	}
-
 
 	if ( $replace_media_urls ) {
 		$wp_media_site_url = $frontend_uri . $relative_upload_url;
@@ -73,8 +71,8 @@ function content_replacement( string $content ): string {
 	}
 
 	foreach ( $wp_site_urls as $site_url ) {
-		$pattern_exclude_media_urls = "#" . preg_quote( $site_url, '#' ) . "(?!{$relative_upload_url}(\/|$))#";
-		$content = preg_replace( $pattern_exclude_media_urls, $frontend_uri, $content );
+		$pattern_exclude_media_urls = '#' . preg_quote( $site_url, '#' ) . "(?!{$relative_upload_url}(\/|$))#";
+		$content                    = preg_replace( $pattern_exclude_media_urls, $frontend_uri, $content );
 	}
 
 	return $content;
@@ -115,7 +113,6 @@ function image_source_srcset_replacement( $sources ) {
 	$use_wp_domain_for_media = use_wp_domain_for_media();
 	$frontend_uri            = faustwp_get_setting( 'frontend_uri' );
 	$site_url                = site_url();
-
 
 	/**
 	 * For urls with no domain or the frontend domain, replace with the WP site_url.
