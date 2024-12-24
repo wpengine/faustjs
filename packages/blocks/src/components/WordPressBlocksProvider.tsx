@@ -69,5 +69,5 @@ export function WordPressBlocksProvider(props: {
  * ```
  */
 export function useBlocksTheme(): BlocksTheme {
-  return React.useContext(WordPressThemeContext);
+  return React.useContext(WordPressThemeContext) as BlocksTheme;
 }
