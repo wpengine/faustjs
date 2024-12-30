@@ -405,8 +405,8 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_content_replacement_for_content_and_media_urls_for_different_http_protocols() {
 
 		$frontend_uri    = 'http://localhost:3000';
-		$site_url        = 'http://example.org';
-		$site_url_secure = 'https://example.org';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
 
 
 		faustwp_update_setting( 'frontend_uri', $frontend_uri );
@@ -445,8 +445,8 @@ HTML;
 	public function test_content_replacement_for_just_media_urls_for_different_http_protocols() {
 
 		$frontend_uri    = 'http://localhost:3000';
-		$site_url        = 'http://example.org';
-		$site_url_secure = 'https://example.org';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
 
 		faustwp_update_setting( 'frontend_uri', $frontend_uri );
 		faustwp_update_setting( 'enable_rewrites', '0' );
@@ -492,8 +492,8 @@ HTML;
 	public function test_content_replacement_for_just_content_urls_for_different_http_protocols() {
 
 		$frontend_uri    = 'http://localhost:3000';
-		$site_url        = 'http://example.org';
-		$site_url_secure = 'https://example.org';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
 
 		faustwp_update_setting( 'frontend_uri', $frontend_uri );
 		faustwp_update_setting( 'enable_rewrites', '1' );
@@ -536,8 +536,8 @@ HTML;
 
 	public function test_content_replacement_for_content_and_media_urls_and_add_site_to_available_site_urls() {
 		$frontend_uri    = 'http://localhost:3000';
-		$site_url        = 'http://example.org';
-		$site_url_secure = 'https://example.org';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
 		$additional_site_url = 'https://subdomain.example.org';
 
 
@@ -550,8 +550,8 @@ HTML;
 		});
 
 		$this->assertSame(faustwp_get_wp_site_urls(), [
-			'https://example.org',
-			'http://example.org',
+			$site_url,
+			$site_url_secure,
 			'//example.org',
 			$additional_site_url
 		] );
@@ -578,6 +578,58 @@ HTML;
 </p>
 HTML;
 		$this->assertSame( $expected_content, content_replacement( $content ) );
+	}
+
+
+	public function test_image_sourceset_replacement_for_different_http_protocols_with_media_replacement_enabled() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$sources = array (
+			100 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $site_url_secure . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$expected = array (
+			100 => array('url' => $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$this->assertSame( $expected, image_source_srcset_replacement( $sources ) );
+	}
+
+
+	public function test_image_sourceset_replacement_for_different_http_protocols_with_media_replacement_disabled() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '1' );
+
+		$sources = array (
+			100 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $site_url_secure . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$expected = array (
+			100 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $site_url_secure . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$this->assertSame( $expected, image_source_srcset_replacement( $sources ) );
 	}
 
 }

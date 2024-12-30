@@ -133,7 +133,7 @@ function is_wp_link_ajax_request(): bool {
 }
 
 /**
- * Get all site URLs for each HTTP protocol
+ * Get all site URLs for each possible HTTP protocol
  */
 function faustwp_get_wp_site_urls() {
 
@@ -141,11 +141,19 @@ function faustwp_get_wp_site_urls() {
 	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
 	if ( is_string( $host_url ) ) {
-		$urls = array(
-			'https://' . $host_url,
-			'http://' . $host_url,
-			'//' . $host_url,
-		);
+		if ( substr( $site_url, 0, 5 ) === 'http:' ) {
+			$urls = array(
+				'http://' . $host_url,
+				'https://' . $host_url,
+				'//' . $host_url,
+			);
+		} else {
+			$urls = array(
+				'https://' . $host_url,
+				'http://' . $host_url,
+				'//' . $host_url,
+			);
+		}
 	} else {
 		$urls = array( $site_url );
 	}
@@ -190,4 +198,22 @@ function faustwp_get_relative_upload_url( $site_urls ) {
 	}
 
 	return false;
+}
+
+/***
+ * Replaces the media URL for various media urls
+ *
+ * @param string $content The content to be updated with the new media URL.
+ * @param array  $wp_media_urls An array of media URLS.
+ * @param string $replace_url The media URL to be updated to.
+ *
+ * @return string
+ */
+function faustwp_replace_media_url( string $content, array $wp_media_urls, string $replace_url ) {
+
+	foreach ( $wp_media_urls as $media_url ) {
+		$content = str_replace( $media_url, $replace_url, $content );
+	}
+
+	return (string) $content;
 }
