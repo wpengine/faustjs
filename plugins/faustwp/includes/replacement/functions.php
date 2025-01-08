@@ -141,7 +141,7 @@ function faustwp_get_wp_site_urls() {
 	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
 	if ( ! is_string( $host_url ) ) {
-		return apply_filters( 'faustwp_get_wp_site_urls', [ $site_url ] );
+		return apply_filters( 'faustwp_get_wp_site_urls', array( $site_url ) );
 	}
 
 	$is_https = substr( $site_url, 0, 6 ) === 'https:';
@@ -151,7 +151,7 @@ function faustwp_get_wp_site_urls() {
 		array(
 			$is_https ? "https://$host_url" : "http://$host_url",
 			$is_https ? "http://$host_url" : "https://$host_url",
-			"//$host_url"
+			"//$host_url",
 		)
 	);
 }
@@ -188,7 +188,6 @@ function faustwp_get_wp_media_urls() {
 function faustwp_get_relative_upload_url( $site_urls ) {
 	$upload_dir = wp_upload_dir()['baseurl'];
 
-
 	foreach ( $site_urls as $site_url ) {
 		if ( false !== strpos( $upload_dir, $site_url ) ) {
 			return (string) str_replace( $site_url, '', $upload_dir );
@@ -202,10 +201,10 @@ function faustwp_get_relative_upload_url( $site_urls ) {
  * Replaces the media URL for various media urls
  *
  * @param string $content The content to be updated with the new media URL.
- * @param array $wp_media_urls An array of media URLS.
+ * @param array  $wp_media_urls An array of media URLS.
  * @param string $replace_url The media URL to be updated to.
  *
- * @return string
+ * @return string The replaced string
  */
 function faustwp_replace_media_url( string $content, array $wp_media_urls, string $replace_url ) {
 	return str_replace( $wp_media_urls, $replace_url, $content );
@@ -213,23 +212,25 @@ function faustwp_replace_media_url( string $content, array $wp_media_urls, strin
 
 
 /**
- * @param array $patterns
- * @param mixed $wp_site_urls
- * @param mixed $url
+ * Replaces urls for multiple patterns
  *
- * @return array|string|string[]|null
+ * @param array $patterns The array of patterns.
+ * @param mixed $wp_site_urls The array of site URLs.
+ * @param mixed $content The content to be updated.
+ *
+ * @return mixed The replaced content
  */
-function faustwp_replace_urls( array $patterns, mixed $wp_site_urls, mixed $url ) {
+function faustwp_replace_urls( array $patterns, mixed $wp_site_urls, mixed $content ) {
 	$i = 0;
 
 	return preg_replace_callback(
 		$patterns,
 		function () use ( &$wp_site_urls, &$i ) {
 			$replacement = $wp_site_urls[ $i ] . '/';
-			$i ++;
+			$i++;
 
 			return $replacement;
 		},
-		$url
+		$content
 	);
 }

@@ -127,9 +127,9 @@ function image_source_srcset_replacement( $sources ) {
 	);
 
 	foreach ( $sources as $width => $source ) {
-
 		if ( ! $replace_media_urls ) {
-			$sources[ $width ]['url'] = faustwp_replace_urls( $patterns, $wp_site_urls, $source['url'] );;
+			$sources[ $width ]['url'] = faustwp_replace_urls( $patterns, $wp_site_urls, $source['url'] );
+
 			continue;
 		}
 
