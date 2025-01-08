@@ -33,6 +33,10 @@ add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\cont
  */
 function content_replacement( string $content ): string {
 
+	if ( ! $content ) {
+		return '';
+	}
+
 	$replace_content_urls = domain_replacement_enabled();
 	$replace_media_urls   = ! use_wp_domain_for_media();
 
@@ -53,17 +57,11 @@ function content_replacement( string $content ): string {
 	}
 
 	if ( $replace_content_urls && $replace_media_urls ) {
-		foreach ( $wp_site_urls as $site_url ) {
-			$content = str_replace( $site_url, $frontend_uri, $content );
-		}
-
-		return $content;
+		return str_replace( $wp_site_urls, $frontend_uri, $content );
 	}
 
 	if ( $replace_media_urls ) {
-		$wp_media_site_url = $frontend_uri . $relative_upload_url;
-
-		return faustwp_replace_media_url( $content, $wp_media_urls, $wp_media_site_url );
+		return faustwp_replace_media_url( $content, $wp_media_urls, $frontend_uri . $relative_upload_url );
 	}
 
 	foreach ( $wp_site_urls as $site_url ) {
@@ -129,20 +127,18 @@ function image_source_srcset_replacement( $sources ) {
 	);
 
 	foreach ( $sources as $width => $source ) {
-		if ( $replace_media_urls ) {
-			if ( substr( $source['url'], 0, strlen( $relative_upload_url ) ) === $relative_upload_url ) {
-				$sources[ $width ]['url'] = $frontend_uri . $source['url'];
-			} else {
-				$sources[ $width ]['url'] = faustwp_replace_media_url( $source['url'], $wp_media_urls, $wp_media_site_url );
-			}
-		} else {
-			$url = $source['url'];
 
-			foreach ( $wp_site_urls as $wp_site_url ) {
-				$url = preg_replace( $patterns, $wp_site_url . '/', $url );
-			}
-			$sources[ $width ]['url'] = $url;
+		if ( ! $replace_media_urls ) {
+			$sources[ $width ]['url'] = faustwp_replace_urls( $patterns, $wp_site_urls, $source['url'] );;
+			continue;
 		}
+
+		if ( strpos( $source['url'], $relative_upload_url ) === 0 ) {
+			$sources[ $width ]['url'] = $frontend_uri . $source['url'];
+			continue;
+		}
+
+		$sources[ $width ]['url'] = faustwp_replace_media_url( $source['url'], $wp_media_urls, $wp_media_site_url );
 	}
 
 	return $sources;

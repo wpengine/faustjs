@@ -140,25 +140,20 @@ function faustwp_get_wp_site_urls() {
 	$site_url = site_url();
 	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
-	if ( is_string( $host_url ) ) {
-		if ( substr( $site_url, 0, 5 ) === 'http:' ) {
-			$urls = array(
-				'http://' . $host_url,
-				'https://' . $host_url,
-				'//' . $host_url,
-			);
-		} else {
-			$urls = array(
-				'https://' . $host_url,
-				'http://' . $host_url,
-				'//' . $host_url,
-			);
-		}
-	} else {
-		$urls = array( $site_url );
+	if ( ! is_string( $host_url ) ) {
+		return apply_filters( 'faustwp_get_wp_site_urls', [ $site_url ] );
 	}
 
-	return apply_filters( 'faustwp_get_wp_site_urls', $urls );
+	$is_https = substr( $site_url, 0, 6 ) === 'https:';
+
+	return apply_filters(
+		'faustwp_get_wp_site_urls',
+		array(
+			$is_https ? "https://$host_url" : "http://$host_url",
+			$is_https ? "http://$host_url" : "https://$host_url",
+			"//$host_url"
+		)
+	);
 }
 
 /**
@@ -187,33 +182,54 @@ function faustwp_get_wp_media_urls() {
  * Gets the relative wp-content upload URL.
  *
  * @param array<string> $site_urls An array of site URLs.
+ *
  * @return string The relative upload URL.
  */
 function faustwp_get_relative_upload_url( $site_urls ) {
 	$upload_dir = wp_upload_dir()['baseurl'];
+
+
 	foreach ( $site_urls as $site_url ) {
-		if ( strpos( $upload_dir, $site_url ) !== false ) {
+		if ( false !== strpos( $upload_dir, $site_url ) ) {
 			return (string) str_replace( $site_url, '', $upload_dir );
 		}
 	}
 
-	return false;
+	return '';
 }
 
 /***
  * Replaces the media URL for various media urls
  *
  * @param string $content The content to be updated with the new media URL.
- * @param array  $wp_media_urls An array of media URLS.
+ * @param array $wp_media_urls An array of media URLS.
  * @param string $replace_url The media URL to be updated to.
  *
  * @return string
  */
 function faustwp_replace_media_url( string $content, array $wp_media_urls, string $replace_url ) {
+	return str_replace( $wp_media_urls, $replace_url, $content );
+}
 
-	foreach ( $wp_media_urls as $media_url ) {
-		$content = str_replace( $media_url, $replace_url, $content );
-	}
 
-	return (string) $content;
+/**
+ * @param array $patterns
+ * @param mixed $wp_site_urls
+ * @param mixed $url
+ *
+ * @return array|string|string[]|null
+ */
+function faustwp_replace_urls( array $patterns, mixed $wp_site_urls, mixed $url ) {
+	$i = 0;
+
+	return preg_replace_callback(
+		$patterns,
+		function () use ( &$wp_site_urls, &$i ) {
+			$replacement = $wp_site_urls[ $i ] . '/';
+			$i ++;
+
+			return $replacement;
+		},
+		$url
+	);
 }
