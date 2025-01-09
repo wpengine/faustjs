@@ -51,7 +51,7 @@ function content_replacement( string $content ): string {
 
 	$wp_media_urls       = faustwp_get_wp_media_urls();
 	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
-	$frontend_uri        = faustwp_get_setting( 'frontend_uri' );
+	$frontend_uri  = (string) faustwp_get_setting( 'frontend_uri' ) ?: '/';
 	if ( ! $frontend_uri ) {
 		$frontend_uri = '/';
 	}
