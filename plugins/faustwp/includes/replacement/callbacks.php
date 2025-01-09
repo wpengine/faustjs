@@ -49,9 +49,9 @@ function content_replacement( string $content ): string {
 		return $content;
 	}
 
-	$wp_media_urls       = faustwp_get_wp_media_urls();
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls );
 	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
-	$frontend_uri  = (string) faustwp_get_setting( 'frontend_uri' ) ?: '/';
+	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' );
 	if ( ! $frontend_uri ) {
 		$frontend_uri = '/';
 	}
@@ -64,12 +64,9 @@ function content_replacement( string $content ): string {
 		return faustwp_replace_media_url( $content, $wp_media_urls, $frontend_uri . $relative_upload_url );
 	}
 
-	foreach ( $wp_site_urls as $site_url ) {
-		$pattern_exclude_media_urls = '#' . preg_quote( $site_url, '#' ) . "(?!{$relative_upload_url}(\/|$))#";
-		$content                    = preg_replace( $pattern_exclude_media_urls, $frontend_uri, $content );
-	}
-
-	return $content;
+	$site_urls_pattern = implode( '|', array_map( 'preg_quote', $wp_site_urls ) );
+	$pattern           = '#(' . $site_urls_pattern . ')(?!' . $relative_upload_url . '(\/|$))#';
+	return preg_replace( $pattern, $frontend_uri, $content );
 }
 
 /**
@@ -98,7 +95,9 @@ function image_source_replacement( $content ) {
 
 add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_replacement' );
 /**
- * Callback for WordPress 'the_content' filter to replace paths to media.
+ * Callback for WordPress 'wp_calculate_image_srcset' filter to replace paths when generating a srcset
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_calculate_image_srcset/
  *
  * @param array $sources One or more arrays of source data to include in the 'srcset'.
  *
@@ -116,7 +115,7 @@ function image_source_srcset_replacement( $sources ) {
 		return $sources;
 	}
 
-	$wp_media_urls       = faustwp_get_wp_media_urls();
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls );
 	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
 	$frontend_uri        = faustwp_get_setting( 'frontend_uri' );
 
@@ -128,7 +127,19 @@ function image_source_srcset_replacement( $sources ) {
 
 	foreach ( $sources as $width => $source ) {
 		if ( ! $replace_media_urls ) {
-			$sources[ $width ]['url'] = faustwp_replace_urls( $patterns, $wp_site_urls, $source['url'] );
+			$i   = 0;
+			$url = preg_replace_callback(
+				$patterns,
+				function () use ( &$wp_site_urls, &$i ) {
+					$replacement = $wp_site_urls[ $i ] . '/';
+					$i++;
+
+					return $replacement;
+				},
+				$source['url']
+			);
+
+			$sources[ $width ]['url'] = $url;
 
 			continue;
 		}

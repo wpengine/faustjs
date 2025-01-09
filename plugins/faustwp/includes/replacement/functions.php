@@ -134,17 +134,15 @@ function is_wp_link_ajax_request(): bool {
 
 /**
  * Get all site URLs for each possible HTTP protocol
+ *
+ * @return array<string> An array of site urls.
  */
 function faustwp_get_wp_site_urls() {
 
 	$site_url = site_url();
 	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
-	if ( ! is_string( $host_url ) ) {
-		return apply_filters( 'faustwp_get_wp_site_urls', array( $site_url ) );
-	}
-
-	$is_https = substr( $site_url, 0, 6 ) === 'https:';
+	$is_https = strpos( $site_url, 0, 6 ) === 'https:';
 
 	return apply_filters(
 		'faustwp_get_wp_site_urls',
@@ -159,18 +157,19 @@ function faustwp_get_wp_site_urls() {
 /**
  * Get all media urls based off the available site urls
  *
- * @return array
+ * @param array<string> $wp_site_urls The array of potential site urls.
+ *
+ * @return array<string> The array of media Urls
  */
-function faustwp_get_wp_media_urls() {
-	$site_urls  = faustwp_get_wp_site_urls();
-	$upload_url = faustwp_get_relative_upload_url( $site_urls );
+function faustwp_get_wp_media_urls( array $wp_site_urls ) {
+	$upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
 
 	if ( ! is_string( $upload_url ) ) {
 		return apply_filters( 'faustwp_get_wp_site_media_urls', array() );
 	}
 
 	$media_urls = array();
-	foreach ( $site_urls as $site_url ) {
+	foreach ( $wp_site_urls as $site_url ) {
 		$media_urls[] = $site_url . $upload_url;
 	}
 
@@ -189,7 +188,7 @@ function faustwp_get_relative_upload_url( $site_urls ) {
 	$upload_dir = wp_upload_dir()['baseurl'];
 
 	foreach ( $site_urls as $site_url ) {
-		if ( false !== strpos( $upload_dir, $site_url ) ) {
+		if ( strpos( $upload_dir, $site_url ) === 0 ) {
 			return (string) str_replace( $site_url, '', $upload_dir );
 		}
 	}
@@ -208,29 +207,4 @@ function faustwp_get_relative_upload_url( $site_urls ) {
  */
 function faustwp_replace_media_url( string $content, array $wp_media_urls, string $replace_url ) {
 	return str_replace( $wp_media_urls, $replace_url, $content );
-}
-
-
-/**
- * Replaces urls for multiple patterns
- *
- * @param array $patterns The array of patterns.
- * @param mixed $wp_site_urls The array of site URLs.
- * @param mixed $content The content to be updated.
- *
- * @return mixed The replaced content
- */
-function faustwp_replace_urls( array $patterns, mixed $wp_site_urls, mixed $content ) {
-	$i = 0;
-
-	return preg_replace_callback(
-		$patterns,
-		function () use ( &$wp_site_urls, &$i ) {
-			$replacement = $wp_site_urls[ $i ] . '/';
-			$i++;
-
-			return $replacement;
-		},
-		$content
-	);
 }
