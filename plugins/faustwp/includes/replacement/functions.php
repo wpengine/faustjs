@@ -126,6 +126,10 @@ function is_ajax_generate_permalink_request(): bool {
  */
 function is_wp_link_ajax_request(): bool {
 	return ( wp_doing_ajax()
+			&& ! empty( $_POST['_ajax_linking_nonce'] )
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
+			&& ! empty( $_POST['action'] )
+			&& 'wp-link-ajax' === $_POST['action'] );
 }
 
 /**
