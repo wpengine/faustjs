@@ -126,10 +126,6 @@ function is_ajax_generate_permalink_request(): bool {
  */
 function is_wp_link_ajax_request(): bool {
 	return ( wp_doing_ajax()
-		&& ! empty( $_POST['_ajax_linking_nonce'] )
-		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
-		&& ! empty( $_POST['action'] )
-		&& 'wp-link-ajax' === $_POST['action'] );
 }
 
 /**
@@ -158,19 +154,20 @@ function faustwp_get_wp_site_urls() {
  * Get all media urls based off the available site urls
  *
  * @param array<string> $wp_site_urls The array of potential site urls.
+ * @param string        $upload_url An array of site URLs.
  *
  * @return array<string> The array of media Urls
  */
-function faustwp_get_wp_media_urls( array $wp_site_urls ) {
-	$upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
+function faustwp_get_wp_media_urls( array $wp_site_urls, string $upload_url ) {
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, $upload_url );
 
-	if ( ! is_string( $upload_url ) ) {
+	if ( ! is_string( $relative_upload_url ) ) {
 		return apply_filters( 'faustwp_get_wp_site_media_urls', array() );
 	}
 
 	$media_urls = array();
 	foreach ( $wp_site_urls as $site_url ) {
-		$media_urls[] = $site_url . $upload_url;
+		$media_urls[] = $site_url . $relative_upload_url;
 	}
 
 	return apply_filters( 'faustwp_get_wp_site_media_urls', $media_urls );
@@ -181,15 +178,15 @@ function faustwp_get_wp_media_urls( array $wp_site_urls ) {
  * Gets the relative wp-content upload URL.
  *
  * @param array<string> $site_urls An array of site URLs.
+ * @param string        $upload_url An array of site URLs.
  *
  * @return string The relative upload URL.
  */
-function faustwp_get_relative_upload_url( $site_urls ) {
-	$upload_dir = wp_upload_dir()['baseurl'];
+function faustwp_get_relative_upload_url( array $site_urls, string $upload_url = '' ): string {
 
 	foreach ( $site_urls as $site_url ) {
-		if ( strpos( $upload_dir, $site_url ) === 0 ) {
-			return (string) str_replace( $site_url, '', $upload_dir );
+		if ( strpos( $upload_url, $site_url ) === 0 ) {
+			return (string) str_replace( $site_url, '', $upload_url );
 		}
 	}
 

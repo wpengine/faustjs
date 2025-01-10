@@ -49,12 +49,10 @@ function content_replacement( string $content ): string {
 		return $content;
 	}
 
-	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls );
-	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
-	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' );
-	if ( ! $frontend_uri ) {
-		$frontend_uri = '/';
-	}
+	$upload_url          = wp_upload_dir()['baseurl'];
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $upload_url );
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, $upload_url );
+	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
 
 	if ( $replace_content_urls && $replace_media_urls ) {
 		return str_replace( $wp_site_urls, $frontend_uri, $content );
@@ -100,7 +98,7 @@ add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_
  *
  * @link https://developer.wordpress.org/reference/functions/wp_calculate_image_srcset/
  *
- * @param array $sources One or more arrays of source data to include in the 'srcset'.
+ * @param array<string> $sources One or more arrays of source data to include in the 'srcset'.
  *
  * @return array One or more arrays of source data.
  */
@@ -116,9 +114,10 @@ function image_source_srcset_replacement( $sources ) {
 	}
 
 	$replace_media_urls  = ! use_wp_domain_for_media();
-	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls );
-	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
-	$frontend_uri        = faustwp_get_setting( 'frontend_uri' );
+	$upload_url          = wp_upload_dir()['baseurl'];
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $upload_url );
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, $upload_url );
+	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' );
 	$site_url            = site_url() . '/';
 
 	$wp_media_site_url = $frontend_uri . $relative_upload_url;
@@ -134,16 +133,14 @@ function image_source_srcset_replacement( $sources ) {
 		$url = $source['url'];
 
 		if ( $replace_media_urls ) {
-			$url = ( strpos( $url, $relative_upload_url ) === 0 )
+			$sources[ $width ]['url'] = ( strpos( $url, $relative_upload_url ) === 0 )
 				? $frontend_uri . $url
-				: str_replace( $wp_media_urls, $wp_media_site_url, $url );
-		} else {
-
-			// We need to make sure that the frontend URL or relative URL (legacy) is updated with the site url.
-			$url = preg_replace( $patterns, $site_url, $url );
+				: str_replace( $wp_media_urls, $wp_media_site_url, $source['url'] );
+			continue;
 		}
 
-		$sources[ $width ]['url'] = $url;
+		// We need to make sure that the frontend URL or relative URL (legacy) is updated with the site url.
+		$sources[ $width ]['url'] = preg_replace( $patterns, $site_url, $source['url'] );
 	}
 
 	return $sources;
