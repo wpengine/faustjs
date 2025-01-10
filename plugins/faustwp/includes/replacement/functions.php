@@ -195,16 +195,3 @@ function faustwp_get_relative_upload_url( $site_urls ) {
 
 	return '';
 }
-
-/***
- * Replaces the media URL for various media urls
- *
- * @param string $content The content to be updated with the new media URL.
- * @param array  $wp_media_urls An array of media URLS.
- * @param string $replace_url The media URL to be updated to.
- *
- * @return string The replaced string
- */
-function faustwp_replace_media_url( string $content, array $wp_media_urls, string $replace_url ) {
-	return str_replace( $wp_media_urls, $replace_url, $content );
-}

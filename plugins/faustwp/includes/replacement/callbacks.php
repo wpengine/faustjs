@@ -61,11 +61,12 @@ function content_replacement( string $content ): string {
 	}
 
 	if ( $replace_media_urls ) {
-		return faustwp_replace_media_url( $content, $wp_media_urls, $frontend_uri . $relative_upload_url );
+		return str_replace( $wp_media_urls, $frontend_uri . $relative_upload_url, $content );
 	}
 
 	$site_urls_pattern = implode( '|', array_map( 'preg_quote', $wp_site_urls ) );
 	$pattern           = '#(' . $site_urls_pattern . ')(?!' . $relative_upload_url . '(\/|$))#';
+
 	return preg_replace( $pattern, $frontend_uri, $content );
 }
 
@@ -109,15 +110,16 @@ function image_source_srcset_replacement( $sources ) {
 		return $sources;
 	}
 
-	$replace_media_urls = ! use_wp_domain_for_media();
-	$wp_site_urls       = faustwp_get_wp_site_urls();
+	$wp_site_urls = faustwp_get_wp_site_urls();
 	if ( empty( $wp_site_urls ) ) {
 		return $sources;
 	}
 
+	$replace_media_urls  = ! use_wp_domain_for_media();
 	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls );
 	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls );
 	$frontend_uri        = faustwp_get_setting( 'frontend_uri' );
+	$site_url            = site_url() . '/';
 
 	$wp_media_site_url = $frontend_uri . $relative_upload_url;
 	$patterns          = array(
@@ -125,31 +127,23 @@ function image_source_srcset_replacement( $sources ) {
 		'#^/#',
 	);
 
+	/**
+	 * Update each source with the correct replacement URL
+	 */
 	foreach ( $sources as $width => $source ) {
-		if ( ! $replace_media_urls ) {
-			$i   = 0;
-			$url = preg_replace_callback(
-				$patterns,
-				function () use ( &$wp_site_urls, &$i ) {
-					$replacement = $wp_site_urls[ $i ] . '/';
-					$i++;
+		$url = $source['url'];
 
-					return $replacement;
-				},
-				$source['url']
-			);
+		if ( $replace_media_urls ) {
+			$url = ( strpos( $url, $relative_upload_url ) === 0 )
+				? $frontend_uri . $url
+				: str_replace( $wp_media_urls, $wp_media_site_url, $url );
+		} else {
 
-			$sources[ $width ]['url'] = $url;
-
-			continue;
+			// We need to make sure that the frontend URL or relative URL (legacy) is updated with the site url
+			$url = preg_replace( $patterns, $site_url, $url );
 		}
 
-		if ( strpos( $source['url'], $relative_upload_url ) === 0 ) {
-			$sources[ $width ]['url'] = $frontend_uri . $source['url'];
-			continue;
-		}
-
-		$sources[ $width ]['url'] = faustwp_replace_media_url( $source['url'], $wp_media_urls, $wp_media_site_url );
+		$sources[ $width ]['url'] = $url;
 	}
 
 	return $sources;
