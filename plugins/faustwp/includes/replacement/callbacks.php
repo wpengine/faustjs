@@ -139,7 +139,7 @@ function image_source_srcset_replacement( $sources ) {
 				: str_replace( $wp_media_urls, $wp_media_site_url, $url );
 		} else {
 
-			// We need to make sure that the frontend URL or relative URL (legacy) is updated with the site url
+			// We need to make sure that the frontend URL or relative URL (legacy) is updated with the site url.
 			$url = preg_replace( $patterns, $site_url, $url );
 		}
 
