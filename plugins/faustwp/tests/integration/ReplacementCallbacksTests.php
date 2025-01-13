@@ -549,7 +549,7 @@ HTML;
 			return array_merge( $site_urls, [ 'https://subdomain.example.org' ] );
 		});
 
-		$this->assertSame(faustwp_get_wp_site_urls(), [
+		$this->assertSame(faustwp_get_wp_site_urls($site_url), [
 			$site_url,
 			$site_url_secure,
 			'//example.org',

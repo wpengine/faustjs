@@ -44,14 +44,13 @@ function content_replacement( string $content ): string {
 		return $content;
 	}
 
-	$wp_site_urls = faustwp_get_wp_site_urls();
+	$wp_site_urls = faustwp_get_wp_site_urls( site_url() );
 	if ( empty( $wp_site_urls ) ) {
 		return $content;
 	}
 
-	$upload_url          = wp_upload_dir()['baseurl'];
-	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $upload_url );
-	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, $upload_url );
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
 	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
 
 	if ( $replace_content_urls && $replace_media_urls ) {
@@ -108,15 +107,14 @@ function image_source_srcset_replacement( $sources ) {
 		return $sources;
 	}
 
-	$wp_site_urls = faustwp_get_wp_site_urls();
+	$wp_site_urls = faustwp_get_wp_site_urls( site_url() );
 	if ( empty( $wp_site_urls ) ) {
 		return $sources;
 	}
 
 	$replace_media_urls  = ! use_wp_domain_for_media();
-	$upload_url          = wp_upload_dir()['baseurl'];
-	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $upload_url );
-	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, $upload_url );
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
 	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' );
 	$site_url            = site_url() . '/';
 

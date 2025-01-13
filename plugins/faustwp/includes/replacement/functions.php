@@ -132,14 +132,16 @@ function is_wp_link_ajax_request(): bool {
 			&& 'wp-link-ajax' === $_POST['action'] );
 }
 
+
 /**
  * Get all site URLs for each possible HTTP protocol
  *
+ * @param string $site_url The site url.
+ *
  * @return array<string> An array of site urls.
  */
-function faustwp_get_wp_site_urls() {
+function faustwp_get_wp_site_urls( string $site_url ): array {
 
-	$site_url = site_url();
 	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
 	$is_https = strpos( $site_url, 0, 6 ) === 'https:';
@@ -158,16 +160,11 @@ function faustwp_get_wp_site_urls() {
  * Get all media urls based off the available site urls
  *
  * @param array<string> $wp_site_urls The array of potential site urls.
- * @param string        $upload_url An array of site URLs.
+ * @param string        $relative_upload_url The relative upload url.
  *
  * @return array<string> The array of media Urls
  */
-function faustwp_get_wp_media_urls( array $wp_site_urls, string $upload_url ) {
-	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, $upload_url );
-
-	if ( ! is_string( $relative_upload_url ) ) {
-		return apply_filters( 'faustwp_get_wp_site_media_urls', array() );
-	}
+function faustwp_get_wp_media_urls( array $wp_site_urls, string $relative_upload_url ) {
 
 	$media_urls = array();
 	foreach ( $wp_site_urls as $site_url ) {
