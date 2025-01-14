@@ -19,7 +19,7 @@
   </a>
 </p>
 
-> [!NOTICE] DEPRECATED
+> [!CAUTION] DEPRECATED
 > This package has been deprecated due to lack of Apollo support for React Server Components and Next's App Router. The Team is working on a [tooling to replace Faust](https://github.com/wpengine/hwptoolkit) and this will include App Router support. In the mean time, if you need bug fixes or security updates we'd recommend copying the source code of this package directly into your project for use.
 
 This is an **experimental** collection of utilities to support Next.js' App Router feature in Faust. To get started, please visit the docs here:
