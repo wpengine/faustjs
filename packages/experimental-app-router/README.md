@@ -19,6 +19,17 @@
   </a>
 </p>
 
+> [!NOTICE] DEPRECATED
+> This package has been deprecated due to lack of Apollo support for React Server Components and Next's App Router. The Team is working on a [tooling to replace Faust](https://github.com/wpengine/hwptoolkit) and this will include App Router support. In the mean time, if you need bug fixes or security updates we'd recommend copying the source code of this package directly into your project for use.
+
 This is an **experimental** collection of utilities to support Next.js' App Router feature in Faust. To get started, please visit the docs here:
 
-https://faustjs.org/tutorial/getting-started-with-the-experimental-app-router
+## Documentation
+
+- [Tutorial](./docs/getting-started.md)
+- Reference
+  - [`faustRouteHandler`](./docs/faustroutehandler.md)
+  - [`getAuthClient`](./docs/getauthclient.md)
+  - [`getClient`](./docs/getclient.md)
+  - [`onLogin` Server Action](./docs/onlogin-server-action.md)
+  - [`onLogout` Server Action](./docs/onlogout-server-action.md)
