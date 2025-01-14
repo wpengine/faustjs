@@ -1,7 +1,7 @@
 {
   "name": "@faustwp/experimental-app-router",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Experimental: A Faust package to support Next.js' App Router",
   "exports": {
     ".": "./dist/index.js",
