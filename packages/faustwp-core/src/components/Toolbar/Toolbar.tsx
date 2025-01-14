@@ -217,7 +217,9 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
 export function Toolbar({ seedNode }: ToolbarProps) {
   const { isAuthenticated } = useAuth();
 
-  console.warn(`[Faust.js] The Admin Toolbar was ~~experimental~~ and will no longer be actively maintained. No further updates will be made.`);
+  console.warn(
+    `[Faust.js] The Admin Toolbar was ~~experimental~~ and will no longer be actively maintained. No further updates will be made.`,
+  );
 
   if (isAuthenticated !== true) {
     return null;
