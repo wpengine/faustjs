@@ -76,6 +76,12 @@ export function normalizeConfig(_config: FaustConfig): FaustConfig {
     }
   });
 
+  if (cfg.experimentalToolbar) {
+    console.warn(
+      `[Faust.js] The Admin Toolbar was ~~experimental~~ and will no longer be actively maintained. No further updates will be made.`,
+    );
+  }
+
   return extend(cfg, {});
 }
 
