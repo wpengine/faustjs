@@ -16,15 +16,9 @@
 
 ## Introduction
 
-Faust.js is a framework for building front-end applications for headless WordPress sites. Faust.js provides tooling to reduce the pains of building a headless WordPress site (namely around data fetching, authentication, previews, and SSR/SSG) while offering a pleasant experience for both developers and publishers.
-
-## Getting Started
-
-Faust.js aims to be framework agnostic, so it can be used with any front-end framework. Visit one of the guides below for a starting point:
+Faust.js is a toolkit for building Next.js applications for headless WordPress sites. Faust.js provides tooling to reduce the pains of building a headless WordPress site (namely around data fetching, authentication, previews, and SSR/SSG) while offering a pleasant experience for both developers and publishers.
 
 - [Getting started with Next.js](https://faustjs.org/docs/getting-started)
-
-As we work towards our first release, we will be introducing support for other frameworks.
 
 ## System Requirements
 
