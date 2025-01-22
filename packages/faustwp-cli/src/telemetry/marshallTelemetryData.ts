@@ -37,12 +37,6 @@ export const marshallTelemetryData = (command: string) => {
         | string
         | undefined,
     ),
-    node_faustwp_experimental_app_router_version: sanitizePackageJsonVersion(
-      packageJson?.dependencies?.['@faustwp/experimental-app-router'] as
-        | string
-        | undefined,
-    ),
-
     node_apollo_client_version: sanitizePackageJsonVersion(
       packageJson?.dependencies?.['@apollo/client'] as string | undefined,
     ),

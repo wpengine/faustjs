@@ -202,7 +202,6 @@ Once deployed, the updated packages and plugin will be visible here:
 
 - https://www.npmjs.com/package/@faustwp/core
 - https://www.npmjs.com/package/@faustwp/cli
-- https://www.npmjs.com/package/@faustwp/experimental-app-router
 - https://www.npmjs.com/package/@faustwp/block-editor-utils
 - https://www.npmjs.com/package/@faustwp/blocks
 - https://plugins.trac.wordpress.org/browser/faustwp/tags
