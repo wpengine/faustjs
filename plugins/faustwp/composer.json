@@ -58,6 +58,7 @@
     }
   },
   "require": {
-    "symfony/process": "^6.4.14"
+    "symfony/process": "^6.4.14",
+    "php": "^7.4 || ^8.0"
   }
 }
