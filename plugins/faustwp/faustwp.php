@@ -29,6 +29,47 @@ define( 'FAUSTWP_URL', plugin_dir_url( __FILE__ ) );
 define( 'FAUSTWP_PATH', plugin_basename( FAUSTWP_FILE ) );
 define( 'FAUSTWP_SLUG', dirname( plugin_basename( FAUSTWP_FILE ) ) );
 
+
+/**
+ * Get the minimum version of PHP required for this plugin.
+ *
+ * @return string Minimum version required.
+ */
+function faustwp_minimum_php_requirement() {
+	return '7.4';
+}
+
+/**
+ * Whether PHP installation meets the minimum requirements
+ *
+ * @return bool True if meets minimum requirements, false otherwise.
+ */
+function faustwp_meets_php_requirements() {
+	return version_compare( phpversion(), faustwp_minimum_php_requirement(), '>=' );
+}
+
+if ( ! faustwp_meets_php_requirements() ) {
+	add_action(
+		'admin_notices',
+		function () {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					printf(
+						/* translators: %s: Minimum required PHP version */
+						esc_html__( 'FaustWP requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'faustwp' ),
+						esc_html( faustwp_meets_php_requirements() )
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+}
+
 require FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php';
 require FAUSTWP_DIR . '/includes/updates/check-for-updates.php';
 require FAUSTWP_DIR . '/includes/auth/functions.php';
