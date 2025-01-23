@@ -44,11 +44,11 @@ function faustwp_minimum_php_requirement() {
  *
  * @return bool True if meets minimum requirements, false otherwise.
  */
-function faustwp_meets_php_requirements() {
+function is_php_version_compatible() {
 	return version_compare( phpversion(), faustwp_minimum_php_requirement(), '>=' );
 }
 
-if ( ! faustwp_meets_php_requirements() ) {
+if ( ! is_php_version_compatible() ) {
 	add_action(
 		'admin_notices',
 		function () {
@@ -59,7 +59,7 @@ if ( ! faustwp_meets_php_requirements() ) {
 					printf(
 						/* translators: %s: Minimum required PHP version */
 						esc_html__( 'FaustWP requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'faustwp' ),
-						esc_html( faustwp_meets_php_requirements() )
+						esc_html( is_php_version_compatible() )
 					);
 					?>
 				</p>
