@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.2.0
+
+### Minor Changes
+
+- 8f133f5: The Experimental Toolbar feature is being deprecated. You may continue using it but no further bug fixes will be provided.
+
 ## 3.1.0
 
 ### Minor Changes
