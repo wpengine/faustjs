@@ -39,16 +39,7 @@ function faustwp_minimum_php_requirement() {
 	return '7.4';
 }
 
-/**
- * Whether PHP installation meets the minimum requirements
- *
- * @return bool True if meets minimum requirements, false otherwise.
- */
-function is_php_version_compatible() {
-	return version_compare( phpversion(), faustwp_minimum_php_requirement(), '>=' );
-}
-
-if ( ! is_php_version_compatible() ) {
+if ( ! is_php_version_compatible( faustwp_minimum_php_requirement() ) ) {
 	add_action(
 		'admin_notices',
 		function () {
@@ -59,7 +50,7 @@ if ( ! is_php_version_compatible() ) {
 					printf(
 						/* translators: %s: Minimum required PHP version */
 						esc_html__( 'FaustWP requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'faustwp' ),
-						esc_html( is_php_version_compatible() )
+						esc_html( faustwp_minimum_php_requirement() )
 					);
 					?>
 				</p>
