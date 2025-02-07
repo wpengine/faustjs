@@ -1,5 +1,11 @@
 # Faust
 
+## 1.7.1
+
+### Patch Changes
+
+- 4dddd20: Bug: Fixed an issue with the function content_replacement throwing a 500 error for a null value.
+
 ## 1.7.0
 
 ### Minor Changes

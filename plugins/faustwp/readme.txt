@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.6.1
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.7.1 =
+
+### Patch Changes
+
+- 4dddd20: Bug: Fixed an issue with the function content_replacement throwing a 500 error for a null value.
+
 = 1.7.0 =
 
 ### Minor Changes
@@ -77,11 +83,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Minor Changes
 
 - 28f1f83: Added new filter `faustwp_public_redirect_status_code`, allowing WordPress plugins and themes to choose the [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) to use when generating redirects when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
-
-= 1.5.0 =
-
-### Minor Changes
-
-- 011cd931: - Added a custom PluginUpdater class to enable FaustWP plugin updates from an external API endpoint.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
