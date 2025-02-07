@@ -96,7 +96,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	/**
 	 * Test to make sure content rep can accept null values
 	 */
-	public function test_content_replacement_for_null_content_replacement() {
+	public function test_content_replacement_for_null_values() {
 		$this->assertNull(content_replacement( null ) );
 	}
 
