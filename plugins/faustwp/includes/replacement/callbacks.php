@@ -27,11 +27,11 @@ add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\cont
 /**
  * Callback for WordPress 'the_content' filter.
  *
- * @param string $content The post content.
+ * @param ?string $content The post content.
  *
- * @return string The post content.
+ * @return ?string The post content.
  */
-function content_replacement( $content = '' ) {
+function content_replacement( ?string $content ) {
 
 	if ( ! $content ) {
 		return $content;
