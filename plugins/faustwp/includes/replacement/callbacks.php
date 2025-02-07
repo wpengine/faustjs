@@ -27,44 +27,43 @@ add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\cont
 /**
  * Callback for WordPress 'the_content' filter.
  *
- * @param string $content The post content.
+ * @param null|string $content The post content.
  *
- * @return string The post content.
+ * @return null|string The post content.
  */
-function content_replacement( string $content ): string {
+function content_replacement( $content ) {
 
-	if ( ! $content ) {
-		return '';
-	}
+	try {
+		if ( ! $content ) {
+			return $content;
+		}
+		$replace_content_urls = domain_replacement_enabled();
+		$replace_media_urls   = ! use_wp_domain_for_media();
+		if ( ! $replace_content_urls && ! $replace_media_urls ) {
+			return $content;
+		}
+		$wp_site_urls = faustwp_get_wp_site_urls( site_url() );
+		if ( empty( $wp_site_urls ) ) {
+			return $content;
+		}
+		$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
+		$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
+		$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
+		if ( $replace_content_urls && $replace_media_urls ) {
+			return str_replace( $wp_site_urls, $frontend_uri, $content );
+		}
+		if ( $replace_media_urls ) {
+			return str_replace( $wp_media_urls, $frontend_uri . $relative_upload_url, $content );
+		}
+		$site_urls_pattern = implode( '|', array_map( 'preg_quote', $wp_site_urls ) );
+		$pattern           = '#(' . $site_urls_pattern . ')(?!' . $relative_upload_url . '(\/|$))#';
 
-	$replace_content_urls = domain_replacement_enabled();
-	$replace_media_urls   = ! use_wp_domain_for_media();
-
-	if ( ! $replace_content_urls && ! $replace_media_urls ) {
+		return preg_replace( $pattern, $frontend_uri, $content );
+	} catch ( \Exception $e ) {
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		error_log( 'Error replacing content URLs: ' . $e->getMessage() );
 		return $content;
 	}
-
-	$wp_site_urls = faustwp_get_wp_site_urls( site_url() );
-	if ( empty( $wp_site_urls ) ) {
-		return $content;
-	}
-
-	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
-	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
-	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
-
-	if ( $replace_content_urls && $replace_media_urls ) {
-		return str_replace( $wp_site_urls, $frontend_uri, $content );
-	}
-
-	if ( $replace_media_urls ) {
-		return str_replace( $wp_media_urls, $frontend_uri . $relative_upload_url, $content );
-	}
-
-	$site_urls_pattern = implode( '|', array_map( 'preg_quote', $wp_site_urls ) );
-	$pattern           = '#(' . $site_urls_pattern . ')(?!' . $relative_upload_url . '(\/|$))#';
-
-	return preg_replace( $pattern, $frontend_uri, $content );
 }
 
 /**
