@@ -96,8 +96,11 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	/**
 	 * Test to make sure content rep can accept null values
 	 */
-	public function test_content_replacement_for_null_values() {
-		$this->assertNull(content_replacement( null ) );
+	public function test_content_replacement_for_different_types() {
+		$this->assertNull(content_replacement( null));
+		$this->assertEmpty(content_replacement(''));
+		$content = '<p>This is a string with no URLs to be replaced.</p>';
+		$this->assertEquals($content, content_replacement($content));
 	}
 
 	/**

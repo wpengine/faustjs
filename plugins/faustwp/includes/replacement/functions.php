@@ -5,6 +5,8 @@
  * @package FaustWP
  */
 
+declare(strict_types=1);
+
 namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\{
@@ -144,7 +146,7 @@ function faustwp_get_wp_site_urls( string $site_url ): array {
 
 	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
 
-	$is_https = strpos( $site_url, 0, 6 ) === 'https:';
+	$is_https = strpos( $site_url, 'https://' ) === 0;
 
 	return apply_filters(
 		'faustwp_get_wp_site_urls',

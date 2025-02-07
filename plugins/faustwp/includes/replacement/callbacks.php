@@ -5,6 +5,8 @@
  * @package FaustWP
  */
 
+declare(strict_types=1);
+
 namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\{
