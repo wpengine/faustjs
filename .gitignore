@@ -9,6 +9,7 @@ process.yml
 .env
 .env.*
 !.env.local.sample
+!.env.local.example
 build/
 faustjs.code-workspace
 plugins/faustwp/.docker/plugins/akismet/
