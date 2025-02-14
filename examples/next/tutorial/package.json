@@ -7,7 +7,8 @@
     "build": "next build",
     "generate": "faust generatePossibleTypes",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "wp-dev": "npx @wp-now/wp-now start --blueprint faust-tutorial-blueprint.json"
   },
   "dependencies": {
     "@apollo/client": "^3.12.7",
