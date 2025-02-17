@@ -42,6 +42,7 @@
 		"test": "jest",
 		"test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --passWithNoTests --outputFile=report.json",
 		"test:coverage": "jest --coverage",
+		"test:format": "prettier . --check",
 		"test:watch": "jest --watch"
 	},
 	"repository": {

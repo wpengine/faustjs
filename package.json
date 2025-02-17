@@ -28,6 +28,7 @@
 		"dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
 		"test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
 		"test:coverage": "npm run build && npm run test:coverage --workspace=@faustwp/block-editor-utils",
+		"test:format": "npm run test:format --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
 		"wpe-build": "exit 1",
 		"changeset": "changeset",
 		"version": "changeset version && node scripts/versionPlugin.js",
