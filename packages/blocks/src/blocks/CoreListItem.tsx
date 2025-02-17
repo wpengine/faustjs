@@ -8,80 +8,75 @@ import {
 } from '../components/WordPressBlocksViewer.js';
 import { getStyles } from '../utils/index.js';
 
-export type CoreListFragmentProps = ContentBlock & {
+export type CoreListItemFragmentProps = ContentBlock & {
   attributes?: {
+    content?: string;
     anchor?: string;
     backgroundColor?: string;
+    borderColor?: string;
     className?: string;
     fontFamily?: string;
     fontSize?: string;
     gradient?: string;
     lock?: string;
-    ordered?: boolean;
-    reversed?: boolean;
-    start?: number;
+    metadata?: string;
+    placeholder?: string;
     style?: string;
     textColor?: string;
-    type?: string;
-    values?: string;
-    cssClassName?: string;
   };
   innerBlocks?: Array<BlockWithAttributes | null>;
 };
 
-export function CoreList(props: CoreListFragmentProps) {
+export function CoreListItem(props: CoreListItemFragmentProps) {
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });
   const { attributes, innerBlocks } = props;
 
-  if (!attributes?.values) {
+  const content = attributes?.content;
+
+  if (!content) {
     return null;
   }
 
-  const ListLevel = attributes?.ordered ? 'ol' : 'ul';
+  const ownContent = content ? content.split('\n')[0] : '';
 
   return (
-    <ListLevel
-      style={style}
-      className={attributes?.cssClassName}
-      reversed={
-        attributes?.ordered && attributes?.reversed === true ? true : undefined
-      }
-      start={
-        attributes?.ordered && attributes?.start ? attributes?.start : undefined
-      }>
+    <li style={style} className={attributes?.className}>
+      <div
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: ownContent }}
+      />
+
       <WordPressBlocksViewer blocks={innerBlocks ?? []} />
-    </ListLevel>
+    </li>
   );
 }
 
-CoreList.fragments = {
-  key: `CoreListBlockFragment`,
+CoreListItem.fragments = {
+  key: `CoreListItemFragment`,
   entry: gql`
-    fragment CoreListBlockFragment on CoreList {
+    fragment CoreListItemFragment on CoreListItem {
       attributes {
+        content
         anchor
         backgroundColor
+        borderColor
         className
         fontFamily
         fontSize
         gradient
         lock
-        ordered
-        reversed
-        start
+        metadata
+        placeholder
         style
         textColor
-        type
-        values
-        cssClassName
       }
     }
   `,
 };
 
-CoreList.config = {
-  name: 'CoreList',
+CoreListItem.config = {
+  name: 'CoreListItem',
 };
 
-CoreList.displayName = 'CoreList';
+CoreListItem.displayName = 'CoreListItem';
