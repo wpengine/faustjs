@@ -5,55 +5,55 @@ import { actions, filters, addFilter } from '@wordpress/hooks';
 import { Control, Field } from '../../src/types/index.js';
 
 afterEach(() => {
-  jest.clearAllMocks();
+	jest.clearAllMocks();
 });
 
 beforeEach(() => {
-  [actions, filters].forEach((hooks) => {
-    for (const k in hooks) {
-      if ('__current' === k) {
-        continue;
-      }
+	[actions, filters].forEach((hooks) => {
+		for (const k in hooks) {
+			if ('__current' === k) {
+				continue;
+			}
 
-      delete hooks[k];
-    }
-    delete hooks.all;
-  });
+			delete hooks[k];
+		}
+		delete hooks.all;
+	});
 });
 
 function filterA(controls: { [key: string]: Control }) {
-  // eslint-disable-next-line no-param-reassign
-  controls.color = () => <div>Another Color</div>;
-  return controls;
+	// eslint-disable-next-line no-param-reassign
+	controls.color = () => <div>Another Color</div>;
+	return controls;
 }
 
 const blockProps = {
-  clientId: '1',
-  setAttributes: () => null,
-  context: {},
-  attributes: {
-    message: 'Hello',
-  },
-  isSelected: false,
-  className: 'SimpleBlock',
+	clientId: '1',
+	setAttributes: () => null,
+	context: {},
+	attributes: {
+		message: 'Hello',
+	},
+	isSelected: false,
+	className: 'SimpleBlock',
 };
 
 const blockJson = {
-  title: 'SimpleBlock',
-  icon: 'star',
-  category: 'text',
-  attributes: {},
+	title: 'SimpleBlock',
+	icon: 'star',
+	category: 'text',
+	attributes: {},
 };
 
 describe('<EditorForm />', () => {
-  it('renders an empty EditorForm if no fields are provided', () => {
-    const fields: Field[] = [];
-    addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
-    render(
-      <EditorForm fields={fields} props={blockProps} blockJson={blockJson} />,
-    );
-    expect(screen.getByLabelText('Faust block editor form'))
-      .toMatchInlineSnapshot(`
+	it('renders an empty EditorForm if no fields are provided', () => {
+		const fields: Field[] = [];
+		addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
+		render(
+			<EditorForm fields={fields} props={blockProps} blockJson={blockJson} />,
+		);
+		expect(screen.getByLabelText('Faust block editor form'))
+			.toMatchInlineSnapshot(`
       <div
         aria-label="Faust block editor form"
         class="faust-editor-form"
@@ -71,26 +71,26 @@ describe('<EditorForm />', () => {
         </h3>
       </div>
     `);
-  });
-  it('renders EditorForm if matching fields are provided', () => {
-    const fields: Field[] = [
-      {
-        type: 'string',
-        control: 'color',
-        name: 'myColor',
-        location: 'editor',
-      },
-      {
-        type: 'string',
-        control: 'text',
-        name: 'myText',
-        location: 'inspector',
-      },
-    ];
-    addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
-    render(
-      <EditorForm fields={fields} props={blockProps} blockJson={blockJson} />,
-    );
-    expect(screen.getAllByText('Another Color')).toHaveLength(1);
-  });
+	});
+	it('renders EditorForm if matching fields are provided', () => {
+		const fields: Field[] = [
+			{
+				type: 'string',
+				control: 'color',
+				name: 'myColor',
+				location: 'editor',
+			},
+			{
+				type: 'string',
+				control: 'text',
+				name: 'myText',
+				location: 'inspector',
+			},
+		];
+		addFilter('faustBlockEditorUtils.controls', 'my_callback', filterA);
+		render(
+			<EditorForm fields={fields} props={blockProps} blockJson={blockJson} />,
+		);
+		expect(screen.getAllByText('Another Color')).toHaveLength(1);
+	});
 });

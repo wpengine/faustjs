@@ -32,6 +32,7 @@ This package exposes a helper function that you can use to register a React Comp
 Here are the quick steps needed to use this package:
 
 1. From your root folder, install the required dependencies:
+
 ```bash
 $ npm install @wordpress/scripts @faustwp/block-editor-utils --save-dev
 ```
@@ -41,10 +42,10 @@ $ npm install @wordpress/scripts @faustwp/block-editor-utils --save-dev
 ```jsx
 // MyFirstBlock.jsx
 function MyFirstBlock({ style, className, attributes, children, ...props }) {
-    const styles = {
-      ...style,
-    };
-    const cssClassName = 'create-block-my-first-block';
+	const styles = {
+		...style,
+	};
+	const cssClassName = 'create-block-my-first-block';
 	return (
 		<div
 			style={styles}
@@ -54,7 +55,7 @@ function MyFirstBlock({ style, className, attributes, children, ...props }) {
 	);
 }
 
-export default MyFirstBlock
+export default MyFirstBlock;
 ```
 
 2. Create an associated block.json file:
@@ -75,10 +76,10 @@ export default MyFirstBlock
 	"attributes": {
 		"message": {
 			"type": "string",
-            "default": "My First Block"
+			"default": "My First Block"
 		},
 		"bg_color": { "type": "string", "default": "#000000" },
-        "text_color": { "type": "string", "default": "#ffffff" }
+		"text_color": { "type": "string", "default": "#ffffff" }
 	},
 	"textdomain": "my-first-block",
 	"editorScript": "file:./index.js",
@@ -101,7 +102,7 @@ import MyFirstBlock from './MyFirstBlock';
 // Register React Component in Gutenberg
 import { registerFaustBlock } from '@faustwp/block-editor-utils';
 
-registerFaustBlock(MyFirstBlock, {blockJson: metadata})
+registerFaustBlock(MyFirstBlock, { blockJson: metadata });
 ```
 
 4.Sync the block with WordPress
@@ -114,6 +115,7 @@ Add the following command in your `package.json` scripts and run it afterwards:
     "blockset": "faust blockset"
   },
 ```
+
 `$ npm run blockset`
 
 If everything goes OK the cli tool will compile the blocks within the wp-blocks folder and upload them to your WordPress site in a special location that Faust uses to detect and register the blocks.
