@@ -1,68 +1,67 @@
 {
-  "name": "@faustjs/root",
-  "private": true,
-  "engines": {
-    "node": ">=18",
-    "npm": ">=8"
-  },
-  "workspaces": {
-    "packages": [
-      "packages/blocks",
-      "packages/block-editor-utils",
-      "packages/faustwp-cli",
-      "packages/faustwp-core",
-      "examples/next/faustwp-getting-started",
-      "plugins/faustwp"
-    ]
-  },
-  "scripts": {
-    "build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
-    "build:faust-cli": "npm run build --workspace=@faustwp/cli",
-    "build:faust-core": "npm run build --workspace=@faustwp/core",
-    "build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
-    "clean": "npm run clean --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
-    "clean:examples": "rimraf examples/**/node_modules",
-    "format": "npm run format --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
-    "build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",
-    "dev": "npm run build && npm run dev:next:getting-started",
-    "dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
-    "test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
-    "test:coverage": "npm run build && npm run test:coverage --workspace=@faustwp/block-editor-utils",
-    "wpe-build": "exit 1",
-    "changeset": "changeset",
-    "version": "changeset version && node scripts/versionPlugin.js",
-    "version:nightly": "changeset version --snapshot && node scripts/versionPlugin.js",
-    "version:status": "changeset status",
-    "release": "npm run build && changeset publish",
-    "release:nightly": "npm run build && changeset publish --tag canary",
-    "lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",
-    "lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.26.2",
-    "@next/bundle-analyzer": "^13.2.4",
-    "@typescript-eslint/eslint-plugin": "^5.18.0",
-    "@typescript-eslint/parser": "^5.18.0",
-    "eslint": "^8.12.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.4.0",
-    "eslint-plugin-simple-import-sort": "^7.0.0",
-    "prettier": "^2.4.1",
-    "prettier-linter-helpers": "^1.0.0",
-    "react-refresh": "^0.14.2",
-    "rimraf": "^3.0.2"
-  },
-  "overrides": {
-    "semver": "~7.5.2",
-    "optionator": "0.9.3",
-    "postcss": "8.4.31",
-    "axios": "^1.7.4",
-    "cross-spawn": "^7.0.6"
-  }
+	"name": "@faustjs/root",
+	"private": true,
+	"engines": {
+		"node": ">=18",
+		"npm": ">=8"
+	},
+	"workspaces": {
+		"packages": [
+			"packages/blocks",
+			"packages/block-editor-utils",
+			"packages/faustwp-cli",
+			"packages/faustwp-core",
+			"examples/next/faustwp-getting-started",
+			"plugins/faustwp"
+		]
+	},
+	"scripts": {
+		"build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+		"build:faust-cli": "npm run build --workspace=@faustwp/cli",
+		"build:faust-core": "npm run build --workspace=@faustwp/core",
+		"build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
+		"clean": "npm run clean --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
+		"clean:examples": "rimraf examples/**/node_modules",
+		"format": "npm run format --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
+		"build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",
+		"dev": "npm run build && npm run dev:next:getting-started",
+		"dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
+		"test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+		"test:coverage": "npm run build && npm run test:coverage --workspace=@faustwp/block-editor-utils",
+		"wpe-build": "exit 1",
+		"changeset": "changeset",
+		"version": "changeset version && node scripts/versionPlugin.js",
+		"version:nightly": "changeset version --snapshot && node scripts/versionPlugin.js",
+		"version:status": "changeset status",
+		"release": "npm run build && changeset publish",
+		"release:nightly": "npm run build && changeset publish --tag canary",
+		"lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",
+		"lint:fix": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0 --fix"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.26.2",
+		"@next/bundle-analyzer": "^13.2.4",
+		"@typescript-eslint/eslint-plugin": "^5.18.0",
+		"@typescript-eslint/parser": "^5.18.0",
+		"eslint": "^8.12.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-airbnb-typescript": "^17.0.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-jsx-a11y": "^6.5.1",
+		"eslint-plugin-react": "^7.29.4",
+		"eslint-plugin-react-hooks": "^4.4.0",
+		"eslint-plugin-simple-import-sort": "^7.0.0",
+		"prettier": "^2.4.1",
+		"prettier-linter-helpers": "^1.0.0",
+		"react-refresh": "^0.14.2",
+		"rimraf": "^3.0.2"
+	},
+	"overrides": {
+		"semver": "~7.5.2",
+		"optionator": "0.9.3",
+		"postcss": "8.4.31",
+		"axios": "^1.7.4",
+		"cross-spawn": "^7.0.6"
+	}
 }
