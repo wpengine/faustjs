@@ -3,83 +3,83 @@ import { apiRouter } from '../../../src/server';
 import * as middleware from '../../../src/server/auth/middleware';
 
 describe('server/router', () => {
-  test('req.url with /api/faust/auth/token calls the authorizeHandler', async () => {
-    const req: IncomingMessage = {
-      url: '/api/faust/auth/token',
-    } as any;
+	test('req.url with /api/faust/auth/token calls the authorizeHandler', async () => {
+		const req: IncomingMessage = {
+			url: '/api/faust/auth/token',
+		} as any;
 
-    const res: ServerResponse = {
-      end() {},
-    } as any;
+		const res: ServerResponse = {
+			end() {},
+		} as any;
 
-    const authorizeHandlerSpy = jest
-      .spyOn(middleware, 'authorizeHandler')
-      .mockImplementation(async () => {});
+		const authorizeHandlerSpy = jest
+			.spyOn(middleware, 'authorizeHandler')
+			.mockImplementation(async () => {});
 
-    await apiRouter(req, res);
+		await apiRouter(req, res);
 
-    expect(authorizeHandlerSpy).toBeCalled();
+		expect(authorizeHandlerSpy).toBeCalled();
 
-    authorizeHandlerSpy.mockRestore();
-  });
+		authorizeHandlerSpy.mockRestore();
+	});
 
-  test('token route with a code url param calls the authorizeHandler', async () => {
-    const req: IncomingMessage = {
-      url: '/api/faust/auth/token?code=xxxx',
-    } as any;
+	test('token route with a code url param calls the authorizeHandler', async () => {
+		const req: IncomingMessage = {
+			url: '/api/faust/auth/token?code=xxxx',
+		} as any;
 
-    const res: ServerResponse = {
-      end() {},
-    } as any;
+		const res: ServerResponse = {
+			end() {},
+		} as any;
 
-    const authorizeHandlerSpy = jest
-      .spyOn(middleware, 'authorizeHandler')
-      .mockImplementation(async () => {});
+		const authorizeHandlerSpy = jest
+			.spyOn(middleware, 'authorizeHandler')
+			.mockImplementation(async () => {});
 
-    await apiRouter(req, res);
+		await apiRouter(req, res);
 
-    expect(authorizeHandlerSpy).toBeCalled();
+		expect(authorizeHandlerSpy).toBeCalled();
 
-    authorizeHandlerSpy.mockRestore();
-  });
+		authorizeHandlerSpy.mockRestore();
+	});
 
-  test('token route with trailing slash calls the authorizeHandler', async () => {
-    const req: IncomingMessage = {
-      url: '/api/faust/auth/token/?code=xxxx',
-    } as any;
+	test('token route with trailing slash calls the authorizeHandler', async () => {
+		const req: IncomingMessage = {
+			url: '/api/faust/auth/token/?code=xxxx',
+		} as any;
 
-    const res: ServerResponse = {
-      end() {},
-    } as any;
+		const res: ServerResponse = {
+			end() {},
+		} as any;
 
-    const authorizeHandlerSpy = jest
-      .spyOn(middleware, 'authorizeHandler')
-      .mockImplementation(async () => {});
+		const authorizeHandlerSpy = jest
+			.spyOn(middleware, 'authorizeHandler')
+			.mockImplementation(async () => {});
 
-    await apiRouter(req, res);
+		await apiRouter(req, res);
 
-    expect(authorizeHandlerSpy).toBeCalled();
+		expect(authorizeHandlerSpy).toBeCalled();
 
-    authorizeHandlerSpy.mockRestore();
-  });
+		authorizeHandlerSpy.mockRestore();
+	});
 
-  test('req.url with /api/faust/auth/logout calls the logoutHandler', async () => {
-    const req: IncomingMessage = {
-      url: '/api/faust/auth/logout',
-    } as any;
+	test('req.url with /api/faust/auth/logout calls the logoutHandler', async () => {
+		const req: IncomingMessage = {
+			url: '/api/faust/auth/logout',
+		} as any;
 
-    const res: ServerResponse = {
-      end() {},
-    } as any;
+		const res: ServerResponse = {
+			end() {},
+		} as any;
 
-    const logoutHandlerSpy = jest
-      .spyOn(middleware, 'logoutHandler')
-      .mockImplementation(async () => {});
+		const logoutHandlerSpy = jest
+			.spyOn(middleware, 'logoutHandler')
+			.mockImplementation(async () => {});
 
-    await apiRouter(req, res);
+		await apiRouter(req, res);
 
-    expect(logoutHandlerSpy).toBeCalled();
+		expect(logoutHandlerSpy).toBeCalled();
 
-    logoutHandlerSpy.mockRestore();
-  });
+		logoutHandlerSpy.mockRestore();
+	});
 });

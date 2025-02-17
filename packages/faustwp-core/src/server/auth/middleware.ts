@@ -5,10 +5,10 @@ import { Cookies } from './cookie.js';
 import { OAuth } from './token.js';
 
 export interface AuthorizeResponse {
-  accessToken: string;
-  accessTokenExpiration: number;
-  refreshToken: string;
-  refreshTokenExpiration: number;
+	accessToken: string;
+	accessTokenExpiration: number;
+	refreshToken: string;
+	refreshTokenExpiration: number;
 }
 
 /**
@@ -22,61 +22,61 @@ export interface AuthorizeResponse {
  * @see https://faustjs.org/docs/next/guides/auth
  */
 export async function authorizeHandler(
-  req: IncomingMessage,
-  res: ServerResponse,
+	req: IncomingMessage,
+	res: ServerResponse,
 ): Promise<void> {
-  const url = req.url as string;
-  const code = getQueryParam(url, 'code');
-  const oauth = new OAuth(new Cookies(req, res));
-  const refreshToken = oauth.getRefreshToken();
+	const url = req.url as string;
+	const code = getQueryParam(url, 'code');
+	const oauth = new OAuth(new Cookies(req, res));
+	const refreshToken = oauth.getRefreshToken();
 
-  if (!refreshToken && !code) {
-    res.statusCode = 401;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Unauthorized' }));
+	if (!refreshToken && !code) {
+		res.statusCode = 401;
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify({ error: 'Unauthorized' }));
 
-    return;
-  }
+		return;
+	}
 
-  try {
-    const result = await oauth.fetch(code);
+	try {
+		const result = await oauth.fetch(code);
 
-    if (oauth.isOAuthTokens(result)) {
-      oauth.setRefreshToken(result.refreshToken);
-      res.statusCode = 200;
-      res.end(JSON.stringify(result));
-    } else {
-      const {
-        response: { status },
-      } = result;
+		if (oauth.isOAuthTokens(result)) {
+			oauth.setRefreshToken(result.refreshToken);
+			res.statusCode = 200;
+			res.end(JSON.stringify(result));
+		} else {
+			const {
+				response: { status },
+			} = result;
 
-      if (status > 299) {
-        res.statusCode = result.response.status;
-      } else {
-        res.statusCode = 401;
-      }
+			if (status > 299) {
+				res.statusCode = result.response.status;
+			} else {
+				res.statusCode = 401;
+			}
 
-      /**
-       * If the response to the authorization request does not match
-       * isOAuthTokens, remove the refresh token from the cookie in the case
-       * the token is:
-       * - expired
-       * - invalid
-       * - revoked
-       * - from a different WordPress instance when developing on localhost
-       */
-      oauth.setRefreshToken(undefined);
+			/**
+			 * If the response to the authorization request does not match
+			 * isOAuthTokens, remove the refresh token from the cookie in the case
+			 * the token is:
+			 * - expired
+			 * - invalid
+			 * - revoked
+			 * - from a different WordPress instance when developing on localhost
+			 */
+			oauth.setRefreshToken(undefined);
 
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(result.result));
-    }
-  } catch (e) {
-    errorLog('Invalid response for authorize handler:', e);
+			res.setHeader('Content-Type', 'application/json');
+			res.end(JSON.stringify(result.result));
+		}
+	} catch (e) {
+		errorLog('Invalid response for authorize handler:', e);
 
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Internal Server Error' }));
-  }
+		res.statusCode = 500;
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify({ error: 'Internal Server Error' }));
+	}
 }
 
 /**
@@ -90,20 +90,20 @@ export async function authorizeHandler(
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function logoutHandler(
-  req: IncomingMessage,
-  res: ServerResponse,
+	req: IncomingMessage,
+	res: ServerResponse,
 ): Promise<void> {
-  // Only allow POST requests, as browsers may pre-fetch GET requests.
-  if (req.method !== 'POST') {
-    res.statusCode = 405;
-    res.end();
+	// Only allow POST requests, as browsers may pre-fetch GET requests.
+	if (req.method !== 'POST') {
+		res.statusCode = 405;
+		res.end();
 
-    return;
-  }
+		return;
+	}
 
-  const oauth = new OAuth(new Cookies(req, res));
-  oauth.setRefreshToken(undefined);
+	const oauth = new OAuth(new Cookies(req, res));
+	oauth.setRefreshToken(undefined);
 
-  res.statusCode = 205;
-  res.end();
+	res.statusCode = 205;
+	res.end();
 }

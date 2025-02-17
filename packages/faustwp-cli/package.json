@@ -1,61 +1,61 @@
 {
-  "name": "@faustwp/cli",
-  "version": "3.1.1",
-  "description": "This modules provides a CLI to develop, build, and serve your Faust apps",
-  "main": "dist/index.js",
-  "type": "module",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "faust": "dist/index.js"
-  },
-  "devDependencies": {
-    "@types/archiver": "^5.3.2",
-    "@types/cookie": "0.5.1",
-    "@types/dotenv-flow": "^3.2.0",
-    "@types/fs-extra": "^11.0.2",
-    "@types/isomorphic-fetch": "^0.0.36",
-    "@types/jest": "^29.5.5",
-    "@types/node": "^18.15.11",
-    "@types/prompt": "1.1.2",
-    "fetch-mock-jest": "^1.5.1",
-    "jest-environment-jsdom": "29.6.4",
-    "rimraf": "5.0.5",
-    "ts-jest": "^29.1.1",
-    "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "archiver": "^6.0.1",
-    "chalk": "^4.1.2",
-    "dotenv-flow": "^3.2.0",
-    "form-data": "^4.0.0",
-    "fs-extra": "^11.1.1",
-    "glob": "^11.0.0",
-    "isomorphic-fetch": "^3.0.0",
-    "lodash": "^4.17.21",
-    "webpack-cli": "5.1.4"
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "clean": "rimraf dist",
-    "dev": "tsc -p tsconfig.json --watch",
-    "format": "prettier --write .",
-    "test": "jest",
-    "test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --passWithNoTests --outputFile=report.json",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wpengine/faustjs.git"
-  },
-  "author": "Faust Team",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wpengine/faustjs/issues"
-  },
-  "homepage": "https://github.com/wpengine/faustjs#readme",
-  "engines": {
-    "node": ">=18",
-    "npm": ">=8"
-  }
+	"name": "@faustwp/cli",
+	"version": "3.1.1",
+	"description": "This modules provides a CLI to develop, build, and serve your Faust apps",
+	"main": "dist/index.js",
+	"type": "module",
+	"types": "dist/index.d.ts",
+	"bin": {
+		"faust": "dist/index.js"
+	},
+	"devDependencies": {
+		"@types/archiver": "^5.3.2",
+		"@types/cookie": "0.5.1",
+		"@types/dotenv-flow": "^3.2.0",
+		"@types/fs-extra": "^11.0.2",
+		"@types/isomorphic-fetch": "^0.0.36",
+		"@types/jest": "^29.5.5",
+		"@types/node": "^18.15.11",
+		"@types/prompt": "1.1.2",
+		"fetch-mock-jest": "^1.5.1",
+		"jest-environment-jsdom": "29.6.4",
+		"rimraf": "5.0.5",
+		"ts-jest": "^29.1.1",
+		"typescript": "^4.9.5"
+	},
+	"dependencies": {
+		"archiver": "^6.0.1",
+		"chalk": "^4.1.2",
+		"dotenv-flow": "^3.2.0",
+		"form-data": "^4.0.0",
+		"fs-extra": "^11.1.1",
+		"glob": "^11.0.0",
+		"isomorphic-fetch": "^3.0.0",
+		"lodash": "^4.17.21",
+		"webpack-cli": "5.1.4"
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"clean": "rimraf dist",
+		"dev": "tsc -p tsconfig.json --watch",
+		"format": "prettier --write .",
+		"test": "jest",
+		"test:coverage:ci": "jest --ci --json --coverage --testLocationInResults --passWithNoTests --outputFile=report.json",
+		"test:coverage": "jest --coverage",
+		"test:watch": "jest --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wpengine/faustjs.git"
+	},
+	"author": "Faust Team",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/wpengine/faustjs/issues"
+	},
+	"homepage": "https://github.com/wpengine/faustjs#readme",
+	"engines": {
+		"node": ">=18",
+		"npm": ">=8"
+	}
 }
