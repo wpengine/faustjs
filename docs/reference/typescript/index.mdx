@@ -1,0 +1,68 @@
+export const metadata = {
+	title: "TypeScript",
+	description:
+		"Guide to using TypeScript with Faust.js components, hooks, and plugins, including common patterns and type definitions.",
+};
+
+Faust has built-in TypeScript support, which means you can use TypeScript to type your Faust components, hooks, and plugins. This may not be exhaustive but should show you common patterns for typing your Faust code.
+
+## Typing Faust Components
+
+- `FaustTemplate` for WP Template pages.
+- `WordPressBlock` for block components.
+- `GetStaticProps`, `GetServerSideProps`, and `GetStaticPaths` from Next.js for data-fetching methods.
+- `FaustHooks` for hooking into the Faust plugin system.
+
+Here's a quick example using `[...wordpressNode].tsx`:
+
+```tsx title="pages/[...wordpressNode].tsx"
+import { getWordPressProps, WordPressTemplate } from "@faustwp/core";
+import { GetStaticPaths, GetStaticProps } from "next";
+
+export type WordPressTemplateProps = Parameters<typeof WordPressTemplate>[0];
+
+export default function Page(props: WordPressTemplateProps) {
+	return <WordPressTemplate {...props} />;
+}
+
+export const getStaticProps: GetStaticProps = (ctx) => {
+	return getWordPressProps({ ctx });
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+	return {
+		paths: [],
+		fallback: "blocking",
+	};
+};
+```
+
+## Typing Faust Plugins
+
+When creating Faust plugins, you can use the `FaustHooks` type to get autocompletion and type-safety for the hooks system:
+
+```ts title="plugins/ProjectTemplatePlugin.ts"
+import { FaustHooks, FaustPlugin } from "@faustwp/core";
+
+export class ProjectTemplatePlugin implements FaustPlugin {
+	constructor() {}
+
+	apply(hooks: FaustHooks) {
+		hooks.addFilter("possibleTemplatesList", "faust", (templates, data) => {
+			if (data?.seedNode?.__typename === "Project") {
+				return Array.from(new Set(["project", ...templates]));
+			}
+			return templates;
+		});
+	}
+}
+```
+
+Because `FaustHooks` knows about available filters and hooks, TypeScript will automatically guide you on what the callback signatures should look like.
+
+![](./images/typescript-fausthooks-type.png)
+
+## Further Reading
+
+- [Migrating to TypeScript](/docs/explanation/migrating-to-typescript)
+- [Typing GraphQL Queries with GraphQL Codegen](/docs/how-to/generate-types-with-graphql-codegen)

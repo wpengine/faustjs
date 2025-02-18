@@ -1,0 +1,93 @@
+export const metadata = {
+	title: "WordPressBlocksProvider",
+	description:
+		"Reference for the WordPressBlocksProvider component that provides block data and configuration for WordPress block rendering.",
+};
+
+`WordPressBlocksProvider` is a React [Context Provider](https://react.dev/reference/react/createContext#provider) that exposes the data that `WordPressBlocksViewer` needs to render WordPress blocks, namely which blocks have been defined as a part of your Faust app.
+
+## Usage
+
+The below example shows how you can setup the `WordPressBlocksProvider` in your Faust app's `_app.js` file:
+
+```js title="pages/_app.js"
+import "../faust.config";
+import React from "react";
+import { useRouter } from "next/router";
+import { WordPressBlocksProvider } from "@faustwp/blocks"; // [!code ++]
+import { FaustProvider } from "@faustwp/core";
+import blocks from "../wp-blocks/index.js";
+
+export default function MyApp({ Component, pageProps }) {
+	const router = useRouter();
+
+	return (
+		<FaustProvider pageProps={pageProps}>
+			<WordPressBlocksProvider // [!code ++]
+				config={{
+					// [!code ++]
+					blocks, // [!code ++]
+				}}
+			>
+				{" "}
+				// [!code ++]
+				<Component {...pageProps} key={router.asPath} />
+			</WordPressBlocksProvider>{" "}
+			// [!code ++]
+		</FaustProvider>
+	);
+}
+```
+
+## Props
+
+Below are `WordPressBlocksProvider`'s props defined as a TypeScript interface:
+
+```ts
+interface WordPressBlocksProviderProps {
+	config: {
+		blocks?: { [key: string]: WordPressBlock };
+		theme?: BlocksTheme;
+	};
+}
+```
+
+The `config` prop accepts a `blocks` property, which is an map of block names to `WordPressBlock` components:
+
+```ts
+type WordPressBlock = React.FC & {
+	displayName?: string;
+	name?: string;
+	config?: {
+		name: string;
+	};
+};
+```
+
+The `blocks` property is typically set to a path of `wp-blocks/index.js`:
+
+```js
+import { WordPressBlocksProvider } from "@faustwp/blocks";
+import blocks from "../wp-blocks/index.js"; // [!code ++]
+
+<WordPressBlocksProvider
+	config={{
+		blocks,
+	}}
+/>;
+```
+
+The theme property is an optional parameter that is used to assign a ThemeProvider for a theme.json and will be available in the `useBlocksTheme` hook. You will need to use the `fromThemeJson` helper to transform a `theme.json` object into the `BlocksTheme` type:
+
+```js
+import { WordPressBlocksProvider } from "@faustwp/blocks";
+import blocks from "../wp-blocks/index.js";
+import themeJson from "../theme.json"; // [!code ++]
+
+<WordPressBlocksProvider
+	config={{
+		blocks,
+		theme: fromThemeJson(themeJson), // [!code ++]
+	}}
+/>;
+```

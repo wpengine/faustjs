@@ -1,0 +1,95 @@
+export const metadata = {
+	title: "Query Data in the Browser",
+	description:
+		"Learn how to perform client-side data fetching using Apollo's useQuery hook in your React components.",
+};
+
+When you query data in the browser, you're leveraging Apollo's `useQuery` hook within your React components.
+
+> [!IMPORTANT]
+> This is client-side data fetching, which means the data is fetched after your page renders in the browser **rather than at build time or request time on the server**. This can be very beneficial and powerful. It can also cause performance and SEO issues. Be sure to understand the implications of client-side data fetching before using it in your project.
+
+## 0. Prerequisites
+
+If you haven't already, follow the [Basic Setup](/docs/how-to/basic-setup/) steps to get Faust.js set up.
+
+## 1. Create a new page
+
+Create a new page in your Next.js app. For this example we'll create a new page called `client.js` in the `pages` directory. This client can also be used in any component.
+
+```js title="page/client.js"
+export default function Page(props) {
+	return <h1>Client Page</h1>;
+}
+```
+
+Make sure you can navigate to this page in your browser.
+
+## 2. Adding the Apollo Client
+
+To query data in the browser, you need to import the `useQuery` from the `@apollo/client` package. This hook will execute queries using the same client used by templates on the server.
+
+```js title="page/client.js" {1,4}
+import { gql, useQuery } from "@apollo/client";
+
+export default function Page(props) {
+	const { data } = useQuery();
+
+	return <h1>Client Page</h1>;
+}
+```
+
+## 3. Adding a Query
+
+It's time to write our GraphQL query to fetch some data. For this example we'll be fetching the site title and description from your WP site's general settings.
+
+```js {4,9-17} title="page/client.js"
+import { gql, useQuery } from "@apollo/client";
+
+export default function Page(props) {
+	const { data } = useQuery(Page.query);
+
+	return <h1>Client Page</h1>;
+}
+
+Page.query = gql`
+	query {
+		generalSettings {
+			title
+			description
+		}
+	}
+`;
+```
+
+> [!TIP]:
+> While it's can be convinient to co-locate a GraphQL query within the same file. You can also import and use queries from an external file.
+
+## 4. Displaying the Data
+
+Now that we have our query, we can display the data on the page.
+
+```js {5, 7-12} title="page/client.js"
+import { gql, useQuery } from "@apollo/client";
+
+export default function Page(props) {
+	const { data } = useQuery(Page.query);
+	const { title, description } = data.generalSettings;
+
+	return (
+		<>
+			<h1>{title}</h1>
+			<p>{description}</p>
+		</>
+	);
+}
+
+Page.query = gql`
+	query {
+		generalSettings {
+			title
+			description
+		}
+	}
+`;
+```

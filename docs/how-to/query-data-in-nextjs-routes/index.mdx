@@ -1,0 +1,183 @@
+export const metadata = {
+	title: "Query Data in Next.js Routes",
+	description:
+		"Guide to pre-fetching WordPress data in Next.js routes using getNextServerSideProps and getNextStaticProps helper functions.",
+};
+
+When you want to pre-fetch WordPress data and render your pages outside of the Faust.js template hierarchy and instead use Next.js routes, either at **build time** or **on every request**, Faust provides two helper functions:
+
+- [`getNextServerSideProps`](/docs/reference/get-next-server-side-props/) (for Server Side Rendering [SSR])
+- [`getNextStaticProps`](/docs/reference/get-next-static-props/) (for Static Site Generation [SSG])
+
+> [!IMPORTANT]
+> SSR and SSG provide significant performance and SEO benefits compared to client-side data fetching, because the HTML is rendered ahead of time rather than in the browser. However, choose your method wisely:
+>
+> - **SSR** (via `getNextServerSideProps`) fetches fresh data on **every** request.
+> - **SSG** (via `getNextStaticProps`) builds pages once at build time or at revalidation intervals.
+
+## 0. Prerequisites
+
+If you haven't already, follow the [Basic Setup](/docs/how-to/basic-setup/) steps to get Faust.js set up. You should also be familiar with [Next.js data fetching](https://nextjs.org/docs/pages/building-your-application/data-fetching).
+
+## 1. Create new pages
+
+Create a new file in your Next.js `pages` directory. For this example, we'll make two pages called `ssr.js` & `ssg.js`. We'll add a simple component to confirm the page can be navigated to.
+
+```js title="pages/ssr.js"
+export default function Page(props) {
+	return <h1>SSR Page</h1>;
+}
+```
+
+```js title="pages/ssg.js"
+export default function Page(props) {
+	return <h1>SSG Page</h1>;
+}
+```
+
+## 2. Define a Query in the Page Component
+
+Just like you can co-locate queries in a client-side component, you can do the same here. By default, Faust will look for a static `Page.query` property and run it automatically.
+
+Add the following code to both files we just created (`ssr.js` and `ssg.js`):
+
+```js {5-12}
+export default function Page(props) {
+	// page code here
+}
+
+Page.query = gql`
+	query {
+		generalSettings {
+			title
+			description
+		}
+	}
+`;
+```
+
+Make sure you can navigate to this page in your browser. For instance, visit http://localhost:3000/ssr in development mode.
+
+## 2. Using `getNextServerSideProps` (SSR)
+
+Server-side rendering (SSR) is useful when you need to fetch fresh data on every request. This is beneficial for pages that are user-specific dashboards or a page that displays real-time data.
+
+### Import data fetching helpers
+
+To server-side render data from WordPress, import and use the [`getNextServerSideProps`](/docs/reference/get-next-server-side-props/) helper from the `@faustwp/core` package in the `ssr.js` page route you just created. This allows you to fetch data during the server-side request. Do not forget to import `gql` from apollo as well.
+
+```js {1,2} title="pages/ssr.js"
+import { getNextServerSideProps } from "@faustwp/core";
+import { gql } from "@apollo/client";
+
+export default function Page(props) {
+	return <h1>SSR Page</h1>;
+}
+
+// etc.
+```
+
+### Execute a Query in the Page Component
+
+Finally, we need to call the [`getNextServerSideProps`](/docs/reference/get-next-server-side-props/) helper function from Faust with the [`context`](https://nextjs.org/docs/pages/api-reference/functions/get-server-side-props#context-parameter) and an options object to set the `Page` component.
+
+```js {25-29} title="pages/ssr.js"
+import { getNextServerSideProps } from "@faustwp/core";
+import { gql } from "@apollo/client";
+
+export default function Page(props) {
+	const { title, description } = props.data?.generalSettings ?? {};
+
+	return (
+		<>
+			<h1>SSR Page</h1>
+			<p>{title}</p>
+			<p>{description}</p>
+		</>
+	);
+}
+
+Page.query = gql`
+	query {
+		generalSettings {
+			title
+			description
+		}
+	}
+`;
+
+export async function getServerSideProps(context) {
+	return getNextServerSideProps(context, {
+		Page: Page,
+	});
+}
+```
+
+> [!TIP] You can also import and use queries from an external file. For complex projects, keeping your queries in separate files can help with organization and code reuse.
+
+## 3. Using `getNextStaticProps` (SSG)
+
+Static rendering is useful when a page's data is consistent across visitors. Next.js will build the page once initially and serve the same HTML to all visitors. This is beneficial for pages that don't need to be updated frequently and need to be served as quickly.
+
+> [!TIP]
+> Next.js supports "Incremental Static Regeneration" (ISR), this is a basically server-side cache that enables the regeneration of static pages [programmatically](https://nextjs.org/docs/pages/building-your-application/data-fetching/incremental-static-regeneration#on-demand-validation-with-resrevalidate) or on [time based interval](https://nextjs.org/docs/pages/building-your-application/data-fetching/incremental-static-regeneration). This can be extremely useful for pages that need to be updated periodically but not on every request while still maintaining the performance benefits of static generation.
+
+### Import data fetching helpers
+
+To statically render data from WordPress, import and use the [`getNextStaticProps`](/docs/reference/get-next-static-props/) helper from the `@faustwp/core` package in the `ssg.js` page route you just created. This allows you to fetch data during the build or revalidation. Do not forget to import `gql` from apollo as well.
+
+```js {1,2} title="pages/ssr.js"
+import { getNextStaticProps } from "@faustwp/core";
+import { gql } from "@apollo/client";
+
+export default function Page(props) {
+	return <h1>SSG Page</h1>;
+}
+
+//etc.
+```
+
+### Execute a Query in the Page Component
+
+Similar to the SSR example, we need to implement the `getNextStaticProps` helper function from Faust with the `context` and an options object to set the `Page` component.
+
+```js {25-30} title="pages/ssg.js"
+import { getNextStaticProps } from "@faustwp/core";
+import { gql } from "@apollo/client";
+
+export default function Page(props) {
+	const { title, description } = props.data?.generalSettings ?? {};
+
+	return (
+		<>
+			<h1>SSG Page</h1>
+			<p>{title}</p>
+			<p>{description}</p>
+		</>
+	);
+}
+
+Page.query = gql`
+	query {
+		generalSettings {
+			title
+			description
+		}
+	}
+`;
+
+export async function getStaticProps(context) {
+	return getNextStaticProps(context, {
+		Page: Page,
+		revalidate: 60, // Enables ISR with a 60 second revalidation interval
+	});
+}
+```
+
+## 4. Start a Production Server
+
+To test see the difference between SSR and SSG, start your production server by running `npm run build && npm run start` in your terminal and navigate to the pages you created in your browser. For instance, visit http://localhost:3000/ssr and http://localhost:3000/ssg. You should see the title and description from the `generalSettings` query displayed on the page.
+
+## 5. Test the differences
+
+Use the browser console to check the network tab and see the differences between SSR and SSG. Compare the headers and response times to see how the pages is being uniquely fetch, rendered, and cached.
