@@ -14,18 +14,15 @@ jobs:
   setup:
     name: Setup Dependencies
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ${{ inputs.node-version }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js ${{ matrix.node-version }}
+      - name: Set up Node.js ${{ inputs.node-version }}
         uses: ./.github/actions/cache-restore
         id: cache-node-modules
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ inputs.node-version }}
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
