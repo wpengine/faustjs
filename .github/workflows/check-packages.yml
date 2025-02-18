@@ -14,24 +14,12 @@ concurrency:
 jobs:
   setup-node:
     name: Setup Dependencies
-    runs-on: ubuntu-latest
-
+    uses: ./.github/workflows/node-setup.yml
     strategy:
       matrix:
         node-version: [22]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: ./.github/actions/cache-restore
-        id: cache-node-modules
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci
+    with:
+      node-version: ${{ matrix.node-version }}
   check_lint:
     name: Validate package linting
     runs-on: ubuntu-latest
