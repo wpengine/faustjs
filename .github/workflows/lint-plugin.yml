@@ -5,6 +5,10 @@ on:
     paths-ignore:
       - '**/*.md'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint_plugin:
     runs-on: ubuntu-22.04
