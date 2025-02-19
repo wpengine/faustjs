@@ -8,11 +8,11 @@ import { getWpUrl } from './getWpUrl.js';
  * @param {string} path Path relative to the admin URL.
  */
 export function getAdminUrl(path = ''): string {
-  const adminUrl = getWpUrl('wp-admin');
+	const adminUrl = getWpUrl('wp-admin');
 
-  if (!path) {
-    return adminUrl;
-  }
+	if (!path) {
+		return adminUrl;
+	}
 
-  return `${adminUrl}/${path}`;
+	return `${adminUrl}/${path}`;
 }

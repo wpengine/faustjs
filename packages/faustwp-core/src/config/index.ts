@@ -8,83 +8,83 @@ import { hooks, FaustPlugin } from '../wpHooks/index.js';
 import { warnLog } from '../utils/log.js';
 
 export interface FaustConfig {
-  templates: { [key: string]: WordPressTemplate };
-  experimentalToolbar?: boolean;
-  loginPagePath?: string;
-  /**
-   * @deprecated Plugins are no longer experimental, use "plugins" instead.
-   */
-  experimentalPlugins?: FaustPlugin[];
-  plugins?: FaustPlugin[];
-  possibleTypes: PossibleTypesMap;
-  basePath?: string;
-  /**
-   * Instruct the Apollo Client to use Persisted Queries
-   *
-   * @link https://www.apollographql.com/docs/apollo-server/performance/apq/#apollo-client-setup
-   */
-  usePersistedQueries?: boolean;
-  /**
-   * Instruct the Apollo Client to send applicable requests as GET instead of POST.
-   *
-   * @link https://www.apollographql.com/docs/react/networking/advanced-http-networking/#the-httplink-object
-   */
-  useGETForQueries?: boolean;
+	templates: { [key: string]: WordPressTemplate };
+	experimentalToolbar?: boolean;
+	loginPagePath?: string;
+	/**
+	 * @deprecated Plugins are no longer experimental, use "plugins" instead.
+	 */
+	experimentalPlugins?: FaustPlugin[];
+	plugins?: FaustPlugin[];
+	possibleTypes: PossibleTypesMap;
+	basePath?: string;
+	/**
+	 * Instruct the Apollo Client to use Persisted Queries
+	 *
+	 * @link https://www.apollographql.com/docs/apollo-server/performance/apq/#apollo-client-setup
+	 */
+	usePersistedQueries?: boolean;
+	/**
+	 * Instruct the Apollo Client to send applicable requests as GET instead of POST.
+	 *
+	 * @link https://www.apollographql.com/docs/react/networking/advanced-http-networking/#the-httplink-object
+	 */
+	useGETForQueries?: boolean;
 }
 
 let config: FaustConfig;
 
 export function setConfig(_config: FaustConfig) {
-  return once(() => {
-    config = _config;
+	return once(() => {
+		config = _config;
 
-    const { experimentalPlugins, plugins } = _config;
-    // combine both sets of plugins until experimentalPlugins is fully deprecated
-    const allSupportedPlugins = [
-      ...(experimentalPlugins || []),
-      ...(plugins || []),
-    ];
+		const { experimentalPlugins, plugins } = _config;
+		// combine both sets of plugins until experimentalPlugins is fully deprecated
+		const allSupportedPlugins = [
+			...(experimentalPlugins || []),
+			...(plugins || []),
+		];
 
-    allSupportedPlugins?.forEach((plugin) => {
-      plugin?.apply?.(hooks);
-    });
+		allSupportedPlugins?.forEach((plugin) => {
+			plugin?.apply?.(hooks);
+		});
 
-    if (experimentalPlugins?.length) {
-      // log to cli if experimentalPlugins is used since it's being deprecated
-      warnLog(
-        'Plugin System: The "experimentalPlugins" configuration option will be deprecated in the near future. Please use "plugins" instead in the faust.config.js.',
-      );
-    }
-  })();
+		if (experimentalPlugins?.length) {
+			// log to cli if experimentalPlugins is used since it's being deprecated
+			warnLog(
+				'Plugin System: The "experimentalPlugins" configuration option will be deprecated in the near future. Please use "plugins" instead in the faust.config.js.',
+			);
+		}
+	})();
 }
 
 export function normalizeConfig(_config: FaustConfig): FaustConfig {
-  const cfg = defaults({}, _config, {
-    loginPagePath: '/login',
-    experimentalToolbar: false,
-    usePersistedQueries: false,
-    useGETForQueries: true,
-    basePath: '',
-  });
+	const cfg = defaults({}, _config, {
+		loginPagePath: '/login',
+		experimentalToolbar: false,
+		usePersistedQueries: false,
+		useGETForQueries: true,
+		basePath: '',
+	});
 
-  Object.keys(cfg).forEach((key) => {
-    const keyValue: keyof FaustConfig = key as any;
-    const value = cfg[keyValue];
+	Object.keys(cfg).forEach((key) => {
+		const keyValue: keyof FaustConfig = key as any;
+		const value = cfg[keyValue];
 
-    if (isString(value)) {
-      (cfg as any)[keyValue] = value.trim();
-    }
-  });
+		if (isString(value)) {
+			(cfg as any)[keyValue] = value.trim();
+		}
+	});
 
-  if (cfg.experimentalToolbar) {
-    console.warn(
-      `[Faust.js] As the team shifts focus to new work on [Headless WordPress](https://github.com/wpengine/hwptoolkit), the Admin Toolbar, which was ~~experimental~~, will no longer be actively maintained. No further updates will be made.`,
-    );
-  }
+	if (cfg.experimentalToolbar) {
+		console.warn(
+			`[Faust.js] As the team shifts focus to new work on [Headless WordPress](https://github.com/wpengine/hwptoolkit), the Admin Toolbar, which was ~~experimental~~, will no longer be actively maintained. No further updates will be made.`,
+		);
+	}
 
-  return extend(cfg, {});
+	return extend(cfg, {});
 }
 
 export function getConfig(): Partial<FaustConfig> {
-  return normalizeConfig(config);
+	return normalizeConfig(config);
 }

@@ -6,14 +6,14 @@ import { useContext } from 'react';
 import { FaustContext } from '../store/FaustContext.js';
 
 export function useFaustQuery<TData>(query: DocumentNode): TData {
-  const context = useContext(FaustContext);
+	const context = useContext(FaustContext);
 
-  if (context === undefined) {
-    throw new Error('useFaustQuery must be used within a FaustProvider');
-  }
+	if (context === undefined) {
+		throw new Error('useFaustQuery must be used within a FaustProvider');
+	}
 
-  const sha = sha256(print(query));
+	const sha = sha256(print(query));
 
-  // eslint-disable-next-line no-underscore-dangle
-  return context?.queries?.[sha] as TData;
+	// eslint-disable-next-line no-underscore-dangle
+	return context?.queries?.[sha] as TData;
 }
