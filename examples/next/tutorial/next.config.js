@@ -1,4 +1,4 @@
-const { createSecureHeaders } = require("next-secure-headers");
+const { createSecureHeaders } = require('next-secure-headers');
 
 /**
  * @type {import('next').NextConfig}
@@ -6,7 +6,7 @@ const { createSecureHeaders } = require("next-secure-headers");
 module.exports = withFaust({
   reactStrictMode: true,
   sassOptions: {
-    includePaths: ["node_modules"],
+    includePaths: ['node_modules'],
   },
   images: {
     domains: [getWpHostname()],
@@ -15,7 +15,7 @@ module.exports = withFaust({
   async headers() {
     return [
       {
-        source: "/:path*",
+        source: '/:path*',
         headers: createSecureHeaders({
           xssProtection: false,
         }),
