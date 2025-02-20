@@ -44,10 +44,10 @@ runs:
         # Create dist folder and copy files while excluding .distignore items
         mkdir -p dist
         # Copy plugin files to dist folder and exclude external updater
-        rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" --exclude="includes/updates" "${{ env.PLUGIN_DIR }}/" "dist/${{ env.SLUG }}"
+        rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" --exclude="includes/updates/check-for-updates.php" --exclude="includes/updates/class-plugin-updater.php" "${{ env.PLUGIN_DIR }}/" "dist/${{ env.SLUG }}"
 
         # Updates for the CHANGELOG file
-        sed -i '' -e 's/plugin updates from an external API endpoint./plugin updates from an external API endpoint when not installed from WordPress.org/' "dist/${{ env.SLUG }}/CHANGELOG.md"
+        sed -i -e 's/plugin updates from an external API endpoint./plugin updates from an external API endpoint when not installed from WordPress.org/' "dist/${{ env.SLUG }}/CHANGELOG.md"
 
         # Create .org zip file
         org_zip_file="faustwp-${{ env.VERSION }}.org.zip"
