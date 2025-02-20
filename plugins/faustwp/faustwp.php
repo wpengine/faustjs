@@ -65,7 +65,6 @@ if ( ! is_php_version_compatible( faustwp_minimum_php_requirement() ) ) {
 if ( file_exists( FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php' ) ) {
 	require FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php';
 }
-
 if ( file_exists( FAUSTWP_DIR . '/includes/updates/check-for-updates.php' ) ) {
 	require FAUSTWP_DIR . '/includes/updates/check-for-updates.php';
 }
