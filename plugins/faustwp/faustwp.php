@@ -69,6 +69,7 @@ if ( file_exists( FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php' ) )
 if ( file_exists( FAUSTWP_DIR . '/includes/updates/check-for-updates.php' ) ) {
 	require FAUSTWP_DIR . '/includes/updates/check-for-updates.php';
 }
+
 require FAUSTWP_DIR . '/includes/auth/functions.php';
 require FAUSTWP_DIR . '/includes/telemetry/functions.php';
 require FAUSTWP_DIR . '/includes/replacement/functions.php';
