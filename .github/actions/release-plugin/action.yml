@@ -21,8 +21,8 @@ runs:
         sudo apt-get update && sudo apt-get install zip rsync -y
       shell: bash
 
-    - id: zip
-      name: Zip Plugin (Main)
+    - id: zip-main-release-for-github
+      name: Zip plugin for the main release
       run: |
         # Create dist folder and copy files while excluding .distignore items
         mkdir -p dist
@@ -35,8 +35,8 @@ runs:
         echo "::set-output name=zip-path::$PWD/$zip_file"
       shell: bash
 
-    - id: zip-org
-      name: Zip Plugin (.org version)
+    - id: zip-org-release-for-github
+      name: Zip plugin for the non wpe-updater release
       run: |
         # Delete old directory
         rm -rf dist
@@ -57,8 +57,8 @@ runs:
         echo "::set-output name=zip-path::$PWD/$org_zip_file"
       shell: bash
 
-    - id: upload-main
-      name: Upload Main Zip File to Release
+    - id: upload-main-release-to-github
+      name: Uploads the main release zip file to Github
       uses: softprops/action-gh-release@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,8 +66,8 @@ runs:
         asset_name: faustwp-${{ env.VERSION }}.zip
         overwrite: true
 
-    - id: upload-org
-      name: Upload .org Zip File to Release
+    - id: upload-org-release-to-github
+      name: Uploads the non wpe-updater release zip file to Github
       uses: softprops/action-gh-release@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
