@@ -1,5 +1,5 @@
 ---
-'@faustwp/blocks': major
+'@faustwp/blocks': minor
 ---
 
 ### WHAT
