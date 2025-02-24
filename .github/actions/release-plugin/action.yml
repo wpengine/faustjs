@@ -58,10 +58,10 @@ runs:
       shell: bash
 
     - id: upload-main-release-to-github
-      name: Uploads the main release zip file to Github
+      name: Uploads the main release zip file to GitHub
       uses: softprops/action-gh-release@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: ${{ steps.zip.outputs.zip-path }}
         asset_name: faustwp-${{ env.VERSION }}.zip
         overwrite: true
@@ -70,7 +70,7 @@ runs:
       name: Uploads the non wpe-updater release zip file to Github
       uses: softprops/action-gh-release@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         files: ${{ steps.zip-org.outputs.zip-path }}
         asset_name: faustwp-${{ env.VERSION }}.org.zip
         overwrite: true
