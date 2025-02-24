@@ -67,7 +67,7 @@ runs:
         overwrite: true
 
     - id: upload-org-release-to-github
-      name: Uploads the non wpe-updater release zip file to Github
+      name: Uploads the non wpe-updater release zip file to GitHub
       uses: softprops/action-gh-release@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
