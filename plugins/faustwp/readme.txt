@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.6.1
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.7.2 =
+
+### Patch Changes
+
+- 4f82c31: Chore update faustwp release process
+
 = 1.7.1 =
 
 ### Patch Changes
@@ -77,11 +83,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - ab06786: Updated the package `lucatume/wp-browser` to fix a security vulnurability for `nesbot/carbon `. See https://github.com/briannesbitt/Carbon/releases/tag/2.72.6
-
-= 1.6.0 =
-
-### Minor Changes
-
-- 28f1f83: Added new filter `faustwp_public_redirect_status_code`, allowing WordPress plugins and themes to choose the [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) to use when generating redirects when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

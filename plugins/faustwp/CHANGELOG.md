@@ -1,5 +1,11 @@
 # Faust
 
+## 1.7.2
+
+### Patch Changes
+
+- 4f82c31: Chore update faustwp release process
+
 ## 1.7.1
 
 ### Patch Changes
