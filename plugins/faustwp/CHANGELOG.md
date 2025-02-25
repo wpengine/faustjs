@@ -1,5 +1,11 @@
 # Faust
 
+## 1.7.3
+
+### Patch Changes
+
+- 4cee2d1: Fixed the token variable name for Github actions
+
 ## 1.7.2
 
 ### Patch Changes
