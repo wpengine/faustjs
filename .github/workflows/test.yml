@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy WordPress Plugin
         uses: ./.github/actions/debug
-        env:
-          PLUGIN_DIR: plugins/faustwp
-          SLUG: faustwp
-          VERSION: ${{ env.PLUGIN_VERSION }}
+        with:
+          plugin_dir: plugins/faustwp
+          slug: faustwp
+          version: ${{ env.PLUGIN_VERSION }}
