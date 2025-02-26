@@ -7,6 +7,7 @@ Stable tag: 1.7.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Author: WP Engine
 
 Faust.js™ transforms your traditional WordPress installation into a flexible headless CMS.
 
