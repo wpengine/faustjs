@@ -1,5 +1,11 @@
 # Faust
 
+## 1.7.4
+
+### Patch Changes
+
+- 3bf8104: Added author for FaustWP plugin.
+
 ## 1.7.3
 
 ### Patch Changes

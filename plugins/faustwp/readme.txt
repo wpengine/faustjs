@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.7.2
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.7.4 =
+
+### Patch Changes
+
+- 3bf8104: Added author for FaustWP plugin.
+
 = 1.7.3 =
 
 ### Patch Changes
@@ -65,11 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 4f82c31: Chore update faustwp release process
-
-= 1.7.1 =
-
-### Patch Changes
-
-- 4dddd20: Bug: Fixed an issue with the function content_replacement throwing a 500 error for a null value.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
