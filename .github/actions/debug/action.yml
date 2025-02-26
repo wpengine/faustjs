@@ -8,23 +8,22 @@ jobs:
     steps:
       - name: Debug GitHub Actions Environment
         run: |
-          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN=${{ secrets.NPM_TOKEN }}
           echo "### 🔍 Checking GitHub Secrets & Environment Variables ###"
 
           # Check if GITHUB_TOKEN is set
-          if [[ -z "$GITHUB_TOKEN" ]]; then
+          if [[ -z "${{ secrets.GITHUB_TOKEN }}" ]]; then
             echo "❌ GITHUB_TOKEN is NOT set. This may be due to missing permissions or a misconfigured repository secret.";
           else
             echo "✅ GITHUB_TOKEN is set.";
           fi
 
           # Check if NPM_TOKEN is set
-          if [[ -z "$NPM_TOKEN" ]]; then
+          if [[ -z "${{ secrets.NPM_TOKEN }}" ]]; then
             echo "❌ NPM_TOKEN is NOT set. Ensure it exists in repository secrets under Settings → Secrets.";
           else
             echo "✅ NPM_TOKEN is set.";
           fi
+          echo "### 🔍 Checking GitHub Secrets & Environment Variables ###"
 
           # Check current GitHub Actions permissions
           echo "🔹 Workflow permissions setting:"
