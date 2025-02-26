@@ -1,4 +1,4 @@
-name: Test Release Packages
+name: Debug GitHub Actions Environment
 
 on:
   push:

@@ -4,35 +4,37 @@ branding:
   icon: 'upload-cloud'
   color: 'blue'
 
+inputs:
+  github_token:
+    description: 'GitHub Token'
+    required: true
+
 outputs:
   zip-path:
     description: 'Path to zip file'
-    value: ${{ steps.zip.outputs.zip-path }}
+    value: ${{ steps.zip-main-release-for-github.outputs.zip-path }}
   org-zip-path:
     description: 'Path to .org zip file'
-    value: ${{ steps.zip-org.outputs.zip-path }}
+    value: ${{ steps.zip-org-release-for-github.outputs.zip-path }}
 
 runs:
   using: 'composite'
   steps:
     - id: prepare
       name: Prepare Environment
-      run: |
-        sudo apt-get update && sudo apt-get install zip rsync -y
+      run: sudo apt-get update && sudo apt-get install zip rsync -y
       shell: bash
 
     - id: zip-main-release-for-github
       name: Zip plugin for the main release
       run: |
-        # Create dist folder and copy files while excluding .distignore items
         mkdir -p dist
         rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" ${{ env.PLUGIN_DIR }}/ dist/${{ env.SLUG }}
 
         zip_file="faustwp-${{ env.VERSION }}.zip"
         zip -r "$zip_file" "dist/${{ env.SLUG }}"
 
-        # Save zip path to output
-        echo "::set-output name=zip-path::$PWD/$zip_file"
+        echo "zip-path=$PWD/$zip_file" >> $GITHUB_ENV
       shell: bash
 
     - id: zip-org-release-for-github
@@ -40,7 +42,6 @@ runs:
       run: |
         # Delete old directory
         rm -rf dist
-
         # Create dist folder and copy files while excluding .distignore items
         mkdir -p dist
         # Copy plugin files to dist folder and exclude external updater
@@ -54,15 +55,15 @@ runs:
         zip -r "$org_zip_file" "dist/${{ env.SLUG }}"
 
         # Save zip path to output
-        echo "::set-output name=zip-path::$PWD/$org_zip_file"
+        echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV
       shell: bash
 
     - id: upload-main-release-to-github
       name: Uploads the main release zip file to GitHub
       uses: softprops/action-gh-release@v2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: ${{ steps.zip.outputs.zip-path }}
+        token: ${{ inputs.github_token }}
+        files: ${{ env.zip-path }}
         asset_name: faustwp-${{ env.VERSION }}.zip
         overwrite: true
 
@@ -70,7 +71,7 @@ runs:
       name: Uploads the non wpe-updater release zip file to GitHub
       uses: softprops/action-gh-release@v2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: ${{ steps.zip-org.outputs.zip-path }}
+        token: ${{ inputs.github_token }}
+        files: ${{ env.org-zip-path }}
         asset_name: faustwp-${{ env.VERSION }}.org.zip
         overwrite: true
