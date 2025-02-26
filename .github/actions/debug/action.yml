@@ -7,10 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Debug GitHub Actions Environment
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN=${{ secrets.NPM_TOKEN }}
           echo "### 🔍 Checking GitHub Secrets & Environment Variables ###"
 
           # Check if GITHUB_TOKEN is set
