@@ -24,3 +24,5 @@ jobs:
           plugin_dir: plugins/faustwp
           slug: faustwp
           version: ${{ env.PLUGIN_VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          npm_token: ${{ secrets.NPM_TOKEN }}
