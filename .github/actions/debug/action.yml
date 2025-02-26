@@ -1,54 +1,35 @@
-name: Debug GitHub Actions Environment
+name: "Debug GitHub Actions Environment"
+description: "Check GitHub Secrets & Environment Variables"
 
-on: workflow_dispatch
+inputs:
+  github_token:
+    description: "GitHub Token"
+    required: true
+  npm_token:
+    description: "NPM Token"
+    required: false
 
-jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug GitHub Actions Environment
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "### 🔍 Checking GitHub Secrets & Environment Variables ###"
+runs:
+  using: "composite"
+  steps:
+    - name: Debug GitHub Secrets & Environment
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+        NPM_TOKEN: ${{ inputs.npm_token }}
+      run: |
+        echo "### 🔍 Checking GitHub Secrets & Environment Variables ###"
 
-          # Check if GITHUB_TOKEN is set
-          if [[ -z "$GITHUB_TOKEN" ]]; then
-            echo "❌ GITHUB_TOKEN is NOT set. Ensure it is available in repository secrets.";
-          else
-            echo "✅ GITHUB_TOKEN is set.";
-          fi
+        # Check if GITHUB_TOKEN is set
+        if [[ -z "$GITHUB_TOKEN" ]]; then
+          echo "❌ GITHUB_TOKEN is NOT set. Ensure it is passed correctly.";
+        else
+          echo "✅ GITHUB_TOKEN is set.";
+        fi
 
-          # Check if NPM_TOKEN is set
-          if [[ -z "$NPM_TOKEN" ]]; then
-            echo "❌ NPM_TOKEN is NOT set. Ensure it exists in repository secrets.";
-          else
-            echo "✅ NPM_TOKEN is set.";
-          fi
-
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Check GitHub Actions Permissions
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "🔹 Workflow permissions setting:"
-          curl -s -H "Authorization: token $GITHUB_TOKEN" \
-               -H "Accept: application/vnd.github.v3+json" \
-               "https://api.github.com/repos/${{ github.repository }}" \
-               | jq '.permissions'
-
-      - name: Check Fork Status
-        run: |
-          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
-            echo "⚠️ This workflow is running from a fork. GitHub restricts repository secrets for forks.";
-          else
-            echo "✅ This workflow is running in the original repository.";
-          fi
-
-      - name: Check System Environment Variables
-        run: |
-          echo "🔹 Checking system environment variables:"
-          env | grep -E 'GITHUB|NPM' || echo "⚠️ No GITHUB/NPM environment variables found."
+        # Check if NPM_TOKEN is set
+        if [[ -z "$NPM_TOKEN" ]]; then
+          echo "❌ NPM_TOKEN is NOT set.";
+        else
+          echo "✅ NPM_TOKEN is set.";
+        fi
