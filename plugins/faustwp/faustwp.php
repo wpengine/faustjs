@@ -1,18 +1,18 @@
 <?php
 /**
- * Plugin Name: Faust.js™
- * Plugin URI: https://faustjs.org/
- * Description: Plugin for working with Faust.js™, the Headless WordPress Framework.
- * Author: WP Engine
- * Author URI: https://wpengine.com/
- * License: GPLv2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: faustwp
- * Domain Path: /languages
- * Version: 1.7.3
- * Requires PHP: 7.4
- * Requires at least: 5.7
- * Update URI: false
+ * Plugin Name: 		Faust.js™
+ * Plugin URI: 			https://faustjs.org/
+ * Description: 		Plugin for working with Faust.js™, the Headless WordPress Framework.
+ * Author: 				WP Engine
+ * Author URI: 			https://wpengine.com/
+ * License: 			GPLv2 or later
+ * License URI: 		https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: 		faustwp
+ * Domain Path: 		/languages
+ * Version: 			1.7.3
+ * Requires PHP: 		7.4
+ * Requires at least: 	5.7
+ * Update URI: 			false
  *
  * @package FaustWP
  */
