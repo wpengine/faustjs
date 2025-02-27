@@ -343,12 +343,13 @@ add_filter( 'rest_post_dispatch', __NAMESPACE__ . '\\rest_post_dispatch', 10, 3 
 /**
  * Adds the preview link to rest responses.
  *
- * @param WP_REST_Response $response The rest response object.
- * @param WP_Post          $post Post object.
+ * @param WP_HTTP_Response $response The rest response object.
+ * @param WP_REST_Server   $post Post object.
+ * @param WP_REST_Request  $request The request object.
  *
  * @return WP_REST_Response The rest response object.
  */
-function rest_post_dispatch( $response, $post ) {
+function rest_post_dispatch( $response, $post, $request ) {
 
 	if ( isset( $post->post_status ) && 'draft' === $post->post_status ) {
 		$response->data['link'] = get_preview_post_link( $post->ID );
