@@ -338,27 +338,6 @@ function register_preview_link_hooks_for_all_draft_post_types() {
 	}
 }
 
-add_filter( 'rest_post_dispatch', __NAMESPACE__ . '\\rest_post_dispatch', 10, 3 );
-
-/**
- * Adds the preview link to rest responses.
- *
- * @param WP_HTTP_Response $response The rest response object.
- * @param WP_REST_Server   $post Post object.
- * @param WP_REST_Request  $request The request object.
- *
- * @return WP_REST_Response The rest response object.
- */
-function rest_post_dispatch( $response, $post, $request ) {
-
-	if ( isset( $post->post_status ) && 'draft' === $post->post_status ) {
-		$response->data['link'] = get_preview_post_link( $post->ID );
-	}
-
-	return $response;
-}
-
-
 /**
  * Adds the preview link to rest responses.
  *

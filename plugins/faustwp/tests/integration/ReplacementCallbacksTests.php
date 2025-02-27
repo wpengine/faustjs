@@ -48,11 +48,10 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 1000, has_action( 'preview_post_link', 'WPE\FaustWP\Replacement\post_preview_link' ) );
 	}
 
-	public function test_preview_rest_prepare_post_filter() {
+	public function test_rest_api_init_filter() {
+		$this->assertSame( 10, has_action( 'rest_api_init', 'WPE\FaustWP\Replacement\register_preview_link_hooks_for_all_draft_post_types' ) );
+		do_action( 'rest_api_init' );
 		$this->assertSame( 10, has_action( 'rest_prepare_post', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
-	}
-
-	public function test_preview_rest_prepare_page_filter() {
 		$this->assertSame( 10, has_action( 'rest_prepare_page', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
 	}
 
