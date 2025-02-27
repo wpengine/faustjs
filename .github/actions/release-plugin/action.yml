@@ -65,6 +65,7 @@ runs:
         token: ${{ inputs.github_token }}
         files: ${{ env.zip-path }}
         asset_name: faustwp-${{ env.VERSION }}.zip
+        tag_name: ${{ env.VERSION }}
         overwrite: true
 
     - id: upload-org-release-to-github
@@ -74,4 +75,5 @@ runs:
         token: ${{ inputs.github_token }}
         files: ${{ env.org-zip-path }}
         asset_name: faustwp-${{ env.VERSION }}.org.zip
+        tag_name: ${{ env.VERSION }}
         overwrite: true
