@@ -321,8 +321,43 @@ function enqueue_preview_scripts() {
 	);
 }
 
-add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
-add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_api_init', __NAMESPACE__ . '\\register_preview_link_hooks_for_all_draft_post_types' );
+
+/**
+ * Registers the preview link hooks for all post types.
+ */
+function register_preview_link_hooks_for_all_draft_post_types() {
+	$post_types = get_post_types(
+		array(
+			'public' => true,
+		)
+	);
+
+	foreach ( $post_types as $post_type ) {
+		add_filter( 'rest_prepare_' . $post_type, __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+	}
+}
+
+add_filter( 'rest_post_dispatch', __NAMESPACE__ . '\\rest_post_dispatch', 10, 3 );
+
+/**
+ * Adds the preview link to rest responses.
+ *
+ * @param WP_REST_Response $response The rest response object.
+ * @param WP_Post          $post Post object.
+ *
+ * @return WP_REST_Response The rest response object.
+ */
+function rest_post_dispatch( $response, $post ) {
+
+	if ( isset( $post->post_status ) && 'draft' === $post->post_status ) {
+		$response->data['link'] = get_preview_post_link( $post->ID );
+	}
+
+	return $response;
+}
+
+
 /**
  * Adds the preview link to rest responses.
  *

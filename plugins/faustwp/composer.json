@@ -34,7 +34,7 @@
     "lint": "parallel-lint -e php --no-colors --exclude vendor .",
     "phpcs": "phpcs",
     "phpcs:fix": "phpcbf",
-    "phpstan": "phpstan analyze --ansi --memory-limit=1G",
+    "phpstan": "phpstan --ansi --memory-limit=1G",
     "suite": [
       "@lint",
       "@phpcs",
