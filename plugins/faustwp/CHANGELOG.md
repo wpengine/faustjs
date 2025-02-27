@@ -1,5 +1,11 @@
 # Faust
 
+## 1.7.5
+
+### Patch Changes
+
+- 413fe9a: Added tested up to WordPress 6.7.2 for the FaustWP plugin.
+
 ## 1.7.4
 
 ### Patch Changes
