@@ -61,22 +61,12 @@ runs:
         echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV
       shell: bash
 
-    - id: upload-main-release-to-github
-      name: Uploads the main release zip file to GitHub
-      uses: softprops/action-gh-release@v2
-      with:
-        token: ${{ inputs.github_token }}
-        files: ${{ env.zip-path }}
-        asset_name: faustwp-${{ env.VERSION }}.zip
-        tag_name: ${{ env.VERSION }}
-        overwrite: true
-
-    - id: upload-org-release-to-github
-      name: Uploads the non wpe-updater release zip file to GitHub
-      uses: softprops/action-gh-release@v2
-      with:
-        token: ${{ inputs.github_token }}
-        files: ${{ env.org-zip-path }}
-        asset_name: faustwp-${{ env.VERSION }}.org.zip
-        tag_name: ${{ env.VERSION }}
-        overwrite: true
+    - id: debug-org-changes
+      name: Debug Check .org Zip File
+      run: |
+        echo ".org zip file path: ${{ steps.zip-org.outputs.zip-path }}"
+        ls -lah ${{ steps.zip-org.outputs.zip-path }}
+        unzip -l ${{ steps.zip-org.outputs.zip-path }}
+        cat "dist/${{ env.SLUG }}/CHANGELOG.md"
+        cat "dist/${{ env.SLUG }}/faustwp.php"
+      shell: bash
