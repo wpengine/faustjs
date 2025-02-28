@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.7.2
-Stable tag: 2.0.0
+Stable tag: 1.8.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,9 +54,9 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
-= 2.0.0 =
+= 1.8.0 =
 
-### Major Changes
+### Minor Changes
 
 - aedd100: chore: Updated FaustWP to create a preview link for all draft post types.
 
