@@ -1,8 +1,8 @@
 # Faust
 
-## 2.0.0
+## 1.8.0
 
-### Major Changes
+### Minor Changes
 
 - aedd100: chore: Updated FaustWP to create a preview link for all draft post types.
 
