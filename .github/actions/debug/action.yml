@@ -53,20 +53,7 @@ runs:
         # Allow updates for .org
         sed -i -e '/\* Update URI: false/d' "dist/${{ env.SLUG }}/faustwp.php"
 
-        # Create .org zip file
-        org_zip_file="faustwp-${{ env.VERSION }}.org.zip"
-        zip -r "$org_zip_file" "dist/${{ env.SLUG }}"
-
-        # Save zip path to output
-        echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV
-      shell: bash
-
-    - id: debug-org-changes
-      name: Debug Check .org Zip File
-      run: |
-        echo ".org zip file path: ${{ steps.zip-org.outputs.zip-path }}"
-        ls -lah ${{ steps.zip-org.outputs.zip-path }}
-        unzip -l ${{ steps.zip-org.outputs.zip-path }}
+        # Check outputs
         cat "dist/${{ env.SLUG }}/CHANGELOG.md"
         cat "dist/${{ env.SLUG }}/faustwp.php"
       shell: bash
