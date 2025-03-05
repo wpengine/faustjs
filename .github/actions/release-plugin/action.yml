@@ -31,8 +31,10 @@ runs:
         mkdir -p dist
         rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" ${{ env.PLUGIN_DIR }}/ dist/${{ env.SLUG }}
 
-        zip_file="faustwp-${{ env.VERSION }}.zip"
-        zip -r "$zip_file" "dist/${{ env.SLUG }}"
+        zip_file="faustwp.${{ env.VERSION }}.zip"
+        cd "dist/${{ env.SLUG }}"
+        zip -r "../../$zip_file" .
+        cd -
 
         echo "zip-path=$PWD/$zip_file" >> $GITHUB_ENV
       shell: bash
@@ -53,11 +55,11 @@ runs:
         # Allow updates for .org
         sed -i -e '/\* Update URI: false/d' "dist/${{ env.SLUG }}/faustwp.php"
 
-        # Create .org zip file
-        org_zip_file="faustwp-${{ env.VERSION }}.org.zip"
-        zip -r "$org_zip_file" "dist/${{ env.SLUG }}"
+        org_zip_file="faustwp.${{ env.VERSION }}.org.zip"
+        cd "dist/${{ env.SLUG }}"
+        zip -r "../../$org_zip_file" .
+        cd -
 
-        # Save zip path to output
         echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV
       shell: bash
 
@@ -67,8 +69,8 @@ runs:
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.zip-path }}
-        asset_name: faustwp-${{ env.VERSION }}.zip
-        tag_name: ${{ env.VERSION }}
+        asset_name: faustwp.${{ env.VERSION }}.zip
+        tag_name: canary
         overwrite: true
 
     - id: upload-org-release-to-github
@@ -77,6 +79,6 @@ runs:
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.org-zip-path }}
-        asset_name: faustwp-${{ env.VERSION }}.org.zip
-        tag_name: ${{ env.VERSION }}
+        asset_name: faustwp.${{ env.VERSION }}.org.zip
+        tag_name: canary
         overwrite: true
