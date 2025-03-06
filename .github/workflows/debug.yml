@@ -13,9 +13,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Fetch info.json
-        run: |
-          curl -sSL "https://wpe-plugin-updates.wpengine.com/faustwp/info.json" -o info.json
+      - name: Set version manually
+        run: echo "VERSION=1.8.1" >> $GITHUB_ENV
 
       - name: Fetch and update info.json for WPE release
         run: |
