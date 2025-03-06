@@ -1,0 +1,28 @@
+name: Fetch, Modify, and Output info.json
+
+on:
+  push:
+    branches:
+      - bug-fix-github-workflow-faustwp-issues
+
+jobs:
+  fetch_modify_info_json:
+    name: Fetch, Modify, and Output info.json
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch info.json
+        run: |
+          curl -sSL "https://wpe-plugin-updates.wpengine.com/faustwp/info.json" -o info.json
+
+      - name: Fetch and update info.json for WPE release
+        run: |
+           ./scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
+        shell: bash
+
+      - name: Output modified info.json
+        run: |
+          echo "Modified info.json content:"
+          cat info.json

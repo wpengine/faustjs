@@ -89,22 +89,7 @@ runs:
     - id: generate-info-json
       name: Fetch and update info.json for WPE release
       run: |
-        # Fetch the info.json file and set variables
-        curl -sSL "https://wpe-plugin-updates.wpengine.com/faustwp/info.json" -o info.json
-        current_time=$(date -u +"%Y-%m-%d %-I:%M%p GMT")
-        download_link="https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.${{ env.VERSION }}.zip"
-
-        # Update the info.json file with the new version and download link
-        jq \
-          --arg version "${{ env.VERSION }}" \
-          --arg last_updated "$current_time" \
-          --arg download_link "$download_link" \
-          --arg new_version "${{ env.VERSION }}" \
-          --arg new_download_link "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.${{ env.VERSION }}.zip" \
-          '.versions = {($new_version): $new_download_link} + .versions | .version=$version | .last_updated=$last_updated | .download_link=$download_link' \
-          info.json > info.json.tmp && mv info.json.tmp info.json
-
-        # Output the modified file path
+        ./scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
         echo "info-json-path=$PWD/info.json" >> $GITHUB_ENV
       shell: bash
 
