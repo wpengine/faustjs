@@ -89,7 +89,7 @@ runs:
     - id: generate-info-json
       name: Fetch and update info.json for WPE release
       run: |
-        ./scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
+        ../scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
         echo "info-json-path=$PWD/info.json" >> $GITHUB_ENV
       shell: bash
 

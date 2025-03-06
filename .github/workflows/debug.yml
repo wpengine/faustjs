@@ -19,7 +19,7 @@ jobs:
 
       - name: Fetch and update info.json for WPE release
         run: |
-          ./scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
+          ../scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
         shell: bash
 
       - name: Output modified info.json
