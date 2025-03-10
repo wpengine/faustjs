@@ -1,5 +1,12 @@
 # Faust
 
+## 1.8.1
+
+### Patch Changes
+
+- 700f96e: bug: Fixes for Github workflow for faustwp releases. Added WPE info.json and automated for the release.
+- 134f823: Added minor fixes for non wpe release. Added test script to output th…
+
 ## 1.8.0
 
 ### Minor Changes
