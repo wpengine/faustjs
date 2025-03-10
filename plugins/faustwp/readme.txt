@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.7.2
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,13 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.8.3 =
+
+### Patch Changes
+
+- 089ea0a: Fix for adding assets to the correct release for Github Actions.
+  Small fix for Github actions to upload assets to the correct release
+
 = 1.8.2 =
 
 ### Patch Changes
@@ -66,14 +73,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 - 700f96e: bug: Fixes for Github workflow for faustwp releases. Added WPE info.json and automated for the release.
 - 134f823: Added minor fixes for release process.
-
-= 1.8.0 =
-
-### Minor Changes
-
-- aedd100: chore: Updated FaustWP to create a preview link for all draft post types.
-
-  Removed actions `rest_prepare_post` and `rest_prepare_page` from the callback functions.
-  Added a new action for `rest_api_init` to add `rest_prepare_{$post_type}` action for all publicably queryable post types including custom post types.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

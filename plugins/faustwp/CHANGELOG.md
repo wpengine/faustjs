@@ -1,5 +1,12 @@
 # Faust
 
+## 1.8.3
+
+### Patch Changes
+
+- 089ea0a: Fix for adding assets to the correct release for Github Actions.
+  Small fix for Github actions to upload assets to the correct release
+
 ## 1.8.2
 
 ### Patch Changes
