@@ -28,6 +28,13 @@ runs:
       run: sudo apt-get update && sudo apt-get install zip rsync -y
       shell: bash
 
+    - id: create-asset-release-version
+      name: Create asset release version without quotes
+      run: |
+        ASSET_RELEASE_VERSION=$(echo ${{ env.VERSION }} | tr -d '"')
+        echo "ASSET_RELEASE_VERSION=$ASSET_RELEASE_VERSION" >> $GITHUB_ENV
+      shell: bash
+
     - id: zip-main-release-for-github
       name: Zip plugin for the main release
       run: |
@@ -73,7 +80,7 @@ runs:
         token: ${{ inputs.github_token }}
         files: ${{ env.zip-path }}
         asset_name: faustwp.${{ env.VERSION }}.zip
-        tag_name: "@faustwp/wordpress-plugin@${{ env.VERSION }}"
+        tag_name: "@faustwp/wordpress-plugin@${{ env.ASSET_RELEASE_VERSION }}"
         overwrite: true
 
     - id: upload-org-release-to-github
@@ -83,7 +90,7 @@ runs:
         token: ${{ inputs.github_token }}
         files: ${{ env.org-zip-path }}
         asset_name: faustwp.${{ env.VERSION }}.org.zip
-        tag_name: "@faustwp/wordpress-plugin@${{ env.VERSION }}"
+        tag_name: "@faustwp/wordpress-plugin@${{ env.ASSET_RELEASE_VERSION }}"
         overwrite: true
 
     - id: generate-info-json
@@ -100,5 +107,5 @@ runs:
         token: ${{ inputs.github_token }}
         files: ${{ env.info-json-path }}
         asset_name: info.json
-        tag_name: "@faustwp/wordpress-plugin@${{ env.VERSION }}"
+        tag_name: "@faustwp/wordpress-plugin@${{ env.ASSET_RELEASE_VERSION }}"
         overwrite: true
