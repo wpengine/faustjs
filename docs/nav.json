@@ -1,7 +1,11 @@
 [
 	{
-		"title": "Getting Started",
+		"title": "Introduction",
 		"route": "/docs/"
+	},
+	{
+		"title": "Learn Faust.js",
+		"route": "/docs/tutorial/learn-faust/"
 	},
 	{
 		"title": "How-To Guides",
@@ -10,6 +14,10 @@
 			{
 				"title": "Basic Setup",
 				"route": "/docs/how-to/basic-setup/"
+			},
+			{
+				"title": "Authentication",
+				"route": "/docs/how-to/authentication/"
 			},
 			{
 				"title": "Customize the Toolbar",
@@ -26,10 +34,6 @@
 			{
 				"title": "Custom Blocks",
 				"route": "/docs/how-to/custom-blocks/"
-			},
-			{
-				"title": "Authentication",
-				"route": "/docs/how-to/authentication/"
 			},
 			{
 				"title": "Post Previews",

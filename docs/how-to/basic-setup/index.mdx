@@ -56,7 +56,7 @@ Create a `faust.config.js` file in the root of your project with this code:
 
 ```js title="faust.config.js"
 import { setConfig } from "@faustwp/core";
-import templates from "./wp-templates";
+import templates from "./src/wp-templates";
 import possibleTypes from "./possibleTypes.json";
 
 /**
@@ -71,24 +71,27 @@ export default setConfig({
 
 ### E. Create Faust API route
 
-Create an API route for Faust.js to use. You can do this by creating a file in `pages/api/faust/[[...route]].js`, with the following code:
+Create an API route for Faust.js to use. You can do this by creating a file in `src/pages/api/faust/[[...route]].js`, with the following code:
 
-```js title="pages/api/faust/[[...route]].js"
-import "../../../faust.config";
+```js title="src/pages/api/faust/[[...route]].js"
+import "../../faust.config"; // Adjust path as necessary
 
 export { apiRouter as default } from "@faustwp/core";
 ```
 
+> [!IMPORTANT] Important
+> If you're not using a `src` folder in your project, you can omit "src/" from the file path above. And the same applies for other file paths mentioned throughout this doc.
+
 ### F. Update `_app.js` file
 
-Once the API router is set up, head to `pages/_app.js` and add this code to the file:
+Once the API router is set up, head to `src/pages/_app.js`. Add the `import` statements, wrap your app in the `FaustProvider`, and pass `key={router.asPath}` to `Component`, as shown below.
 
-```js title="pages/_app.js"
+```js title="src/pages/_app.js"
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
-import "../faust.config";
+import "../../faust.config";
 
-export default function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
 	const router = useRouter();
 
 	return (
@@ -104,6 +107,8 @@ export default function MyApp({ Component, pageProps }) {
 ### A. Generate types
 
 In order for Faust.js to run the GraphQL queries it needs to determine the correct template to use, it needs to have a list of all the types available in the GraphQL schema. We'll generate this list of types now.
+
+In your WordPress admin sidebar, go to `GraphQL` > `Settings`. Check the `Enable Public Introspection` box if it's not checked already and save your changes. Enabling introspection is required for the `npm run generate` command below to work.
 
 Add the following generate script to your Next.js project's `package.json` file, in the scripts block:
 
@@ -124,7 +129,7 @@ Run `npm run generate` on the command line. Confirm that a possibleTypes.json ha
 
 ### B. Add a template
 
-Create a new `wp-templates` folder in the root of your project. This is where your template files will be stored. We'll start by adding a template for rendering single blog posts.
+Create a new `src/wp-templates` folder (or add the `/wp-templates` folder in the root project folder if you don't use a `/src` folder). This is where your template files will be stored. We'll start by adding a template for rendering single blog posts.
 
 Inside the `wp-templates` folder, create a `single.js` file that contains the following code.
 
@@ -167,10 +172,10 @@ In the `SingleTemplate` component, we receive the props, destructure the `title`
 Finally, we have to make Faust.js aware that this template exists. To do that, create an `index.js` file inside the `wp-templates` folder with this code inside:
 
 ```js title="wp-templates/index.js"
-import single from "./single";
+import SingleTemplate from "./single";
 
 const templates = {
-	single,
+	single: SingleTemplate,
 };
 
 export default templates;
@@ -180,7 +185,7 @@ export default templates;
 
 Create a `[...wordpressNode].js` file inside your `pages` folder. Add the following code to it.
 
-```js title="pages/[...wordpressNode].js"
+```js title="src/pages/[...wordpressNode].js"
 import { getWordPressProps, WordPressTemplate } from "@faustwp/core";
 
 export default function Page(props) {
@@ -201,7 +206,7 @@ export async function getStaticPaths() {
 
 This catch-all route tells Next.js to use the templates to render pages.
 
-Note that it is still possible to override this with hardcoded pages. For example, if you have a page in your WordPress site with a URI of `/about`, Faust.js will render that page using the relevant template in your project's `wp-templates` folder. However, if you add a `pages/about.js` file to your project, Next.js will render the `/about` path in your app using that file instead.
+Note that it is still possible to override this with hardcoded pages. For example, if you have a page in your WordPress site with a URI of `/about`, Faust.js will render that page using the relevant template in your project's `wp-templates` folder. However, if you add a `src/pages/about.js` file to your project, Next.js will render the `/about` path in your app using that file instead.
 
 ### D. Test your template
 

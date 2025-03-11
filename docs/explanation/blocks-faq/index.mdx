@@ -7,7 +7,7 @@ export const metadata = {
 
 If the block does not have any attributes or has only a few of them declared in the `block.json` for that block (you can view the `block.json` file for the block at https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/), you can still try to extend the block API by declaring additional attributes for that block.
 
-Follow the [filters reference guide](reference/plugin-filters) to create a block that uses the `additional_block_attributes` property. The attributes will then be available to query from that block.
+Follow the [filters reference guide](/docs/reference/use-blocks-theme/) to create a block that uses the `additional_block_attributes` property. The attributes will then be available to query from that block.
 
 ```php
 class CoreCode extends WPGraphQL\ContentBlocks\Blocks\Block

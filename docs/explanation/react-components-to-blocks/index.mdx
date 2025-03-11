@@ -6,88 +6,93 @@ export const metadata = {
 
 The `@faustwp/block-editor-utils` package provides helper functions for converting React components into blocks. This means you can use the same components in both places—your Next.js app and the WordPress Block Editor.
 
-In this how-to guide, we will walk through the steps required to create a new block named `my-first-block` using this workflow.
+## Prerequisites
 
-## 0. Prerequisites
+In order to use this feature, you need to clone down the working boilerplate example [here](https://github.com/wpengine/faustjs/tree/canary/examples/next/block-support) and follow its instructions in the `README.md` file on what plugins you need, packages you need to install and the command that needs to be run to sync the blocks to WordPress.
 
-Make sure you have followed the [Basic Setup](/docs/how-to/basic-setup/) steps to get Faust.js set up.
+> [!WARNING]
+> This feature does not work with the latest version of React. It only works with React 18.
+> Also, please avoid using this feature in production. It is not fully maintained.
 
-## 1. Install the Dev Dependencies
+## Creating and Registering a Block Component
 
-First, from your root folder, install the required dev dependencies:
+In the `pages/wp-blocks/block-b/Component.js` file, you will see the following code:
 
-```bash
-npm install @wordpress/scripts @faustwp/block-editor-utils --save-dev
-```
+```js title="pages/wp-blocks/block-b/Component.js"
+import { gql } from "@apollo/client";
 
-Now we're ready to explore the process of using this package's helpers to convert a React component to blocks.
-
-## 2. Create and Register a Block Component
-
-For the purposes of this guide we are using the a simple React component. Add a folder called `my-first-block` to the `wp-blocks` folder, then add the following into a jsx file called `MyFirstBlock.jsx`:
-
-```js title="MyFirstBlock.jsx"
-function MyFirstBlock({ style, className, attributes, children, ...props }) {
+function Component({ style, attributes, children, ...props }) {
 	const styles = {
 		...style,
 	};
-	const cssClassName = "create-block-my-first-block";
+	const cssClassName = "create-block-block-b-message";
 	return (
-		<div
-			style={styles}
-			className={cssClassName}
-			dangerouslySetInnerHTML={{ __html: attributes.message }}
-		/>
+		<>
+			<div
+				style={styles}
+				className={cssClassName}
+				dangerouslySetInnerHTML={{ __html: attributes.message }}
+			/>
+			<div
+				style={styles}
+				className="rich-text"
+				dangerouslySetInnerHTML={{ __html: attributes.richText }}
+			/>
+		</>
 	);
 }
 
-MyFirstBlock.config = {
-	name: "MyFirstBlock",
+Component.fragments = {
+	key: `CreateBlockBlockBFragment`,
+	entry: gql`
+		fragment CreateBlockBlockBFragment on CreateBlockBlockB {
+			attributes {
+				message
+			}
+		}
+	`,
 };
 
-export default MyFirstBlock;
+Component.config = {
+	name: "CreateBlockBlockB",
+	editorFields: {
+		message: {
+			type: "string",
+			label: "My Message",
+			location: "editor",
+		},
+	},
+};
+export default Component;
 ```
 
-This React component consists of a `div` element with three attributes that controls the content and the style of the box. Let's describe them briefly:
+This defines a React component that renders two `<div>` elements with inline styles and specific CSS class names, inserting `HTML` content from the `attributes` prop using `dangerouslySetInnerHTML`.
 
-- **message**: is a text message that gets displayed.
-- **bg_color**: controls the background color.
-- **text_color**: controls the text color.
+It also specifies a GraphQL fragment to fetch the necessary data for the component, particularly the message attribute, ensuring the data structure is aligned with the expected GraphQL type. Additionally, the component includes a configuration object that defines its name and editor fields, which is used to integrate and manage the block within a WordPress block editor environment.
 
-The `MyFirstBlock.config` object here with a `name` value inside is used to specify the name of the block.
+Within your `block-b/index.js` file, we see the following code:
 
-We would like to use this React component in WordPress using the Block Editor. Traditionally, this step would require us (the developers) to register a block within WordPress, provide a `block.json` and write code for the [Edit and Save](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/) functions for the editor. Once those steps are done, then the block would be usable in the Block Editor list.
-
-That is a lot of know-how and development effort for simply trying to use the React component in the editor side. What if we just provided the React component and let the framework handle all the block registration and creating the editor form fields for changing the content?
-
-This is what the `@faustwp/block-editor-utils` package tries to do. It provides a `registerFaustBlock` helper function, that handles all the necessary configuration, registration and generation of Editor Form fields and [Inspector controls](https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/block-controls-toolbar-and-sidebar/) for you. A developer can provide the React component and are able to review this within the WordPress Block Editor and use it in both places.
-
-Within your `wp-blocks/my-first-block` folder replace the `index.js` contents with the following code:
-
-```js title="index.js"
-import "./style.scss";
-
-// Import block.json
-import metadata from "./block.json";
-
-// Import our React component
-import MyFirstBlock from "./MyFirstBlock";
-
+```js title="block-b/index.js"
 import { registerFaustBlock } from "@faustwp/block-editor-utils";
-
-// Register the React component as a Block Editor block
-registerFaustBlock(MyFirstBlock, { blockJson: metadata });
+import "./style.scss";
+import BlockB from "./Component.js";
+/**
+ * Block.json metadata
+ */
+import metadata from "./block.json";
+/**
+ * Register React block on the Block Editor
+ */
+registerFaustBlock(BlockB, {
+	blockJson: metadata,
+});
 ```
 
-The `registerFaustBlock` helper takes the following arguments:
+This file imports the necessary styling, component logic, and metadata to register a React block with the WordPress block editor using the Faust.js framework. It leverages the `registerFaustBlock` utility from the `@faustwp/block-editor-utils` package, passing the component and its configuration metadata to properly initialize the block.
 
-- **component**: the actual React component to convert into a Block Editor block. (**Required**).
-- **metadata**: a metadata object that contains several fields:
-  - **blockJson**: the `block.json` object that describes the component attributes. (**Required**).
-  - **edit**: provides a custom Edit function that describes the structure of your block in the context of the editor. (**Optional**).
-  - **save**: provides a custom Save function that defines the way in which the different attributes should be combined into the final markup. (**Optional**).
+As a result, the block is seamlessly integrated into the editor, with its visual and functional properties defined by the imported SCSS and JSON metadata.
 
-Now let's take a look at the `block.json`. Since we declared three configurable attributes for our component, we need to declare them as attributes here.
+Now let's take a look at the `block.json` file in the `block-b` folder. Since we declared three configurable attributes for our component, we need to declare them as attributes here.
 
 Here is the final `block.json` with the assigned attributes object:
 
@@ -95,48 +100,35 @@ Here is the final `block.json` with the assigned attributes object:
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
-	"name": "create-block/my-first-block",
+	"name": "create-block/block-b",
 	"version": "0.1.0",
-	"title": "My First Block",
+	"title": "Block B",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Example static block scaffolded with Create Block tool.",
 	"supports": {
 		"html": false
 	},
 	"attributes": {
 		"message": {
 			"type": "string",
-			"default": "My First Block"
+			"default": "Hello World"
 		},
-		"bg_color": { "type": "string", "default": "#000000" },
-		"text_color": { "type": "string", "default": "#ffffff" }
+		"richText": {
+			"type": "string",
+			"source": "html",
+			"selector": ".rich-text",
+			"default": "Hello World"
+		}
 	},
-	"textdomain": "my-first-block",
+	"textdomain": "block-b",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }
 ```
 
-### 3. Sync the block with WordPress
-
-Add the following `blockset` script to your `package.json` file, then run it on the command line:
-
-```json title="package.json"
-"scripts": {
-  ...
-  "blockset": "faust blockset"
-},
-```
-
-```sh
-npm run blockset
-```
-
-The cli tool will compile the blocks within the `wp-blocks` folder and upload them to your WordPress site in a special location that Faust uses to detect and register the blocks.
-
-## 4. Try out the Component in the Block Editor
+## Try out the Component in the Block Editor
 
 Open the WordPress Block Editor and try out the new block. This is what it will look like at first glance in Edit mode:
 
@@ -146,9 +138,9 @@ You can interact with the form fields, and then click outside the block contents
 
 ![React Component in Preview Mode.](./images/react-component-in-preview-mode.png)
 
-## 5. Configure the Form Controls
+## Configure the Form Controls
 
-So far we've been able to render the React component in the Block Editor, change some of the attributes, and reflect the changes in the page.
+So far we've been able to render the React component in the Block Editor.
 
 However, a few of the attributes that control the color are using [text field](https://developer.wordpress.org/block-editor/reference-guides/components/text-control/) controls, which may prove problematic since they allow invalid values. What if we wanted to use a proper color picker component?
 
@@ -156,12 +148,12 @@ Since the `block.json` [attribute types](https://developer.wordpress.org/block-e
 
 When registering the React component using `registerFaustBlock`, it allows extra configuration to be used in case you want to declare which kinds of controls to use on each attribute.
 
-In your `MyFirstBlock.jsx` file, add the following `editorFields` to your `MyFirstBlock.config` object:
+In your `Component.js` file, add the following `editorFields` to your `Component.config` object:
 
-```js title="MyFirstBlock.jsx"
+```js title="block-b/Component.js"
 ...
-MyFirstBlock.config = {
-    name: "MyFirstBlock",
+Component.config = {
+    name: "CreateBlockBlockB",
     editorFields: {// [!code ++]
         bg_color: {// [!code ++]
             location: "inspector",// [!code ++]
@@ -181,7 +173,7 @@ Once you update the component, you can refresh the page and create a new block. 
 
 ![Using ColorPicker controls for the color attributes.](./images/colorpicker-controls-for-color-attributes.png)
 
-## 6. Form Control Reference List
+## Form Control Reference List
 
 So far we've seen examples of two controls: The `ColorPicker` handled by the `control: "color"` and the `TextControl`, which is set as default for every `type: "string"` in the `block.json` attributes list. You can experiment with adding more, however.
 
