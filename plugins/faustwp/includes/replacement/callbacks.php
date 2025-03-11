@@ -321,8 +321,23 @@ function enqueue_preview_scripts() {
 	);
 }
 
-add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
-add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_api_init', __NAMESPACE__ . '\\register_preview_link_hooks_for_all_draft_post_types' );
+
+/**
+ * Registers the preview link hooks for all post types.
+ */
+function register_preview_link_hooks_for_all_draft_post_types() {
+	$post_types = get_post_types(
+		array(
+			'public' => true,
+		)
+	);
+
+	foreach ( $post_types as $post_type ) {
+		add_filter( 'rest_prepare_' . $post_type, __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+	}
+}
+
 /**
  * Adds the preview link to rest responses.
  *

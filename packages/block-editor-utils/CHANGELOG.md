@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.3.1
+
+### Patch Changes
+
+- 74e55bc: Updated code formatting config and switch to tabs. Configure your editor config settings for tab sizing preferences.
+
 ## 0.3.0
 
 ### Minor Changes

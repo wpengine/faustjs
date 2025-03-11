@@ -9,9 +9,10 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: faustwp
  * Domain Path: /languages
- * Version: 1.7.1
+ * Version: 1.8.1
  * Requires PHP: 7.4
  * Requires at least: 5.7
+ * Tested up to: 6.7.2
  * Update URI: false
  *
  * @package FaustWP
@@ -61,8 +62,14 @@ if ( ! is_php_version_compatible( faustwp_minimum_php_requirement() ) ) {
 	return;
 }
 
-require FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php';
-require FAUSTWP_DIR . '/includes/updates/check-for-updates.php';
+// Loads the updater service, if included in this build.
+if ( file_exists( FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php' ) ) {
+	require FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php';
+}
+if ( file_exists( FAUSTWP_DIR . '/includes/updates/check-for-updates.php' ) ) {
+	require FAUSTWP_DIR . '/includes/updates/check-for-updates.php';
+}
+
 require FAUSTWP_DIR . '/includes/auth/functions.php';
 require FAUSTWP_DIR . '/includes/telemetry/functions.php';
 require FAUSTWP_DIR . '/includes/replacement/functions.php';

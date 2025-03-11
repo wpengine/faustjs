@@ -1,41 +1,104 @@
-name: 'Plugin Deploy'
+name: 'Test Plugin Deploy'
 description: 'Upload zip file to releases tab'
 branding:
   icon: 'upload-cloud'
   color: 'blue'
 
+inputs:
+  github_token:
+    description: 'GitHub Token'
+    required: true
+
 outputs:
   zip-path:
     description: 'Path to zip file'
-    value: ${{ steps.zip.outputs.zip-path }}
+    value: ${{ steps.zip-main-release-for-github.outputs.zip-path }}
+  org-zip-path:
+    description: 'Path to .org zip file'
+    value: ${{ steps.zip-org-release-for-github.outputs.zip-path }}
+  info-json-path:
+    description: 'Path to info.json file'
+    value: ${{ steps.generate-info-json.outputs.info-json-path }}
 
 runs:
   using: 'composite'
   steps:
     - id: prepare
       name: Prepare Environment
+      run: sudo apt-get update && sudo apt-get install zip rsync -y
+      shell: bash
+
+    - id: zip-main-release-for-github
+      name: Zip plugin for the main release
       run: |
-        sudo apt-get update && sudo apt-get install zip rsync -y
-    - id: zip
-      name: Zip Plugin (optional)
-      run: |
-        # Create dist folder and copy files while excluding .distignore items
         mkdir -p dist
         rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" ${{ env.PLUGIN_DIR }}/ dist/${{ env.SLUG }}
 
-        # Zip the plugin directory
-        zip_file="faustwp-${{ env.VERSION }}.zip"
-        zip -r $zip_file dist/${{ env.SLUG }}
+        zip_file="faustwp.${{ env.VERSION }}.zip"
+        cd "dist/${{ env.SLUG }}"
+        zip -r "../../$zip_file" .
+        cd -
 
-        # Save zip path to output
-        echo "::set-output name=zip-path::$PWD/$zip_file"
+        echo "zip-path=$PWD/$zip_file" >> $GITHUB_ENV
       shell: bash
 
-    - id: upload
-      name: Upload Zip File to Release
+    - id: zip-org-release-for-github
+      name: Zip plugin for the non wpe-updater release
+      run: |
+        # Delete old directory
+        rm -rf dist
+        # Create dist folder and copy files while excluding .distignore items
+        mkdir -p dist
+        # Copy plugin files to dist folder and exclude external updater
+        rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" --exclude="includes/updates/check-for-updates.php" --exclude="includes/updates/class-plugin-updater.php" "${{ env.PLUGIN_DIR }}/" "dist/${{ env.SLUG }}"
+
+        # Updates for the CHANGELOG file
+        sed -i -e '/## 1.6.0/,+4d' "dist/${{ env.SLUG }}/CHANGELOG.md"
+
+        # Allow updates for .org
+        sed -i -e '/\* Update URI: false/d' "dist/${{ env.SLUG }}/faustwp.php"
+
+        org_zip_file="faustwp.${{ env.VERSION }}.org.zip"
+        cd "dist/${{ env.SLUG }}"
+        zip -r "../../$org_zip_file" .
+        cd -
+
+        echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV
+      shell: bash
+
+    - id: upload-main-release-to-github
+      name: Uploads the main release zip file to GitHub
       uses: softprops/action-gh-release@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        files: ${{ steps.zip.outputs.zip-path }}  # Updated to use zip-path output
-        asset_name: faustwp-${{ env.VERSION }}.zip  # Set asset name to the correct versioned name
+        token: ${{ inputs.github_token }}
+        files: ${{ env.zip-path }}
+        asset_name: faustwp.${{ env.VERSION }}.zip
+        tag_name: canary
+        overwrite: true
+
+    - id: upload-org-release-to-github
+      name: Uploads the non wpe-updater release zip file to GitHub
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ inputs.github_token }}
+        files: ${{ env.org-zip-path }}
+        asset_name: faustwp.${{ env.VERSION }}.org.zip
+        tag_name: canary
+        overwrite: true
+
+    - id: generate-info-json
+      name: Fetch and update info.json for WPE release
+      run: |
+        bash .github/scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
+        echo "info-json-path=$PWD/info.json" >> $GITHUB_ENV
+      shell: bash
+
+    - id: upload-info-json-to-github
+      name: Upload info.json to GitHub Releases
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ inputs.github_token }}
+        files: ${{ env.info-json-path }}
+        asset_name: info.json
+        tag_name: canary
         overwrite: true

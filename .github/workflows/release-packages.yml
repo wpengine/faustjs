@@ -53,6 +53,8 @@ jobs:
         # https://github.com/changesets/action#outputs
         if: steps.changesets.outputs.published && contains(steps.changesets.outputs.publishedPackages, '"@faustwp/wordpress-plugin"')
         uses: ./.github/actions/release-plugin
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
         env:
           PLUGIN_DIR: plugins/faustwp
           SLUG: faustwp

@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.2.1
+
+### Patch Changes
+
+- 74e55bc: Updated code formatting config and switch to tabs. Configure your editor config settings for tab sizing preferences.
+
 ## 3.1.1
 
 ### Patch Changes

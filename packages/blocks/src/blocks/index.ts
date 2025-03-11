@@ -10,6 +10,7 @@ import { CoreImage } from './CoreImage.js';
 import { CoreSeparator } from './CoreSeparator.js';
 import { CoreList } from './CoreList.js';
 import { CoreHeading } from './CoreHeading.js';
+import { CoreListItem } from './CoreListItem.js';
 
 export default {
   CoreParagraph: CoreParagraph,
@@ -20,6 +21,7 @@ export default {
   CoreImage: CoreImage,
   CoreSeparator: CoreSeparator,
   CoreList: CoreList,
+  CoreListItem: CoreListItem,
   CoreButton: CoreButton,
   CoreButtons: CoreButtons,
   CoreHeading: CoreHeading,

@@ -1,9 +1,9 @@
 === Faust.js ===
-Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
+Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine,
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.6.1
-Stable tag: 1.7.1
+Tested up to: 6.7.2
+Stable tag: 1.8.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,34 +54,26 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
-= 1.7.1 =
+= 1.8.1 =
 
 ### Patch Changes
 
-- 4dddd20: Bug: Fixed an issue with the function content_replacement throwing a 500 error for a null value.
+- 700f96e: bug: Fixes for Github workflow for faustwp releases. Added WPE info.json and automated for the release.
+- 134f823: Added minor fixes for non wpe release. Added test script to output th…
 
-= 1.7.0 =
+= 1.8.0 =
 
 ### Minor Changes
 
-- 33dda2e: ### Fixes
+- aedd100: chore: Updated FaustWP to create a preview link for all draft post types.
 
-  - Fixes various issues with content replacement callback functions and replacing the site_url and media_urls
-  - Fixed an issue with content replacement when media replacement was disabled and rewrites enabled, it was overwriting and updating the media URL to the frontend URL rather than leaving it as the original site URL
+  Removed actions `rest_prepare_post` and `rest_prepare_page` from the callback functions.
+  Added a new action for `rest_api_init` to add `rest_prepare_{$post_type}` action for all publicably queryable post types including custom post types.
 
-  ### Added
-
-  - Added 6.6 and 6.7 to Github Actions
-  - Added 2 new filters for `faustwp_get_wp_site_urls` and `faustwp_get_wp_site_media_urls` to allow users add/remove/edit site and media URLS for the content replacement.
+= 1.7.5 =
 
 ### Patch Changes
 
-- ab06786: Updated the package `lucatume/wp-browser` to fix a security vulnurability for `nesbot/carbon `. See https://github.com/briannesbitt/Carbon/releases/tag/2.72.6
-
-= 1.6.0 =
-
-### Minor Changes
-
-- 28f1f83: Added new filter `faustwp_public_redirect_status_code`, allowing WordPress plugins and themes to choose the [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) to use when generating redirects when the [enable public route redirects](https://faustjs.org/docs/faustwp/settings#enabling-public-route-redirects) setting is active.
+- 413fe9a: Added tested up to WordPress 6.7.2 for the FaustWP plugin.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
