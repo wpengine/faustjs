@@ -149,7 +149,7 @@ export default function SingleTemplate(props) {
 SingleTemplate.query = gql`
 	query GetPost($uri: ID!) {
 		post(id: $uri, idType: URI) {
-			title
+		title
 			content
 		}
 	}

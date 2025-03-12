@@ -1,6 +1,6 @@
 ---
-	title: "Apollo Client Basics"
-	description:
+title: "Apollo Client Basics"
+description:
 		"Learn about core Apollo Client concepts like queries, fragments, mutations, and caching as they relate to Faust.js and WordPress."
 ---
 

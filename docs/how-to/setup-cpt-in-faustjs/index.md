@@ -36,7 +36,7 @@ Now let's make sure we can access the `movie` in WPGraphQL. You can use the foll
 query GetMovieByUri($uri: String!) {
 	nodeByUri(uri: $uri) {
 		... on NodeWithTitle {
-			title
+		title
 		}
 		... on NodeWithContentEditor {
 			content
@@ -125,7 +125,7 @@ SingleMovie.query = gql`
 	query GetMovieByUri($uri: String!) {
 		nodeByUri(uri: $uri) {
 			... on NodeWithTitle {
-				title
+			title
 			}
 			... on NodeWithContentEditor {
 				content
@@ -196,13 +196,13 @@ ArchiveMovies.query = gql`
 		nodeByUri(uri: $uri) {
 			... on ContentType {
 				label
-				description
+			description
 				contentNodes {
 					nodes {
 						databaseId
 						uri
 						... on NodeWithTitle {
-							title
+						title
 						}
 					}
 				}

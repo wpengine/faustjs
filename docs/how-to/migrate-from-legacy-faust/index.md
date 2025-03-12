@@ -96,7 +96,7 @@ fragment PostsItemFragment on Post {
 	id
 	date
 	uri
-	title
+title
 	author {
 		node {
 			name

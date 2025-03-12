@@ -143,7 +143,7 @@ export default function PageTemplate(props) {
 PageTemplate.query = gql`
 	query GetPage($uri: ID!) {
 		page(id: $uri, idType: URI) {
-			title
+		title
 			content
 		}
 	}
@@ -222,7 +222,7 @@ Inside of the `GetPost` GraphQL query, accept a new `$asPreview: Boolean = false
 SingleTemplate.query = gql`
 	query GetPost($uri: ID!, $asPreview: Boolean = false) {
 		post(id: $uri, idType: URI, asPreview: $asPreview) {
-			title
+		title
 			content
 		}
 	}
@@ -252,7 +252,7 @@ export default function SingleTemplate(props) {
 SingleTemplate.query = gql`
 	query GetPost($uri: ID!, $asPreview: Boolean = false) {
 		post(id: $uri, idType: URI, asPreview: $asPreview) {
-			title
+		title
 			content
 		}
 	}
@@ -304,7 +304,7 @@ Inside of the `SingleTemplate.query` GraphQL query, remove `content` and replace
 ```jsx title="src/wp-templates/single.js"
 query GetPost($uri: ID!, $asPreview: Boolean = false) {
 	post(id: $uri, idType: URI, asPreview: $asPreview) {
-		title
+	title
 		editorBlocks {
 			__typename
 			name
