@@ -1,7 +1,6 @@
 ---
 title: "Apollo Client Basics"
-description:
-		"Learn about core Apollo Client concepts like queries, fragments, mutations, and caching as they relate to Faust.js and WordPress."
+description: "Learn about core Apollo Client concepts like queries, fragments, mutations, and caching as they relate to Faust.js and WordPress."
 ---
 
 Faust.js uses `@apollo/client` under the hood to perform GraphQL operations against your WordPress backend. Having a solid understanding of Apollo Client queries, fragments, and mutations will help you get the most out of Faust.js.
