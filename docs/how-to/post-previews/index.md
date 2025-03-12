@@ -124,7 +124,7 @@ export default function Component(props) {
 Component.query = gql`
 	query GetPost($databaseId: ID!, $asPreview: Boolean = false) {
 		post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
-		title
+			title
 			content
 			# Add additional fields here if necessary
 		}

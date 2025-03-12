@@ -113,7 +113,7 @@ function AuthenticatedView() {
 					posts {
 						nodes {
 							id
-						title
+							title
 						}
 					}
 					name

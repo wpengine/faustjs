@@ -54,8 +54,8 @@ export default function Page(props) {
 Page.query = gql`
 	query {
 		generalSettings {
-		title
-		description
+			title
+			description
 		}
 	}
 `;
@@ -86,8 +86,8 @@ export default function Page(props) {
 Page.query = gql`
 	query {
 		generalSettings {
-		title
-		description
+			title
+			description
 		}
 	}
 `;
