@@ -1,8 +1,8 @@
-export const metadata = {
-	title: "Migrate from Legacy Faust",
-	description:
-		"Upgrading your headless WordPress setup from GQty-based Faust to the current version. Learn how to reuse presentational components, write GraphQL queries, and adopt the WP Template system for a smooth transition",
-};
+---
+title: "Migrate from Legacy Faust"
+description:
+		"Upgrading your headless WordPress setup from GQty-based Faust to the current version. Learn how to reuse presentational components, write GraphQL queries, and adopt the WP Template system for a smooth transition"
+---
 
 Migration from the previous versions of Faust that use GQty is a manual process. However, there are some conventional techniques and best practices for React Development that will definitely help you with this process.
 
