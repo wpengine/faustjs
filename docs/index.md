@@ -1,8 +1,7 @@
-export const metadata = {
-	title: "Introduction",
-	description:
-		"Introduction to Faust.js, a toolkit for building headless WordPress applications with Next.js.",
-};
+---
+title: "Introduction"
+description: "Introduction to Faust.js, a toolkit for building headless WordPress applications with Next.js."
+---
 
 ## What is Faust.js®?
 
