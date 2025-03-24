@@ -102,7 +102,9 @@ export function createApolloClient(authenticated = false) {
 
 	let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
 		ssrMode: typeof window === 'undefined',
-		connectToDevTools: typeof window !== 'undefined',
+		devtools: {
+			enabled: typeof window !== 'undefined'
+		},
 		link: linkChain,
 		cache: new InMemoryCache(inMemoryCacheObject).restore(windowApolloState),
 	};
