@@ -40,17 +40,6 @@ npx create-next-app \
 - When asked for the name of your project, enter `faust-tutorial`.
 - When asked if it's okay to install the `create-next-app` package, answer `y` to confirm.
 
-
-> [!IMPORTANT]
-Some users are experiencing issues with the next.config.js file missing some key parts of the file. If you run into any issues when running Next.js application we recommend running the following:
-
-``sh
-cd faust-tutorial && \
-rm next.config.js && \
-curl -s https://raw.githubusercontent.com/wpengine/faustjs/canary/examples/next/tutorial/next.config.js > next.config.js
-```
-
-
 ### 2. Set up headless WordPress backend
 
 Initial set up steps:
