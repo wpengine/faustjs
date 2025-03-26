@@ -1,5 +1,5 @@
-const { withFaust, getWpHostname } = require('@faustwp/core');
 const { createSecureHeaders } = require('next-secure-headers');
+const { withFaust, getWpHostname } = require('@faustwp/core');
 
 /**
  * @type {import('next').NextConfig}
