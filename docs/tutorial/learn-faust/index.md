@@ -31,7 +31,7 @@ The steps below will get you up-and-running with the pre-built app you will use 
 - Run the command below to set up the example Next.js app we will use for the tutorial.
 
 ```sh
-npx degit wpengine/faustjs/examples/next/tutorial --force faust-tutorial
+npx degit wpengine/faustjs/examples/next/tutorial faust-tutorial
 ```
 
 ### 2. Set up headless WordPress backend
