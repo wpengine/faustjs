@@ -62,12 +62,8 @@ Follow these steps to set up your Faust.js frontend:
 
 - Open a separate terminal window from the one running your WordPress backend to run the commands that follow.
 - Run `npm install` to install the Next.js app's NPM packages.
-- In a separate terminal window from the one running your WordPress backend, run `npm install` to install the Next.js app's NPM packages.
 - Find the `.env.local.example` file and rename it to `.env.local`. This is where we'll store our environment variables.
 - Once again, in the WordPress admin sidebar, go to `Settings` > `Faust` to access the Faust.js settings page. Copy the value you see for the `Secret Key` and paste that in as the value of `FAUST_SECRET_KEY` in your `.env.local` file and save it. Faust.js uses this secret key to send authenticated request to WordPress.
-  ![Faust Secret Key setting](./images/faust-secret-key-setting.png)
-  ![Faust Secret Key setting](./images/faust-secret-key-setting.png)
-
   ![Faust Secret Key setting](./images/faust-secret-key-setting.png)
 
   Your `.env.local` file should now look like this, where `ABC123` is the secret key you copied from the Faust settings page:
