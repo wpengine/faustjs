@@ -31,14 +31,8 @@ The steps below will get you up-and-running with the pre-built app you will use 
 - Run the command below to set up the example Next.js app we will use for the tutorial.
 
 ```sh
-npx create-next-app \
-    -e https://github.com/wpengine/faustjs/tree/canary \
-    --example-path examples/next/tutorial \
-    --use-npm
+npx degit wpengine/faustjs/examples/next/tutorial faust-tutorial
 ```
-
-- When asked for the name of your project, enter `faust-tutorial`.
-- When asked if it's okay to install the `create-next-app` package, answer `y` to confirm.
 
 ### 2. Set up headless WordPress backend
 
