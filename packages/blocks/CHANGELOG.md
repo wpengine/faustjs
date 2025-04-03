@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.1
+
+### Patch Changes
+
+- f4c0abb: chore: Update various babel packages.
+
 ## 6.1.0
 
 ### Minor Changes
