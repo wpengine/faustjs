@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.2.2
+
+### Patch Changes
+
+- f4c0abb: chore: Update various babel packages.
+
 ## 3.2.1
 
 ### Patch Changes
