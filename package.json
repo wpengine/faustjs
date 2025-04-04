@@ -66,5 +66,8 @@
 		"axios": "^1.7.4",
 		"cross-spawn": "^7.0.6",
 		"@babel/runtime": "^7.27.0"
+	},
+	"resolutions": {
+  	"@babel/runtime": "7.27.0"
 	}
 }
