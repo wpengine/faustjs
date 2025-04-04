@@ -107,6 +107,10 @@ export async function getWordPressProps(
 		ctx.res.setHeader('x-using', 'faust');
 	}
 
+	if (ctx.locale !== ctx.defaultLocale && resolvedUrl !== '/') {
+		resolvedUrl = `/${ctx.locale}${resolvedUrl}`;
+	}
+
 	resolvedUrl = hooks.applyFilters('resolvedUrl', resolvedUrl, {
 		nextContext: ctx,
 	}) as string | null;
