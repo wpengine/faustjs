@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.3.3
+
+### Patch Changes
+
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+
 ## 0.3.2
 
 ### Patch Changes
@@ -30,15 +36,15 @@
   // Component.js
 
   Component.config = {
-  	name: 'CreateBlockBlockB',
-  	editorFields: {
-  		textArea: {
-  			type: 'string',
-  			label: 'My Message',
-  			location: 'editor',
-  			control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
-  		},
-  	},
+    name: 'CreateBlockBlockB',
+    editorFields: {
+      textArea: {
+        type: 'string',
+        label: 'My Message',
+        location: 'editor',
+        control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
+      },
+    },
   };
   ```
 
@@ -72,9 +78,9 @@
 
   ```js
   <div
-  	style={styles}
-  	className="rich-text"
-  	dangerouslySetInnerHTML={{ __html: attributes.richText }}
+    style={styles}
+    className="rich-text"
+    dangerouslySetInnerHTML={{ __html: attributes.richText }}
   />
   ```
 
@@ -125,9 +131,9 @@
   import save from './save';
 
   registerFaustBlock(MyFirstBlock, {
-  	blockJson: metadata,
-  	editFn: Edit,
-  	saveFn: save,
+    blockJson: metadata,
+    editFn: Edit,
+    saveFn: save,
   });
   ```
 
