@@ -27,8 +27,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_filter( 'the_content', __NAMESPACE__ . '\\content_replacement' );
 add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\content_replacement' );
 /**
- * Callback for WordPress 'the_content' filter.
- *
+ * Replace the URLs in the post content basesd on two settings if enabled:
+ * 	1. Enable Post and Category URL rewrites - rewrite the WordPress internal URL in the content with the Front-end URL
+ * 		1.1 If NOT enabled - use the WordPress URL
+ * 	2. Use the WordPress domain for media URLs in post content - use WordPress URL for media files (images,csv,pdf)
+ * 		2.1 If NOT enabled - use front-end url
+ * 
  * @param ?string $content The post content.
  *
  * @return ?string The post content.
@@ -40,6 +44,7 @@ function content_replacement( ?string $content ) {
 	}
 	$replace_content_urls = domain_replacement_enabled();
 	$replace_media_urls   = ! use_wp_domain_for_media();
+
 	if ( ! $replace_content_urls && ! $replace_media_urls ) {
 		return $content;
 	}
@@ -50,16 +55,42 @@ function content_replacement( ?string $content ) {
 	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
 	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
 	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
-	if ( $replace_content_urls && $replace_media_urls ) {
-		return str_replace( $wp_site_urls, $frontend_uri, $content );
-	}
-	if ( $replace_media_urls ) {
-		return str_replace( $wp_media_urls, $frontend_uri . $relative_upload_url, $content );
-	}
-	$site_urls_pattern = implode( '|', array_map( 'preg_quote', $wp_site_urls ) );
-	$pattern           = '#(' . $site_urls_pattern . ')(?!' . $relative_upload_url . '(\/|$))#';
 
-	return preg_replace( $pattern, $frontend_uri, $content );
+	/* If the setting IS enabled, use front-end URL for internal URLs, but not media */
+	if ( $replace_content_urls ) {
+		if ( $replace_content_urls ) {
+			$pattern = '#href="(' . implode( '|', array_map( 'preg_quote', $wp_site_urls ) ) . ')([^"]*)"#';
+
+			/* Check for media urls and skip them */
+			$content = preg_replace_callback(
+				$pattern,
+				function ( $matches ) use ( $wp_media_urls, $frontend_uri ) {
+					$full_url = $matches[1] . $matches[2];
+					
+					// Skip if the full URL matches a known media URL - could be csv, pdf as well
+					foreach ( $wp_media_urls as $media_url ) {
+						if ( strpos( $full_url, $media_url ) === 0 ) {							
+							return $matches[0]; // Return original href
+						}
+					}
+	
+					// Normalize the URL path
+					$relative_path = ltrim( $matches[2], '/' );
+	
+					return 'href="' . trailingslashit( $frontend_uri ) . $relative_path . '"';
+				},
+				$content
+			);
+		}
+	}
+	
+	/* If the setting is NOT enabled, use front-end URL for media URLs */
+
+	if ( $replace_media_urls ) {			
+		$content = str_replace( $wp_media_urls,  $frontend_uri . $relative_upload_url, $content );
+	}
+	
+	return $content;
 }
 
 /**
