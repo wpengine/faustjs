@@ -76,8 +76,8 @@ function content_replacement( ?string $content ) {
 			}
 
 			// get relative link.
-			$relative = ltrim( str_replace( reset( $is_wp_url ), '', $url ), '/' );
-			$updated  = 'href="' . $frontend_uri . '/' . $relative . '"';
+			$relative = str_replace( reset( $is_wp_url ), '', $url );
+			$updated  = 'href="' . $frontend_uri . $relative . '"';
 
 			$original = $href_links[0][ $i ];
 			$content  = str_replace( $original, $updated, $content );
