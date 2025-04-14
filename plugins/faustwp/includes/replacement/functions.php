@@ -145,7 +145,7 @@ function is_wp_link_ajax_request(): bool {
 function faustwp_get_wp_site_urls( string $site_url ): array {
 
 	$host_url_parse = wp_parse_url( $site_url );
-	$host_url = $host_url_parse['host'] ?? '';
+	$host_url       = $host_url_parse['host'] ?? '';
 	if ( $host_url_parse['port'] ) {
 		$host_url .= ':' . $host_url_parse['port'];
 	}
@@ -185,7 +185,7 @@ function faustwp_get_wp_media_urls( array $wp_site_urls, string $relative_upload
  * Gets the relative wp-content upload URL.
  *
  * @param array<string>|string $site_urls An array of site URLs.
- * @param string        $upload_url An array of site URLs.
+ * @param string               $upload_url An array of site URLs.
  *
  * @return string The relative upload URL.
  */
