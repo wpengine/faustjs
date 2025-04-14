@@ -146,7 +146,7 @@ function faustwp_get_wp_site_urls( string $site_url ): array {
 
 	$host_url_parse = wp_parse_url( $site_url );
 	$host_url       = $host_url_parse['host'] ?? '';
-	if ( $host_url_parse['port'] ) {
+	if ( !empty($host_url_parse['port']) ) {
 		$host_url .= ':' . $host_url_parse['port'];
 	}
 	$is_https = strpos( $site_url, 'https://' ) === 0;
