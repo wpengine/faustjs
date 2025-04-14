@@ -189,18 +189,11 @@ function faustwp_get_wp_media_urls( array $wp_site_urls, string $relative_upload
  *
  * @return string The relative upload URL.
  */
-function faustwp_get_relative_upload_url( array|string $site_urls, string $upload_url = '' ): string {
-	if ( is_array( $site_urls ) ) {
-		foreach ( $site_urls as $site_url ) {
-			if ( strpos( $upload_url, $site_url ) === 0 ) {
-				return (string) str_replace( $site_url, '', $upload_url );
-			}
-		}
-	} else {
-		if ( $site_urls ) {
-			$upload_url = str_replace( $site_urls, '', $upload_url );
+function faustwp_get_relative_upload_url( array $site_urls, string $upload_url = '' ): string {
+	foreach ( $site_urls as $site_url ) {
+		if ( strpos( $upload_url, $site_url ) === 0 ) {
+			return (string) str_replace( $site_url, '', $upload_url );
 		}
 	}
-
 	return '';
 }

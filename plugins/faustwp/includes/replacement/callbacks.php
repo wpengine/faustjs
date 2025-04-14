@@ -56,35 +56,31 @@ function content_replacement( ?string $content ) {
 	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
 	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
 
-	/* If the setting IS enabled, use front-end URL for internal URLs, but not media */
+	/* If "Enable Post and Category URL" is enabled, use front-end URL for internal URLs, but not for media links */
+	
 	if ( $replace_content_urls ) {
-		if ( $replace_content_urls ) {
-			$pattern = '#href="(' . implode( '|', array_map( 'preg_quote', $wp_site_urls ) ) . ')([^"]*)"#';
 
-			/* Check for media urls and skip them */
-			$content = preg_replace_callback(
-				$pattern,
-				function ( $matches ) use ( $wp_media_urls, $frontend_uri ) {
-					$full_url = $matches[1] . $matches[2];
-					
-					// Skip if the full URL matches a known media URL - could be csv, pdf as well
-					foreach ( $wp_media_urls as $media_url ) {
-						if ( strpos( $full_url, $media_url ) === 0 ) {							
-							return $matches[0]; // Return original href
-						}
-					}
+		//Look for href links
+		preg_match_all( '#href="([^"]+)"#i', $content, $href_links );
 	
-					// Normalize the URL path
-					$relative_path = ltrim( $matches[2], '/' );
+		foreach ( $href_links[1] as $i => $url ) {
+			//skip media links
+			$is_media = array_filter( $wp_media_urls, fn( $media ) => strpos( $url, $media ) === 0 );
+			if ( $is_media ) continue;			
+			
+			$is_wp_url = array_filter( $wp_site_urls, fn( $base ) => strpos( $url, $base ) === 0 );		
+			if ( ! $is_wp_url ) continue;		
 	
-					return 'href="' . trailingslashit( $frontend_uri ) . $relative_path . '"';
-				},
-				$content
-			);
+			//get relative link
+			$relative = ltrim( str_replace( reset( $is_wp_url ), '', $url ), '/' );					
+			$updated  = 'href="' . $frontend_uri .'/'. $relative . '"';
+
+			$original = $href_links[0][$i];		
+			$content  = str_replace( $original, $updated, $content );
 		}
 	}
 	
-	/* If the setting is NOT enabled, use front-end URL for media URLs */
+	/* If "Use the WordPress domain for media URLs in post content" is NOT enabled, use front-end URL for media URLs */
 
 	if ( $replace_media_urls ) {			
 		$content = str_replace( $wp_media_urls,  $frontend_uri . $relative_upload_url, $content );
