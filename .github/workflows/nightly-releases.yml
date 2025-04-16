@@ -22,6 +22,7 @@ on:
 
 jobs:
   release_nightly_canary:
+    if: github.repository_owner == 'wpengine'
     name: Release Nightly Canary
     runs-on: ubuntu-22.04
     steps:
