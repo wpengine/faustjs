@@ -37,7 +37,10 @@ jobs:
       # and use the PR branch to pull the correct example URL
       - name: npx create next app
         run: |
-          npx degit ${PR_REPO}#${PR_BRANCH} --src=examples/next/faustwp-getting-started e2e-app
+          npx degit ${PR_REPO}#${PR_BRANCH} --src=examples/next/faustwp-getting-started e2e-app \
+          cd e2e-app \
+          nvm use \
+          npm ci
       - name: install and build packages
         working-directory: ./
         run: |
