@@ -38,9 +38,11 @@ jobs:
       - name: npx create next app
         run: |
           npx degit ${PR_REPO}#${PR_BRANCH} --src=examples/next/faustwp-getting-started e2e-app \
-          cd e2e-app \
-          nvm use \
+      - name: Install e2e dependencies
+        working-directory: e2e-app
+        run: |
           npm ci
+          ls -la
       - name: install and build packages
         working-directory: ./
         run: |
@@ -53,8 +55,8 @@ jobs:
       # writing this they do not function as expected on GH actions
       - name: replace downloaded registry faust packages with local build
         run: |
-          if [ -d "e2e-app/node_modules/@faustwp/cli" ]; then rm -rf e2e-app/node_modules/@faustwp/cli; fi
-          if [ -d "e2e-app/node_modules/@faustwp/core" ]; then rm -rf e2e-app/node_modules/@faustwp/core; fi
+          rm -rf e2e-app/node_modules/@faustwp/cli
+          rm -rf e2e-app/node_modules/@faustwp/core
           cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
           cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
           chmod +x e2e-app/node_modules/.bin/faust
