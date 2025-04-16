@@ -55,11 +55,11 @@ Docs are MD in [`docs`](docs/). Here are a couple things you should know!
       1.  Lines can be [highlighted](https://rehype-pretty.pages.dev/#highlight-lines) in code blocks ` ```js {1,3-5}`. There are a variety of advanced highlighting methods, see: https://rehype-pretty.pages.dev/#highlight-lines
       2.  Lines may be [diffed](https://shiki.style/packages/transformers#transformernotationdiff) in a code block:
 
-              ```js
-              console.log('hewwo') // [!code --]
-              console.log('hello') // [!code ++]
-              console.log('goodbye')
-              ```
+			```js
+			console.log('hewwo') // [!code --]
+			console.log('hello') // [!code ++]
+			console.log('goodbye')
+			```
 
 ## WordPress Plugin (FaustWP)
 
