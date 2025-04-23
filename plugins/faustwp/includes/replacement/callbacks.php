@@ -62,7 +62,7 @@ function content_replacement( ?string $content ) {
 
 		// Look for href links.
 		preg_match_all( '#href="([^"]+)"#i', $content, $href_links );
-		if ( is_array($href_links) && !empty($href_links[1]) ) {
+		if ( is_array( $href_links ) && ! empty( $href_links[1] ) ) {
 			foreach ( $href_links[1] as $i => $url ) {
 				// skip media links.
 				$is_media = array_filter( $wp_media_urls, fn( $media ) => strpos( $url, $media ) === 0 );
@@ -80,8 +80,8 @@ function content_replacement( ?string $content ) {
 				$updated  = 'href="' . $frontend_uri . $relative . '"';
 
 				$original = $href_links[0][ $i ];
-		
-				if ( $original ) {					
+
+				if ( $original ) {
 					$content = str_replace( $original, $updated, $content );
 				}
 			}
