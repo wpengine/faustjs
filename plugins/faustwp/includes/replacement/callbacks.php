@@ -62,25 +62,29 @@ function content_replacement( ?string $content ) {
 
 		// Look for href links.
 		preg_match_all( '#href="([^"]+)"#i', $content, $href_links );
+		if ( is_array($href_links) && !empty($href_links[1]) ) {
+			foreach ( $href_links[1] as $i => $url ) {
+				// skip media links.
+				$is_media = array_filter( $wp_media_urls, fn( $media ) => strpos( $url, $media ) === 0 );
+				if ( $is_media ) {
+					continue;
+				}
 
-		foreach ( $href_links[1] as $i => $url ) {
-			// skip media links.
-			$is_media = array_filter( $wp_media_urls, fn( $media ) => strpos( $url, $media ) === 0 );
-			if ( $is_media ) {
-				continue;
+				$is_wp_url = array_filter( $wp_site_urls, fn( $base ) => strpos( $url, $base ) === 0 );
+				if ( ! $is_wp_url ) {
+					continue;
+				}
+
+				// get relative link.
+				$relative = str_replace( reset( $is_wp_url ), '', $url );
+				$updated  = 'href="' . $frontend_uri . $relative . '"';
+
+				$original = $href_links[0][ $i ];
+		
+				if ( $original ) {					
+					$content = str_replace( $original, $updated, $content );
+				}
 			}
-
-			$is_wp_url = array_filter( $wp_site_urls, fn( $base ) => strpos( $url, $base ) === 0 );
-			if ( ! $is_wp_url ) {
-				continue;
-			}
-
-			// get relative link.
-			$relative = str_replace( reset( $is_wp_url ), '', $url );
-			$updated  = 'href="' . $frontend_uri . $relative . '"';
-
-			$original = $href_links[0][ $i ];
-			$content  = str_replace( $original, $updated, $content );
 		}
 	}
 
