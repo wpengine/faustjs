@@ -173,10 +173,10 @@ export async function getWordPressProps(
 		});
 	}
 
-	let queries: FaustQueries | null = null;
-	if (template.queries) {
-		const queryCalls = template.queries.map(({ query, variables }) => {
-			const queryVariables = variables
+	// let queries: FaustQueries | null = null;
+	const templateMultipleVariables =
+		template?.queries?.map(({ variables }) => {
+			return variables
 				? variables(
 						seedNode,
 						{
@@ -186,20 +186,25 @@ export async function getWordPressProps(
 						extra,
 				  )
 				: undefined;
+		}) ?? [];
+
+	if (template.queries) {
+		const queryCalls = template.queries.map(({ query, variables }, index) => {
 			return client.query({
 				query,
-				variables: queryVariables,
+				variables: templateMultipleVariables[index],
 			});
 		});
-		const queriesRes = await Promise.all(queryCalls);
+		await Promise.all(queryCalls);
+		// const queriesRes = await Promise.all(queryCalls);
 
-		queries = {};
+		// queries = {};
 
-		queriesRes.forEach((queryRes, index) => {
-			if (queries && template.queries) {
-				queries[sha256(print(template.queries[index].query))] = queryRes.data;
-			}
-		});
+		// queriesRes.forEach((queryRes, index) => {
+		// 	if (queries && template.queries) {
+		// 		queries[sha256(print(template.queries[index].query))] = queryRes.data;
+		// 	}
+		// });
 	}
 
 	const appProps = addApolloState(client, {
@@ -211,7 +216,8 @@ export async function getWordPressProps(
 			__SEED_NODE__: seedNode ?? null,
 			__TEMPLATE_QUERY_DATA__: templateQueryRes?.data ?? null,
 			__TEMPLATE_VARIABLES__: templateVariables ?? null,
-			__FAUST_QUERIES__: queries ?? null,
+			__TEMPLATE_MULTIPLE_VARIABLES__: templateMultipleVariables ?? null,
+			// __FAUST_QUERIES__: queries ?? null,
 			...props,
 		},
 	});
