@@ -642,4 +642,29 @@ HTML;
 		$this->assertSame( $expected, image_source_srcset_replacement( $sources ) );
 	}
 
+	public function test_for_media_when_replacement_is_disabled_and_url_contains_port() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		
+		update_option('siteurl', 'http://localhost:8881');
+		$site_url = site_url();
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );		
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$this->assertSame(  $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp', content_replacement( $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp' ) );
+	}
+	public function test_URL_replacement_is_disabled_and_url_contains_port() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		
+		update_option('siteurl', 'http://localhost:8881');
+		$site_url = site_url();
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '0' );		
+
+		$this->assertSame(  $frontend_uri . '/sample-page', content_replacement( $site_url . '/sample-page' ) );
+	}
+
 }
