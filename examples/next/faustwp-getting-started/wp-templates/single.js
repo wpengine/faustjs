@@ -60,16 +60,16 @@ export default function Component(props) {
 	}
 
 	const { data: settings } = useQuery(Component.queries[0].query, {
-		variables: props.__TEMPLATE_MULTIPLE_VARIABLES__[0],
+		variables: props.__TEMPLATE_MULTI_QUERY_VARIABLES__[0],
 	});
 
-	const { data } = useQuery(Component.queries[1].query, {
-		variables: props.__TEMPLATE_MULTIPLE_VARIABLES__[1],
+	const { data } = useQuery(GET_POST_QUERY, {
+		variables: props.__TEMPLATE_MULTI_QUERY_VARIABLES__[1],
 	});
 
 	// Same query as above with different variables
-	const { data: secondPost } = useQuery(Component.queries[2].query, {
-		variables: props.__TEMPLATE_MULTIPLE_VARIABLES__[2],
+	const { data: secondPost } = useQuery(GET_POST_QUERY, {
+		variables: { databaseId: 2 },
 	});
 
 	const post = data?.post;
