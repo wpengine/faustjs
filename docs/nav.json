@@ -140,6 +140,10 @@
 				"route": "/docs/explanation/telemetry/"
 			},
 			{
+				"title": "Seed Query",
+				"route": "/docs/explanation/seed-query/"
+			},
+			{
 				"title": "WordPress Blocks FAQ",
 				"route": "/docs/explanation/blocks-faq/"
 			},
