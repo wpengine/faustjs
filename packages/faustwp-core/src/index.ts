@@ -44,6 +44,7 @@ import {
 	ToolbarSubmenuWrapper,
 } from './components/Toolbar/index.js';
 import { flatListToHierarchical } from './utils/flatListToHierarchical.js';
+import { getMultiQueryVariables } from './utils/getMultiQueryVariables.js';
 
 export {
 	flatListToHierarchical,
@@ -87,4 +88,5 @@ export {
 	hooks,
 	useFaustQuery,
 	FaustContext,
+	getMultiQueryVariables,
 };

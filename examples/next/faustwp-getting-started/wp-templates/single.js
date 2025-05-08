@@ -12,6 +12,7 @@ import {
 } from '../components';
 import * as MENUS from '../constants/menus';
 import { BlogInfoFragment } from '../fragments/GeneralSettings';
+import { getMultiQueryVariables } from '@faustwp/core';
 
 const GET_LAYOUT_QUERY = gql`
 	${BlogInfoFragment}
@@ -60,11 +61,11 @@ export default function Component(props) {
 	}
 
 	const { data: settings } = useQuery(Component.queries[0].query, {
-		variables: props.__TEMPLATE_MULTI_QUERY_VARIABLES__[0],
+		variables: getMultiQueryVariables(0, props),
 	});
 
 	const { data } = useQuery(GET_POST_QUERY, {
-		variables: props.__TEMPLATE_MULTI_QUERY_VARIABLES__[1],
+		variables: getMultiQueryVariables(1, props),
 	});
 
 	// Same query as above with different variables
