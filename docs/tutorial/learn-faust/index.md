@@ -1,6 +1,6 @@
 ---
-title: "Learn Faust.js"
-description: "Tutorial to learn about the core features of Faust.js."
+title: 'Learn Faust.js'
+description: 'Tutorial to learn about the core features of Faust.js.'
 ---
 
 This tutorial introduces you to the core features of Faust.js. You'll begin with a pre-configured Next.js project and learn how to implement these features yourself:
@@ -98,7 +98,7 @@ By referencing the template hierarchy image above, you can see that we can targe
 Copy the `gql` import and the `SingleTemplate` component from `wp-templates/single.js` and paste them into `wp-templates/page.js`. Rename the `SingleTemplate` component to `PageTemplate`. Our new page template should now look like this:
 
 ```jsx title="wp-templates/page.js"
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default function PageTemplate(props) {
 	const { title, content } = props.data.page;
@@ -117,7 +117,7 @@ You can see that the `PageTemplate` component receives the props passed into it,
 Next, copy the `SingleTemplate.query` and `SingleTemplate.variables` assignments from `wp-templates/single.js` and paste them into `wp-templates/page.js`. rename them to `PageTemplate.query` and `PageTemplate.variables`. The new page template should now look like this:
 
 ```jsx title="wp-templates/page.js"
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default function PageTemplate(props) {
 	const { title, content } = props.data.page;
@@ -153,8 +153,8 @@ The `PageTemplate.variables` function takes the `uri` for the current page and m
 The last step is to make Faust aware of our new template. To do this, open `wp-templates/index.js` and add these lines:
 
 ```js
-import SingleTemplate from "./single";
-import PageTemplate from "./page"; // [!code ++]
+import SingleTemplate from './single';
+import PageTemplate from './page'; // [!code ++]
 
 const templates = {
 	single: SingleTemplate,
@@ -198,9 +198,9 @@ This tells React to render a "Loading" message if the component is still loading
 Update the `Component.variables` function to return a new `asPreview` variable that is set to the value of `ctx?.asPreview`:
 
 ```jsx title="src/wp-templates/single.js"
-SingleTemplate.variables = ({ databaseId }, ctx) => {
+SingleTemplate.variables = (seedQuery, ctx) => {
 	return {
-		databaseId,
+		uri: seedQuery?.uri,
 		asPreview: ctx?.asPreview, // [!code ++]
 	};
 };
@@ -222,7 +222,7 @@ SingleTemplate.query = gql`
 Your `single` template file should now look like this:
 
 ```jsx title="src/wp-templates/single.js"
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export default function SingleTemplate(props) {
 	const { title, content } = props.data.post;
@@ -320,7 +320,7 @@ Finally, replace the `<div dangerouslySetInnerHTML={{ __html: content }} />` lin
 ```jsx title="src/wp-templates/single.js"
 <div>
 	{editorBlocks.map((block, index) => {
-		if (block.name === "core/paragraph") {
+		if (block.name === 'core/paragraph') {
 			return (
 				<div
 					key={index}
@@ -355,7 +355,7 @@ export default function SingleTemplate(props) {
 			<div>
 				{editorBlocks.map((block, index) => {
 					console.log(block);
-					if (block.name === "core/paragraph") {
+					if (block.name === 'core/paragraph') {
 						return (
 							<div
 								key={index}
@@ -396,8 +396,7 @@ Reload the http://localhost:3000/blog/hello-world/ page in your frontend app and
       padding-right: var(--wp--preset--spacing--40);
       padding-bottom: var(--wp--preset--spacing--20);
       padding-left: var(--wp--preset--spacing--40);
-    "
-	>
+    ">
 		Welcome to WordPress. This is your first post. Edit or delete it, then start
 		writing!
 	</p>
