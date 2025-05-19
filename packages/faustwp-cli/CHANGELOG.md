@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.2.3
+
+### Patch Changes
+
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+
 ## 3.2.2
 
 ### Patch Changes

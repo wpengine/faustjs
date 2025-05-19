@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.2
+
+### Patch Changes
+
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+
 ## 6.1.1
 
 ### Patch Changes

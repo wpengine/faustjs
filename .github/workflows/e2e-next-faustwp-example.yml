@@ -2,8 +2,8 @@ name: E2E Test Packages
 
 on:
   pull_request:
-    paths-ignore:
-      - '**/*.md'
+    paths:
+      - 'examples/next/**'
 
 jobs:
   e2e-test-faustwp-getting-started-example:
