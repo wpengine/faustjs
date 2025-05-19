@@ -3,9 +3,6 @@ name: Package Code Quality
 on:
   pull_request:
     branches: [canary]
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.php'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
