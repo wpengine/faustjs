@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.8.1
-Stable tag: 1.8.3
+Stable tag: 1.8.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,24 +54,24 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.8.4 =
+
+### Patch Changes
+
+- 5ce074a: Tested Faust on WordPress 6.8.1
+- 8684b83: Fixed issue in content_replacement when site_url() contains port
+
 = 1.8.3 =
 
 ### Patch Changes
 
 - 089ea0a: Fix for adding assets to the correct release for Github Actions.
-  Small fix for Github actions to upload assets to the correct release
+- Small fix for Github actions to upload assets to the correct release
 
 = 1.8.2 =
 
 ### Patch Changes
 
 - b1898f8: Fix for adding assets to the correct release for Github Actions.
-
-= 1.8.1 =
-
-### Patch Changes
-
-- 700f96e: bug: Fixes for Github workflow for faustwp releases. Added WPE info.json and automated for the release.
-- 134f823: Added minor fixes for release process.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

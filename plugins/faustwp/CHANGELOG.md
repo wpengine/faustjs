@@ -1,5 +1,12 @@
 # Faust
 
+## 1.8.4
+
+### Patch Changes
+
+- 5ce074a: Tested Faust on WordPress 6.8.1
+- 8684b83: Fixed issue in content_replacement when site_url() contains port
+
 ## 1.8.3
 
 ### Patch Changes
