@@ -36,7 +36,10 @@
     "npm": ">=10"
   },
   "overrides": {
-    "@babel/runtime": "7.27.0"
+    "@babel/runtime": "7.27.0",
+		"puppeteer": "^24.10",
+    "puppeteer-core": "^24.10",
+    "webpack-dev-server": "^5.2"
   },
   "resolutions": {
     "@babel/runtime": "7.27.0"
