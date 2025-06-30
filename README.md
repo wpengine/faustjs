@@ -1,4 +1,4 @@
-![Faust.js](https://user-images.githubusercontent.com/5306336/152221545-53087444-b3ad-477d-90a9-606785854656.jpg)
+![Faust.js](.github/assets/faust-banner.jpg)
 
 <p align="center">
   <a aria-label="@faustwp/core Downloads" href="https://www.npmjs.com/package/@faustwp/core">
