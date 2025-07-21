@@ -27,7 +27,7 @@
 		"archiver": "^6.0.1",
 		"chalk": "^4.1.2",
 		"dotenv-flow": "^3.2.0",
-		"form-data": "^4.0.0",
+		"form-data": "^4.0.4",
 		"fs-extra": "^11.1.1",
 		"glob": "^11.0.0",
 		"isomorphic-fetch": "^3.0.0",
