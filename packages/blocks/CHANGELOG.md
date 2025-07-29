@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- a1fb6dd: chore: security update for packages brace-extension and form-data.
+- a1fb6dd: chore: Security update for packages brace-extension and form-data.
 
 ## 6.1.2
 
