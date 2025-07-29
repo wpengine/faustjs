@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.3.4
+
+### Patch Changes
+
+- a1fb6dd: chore: security update for packages brace-extension and form-data.
+
 ## 0.3.3
 
 ### Patch Changes
@@ -36,15 +42,15 @@
   // Component.js
 
   Component.config = {
-  	name: 'CreateBlockBlockB',
-  	editorFields: {
-  		textArea: {
-  			type: 'string',
-  			label: 'My Message',
-  			location: 'editor',
-  			control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
-  		},
-  	},
+    name: 'CreateBlockBlockB',
+    editorFields: {
+      textArea: {
+        type: 'string',
+        label: 'My Message',
+        location: 'editor',
+        control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
+      },
+    },
   };
   ```
 
@@ -78,9 +84,9 @@
 
   ```js
   <div
-  	style={styles}
-  	className="rich-text"
-  	dangerouslySetInnerHTML={{ __html: attributes.richText }}
+    style={styles}
+    className="rich-text"
+    dangerouslySetInnerHTML={{ __html: attributes.richText }}
   />
   ```
 
@@ -131,9 +137,9 @@
   import save from './save';
 
   registerFaustBlock(MyFirstBlock, {
-  	blockJson: metadata,
-  	editFn: Edit,
-  	saveFn: save,
+    blockJson: metadata,
+    editFn: Edit,
+    saveFn: save,
   });
   ```
 
