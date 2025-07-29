@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.3
+
+### Patch Changes
+
+- a1fb6dd: chore: Security update for packages brace-extension and form-data.
+
 ## 6.1.2
 
 ### Patch Changes

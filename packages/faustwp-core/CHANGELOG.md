@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.2.4
+
+### Patch Changes
+
+- a1fb6dd: chore: security update for packages brace-extension and form-data.
+
 ## 3.2.3
 
 ### Patch Changes
