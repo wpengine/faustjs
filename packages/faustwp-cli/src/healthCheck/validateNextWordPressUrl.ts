@@ -28,6 +28,11 @@ export async function validateNextWordPressUrl(): Promise<void> {
 				warnLog(
 					'Route not found: Please update your FaustWP plugin to the latest version.',
 				);
+			} else if (response.status === 500) {
+				// Handle WordPress server error
+				errorLog(
+					'Could not connect to the WordPress server. Please check your WordPress URL or server status, as your site may not function correctly.',
+				);
 			} else {
 				errorLog(
 					'Validation Failed: Your Faust front-end site URL value is misconfigured. It should NOT match the `NEXT_PUBLIC_WORDPRESS_URL.`',
