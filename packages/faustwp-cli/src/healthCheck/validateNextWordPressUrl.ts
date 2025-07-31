@@ -28,7 +28,7 @@ export async function validateNextWordPressUrl(): Promise<void> {
 				warnLog(
 					'Route not found: Please update your FaustWP plugin to the latest version.',
 				);
-			} else if (response.status === 500) {
+			} else if (response.status >= 500 && response.status < 600) {
 				// Handle WordPress server error
 				errorLog(
 					'Could not connect to the WordPress server. Please check your WordPress URL or server status, as your site may not function correctly.',
