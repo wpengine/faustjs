@@ -1,8 +1,9 @@
 {
-	"name": "@faustjs/core",
+	"name": "@faustjs/template-hierarchy",
 	"version": "4.0.0-alpha.0",
-	"description": "",
+	"description": "Template hierarchy utilities for FaustJS",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},

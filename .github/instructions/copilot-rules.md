@@ -26,15 +26,17 @@
 
 ### TypeScript/JavaScript
 
-- Prefer JSDoc for new packages
-- Use consistent tsconfig.json configurations
+- Prefer JSDoc over TypeScript for new packages (to avoid build steps)
+- Use ESM (ES Modules) - include `"type": "module"` in package.json
+- Use JSDoc comments for type annotations and documentation
 - Follow existing code style and formatting patterns
-- Include proper type definitions
+- Include proper type definitions via JSDoc
 
 ### Package.json Requirements
 
 - Include `license` field with appropriate license
 - Use `packageManager` field to specify pnpm version
+- Include `"type": "module"` for ESM support
 - Include proper `engines` field for Node.js version requirements
 - Use consistent naming conventions for scripts
 

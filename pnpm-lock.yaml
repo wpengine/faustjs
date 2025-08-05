@@ -66,6 +66,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
 
+  packages/template-hierarchy: {}
+
 packages:
 
   '@babel/code-frame@7.27.1':
