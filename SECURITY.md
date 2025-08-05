@@ -1,21 +1,8 @@
 # Security Policy
 
-## Supported Versions
-
-The following versions of this project are currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.3.1   | :white_check_mark: |
-| <1.3.0  | :x:                |
-
-WP Engine takes the security of our software and services seriously, including all
-of the open-source code repositories managed through our
-[WP Engine organization](https://github.com/wpengine).
-
 ## Reporting Security Issues
 
-If you believe you have found a security vulnerability in any Alley-owned
+If you believe you have found a security vulnerability in any WP Engine-owned
 repository, please report it to us via email at opensource@wpengine.com.
 
 **Please do not report security vulnerabilities through public GitHub issues,
