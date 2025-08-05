@@ -2,7 +2,7 @@
  * @file Template hierarchy resolution for Astro using WordPress data
  */
 
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { getTemplate, getPossibleTemplates } from '@faustjs/template-hierarchy';
 import { getSeedQuery } from './seedQuery.js';
 
@@ -56,15 +56,14 @@ export async function uriToTemplate({ uri, graphqlClient }) {
 		return returnData;
 	}
 
-	const template = getTemplate(
-		availableTemplates.map((template) => template.data),
+	const templateId = getTemplate(
+		availableTemplates.map((template) => template.data.id),
 		possibleTemplates,
 	);
+	returnData.template = await getEntry('templates', templateId)?.data;
 
-	returnData.template = template;
-
-	if (!template) {
-		console.error('No template not found for route');
+	if (!returnData.template) {
+		console.error('No template found for route');
 	}
 
 	return returnData;

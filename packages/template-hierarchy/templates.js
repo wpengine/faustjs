@@ -149,21 +149,15 @@ export function getPossibleTemplates(node) {
 
 /**
  * Get the first matching template from available templates
- * @param {import('./types.js').WordPressTemplate[] | undefined} availableTemplates - Array of available templates
+ * @param {string[]} availableTemplates - Array of available template IDs
  * @param {string[]} [possibleTemplates=[]] - Array of possible template names in priority order
- * @returns {import('./types.js').WordPressTemplate | undefined} The first matching template or undefined
+ * @returns {string | undefined} The first matching template ID or undefined
  */
 export function getTemplate(availableTemplates, possibleTemplates = []) {
 	// eslint-disable-next-line no-plusplus
 	for (const possibleTemplate of possibleTemplates) {
-		const templateFromConfig = availableTemplates?.find(
-			(template) => template.id === possibleTemplate,
-		);
-
-		if (!templateFromConfig) {
-			continue;
+		if (availableTemplates?.includes(possibleTemplate)) {
+			return possibleTemplate;
 		}
-
-		return templateFromConfig;
 	}
 }
