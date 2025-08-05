@@ -2,8 +2,12 @@
  * @file Template hierarchy resolution for NextJS using WordPress data
  */
 
-import { getTemplate, getPossibleTemplates } from '@faustjs/template-hierarchy';
-import { getSeedQuery } from './seedQuery.js';
+import {
+	getTemplate,
+	getPossibleTemplates,
+	getSeedQuery,
+} from '@faustjs/template-hierarchy';
+import { getGraphQLClient } from '@faustjs/graphql';
 
 /**
  * Resolve a URI to template data using WordPress template hierarchy
@@ -29,10 +33,11 @@ export async function uriToTemplate({
 		template: undefined,
 	};
 
+	// Get the GraphQL client - use provided one or get configured one
+	const client = getGraphQLClient(graphqlClient);
 	const { data, error } = await getSeedQuery({
 		uri,
-		graphqlClient,
-		wordpressUrl,
+		graphqlClient: client,
 	});
 
 	returnData.seedQuery = { data, error };

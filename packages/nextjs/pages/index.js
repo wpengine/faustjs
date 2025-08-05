@@ -8,8 +8,13 @@ import './types.js';
 // Export template hierarchy utilities
 export { uriToTemplate } from './templateHierarchy.js';
 
-// Export seed query utilities
-export { getSeedQuery } from './seedQuery.js';
+// Export GraphQL client configuration
+// Export GraphQL client configuration
+export {
+	setGraphQLClient,
+	getGraphQLClient,
+	createDefaultGraphQLClient as createDefaultClient,
+} from '@faustjs/graphql';
 
 // Export template registry utility
 export { createTemplateRegistry } from './templateRenderer.js';

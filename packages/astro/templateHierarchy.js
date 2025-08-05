@@ -3,8 +3,17 @@
  */
 
 import { getCollection, getEntry } from 'astro:content';
-import { getTemplate, getPossibleTemplates } from '@faustjs/template-hierarchy';
-import { getSeedQuery } from './seedQuery.js';
+import {
+	getTemplate,
+	getPossibleTemplates,
+	getSeedQuery,
+} from '@faustjs/template-hierarchy';
+import { getGraphQLClient } from '@faustjs/graphql';
+
+console.log(
+	'🚀 Astro templateHierarchy.js loaded at:',
+	new Date().toISOString(),
+);
 
 /**
  * Resolve a URI to template data using WordPress template hierarchy
@@ -21,7 +30,9 @@ export async function uriToTemplate({ uri, graphqlClient }) {
 		template: undefined,
 	};
 
-	const { data, error } = await getSeedQuery({ uri, graphqlClient });
+	// Get the GraphQL client - use provided one or get configured one
+	const client = getGraphQLClient(graphqlClient);
+	const { data, error } = await getSeedQuery({ uri, graphqlClient: client });
 
 	returnData.seedQuery = { data, error };
 
@@ -60,9 +71,12 @@ export async function uriToTemplate({ uri, graphqlClient }) {
 		availableTemplates.map((template) => template.data.id),
 		possibleTemplates,
 	);
-	returnData.template = await getEntry('templates', templateId)?.data;
 
-	if (!returnData.template) {
+	const template = await getEntry('templates', templateId);
+
+	returnData.template = template.data;
+
+	if (!template) {
 		console.error('No template found for route');
 	}
 

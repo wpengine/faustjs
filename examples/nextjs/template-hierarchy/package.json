@@ -1,0 +1,23 @@
+{
+	"name": "@faustjs/nextjs-template-hierarchy-example",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Example Next.js app using @faustjs/nextjs template hierarchy",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint"
+	},
+	"dependencies": {
+		"@faustjs/nextjs": "workspace:*",
+		"@faustjs/template-hierarchy": "workspace:*",
+		"next": "^14.0.0",
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0"
+	},
+	"devDependencies": {
+		"eslint": "^8.0.0",
+		"eslint-config-next": "^14.0.0"
+	}
+}

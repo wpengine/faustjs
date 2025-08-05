@@ -25,7 +25,8 @@
 		"node": ">=24"
 	},
 	"dependencies": {
-		"@faustjs/template-hierarchy": "workspace:*"
+		"@faustjs/template-hierarchy": "workspace:*",
+		"@faustjs/graphql": "workspace:*"
 	},
 	"peerDependencies": {
 		"next": "^13.0.0 || ^14.0.0 || ^15.0.0",

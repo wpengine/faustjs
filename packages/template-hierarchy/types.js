@@ -51,5 +51,23 @@
  * @description Base parameters for uriToTemplate functions. Can be extended with additional properties as needed.
  */
 
+/**
+ * @typedef {Object} GraphQLClient
+ * @property {function} request - Function to execute GraphQL queries
+ */
+
+/**
+ * @typedef {Object} SeedQueryOptions
+ * @property {string} uri - The URI to query for
+ * @property {GraphQLClient} [graphqlClient] - Optional GraphQL client to use
+ * @property {string} [wordpressUrl] - Optional WordPress URL for client creation
+ */
+
+/**
+ * @typedef {Object} GraphQLResponse
+ * @property {any} [data] - The response data
+ * @property {string} [error] - Error message if any
+ */
+
 // Export types for use in other modules
 export {};

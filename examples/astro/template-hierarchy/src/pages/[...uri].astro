@@ -1,5 +1,13 @@
 ---
-import { uriToTemplate } from '@faustjs/astro';
+import {
+	uriToTemplate,
+	createDefaultClient,
+	setGraphQLClient,
+} from '@faustjs/astro';
+
+// Set up GraphQL client using environment variable
+const client = createDefaultClient(import.meta.env.WORDPRESS_URL);
+setGraphQLClient(client);
 
 // URI comes as a string from Astro params, ensure it starts with /
 const { uri = '/' } = Astro.params;
