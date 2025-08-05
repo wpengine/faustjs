@@ -1,0 +1,21 @@
+---
+// Example WordPress page template
+import WordPressLayout from '@/layouts/WordPressLayout.astro';
+
+// Prevent direct access to template files
+if (Astro.url.pathname === Astro.originPathname) {
+	return Astro.rewrite('/404');
+}
+---
+
+<WordPressLayout title="Page Template">
+	<h1>WordPress Page Template</h1>
+	<p>This template would render individual WordPress pages.</p>
+	<div class="content-area">
+		<!-- WordPress page content would be rendered here -->
+		<p>
+			Page title, content, and metadata would be displayed here using data from
+			the WordPress GraphQL API.
+		</p>
+	</div>
+</WordPressLayout>

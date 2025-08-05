@@ -1,0 +1,21 @@
+---
+// Example WordPress post template
+import WordPressLayout from '@/layouts/WordPressLayout.astro';
+
+// Prevent direct access to template files
+if (Astro.url.pathname === Astro.originPathname) {
+	return Astro.rewrite('/404');
+}
+---
+
+<WordPressLayout title="Single Post Template">
+	<h1>WordPress Single Post Template</h1>
+	<p>This template would render individual WordPress posts.</p>
+	<div class="content-area">
+		<!-- WordPress post content would be rendered here -->
+		<p>
+			Post title, content, and metadata would be displayed here using data from
+			the WordPress GraphQL API.
+		</p>
+	</div>
+</WordPressLayout>

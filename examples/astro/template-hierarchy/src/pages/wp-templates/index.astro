@@ -1,0 +1,29 @@
+---
+// Example WordPress index/home template
+import WordPressLayout from '@/layouts/WordPressLayout.astro';
+
+// Prevent direct access to template files
+if (Astro.url.pathname === Astro.originPathname) {
+	return Astro.rewrite('/404');
+}
+---
+
+<WordPressLayout title="Home Template">
+	<h1>WordPress Home/Index Template</h1>
+	<p>This template would render the WordPress homepage or blog index.</p>
+	<div class="content-area">
+		<!-- WordPress posts list would be rendered here -->
+		<div class="post-preview">
+			<h3>Example Post 1</h3>
+			<p>This would be an excerpt from a WordPress post...</p>
+		</div>
+		<div class="post-preview">
+			<h3>Example Post 2</h3>
+			<p>This would be an excerpt from another WordPress post...</p>
+		</div>
+		<div class="post-preview">
+			<h3>Example Post 3</h3>
+			<p>This would be an excerpt from yet another WordPress post...</p>
+		</div>
+	</div>
+</WordPressLayout>

@@ -1,0 +1,65 @@
+---
+// Example WordPress archive template
+import WordPressLayout from '@/layouts/WordPressLayout.astro';
+
+// Prevent direct access to template files
+if (Astro.url.pathname === Astro.originPathname) {
+	return Astro.rewrite('/404');
+}
+---
+
+<WordPressLayout title="Archive Template">
+	<h1>WordPress Archive Template</h1>
+	<p>
+		This template would render WordPress archive pages (category, tag, date,
+		etc.).
+	</p>
+	<div class="content-area">
+		<h2>Archive: Category Name</h2>
+		<p>Showing posts from this category...</p>
+
+		<div class="post-preview">
+			<h3>Archive Post 1</h3>
+			<p>This would be a post from the archive...</p>
+			<small>Posted on March 15, 2024</small>
+		</div>
+		<div class="post-preview">
+			<h3>Archive Post 2</h3>
+			<p>This would be another post from the archive...</p>
+			<small>Posted on March 10, 2024</small>
+		</div>
+	</div>
+</WordPressLayout>
+
+<style>
+	body {
+		font-family: Arial, sans-serif;
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+	.archive-info {
+		background: #fff3cd;
+		padding: 15px;
+		border-radius: 8px;
+		margin-bottom: 20px;
+		border: 1px solid #ffeaa7;
+	}
+	.archive-posts {
+		margin-top: 20px;
+	}
+	.archive-post {
+		background: #f8f9fa;
+		padding: 15px;
+		border-radius: 8px;
+		margin-bottom: 15px;
+		border-left: 4px solid #6c757d;
+	}
+	.archive-post h3 {
+		margin-top: 0;
+		color: #495057;
+	}
+	.archive-post small {
+		color: #6c757d;
+	}
+</style>

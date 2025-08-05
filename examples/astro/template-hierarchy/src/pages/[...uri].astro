@@ -1,0 +1,25 @@
+---
+import { uriToTemplate } from '@faustjs/astro';
+
+// URI comes as a string from Astro params, ensure it starts with /
+const { uri = '/' } = Astro.params;
+
+const results = await uriToTemplate({ uri });
+
+Astro.locals.templateData = results;
+
+if (results.template) {
+	return Astro.rewrite(results.template.path);
+}
+---
+
+<h1 style="color: red;">Oops! You shouldn't be here, something went wrong!</h1>
+<pre>
+	<code>
+	  {JSON.stringify(
+		results,
+		null,
+		2
+	  )}
+	</code>
+  </pre>
