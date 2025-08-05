@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- f5e1253: Previously, WordPress connection failures lacked clear feedback. This update adds a proper error message when a 500 error occurs, improving debugging and usability.
+- f5e1253: Previously, WordPress connection failures lacked clear feedback. This update adds an error message when a 500 error occurs, improving debugging and usability.
 
 ## 3.2.4
 
