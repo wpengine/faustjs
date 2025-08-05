@@ -2,13 +2,22 @@
 	"name": "@faustjs/template-hierarchy",
 	"version": "4.0.0-alpha.0",
 	"description": "Template hierarchy utilities for FaustJS",
-	"main": "index.js",
 	"type": "module",
+	"exports": {
+		".": "./index.js"
+	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "MIT",
-	"packageManager": "pnpm@10.14.0"
+	"packageManager": "pnpm@10.14.0",
+	"engines": {
+		"node": ">=24"
+	},
+	"peerDependencies": {
+		"graphql": "^16.0.0",
+		"graphql-tag": "^2.12.0"
+	}
 }
