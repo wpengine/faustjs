@@ -37,6 +37,7 @@
 - Include `license` field with appropriate license
 - Use `packageManager` field to specify pnpm version
 - Include `"type": "module"` for ESM support
+- Use `"exports"` field instead of `"main"` or `"module"` for modern module resolution
 - Include proper `engines` field for Node.js version requirements
 - Use consistent naming conventions for scripts
 
