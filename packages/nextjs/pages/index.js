@@ -15,6 +15,3 @@ export {
 	getGraphQLClient,
 	createDefaultGraphQLClient as createDefaultClient,
 } from '@faustjs/graphql';
-
-// Export template registry utility
-export { createTemplateRegistry } from './templateRenderer.js';
