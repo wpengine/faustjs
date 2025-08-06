@@ -15,3 +15,6 @@ export {
 	getGraphQLClient,
 	createDefaultGraphQLClient as createDefaultClient,
 } from '@faustjs/graphql';
+
+// Export higher-level page creation utilities
+export { createWordPressPage } from './createWordPressPage.jsx';

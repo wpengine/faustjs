@@ -6,6 +6,7 @@ const nextConfig = {
 	experimental: {
 		esmExternals: true,
 	},
+	transpilePackages: ['@faustjs/nextjs'],
 	webpack: (config) => {
 		config.resolve.alias = {
 			...config.resolve.alias,
