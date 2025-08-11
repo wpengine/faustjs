@@ -1,0 +1,35 @@
+{
+	"name": "@faustjs/sveltekit",
+	"version": "4.0.0-alpha.0",
+	"description": "SvelteKit integration for FaustJS template hierarchy",
+	"type": "module",
+	"exports": {
+		".": "./index.js"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"sveltekit",
+		"svelte",
+		"wordpress",
+		"template-hierarchy",
+		"faustjs"
+	],
+	"author": "",
+	"license": "MIT",
+	"packageManager": "pnpm@10.14.0",
+	"engines": {
+		"node": ">=24"
+	},
+	"dependencies": {
+		"@faustjs/template-hierarchy": "workspace:*",
+		"@faustjs/graphql": "workspace:*",
+		"graphql": "^16.8.1"
+	},
+	"peerDependencies": {
+		"@sveltejs/kit": "^2.0.0",
+		"svelte": "^4.0.0 || ^5.0.0",
+		"graphql": "^16.0.0"
+	}
+}
