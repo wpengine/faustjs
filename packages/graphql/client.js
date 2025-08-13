@@ -38,7 +38,7 @@ export function buildGraphQLEndpoint(wordpressUrl) {
  * @returns {import('./types.js').GraphQLClient} A basic GraphQL client
  * @throws {Error} If no WordPress URL is provided
  */
-export function createDefaultGraphQLClient(wordpressUrl) {
+export function createDefaultGraphQLClient(wordpressUrl, headers = {}) {
 	if (!wordpressUrl) {
 		throw new Error(
 			'WordPress URL is required to create a default GraphQL client.',
@@ -54,6 +54,7 @@ export function createDefaultGraphQLClient(wordpressUrl) {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						...headers,
 					},
 					body: JSON.stringify({ query, variables }),
 				});
