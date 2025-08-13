@@ -41,7 +41,7 @@ export async function getStaticProps({
 	const variables = isDraftModeEnabled
 		? {
 				id: params.identifier?.[0],
-				isPreview: true,
+				asPreview: true,
 		  }
 		: { uri };
 
