@@ -10,13 +10,20 @@ import { print } from 'graphql';
  * @param {import('./types.js').SeedQueryOptions} options - Query options
  * @returns {Promise<import('./types.js').GraphQLResponse>} Query result
  */
-export async function getSeedQuery({ uri, graphqlClient }) {
+export async function getSeedQuery({ uri, id, asPreview, graphqlClient }) {
 	if (!graphqlClient) {
 		throw new Error('GraphQL client is required for getSeedQuery');
 	}
 
 	try {
-		const result = await graphqlClient.request(print(SEED_QUERY), { uri });
+		const result = await graphqlClient.request(print(SEED_QUERY), {
+			uri,
+			id,
+			asPreview,
+		});
+
+		console.log('Seed query result:', uri, id, asPreview, result);
+
 		return {
 			data: result.data || result,
 			error: result.error || null,

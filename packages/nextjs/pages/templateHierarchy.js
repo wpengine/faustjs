@@ -20,6 +20,8 @@ import { getGraphQLClient } from '@faustjs/graphql';
  */
 export async function uriToTemplate({
 	uri,
+	id,
+	asPreview,
 	availableTemplates,
 	graphqlClient,
 	wordpressUrl,
@@ -37,17 +39,21 @@ export async function uriToTemplate({
 	const client = getGraphQLClient(graphqlClient);
 	const { data, error } = await getSeedQuery({
 		uri,
+		id,
+		asPreview,
 		graphqlClient: client,
 	});
 
 	returnData.seedQuery = { data, error };
+
+	const seedNode = data?.nodeByUri || data?.contentNode;
 
 	if (error) {
 		console.error('Error fetching seedQuery:', error);
 		return returnData;
 	}
 
-	if (!data?.nodeByUri) {
+	if (!seedNode) {
 		console.error('HTTP/404 - Not Found in WordPress:', uri);
 		return returnData; // Let Next.js handle 404s
 	}
@@ -59,7 +65,7 @@ export async function uriToTemplate({
 		return returnData;
 	}
 
-	const possibleTemplates = getPossibleTemplates(data.nodeByUri);
+	const possibleTemplates = getPossibleTemplates(seedNode);
 
 	returnData.possibleTemplates = possibleTemplates;
 
