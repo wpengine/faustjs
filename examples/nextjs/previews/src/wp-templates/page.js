@@ -1,4 +1,4 @@
-export default function PageTemplate({ templateData }) {
+export default function Component({ templateData }) {
 	const { seedQuery } = templateData || {};
 	const page = seedQuery?.data?.page;
 

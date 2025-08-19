@@ -1,13 +1,15 @@
 import { getAuthString } from '@/utils/getAuthString';
 import availableTemplates from '@/wp-templates';
+import availableQueries from '@/wp-templates/templateQueries';
 import {
 	createDefaultClient,
 	setGraphQLClient,
 	uriToTemplate,
 } from '@faustjs/nextjs/pages';
+import { fetchTemplateQueries } from '@faustjs/data-fetching';
 
 export default function Page(props) {
-	const { templateData } = props;
+	const { templateData, queriesData } = props;
 
 	const PageTemplate = availableTemplates[templateData?.template?.id];
 
@@ -59,10 +61,18 @@ export async function getStaticProps({
 			return { notFound: true };
 		}
 
+		const queriesData = await fetchTemplateQueries({
+			availableQueries,
+			templateData,
+			client,
+			locale: templateData?.seedNode?.locale,
+		});
+
 		return {
 			props: {
 				uri,
 				templateData: JSON.parse(JSON.stringify(templateData)),
+				queriesData,
 			},
 		};
 	} catch (error) {

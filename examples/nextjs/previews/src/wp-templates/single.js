@@ -1,3 +1,6 @@
+import { GET_LAYOUT } from '@/queries/getLayout';
+import { GET_POST } from '@/queries/getPost';
+
 export default function SingleTemplate({ templateData }) {
 	const { seedQuery } = templateData || {};
 	const post = seedQuery?.data?.post;
@@ -34,3 +37,16 @@ export default function SingleTemplate({ templateData }) {
 		</>
 	);
 }
+
+export const queries = [
+	{
+		query: GET_LAYOUT,
+	},
+	{
+		query: GET_POST,
+		variables: ({ databaseId }, ctx) => ({
+			databaseId,
+			asPreview: ctx?.asPreview,
+		}),
+	},
+];

@@ -29,10 +29,11 @@ export async function uriToTemplate({
 	/** @type {import('../types.js').NextJSTemplateData} */
 	const returnData = {
 		uri,
-		seedQuery: undefined,
+		seedQuery: undefined, // TODO remove in favor of seedNode
 		availableTemplates: undefined,
 		possibleTemplates: undefined,
 		template: undefined,
+		seedNode: undefined,
 	};
 
 	// Get the GraphQL client - use provided one or get configured one
@@ -47,6 +48,8 @@ export async function uriToTemplate({
 	returnData.seedQuery = { data, error };
 
 	const seedNode = data?.nodeByUri || data?.contentNode;
+
+	returnData.seedNode = seedNode ?? error;
 
 	if (error) {
 		console.error('Error fetching seedQuery:', error);
