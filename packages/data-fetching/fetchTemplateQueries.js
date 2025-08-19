@@ -2,6 +2,8 @@
  * @file Fetches template-specific GraphQL queries for FaustJS templates
  */
 
+import { print } from 'graphql';
+
 /**
  * @param {Object} params
  * @param {Object.<string, Array>} params.availableQueries - Map of template IDs to their queries
@@ -15,7 +17,7 @@ export async function fetchTemplateQueries({
 	availableQueries,
 	templateData,
 	client,
-	extraVariables = {},
+	extraVariables,
 	locale,
 }) {
 	if (!client) {
@@ -38,12 +40,20 @@ export async function fetchTemplateQueries({
 				  )
 				: undefined;
 
-			return client.request({
-				query,
-				variables: queryVariables,
-			});
+			return client.request(print(query), queryVariables);
 		});
 
-		return await Promise.all(queryCalls);
+		const results = await Promise.all(queryCalls);
+
+		return results.reduce((acc, result, index) => {
+			const queryName = templateQueries[index].name ?? `query${index + 1}`;
+
+			return {
+				...acc,
+				[queryName]: result,
+			};
+		}, {});
 	}
+
+	return null;
 }

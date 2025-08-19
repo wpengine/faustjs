@@ -1,38 +1,69 @@
-export default function ArchiveTemplate({ templateData }) {
-	const { seedQuery } = templateData || {};
-	const posts = seedQuery?.data?.posts?.nodes || [];
-	const archiveInfo = seedQuery?.data?.category || seedQuery?.data?.tag || {};
+import { GET_LAYOUT } from '@/queries/getLayout';
+import { GET_ARCHIVE } from '@/queries/getArchive';
+import Head from 'next/head';
+
+export default function CategoryTemplate({ queriesData }) {
+	const { getCategory } = queriesData || {};
+	const categoryData = getCategory?.data?.nodeByUri;
+	const { posts, name } = categoryData || {};
 
 	return (
 		<>
-			<h1>WordPress Archive Template</h1>
-			<p>This template would render category, tag, or other archive pages.</p>
-			<div className="content-area">
-				{archiveInfo.name ? (
-					<h2>Archive: {archiveInfo.name}</h2>
-				) : (
-					<h2>Archive Page</h2>
-				)}
-				{archiveInfo.description && <p>{archiveInfo.description}</p>}
+			<Head>
+				<title>{name}</title>
+			</Head>
 
-				<h3>Posts in this archive:</h3>
-				{posts.length > 0 ? (
-					posts.map((post) => (
-						<div key={post.id || Math.random()} className="post-preview">
-							<h4>{post.title}</h4>
-							<p>{post.excerpt || 'Post excerpt would appear here...'}</p>
-						</div>
-					))
-				) : (
-					<div className="post-preview">
-						<h4>Sample Archive Post</h4>
-						<p>
-							Posts from this category, tag, or archive would be displayed here
-							using data from the WordPress GraphQL API.
-						</p>
-					</div>
-				)}
+			<div className="container max-w-4xl py-6 mx-auto">
+				<h1 className="mb-4 text-2xl font-bold">{name}</h1>
+
+				{posts?.edges?.map((item) => {
+					const post = item.node;
+
+					return (
+						<article
+							key={post.id}
+							className="mb-8 p-6 border border-gray-200 rounded-lg">
+							<h2 className="text-xl font-semibold mb-2">
+								<a href={post.uri} className="hover:text-blue-600">
+									{post.title}
+								</a>
+							</h2>
+
+							{post.featuredImage && (
+								<img
+									src={post.featuredImage.node.sourceUrl}
+									alt={post.featuredImage.node.altText || post.title}
+									className="w-full h-48 object-cover rounded mb-4"
+								/>
+							)}
+
+							<div className="text-gray-600 mb-2">
+								By {post.author.node.name} on{' '}
+								{new Date(post.date).toLocaleDateString()}
+							</div>
+
+							<div
+								className="text-gray-800"
+								dangerouslySetInnerHTML={{ __html: post.content }}
+							/>
+						</article>
+					);
+				})}
 			</div>
 		</>
 	);
 }
+
+export const queries = [
+	{
+		name: 'getLayout',
+		query: GET_LAYOUT,
+	},
+	{
+		name: 'getCategory',
+		query: GET_ARCHIVE,
+		variables: ({ uri }) => ({
+			uri,
+		}),
+	},
+];

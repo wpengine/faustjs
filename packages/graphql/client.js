@@ -60,15 +60,19 @@ export function createDefaultGraphQLClient(wordpressUrl, headers = {}) {
 				});
 
 				if (!response.ok) {
-					console.error();
+					const message = await response.json();
+
 					return {
-						error: `GraphQL request failed: ${response.status}`,
-						message: await response.body.text(),
+						error: `GraphQL request failed: ${response.statusText}`,
+						message: message.errors[0]?.message || 'Unknown error',
 					};
 				}
 
 				const result = await response.json();
-				return { data: result.data, error: result.errors?.[0]?.message };
+				return {
+					data: result.data,
+					error: result.errors?.[0]?.message ?? null,
+				};
 			} catch (error) {
 				return { error: error.message };
 			}

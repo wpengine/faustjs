@@ -1,48 +1,48 @@
 import { GET_LAYOUT } from '@/queries/getLayout';
 import { GET_POST } from '@/queries/getPost';
+import Head from 'next/head';
 
-export default function SingleTemplate({ templateData }) {
-	const { seedQuery } = templateData || {};
-	const post = seedQuery?.data?.post;
+export default function SingleTemplate({ queriesData }) {
+	const { getPost } = queriesData || {};
+	const { title, content, featuredImage } = getPost?.data?.post || {};
 
 	return (
 		<>
-			<h1>WordPress Single Post Template</h1>
-			<p>This template would render individual blog posts.</p>
-			<div className="content-area">
-				{post ? (
-					<article>
-						<h2>{post.title}</h2>
-						<div dangerouslySetInnerHTML={{ __html: post.content }} />
-						{post.categories?.nodes && (
-							<div>
-								<strong>Categories: </strong>
-								{post.categories.nodes.map((cat) => cat.name).join(', ')}
-							</div>
-						)}
-						{post.tags?.nodes && (
-							<div>
-								<strong>Tags: </strong>
-								{post.tags.nodes.map((tag) => tag.name).join(', ')}
-							</div>
-						)}
-					</article>
-				) : (
-					<p>
-						Blog post title, content, categories, tags, and other metadata would
-						be displayed here using data from the WordPress GraphQL API.
-					</p>
+			<Head>
+				<title>{title}</title>
+			</Head>
+
+			<article className="max-w-2xl px-6 py-24 mx-auto space-y-12 ">
+				<div className="w-full mx-auto space-y-4 text-center">
+					<h1 className="text-4xl font-bold leading-tight md:text-5xl">
+						{title}
+					</h1>
+				</div>
+
+				{featuredImage && (
+					<img
+						src={featuredImage?.node?.sourceUrl}
+						alt=""
+						className="w-full h-72 object-cover rounded-lg mb-4"
+					/>
 				)}
-			</div>
+
+				<div
+					className="text-gray-800"
+					dangerouslySetInnerHTML={{ __html: content }}
+				/>
+			</article>
 		</>
 	);
 }
 
 export const queries = [
 	{
+		name: 'getLayout',
 		query: GET_LAYOUT,
 	},
 	{
+		name: 'getPost',
 		query: GET_POST,
 		variables: ({ databaseId }, ctx) => ({
 			databaseId,

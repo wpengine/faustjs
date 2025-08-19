@@ -1,6 +1,6 @@
 import { getAuthString } from '@/utils/getAuthString';
 import availableTemplates from '@/wp-templates';
-import availableQueries from '@/wp-templates/templateQueries';
+import availableQueries from '@/queries';
 import {
 	createDefaultClient,
 	setGraphQLClient,
