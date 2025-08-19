@@ -70,6 +70,8 @@ export async function uriToTemplate({
 
 	const possibleTemplates = getPossibleTemplates(seedNode);
 
+	console.log(possibleTemplates);
+
 	returnData.possibleTemplates = possibleTemplates;
 
 	if (!possibleTemplates || possibleTemplates.length === 0) {

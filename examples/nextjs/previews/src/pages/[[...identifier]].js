@@ -1,6 +1,6 @@
 import { getAuthString } from '@/utils/getAuthString';
 import availableTemplates from '@/wp-templates';
-import availableQueries from '@/queries';
+import availableQueries from '@/wp-templates/templateQueries';
 import {
 	createDefaultClient,
 	setGraphQLClient,
@@ -9,15 +9,13 @@ import {
 import { fetchTemplateQueries } from '@faustjs/data-fetching';
 
 export default function Page(props) {
-	const { templateData, queriesData } = props;
+	const { templateData } = props;
 
 	const PageTemplate = availableTemplates[templateData?.template?.id];
 
 	return <PageTemplate {...props} />;
 }
 
-// Statically generate the pages, except for draft mode
-// More info: https://nextjs.org/docs/pages/guides/draft-mode
 export async function getStaticProps({
 	params,
 	draftMode: isDraftModeEnabled,
