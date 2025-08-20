@@ -34,9 +34,7 @@ export async function getStaticProps({
 
 	setGraphQLClient(client);
 
-	const uri = Array.isArray(params?.identifier)
-		? '/' + params.identifier.join('/') + '/'
-		: '/';
+	const uri = params?.identifier ? `/${params.identifier.join('/')}/` : '/';
 
 	const variables = isDraftModeEnabled
 		? {
