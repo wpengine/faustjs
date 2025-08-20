@@ -1,5 +1,5 @@
 {
-	"name": "@faustjs/nextjs-preview-example",
+	"name": "@faustjs/kitchen-sink-example",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {

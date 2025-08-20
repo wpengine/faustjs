@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic.js';
 
 const single = dynamic(() => import('./single.js'), {
 	loading: () => <p>Loading Single Template...</p>,
