@@ -1,0 +1,88 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { authHeaders, client, gql } from "../../lib/client";
+
+/**
+ * This is a template for the WordPress template hierarchy.
+ * It will be used to render the WordPress templates.
+ * It should never be used directly.
+ * This check confirms that the template is being used in the correct context.
+ * If the template is being used directly, it will redirect to the 404 page.
+ */
+if (Astro.url.pathname === Astro.originPathname) {
+  return Astro.rewrite("/404");
+}
+
+const isPreview = Astro.locals.isPreview;
+
+const { data, error } = await client.query(
+  gql`
+    query homeTemplatePostQuery {
+      posts(first: 6, where: { stati: [DRAFT, PUBLISH, FUTURE, PENDING] }) {
+        nodes {
+          id
+          title
+          uri
+          excerpt
+        }
+      }
+    }
+  `,
+  {},
+  {
+    fetchOptions: {
+      headers: {
+        ...authHeaders(isPreview),
+      },
+    },
+  }
+);
+
+if (error) {
+  console.error("Error fetching data:", error);
+  return Astro.rewrite("/500");
+}
+---
+
+<Layout>
+  <main id="home">
+    <h1>My WP + Astro Blog!</h1>
+
+    <p>I like sharing my life!</p>
+
+    <section id="recent-posts">
+      <h2>Recent Posts</h2>
+      <div class="post-grid">
+        {
+          data.posts.nodes.map((post) => {
+            return (
+              <div data-key={post.id} class="post">
+                <h3 class="post-title">{post.title}</h3>
+                <div class="post-excerpt" set:html={post.excerpt} />
+                <a class="post-link" href={post.uri}>
+                  Read more...
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .post {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+</style>

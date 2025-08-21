@@ -1,0 +1,24 @@
+---
+import WordPressLayout from '@/layouts/WordPressLayout.astro';
+
+// Set the response status to 404
+Astro.response.status = 404;
+---
+
+<WordPressLayout title="Page Not Found">
+	<h1>404 - Page Not Found</h1>
+	<p>Sorry, the page you're looking for doesn't exist.</p>
+	<div class="content-area">
+		<p>This could happen if:</p>
+		<ul>
+			<li>The page has been moved or deleted</li>
+			<li>You typed the URL incorrectly</li>
+			<li>The WordPress content couldn't be found</li>
+		</ul>
+		<p>
+			<a href="/" style="color: #3b82f6; text-decoration: underline;">
+				← Go back to the homepage
+			</a>
+		</p>
+	</div>
+</WordPressLayout>

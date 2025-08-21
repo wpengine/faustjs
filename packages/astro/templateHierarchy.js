@@ -20,7 +20,7 @@ console.log(
  * @param {import('@faustjs/template-hierarchy').UriToTemplateBaseParams & { graphqlClient?: import('./types.js').GraphQLClient }} options - Resolution options
  * @returns {Promise<import('@faustjs/template-hierarchy').TemplateData>} The resolved template data
  */
-export async function uriToTemplate({ uri, graphqlClient }) {
+export async function uriToTemplate({ uri, graphqlClient, id, asPreview }) {
 	/** @type {import('@faustjs/template-hierarchy').TemplateData} */
 	const returnData = {
 		uri,
@@ -28,20 +28,30 @@ export async function uriToTemplate({ uri, graphqlClient }) {
 		availableTemplates: undefined,
 		possibleTemplates: undefined,
 		template: undefined,
+		seedNode: undefined,
 	};
 
 	// Get the GraphQL client - use provided one or get configured one
 	const client = getGraphQLClient(graphqlClient);
-	const { data, error } = await getSeedQuery({ uri, graphqlClient: client });
+	const { data, error } = await getSeedQuery({
+		uri,
+		graphqlClient: client,
+		id,
+		asPreview,
+	});
 
 	returnData.seedQuery = { data, error };
+
+	const seedNode = data?.nodeByUri || data?.contentNode;
+
+	returnData.seedNode = seedNode ?? error;
 
 	if (error) {
 		console.error('Error fetching seedQuery:', error);
 		return returnData;
 	}
 
-	if (!data.nodeByUri) {
+	if (!seedNode) {
 		console.error('HTTP/404 - Not Found in WordPress:', uri);
 
 		returnData.template = { id: '404 Not Found', path: '/404' };
@@ -58,7 +68,7 @@ export async function uriToTemplate({ uri, graphqlClient }) {
 		return returnData;
 	}
 
-	const possibleTemplates = getPossibleTemplates(data.nodeByUri);
+	const possibleTemplates = getPossibleTemplates(seedNode);
 
 	returnData.possibleTemplates = possibleTemplates;
 

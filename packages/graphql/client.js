@@ -59,6 +59,8 @@ export function createDefaultGraphQLClient(wordpressUrl, headers = {}) {
 					body: JSON.stringify({ query, variables }),
 				});
 
+				console.log('RRR', response);
+
 				if (!response.ok) {
 					const message = await response.json();
 

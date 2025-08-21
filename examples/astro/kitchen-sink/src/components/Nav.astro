@@ -1,0 +1,50 @@
+---
+/**
+ * We've hard coded this but you can use the client to fetch this data from WP Menus!
+ * import { client, gql } from "../lib/client";
+ */
+---
+
+<nav>
+  <ul>
+    <li>
+      <a href="/">Home</a>
+    </li>
+    <li>
+      <a href="/sample-page">Sample Page</a>
+    </li>
+  </ul>
+</nav>
+<style>
+  nav {
+    background: #eee;
+    padding: 1rem;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  nav a {
+    text-decoration: none;
+    color: #333;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  nav a:visited {
+    color: #666;
+  }
+  nav a:active {
+    color: #000;
+  }
+  nav a:focus {
+    outline: 2px solid #000;
+  }
+  nav a:focus-visible {
+    outline: 2px solid #000;
+  }
+  nav a:focus:not(:focus-visible) {
+    outline: none;
+  }
+</style>

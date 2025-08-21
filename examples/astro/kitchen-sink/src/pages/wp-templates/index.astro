@@ -1,0 +1,80 @@
+---
+/**
+ * This is a template for the WordPress template hierarchy.
+ * It will be used to render the WordPress templates.
+ * It should never be used directly.
+ * This check confirms that the template is being used in the correct context.
+ * If the template is being used directly, it will redirect to the 404 page.
+ */
+if (Astro.url.pathname === Astro.originPathname) {
+  return Astro.rewrite("/404");
+}
+
+import Layout from "../../layouts/Layout.astro";
+import { authHeaders, client, gql } from "../../lib/client";
+
+const databaseId = Astro.locals.templateData?.databaseId;
+const isPreview = Astro.locals.isPreview;
+
+const query = gql`
+  query indexTemplateNodeQuery($id: ID!, $isPreview: Boolean = false) {
+    node: contentNode(id: $id, idType: DATABASE_ID, asPreview: $isPreview) {
+      __typename
+      uri
+      id
+      ... on NodeWithTitle {
+        title
+      }
+      ... on NodeWithContentEditor {
+        content
+      }
+    }
+  }
+`;
+
+const { data, error } = await client.query(
+  query,
+  {
+    id: databaseId,
+    isPreview,
+  },
+  {
+    fetchOptions: {
+      headers: {
+        ...authHeaders(isPreview),
+      },
+    },
+  }
+);
+
+if (error) {
+  console.error("Error fetching data:", error);
+  return Astro.rewrite("/500");
+}
+---
+
+<Layout>
+  <p>
+    This is the <strong>index</strong> template for the WordPress template hierarchy.
+    It will be used to render the WordPress content if no more appropriate template
+    is provided (e.g. front-page, single, singular, archive, etc). It should never
+    be used directly.
+  </p>
+
+  {data.node.title && <h1 set:html={data.node.title} />}
+  {data.node.content && <div set:html={data.node.content} />}
+  {
+    !data.node.content && !data.node.title && (
+      <pre>
+        <code>{JSON.stringify(data ?? {}, null, 2)}</code>
+      </pre>
+    )
+  }
+</Layout>
+
+<style>
+  pre {
+    margin: 0;
+    padding: 0;
+  }
+</style>

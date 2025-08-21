@@ -1,0 +1,86 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { authHeaders, client, gql } from "../../lib/client";
+/**
+ * This is a template for the WordPress template hierarchy.
+ * It will be used to render the WordPress templates.
+ * It should never be used directly.
+ * This check confirms that the template is being used in the correct context.
+ * If the template is being used directly, it will redirect to the 404 page.
+ */
+if (Astro.url.pathname === Astro.originPathname) {
+  return Astro.rewrite("/404");
+}
+
+const isPreview = Astro.locals.isPreview;
+
+const { data, error } = await client.query(
+  gql`
+    query ArchiveTemplateNodeQuery($uri: String!) {
+      node: nodeByUri(uri: $uri) {
+        __typename
+        ... on TermNode {
+          name
+          description
+        }
+        ... on Tag {
+          contentNodes(where: { stati: [DRAFT, PUBLISH, FUTURE, PENDING] }) {
+            nodes {
+              ... on NodeWithTitle {
+                title
+              }
+              uri
+            }
+          }
+        }
+        ... on Category {
+          contentNodes(where: { stati: [DRAFT, PUBLISH, FUTURE, PENDING] }) {
+            nodes {
+              ... on NodeWithTitle {
+                title
+              }
+              uri
+            }
+          }
+        }
+      }
+      terms {
+        nodes {
+          uri
+        }
+      }
+    }
+  `,
+  {
+    uri: Astro.originPathname,
+  },
+  {
+    fetchOptions: {
+      headers: {
+        ...authHeaders(isPreview),
+      },
+    },
+  }
+);
+
+if (error) {
+  console.error("Error fetching data:", error);
+  return Astro.rewrite("/500");
+}
+---
+
+<Layout>
+  <main>
+    <h1>{data.node.name}</h1>
+    <p set:html={data.node.description} />
+    <ol>
+      {
+        data.node.contentNodes.nodes.map((content) => (
+          <li>
+            <a href={content.uri} set:text={content.title} />
+          </li>
+        ))
+      }
+    </ol>
+  </main>
+</Layout>
