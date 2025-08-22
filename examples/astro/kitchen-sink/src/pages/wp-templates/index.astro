@@ -1,80 +1,53 @@
 ---
+import Layout from '@/components/Layout.astro';
+
 /**
- * This is a template for the WordPress template hierarchy.
- * It will be used to render the WordPress templates.
- * It should never be used directly.
- * This check confirms that the template is being used in the correct context.
- * If the template is being used directly, it will redirect to the 404 page.
+ * This is the index template for the WordPress template hierarchy.
+ * It serves as the fallback template for any content that doesn't have
+ * a more specific template (like single, page, archive, etc.).
+ * This template should never be accessed directly.
  */
 if (Astro.url.pathname === Astro.originPathname) {
-  return Astro.rewrite("/404");
+	return Astro.rewrite('/404');
 }
 
-import Layout from "../../layouts/Layout.astro";
-import { authHeaders, client, gql } from "../../lib/client";
-
-const databaseId = Astro.locals.templateData?.databaseId;
-const isPreview = Astro.locals.isPreview;
-
-const query = gql`
-  query indexTemplateNodeQuery($id: ID!, $isPreview: Boolean = false) {
-    node: contentNode(id: $id, idType: DATABASE_ID, asPreview: $isPreview) {
-      __typename
-      uri
-      id
-      ... on NodeWithTitle {
-        title
-      }
-      ... on NodeWithContentEditor {
-        content
-      }
-    }
-  }
-`;
-
-const { data, error } = await client.query(
-  query,
-  {
-    id: databaseId,
-    isPreview,
-  },
-  {
-    fetchOptions: {
-      headers: {
-        ...authHeaders(isPreview),
-      },
-    },
-  }
-);
-
-if (error) {
-  console.error("Error fetching data:", error);
-  return Astro.rewrite("/500");
-}
+const templateData = Astro.locals.templateData;
+const seedNode = templateData?.seedNode;
+const contentType = seedNode?.__typename || 'content';
 ---
 
-<Layout>
-  <p>
-    This is the <strong>index</strong> template for the WordPress template hierarchy.
-    It will be used to render the WordPress content if no more appropriate template
-    is provided (e.g. front-page, single, singular, archive, etc). It should never
-    be used directly.
-  </p>
+<Layout title='Template Not Found'>
+	<div class='max-w-4xl mx-auto px-8 py-16'>
+		<div class='text-center mb-12'>
+			<h2 class='text-2xl font-semibold text-gray-700 mb-6'>
+				Template Not Found
+			</h2>
+			<p class='text-lg text-gray-600 mb-8'>
+				No specific template was found for the <strong>{contentType}</strong> type.
+				This content is being displayed using the default fallback template.
+			</p>
+		</div>
 
-  {data.node.title && <h1 set:html={data.node.title} />}
-  {data.node.content && <div set:html={data.node.content} />}
-  {
-    !data.node.content && !data.node.title && (
-      <pre>
-        <code>{JSON.stringify(data ?? {}, null, 2)}</code>
-      </pre>
-    )
-  }
+		<div class='text-center'>
+			<a
+				href='/'
+				class='inline-flex items-center px-6 py-3 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200'>
+				← Go back to the homepage
+			</a>
+		</div>
+
+		<div class='bg-gray-50 rounded-lg p-6 mt-8'>
+			<h3 class='text-lg font-semibold text-gray-800 mb-4'>
+				Debug Information
+			</h3>
+			<div class='bg-white rounded border p-4 overflow-auto'>
+				<pre
+					class='text-sm text-gray-700'><code>{JSON.stringify(
+					templateData,
+					null,
+					2
+				)}</code></pre>
+			</div>
+		</div>
+	</div>
 </Layout>
-
-<style>
-  pre {
-    margin: 0;
-    padding: 0;
-  }
-</style>

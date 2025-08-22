@@ -16,7 +16,6 @@ const headers = isPreview
 
 // Set up GraphQL client using environment variable
 const client = createDefaultClient(import.meta.env.WORDPRESS_URL, headers);
-
 setGraphQLClient(client);
 
 // URI comes as a string from Astro params, ensure it starts with /
@@ -29,11 +28,7 @@ const variables = isPreview
 		}
 	: { uri: identifier };
 
-console.log('VVV', variables);
-
 const results = await uriToTemplate(variables);
-
-console.log(results);
 
 Astro.locals.templateData = results;
 Astro.locals.isPreview = isPreview || false;
@@ -42,15 +37,6 @@ Astro.locals.client = client;
 if (results.template) {
 	return Astro.rewrite(results.template.path);
 }
----
 
-<h1 style='color: red;'>Oops! You shouldn't be here, something went wrong!</h1>
-<pre>
-	<code>
-	  {JSON.stringify(
-		results,
-		null,
-		2
-	  )}
-	</code>
-  </pre>
+return Astro.rewrite('/404');
+---

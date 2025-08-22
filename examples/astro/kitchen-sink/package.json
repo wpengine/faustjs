@@ -13,11 +13,13 @@
 	},
 	"dependencies": {
 		"@faustjs/astro": "workspace:*",
-		"@faustjs/template-hierarchy": "workspace:*",
 		"@faustjs/data-fetching": "workspace:*",
+		"@faustjs/template-hierarchy": "workspace:*",
+		"@tailwindcss/vite": "^4.1.12",
 		"astro": "^5.1.1",
 		"graphql": "^16.9.0",
-		"graphql-tag": "^2.12.6"
+		"graphql-tag": "^2.12.6",
+		"tailwindcss": "^4.1.11"
 	},
 	"devDependencies": {
 		"typescript": "^5.6.3"

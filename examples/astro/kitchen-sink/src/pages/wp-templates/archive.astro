@@ -1,86 +1,65 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { authHeaders, client, gql } from "../../lib/client";
-/**
- * This is a template for the WordPress template hierarchy.
- * It will be used to render the WordPress templates.
- * It should never be used directly.
- * This check confirms that the template is being used in the correct context.
- * If the template is being used directly, it will redirect to the 404 page.
- */
+import Layout from '@/components/Layout.astro';
+import { GET_ARCHIVE } from '@/queries/getArchive';
+import { print } from 'graphql';
+
 if (Astro.url.pathname === Astro.originPathname) {
-  return Astro.rewrite("/404");
+	return Astro.rewrite('/404');
 }
 
-const isPreview = Astro.locals.isPreview;
+const uri = Astro.locals.templateData?.seedNode?.uri;
 
-const { data, error } = await client.query(
-  gql`
-    query ArchiveTemplateNodeQuery($uri: String!) {
-      node: nodeByUri(uri: $uri) {
-        __typename
-        ... on TermNode {
-          name
-          description
-        }
-        ... on Tag {
-          contentNodes(where: { stati: [DRAFT, PUBLISH, FUTURE, PENDING] }) {
-            nodes {
-              ... on NodeWithTitle {
-                title
-              }
-              uri
-            }
-          }
-        }
-        ... on Category {
-          contentNodes(where: { stati: [DRAFT, PUBLISH, FUTURE, PENDING] }) {
-            nodes {
-              ... on NodeWithTitle {
-                title
-              }
-              uri
-            }
-          }
-        }
-      }
-      terms {
-        nodes {
-          uri
-        }
-      }
-    }
-  `,
-  {
-    uri: Astro.originPathname,
-  },
-  {
-    fetchOptions: {
-      headers: {
-        ...authHeaders(isPreview),
-      },
-    },
-  }
-);
+const { data, error } = await Astro.locals.client.request(print(GET_ARCHIVE), {
+	uri,
+});
 
 if (error) {
-  console.error("Error fetching data:", error);
-  return Astro.rewrite("/500");
+	console.error('Error fetching data:', error);
+	return Astro.rewrite('/500');
 }
+
+if (!data?.nodeByUri) {
+	console.error('HTTP/404 - Not Found in WordPress:', uri);
+	return Astro.rewrite('/404');
+}
+
+const categoryData = data?.nodeByUri;
+const { posts, name } = categoryData || {};
 ---
 
-<Layout>
-  <main>
-    <h1>{data.node.name}</h1>
-    <p set:html={data.node.description} />
-    <ol>
-      {
-        data.node.contentNodes.nodes.map((content) => (
-          <li>
-            <a href={content.uri} set:text={content.title} />
-          </li>
-        ))
-      }
-    </ol>
-  </main>
+<Layout pageTitle={name}>
+	<div class='container max-w-4xl py-6 mx-auto'>
+		<h1 class='mb-4 text-2xl font-bold'>{name}</h1>
+
+		{
+			posts?.edges?.map((item: any) => {
+				const post = item.node;
+
+				return (
+					<article class='mb-8 p-6 border border-gray-200 rounded-lg'>
+						<h2 class='text-xl font-semibold mb-2'>
+							<a href={post.uri} class='hover:text-blue-600'>
+								{post.title}
+							</a>
+						</h2>
+
+						{post.featuredImage && (
+							<img
+								src={post.featuredImage.node.sourceUrl}
+								alt={post.featuredImage.node.altText || post.title}
+								class='w-full h-48 object-cover rounded mb-4'
+							/>
+						)}
+
+						<div class='text-gray-600 mb-2'>
+							By {post.author.node.name} on{' '}
+							{new Date(post.date).toLocaleDateString()}
+						</div>
+
+						<div class='text-gray-800' set:html={post.content} />
+					</article>
+				);
+			})
+		}
+	</div>
 </Layout>

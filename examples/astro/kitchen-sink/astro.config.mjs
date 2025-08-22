@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
 	output: 'server',
@@ -27,5 +28,6 @@ export default defineConfig({
 				'@faustjs/graphql',
 			],
 		},
+		plugins: [tailwindcss()],
 	},
 });
