@@ -1,0 +1,34 @@
+{
+	"name": "@faustjs/sveltekit-template-hierarchy-example",
+	"private": true,
+	"version": "0.1.0",
+	"license": "0BSD",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@faustjs/sveltekit": "workspace:*",
+		"@faustjs/template-hierarchy": "workspace:*",
+		"@faustjs/data-fetching": "workspace:*",
+		"@sveltejs/adapter-auto": "^6.0.0",
+		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
+		"vite": "^6.2.6"
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.12",
+		"@urql/core": "^5.1.1",
+		"@urql/exchange-persisted": "^4.3.1",
+		"deepmerge": "^4.3.1",
+		"graphql": "^16.11.0",
+		"tailwindcss": "^4.1.12"
+	}
+}
