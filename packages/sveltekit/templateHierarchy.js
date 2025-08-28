@@ -23,6 +23,7 @@ export async function uriToTemplate({ fetch, uri, graphqlClient }) {
 		availableTemplates: undefined,
 		possibleTemplates: undefined,
 		template: undefined,
+		seedNode: undefined,
 	};
 
 	// Get the GraphQL client - use provided one or get configured one
@@ -33,6 +34,10 @@ export async function uriToTemplate({ fetch, uri, graphqlClient }) {
 	});
 
 	returnData.seedQuery = { data, error: errorMessage };
+
+	const seedNode = data?.nodeByUri || data?.contentNode;
+
+	returnData.seedNode = seedNode ?? error;
 
 	if (errorMessage) {
 		console.error('Error fetching seedQuery:', errorMessage);
