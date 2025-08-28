@@ -3,6 +3,13 @@ import Layout from '@/components/Layout.astro';
 import { GET_PAGE } from '@/queries/getPage';
 import { print } from 'graphql';
 
+/**
+ * This is a template for the WordPress template hierarchy.
+ * It will be used to render the WordPress templates.
+ * It should never be used directly.
+ * This check confirms that the template is being used in the correct context.
+ * If the template is being used directly, it will redirect to the 404 page.
+ */
 if (Astro.url.pathname === Astro.originPathname) {
 	return Astro.rewrite('/404');
 }

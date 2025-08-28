@@ -4,39 +4,41 @@ import {
 	createDefaultClient,
 	setGraphQLClient,
 } from '@faustjs/astro';
-import { getAuthString } from '../utils/getAuthString.js';
+import { getAuthString } from '@/utils/getAuthString.js';
 
-const isPreview = Astro.url.searchParams.get('preview') === 'true';
+// Determine if we are in preview mode based on the URL parameter and the secret
+const isPreview =
+	Astro.url.searchParams.get('preview') === 'true' &&
+	import.meta.env.WP_PREVIEW_SECRET === Astro.url.searchParams.get('secret');
 
-const headers = isPreview
-	? {
-			Authorization: getAuthString(),
-		}
-	: null;
+const headers = isPreview ? { Authorization: getAuthString() } : undefined;
 
 // Set up GraphQL client using environment variable
 const client = createDefaultClient(import.meta.env.WORDPRESS_URL, headers);
 setGraphQLClient(client);
 
-// URI comes as a string from Astro params, ensure it starts with /
 const { identifier = '/' } = Astro.params;
 
-const variables = isPreview
-	? {
-			id: identifier,
-			asPreview: true,
-		}
-	: { uri: identifier };
+// Fetch template data based on the URI and preview mode
+const templateData = await uriToTemplate(
+	isPreview
+		? {
+				id: identifier,
+				asPreview: true,
+			}
+		: { uri: identifier },
+);
 
-const results = await uriToTemplate(variables);
-
-Astro.locals.templateData = results;
+// Make data available to other templates and components
+Astro.locals.templateData = templateData;
 Astro.locals.isPreview = isPreview || false;
 Astro.locals.client = client;
 
-if (results.template) {
-	return Astro.rewrite(results.template.path);
+// If a template was found, rewrite to that template's path
+if (templateData.template) {
+	return Astro.rewrite(templateData.template.path);
 }
 
+// If no template was found, redirect to 404
 return Astro.rewrite('/404');
 ---

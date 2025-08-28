@@ -22,8 +22,6 @@ export async function getSeedQuery({ uri, id, asPreview, graphqlClient }) {
 			asPreview,
 		});
 
-		console.log('Seed query result:', uri, id, asPreview, result);
-
 		return {
 			data: result.data || result,
 			error: result.error || null,
