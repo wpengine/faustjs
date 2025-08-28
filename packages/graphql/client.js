@@ -38,7 +38,7 @@ export function buildGraphQLEndpoint(wordpressUrl) {
  * @returns {import('./types.js').GraphQLClient} A basic GraphQL client
  * @throws {Error} If no WordPress URL is provided
  */
-export function createDefaultGraphQLClient(wordpressUrl) {
+export function createDefaultGraphQLClient(wordpressUrl, headers = {}) {
 	if (!wordpressUrl) {
 		throw new Error(
 			'WordPress URL is required to create a default GraphQL client.',
@@ -54,20 +54,25 @@ export function createDefaultGraphQLClient(wordpressUrl) {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						...headers,
 					},
 					body: JSON.stringify({ query, variables }),
 				});
 
 				if (!response.ok) {
-					console.error();
+					const message = await response.json();
+
 					return {
-						error: `GraphQL request failed: ${response.status}`,
-						message: await response.body.text(),
+						error: `GraphQL request failed: ${response.statusText}`,
+						message: message.errors[0]?.message || 'Unknown error',
 					};
 				}
 
 				const result = await response.json();
-				return { data: result.data, error: result.errors?.[0]?.message };
+				return {
+					data: result.data,
+					error: result.errors?.[0]?.message ?? null,
+				};
 			} catch (error) {
 				return { error: error.message };
 			}
