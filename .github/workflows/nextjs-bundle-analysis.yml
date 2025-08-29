@@ -10,7 +10,6 @@ on:
     branches-ignore:
       - 'main'
       - 'next'
-      - 'next/**'
   push:
     branches:
       - 'canary'
