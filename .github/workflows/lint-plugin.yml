@@ -2,6 +2,9 @@ name: Lint Plugin
 
 on:
   pull_request:
+    branches-ignore:
+      - 'next'
+      - 'next/**' 
     paths-ignore:
       - '**/*.md'
 

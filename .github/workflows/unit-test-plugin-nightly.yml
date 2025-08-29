@@ -2,6 +2,9 @@ name: Unit Test Plugin / WordPress Nightly
 
 on:
   pull_request:
+    branches-ignore:
+      - 'next'
+      - 'next/**'
     paths-ignore:
       - '**/*.md'
 

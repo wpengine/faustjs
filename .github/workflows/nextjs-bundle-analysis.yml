@@ -9,6 +9,8 @@ on:
   pull_request:
     branches-ignore:
       - 'main'
+      - 'next'
+      - 'next/**'
   push:
     branches:
       - 'canary'
