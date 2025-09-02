@@ -12,12 +12,12 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.8",
-    "@faustwp/blocks": "^6.1.2",
-    "@faustwp/cli": "^3.2.3",
-    "@faustwp/core": "^3.2.3",
+    "@faustwp/blocks": "^6.1.3",
+    "@faustwp/cli": "^3.2.5",
+    "@faustwp/core": "^3.2.4",
     "classnames": "^2.5.1",
     "graphql": "^16.10.0",
-    "next": "^15.3.3",
+    "next": "^15.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.54.9"
@@ -37,7 +37,7 @@
   },
   "overrides": {
     "@babel/runtime": "7.27.0",
-		"puppeteer": "^24.10",
+    "puppeteer": "^24.10",
     "puppeteer-core": "^24.10",
     "webpack-dev-server": "^5.2"
   },
