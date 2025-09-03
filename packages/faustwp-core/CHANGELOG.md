@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.2.6
+
+### Patch Changes
+
+- 59953b9: chore: Updating next to version 15 to fix security issue
+
 ## 3.2.4
 
 ### Patch Changes
