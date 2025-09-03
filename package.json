@@ -41,7 +41,7 @@
 	},
 	"devDependencies": {
 		"@babel/helpers": "^7.27.0",
-		"@changesets/cli": "^2.26.2",
+		"@changesets/cli": "^2.29.6",
 		"@next/bundle-analyzer": "^13.2.4",
 		"@typescript-eslint/eslint-plugin": "^5.18.0",
 		"@typescript-eslint/parser": "^5.18.0",
