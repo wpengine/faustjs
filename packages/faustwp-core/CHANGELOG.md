@@ -44,6 +44,7 @@
 
 - 2b7949bb: - Added support for configuring a custom sitemap index path via the `sitemapIndexPath` option in `getSitemapProps`, enhancing compatibility with plugins like RankMath that modify the default sitemap path.
 
+
   ```javascript
   import { getSitemapProps } from '@faustwp/core';
 
