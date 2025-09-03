@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.4
+
+### Patch Changes
+
+- 59953b9: chore: Updating next to version 15 to fix security issue
+
 ## 6.1.3
 
 ### Patch Changes
