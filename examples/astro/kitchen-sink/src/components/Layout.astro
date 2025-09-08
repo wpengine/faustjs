@@ -1,0 +1,23 @@
+---
+import Header from './Header.astro';
+import '../styles/globals.css';
+
+const pageTitle = Astro.props.pageTitle;
+---
+
+<!doctype html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width' />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<meta name='generator' content={Astro.generator} />
+		<title>{pageTitle}</title>
+	</head>
+	<body>
+		<Header />
+		<main class='bg-stone-100 text-gray-800 pb-16 pt-8 min-h-screen'>
+			<slot />
+		</main>
+	</body>
+</html>
