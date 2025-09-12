@@ -15,7 +15,13 @@ import { error } from '@sveltejs/kit';
  * @param {import('../template-hierarchy/types.js').UriToTemplateOptions} options - The options object
  * @returns {Promise<import('../template-hierarchy/types.js').TemplateData>} The resolved template data
  */
-export async function uriToTemplate({ fetch, uri, graphqlClient }) {
+export async function uriToTemplate({
+	fetch,
+	uri,
+	graphqlClient,
+	id,
+	asPreview,
+}) {
 	/** @type {import('../template-hierarchy/types.js').TemplateData} */
 	const returnData = {
 		uri,
@@ -23,6 +29,7 @@ export async function uriToTemplate({ fetch, uri, graphqlClient }) {
 		availableTemplates: undefined,
 		possibleTemplates: undefined,
 		template: undefined,
+		seedNode: undefined,
 	};
 
 	// Get the GraphQL client - use provided one or get configured one
@@ -30,16 +37,22 @@ export async function uriToTemplate({ fetch, uri, graphqlClient }) {
 	const { data, error: errorMessage } = await getSeedQuery({
 		uri,
 		graphqlClient: client,
+		id,
+		asPreview,
 	});
 
 	returnData.seedQuery = { data, error: errorMessage };
+
+	const seedNode = data?.nodeByUri || data?.contentNode;
+
+	returnData.seedNode = seedNode ?? error;
 
 	if (errorMessage) {
 		console.error('Error fetching seedQuery:', errorMessage);
 		throw error(500, 'Error fetching seedQuery');
 	}
 
-	if (!data?.nodeByUri) {
+	if (!seedNode) {
 		console.error('HTTP/404 - Not Found in WordPress:', uri);
 		throw error(404, 'Not Found');
 	}
@@ -60,7 +73,7 @@ export async function uriToTemplate({ fetch, uri, graphqlClient }) {
 		throw error(500, 'No available templates');
 	}
 
-	const possibleTemplates = getPossibleTemplates(data.nodeByUri);
+	const possibleTemplates = getPossibleTemplates(seedNode);
 
 	returnData.possibleTemplates = possibleTemplates;
 
