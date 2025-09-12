@@ -48,13 +48,14 @@ export function createDefaultGraphQLClient(wordpressUrl, headers = {}) {
 	const endpoint = buildGraphQLEndpoint(wordpressUrl);
 
 	return {
-		async request(query, variables = {}) {
+		async request(query, variables = {}, requestHeaders = {}) {
 			try {
 				const response = await fetch(endpoint, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 						...headers,
+						...requestHeaders,
 					},
 					body: JSON.stringify({ query, variables }),
 				});

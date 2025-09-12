@@ -12,6 +12,7 @@
 		"@faustjs/nextjs": "workspace:*",
 		"@faustjs/template-hierarchy": "workspace:*",
 		"@faustjs/data-fetching": "workspace:*",
+		"@faustjs/auth": "workspace:*",
 		"graphql": "^16.11.0",
 		"graphql-tag": "^2.12.6",
 		"next": "15.2.4",

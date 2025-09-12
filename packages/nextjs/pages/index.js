@@ -12,9 +12,11 @@ export { uriToTemplate } from './templateHierarchy.js';
 export { enablePreview } from './enablePreview.js';
 
 // Export GraphQL client configuration
-// Export GraphQL client configuration
 export {
 	setGraphQLClient,
 	getGraphQLClient,
 	createDefaultGraphQLClient as createDefaultClient,
 } from '@faustjs/graphql';
+
+// Export authentication hooks and utilities
+export * from './auth/index.js';
