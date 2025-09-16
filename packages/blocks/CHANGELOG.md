@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.5
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
 ## 6.1.4
 
 ### Patch Changes

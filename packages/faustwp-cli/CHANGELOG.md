@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.3.1
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
 ## 3.2.5
 
 ### Patch Changes
