@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.3.0
+
+### Minor Changes
+
+- 5e1dfb4: Updated cookie package to 0.0.7
+
 ## 3.2.6
 
 ### Patch Changes
