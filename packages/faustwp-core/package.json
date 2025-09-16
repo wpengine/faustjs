@@ -51,6 +51,9 @@
 		"js-sha256": "^0.9.0",
 		"lodash": "^4.17.21"
 	},
+	"overrides": {
+		"glob": "^10.4.5"
+	},
 	"scripts": {
 		"dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
 		"build": "concurrently \"npm:build-*\" --prefix-colors \"auto\"",
