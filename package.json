@@ -65,7 +65,8 @@
 		"postcss": "8.4.31",
 		"axios": "^1.7.4",
 		"cross-spawn": "^7.0.6",
-		"@babel/runtime": "^7.27.0"
+		"@babel/runtime": "^7.27.0",
+		"glob": "^10.4.2"
 	},
 	"resolutions": {
   	"@babel/runtime": "7.27.0"
