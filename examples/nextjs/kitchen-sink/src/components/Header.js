@@ -2,11 +2,13 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Login from './Login';
 import { useLogout, useUser } from '@faustjs/nextjs/pages';
+import { useRouter } from 'next/router';
 
 export default function Header() {
 	const { user, refetch, isAuthenticated } = useUser();
 	const { logout } = useLogout();
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+	const route = useRouter();
 
 	const openLoginModal = () => setIsLoginModalOpen(true);
 	const closeLoginModal = () => setIsLoginModalOpen(false);
@@ -32,7 +34,7 @@ export default function Header() {
 						<Link href="/">Headless</Link>
 					</div>
 
-					<nav className="space-x-6">
+					<nav className="flex items-center gap-4">
 						<Link href="/" className="text-lg hover:underline">
 							Home
 						</Link>
@@ -67,13 +69,13 @@ export default function Header() {
 									</div>
 								</div>
 							</div>
-						) : (
+						) : route.asPath !== '/login' ? (
 							<button
 								onClick={openLoginModal}
 								className="text-lg hover:underline cursor-pointer bg-transparent border-none text-white">
 								Login
 							</button>
-						)}
+						) : null}
 					</nav>
 				</div>
 			</header>

@@ -34,18 +34,24 @@ export function buildGraphQLEndpoint(wordpressUrl) {
 
 /**
  * Create a default GraphQL client using fetch
- * @param {string} wordpressUrl - WordPress URL to use (required)
+ * @param {string} requestUrl - WordPress URL to use (required)
  * @returns {import('./types.js').GraphQLClient} A basic GraphQL client
  * @throws {Error} If no WordPress URL is provided
  */
-export function createDefaultGraphQLClient(wordpressUrl, headers = {}) {
-	if (!wordpressUrl) {
+export function createDefaultGraphQLClient(
+	requestUrl,
+	headers = {},
+	options = {},
+) {
+	if (!requestUrl) {
 		throw new Error(
-			'WordPress URL is required to create a default GraphQL client.',
+			'Request URL is required to create a default GraphQL client.',
 		);
 	}
 
-	const endpoint = buildGraphQLEndpoint(wordpressUrl);
+	const endpoint = options.useRawUrl
+		? requestUrl
+		: buildGraphQLEndpoint(requestUrl);
 
 	return {
 		async request(query, variables = {}, requestHeaders = {}) {

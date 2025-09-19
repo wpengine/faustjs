@@ -1,12 +1,11 @@
+import { resolveWpRoute } from '@/lib/resolveWpRoute';
 import { getAuthString } from '@/utils/getAuthString';
 import availableTemplates from '@/wp-templates';
-import availableQueries from '@/wp-templates/templateQueries';
-import {
-	createDefaultClient,
-	setGraphQLClient,
-	uriToTemplate,
-} from '@faustjs/nextjs/pages';
-import { fetchTemplateQueries } from '@faustjs/data-fetching';
+import { createDefaultClient, setGraphQLClient } from '@faustjs/nextjs/pages';
+
+// This is a catch-all dynamic route to handle all WordPress pages and posts.
+// It uses getStaticProps and getStaticPaths for SSG with fallback blocking.
+// It also supports Draft Mode previews with application passwords.
 
 export default function Page(props) {
 	const { templateData } = props;
@@ -34,47 +33,7 @@ export async function getStaticProps({
 
 	setGraphQLClient(client);
 
-	const uri = params?.identifier ? `/${params.identifier.join('/')}/` : '/';
-
-	const variables = isDraftModeEnabled
-		? {
-				id: params.identifier?.[0],
-				asPreview: true,
-		  }
-		: { uri };
-
-	try {
-		const templateData = await uriToTemplate({
-			...variables,
-			availableTemplates: Object.keys(availableTemplates),
-			wordpressUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-		});
-
-		if (
-			!templateData?.template?.id ||
-			templateData?.template?.id === '404 Not Found'
-		) {
-			return { notFound: true };
-		}
-
-		const queriesData = await fetchTemplateQueries({
-			availableQueries,
-			templateData,
-			client,
-			locale: templateData?.seedNode?.locale,
-		});
-
-		return {
-			props: {
-				uri,
-				templateData: JSON.parse(JSON.stringify(templateData)),
-				queriesData,
-			},
-		};
-	} catch (error) {
-		console.error('Error resolving template:', error);
-		return { notFound: true };
-	}
+	return await resolveWpRoute(params?.identifier, isDraftModeEnabled, client);
 }
 
 export async function getStaticPaths() {

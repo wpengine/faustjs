@@ -1,7 +1,7 @@
 import { useLogin } from '@faustjs/nextjs/pages';
 import { useState } from 'react';
 
-export default function Login({ closeModal = () => {} }) {
+export default function Login({ closeModal = () => {}, onSuccess = () => {} }) {
 	const [usernameEmail, setUsernameEmail] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -17,7 +17,10 @@ export default function Login({ closeModal = () => {} }) {
 					username: usernameEmail,
 				},
 			},
-			onSuccess: closeModal,
+			onSuccess: () => {
+				onSuccess();
+				closeModal();
+			},
 		});
 	};
 

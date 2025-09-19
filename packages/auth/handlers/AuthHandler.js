@@ -14,7 +14,15 @@ const defaultConfig = {
 		missingPassword:
 			'Cookie password is not set. Please set it to a secure password of at least 32 characters.',
 	},
-	supportedActions: ['login', 'logout', 'me', 'introspect', 'refresh', 'token'],
+	supportedActions: [
+		'login',
+		'logout',
+		'me',
+		'introspect',
+		'refresh',
+		'token',
+		'query',
+	],
 };
 
 // Pure utility functions
@@ -272,6 +280,54 @@ const meHandler = async ({
 	}
 };
 
+// Authenticated query handler - forwards GQL queries with auth token
+const authenticatedQueryHandler = async ({
+	client,
+	ironOptions,
+	req,
+	res,
+	config = defaultConfig,
+}) => {
+	// First verify and refresh session if needed
+	const result = await getOrRefreshSession({
+		req,
+		res,
+		client,
+		ironOptions,
+		config,
+	});
+
+	if (!result.success) {
+		return sendError(res, 401, config.errorMessages.notLoggedIn);
+	}
+
+	try {
+		// Extract the GraphQL query, variables and operationName from the request
+		const { query, variables, operationName } = req.body;
+
+		if (!query) {
+			return sendError(res, 400, 'GraphQL query is required');
+		}
+
+		// Forward the query to the GraphQL API with the auth token
+		const response = await client.request(query, variables || {}, {
+			Authorization: `Bearer ${result.session.authToken}`,
+			...(req.headers?.['content-type'] && {
+				'Content-Type': req.headers['content-type'],
+			}),
+		});
+
+		return res.status(200).json(response);
+	} catch (error) {
+		return sendError(
+			res,
+			500,
+			'Failed to execute authenticated query',
+			error.message,
+		);
+	}
+};
+
 // Token handler - provides the authToken, refreshing it if expired
 const tokenHandler = async ({
 	client,
@@ -404,6 +460,7 @@ const actionHandlers = {
 	introspect: introspectHandler,
 	refresh: refreshHandler,
 	token: tokenHandler,
+	query: authenticatedQueryHandler,
 };
 
 // Main routing function with currying for configuration
@@ -470,6 +527,7 @@ export {
 	introspectHandler,
 	refreshHandler,
 	tokenHandler,
+	authenticatedQueryHandler,
 
 	// Utilities
 	validateIronOptions,
