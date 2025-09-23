@@ -26,8 +26,7 @@
 	},
 	"dependencies": {
 		"@faustjs/template-hierarchy": "workspace:*",
-		"@faustjs/graphql": "workspace:*",
-		"react": "^18.0.0 || ^19.0.0"
+		"@faustjs/graphql": "workspace:*"
 	},
 	"peerDependencies": {
 		"next": "^13.0.0 || ^14.0.0 || ^15.0.0",
