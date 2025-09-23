@@ -14,15 +14,7 @@ const defaultConfig = {
 		missingPassword:
 			'Cookie password is not set. Please set it to a secure password of at least 32 characters.',
 	},
-	supportedActions: [
-		'login',
-		'logout',
-		'me',
-		'introspect',
-		'refresh',
-		'token',
-		'query',
-	],
+	supportedActions: ['login', 'logout', 'me', 'introspect', 'refresh', 'query'],
 };
 
 // Pure utility functions
@@ -328,36 +320,6 @@ const authenticatedQueryHandler = async ({
 	}
 };
 
-// Token handler - provides the authToken, refreshing it if expired
-const tokenHandler = async ({
-	client,
-	ironOptions,
-	req,
-	res,
-	config = defaultConfig,
-}) => {
-	const result = await getOrRefreshSession({
-		req,
-		res,
-		client,
-		ironOptions,
-		config,
-	});
-
-	if (!result.success) {
-		return sendError(res, 401, config.errorMessages.notLoggedIn);
-	}
-
-	// Get the token (either from existing session or newly refreshed)
-	const { authToken } = result.session;
-	const wasRefreshed = !!result.refreshRes;
-
-	return sendSuccess(res, {
-		authToken,
-		expiresAt: wasRefreshed ? result.refreshRes.authTokenExpiration : null,
-	});
-};
-
 // Pure introspect handler - no side effects, just checks current auth state
 const introspectHandler = async ({
 	client,
@@ -459,7 +421,6 @@ const actionHandlers = {
 	me: meHandler,
 	introspect: introspectHandler,
 	refresh: refreshHandler,
-	token: tokenHandler,
 	query: authenticatedQueryHandler,
 };
 
@@ -526,7 +487,6 @@ export {
 	meHandler,
 	introspectHandler,
 	refreshHandler,
-	tokenHandler,
 	authenticatedQueryHandler,
 
 	// Utilities
