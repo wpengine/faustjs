@@ -238,7 +238,9 @@ const meHandler = async ({
 	// Fetch user data from GraphQL API
 	try {
 		// TODO make customizable
-		const query = `
+		const query =
+			config.viewerQuery ||
+			`
         query GetCurrentUser {
             viewer {
                 id

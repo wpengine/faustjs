@@ -10,6 +10,7 @@ export function useLogout() {
 	async function logout({
 		logoutUrl = DEFAULT_LOGOUT_URL,
 		onSuccess = () => {},
+		onError = () => {},
 	} = {}) {
 		setIsLoading(true);
 		setError(undefined);
@@ -25,16 +26,31 @@ export function useLogout() {
 			const responseData = await res.json();
 
 			if (!res.ok) {
-				setError(responseData);
+				// Transform API error to standard format if needed
+				const errorData = responseData.error
+					? responseData
+					: {
+							error: true,
+							message: 'Logout failed',
+							details: responseData.message || JSON.stringify(responseData),
+					  };
+
+				setError(errorData);
+				onError(errorData);
 				return;
 			}
 
 			setData(responseData);
 			onSuccess(responseData);
 		} catch (err) {
-			setError(
-				err instanceof Error ? err.message : 'An unknown error occurred',
-			);
+			const errorData = {
+				error: true,
+				message: 'Network error or server unavailable',
+				details:
+					err instanceof Error ? err.message : 'An unknown error occurred',
+			};
+			setError(errorData);
+			onError(errorData);
 		} finally {
 			setIsLoading(false);
 		}

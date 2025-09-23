@@ -28,10 +28,19 @@ function useUser({ autoFetch = true } = {}) {
 			const responseData = await res.json();
 
 			if (!res.ok) {
-				setError(responseData);
+				// Transform API error to standard format if needed
+				const errorData = responseData.error
+					? responseData
+					: {
+							error: true,
+							message: 'Failed to fetch user data',
+							details: responseData.message || JSON.stringify(responseData),
+					  };
+
+				setError(errorData);
 				setIsAuthenticated(false);
 				setData(null);
-				onError(responseData);
+				onError(errorData);
 				setIsLoading(false);
 				return;
 			}
