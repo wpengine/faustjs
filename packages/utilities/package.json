@@ -1,0 +1,25 @@
+{
+	"name": "@faustjs/utilities",
+	"version": "0.0.0",
+	"description": "A collection of utility functions for Faust.js",
+	"main": "dist/cjs/index.js",
+	"module": "dist/mjs/index.js",
+	"types": "dist/mjs/index.d.ts",
+	"devDependencies": {
+		"@types/node": "^18.0.6"
+	},
+	"dependencies": {
+		"chalk": "^4.1.2",
+		"lodash": "^4.17.21"
+	},
+	"scripts": {
+		"build": "npm run build-esm && npm run build-cjs",
+		"build-esm": "tsc -p .",
+		"build-cjs": "tsc -p tsconfig.cjs.json"
+	},
+	"author": "Faust.js Team",
+	"engines": {
+		"node": ">=18",
+		"npm": ">=8"
+	}
+}
