@@ -25,7 +25,10 @@ export class OAuth {
 
 	constructor(cookies: Cookies) {
 		this.cookies = cookies;
-		this.tokenKey = `${getWpUrl()}-rt`;
+		this.tokenKey = `${getWpUrl().replace(
+			/[^!#$%&'*+\-.^_`|~0-9A-Za-z]/g,
+			'',
+		)}-rt`; // Sanitize URL to make cookie key RFC 6265 sec 4.1.1 compliant.
 	}
 
 	public getRefreshToken(): string | undefined {
