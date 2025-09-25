@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.3.2
+
+### Patch Changes
+
+- b5c208f: #2181 - Sanitize URL in cookie key to make it RFC 6265 sec 4.1.1 compliant.
+
 ## 3.3.1
 
 ### Patch Changes
@@ -62,11 +68,11 @@
   export default function Sitemap() {}
 
   export function getServerSideProps(ctx) {
-  	return getSitemapProps(ctx, {
-  		sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
-  		frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
-  		sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
-  	});
+    return getSitemapProps(ctx, {
+      sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
+      frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
+      sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+    });
   }
   ```
 
@@ -170,7 +176,7 @@
 
   ```jsx
   <ToolbarItem onKeyDown={handleKeyDown} onClick={handleClick}>
-  	Log Out
+    Log Out
   </ToolbarItem>
   ```
 
@@ -276,18 +282,18 @@
   import { FaustPage } from '@faustwp/core';
 
   type GetPageData = {
-  	generalSettings: {
-  		title: string;
-  	};
+    generalSettings: {
+      title: string;
+    };
   };
 
   type PageProps = {
-  	myProp: string;
+    myProp: string;
   };
 
   const Page: FaustPage<GetPageData, PageProps> = (props) => {
-  	const { myProp, data } = props;
-  	return <></>;
+    const { myProp, data } = props;
+    return <></>;
   };
   ```
 
@@ -356,9 +362,9 @@
   export default function Sitemap() {}
 
   export function getServerSideProps(context) {
-  	return getSitemapProps(context, {
-  		frontendUrl: process.env.FRONTEND_URL, // Set the FRONTEND_URL as an env var
-  	});
+    return getSitemapProps(context, {
+      frontendUrl: process.env.FRONTEND_URL, // Set the FRONTEND_URL as an env var
+    });
   }
   ```
 
@@ -388,7 +394,7 @@
   import { FaustHooks, FaustPlugin } from '@faustwp/core';
 
   export class MyPlugin implements FaustPlugin {
-  	apply(hooks: FaustHooks) {}
+    apply(hooks: FaustHooks) {}
   }
   ```
 
