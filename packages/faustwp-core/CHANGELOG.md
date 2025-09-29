@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.3.2
+
+### Patch Changes
+
+- b5c208f: #2181 - Sanitize URL in cookie key to make it RFC 6265 sec 4.1.1 compliant.
+
 ## 3.3.1
 
 ### Patch Changes
