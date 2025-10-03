@@ -148,7 +148,7 @@ Create a list of components that can be reused in the new version of Faust and m
 Start by installing the Faust.js core packages and dependencies in your terminal:
 
 ```bash
-npm i @faustwp/cli @faustwp/core graphql @apollo/client
+npm i @faustwp/cli @faustwp/core graphql @apollo/client@3
 ```
 
 Change the `package.json` scripts to use the new Faust cli:
