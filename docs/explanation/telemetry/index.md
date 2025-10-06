@@ -23,7 +23,7 @@ Faust collects completely anonymous telemetry data about general usage. Particip
 - `@faustwp/blocks` version
 - `@faustwp/block-editor-utils` version
 - `@faustwp/experimental-app-router` version
-- `@apollo/client` version
+- `@apollo/client@3` version
 - Node version
 - Next.js version
 - If the Node environment is in **dev mode** (i.e., whether `npm run dev` was run)

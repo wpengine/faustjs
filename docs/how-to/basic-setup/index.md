@@ -10,7 +10,7 @@ In order to leverage any of the tools in the Faust.js toolkit, some preliminary 
 Before you begin, you'll need:
 
 - A WordPress site (local or remote), if you don't have one yet, we recommend setting up a local WordPress development environment.
-- A Next.js project, if you don't have a Next.js project yet, [create one](https://nextjs.org/docs/getting-started/installation) on your local computer.
+- A Next.js project (pages router), if you don't have a Next.js project yet, [create one](https://nextjs.org/docs/getting-started/installation) on your local computer.
 
 > [!INFO]- local WordPress development
 > There are lots of options for setting up a local WordPress development environment. Some popular choices include [LocalWP](https://localwp.com/), [`wp-env`](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/), or [MAMP](https://www.mamp.info/en/).
@@ -46,8 +46,12 @@ Save your `.env.local` file.
 Install the required NPM packages in your Next.js app.
 
 ```bash
-npm install @apollo/client @faustwp/core graphql @faustwp/cli
+npm install @apollo/client@3 @faustwp/core graphql @faustwp/cli
 ```
+
+> [!NOTE]
+> Faust currently supports Apollo Client 3.x. Apollo Client 4 is not supported and may break Faust integrations.
+
 
 ### D. Create Faust config file
 
