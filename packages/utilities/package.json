@@ -1,6 +1,6 @@
 {
 	"name": "@faustjs/utilities",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "A collection of utility functions for Faust.js",
 	"main": "dist/cjs/index.js",
 	"module": "dist/mjs/index.js",
