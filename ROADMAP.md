@@ -59,7 +59,7 @@ This roadmap reflects updated priorities for Q4 2025, emphasizing QA and GA rele
 | QA Testing | All test cases pass across supported WP + GraphQL versions | QA | 🔄 In progress |
 | Docs | `.md` files exposed and verified on Docs site | Docs | ✅ Ready |
 | Compatibility | Verified with latest WPGraphQL + Toolkit packages | Eng | 🔄 In progress |
-| Release | Tagged and published to WP.org + GitHub | Eng | ⏳ Planned (Sprint 4) |
+| Release | Tagged on GitHub + WP Updater | Eng | ⏳ Planned (Sprint 4) |
 | Announcement | GA summary and migration notes published | Comms | ⏳ Planned (Sprint 6) |
 
 ---
