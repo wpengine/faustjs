@@ -250,6 +250,9 @@ const meHandler = async ({
                 firstName
                 lastName
                 username
+				avatar {
+					url
+				}
             }
         }`;
 

@@ -3,9 +3,13 @@ import gql from 'graphql-tag';
 export const GET_POST = gql`
 	query GetPost($databaseId: ID!, $asPreview: Boolean = false) {
 		post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
+			databaseId
 			title
 			content
 			date
+			slug
+			status
+			contentTypeName
 			author {
 				node {
 					name

@@ -3,9 +3,13 @@ import gql from 'graphql-tag';
 export const GET_PAGE = gql`
 	query GetPage($databaseId: ID!, $asPreview: Boolean = false) {
 		page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
+			databaseId
 			title
 			content
 			date
+			slug
+			status
+			contentTypeName
 			author {
 				node {
 					name

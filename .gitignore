@@ -18,3 +18,4 @@ plugins/faustwp/.docker/plugins/index.php
 
 # Ignore the WordPress source where used by various development environments
 wordpress/
+node_modules/
