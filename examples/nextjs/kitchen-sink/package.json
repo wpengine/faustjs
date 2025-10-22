@@ -9,14 +9,17 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@faustjs/nextjs": "workspace:*",
-		"@faustjs/template-hierarchy": "workspace:*",
+		"@faustjs/auth": "workspace:*",
 		"@faustjs/data-fetching": "workspace:*",
+		"@faustjs/nextjs": "workspace:*",
 		"graphql": "^16.11.0",
 		"graphql-tag": "^2.12.6",
+		"iron-session": "^8.0.4",
 		"next": "15.2.4",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"@wpengine/faust-next-toolbar": "file:/../../../packages/faust-next-toolbar",
+		"@wpengine/hwp-toolbar": "github:wpengine/hwptoolkit#toolbar"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",

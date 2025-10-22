@@ -1,19 +1,57 @@
+import { resolveWpRoute } from '@/lib/resolveWpRoute';
+import { Toolbar } from '@/toolbar';
 import { getAuthString } from '@/utils/getAuthString';
 import availableTemplates from '@/wp-templates';
-import availableQueries from '@/wp-templates/templateQueries';
 import {
 	createDefaultClient,
 	setGraphQLClient,
-	uriToTemplate,
+	useUser,
 } from '@faustjs/nextjs/pages';
-import { fetchTemplateQueries } from '@faustjs/data-fetching';
+import { useRouter } from 'next/router';
+
+// This is a catch-all dynamic route to handle all WordPress pages and posts.
+// It uses getStaticProps and getStaticPaths for SSG with fallback blocking.
+// It also supports Draft Mode previews with application passwords.
 
 export default function Page(props) {
-	const { templateData } = props;
+	const router = useRouter();
+	const { templateData, queriesData } = props;
+	const { user = {}, isAuthenticated } = useUser();
+
+	const { getPage, getPost } = queriesData || {};
+	const result = getPage || getPost;
+	const content = result?.data?.page || result?.data?.post;
 
 	const PageTemplate = availableTemplates[templateData?.template?.id];
 
-	return <PageTemplate {...props} />;
+	return (
+		<>
+			{isAuthenticated && (
+				<Toolbar
+					user={{
+						...user,
+						avatar: user?.avatar?.url,
+					}}
+					post={
+						content
+							? {
+									...content,
+									type: content?.contentTypeName,
+									id: content?.databaseId,
+							  }
+							: undefined
+					}
+					site={{
+						url: 'http://headless.local',
+						adminUrl: 'http://headless.local/wp-admin',
+					}}
+					isPreview={router.isPreview}
+					disablePreviewUrl={'/api/disable-preview'}
+				/>
+			)}
+			<PageTemplate {...props} />
+		</>
+	);
 }
 
 export async function getStaticProps({
@@ -34,47 +72,7 @@ export async function getStaticProps({
 
 	setGraphQLClient(client);
 
-	const uri = params?.identifier ? `/${params.identifier.join('/')}/` : '/';
-
-	const variables = isDraftModeEnabled
-		? {
-				id: params.identifier?.[0],
-				asPreview: true,
-		  }
-		: { uri };
-
-	try {
-		const templateData = await uriToTemplate({
-			...variables,
-			availableTemplates: Object.keys(availableTemplates),
-			wordpressUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL,
-		});
-
-		if (
-			!templateData?.template?.id ||
-			templateData?.template?.id === '404 Not Found'
-		) {
-			return { notFound: true };
-		}
-
-		const queriesData = await fetchTemplateQueries({
-			availableQueries,
-			templateData,
-			client,
-			locale: templateData?.seedNode?.locale,
-		});
-
-		return {
-			props: {
-				uri,
-				templateData: JSON.parse(JSON.stringify(templateData)),
-				queriesData,
-			},
-		};
-	} catch (error) {
-		console.error('Error resolving template:', error);
-		return { notFound: true };
-	}
+	return await resolveWpRoute(params?.identifier, isDraftModeEnabled, client);
 }
 
 export async function getStaticPaths() {

@@ -1,0 +1,158 @@
+/* CSS Custom Properties (Variables) */
+:root {
+	--faust-toolbar-text-color: #ffffff;
+	--faust-toolbar-border-color: #555962;
+	--faust-toolbar-bg-primary: #23262F;
+	--faust-toolbar-btn-hover: #383b43;
+}
+
+/* Body spacing when toolbar is active */
+body.faust-toolbar-has-toolbar-bottom {
+	margin-bottom: 36px;
+}
+
+body.faust-toolbar-has-toolbar-top {
+	margin-top: 36px;
+}
+
+/* Faust toolbar button styles */
+.faust-toolbar-btn {
+	display: flex;
+	align-items: center;
+	padding: 0 12px;
+	height: 36px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	color: var(--faust-toolbar-text-color);
+	transition: background-color 0.2s ease;
+}
+
+.faust-toolbar-btn:hover {
+	background-color: var(--faust-toolbar-btn-hover);
+}
+
+.faust-toolbar-btn-right {
+	border-left: 1px solid var(--faust-toolbar-border-color);
+}
+
+.faust-toolbar-btn:not(.faust-toolbar-btn-right) {
+	border-right: 1px solid var(--faust-toolbar-border-color);
+}
+
+.faust-toolbar-btn-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.faust-toolbar-btn-icon-faust {
+	width: 22px;
+	height: 22px;
+}
+
+.faust-toolbar-btn-label {
+	margin-left: 6px;
+}
+
+/* Settings panel styles */
+.faust-toolbar-settings-panel {
+	padding: 15px;
+	min-width: 200px;
+}
+
+.faust-toolbar-settings-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: var(--faust-toolbar-text-color);
+}
+
+.faust-toolbar-settings-label {
+	font-weight: 500;
+	min-width: 80px;
+}
+
+.faust-toolbar-settings-select {
+	padding: 6px 8px;
+	border: 1px solid var(--faust-toolbar-border-color);
+	border-radius: 4px;
+	background: var(--faust-toolbar-bg-primary);
+	font-size: 14px;
+
+}
+
+/* User link styles */
+.faust-toolbar-user-link {
+	display: flex;
+	align-items: center;
+	padding: 0 12px;
+	height: 36px;
+	text-decoration: none;
+	color: var(--faust-toolbar-text-color);
+	font-size: 14px;
+}
+
+.faust-toolbar-user-avatar {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	margin-right: 6px;
+}
+
+/* Main toolbar container */
+.faust-toolbar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	background: var(--faust-toolbar-bg-primary);
+	font-size: 14px;
+}
+
+.faust-toolbar-top {
+	top: 0;
+}
+
+.faust-toolbar-bottom {
+	bottom: 0;
+}
+
+/* Toolbar header */
+.faust-toolbar-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 36px;
+	background: var(--faust-toolbar-bg-primary);
+	border-bottom: 1px solid var(--faust-toolbar-border-color);
+}
+
+.faust-toolbar-content {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.faust-toolbar-left {
+	display: flex;
+	align-items: center;
+}
+
+.faust-toolbar-right {
+	display: flex;
+	align-items: center;
+}
+
+/* Panel container */
+.faust-toolbar-panel-container {
+	background: var(--faust-toolbar-bg-primary);
+	border-bottom: 1px solid var(--faust-toolbar-border-color);
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.faust-toolbar-no-content {
+	padding: 15px;
+}
