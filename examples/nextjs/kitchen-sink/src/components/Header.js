@@ -28,7 +28,7 @@ export default function Header() {
 
 	return (
 		<>
-			<header className="bg-gray-800 text-white py-4 px-8">
+			<header className="bg-violet-900 text-white py-4 px-8">
 				<div className="flex justify-between items-center max-w-4xl mx-auto">
 					<div className="text-3xl font-semibold">
 						<Link href="/">Headless</Link>
@@ -43,7 +43,8 @@ export default function Header() {
 							<div className="relative group">
 								<button className="text-lg hover:bg-gray-700 px-3 py-2 rounded-md transition-colors duration-200 flex items-center space-x-1">
 									<span>
-										Welcome, <strong>{user?.name || user?.username || 'User'}</strong>
+										Welcome,{' '}
+										<strong>{user?.name || user?.username || 'User'}</strong>
 									</span>
 									<svg
 										className="w-4 h-4"
