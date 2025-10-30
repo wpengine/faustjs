@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.3.3
+
+### Patch Changes
+
+- 17816f7: Improve validateNextWordPressUrl error messages by including HTTP status code and status text, also providing an additional clarity for fatal errors.
+
 ## 3.3.1
 
 ### Patch Changes
