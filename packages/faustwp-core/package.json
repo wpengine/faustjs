@@ -52,7 +52,7 @@
 		"lodash": "^4.17.21"
 	},
 	"overrides": {
-		"glob": "^10.4.5"
+		"glob": "^10.5.0"
 	},
 	"scripts": {
 		"dev": "concurrently \"npm:watch-*\" --prefix-colors \"auto\"",
