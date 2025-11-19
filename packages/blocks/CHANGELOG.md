@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.6
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
 ## 6.1.5
 
 ### Patch Changes
