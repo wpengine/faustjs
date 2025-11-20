@@ -9,7 +9,17 @@
 		"generate": "faust generatePossibleTypes",
 		"start": "next start",
 		"lint": "next lint",
-		"wp-dev": "npx @wp-now/wp-now start --blueprint faust-tutorial-blueprint.json"
+		"tutorial:start": "npm run wp:start && npm run dev",
+		"tutorial:stop": "npm run wp:stop",
+		"tutorial:setup": "npm install && npm run wp:start && npm run wp:db:import",
+		"tutorial:prune": "npm run wp:destroy && npm run tutorial:setup && npm run tutorial:start",
+		"wp:start": "npm install && wp-env start",
+		"wp:stop": "wp-env stop",
+		"wp:destroy": "wp-env destroy",
+		"wp:db:query": "wp-env run cli -- wp db query",
+		"wp:db:export": "wp-env run cli -- wp db export /var/www/html/db/database.sql",
+		"wp:db:import": "wp-env run cli -- wp db import /var/www/html/db/database.sql",
+		"wp-env": "wp-env"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.13.9",
@@ -24,6 +34,7 @@
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.1",
+		"@wordpress/env": "^10.35.0",
 		"eslint": "^9.32.0",
 		"eslint-config-next": "15.1.6",
 		"postcss": "^8",
