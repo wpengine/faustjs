@@ -1,5 +1,23 @@
 # @faustwp/cli
 
+## 3.3.4
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
+## 3.3.3
+
+### Patch Changes
+
+- 17816f7: Improve validateNextWordPressUrl error messages by including HTTP status code and status text, also providing an additional clarity for fatal errors.
+
+## 3.3.1
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
 ## 3.2.5
 
 ### Patch Changes

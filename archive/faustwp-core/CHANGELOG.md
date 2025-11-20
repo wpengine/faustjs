@@ -1,5 +1,35 @@
 # @faustwp/core
 
+## 3.3.4
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
+## 3.3.2
+
+### Patch Changes
+
+- b5c208f: #2181 - Sanitize URL in cookie key to make it RFC 6265 sec 4.1.1 compliant.
+
+## 3.3.1
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
+## 3.3.0
+
+### Minor Changes
+
+- 5e1dfb4: Updated cookie package to 0.0.7
+
+## 3.2.6
+
+### Patch Changes
+
+- 59953b9: chore: Updating next to version 15 to fix security issue
+
 ## 3.2.4
 
 ### Patch Changes
