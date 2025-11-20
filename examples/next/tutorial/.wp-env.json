@@ -1,0 +1,12 @@
+{
+  "plugins": [
+    "https://downloads.wordpress.org/plugin/wp-graphql.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/faustwp.latest-stable.zip"
+  ],
+  "port": 8888,
+  "config": {
+    "WP_DEBUG": true,
+    "WP_DEBUG_LOG": true,
+    "WP_DEBUG_DISPLAY": false
+  }
+}
