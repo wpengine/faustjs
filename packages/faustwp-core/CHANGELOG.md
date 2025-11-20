@@ -1,5 +1,11 @@
 # @faustwp/core
 
+## 3.3.4
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
 ## 3.3.2
 
 ### Patch Changes

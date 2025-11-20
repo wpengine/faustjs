@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.3.6
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
 ## 0.3.5
 
 ### Patch Changes
