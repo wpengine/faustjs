@@ -34,50 +34,47 @@ The steps below will get you up-and-running with the pre-built app you will use 
 npx degit wpengine/faustjs/examples/next/tutorial faust-tutorial
 ```
 
-### 2. Set up headless WordPress backend
+### 2. Set up the tutorial
 
-Initial set up steps:
+Setting up the tutorial is super simple:
 
 - `cd` into the `/faust-tutorial` project folder.
-- Run `npm run tutorial:setup`. This command uses [`wp-env`](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/) to set up a local WordPress environment with Docker. The configuration is defined in the `.wp-env.json` file included in the project.
-- The setup process will install dependencies, start the WordPress environment, and import a pre-configured database.
+- Run `npm install` to install dependencies.
+- Run `npm run dev` to start everything!
 
-After a moment, you should have a WordPress site up-and-running.
+That's it! The `npm run dev` command will automatically:
+- Create your `.env.local` configuration file (if it doesn't exist)
+- Start WordPress with Docker using [`wp-env`](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/)
+- Import a pre-configured database (on first run)
+- Start the Next.js development server
 
-By navigating to http://localhost:8888/wp-admin/plugins.php, you can see that the required [FaustWP](https://wordpress.org/plugins/faustwp/) and [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) plugins have already been installed for you.
+After a moment, you should have both WordPress and your Next.js app running:
 
-Next, we'll just configure a few last things in WordPress.
+- **Frontend**: http://localhost:3000
+- **WordPress Admin**: http://localhost:8888/wp-admin/ (username: `admin`, password: `password`)
 
-- Activate the FaustWP and WPGraphQL plugins.
-- In the WordPress admin sidebar, go to `Settings` > `Permalinks`. Check the radio button for `Custom Structure`, enter `/blog/%postname%/` in the text field, and save your changes. With this setting, our blog posts will have URLs such as http://localhost:3000/blog/hello-world/.
-  ![Permalink settings](./images/permalink-settings.png)
-- Head to `GraphQL` > `Settings`. Check the box for `Enable Public Introspection` and click the save button. This allows Faust.js to run an "introspection query" on your WordPress backend to get a list of the available GraphQL types and fields.
-  ![WPGraphQL introspection setting](./images/wpgraphql-introspection.png)
-- Finally, head to to `Settings` > `Faust` to access the Faust.js settings page. Set the `Front-end site URL` setting to `http://localhost:3000` and save your changes. This lets Faust know the URL for your decoupled frontend app, which we'll set up next.
-  ![Faust Front-end site URL setting](./images/faust-front-end-site-url.png)
+### 3. What's pre-configured for you?
 
-### 3. Set up Faust.js frontend
+The tutorial environment comes ready to use with everything already set up:
 
-Follow these steps to set up your Faust.js frontend:
+- ✅ **FaustWP and WPGraphQL plugins**: Already installed and activated
+- ✅ **Permalink structure**: Set to `/blog/%postname%/` for blog posts
+- ✅ **GraphQL introspection**: Enabled so Faust can query your WordPress schema
+- ✅ **Faust settings**: Front-end URL is set to `http://localhost:3000`
+- ✅ **Secret key**: Pre-configured in both WordPress and your `.env.local` file
+- ✅ **Demo content**: Includes "Hello world!" post and "Sample Page" to use in examples
 
-- Open a separate terminal window from the one running your WordPress backend to run the commands that follow.
-- Run `npm install` to install the Next.js app's NPM packages.
-- Find the `.env.local.example` file and rename it to `.env.local`. This is where we'll store our environment variables.
-- Once again, in the WordPress admin sidebar, go to `Settings` > `Faust` to access the Faust.js settings page. Copy the value you see for the `Secret Key` and paste that in as the value of `FAUST_SECRET_KEY` in your `.env.local` file and save it. Faust.js uses this secret key to send authenticated request to WordPress.
-  ![Faust Secret Key setting](./images/faust-secret-key-setting.png)
+You can verify everything by navigating to http://localhost:8888/wp-admin/plugins.php to see the plugins, or http://localhost:3000 to see your frontend app running.
 
-  Your `.env.local` file should now look like this, where `ABC123` is the secret key you copied from the Faust settings page:
+### 4. Generate GraphQL types
 
-```env title=".env.local"
-# Your WordPress site URL
-NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8888
+Before you start coding, run this command to generate TypeScript types from your WordPress GraphQL schema:
 
-# Plugin secret found in WordPress Settings->Faust
-FAUST_SECRET_KEY=ABC123
+```bash
+npm run generate
 ```
 
-- Run `npm run generate` on the command line. Confirm that a `possibleTypes.json` has been generated in the `/faust-tutorial` project folder.
-- Run `npm run dev` to start up your frontend app. You should now be able to visit http://localhost:3000 and see your app running.
+This creates a `possibleTypes.json` file in your project folder that Faust.js uses to properly handle your WordPress content types.
 
 ## Template Hierarchy
 
