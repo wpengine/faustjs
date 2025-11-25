@@ -19,8 +19,9 @@ In order to complete this tutorial, you should:
 - Be familiar with [cloning a repository from GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 - Be comfortable running commands on the [command line](https://en.wikipedia.org/wiki/Command-line_interface)
 - Have [Node.js and NPM](https://nodejs.org/) installed on your computer
+- Have [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running on your computer
 
-You should also not have any other projects running on port `3000` or `8881`, since the links in this tutorial point to pages on those ports.
+You should also not have any other projects running on port `3000` or `8888`, since the links in this tutorial point to pages on those ports.
 
 ## Set up
 
@@ -39,12 +40,16 @@ npx degit wpengine/faustjs/examples/next/tutorial faust-tutorial
 Initial set up steps:
 
 - `cd` into the `/faust-tutorial` project folder.
-- Run `npm run wp-dev`. This command uses the [`wp-now`](https://www.npmjs.com/package/@wp-now/wp-now) NPM package and the included [`faust-tutorial-blueprint.json`](https://github.com/wpengine/faustjs/blob/canary/examples/next/tutorial/faust-tutorial-blueprint.json) blueprint file to set up a local WordPress environment.
-- When asked if it's okay to install the `@wp-now/wp-now` package, answer `y` to confirm.
+- Run `npm install` to install dependencies, including the [`@wordpress/env`](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/) package.
+- Run `npm run wp-dev` to start the local WordPress environment using wp-env. This will use Docker to create a WordPress instance with the required plugins.
 
 After a moment, you should have a WordPress site up-and-running.
 
-By navigating to http://localhost:8881/wp-admin/plugins.php, You can see that the required [FaustWP](https://wordpress.org/plugins/faustwp/) and [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) plugins have already been installed for you.
+By navigating to http://localhost:8888/wp-admin, you can access the WordPress admin. The default credentials are:
+- Username: `admin`
+- Password: `password`
+
+You can see that the required [FaustWP](https://wordpress.org/plugins/faustwp/) and [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) plugins have already been installed for you by checking http://localhost:8888/wp-admin/plugins.php.
 
 Next, we'll just configure a few last things in WordPress.
 
@@ -70,7 +75,7 @@ Follow these steps to set up your Faust.js frontend:
 
 ```env title=".env.local"
 # Your WordPress site URL
-NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8881
+NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8888
 
 # Plugin secret found in WordPress Settings->Faust
 FAUST_SECRET_KEY=ABC123
@@ -166,7 +171,7 @@ export default templates;
 
 This tells Faust to use the `PageTemplate` component as the template to render pages that match `page`, according to the template hierarchy.
 
-Save your changes and visit [http://localhost:3000/sample-page/](http://localhost:3000/sample-page/) in a browser. You should be able to see the title and content for the [Sample Page page in WordPress](http://localhost:8881/wp-admin/post.php?post=2&action=edit).
+Save your changes and visit [http://localhost:3000/sample-page/](http://localhost:3000/sample-page/) in a browser. You should be able to see the title and content for the [Sample Page page in WordPress](http://localhost:8888/wp-admin/post.php?post=2&action=edit).
 
 Now that you understand how to leverage the template hierarchy, you can follow this pattern to add additional page templates:
 
@@ -381,7 +386,7 @@ You should now be able to visit http://localhost:3000/blog/hello-world/ and see 
 
 Inspect the blog post content in the browser dev tools and notice that each block is being rendered and that only the paragraph blocks are wrapped in a `div` with a class name of `paragraph-block-wrapper`. Currently, we're not leveraging the `paragraph-block-wrapper` class in any way, but you can see the potential here. By being able to query for and render blocks individually, you have the ability to wrap specific blocks in arbitrary markup, override specific blocks with custom implementations, and more.
 
-Now [edit the Hello World! blog post](http://localhost:8881/wp-admin/post.php?post=1&action=edit). Make several changes to it in terms of font size, padding, margin, a border, an HTML anchor, and additional CSS classes, then save your changes.
+Now [edit the Hello World! blog post](http://localhost:8888/wp-admin/post.php?post=1&action=edit). Make several changes to it in terms of font size, padding, margin, a border, an HTML anchor, and additional CSS classes, then save your changes.
 
 Reload the http://localhost:3000/blog/hello-world/ page in your frontend app and see that all the changes you applied are now being reflected. Inspect the paragraph block in DevTools to see markup similar to the example below. You can see that Faust has taken care of rendering the paragraph tag to include these attributes, and even loaded the CSS required to apply the correct styles.
 
