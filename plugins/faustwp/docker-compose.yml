@@ -1,5 +1,3 @@
-version: '3.6'
-
 services:
   wordpress:
     build:
@@ -27,6 +25,7 @@ services:
   db:
     image: mysql:8
     restart: always
+    command: --ssl=0
     ports:
       - 33066:3306
     environment:
