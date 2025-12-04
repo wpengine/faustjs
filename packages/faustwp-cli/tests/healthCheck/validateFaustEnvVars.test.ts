@@ -58,8 +58,10 @@ describe('healthCheck/validateFaustEnvVars', () => {
 		process.env.NEXT_PUBLIC_WORDPRESS_URL = 'https://headless.local';
 		process.env.FAUST_SECRET_KEY = 'invalid-secret-key';
 
+		const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+
 		fetchMock.post(
-			'https://headless.local/wp-json/faustwp/v1/validate_secret_key',
+			'https://headless.local/?rest_route=/faustwp/v1/validate_secret_key',
 			{
 				status: 401,
 			},
@@ -67,9 +69,11 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
 		await validateFaustEnvVars();
 
-		return expect(Promise.resolve(validateFaustEnvVars())).toMatchSnapshot(
-			`Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings`,
+		expect(consoleLogSpy).toHaveBeenCalledWith(
+			expect.stringContaining('Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key'),
 		);
+
+		consoleLogSpy.mockRestore();
 	});
 });
 

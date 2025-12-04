@@ -129,13 +129,7 @@ test('renders a default list of nodes in the primary section if seedNode is not 
 	testToolBarNode(
 		toolBars[0],
 		3,
-		`
-  Array [
-    "WordPress",
-    "",
-    "GraphiQL IDE",
-  ]
-`,
+		['WordPress', '', 'GraphiQL IDE'],
 	);
 });
 
@@ -159,13 +153,7 @@ test('renders an Edit Post Node,  in the primary section if seedNode is provided
 	testToolBarNode(
 		toolBars[0],
 		3,
-		`
-  Array [
-    "WordPress",
-    "Edit Post",
-    "GraphiQL IDE",
-  ]
-`,
+		['WordPress', 'Edit Post', 'GraphiQL IDE'],
 	);
 });
 
@@ -187,14 +175,7 @@ test('renders an Account Node in the secondary section', async () => {
 	testToolBarNode(
 		toolBars[1],
 		4,
-		`
-    Array [
-      "Howdy, Edit ProfileLog Out",
-      "",
-      "Edit Profile",
-      "Log Out",
-    ]
-  `,
+		['Howdy, Edit ProfileLog Out', '', 'Edit Profile', 'Log Out'],
 	);
 });
 
@@ -218,13 +199,7 @@ test('renders an Edit Post Node, if seedNode is not provided and is preview', as
 	testToolBarNode(
 		toolBars[0],
 		3,
-		`
-  Array [
-    "WordPress",
-    "Edit Post",
-    "GraphiQL IDE",
-  ]
-  `,
+		['WordPress', 'Edit Post', 'GraphiQL IDE'],
 	);
 });
 
@@ -244,13 +219,7 @@ test('does not render an Edit Post Node, if there is no seedNode and it is not a
 	testToolBarNode(
 		toolBars[0],
 		3,
-		`
-  Array [
-    "WordPress",
-    "",
-    "GraphiQL IDE",
-  ]
-`,
+		['WordPress', '', 'GraphiQL IDE'],
 	);
 });
 
@@ -276,18 +245,11 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
 	);
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
-	// Secondary Toolbar
+	// Primary Toolbar
 	testToolBarNode(
 		toolBars[0],
 		4,
-		`
-    Array [
-      "WordPress",
-      "Edit Post",
-      "GraphiQL IDE",
-      "Test Node",
-    ]
-  `,
+		['WordPress', 'Edit Post', 'GraphiQL IDE', 'Test Node'],
 	);
 });
 
@@ -318,11 +280,11 @@ class TestAddToolbarNodePlugin {
 function testToolBarNode(
 	toolBar: HTMLElement,
 	expectedLen: number,
-	expectedContent: string,
+	expectedContent: string[],
 ) {
 	const { getAllByRole } = within(toolBar);
 	const items = getAllByRole('listitem');
 	expect(items.length).toBe(expectedLen);
 	const toolBarNames = items.map((item) => item.textContent);
-	expect(toolBarNames).toMatchInlineSnapshot(expectedContent);
+	expect(toolBarNames).toEqual(expectedContent);
 }
