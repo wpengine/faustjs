@@ -2,7 +2,10 @@ services:
   wordpress:
     build:
       context: ./.docker
-    image: faustwp:latest-wp-${WP_VERSION-latest}
+      args:
+        WP_VERSION: ${WP_VERSION:-6.8}
+        PHP_VERSION: ${PHP_VERSION:-8.2}
+    image: faustwp:wp-${WP_VERSION:-6.8}-php${PHP_VERSION:-8.2}
     restart: always
     ports:
       - 8080:80

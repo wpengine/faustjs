@@ -9,11 +9,12 @@ on:
 
 jobs:
   unit_test_plugin:
-    name: WordPress ${{ matrix.wordpress }}
+    name: WP ${{ matrix.wordpress }} / PHP ${{ matrix.php }}
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        wordpress: [ '6.8', '6.7', '6.6', '6.5', '6.4', '6.3', '6.2']
+        wordpress: ['6.8', '6.7']
+        php: ['8.1', '8.3']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,10 +22,12 @@ jobs:
       - name: Create Docker Containers
         env:
           WP_VERSION: ${{ matrix.wordpress }}
+          PHP_VERSION: ${{ matrix.php }}
         working-directory: ./plugins/faustwp
         run: |
           docker compose build \
-            --build-arg WP_VERSION=${{ matrix.wordpress }}
+            --build-arg WP_VERSION=${{ matrix.wordpress }} \
+            --build-arg PHP_VERSION=${{ matrix.php }}
           docker compose up -d
 
       - name: Wait for db

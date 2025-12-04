@@ -1,6 +1,7 @@
 ARG WP_VERSION
+ARG PHP_VERSION=8.2
 
-FROM wordpress:${WP_VERSION}-php8.2
+FROM wordpress:${WP_VERSION}-php${PHP_VERSION}
 
 # Save the build args for use by the runtime environment
 ENV WP_VERSION=${WP_VERSION}
