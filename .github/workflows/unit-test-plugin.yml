@@ -28,6 +28,8 @@ jobs:
           docker compose up -d
 
       - name: Wait for db
+        env:
+          MYSQL_ROOT_PASSWORD: wordpress
         run: |
           while ! mysqladmin ping --host=127.0.0.1 --port=33066 --password=$MYSQL_ROOT_PASSWORD --silent; do
             sleep 1
