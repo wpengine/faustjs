@@ -70,7 +70,9 @@ describe('healthCheck/validateFaustEnvVars', () => {
 		await validateFaustEnvVars();
 
 		expect(consoleLogSpy).toHaveBeenCalledWith(
-			expect.stringContaining('Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key'),
+			expect.stringContaining(
+				'Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key',
+			),
 		);
 
 		consoleLogSpy.mockRestore();
