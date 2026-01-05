@@ -6,7 +6,11 @@ import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { addApolloState, getApolloClient } from './client.js';
 import { FaustTemplateProps } from './components/WordPressTemplate.js';
 import { getConfig } from './config/index.js';
-import { getPossibleTemplates, getTemplate } from './getTemplate.js';
+import {
+	getPossibleTemplates,
+	getTemplate,
+	isDynamicComponent,
+} from './getTemplate.js';
 import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
 import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
@@ -142,10 +146,17 @@ export async function getWordPressProps(
 		getPossibleTemplates(seedNode),
 	);
 
-	const template = getTemplate(seedNode, templates);
+	let template = getTemplate(seedNode, templates);
 
 	if (!template) {
 		return createNotFound(ctx, revalidate);
+	}
+
+	if (isDynamicComponent(template)) {
+
+		const dynamicTemplate = await template.render.preload();
+
+		template = dynamicTemplate.default ?? dynamicTemplate;
 	}
 
 	if (template.query && template.queries) {
