@@ -25,6 +25,7 @@ export default {
 		'^(\\.{1,2}/.*)\\.js$': '$1',
 	},
 	collectCoverage: false,
+	coverageProvider: 'v8',
 	coverageReporters: ['json', 'html'],
 	passWithNoTests: true,
 };
