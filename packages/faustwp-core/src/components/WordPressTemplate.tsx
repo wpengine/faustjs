@@ -20,7 +20,7 @@ import { SEED_QUERY, SeedNode } from '../queries/seedQuery.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 import { getQueryParam } from '../utils/convert.js';
 import { isWordPressPreview } from '../utils/isWordPressPreview.js';
-import type { WordPressTemplate } from '../getWordPressProps.js';
+import type { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 
 export type FaustProps = {
 	__SEED_NODE__?: SeedNode | null;
@@ -43,7 +43,7 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
 	__TEMPLATE_VARIABLES__?: { [key: string]: any };
 };
 
-function checkDuplicateQueryQueries(template: WordPressTemplate): void {
+function checkDuplicateQueryQueries(template: WordPressTemplateType): void {
 	if (template.query && template.queries) {
 		throw new Error(
 			'`Only either `Component.query` or `Component.queries` can be provided, but not both.',
