@@ -6,9 +6,8 @@ module.exports = {
 		'^.+\\.tsx?$': [
 			'ts-jest',
 			{
-				tsconfig: 'tsconfig.json',
-				isolatedModules: true,
 				useESM: true,
+				isolatedModules: true,
 			},
 		],
 	},
@@ -28,5 +27,6 @@ module.exports = {
 	},
 	collectCoverage: false,
 	coverageReporters: ['json', 'html'],
+	coverageProvider: 'v8',
 	passWithNoTests: true,
 };
