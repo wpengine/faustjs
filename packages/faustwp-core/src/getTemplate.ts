@@ -159,6 +159,12 @@ export function isDynamicComponent<C>(
 	return (component as DynamicComponent<C>).render?.preload !== undefined;
 }
 
+export function loadDynamicComponent<C>(
+	component: DynamicComponent<C>,
+): Promise<C> {
+	return component.render.preload().then((mod) => mod.default);
+}
+
 export function getTemplate(
 	seedNode: SeedNode | null | undefined,
 	templates: { [key: string]: WordPressTemplate },

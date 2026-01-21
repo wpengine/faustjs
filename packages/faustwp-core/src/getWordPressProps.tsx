@@ -10,6 +10,7 @@ import {
 	getPossibleTemplates,
 	getTemplate,
 	isDynamicComponent,
+	loadDynamicComponent,
 } from './getTemplate.js';
 import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
 import { debugLog, infoLog } from './utils/log.js';
@@ -153,10 +154,7 @@ export async function getWordPressProps(
 	}
 
 	if (isDynamicComponent(template)) {
-
-		const dynamicTemplate = await template.render.preload();
-
-		template = dynamicTemplate.default ?? dynamicTemplate;
+		template = await loadDynamicComponent(template);
 	}
 
 	if (template.query && template.queries) {
