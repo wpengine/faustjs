@@ -126,17 +126,7 @@ test('renders a default list of nodes in the primary section if seedNode is not 
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
 	// Primary Toolbar
-	testToolBarNode(
-		toolBars[0],
-		3,
-		`
-  Array [
-    "WordPress",
-    "",
-    "GraphiQL IDE",
-  ]
-`,
-	);
+	testToolBarNode(toolBars[0], 3, ['WordPress', '', 'GraphiQL IDE']);
 });
 
 test('renders an Edit Post Node,  in the primary section if seedNode is provided', async () => {
@@ -156,17 +146,7 @@ test('renders an Edit Post Node,  in the primary section if seedNode is provided
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
 	// Primary Toolbar
-	testToolBarNode(
-		toolBars[0],
-		3,
-		`
-  Array [
-    "WordPress",
-    "Edit Post",
-    "GraphiQL IDE",
-  ]
-`,
-	);
+	testToolBarNode(toolBars[0], 3, ['WordPress', 'Edit Post', 'GraphiQL IDE']);
 });
 
 test('renders an Account Node in the secondary section', async () => {
@@ -184,18 +164,12 @@ test('renders an Account Node in the secondary section', async () => {
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
 	// Secondary Toolbar
-	testToolBarNode(
-		toolBars[1],
-		4,
-		`
-    Array [
-      "Howdy, Edit ProfileLog Out",
-      "",
-      "Edit Profile",
-      "Log Out",
-    ]
-  `,
-	);
+	testToolBarNode(toolBars[1], 4, [
+		'Howdy, Edit ProfileLog Out',
+		'',
+		'Edit Profile',
+		'Log Out',
+	]);
 });
 
 test('renders an Edit Post Node, if seedNode is not provided and is preview', async () => {
@@ -215,17 +189,7 @@ test('renders an Edit Post Node, if seedNode is not provided and is preview', as
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
 	// Primary Toolbar
-	testToolBarNode(
-		toolBars[0],
-		3,
-		`
-  Array [
-    "WordPress",
-    "Edit Post",
-    "GraphiQL IDE",
-  ]
-  `,
-	);
+	testToolBarNode(toolBars[0], 3, ['WordPress', 'Edit Post', 'GraphiQL IDE']);
 });
 
 test('does not render an Edit Post Node, if there is no seedNode and it is not a preview', async () => {
@@ -241,17 +205,7 @@ test('does not render an Edit Post Node, if there is no seedNode and it is not a
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
 	// Primary Toolbar
-	testToolBarNode(
-		toolBars[0],
-		3,
-		`
-  Array [
-    "WordPress",
-    "",
-    "GraphiQL IDE",
-  ]
-`,
-	);
+	testToolBarNode(toolBars[0], 3, ['WordPress', '', 'GraphiQL IDE']);
 });
 
 test('Uses `toolbarNodes` hook to add nodes', async () => {
@@ -276,19 +230,13 @@ test('Uses `toolbarNodes` hook to add nodes', async () => {
 	);
 	await waitFor(() => queryByAttribute('id', dom.container, 'wpadminbar'));
 	const toolBars = screen.getAllByRole('list', { name: /toolbar/i });
-	// Secondary Toolbar
-	testToolBarNode(
-		toolBars[0],
-		4,
-		`
-    Array [
-      "WordPress",
-      "Edit Post",
-      "GraphiQL IDE",
-      "Test Node",
-    ]
-  `,
-	);
+	// Primary Toolbar
+	testToolBarNode(toolBars[0], 4, [
+		'WordPress',
+		'Edit Post',
+		'GraphiQL IDE',
+		'Test Node',
+	]);
 });
 
 class TestAddToolbarNodePlugin {
@@ -318,11 +266,11 @@ class TestAddToolbarNodePlugin {
 function testToolBarNode(
 	toolBar: HTMLElement,
 	expectedLen: number,
-	expectedContent: string,
+	expectedContent: (string | null)[],
 ) {
 	const { getAllByRole } = within(toolBar);
 	const items = getAllByRole('listitem');
 	expect(items.length).toBe(expectedLen);
 	const toolBarNames = items.map((item) => item.textContent);
-	expect(toolBarNames).toMatchInlineSnapshot(expectedContent);
+	expect(toolBarNames).toEqual(expectedContent);
 }
