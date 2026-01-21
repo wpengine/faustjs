@@ -147,15 +147,15 @@ export async function getWordPressProps(
 		getPossibleTemplates(seedNode),
 	);
 
-	let template = getTemplate(seedNode, templates);
+	const unknownTemplate = getTemplate(seedNode, templates);
 
-	if (!template) {
+	if (!unknownTemplate) {
 		return createNotFound(ctx, revalidate);
 	}
 
-	if (isDynamicComponent(template)) {
-		template = await loadDynamicComponent(template);
-	}
+	const template = isDynamicComponent(unknownTemplate)
+		? await loadDynamicComponent(unknownTemplate)
+		: unknownTemplate;
 
 	if (template.query && template.queries) {
 		throw new Error(
