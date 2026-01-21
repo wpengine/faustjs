@@ -84,7 +84,6 @@ export function WordPressTemplateInternal(
 	 */
 	useEffect(() => {
 		void (async () => {
-
 			if (!unknownTemplate) {
 				return;
 			}
@@ -96,7 +95,6 @@ export function WordPressTemplateInternal(
 			checkDuplicateQueryQueries(template);
 
 			const client = isPreview ? getApolloAuthClient() : getApolloClient();
-
 
 			if (template.query) {
 				return;
@@ -136,19 +134,27 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [isAuthenticated, isPreview, seedNode, unknownTemplate, setQueries, setLoading]);
+	}, [
+		isAuthenticated,
+		isPreview,
+		seedNode,
+		unknownTemplate,
+		setQueries,
+		setLoading,
+	]);
 
 	/**
 	 * Fetch the template's query if defined.
 	 */
 	useEffect(() => {
 		void (async () => {
-
-			if(!unknownTemplate) {
+			if (!unknownTemplate) {
 				return;
 			}
 
-			const template = isDynamicComponent(unknownTemplate) ? await loadDynamicComponent(unknownTemplate) : unknownTemplate;
+			const template = isDynamicComponent(unknownTemplate)
+				? await loadDynamicComponent(unknownTemplate)
+				: unknownTemplate;
 
 			checkDuplicateQueryQueries(template);
 
