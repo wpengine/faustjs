@@ -75,7 +75,7 @@ export function WordPressTemplateInternal(
 		setLoading,
 		...wordpressTemplateProps
 	} = props;
-	let template = getTemplate(seedNode, templates);
+	const unknownTemplate = getTemplate(seedNode, templates);
 	const [data, setData] = useState<any | null>(templateQueryDataProp);
 	const { setQueries } = useContext(FaustContext) || {};
 
@@ -85,13 +85,13 @@ export function WordPressTemplateInternal(
 	useEffect(() => {
 		void (async () => {
 
-			if (!template) {
+			if (!unknownTemplate) {
 				return;
 			}
 
-			if (isDynamicComponent(template)) {
-				template = await loadDynamicComponent(template);
-			}
+			const template = isDynamicComponent(unknownTemplate)
+				? await loadDynamicComponent(unknownTemplate)
+				: unknownTemplate;
 
 			checkDuplicateQueryQueries(template);
 
@@ -136,7 +136,7 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [isAuthenticated, isPreview, seedNode, template, setQueries, setLoading]);
+	}, [isAuthenticated, isPreview, seedNode, unknownTemplate, setQueries, setLoading]);
 
 	/**
 	 * Fetch the template's query if defined.
@@ -144,13 +144,11 @@ export function WordPressTemplateInternal(
 	useEffect(() => {
 		void (async () => {
 
-			if(!template) {
+			if(!unknownTemplate) {
 				return;
 			}
 
-			if (isDynamicComponent(template)) {
-				template = await loadDynamicComponent(template);
-			}
+			const template = isDynamicComponent(unknownTemplate) ? await loadDynamicComponent(unknownTemplate) : unknownTemplate;
 
 			checkDuplicateQueryQueries(template);
 
@@ -179,14 +177,13 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [data, template, seedNode, isPreview, isAuthenticated, setLoading]);
+	}, [data, unknownTemplate, seedNode, isPreview, isAuthenticated, setLoading]);
 
-	if (!template) {
+	if (!unknownTemplate) {
 		return null;
 	}
 
-	const Component = template as React.FC<{ [key: string]: any }>;
-
+	const Component = unknownTemplate as React.FC<{ [key: string]: any }>;
 	const newProps = {
 		...wordpressTemplateProps,
 		__TEMPLATE_QUERY_DATA__: templateQueryDataProp,
@@ -212,8 +209,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 	const [seedNode, setSeedNode] = useState<SeedNode | null>(
 		seedNodeProp ?? null,
 	);
-	const template = getTemplate(seedNode, templates);
-	const [loading, setLoading] = useState(template === null);
+	const unknownTemplate = getTemplate(seedNode, templates);
+	const [loading, setLoading] = useState(unknownTemplate === null);
 	const [isPreview, setIsPreview] = useState<boolean | null>(
 		templateQueryDataProp ? false : null,
 	);
