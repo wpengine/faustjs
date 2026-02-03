@@ -3,7 +3,7 @@ export default {
 
 	// Adds Jest support for TypeScript using ts-jest.
 	transform: {
-		'^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
+		'^.+\\.tsx?$': ['ts-jest', { useESM: true, tsconfig: 'tsconfig.json' }],
 	},
 	testEnvironment: 'jsdom',
 	// Run code before each file in the suite is tested.
