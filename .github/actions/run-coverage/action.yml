@@ -18,5 +18,9 @@ runs:
         test-script: npm run test:coverage:ci
         working-directory: ${{ inputs.working-directory }}
         annotations: none
+        # Skip npm install since npm ci already ran in the workflow.
+        # This ensures the lockfile and package.json overrides are respected,
+        # avoiding test-exclude/glob version incompatibility issues on Node 22.
+        skip-step: install
       continue-on-error: FALSE
 
