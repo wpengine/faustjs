@@ -24,6 +24,12 @@ module.exports = {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+
+  // Transform ESM dependencies that Jest needs to handle
+  transformIgnorePatterns: [
+    'node_modules/(?!(@apollo/client|ts-invariant|tslib|zen-observable-ts)/)',
+  ],
+
   collectCoverage: false,
   coverageReporters: ['json', 'html'],
   passWithNoTests: true,
