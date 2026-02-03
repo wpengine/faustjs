@@ -41,33 +41,39 @@ export class ErrorLoggingLink extends ApolloLink {
 		operation: Operation,
 		forward: NextLink,
 	): Observable<FetchResult> | null {
-		return new Observable<FetchResult>((observer) => {
-			const subscription = forward(operation).subscribe({
-				next: (result) => {
-					// Check if there are GraphQL errors in the result
-					if (result.errors && result.errors.length > 0) {
-						errorLog('GraphQL errors:', result.errors);
-					}
-					observer.next(result);
-				},
-				error: (error) => {
-					// Check if the error is a server error
-					if (isServerError(error)) {
-						errorLog('Server error:', error);
-						errorLog('Fetch result:', error.result);
-					} else {
-						errorLog('Network error:', error);
-					}
-					observer.error(error);
-				},
-				complete: () => {
-					observer.complete();
-				},
-			});
+		return new Observable<FetchResult>(
+			(observer: {
+				next: (value: FetchResult) => void;
+				error: (error: unknown) => void;
+				complete: () => void;
+			}) => {
+				const subscription = forward(operation).subscribe({
+					next: (result: FetchResult) => {
+						// Check if there are GraphQL errors in the result
+						if (result.errors && result.errors.length > 0) {
+							errorLog('GraphQL errors:', result.errors);
+						}
+						observer.next(result);
+					},
+					error: (error: unknown) => {
+						// Check if the error is a server error
+						if (isServerError(error)) {
+							errorLog('Server error:', error);
+							errorLog('Fetch result:', error.result);
+						} else {
+							errorLog('Network error:', error);
+						}
+						observer.error(error);
+					},
+					complete: () => {
+						observer.complete();
+					},
+				});
 
-			return () => {
-				subscription.unsubscribe();
-			};
-		});
+				return () => {
+					subscription.unsubscribe();
+				};
+			},
+		);
 	}
 }

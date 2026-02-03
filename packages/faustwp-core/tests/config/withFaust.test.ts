@@ -29,33 +29,33 @@ describe('withFaust', () => {
 		);
 		const redirects = await finalConfig.redirects!();
 		expect(redirects).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "destination": "/preview",
-          "has": Array [
-            Object {
-              "key": "preview",
-              "type": "query",
-              "value": "true",
-            },
-          ],
-          "permanent": false,
-          "source": "/((?!preview).*)",
-        },
-        Object {
-          "destination": "/preview",
-          "has": Array [
-            Object {
-              "key": "preview",
-              "type": "query",
-              "value": "true",
-            },
-          ],
-          "permanent": false,
-          "source": "/((?!preview).*)",
-        },
-      ]
-    `);
+		[
+		  {
+		    "destination": "/preview",
+		    "has": [
+		      {
+		        "key": "preview",
+		        "type": "query",
+		        "value": "true",
+		      },
+		    ],
+		    "permanent": false,
+		    "source": "/((?!preview).*)",
+		  },
+		  {
+		    "destination": "/preview",
+		    "has": [
+		      {
+		        "key": "preview",
+		        "type": "query",
+		        "value": "true",
+		      },
+		    ],
+		    "permanent": false,
+		    "source": "/((?!preview).*)",
+		  },
+		]
+	`);
 	});
 	test('it allows a custom preview destination', async () => {
 		const finalConfig = withFaust(defaultNextConfig, {
@@ -64,44 +64,44 @@ describe('withFaust', () => {
 		});
 		const redirects = await finalConfig.redirects!();
 		expect(redirects).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "destination": "/demo",
-          "has": Array [
-            Object {
-              "key": "preview",
-              "type": "query",
-              "value": "true",
-            },
-          ],
-          "permanent": false,
-          "source": "/((?!demo).*)",
-        },
-        Object {
-          "destination": "/preview",
-          "has": Array [
-            Object {
-              "key": "preview",
-              "type": "query",
-              "value": "true",
-            },
-          ],
-          "permanent": false,
-          "source": "/((?!preview).*)",
-        },
-        Object {
-          "destination": "/preview",
-          "has": Array [
-            Object {
-              "key": "preview",
-              "type": "query",
-              "value": "true",
-            },
-          ],
-          "permanent": false,
-          "source": "/((?!preview).*)",
-        },
-      ]
-    `);
+		[
+		  {
+		    "destination": "/demo",
+		    "has": [
+		      {
+		        "key": "preview",
+		        "type": "query",
+		        "value": "true",
+		      },
+		    ],
+		    "permanent": false,
+		    "source": "/((?!demo).*)",
+		  },
+		  {
+		    "destination": "/preview",
+		    "has": [
+		      {
+		        "key": "preview",
+		        "type": "query",
+		        "value": "true",
+		      },
+		    ],
+		    "permanent": false,
+		    "source": "/((?!preview).*)",
+		  },
+		  {
+		    "destination": "/preview",
+		    "has": [
+		      {
+		        "key": "preview",
+		        "type": "query",
+		        "value": "true",
+		      },
+		    ],
+		    "permanent": false,
+		    "source": "/((?!preview).*)",
+		  },
+		]
+	`);
 	});
 });
