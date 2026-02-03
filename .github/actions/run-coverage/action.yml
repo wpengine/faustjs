@@ -9,18 +9,22 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    # We are currently fixed at 2.1.2 since 2.2 was throwing errors
-    # Remove this when the issue has been resolved.
-    - uses: ArtiomTr/jest-coverage-report-action@v2.1.2
+    # Run coverage tests manually to use correct dependencies from npm ci.
+    # This ensures the lockfile and package.json overrides are respected,
+    # avoiding test-exclude/glob version incompatibility issues on Node 22.
+    - name: Run coverage tests
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: npm run test:coverage:ci
+
+    # Use the action only for report generation, not for running tests
+    - uses: ArtiomTr/jest-coverage-report-action@v2.3.1
       with:
-        # tell to the action to not attach comment.
         output: report-markdown
-        test-script: npm run test:coverage:ci
+        coverage-file: ${{ inputs.working-directory }}/report.json
+        base-coverage-file: ${{ inputs.working-directory }}/report.json
         working-directory: ${{ inputs.working-directory }}
         annotations: none
-        # Skip npm install since npm ci already ran in the workflow.
-        # This ensures the lockfile and package.json overrides are respected,
-        # avoiding test-exclude/glob version incompatibility issues on Node 22.
-        skip-step: install
-      continue-on-error: FALSE
+        skip-step: all
+      continue-on-error: false
 
