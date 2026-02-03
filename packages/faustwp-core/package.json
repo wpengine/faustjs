@@ -33,7 +33,7 @@
 		"sass": "^1.80.3",
 		"shx": "^0.3.4",
 		"throat": "^6.0.2",
-		"ts-jest": "^29.1.1",
+		"ts-jest": "^29.4.6",
 		"ts-loader": "^9.2.6",
 		"typedarray-to-buffer": "4.0.0",
 		"typescript": "^4.4.4",
