@@ -7,7 +7,7 @@ The `getStyles` is a helper function that is used to calculate the inline styles
 
 ## API
 
-The `getStyles` has the following signatur
+The `getStyles` has the following signature:
 ```ts
 function getStyles<T extends BlockWithAttributes>(
   theme: BlocksTheme,

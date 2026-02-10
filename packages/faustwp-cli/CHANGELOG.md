@@ -1,5 +1,15 @@
 # @faustwp/cli
 
+## 3.3.5
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+  - Updated Jest configuration for better ESM support
+  - Switched to V8 coverage provider
+  - Enhanced health check test with more descriptive error output
+  - Added coverage directory to .eslintignore
+
 ## 3.3.4
 
 ### Patch Changes

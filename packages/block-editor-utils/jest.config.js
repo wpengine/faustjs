@@ -28,7 +28,7 @@ module.exports = {
 		'^(\\.{1,2}/.*)\\.js$': '$1',
 		uuid: require.resolve('uuid'),
 	},
-	collectCoverage: true,
+	collectCoverage: false,
 	coverageReporters: ['json', 'html'],
 	passWithNoTests: true,
 };
