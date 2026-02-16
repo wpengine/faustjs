@@ -1,5 +1,16 @@
 # @faustwp/blocks
 
+## 6.1.7
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+
+  - Updated Jest configuration with improved ESM support
+  - Added `transformIgnorePatterns` for ESM dependencies
+  - Suppressed expected React error logs in WordPressBlocksProvider tests
+  - Added `@ts-expect-error` comment in Save.tsx to document known type incompatibility with `InnerBlocks.Content`
+
 ## 6.1.6
 
 ### Patch Changes

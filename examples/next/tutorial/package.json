@@ -30,6 +30,7 @@
     "tailwindcss": "^3.4.1"
   },
   "overrides": {
-    "@babel/runtime": "^7.26.10"
+    "@babel/runtime": "^7.26.10",
+    "fast-xml-parser": "^5.3.4"
   }
 }

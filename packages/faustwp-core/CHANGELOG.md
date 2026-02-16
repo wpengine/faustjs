@@ -1,5 +1,19 @@
 # @faustwp/core
 
+## 3.3.5
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+  - Updated Jest configuration to use V8 coverage provider instead of Babel
+  - Disabled coverage collection by default for better test performance
+  - Added `transformIgnorePatterns` for improved ESM dependency handling
+  - Enhanced Apollo error logging with explicit type annotations
+  - Refactored test assertions to use direct array equality instead of inline snapshots
+  - Added coverage directory to .eslintignore
+  - Bump lodash from 4.17.21 to 4.17.23 to address security vulnerabilities
+  - Bump fast-xml-parser from 4.5.0 to 5.3.4 to address security vulnerabilities
+
 ## 3.3.4
 
 ### Patch Changes

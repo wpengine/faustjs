@@ -5,6 +5,11 @@ on:
     branches:
       - canary
 
+permissions:
+  contents: write      # For creating releases/tags
+  pull-requests: write # For creating version PRs
+  id-token: write      # For npm OIDC authentication
+
 jobs:
   release_packages:
     name: Release Packages
@@ -16,21 +21,14 @@ jobs:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - name: Setup Node.js 18.x
+      - name: Setup Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 22.x
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: npm ci
-
-      - name: Create .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -41,7 +39,6 @@ jobs:
           version: npm run version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Save Plugin version
         run: |
           json=${{ toJSON(steps.changesets.outputs.publishedPackages) }}

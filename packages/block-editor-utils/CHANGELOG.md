@@ -1,5 +1,14 @@
 # @faustwp/block-editor-utils
 
+## 0.3.7
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+
+  - Updated Jest configuration to disable coverage collection by default
+  - Added type annotation to document known InnerBlocks.Content compatibility issue across React versions
+
 ## 0.3.6
 
 ### Patch Changes

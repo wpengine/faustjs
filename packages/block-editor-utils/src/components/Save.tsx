@@ -15,6 +15,7 @@ export default function Save<T extends Record<string, any>>(
 	return (
 		// eslint-disable-next-line react/jsx-props-no-spreading
 		<Block {...allBlockProps}>
+			{/* @ts-expect-error InnerBlocks.Content has incompatible React types across versions */}
 			<InnerBlocks.Content />
 		</Block>
 	);

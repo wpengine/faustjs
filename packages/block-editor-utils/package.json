@@ -1,6 +1,6 @@
 {
 	"name": "@faustwp/block-editor-utils",
-	"version": "0.3.6",
+	"version": "0.3.7",
 	"description": "Faust Block Editor Utils Package",
 	"main": "dist/cjs/index.js",
 	"module": "dist/mjs/index.js",
@@ -58,5 +58,9 @@
 	"engines": {
 		"node": ">=18",
 		"npm": ">=8"
+	},
+	"publishConfig": {
+		"access": "public",
+		"provenance": true
 	}
 }

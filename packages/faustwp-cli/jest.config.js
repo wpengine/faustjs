@@ -3,7 +3,7 @@ export default {
 
 	// Adds Jest support for TypeScript using ts-jest.
 	transform: {
-		'^.+\\.tsx?$': 'ts-jest',
+		'^.+\\.tsx?$': ['ts-jest', { useESM: true, tsconfig: 'tsconfig.json' }],
 	},
 	testEnvironment: 'jsdom',
 	// Run code before each file in the suite is tested.
@@ -16,15 +16,11 @@ export default {
 	// ESM Support
 	// @link https://kulshekhar.github.io/ts-jest/docs/guides/esm-support/
 	extensionsToTreatAsEsm: ['.ts'],
-	globals: {
-		'ts-jest': {
-			useESM: true,
-		},
-	},
 	moduleNameMapper: {
 		'^(\\.{1,2}/.*)\\.js$': '$1',
 	},
-	collectCoverage: true,
+	collectCoverage: false,
+	coverageProvider: 'v8',
 	coverageReporters: ['json', 'html'],
 	passWithNoTests: true,
 };

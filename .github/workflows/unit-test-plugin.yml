@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        wordpress: [ '6.8', '6.7', '6.6', '6.5', '6.4', '6.3', '6.2']
+        wordpress: [ '6.9', '6.8', '6.7', '6.6', '6.5', '6.4', '6.3' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,8 +28,9 @@ jobs:
           docker compose up -d
 
       - name: Wait for db
+        working-directory: ./plugins/faustwp
         run: |
-          while ! mysqladmin ping --host=127.0.0.1 --port=33066 --password=$MYSQL_ROOT_PASSWORD --silent; do
+          until docker compose exec -T db mysqladmin ping -pwordpress --silent; do
             sleep 1
           done
 
