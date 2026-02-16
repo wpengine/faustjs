@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.3.6
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
 ## 3.3.5
 
 ### Patch Changes

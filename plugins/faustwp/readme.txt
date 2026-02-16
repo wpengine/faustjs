@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.9
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.8.5 =
+
+### Patch Changes
+
+- 6bf8a7e: Add WordPress 6.9 to the CI test matrix and update the plugin "Tested up to" header to 6.9.
+
 = 1.8.4 =
 
 ### Patch Changes
@@ -67,11 +73,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 - 089ea0a: Fix for adding assets to the correct release for Github Actions.
   Small fix for Github actions to upload assets to the correct release
-
-= 1.8.2 =
-
-### Patch Changes
-
-- b1898f8: Fix for adding assets to the correct release for Github Actions.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
