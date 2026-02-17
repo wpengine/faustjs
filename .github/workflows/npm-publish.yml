@@ -1,0 +1,55 @@
+name: Publish to npm
+
+on:
+  workflow_call:
+    inputs:
+      pre-build-command:
+        description: 'Command to run before building (e.g., snapshot versioning)'
+        type: string
+        required: false
+        default: ''
+      publish-command:
+        description: 'Command to run for publishing'
+        type: string
+        required: true
+      push-tags:
+        description: 'Whether to push git tags after publishing'
+        type: boolean
+        required: false
+        default: false
+
+# No permissions block — inherits from caller workflow.
+# Release caller grants contents: write + id-token: write (enables git push and OIDC).
+# Nightly caller grants contents: read + id-token: write (enables checkout and OIDC).
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Pre-build
+        if: inputs.pre-build-command != ''
+        run: ${{ inputs.pre-build-command }}
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Publish to npm
+        run: ${{ inputs.publish-command }}
+
+      - name: Push tags
+        if: inputs.push-tags
+        run: git push --follow-tags
