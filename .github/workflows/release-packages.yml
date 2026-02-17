@@ -45,5 +45,5 @@ jobs:
     if: needs.changesets.outputs.has-changesets == 'false'
     uses: ./.github/workflows/npm-publish.yml
     with:
-      publish-command: changeset publish
+      publish-command: npx changeset publish
       push-tags: true
