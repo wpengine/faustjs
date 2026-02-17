@@ -6,14 +6,16 @@ on:
       - canary
 
 permissions:
-  contents: write      # For creating releases/tags
+  contents: write      # For creating releases/tags and pushing tags
   pull-requests: write # For creating version PRs
   id-token: write      # For npm OIDC authentication
 
 jobs:
-  release_packages:
-    name: Release Packages
+  changesets:
+    name: Manage Changesets
     runs-on: ubuntu-22.04
+    outputs:
+      has-changesets: ${{ steps.changesets.outputs.hasChangesets }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -25,34 +27,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
         with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: npm run release
           version: npm run version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Save Plugin version
-        run: |
-          json=${{ toJSON(steps.changesets.outputs.publishedPackages) }}
-          echo PLUGIN_VERSION=$(echo "$json" | jq '.[] | select(.name == "@faustwp/wordpress-plugin") | .version') >> $GITHUB_ENV
-      - name: Deploy WordPress plugin
-        # Checks the changesets publishedPackages output
-        # If there is a published package named "@faustwp/wordpress-plugin"
-        # Then deploy the WordPress plugin
-        # https://github.com/changesets/action#outputs
-        if: steps.changesets.outputs.published && contains(steps.changesets.outputs.publishedPackages, '"@faustwp/wordpress-plugin"')
-        uses: ./.github/actions/release-plugin
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          PLUGIN_DIR: plugins/faustwp
-          SLUG: faustwp
-          VERSION: ${{ env.PLUGIN_VERSION }}
+
+  publish:
+    name: Publish to npm
+    needs: changesets
+    if: needs.changesets.outputs.has-changesets == 'false'
+    uses: ./.github/workflows/npm-publish.yml
+    with:
+      publish-command: changeset publish
+      push-tags: true
