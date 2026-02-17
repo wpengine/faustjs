@@ -1,5 +1,11 @@
 # Faust
 
+## 1.8.5
+
+### Patch Changes
+
+- 6bf8a7e: Add WordPress 6.9 to the CI test matrix and update the plugin "Tested up to" header to 6.9.
+
 ## 1.8.4
 
 ### Patch Changes

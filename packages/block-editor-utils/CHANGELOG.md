@@ -1,5 +1,11 @@
 # @faustwp/block-editor-utils
 
+## 0.3.8
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
 ## 0.3.7
 
 ### Patch Changes

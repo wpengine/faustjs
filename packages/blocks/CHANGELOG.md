@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.8
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
 ## 6.1.7
 
 ### Patch Changes
