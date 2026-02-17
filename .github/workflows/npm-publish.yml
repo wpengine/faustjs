@@ -40,6 +40,17 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Upgrade npm for OIDC support
+        run: npm install -g npm@^11.5.1
+
+      - name: Verify OIDC token availability
+        run: |
+          if [ -z "${ACTIONS_ID_TOKEN_REQUEST_URL}" ]; then
+            echo "::error::OIDC token not available. Ensure the caller workflow has 'id-token: write' permission."
+            exit 1
+          fi
+          echo "OIDC token endpoint available"
+
       - name: Pre-build
         if: inputs.pre-build-command != ''
         run: ${{ inputs.pre-build-command }}
