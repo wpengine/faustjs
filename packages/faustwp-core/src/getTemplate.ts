@@ -146,10 +146,29 @@ export function getPossibleTemplates(node: SeedNode) {
 	return possibleTemplates;
 }
 
+type DynamicComponent<C> = {
+	render: {
+		preload: () => Promise<{ default: C }>;
+		displayName?: string;
+	};
+};
+
+export function isDynamicComponent<C>(
+	component: C | DynamicComponent<C>,
+): component is DynamicComponent<C> {
+	return (component as DynamicComponent<C>).render?.preload !== undefined;
+}
+
+export function loadDynamicComponent<C>(
+	component: DynamicComponent<C>,
+): Promise<C> {
+	return component.render.preload().then((mod) => mod.default);
+}
+
 export function getTemplate(
 	seedNode: SeedNode | null | undefined,
 	templates: { [key: string]: WordPressTemplate },
-): WordPressTemplate | null {
+): WordPressTemplate | DynamicComponent<WordPressTemplate> | null {
 	if (!seedNode) {
 		return null;
 	}

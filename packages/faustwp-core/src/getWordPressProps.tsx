@@ -6,7 +6,12 @@ import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { addApolloState, getApolloClient } from './client.js';
 import { FaustTemplateProps } from './components/WordPressTemplate.js';
 import { getConfig } from './config/index.js';
-import { getPossibleTemplates, getTemplate } from './getTemplate.js';
+import {
+	getPossibleTemplates,
+	getTemplate,
+	isDynamicComponent,
+	loadDynamicComponent,
+} from './getTemplate.js';
 import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
 import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
@@ -142,15 +147,19 @@ export async function getWordPressProps(
 		getPossibleTemplates(seedNode),
 	);
 
-	const template = getTemplate(seedNode, templates);
+	const unknownTemplate = getTemplate(seedNode, templates);
 
-	if (!template) {
+	if (!unknownTemplate) {
 		return createNotFound(ctx, revalidate);
 	}
 
+	const template = isDynamicComponent(unknownTemplate)
+		? await loadDynamicComponent(unknownTemplate)
+		: unknownTemplate;
+
 	if (template.query && template.queries) {
 		throw new Error(
-			'`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+			'Only either `Component.query` or `Component.queries` can be provided, but not both.',
 		);
 	}
 
