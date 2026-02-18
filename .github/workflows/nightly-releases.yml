@@ -12,6 +12,12 @@ name: Nightly Releases
 # * * * * *
 
 on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Specific package to publish (e.g., @faustwp/cli). Leave empty for all.'
+        required: false
+        default: ''
   schedule:
     # Monday-Friday at 8:35pm UTC / 3:35pm CST
 
@@ -20,35 +26,16 @@ on:
     # middle of the hour, there is less chance of delay.
     - cron: '35 20 * * 1-5'
 
+permissions:
+  contents: read       # For checking out the repo
+  id-token: write      # For npm OIDC authentication
+
 jobs:
   release_nightly_canary:
     if: github.repository_owner == 'wpengine'
     name: Release Nightly Canary
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js 18.x
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Create .npmrc
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # https://github.com/atlassian/changesets/blob/master/docs/snapshot-releases.md
-      - name: Release to NPM
-        run: |
-          npm run version:nightly
-          npm run release:nightly
+    # https://github.com/atlassian/changesets/blob/master/docs/snapshot-releases.md
+    uses: ./.github/workflows/npm-publish.yml
+    with:
+      pre-build-command: npm run version:nightly
+      publish-command: ${{ inputs.package && format('npm publish -w {0} --tag canary', inputs.package) || 'changeset publish --tag canary' }}
