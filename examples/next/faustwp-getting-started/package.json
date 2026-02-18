@@ -17,7 +17,7 @@
 		"@wordpress/block-library": "^9.39.0",
 		"classnames": "^2.5.1",
 		"graphql": "^16.12.0",
-		"next": "^15.5.12",
+		"next": "^16.1.6",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"sass": "1.97.3"
@@ -26,7 +26,7 @@
 		"next-secure-headers": "^2.2.0"
 	},
 	"engines": {
-		"node": ">=18",
+		"node": ">=20.9",
 		"npm": ">=8"
 	}
 }

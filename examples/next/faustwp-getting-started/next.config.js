@@ -7,10 +7,14 @@ const { createSecureHeaders } = require('next-secure-headers');
 module.exports = withFaust({
   reactStrictMode: true,
   sassOptions: {
-    includePaths: ['node_modules'],
+    includePaths: ['node_modules', '.'],
   },
   images: {
-    domains: [getWpHostname()],
+    remotePatterns: [
+      {
+        hostname: getWpHostname(),
+      },
+    ],
   },
   i18n: {
     locales: ['en'],
