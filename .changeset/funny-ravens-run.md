@@ -4,7 +4,7 @@
 
 Feat: Added support `next/dynamic` imports for templates to reduce initial bundle size in a way that's backwards compatible with static imports.
 
-This solves a known issue in Faust where all defined templates are bundled together and loaded on every WordPress page. by enabling the use of dynamic importing of templates this issue is resolved. Now templates are only loaded as needed per route.
+This solves a known issue in Faust where all defined templates are bundled together and loaded on every WordPress page. By enabling the use of dynamic importing of templates this issue is resolved. Now templates are only loaded as needed per route.
 
 It's recommended you migrate to dynamic imports by updating your template file. Here's an example:
 
