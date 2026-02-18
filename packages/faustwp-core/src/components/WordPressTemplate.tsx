@@ -46,7 +46,7 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
 function checkDuplicateQueryQueries(template: WordPressTemplateType): void {
 	if (template.query && template.queries) {
 		throw new Error(
-			'`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+			'Only either `Component.query` or `Component.queries` can be provided, but not both.',
 		);
 	}
 }
