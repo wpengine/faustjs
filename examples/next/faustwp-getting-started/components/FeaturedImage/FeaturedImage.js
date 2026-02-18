@@ -25,8 +25,6 @@ export default function FeaturedImage({
 	if (layout !== 'fill' && (!dimensions.width || !dimensions.height))
 		return null;
 
-	console.log(layout, mediaDetails, dimensions);
-
 	return (
 		<figure className={className}>
 			<Image
