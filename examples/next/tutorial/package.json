@@ -14,7 +14,7 @@
     "@apollo/client": "^3.13.9",
     "@faustwp/blocks": "^6.1.3",
     "@faustwp/cli": "^3.2.4",
-    "@faustwp/core": "^3.3.2",
+    "@faustwp/core": "^3.3.6",
     "graphql": "^16.11.0",
     "next": "^15.5.2",
     "next-secure-headers": "^2.2.0",
