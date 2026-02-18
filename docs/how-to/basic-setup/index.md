@@ -177,7 +177,7 @@ Finally, we have to make Faust.js aware that this template exists. To do that, c
 ```js title="wp-templates/index.js"
 import dynamic from 'next/dynamic';
 
-const category = dynamic(() => import('./category.js'));
+const single = dynamic(() => import('./single.js'));
 
 export default {
 	single,
