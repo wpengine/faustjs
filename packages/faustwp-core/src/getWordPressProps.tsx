@@ -159,7 +159,7 @@ export async function getWordPressProps(
 
 	if (template.query && template.queries) {
 		throw new Error(
-			'`Only either `Component.query` or `Component.queries` can be provided, but not both.',
+			'Only either `Component.query` or `Component.queries` can be provided, but not both.',
 		);
 	}
 
