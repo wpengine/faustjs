@@ -105,3 +105,90 @@ describe('getPossibleTemplates', () => {
 		]);
 	});
 });
+
+describe('isDynamicComponent', () => {
+	test('returns true for valid DynamicComponent', () => {
+		const dynamicComponent = {
+			render: {
+				preload: async () => ({ default: () => null }),
+			},
+		};
+
+		expect(getTemplate.isDynamicComponent(dynamicComponent)).toBe(true);
+	});
+
+	test('returns false for regular component', () => {
+		const regularComponent = () => null;
+
+		expect(getTemplate.isDynamicComponent(regularComponent)).toBe(false);
+	});
+
+	test('returns false for object without render.preload', () => {
+		const invalidComponent = {
+			render: {
+				displayName: 'TestComponent',
+			},
+		};
+
+		expect(getTemplate.isDynamicComponent(invalidComponent)).toBe(false);
+	});
+
+	test('returns false for object with render but no preload', () => {
+		const invalidComponent = {
+			render: {},
+		};
+
+		expect(getTemplate.isDynamicComponent(invalidComponent)).toBe(false);
+	});
+});
+
+describe('loadDynamicComponent', () => {
+	test('loads and resolves DynamicComponent correctly', async () => {
+		const mockComponent = () => 'test component';
+		const dynamicComponent = {
+			render: {
+				preload: jest.fn().mockResolvedValue({ default: mockComponent }),
+			},
+		};
+
+		const result = await getTemplate.loadDynamicComponent(dynamicComponent);
+
+		expect(dynamicComponent.render.preload).toHaveBeenCalledTimes(1);
+		expect(result).toBe(mockComponent);
+	});
+
+	test('extracts default export from preload result', async () => {
+		const mockComponent = { name: 'MyComponent' };
+		const dynamicComponent = {
+			render: {
+				preload: async () => ({
+					default: mockComponent,
+					otherExport: 'should not be returned',
+				}),
+			},
+		};
+
+		const result = await getTemplate.loadDynamicComponent(dynamicComponent);
+
+		expect(result).toBe(mockComponent);
+		expect(result).not.toBe('should not be returned');
+	});
+
+	test('handles async preload resolution', async () => {
+		const mockComponent = () => 'async component';
+		const dynamicComponent = {
+			render: {
+				preload: () =>
+					new Promise<{ default: typeof mockComponent }>((resolve) => {
+						setTimeout(() => {
+							resolve({ default: mockComponent });
+						}, 10);
+					}),
+			},
+		};
+
+		const result = await getTemplate.loadDynamicComponent(dynamicComponent);
+
+		expect(result).toBe(mockComponent);
+	});
+});

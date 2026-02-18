@@ -175,13 +175,13 @@ In the `SingleTemplate` component, we receive the props, destructure the `title`
 Finally, we have to make Faust.js aware that this template exists. To do that, create an `index.js` file inside the `wp-templates` folder with this code inside:
 
 ```js title="wp-templates/index.js"
-import SingleTemplate from "./single";
+import dynamic from 'next/dynamic';
 
-const templates = {
-	single: SingleTemplate,
+const single = dynamic(() => import('./single.js'));
+
+export default {
+	single,
 };
-
-export default templates;
 ```
 
 ### C. Create a catch-all route
