@@ -79,7 +79,7 @@ jobs:
 
       - name: Build Next.js example app
         working-directory: ${{ matrix.next-dir }}
-        run: npm run build
+        run: npm run build -- --webpack
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
