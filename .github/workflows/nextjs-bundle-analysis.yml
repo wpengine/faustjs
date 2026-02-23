@@ -35,7 +35,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install bundle analyzer dependency globally
         run: npm install -g @next/bundle-analyzer
@@ -79,7 +79,7 @@ jobs:
 
       - name: Build Next.js example app
         working-directory: ${{ matrix.next-dir }}
-        run: npm run build
+        run: npm run build -- --webpack
 
       # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
