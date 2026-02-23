@@ -31,10 +31,11 @@ export default function Component(props) {
 	}
 
 	const { generalSettings, headerMenuItems, footerMenuItems } =
-		useFaustQuery(GET_LAYOUT_QUERY);
-	const { page } = useFaustQuery(GET_PAGE_QUERY);
+		useFaustQuery(GET_LAYOUT_QUERY) ?? {};
+	const { page } = useFaustQuery(GET_PAGE_QUERY) ?? {};
 
-	const { title: siteTitle, description: siteDescription } = generalSettings;
+	const { title: siteTitle, description: siteDescription } =
+		generalSettings ?? {};
 	const primaryMenu = headerMenuItems?.nodes ?? [];
 	const footerMenu = footerMenuItems?.nodes ?? [];
 	const { title, content, featuredImage } = page ?? { title: '' };

@@ -44,12 +44,13 @@ const GET_TAG_QUERY = gql`
 export default function Component(props) {
 	const { generalSettings, headerMenuItems, footerMenuItems } =
 		useFaustQuery(GET_LAYOUT_QUERY);
-	const { nodeByUri } = useFaustQuery(GET_TAG_QUERY);
+	const { nodeByUri } = useFaustQuery(GET_TAG_QUERY) ?? {};
 
-	const { title: siteTitle, description: siteDescription } = generalSettings;
+	const { title: siteTitle, description: siteDescription } =
+		generalSettings ?? {};
 	const primaryMenu = headerMenuItems?.nodes ?? [];
 	const footerMenu = footerMenuItems?.nodes ?? [];
-	const { name, posts } = nodeByUri;
+	const { name, posts } = nodeByUri ?? {};
 
 	return (
 		<>
@@ -63,7 +64,7 @@ export default function Component(props) {
 				<>
 					<EntryHeader title={`Tag: ${name}`} />
 					<Container>
-						{posts.edges.map((post) => (
+						{posts?.edges?.map((post) => (
 							<Post
 								title={post.node.title}
 								content={post.node.content}

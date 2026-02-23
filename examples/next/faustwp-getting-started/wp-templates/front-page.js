@@ -6,9 +6,10 @@ import { GET_LAYOUT_QUERY } from '../fragments/LayoutQuery';
 
 export default function Component() {
 	const { generalSettings, headerMenuItems, footerMenuItems } =
-		useFaustQuery(GET_LAYOUT_QUERY);
+		useFaustQuery(GET_LAYOUT_QUERY) ?? {};
 
-	const { title: siteTitle, description: siteDescription } = generalSettings;
+	const { title: siteTitle, description: siteDescription } =
+		generalSettings ?? {};
 	const primaryMenu = headerMenuItems?.nodes ?? [];
 	const footerMenu = footerMenuItems?.nodes ?? [];
 
