@@ -47,6 +47,9 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "optimize-autoloader": true,
+    "platform": {
+      "php": "8.2.21"
+    },
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true,
       "phpstan/extension-installer": true
