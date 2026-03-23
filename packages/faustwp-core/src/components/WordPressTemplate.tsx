@@ -144,6 +144,7 @@ export function WordPressTemplateInternal(
 		unknownTemplate,
 		setQueries,
 		setLoading,
+		isDynamic,
 	]);
 
 	/**
@@ -186,7 +187,15 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [data, unknownTemplate, seedNode, isPreview, isAuthenticated, setLoading]);
+	}, [
+		data,
+		unknownTemplate,
+		seedNode,
+		isPreview,
+		isAuthenticated,
+		setLoading,
+		isDynamic,
+	]);
 
 	useEffect(() => {
 		if (!unknownTemplate || !isDynamic) {
@@ -195,7 +204,7 @@ export function WordPressTemplateInternal(
 		void loadDynamicComponent(unknownTemplate).then((template) => {
 			setResolvedTemplate(() => template);
 		});
-	}, [unknownTemplate]);
+	}, [unknownTemplate, isDynamic]);
 
 	if (!unknownTemplate) {
 		return null;
