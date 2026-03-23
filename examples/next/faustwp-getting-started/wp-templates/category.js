@@ -43,7 +43,7 @@ const GET_CATEGORY_QUERY = gql`
 
 export default function Component(props) {
 	const { generalSettings, headerMenuItems, footerMenuItems } =
-		useFaustQuery(GET_LAYOUT_QUERY);
+		useFaustQuery(GET_LAYOUT_QUERY) ?? {};
 	const { nodeByUri } = useFaustQuery(GET_CATEGORY_QUERY) ?? {};
 
 	const { title: siteTitle, description: siteDescription } =

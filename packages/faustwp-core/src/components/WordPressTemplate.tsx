@@ -76,7 +76,10 @@ export function WordPressTemplateInternal(
 		...wordpressTemplateProps
 	} = props;
 	const unknownTemplate = getTemplate(seedNode, templates);
+	const isDynamic = isDynamicComponent(unknownTemplate);
 	const [data, setData] = useState<any | null>(templateQueryDataProp);
+	const [resolvedTemplate, setResolvedTemplate] =
+		useState<WordPressTemplateType | null>(null);
 	const { setQueries } = useContext(FaustContext) || {};
 
 	/**
@@ -88,7 +91,7 @@ export function WordPressTemplateInternal(
 				return;
 			}
 
-			const template = isDynamicComponent(unknownTemplate)
+			const template = isDynamic
 				? await loadDynamicComponent(unknownTemplate)
 				: unknownTemplate;
 
@@ -141,6 +144,7 @@ export function WordPressTemplateInternal(
 		unknownTemplate,
 		setQueries,
 		setLoading,
+		isDynamic,
 	]);
 
 	/**
@@ -152,7 +156,7 @@ export function WordPressTemplateInternal(
 				return;
 			}
 
-			const template = isDynamicComponent(unknownTemplate)
+			const template = isDynamic
 				? await loadDynamicComponent(unknownTemplate)
 				: unknownTemplate;
 
@@ -183,13 +187,36 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [data, unknownTemplate, seedNode, isPreview, isAuthenticated, setLoading]);
+	}, [
+		data,
+		unknownTemplate,
+		seedNode,
+		isPreview,
+		isAuthenticated,
+		setLoading,
+		isDynamic,
+	]);
+
+	useEffect(() => {
+		if (!unknownTemplate || !isDynamic) {
+			return;
+		}
+		void loadDynamicComponent(unknownTemplate).then((template) => {
+			setResolvedTemplate(() => template);
+		});
+	}, [unknownTemplate, isDynamic]);
 
 	if (!unknownTemplate) {
 		return null;
 	}
 
-	const Component = unknownTemplate as React.FC<{ [key: string]: any }>;
+	if (isDynamic && !resolvedTemplate) {
+		return null;
+	}
+
+	const Component = (
+		isDynamic ? resolvedTemplate : unknownTemplate
+	) as React.FC<{ [key: string]: any }>;
 	const newProps = {
 		...wordpressTemplateProps,
 		__TEMPLATE_QUERY_DATA__: templateQueryDataProp,
