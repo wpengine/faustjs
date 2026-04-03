@@ -70,6 +70,10 @@ export class Cookies {
 		this.response?.setHeader(
 			'Set-Cookie',
 			cookie.serialize(key, '', {
+				path: '/',
+				sameSite: 'strict',
+				secure: true,
+				httpOnly: true,
 				expires: new Date(0),
 			}),
 		);
