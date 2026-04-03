@@ -5,6 +5,7 @@ Requires at least: 5.7
 Tested up to: 6.9
 Stable tag: 1.8.6
 Requires PHP: 7.4
+Requires Plugins: wp-graphql
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 

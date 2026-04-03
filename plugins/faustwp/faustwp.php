@@ -13,6 +13,7 @@
  * Requires PHP: 7.4
  * Requires at least: 5.7
  * Tested up to: 6.9
+ * Requires Plugins: wp-graphql
  * Update URI: false
  *
  * @package FaustWP
