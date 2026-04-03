@@ -242,6 +242,83 @@ describe('createRootSitemapIndex', () => {
 
 		expect(createSitemapIndexSpy).toHaveBeenCalledWith(expectedSitemaps);
 	});
+
+	it('fetches from custom sitemapIndexPath when provided', async () => {
+		const fetchSpy = jest.spyOn(global, 'fetch').mockImplementationOnce((url) => {
+			// Verify the custom path was used in the fetch URL
+			expect(url).toBe('http://headless.local/custom-sitemap-index.xml');
+			return Promise.resolve({
+				ok: true,
+				status: 200,
+				text: () => Promise.resolve(validSitemapIndex1RecordXML),
+			}) as Promise<Response>;
+		});
+
+		const req = {
+			url: 'http://localhost:3000/sitemap.xml',
+		} as NextRequest;
+
+		const config: GetSitemapPropsConfig = {
+			frontendUrl: 'http://localhost:3000',
+			sitemapIndexPath: '/custom-sitemap-index.xml',
+		};
+
+		await createSitemaps.createRootSitemapIndex(req, config);
+
+		expect(fetchSpy).toHaveBeenCalledWith(
+			'http://headless.local/custom-sitemap-index.xml',
+		);
+	});
+
+	it('fetches from default /sitemap.xml when sitemapIndexPath is not provided', async () => {
+		const fetchSpy = jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
+			return Promise.resolve({
+				ok: true,
+				status: 200,
+				text: () => Promise.resolve(validSitemapIndex1RecordXML),
+			}) as Promise<Response>;
+		});
+
+		const req = {
+			url: 'http://localhost:3000/sitemap.xml',
+		} as NextRequest;
+
+		const config: GetSitemapPropsConfig = {
+			frontendUrl: 'http://localhost:3000',
+		};
+
+		await createSitemaps.createRootSitemapIndex(req, config);
+
+		expect(fetchSpy).toHaveBeenCalledWith(
+			'http://headless.local/sitemap.xml',
+		);
+	});
+
+	it('trims slashes from sitemapIndexPath', async () => {
+		const fetchSpy = jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
+			return Promise.resolve({
+				ok: true,
+				status: 200,
+				text: () => Promise.resolve(validSitemapIndex1RecordXML),
+			}) as Promise<Response>;
+		});
+
+		const req = {
+			url: 'http://localhost:3000/sitemap.xml',
+		} as NextRequest;
+
+		const config: GetSitemapPropsConfig = {
+			frontendUrl: 'http://localhost:3000',
+			sitemapIndexPath: '/yoast-sitemap.xml/',
+		};
+
+		await createSitemaps.createRootSitemapIndex(req, config);
+
+		expect(fetchSpy).toHaveBeenCalledWith(
+			'http://headless.local/yoast-sitemap.xml',
+		);
+	});
+
 });
 
 describe('createPagesSitemap()', () => {
