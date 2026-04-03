@@ -23,6 +23,17 @@ add_action( 'parse_request', __NAMESPACE__ . '\\handle_generate_endpoint' );
  */
 function handle_generate_endpoint() {
 	$search_pattern = ':^' . site_url( '/generate', 'relative' ) . ':';
+	/**
+	 * Filter the search pattern used to match the generate endpoint.
+	 *
+	 * Useful for non-standard WordPress installations (e.g. Bedrock) where
+	 * site_url() includes a subdirectory that does not appear in REQUEST_URI.
+	 *
+	 * @since 1.8.7
+	 *
+	 * @param string $search_pattern The regex pattern used to match the generate endpoint.
+	 */
+	$search_pattern = apply_filters( 'faustwp_generate_endpoint_search_pattern', $search_pattern );
 
 	if ( ! preg_match( $search_pattern, $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security
 		return;
