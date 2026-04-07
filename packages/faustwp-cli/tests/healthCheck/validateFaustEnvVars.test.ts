@@ -71,8 +71,6 @@ describe('healthCheck/validateFaustEnvVars', () => {
 			`Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings`,
 		);
 	});
-});
-
 
 	it('logs a Basic Auth error when the site returns 401 with WWW-Authenticate: Basic', async () => {
 		// @ts-ignore
@@ -107,6 +105,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
 		mockLog.mockRestore();
 	});
+});
 
 describe('isWPEngineComTLD', () => {
 	it('matches subdomains on wpengine.com', () => {
