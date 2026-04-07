@@ -13,11 +13,12 @@ From data fetching to Block components, Faust.js® has you covered. Build your h
 
 Some of the main Faust.js® features include:
 
-| Feature                                            | Description                                                        |
-| -------------------------------------------------- | ------------------------------------------------------------------ |
-| [Authentication](/docs/how-to/authentication/)     | Authenticate users in your Next.js app with WordPress              |
-| [Block Components](/docs/how-to/rendering-blocks/) | Render WordPress blocks in your Next.js app                        |
-| [Post Preview](/docs/how-to/post-previews/)        | Preview posts and pages in your Next.js app before publishing them |
+| Feature                                            | Description                                                                          |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [Template Hierarchy](/docs/explanation/seed-query/) | Automatically resolve WordPress content to the right template, just like classic PHP  |
+| [Authentication](/docs/how-to/authentication/)     | Authenticate users in your Next.js app with WordPress                                |
+| [Block Components](/docs/how-to/rendering-blocks/) | Render WordPress blocks in your Next.js app                                          |
+| [Post Preview](/docs/how-to/post-previews/)        | Preview posts and pages in your Next.js app before publishing them                   |
 
 ## How to Use These Docs
 
