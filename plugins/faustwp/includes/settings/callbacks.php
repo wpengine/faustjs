@@ -44,7 +44,7 @@ function frontend_url_notice() {
 					printf(
 						/* translators: Link text */
 						esc_html__( 'See the %1$s Getting Started Documentation%2$s for more details.', 'faustwp' ),
-						'<a href="https://faustjs.org/docs/getting-started" target="_blank" rel="noopener noreferrer">',
+						'<a href="https://faustjs.org/docs/how-to/basic-setup" target="_blank" rel="noopener noreferrer">',
 						'</a>'
 					);
 					?>
@@ -396,7 +396,7 @@ function display_secret_key_field() {
 		printf(
 			/* translators: %s: Documentation URL. */
 			wp_kses_post( __( 'This key is used to enable <a href="%s" target="_blank" rel="noopener noreferrer">headless post previews</a> and make authenticated GraphQL requests for schema generation.', 'faustwp' ) ),
-			'https://faustjs.org/guide/how-to-setup-post-and-page-previews'
+			'https://faustjs.org/docs/how-to/post-previews'
 		);
 		?>
 	</p>
@@ -442,7 +442,7 @@ function display_enable_disable_fields() {
 				printf(
 				/* translators: %s: Documentation URL. */
 					wp_kses_post( __( 'Learn more about <a href="%s" target="_blank" rel="noopener noreferrer">features</a>.', 'faustwp' ) ),
-					'https://faustjs.org/docs/faustwp/settings'
+					'https://faustjs.org/docs/how-to/basic-setup'
 				);
 				?>
 			</p>
