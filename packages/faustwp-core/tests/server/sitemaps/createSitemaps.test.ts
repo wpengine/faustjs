@@ -244,15 +244,17 @@ describe('createRootSitemapIndex', () => {
 	});
 
 	it('fetches from custom sitemapIndexPath when provided', async () => {
-		const fetchSpy = jest.spyOn(global, 'fetch').mockImplementationOnce((url) => {
-			// Verify the custom path was used in the fetch URL
-			expect(url).toBe('http://headless.local/custom-sitemap-index.xml');
-			return Promise.resolve({
-				ok: true,
-				status: 200,
-				text: () => Promise.resolve(validSitemapIndex1RecordXML),
-			}) as Promise<Response>;
-		});
+		const fetchSpy = jest
+			.spyOn(global, 'fetch')
+			.mockImplementationOnce((url) => {
+				// Verify the custom path was used in the fetch URL
+				expect(url).toBe('http://headless.local/custom-sitemap-index.xml');
+				return Promise.resolve({
+					ok: true,
+					status: 200,
+					text: () => Promise.resolve(validSitemapIndex1RecordXML),
+				}) as Promise<Response>;
+			});
 
 		const req = {
 			url: 'http://localhost:3000/sitemap.xml',
@@ -289,9 +291,7 @@ describe('createRootSitemapIndex', () => {
 
 		await createSitemaps.createRootSitemapIndex(req, config);
 
-		expect(fetchSpy).toHaveBeenCalledWith(
-			'http://headless.local/sitemap.xml',
-		);
+		expect(fetchSpy).toHaveBeenCalledWith('http://headless.local/sitemap.xml');
 	});
 
 	it('trims slashes from sitemapIndexPath', async () => {
@@ -318,7 +318,6 @@ describe('createRootSitemapIndex', () => {
 			'http://headless.local/yoast-sitemap.xml',
 		);
 	});
-
 });
 
 describe('createPagesSitemap()', () => {
