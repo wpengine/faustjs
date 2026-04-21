@@ -66,8 +66,9 @@ function filter_introspection( $value, $default_value, $option_name, $section_fi
 		return $value;
 	}
 
-	$secret_key = get_secret_key();
-	if ( $secret_key !== $_SERVER['HTTP_X_FAUST_SECRET'] ) {
+	$secret_key   = get_secret_key();
+	$faust_secret = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FAUST_SECRET'] ) );
+	if ( ! hash_equals( $secret_key, $faust_secret ) ) {
 		return $value;
 	}
 
