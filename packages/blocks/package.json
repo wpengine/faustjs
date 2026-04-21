@@ -17,7 +17,8 @@
 		"@testing-library/jest-dom": "^5.16.5",
 		"@types/node": "^18.0.6",
 		"@types/react": "^17.0.34",
-		"rimraf": "^4.4.0"
+		"rimraf": "^4.4.0",
+		"ts-jest": "^29.4.6"
 	},
 	"scripts": {
 		"prebuild": "npm run clean",
