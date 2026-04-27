@@ -54,6 +54,7 @@ jobs:
       # writing this they do not function as expected on GH actions
       - name: replace downloaded registry faust packages with local build
         run: |
+          mkdir -p e2e-app/node_modules/@faustwp
           rm -rf e2e-app/node_modules/@faustwp/cli
           rm -rf e2e-app/node_modules/@faustwp/core
           cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
