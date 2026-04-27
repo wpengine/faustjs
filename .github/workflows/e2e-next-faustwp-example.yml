@@ -62,6 +62,15 @@ jobs:
           mkdir -p e2e-app/node_modules/.bin
           ln -sf ../@faustwp/cli/dist/index.js e2e-app/node_modules/.bin/faust
           chmod +x e2e-app/node_modules/@faustwp/cli/dist/index.js
+      # create-next-app's npm install may fail if @faustwp/* versions
+      # are not yet published. Point deps at local builds so npm install
+      # can resolve them and install all remaining dependencies.
+      - name: install e2e-app dependencies
+        working-directory: e2e-app
+        run: |
+          npm pkg set "dependencies.@faustwp/cli=file:../packages/faustwp-cli"
+          npm pkg set "dependencies.@faustwp/core=file:../packages/faustwp-core"
+          npm install
       - name: copy env
         working-directory: e2e-app
         run: |
