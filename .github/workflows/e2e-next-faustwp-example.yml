@@ -59,7 +59,9 @@ jobs:
           rm -rf e2e-app/node_modules/@faustwp/core
           cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
           cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
-          chmod +x e2e-app/node_modules/.bin/faust
+          mkdir -p e2e-app/node_modules/.bin
+          ln -sf ../@faustwp/cli/dist/index.js e2e-app/node_modules/.bin/faust
+          chmod +x e2e-app/node_modules/@faustwp/cli/dist/index.js
       - name: copy env
         working-directory: e2e-app
         run: |
