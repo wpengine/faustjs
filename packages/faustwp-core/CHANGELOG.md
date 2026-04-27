@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## 3.4.1
+
+### Patch Changes
+
+- 10ad814: fix[faustwp-core]: add path, sameSite, secure, and httpOnly flags to removeCookie() to match setCookie() attributes
+- b087ac3: test[faustwp-core]: add test coverage for sitemapIndexPath option in createRootSitemapIndex
+
 ## 3.4.0
 
 ### Minor Changes

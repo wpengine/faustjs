@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.9
-Stable tag: 1.8.6
+Stable tag: 1.8.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.8.7 =
+
+### Patch Changes
+
+- ca1e2f4: fix[faustwp]: update documentation links in settings page to use current URL structure
+
 = 1.8.6 =
 
 ### Patch Changes
@@ -68,12 +74,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - 6bf8a7e: Add WordPress 6.9 to the CI test matrix and update the plugin "Tested up to" header to 6.9.
-
-= 1.8.4 =
-
-### Patch Changes
-
-- 5ce074a: Tested Faust on WordPress 6.8.1
-- 8684b83: Fixed issue in content_replacement when site_url() contains port
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

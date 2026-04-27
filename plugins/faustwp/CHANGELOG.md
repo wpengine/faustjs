@@ -1,5 +1,11 @@
 # Faust
 
+## 1.8.7
+
+### Patch Changes
+
+- ca1e2f4: fix[faustwp]: update documentation links in settings page to use current URL structure
+
 ## 1.8.6
 
 ### Patch Changes
