@@ -62,12 +62,14 @@
 	"overrides": {
 		"semver": "~7.5.2",
 		"optionator": "0.9.3",
-		"postcss": "8.4.31",
+		"postcss": "^8.5.10",
 		"axios": "^1.7.4",
 		"cross-spawn": "^7.0.6",
 		"@babel/runtime": "^7.27.0",
 		"test-exclude": "^7.0.1",
-		"immutable": "^5.1.5"
+		"immutable": "^5.1.5",
+		"uuid": ">=14.0.0",
+		"@tootallnate/once": ">=3.0.1"
 	},
 	"resolutions": {
 		"@babel/runtime": "7.27.0"
