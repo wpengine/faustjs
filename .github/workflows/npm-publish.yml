@@ -41,7 +41,7 @@ jobs:
         run: npm ci
 
       - name: Upgrade npm for OIDC support
-        run: npm install -g npm@^11.5.1
+        run: npm install -g npm@11.13.0
 
       - name: Verify OIDC token availability
         run: |
@@ -63,4 +63,4 @@ jobs:
 
       - name: Push tags
         if: inputs.push-tags
-        run: git push --follow-tags
+        run: git push origin --tags
