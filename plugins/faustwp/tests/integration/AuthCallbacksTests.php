@@ -42,11 +42,31 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 	 */
 	private $original_siteurl = '';
 
+	/**
+	 * Snapshots of superglobal values taken in setUp and restored in tearDown.
+	 *
+	 * `phpunit.xml.dist` sets backupGlobals="false" so anything we mutate on
+	 * $_SERVER / $_GET persists across test classes. The WP test bootstrap and
+	 * other test classes downstream of this one (e.g. TelemetryCallbacksTests,
+	 * which triggers wp-cron) depend on REQUEST_URI being defined. Snapshot it
+	 * here so our tearDown leaves the world exactly as we found it.
+	 *
+	 * @var array{request_uri: string|null, get: array<string, mixed>}
+	 */
+	private $original_globals = array(
+		'request_uri' => null,
+		'get'         => array(),
+	);
+
 	public function setUp(): void {
 		parent::setUp();
 
 		self::$captured_redirect = null;
 		$this->original_siteurl  = get_option( 'siteurl' );
+		$this->original_globals  = array(
+			'request_uri' => isset( $_SERVER['REQUEST_URI'] ) ? (string) $_SERVER['REQUEST_URI'] : null,
+			'get'         => $_GET,
+		);
 
 		// handle_generate_endpoint() calls wp_safe_redirect() and then a bare exit;.
 		// Redefine wp_safe_redirect via Patchwork to throw a dedicated exception,
@@ -65,7 +85,17 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 	public function tearDown(): void {
 		\Patchwork\restoreAll();
 		update_option( 'siteurl', $this->original_siteurl );
-		unset( $_SERVER['REQUEST_URI'], $_GET['redirect_uri'] );
+
+		// Restore superglobals to whatever the WP test bootstrap (or a prior test
+		// class) had them at. Unsetting REQUEST_URI here would break the cron path
+		// in subsequent test classes -- it leaked into TelemetryCallbacksTests on CI.
+		if ( null === $this->original_globals['request_uri'] ) {
+			unset( $_SERVER['REQUEST_URI'] );
+		} else {
+			$_SERVER['REQUEST_URI'] = $this->original_globals['request_uri'];
+		}
+		$_GET = $this->original_globals['get'];
+
 		self::$captured_redirect = null;
 		parent::tearDown();
 	}
