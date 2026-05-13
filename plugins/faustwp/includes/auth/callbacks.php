@@ -19,10 +19,17 @@ add_action( 'parse_request', __NAMESPACE__ . '\\handle_generate_endpoint' );
  *
  * Generate an authorization code and redirect to the requested url.
  *
+ * Note: matches REQUEST_URI against the filtered output of home_url(). Plugins
+ * that filter home_url() to prepend locale paths (WPML, Polylang, TranslatePress)
+ * may cause this match to fail when the frontend calls '/generate' directly
+ * without a locale prefix. If that combination surfaces in support, the
+ * follow-up will likely migrate '/generate' to a proper REST route so locale
+ * filters cannot affect the match.
+ *
  * @return void
  */
 function handle_generate_endpoint() {
-	$search_pattern = ':^' . site_url( '/generate', 'relative' ) . ':';
+	$search_pattern = ':^' . home_url( '/generate', 'relative' ) . ':';
 
 	if ( ! preg_match( $search_pattern, $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security
 		return;
