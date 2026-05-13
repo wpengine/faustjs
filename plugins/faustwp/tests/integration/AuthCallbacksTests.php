@@ -71,14 +71,19 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Reconfigure the WordPress siteurl option to mirror a Bedrock-style install
-	 * (WP core under /wp/, public site at root). Matches what
-	 * `composer create-project roots/bedrock` configures via WP_SITEURL in
-	 * wp-config.php.
+	 * Reconfigure the WordPress siteurl option to a split-install layout where WP
+	 * core lives in a subdirectory of the public site.
+	 *
+	 * Default suffix '/wp' mirrors Bedrock (what `composer create-project roots/bedrock`
+	 * sets via WP_SITEURL in wp-config.php). Pass '/wordpress' for the Codex-documented
+	 * "Giving WordPress its own directory" pattern, or any other prefix to exercise
+	 * other split-install configurations.
+	 *
+	 * @param string $suffix Path appended to the home option to form siteurl. Defaults to '/wp'.
 	 */
-	private function set_bedrock_siteurl(): void {
+	private function set_split_install_siteurl( string $suffix = '/wp' ): void {
 		$home = (string) get_option( 'home' );
-		update_option( 'siteurl', rtrim( $home, '/' ) . '/wp' );
+		update_option( 'siteurl', rtrim( $home, '/' ) . $suffix );
 	}
 
 	/**
@@ -98,7 +103,10 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 
 	/**
 	 * Standard install: REQUEST_URI matches the default search pattern; the
-	 * function proceeds to wp_safe_redirect (login-redirect branch).
+	 * function proceeds to wp_safe_redirect (login-redirect branch). The
+	 * redirect_uri query arg from the original request must be carried through
+	 * into the wp-login redirect_to param so the user lands back at the right
+	 * frontend after authenticating.
 	 */
 	public function test_standard_install_matches_and_redirects(): void {
 		$_SERVER['REQUEST_URI'] = '/generate?redirect_uri=https://frontend.example/';
@@ -108,6 +116,11 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 
 		$this->assertNotNull( $redirect, 'Standard install must reach wp_safe_redirect.' );
 		$this->assertStringContainsString( 'wp-login.php', $redirect );
+		$this->assertStringContainsString(
+			'frontend.example',
+			$redirect,
+			'redirect_uri value must be preserved in the wp-login redirect_to param.'
+		);
 	}
 
 	/**
@@ -119,7 +132,7 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 	 * the public REQUEST_URI.
 	 */
 	public function test_bedrock_divergence_matches_with_home_url(): void {
-		$this->set_bedrock_siteurl();
+		$this->set_split_install_siteurl( '/wp' );
 
 		// Sanity-check the divergence we just configured: site_url carries /wp,
 		// home_url does not. If these fail, the test environment itself is broken
@@ -135,6 +148,33 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 		$this->assertNotNull(
 			$redirect,
 			'Bedrock layout (siteurl includes /wp, home does not) must still match REQUEST_URI=/generate when home_url() is used.'
+		);
+		$this->assertStringContainsString( 'wp-login.php', $redirect );
+		$this->assertStringContainsString( 'frontend.example', $redirect );
+	}
+
+	/**
+	 * "Giving WordPress its own directory" install: the Codex-documented pattern
+	 * where WP core is installed in a subdirectory (e.g. /wordpress) but the
+	 * site is served from the public root. Different prefix from Bedrock, same
+	 * shape of divergence -- proves the fix generalises beyond '/wp' specifically.
+	 *
+	 * Ref: https://wordpress.org/documentation/article/giving-wordpress-its-own-directory/
+	 */
+	public function test_wp_in_subdirectory_install_matches_with_home_url(): void {
+		$this->set_split_install_siteurl( '/wordpress' );
+
+		$this->assertStringEndsWith( '/wordpress/generate', site_url( '/generate', 'relative' ) );
+		$this->assertStringEndsWith( '/generate', home_url( '/generate', 'relative' ) );
+
+		$_SERVER['REQUEST_URI'] = '/generate?redirect_uri=https://frontend.example/';
+		$_GET['redirect_uri']   = 'https://frontend.example/';
+
+		$redirect = $this->invoke_handler();
+
+		$this->assertNotNull(
+			$redirect,
+			'WP-in-subdirectory layout (siteurl includes /wordpress, home does not) must still match REQUEST_URI=/generate.'
 		);
 		$this->assertStringContainsString( 'wp-login.php', $redirect );
 	}
