@@ -12,65 +12,73 @@ use WPE\FaustWP\Auth;
 /**
  * Regression tests for handle_generate_endpoint().
  *
- * Guards the home_url() vs site_url() behavior so the fix for #1872 -- Bedrock-style
- * installs where WordPress core lives under /wp/ -- cannot be silently reverted by a
- * future change.
+ * Guards the home_url() vs site_url() behavior in handle_generate_endpoint() so
+ * the fix for #1872 -- Bedrock-style installs where WordPress core lives under
+ * /wp/ -- cannot be silently reverted.
+ *
+ * The Bedrock case is reproduced by overriding the `siteurl` option directly
+ * (matching what Bedrock configures via WP_SITEURL in wp-config.php) rather
+ * than filtering `site_url`. That way every consumer of `get_option('siteurl')`
+ * and `site_url()` sees the divergent value, which is faithful to real Bedrock.
  *
  * @group auth
  */
 class AuthCallbacksTests extends \WP_UnitTestCase {
 
+	/**
+	 * Redirect URL captured by the Patchwork-redefined wp_safe_redirect.
+	 *
+	 * Static so the redefine closure can write to it without binding $this.
+	 *
+	 * @var string|null
+	 */
+	public static $captured_redirect = null;
+
+	/**
+	 * Original siteurl option value, restored in tearDown so tests stay isolated
+	 * even if WP_UnitTestCase's transaction rollback misses something.
+	 *
+	 * @var string
+	 */
+	private $original_siteurl = '';
+
 	public function setUp(): void {
 		parent::setUp();
-		$GLOBALS['__test_captured_redirect'] = null;
+
+		self::$captured_redirect = null;
+		$this->original_siteurl  = get_option( 'siteurl' );
 
 		// handle_generate_endpoint() calls wp_safe_redirect() and then a bare exit;.
-		// Redefine wp_safe_redirect via Patchwork to throw, which bypasses the exit
-		// and lets us assert which redirect target was reached.
+		// Redefine wp_safe_redirect via Patchwork to throw a dedicated exception,
+		// which bypasses the exit and lets us assert which redirect target was
+		// reached. A dedicated exception class avoids the string-matching trap of
+		// a generic RuntimeException (which could collide with unrelated errors).
 		\Patchwork\redefine(
 			'wp_safe_redirect',
-			function ( $location ) {
-				$GLOBALS['__test_captured_redirect'] = $location;
-				throw new \RuntimeException( 'test:wp_safe_redirect' );
+			static function ( $location ) {
+				AuthCallbacksTests::$captured_redirect = $location;
+				throw new RedirectAttempted( (string) $location );
 			}
 		);
 	}
 
 	public function tearDown(): void {
 		\Patchwork\restoreAll();
-		unset(
-			$_SERVER['REQUEST_URI'],
-			$_GET['redirect_uri'],
-			$GLOBALS['__test_captured_redirect']
-		);
-		remove_all_filters( 'site_url' );
-		remove_all_filters( 'home_url' );
+		update_option( 'siteurl', $this->original_siteurl );
+		unset( $_SERVER['REQUEST_URI'], $_GET['redirect_uri'] );
+		self::$captured_redirect = null;
 		parent::tearDown();
 	}
 
 	/**
-	 * Simulate a Bedrock-style URL layout: site_url() returns /wp/<path>, home_url()
-	 * stays at /<path>. Mirrors the divergence reported in #1872.
-	 *
-	 * Real Bedrock installs return /wp/<path> from site_url($path, 'relative') because
-	 * the siteurl option is configured as <host>/wp. We replicate that here by handling
-	 * both relative (just /<path>) and absolute (<scheme>://<host>/<path>) URL shapes.
+	 * Reconfigure the WordPress siteurl option to mirror a Bedrock-style install
+	 * (WP core under /wp/, public site at root). Matches what
+	 * `composer create-project roots/bedrock` configures via WP_SITEURL in
+	 * wp-config.php.
 	 */
-	private function set_bedrock_layout(): void {
-		add_filter(
-			'site_url',
-			static function ( $url ) {
-				// Relative URL (scheme='relative'): /<path> -> /wp/<path>
-				if ( '' !== $url && '/' === $url[0] && ( ! isset( $url[1] ) || '/' !== $url[1] ) ) {
-					return '/wp' . $url;
-				}
-				// Absolute URL: <scheme>://<host>/<path> -> <scheme>://<host>/wp/<path>
-				return preg_replace( '#(https?://[^/]+)(/.*)?#', '$1/wp$2', $url );
-			},
-			10,
-			1
-		);
-		// home_url left at the default ('/<path>').
+	private function set_bedrock_siteurl(): void {
+		$home = (string) get_option( 'home' );
+		update_option( 'siteurl', rtrim( $home, '/' ) . '/wp' );
 	}
 
 	/**
@@ -82,18 +90,15 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 	private function invoke_handler() {
 		try {
 			Auth\handle_generate_endpoint();
-		} catch ( \RuntimeException $e ) {
-			if ( 'test:wp_safe_redirect' === $e->getMessage() ) {
-				return $GLOBALS['__test_captured_redirect'];
-			}
-			throw $e;
+		} catch ( RedirectAttempted $e ) {
+			return self::$captured_redirect;
 		}
-		return null; // function returned before reaching wp_safe_redirect.
+		return null;
 	}
 
 	/**
-	 * Standard install: REQUEST_URI matches the default search pattern; the function
-	 * proceeds to wp_safe_redirect (login redirect when not authenticated).
+	 * Standard install: REQUEST_URI matches the default search pattern; the
+	 * function proceeds to wp_safe_redirect (login-redirect branch).
 	 */
 	public function test_standard_install_matches_and_redirects(): void {
 		$_SERVER['REQUEST_URI'] = '/generate?redirect_uri=https://frontend.example/';
@@ -101,22 +106,27 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 
 		$redirect = $this->invoke_handler();
 
-		$this->assertNotNull(
-			$redirect,
-			'Standard install must reach wp_safe_redirect.'
-		);
+		$this->assertNotNull( $redirect, 'Standard install must reach wp_safe_redirect.' );
 		$this->assertStringContainsString( 'wp-login.php', $redirect );
 	}
 
 	/**
-	 * Bedrock layout: home_url() returns /generate while site_url() returns /wp/generate.
-	 * With the home_url() fix in place, REQUEST_URI=/generate still matches.
+	 * Bedrock-shaped install: the siteurl option includes /wp while home does not.
+	 * With home_url() in callbacks.php, REQUEST_URI=/generate still matches.
 	 *
-	 * This is the regression guard for #1872: if a future change reverts callbacks.php
-	 * to site_url(), this test goes red because the regex would no longer match.
+	 * Regression guard for #1872: this test fails if callbacks.php is reverted
+	 * to site_url() because the regex becomes /wp/generate and stops matching
+	 * the public REQUEST_URI.
 	 */
 	public function test_bedrock_divergence_matches_with_home_url(): void {
-		$this->set_bedrock_layout();
+		$this->set_bedrock_siteurl();
+
+		// Sanity-check the divergence we just configured: site_url carries /wp,
+		// home_url does not. If these fail, the test environment itself is broken
+		// before we even exercise the handler.
+		$this->assertStringEndsWith( '/wp/generate', site_url( '/generate', 'relative' ) );
+		$this->assertStringEndsWith( '/generate', home_url( '/generate', 'relative' ) );
+
 		$_SERVER['REQUEST_URI'] = '/generate?redirect_uri=https://frontend.example/';
 		$_GET['redirect_uri']   = 'https://frontend.example/';
 
@@ -124,8 +134,9 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 
 		$this->assertNotNull(
 			$redirect,
-			'Bedrock layout (site_url=/wp/x, home_url=/x) must still match REQUEST_URI=/x once home_url() is used.'
+			'Bedrock layout (siteurl includes /wp, home does not) must still match REQUEST_URI=/generate when home_url() is used.'
 		);
+		$this->assertStringContainsString( 'wp-login.php', $redirect );
 	}
 
 	/**
@@ -148,3 +159,12 @@ class AuthCallbacksTests extends \WP_UnitTestCase {
 		$this->assertNull( $this->invoke_handler() );
 	}
 }
+
+/**
+ * Thrown by the Patchwork redefine of wp_safe_redirect inside AuthCallbacksTests
+ * to bypass the bare `exit;` that immediately follows wp_safe_redirect() in
+ * handle_generate_endpoint(). Keeping this as a dedicated subclass (rather than
+ * a generic RuntimeException with a magic string) means the catch in
+ * invoke_handler() can't accidentally swallow unrelated runtime errors.
+ */
+class RedirectAttempted extends \Exception {}
