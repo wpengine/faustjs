@@ -53,6 +53,7 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
 
 	$unzip_result = unzip_uploaded_file( $target_file, $dirs['target'] );
 	if ( is_wp_error( $unzip_result ) ) {
+		$wp_filesystem->delete( $target_file );
 		return $unzip_result;
 	}
 
