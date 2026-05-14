@@ -147,6 +147,9 @@ class RestCallbacksTests extends \WP_UnitTestCase {
 		$rest_callbacks    = file_get_contents( dirname( __DIR__, 2 ) . '/includes/rest/callbacks.php' );
 		$graphql_callbacks = file_get_contents( dirname( __DIR__, 2 ) . '/includes/graphql/callbacks.php' );
 
+		$this->assertNotFalse( $rest_callbacks, 'Failed to read includes/rest/callbacks.php for regression guard.' );
+		$this->assertNotFalse( $graphql_callbacks, 'Failed to read includes/graphql/callbacks.php for regression guard.' );
+
 		// The three bad patterns this PR replaces:
 		$this->assertStringNotContainsString( '=== $header_key', $rest_callbacks,
 			'rest_authorize_permission_callback must use hash_equals(), not ===.' );
