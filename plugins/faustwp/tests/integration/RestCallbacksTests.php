@@ -150,7 +150,10 @@ class RestCallbacksTests extends \WP_UnitTestCase {
 		$this->assertNotFalse( $rest_callbacks, 'Failed to read includes/rest/callbacks.php for regression guard.' );
 		$this->assertNotFalse( $graphql_callbacks, 'Failed to read includes/graphql/callbacks.php for regression guard.' );
 
-		// The three bad patterns this PR replaces:
+		// The bad comparison shapes this PR replaces (two distinct patterns, three
+		// call sites: '=== $header_key' covers both rest_authorize_permission_callback
+		// and wpac_authorize_permission_callback; '!== $_SERVER[...]' covers
+		// filter_introspection):
 		$this->assertStringNotContainsString( '=== $header_key', $rest_callbacks,
 			'rest_authorize_permission_callback must use hash_equals(), not ===.' );
 		$this->assertStringNotContainsString( "!== \$_SERVER['HTTP_X_FAUST_SECRET']", $graphql_callbacks,
