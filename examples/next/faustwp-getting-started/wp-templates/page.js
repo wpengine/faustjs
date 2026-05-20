@@ -26,7 +26,7 @@ const GET_PAGE_QUERY = gql`
 
 export default function Component(props) {
 	// Loading state for previews
-	if (props.loading) {
+	if (props?.loading) {
 		return <>Loading...</>;
 	}
 

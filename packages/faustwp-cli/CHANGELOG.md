@@ -1,5 +1,11 @@
 # @faustwp/cli
 
+## 3.4.1
+
+### Patch Changes
+
+- d8b9d2e: fix[faustwp-cli]: detect HTTP Basic Auth on 401 response and show accurate error message instead of misleading secret key mismatch
+
 ## 3.3.6
 
 ### Patch Changes

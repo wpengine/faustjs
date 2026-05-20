@@ -1,22 +1,23 @@
 {
-  "name": "@faustwp/custom-toolbar",
-  "private": true,
-  "scripts": {
-    "dev": "faust dev",
-    "build": "faust build",
-    "generate": "faust generatePossibleTypes",
-    "start": "faust start"
-  },
-  "dependencies": {
-    "@apollo/client": "^3.7.7",
-    "@faustwp/cli": "^3.2.5",
-    "@faustwp/core": "^3.3.2",
-    "graphql": "^16.6.0",
-    "next": "^15.5.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
-  "overrides": {
-    "fast-xml-parser": "^5.3.4"
-  }
+	"name": "@faustwp/custom-toolbar",
+	"private": true,
+	"scripts": {
+		"dev": "faust dev",
+		"build": "faust build",
+		"generate": "faust generatePossibleTypes",
+		"start": "faust start"
+	},
+	"dependencies": {
+		"@apollo/client": "^3.7.7",
+		"@faustwp/cli": "^3.2.5",
+		"@faustwp/core": "^3.3.2",
+		"graphql": "^16.6.0",
+		"next": "^15.5.18",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
+	},
+	"overrides": {
+		"fast-xml-parser": "^5.3.4",
+		"postcss": "^8.5.10"
+	}
 }

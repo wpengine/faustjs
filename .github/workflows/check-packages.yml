@@ -26,6 +26,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Node.js
         uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
       - name: Check Linting
         run: npm run lint
   check_format:
@@ -37,5 +41,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up Node.js
         uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
       - name: Check Formatting
         run: npm run test:format

@@ -54,11 +54,25 @@ jobs:
       # writing this they do not function as expected on GH actions
       - name: replace downloaded registry faust packages with local build
         run: |
+          mkdir -p e2e-app/node_modules/@faustwp
           rm -rf e2e-app/node_modules/@faustwp/cli
           rm -rf e2e-app/node_modules/@faustwp/core
           cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
           cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
-          chmod +x e2e-app/node_modules/.bin/faust
+          mkdir -p e2e-app/node_modules/.bin
+          ln -sf ../@faustwp/cli/dist/index.js e2e-app/node_modules/.bin/faust
+          chmod +x e2e-app/node_modules/@faustwp/cli/dist/index.js
+      # create-next-app's npm install may fail if @faustwp/* versions
+      # are not yet published. Point deps at local builds so npm install
+      # can resolve them and install all remaining dependencies.
+      # --install-links copies packages instead of symlinking, avoiding
+      # duplicate React instances from split module resolution.
+      - name: install e2e-app dependencies
+        working-directory: e2e-app
+        run: |
+          npm pkg set "dependencies.@faustwp/cli=file:../packages/faustwp-cli"
+          npm pkg set "dependencies.@faustwp/core=file:../packages/faustwp-core"
+          npm install --install-links
       - name: copy env
         working-directory: e2e-app
         run: |

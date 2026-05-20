@@ -58,10 +58,19 @@ export const validateFaustEnvVars = async () => {
 				method: 'POST',
 			});
 			if (response.status === 401) {
-				// Unauthorized: User receives a 401 status code AND the message below
-				errorLog(
-					'Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings',
-				);
+				const wwwAuth = response.headers.get('www-authenticate') || '';
+				if (wwwAuth.toLowerCase().includes('basic')) {
+					errorLog(
+						'Your WordPress site appears to be protected with HTTP Basic Authentication.',
+					);
+					errorLog(
+						'Faust cannot validate the secret key until Basic Auth credentials are provided or the protection is removed.',
+					);
+				} else {
+					errorLog(
+						'Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings',
+					);
+				}
 				process.exit(1);
 			}
 			await validateNextWordPressUrl();

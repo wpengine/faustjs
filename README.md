@@ -22,7 +22,7 @@ Faust.js is a toolkit for building Next.js applications for headless WordPress s
 
 ## System Requirements
 
-- Node.js v16.0.0 or newer (v16.8.0 when using Next.js 13 and v18.17 when using Next.js 14).
+- Node.js v18 or newer. npm v8 or newer.
 - MacOS, Windows (including WSL), and Linux are supported.
 
 ## Documentation
