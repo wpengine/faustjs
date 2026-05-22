@@ -32,7 +32,7 @@
 		"@wordpress/scripts": "^30.26.2"
 	},
 	"engines": {
-		"node": ">=18",
+		"node": ">=22",
 		"npm": ">=10"
 	},
 	"overrides": {

@@ -57,7 +57,7 @@
 	},
 	"homepage": "https://github.com/wpengine/faustjs#readme",
 	"engines": {
-		"node": ">=18",
+		"node": ">=22",
 		"npm": ">=8"
 	},
 	"publishConfig": {
