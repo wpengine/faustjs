@@ -67,3 +67,13 @@ jobs:
       - name: Push tags
         if: inputs.push-tags
         run: git push origin --tags
+
+      - name: Create GitHub Releases
+        if: inputs.push-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag --points-at HEAD | while IFS= read -r tag; do
+            echo "Creating GitHub release for $tag"
+            gh release create "$tag" --title "$tag" --generate-notes || true
+          done
