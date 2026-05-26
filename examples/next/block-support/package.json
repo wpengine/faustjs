@@ -29,7 +29,7 @@
 		"next-secure-headers": "^2.2.0"
 	},
 	"optionalDependencies": {
-		"@wordpress/scripts": "^30.26.2"
+		"@wordpress/scripts": "^31.6.0"
 	},
 	"engines": {
 		"node": ">=18",
