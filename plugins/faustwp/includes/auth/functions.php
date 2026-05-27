@@ -167,7 +167,7 @@ function encrypt( $value ) {
 		return false;
 	}
 
-	$hash = hash_hmac( 'sha256', $cipher_text, $secret_key, true );
+	$hash = hash_hmac( 'sha256', $iv . $cipher_text, $secret_key, true );
 
 	return base64_encode( $iv . $hash . $cipher_text ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 }
@@ -195,7 +195,7 @@ function decrypt( $value ) {
 	$iv          = substr( $value, 0, $iv_length );
 	$hash        = substr( $value, $iv_length, 32 );
 	$cipher_text = substr( $value, $iv_length + 32 );
-	$hash_comp   = hash_hmac( 'sha256', $cipher_text, $secret_key, true );
+	$hash_comp   = hash_hmac( 'sha256', $iv . $cipher_text, $secret_key, true );
 
 	if ( hash_equals( $hash, $hash_comp ) ) {
 		$decrypted_value = openssl_decrypt( $cipher_text, 'AES-256-CBC', $secret_key, OPENSSL_RAW_DATA, $iv );
