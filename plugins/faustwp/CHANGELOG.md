@@ -1,5 +1,11 @@
 # Faust
 
+## 1.8.8
+
+### Patch Changes
+
+- cda00de: fix[faustwp]: include the IV in the token envelope HMAC to prevent authentication bypass via IV bit-flipping (GHSA-q6pm-r77q-qcv3)
+
 ## 1.8.7
 
 ### Patch Changes
