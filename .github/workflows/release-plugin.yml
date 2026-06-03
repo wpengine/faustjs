@@ -64,6 +64,19 @@ jobs:
             echo "Tag ${VERSION} did not exist; continuing"
           fi
 
+      - name: Stage clean plugin payload
+        # Upstream 10up skips .distignore when BUILD_DIR is set, so apply the
+        # exclusion rules here by rsyncing plugins/faustwp/ into a staging
+        # directory through .distignore. The 10up step then ships the staging
+        # directory as-is.
+        run: |
+          mkdir -p plugin-build/faustwp
+          rsync -rc \
+            --exclude-from=plugins/faustwp/.distignore \
+            --exclude=plugin-build \
+            plugins/faustwp/ plugin-build/faustwp/ \
+            --delete --delete-excluded
+
       - name: WordPress Plugin Deploy
         id: deploy
         uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # v2.3.0
@@ -74,8 +87,10 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: faustwp
-          BUILD_DIR: plugins/faustwp
-          ASSETS_DIR: .wordpress-org
+          BUILD_DIR: plugin-build/faustwp
+          # ASSETS_DIR is resolved against GITHUB_WORKSPACE, not BUILD_DIR,
+          # so it must be the full workspace-relative path.
+          ASSETS_DIR: plugins/faustwp/.wordpress-org
           VERSION: ${{ steps.version.outputs.version }}
 
       - name: Attach plugin zip to GitHub Release
