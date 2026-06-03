@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.9
-Stable tag: 1.8.7
+Stable tag: 1.8.8
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.8.8 =
+
+### Patch Changes
+
+- cda00de: fix[faustwp]: include the IV in the token envelope HMAC to prevent authentication bypass via IV bit-flipping (GHSA-q6pm-r77q-qcv3)
+
 = 1.8.7 =
 
 ### Patch Changes
@@ -68,11 +74,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
   - Updated `psy/psysh` from v0.12.7 to v0.12.19
   - Updated `phpunit/phpunit` from 9.6.22 to 9.6.33
   - Updated `symfony/process` from v6.4.15 to v6.4.33
-
-= 1.8.5 =
-
-### Patch Changes
-
-- 6bf8a7e: Add WordPress 6.9 to the CI test matrix and update the plugin "Tested up to" header to 6.9.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
