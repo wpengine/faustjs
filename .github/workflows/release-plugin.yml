@@ -1,0 +1,78 @@
+name: Deploy to WordPress.org
+
+on:
+  push:
+    tags:
+      - '@faustwp/wordpress-plugin@*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to operate on (e.g. @faustwp/wordpress-plugin@1.8.8)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Skip the SVN commit (verifies wp.org credentials without publishing)'
+        required: false
+        default: true
+        type: boolean
+      redeploy:
+        description: 'Delete the existing SVN tag before publishing'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release_plugin:
+    name: Publish faustwp to WordPress.org
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+
+      - name: Compute SVN version from tag
+        id: version
+        env:
+          RAW_REF: ${{ inputs.tag || github.ref_name }}
+        run: |
+          # Strip the Changesets-style "@faustwp/wordpress-plugin@" prefix so VERSION
+          # is just "1.8.8". Upstream 10up deploy.sh only strips refs/tags/ and a leading v.
+          version="${RAW_REF#@faustwp/wordpress-plugin@}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Resolved SVN version: $version"
+
+      - name: Delete existing SVN tag
+        if: ${{ inputs.redeploy && !inputs.dry_run }}
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          svn delete "https://plugins.svn.wordpress.org/faustwp/tags/${VERSION}" \
+            -m "Delete tag ${VERSION} for redeployment" \
+            --username "$SVN_USERNAME" --password "$SVN_PASSWORD" \
+            --non-interactive || echo "Tag ${VERSION} did not exist; continuing"
+
+      - name: WordPress Plugin Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # v2.3.0
+        with:
+          generate-zip: true
+          dry-run: ${{ inputs.dry_run || false }}
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: faustwp
+          BUILD_DIR: plugins/faustwp
+          ASSETS_DIR: .wordpress-org
+          VERSION: ${{ steps.version.outputs.version }}
+
+      - name: Attach plugin zip to GitHub Release
+        if: ${{ !inputs.dry_run }}
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.4.0
+        with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
+          files: ${{ steps.deploy.outputs.zip-path }}
