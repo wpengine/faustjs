@@ -1,5 +1,13 @@
 # Faust
 
+## 1.8.8
+
+### Patch Changes
+
+- 6efeeda: fix[faustwp]: clean up uploaded blockset zip when extraction fails
+- b6eebd5: fix[faustwp]: use home_url() in handle_generate_endpoint so Bedrock-style installs (where WordPress core lives under /wp/) match against the public REQUEST_URI
+- 5d73ec8: fix[faustwp]: use hash_equals() for constant-time secret key comparison in REST and GraphQL permission callbacks
+
 ## 1.8.7
 
 ### Patch Changes
