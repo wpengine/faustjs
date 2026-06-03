@@ -51,10 +51,15 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         run: |
-          svn delete "https://plugins.svn.wordpress.org/faustwp/tags/${VERSION}" \
-            -m "Delete tag ${VERSION} for redeployment" \
-            --username "$SVN_USERNAME" --password "$SVN_PASSWORD" \
-            --non-interactive || echo "Tag ${VERSION} did not exist; continuing"
+          TAG_URL="https://plugins.svn.wordpress.org/faustwp/tags/${VERSION}"
+          if svn info "$TAG_URL" --username "$SVN_USERNAME" --password "$SVN_PASSWORD" --non-interactive >/dev/null 2>&1; then
+            svn delete "$TAG_URL" \
+              -m "Delete tag ${VERSION} for redeployment" \
+              --username "$SVN_USERNAME" --password "$SVN_PASSWORD" \
+              --non-interactive
+          else
+            echo "Tag ${VERSION} did not exist; continuing"
+          fi
 
       - name: WordPress Plugin Deploy
         id: deploy
