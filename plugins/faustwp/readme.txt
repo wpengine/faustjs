@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.9
-Stable tag: 1.8.8
+Stable tag: 1.8.9
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
+= 1.8.9 =
+
+### Patch Changes
+
+- 139479d: Remove the `Update URI: false` header from `faustwp.php` so WordPress checks wordpress.org for plugin updates. This restores wordpress.org as the canonical update channel for new installs. The 1.8.8 security fix (GHSA-q6pm-r77q-qcv3) — include the IV in the token envelope HMAC to prevent authentication bypass — was reported by ParkHyunWoo (@hwpark6804-gif) via Patchstack.
+
 = 1.8.8 =
 
 ### Patch Changes
@@ -65,14 +71,5 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 ### Patch Changes
 
 - ca1e2f4: fix[faustwp]: update documentation links in settings page to use current URL structure
-
-= 1.8.6 =
-
-### Patch Changes
-
-- 56dfa51: - Updated `phpstan/phpstan` from 1.10.55 to 1.12.33
-  - Updated `psy/psysh` from v0.12.7 to v0.12.19
-  - Updated `phpunit/phpunit` from 9.6.22 to 9.6.33
-  - Updated `symfony/process` from v6.4.15 to v6.4.33
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
