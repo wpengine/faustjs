@@ -38,9 +38,12 @@ jobs:
         env:
           RAW_REF: ${{ inputs.tag || github.ref_name }}
         run: |
-          # Strip the Changesets-style "@faustwp/wordpress-plugin@" prefix so VERSION
-          # is just "1.8.8". Upstream 10up deploy.sh only strips refs/tags/ and a leading v.
-          version="${RAW_REF#@faustwp/wordpress-plugin@}"
+          # Normalize to a tag name (strip refs/tags/), then strip optional leading "v".
+          ref="${RAW_REF#refs/tags/}"
+          ref="${ref#v}"
+
+          # Strip the Changesets-style "@faustwp/wordpress-plugin@" prefix so VERSION is just "1.8.8".
+          version="${ref#@faustwp/wordpress-plugin@}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Resolved SVN version: $version"
 
