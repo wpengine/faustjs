@@ -149,6 +149,11 @@ jobs:
               "allow-plugins": {
                 "composer/installers": true
               }
+            },
+            "extra": {
+              "installer-paths": {
+                "vendor/{\$vendor}/{\$name}": ["type:wordpress-plugin"]
+              }
             }
           }
           EOF
