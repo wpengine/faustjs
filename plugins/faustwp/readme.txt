@@ -1,5 +1,5 @@
 === Faust.js ===
-Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine,
+Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, teresagobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 6.9
@@ -47,10 +47,6 @@ Johann Faust was a German printer and was instrumental in the invention of the p
 1. The settings page
 2. Portfolio, blog, and basic blueprints for headless sites built with Faust.js
 3. A code snippet
-
-plugins/faustwp/.wordpress-org/screenshot-1.png
-plugins/faustwp/.wordpress-org/screenshot-2.png
-plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
