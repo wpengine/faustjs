@@ -144,6 +144,11 @@ jobs:
             ],
             "require": {
               "wpackagist-plugin/faustwp": "${VERSION}"
+            },
+            "config": {
+              "allow-plugins": {
+                "composer/installers": true
+              }
             }
           }
           EOF
