@@ -1,0 +1,166 @@
+name: Verify Published Plugin
+
+on:
+  workflow_run:
+    workflows: ['Deploy to WordPress.org']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Plugin version to verify (e.g. 1.8.9)'
+        required: true
+        type: string
+  schedule:
+    # Mondays 14:17 UTC — weekly catch for wp.org-side regressions and
+    # wpackagist sync drift between releases.
+    - cron: '17 14 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    name: Verify ${{ matrix.source }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [wpcli, wpackagist]
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wp_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: canary
+
+      - name: Set up PHP and wp-cli
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: wp-cli, composer
+
+      - name: Resolve version under test
+        id: version
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          if [ -n "${INPUT_VERSION:-}" ]; then
+            VERSION="$INPUT_VERSION"
+            SRC="workflow_dispatch input"
+          else
+            VERSION=$(grep -E '^Stable tag:' plugins/faustwp/readme.txt | awk '{print $3}' | tr -d '\r')
+            SRC="plugins/faustwp/readme.txt (Stable tag)"
+          fi
+          if [ -z "$VERSION" ]; then
+            echo "::error::could not resolve a version to verify"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Resolved version $VERSION (source: $SRC)"
+
+      - name: Wait for wordpress.org to publish the expected version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          DEADLINE=$(( $(date +%s) + 2 * 60 * 60 ))
+          while [ "$(date +%s)" -lt "$DEADLINE" ]; do
+            PUBLISHED=$(curl -fsSL "https://api.wordpress.org/plugins/info/1.0/faustwp.json" \
+              | python3 -c 'import sys,json; print(json.load(sys.stdin).get("version",""))')
+            echo "  api.wordpress.org reports: ${PUBLISHED:-<empty>}  (expected: ${VERSION})"
+            if [ "$PUBLISHED" = "$VERSION" ]; then
+              echo "Match — proceeding"
+              exit 0
+            fi
+            sleep 60
+          done
+          echo "::error::Timed out after 2h waiting for wp.org to publish ${VERSION}"
+          exit 1
+
+      - name: Install WordPress
+        id: wp
+        env:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_PORT: 3306
+        run: |
+          WP_PATH="${RUNNER_TEMP}/wp"
+          mkdir -p "$WP_PATH"
+          cd "$WP_PATH"
+          wp core download --allow-root --quiet
+          wp config create \
+            --dbname=wp_test \
+            --dbuser=root \
+            --dbpass=root \
+            --dbhost="${MYSQL_HOST}:${MYSQL_PORT}" \
+            --allow-root --quiet
+          wp core install \
+            --url=http://localhost \
+            --title="Verify faustwp" \
+            --admin_user=admin \
+            --admin_password=admin \
+            --admin_email=verify@example.invalid \
+            --skip-email --allow-root --quiet
+          echo "wp_path=$WP_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Install faustwp via wp-cli (wp.org)
+        if: matrix.source == 'wpcli'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          WP_PATH: ${{ steps.wp.outputs.wp_path }}
+        run: |
+          wp --path="$WP_PATH" plugin install faustwp \
+            --version="$VERSION" --activate --allow-root
+
+      - name: Install faustwp via Composer (wpackagist)
+        if: matrix.source == 'wpackagist'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          WP_PATH: ${{ steps.wp.outputs.wp_path }}
+        run: |
+          PROJECT="${RUNNER_TEMP}/composer-faustwp"
+          mkdir -p "$PROJECT"
+          cd "$PROJECT"
+          cat > composer.json <<EOF
+          {
+            "name": "faustwp/verify-published-plugin",
+            "minimum-stability": "dev",
+            "prefer-stable": true,
+            "repositories": [
+              { "type": "composer", "url": "https://wpackagist.org" }
+            ],
+            "require": {
+              "wpackagist-plugin/faustwp": "${VERSION}"
+            }
+          }
+          EOF
+          composer install --no-interaction --no-progress
+          # Move the installed plugin into WordPress' plugins directory.
+          mkdir -p "$WP_PATH/wp-content/plugins"
+          rm -rf "$WP_PATH/wp-content/plugins/faustwp"
+          cp -R "vendor/wpackagist-plugin/faustwp" "$WP_PATH/wp-content/plugins/faustwp"
+          wp --path="$WP_PATH" plugin activate faustwp --allow-root
+
+      - name: Verify
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          WP_PATH: ${{ steps.wp.outputs.wp_path }}
+        run: |
+          scripts/verify-published-plugin.sh \
+            "$WP_PATH" \
+            "$WP_PATH/wp-content/plugins/faustwp" \
+            "$VERSION" \
+            "$GITHUB_WORKSPACE/plugins/faustwp/.distignore"
