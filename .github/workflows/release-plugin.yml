@@ -11,7 +11,7 @@ on:
         required: true
         type: string
       dry_run:
-        description: 'Skip the SVN commit (verifies wp.org credentials without publishing)'
+        description: 'Build artifacts but skip the wordpress.org deploy job'
         required: false
         default: true
         type: boolean
@@ -25,9 +25,11 @@ permissions:
   contents: write
 
 jobs:
-  release_plugin:
-    name: Publish faustwp to WordPress.org
+  build_artifacts:
+    name: Build distribution artifacts
     runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -47,10 +49,53 @@ jobs:
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Resolved SVN version: $version"
 
-      - name: Delete existing SVN tag
-        if: ${{ inputs.redeploy && !inputs.dry_run }}
+      - name: Build distribution artifacts
+        # The local composite action is the single source of truth for what the
+        # wordpress.org distribution contains: it rsyncs the plugin source into
+        # dist/<slug>/ with the .org-specific exclusions applied, and (when
+        # upload-artifacts is true) uploads the main zip, the .org zip, and
+        # info.json to the matching GitHub Release.
+        uses: ./.github/actions/release-plugin
         env:
           VERSION: ${{ steps.version.outputs.version }}
+          PLUGIN_DIR: plugins/faustwp
+          SLUG: faustwp
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          upload-artifacts: ${{ !inputs.dry_run }}
+
+      - name: Upload .org payload for the deploy job
+        if: ${{ !inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: faustwp-org-payload
+          path: dist/faustwp
+          retention-days: 1
+          include-hidden-files: true
+
+  deploy_to_wordpress_org:
+    name: Deploy to WordPress.org
+    if: ${{ !inputs.dry_run }}
+    needs: build_artifacts
+    runs-on: ubuntu-22.04
+    environment:
+      name: wordpress-org
+      url: https://wordpress.org/plugins/faustwp/
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
+
+      - name: Download .org payload
+        uses: actions/download-artifact@v4
+        with:
+          name: faustwp-org-payload
+          path: dist/faustwp
+
+      - name: Delete existing SVN tag
+        if: ${{ inputs.redeploy }}
+        env:
+          VERSION: ${{ needs.build_artifacts.outputs.version }}
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         run: |
@@ -64,38 +109,14 @@ jobs:
             echo "Tag ${VERSION} did not exist; continuing"
           fi
 
-      - name: Stage clean plugin payload
-        # Upstream 10up skips .distignore when BUILD_DIR is set, so apply the
-        # exclusion rules here by rsyncing plugins/faustwp/ into a staging
-        # directory through .distignore. The 10up step then ships the staging
-        # directory as-is.
-        run: |
-          mkdir -p plugin-build/faustwp
-          rsync -rc \
-            --exclude-from=plugins/faustwp/.distignore \
-            --exclude=plugin-build \
-            plugins/faustwp/ plugin-build/faustwp/ \
-            --delete --delete-excluded
-
       - name: WordPress Plugin Deploy
-        id: deploy
         uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # v2.3.0
-        with:
-          generate-zip: true
-          dry-run: ${{ inputs.dry_run || false }}
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
           SLUG: faustwp
-          BUILD_DIR: plugin-build/faustwp
-          # ASSETS_DIR is resolved against GITHUB_WORKSPACE, not BUILD_DIR,
-          # so it must be the full workspace-relative path.
+          # The build_artifacts job produced the .org-stripped payload at dist/faustwp.
+          BUILD_DIR: dist/faustwp
+          # ASSETS_DIR is resolved against GITHUB_WORKSPACE, not BUILD_DIR.
           ASSETS_DIR: plugins/faustwp/.wordpress-org
-          VERSION: ${{ steps.version.outputs.version }}
-
-      - name: Attach plugin zip to GitHub Release
-        if: ${{ !inputs.dry_run }}
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.4.0
-        with:
-          tag_name: ${{ inputs.tag || github.ref_name }}
-          files: ${{ steps.deploy.outputs.zip-path }}
+          VERSION: ${{ needs.build_artifacts.outputs.version }}
