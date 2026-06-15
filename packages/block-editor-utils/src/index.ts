@@ -1,8 +1,8 @@
 import registerFaustBlock from './registerFaustBlock.js';
 import type {
-  RegisterFaustBlockMetadata,
-  EditFnContext,
-  SaveFnContext,
+	RegisterFaustBlockMetadata,
+	EditFnContext,
+	SaveFnContext,
 } from './registerFaustBlock.js';
 
 export { registerFaustBlock };

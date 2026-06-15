@@ -10,25 +10,33 @@ export default function FeaturedImage({
   ...props
 }) {
   const src = image?.sourceUrl;
-  const { altText } = image || '';
 
-  width = width ? width : image?.mediaDetails?.width;
-  height = height ? height : image?.mediaDetails?.height;
+  if (!src) return null;
+
+  const { altText = '', mediaDetails = {} } = image ?? {};
+
   layout = layout ?? 'fill';
 
-  return src && width && height ? (
+  const dimensions = {
+    width: layout === 'fill' ? undefined : width ?? mediaDetails?.width,
+    height: layout === 'fill' ? undefined : height ?? mediaDetails?.height
+  };
+
+  if (layout !== 'fill' && (!dimensions.width || !dimensions.height)) return null;
+
+  return (
     <figure className={className}>
       <Image
         src={src}
         alt={altText}
-        layout={layout}
-        width={width}
-        height={height}
+        fill={layout}
+        width={dimensions.width}
+        height={dimensions.height}
         priority={priority}
         {...props}
       />
     </figure>
-  ) : null;
+  );
 }
 
 FeaturedImage.fragments = {

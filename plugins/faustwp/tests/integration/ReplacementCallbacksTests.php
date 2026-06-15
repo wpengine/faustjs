@@ -7,17 +7,19 @@
 
 namespace WPE\FaustWP\Tests\Integration;
 
-use function WPE\FaustWP\Replacement\{
-	content_replacement,
+use function WPE\FaustWP\Replacement\{content_replacement,
+	faustwp_get_wp_site_urls,
 	post_preview_link,
 	preview_link_in_rest_response,
 	image_source_replacement,
 	image_source_srcset_replacement,
-	post_link,
-};
+	post_link};
 use function WPE\FaustWP\Settings\faustwp_update_setting;
-use WP_REST_Response;
 
+/**
+ * @group replacement-callback
+ * @group callback
+ */
 class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	protected $post_id;
 	protected $draft_post_id;
@@ -35,6 +37,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 			'post_content' => 'Hi',
 			'post_status'  => 'draft',
 		] );
+
 	}
 
 	public function test_the_content_filter() {
@@ -45,11 +48,10 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 1000, has_action( 'preview_post_link', 'WPE\FaustWP\Replacement\post_preview_link' ) );
 	}
 
-	public function test_preview_rest_prepare_post_filter() {
+	public function test_rest_api_init_filter() {
+		$this->assertSame( 10, has_action( 'rest_api_init', 'WPE\FaustWP\Replacement\register_preview_link_hooks_for_all_draft_post_types' ) );
+		do_action( 'rest_api_init' );
 		$this->assertSame( 10, has_action( 'rest_prepare_post', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
-	}
-
-	public function test_preview_rest_prepare_page_filter() {
 		$this->assertSame( 10, has_action( 'rest_prepare_page', 'WPE\FaustWP\Replacement\preview_link_in_rest_response' ) );
 	}
 
@@ -64,7 +66,7 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 	public function test_term_link_filter() {
 		$this->assertSame( 1000, has_action( 'term_link', 'WPE\FaustWP\Replacement\term_link' ) );
 	}
-	
+
 	public function test_post_type_link_filter() {
 		$this->assertSame( 1000, has_filter( 'post_type_link', 'WPE\FaustWP\Replacement\post_link' ) );
 	}
@@ -87,6 +89,17 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_wp_calculate_image_srcset_filter(): void {
 		self::assertSame( 10, has_action( 'wp_calculate_image_srcset', 'WPE\FaustWP\Replacement\image_source_srcset_replacement' ) );
+	}
+
+
+	/**
+	 * Test to make sure content rep can accept null values
+	 */
+	public function test_content_replacement_for_different_types() {
+		$this->assertNull(content_replacement( null));
+		$this->assertEmpty(content_replacement(''));
+		$content = '<p>This is a string with no URLs to be replaced.</p>';
+		$this->assertEquals($content, content_replacement($content));
 	}
 
 	/**
@@ -394,6 +407,239 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 
 	public function get_home_url( $url ) {
 		return "https://example.com/";
+	}
+
+	/**
+	 * Test to make sure that site url is replaced for both content and media
+	 */
+	public function test_content_replacement_for_content_and_media_urls_for_different_http_protocols() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$contentExample1 = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url_secure}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$contentExample2 = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$expected_content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$frontend_uri}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$this->assertSame( $expected_content, content_replacement( $contentExample1 ) );
+		$this->assertSame( $expected_content, content_replacement( $contentExample2 ) );
+	}
+
+
+	/**
+	 * Test to make sure that site url is replaced for just media and not content
+	 */
+	public function test_content_replacement_for_just_media_urls_for_different_http_protocols() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '0' );
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url_secure}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$expected_content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url_secure}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$this->assertSame( $expected_content, content_replacement( $content ) );
+
+
+		$content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$expected_content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url}/hello-world/">Hello World</a>
+</p>
+HTML;
+		$this->assertSame( $expected_content, content_replacement( $content ) );
+	}
+
+
+	/**
+	 * Test to make sure that site url is replaced for just content and not media
+	 */
+	public function test_content_replacement_for_just_content_urls_for_different_http_protocols() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '1' );
+
+		$content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url_secure}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$expected_content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$frontend_uri}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$this->assertSame( $expected_content, content_replacement( $content ) );
+
+		$content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$expected_content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url_secure}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$frontend_uri}/hello-world/">Hello World</a>
+</p>
+HTML;
+
+		$this->assertSame( $expected_content, content_replacement( $content ) );
+
+	}
+
+
+	public function test_content_replacement_for_content_and_media_urls_and_add_site_to_available_site_urls() {
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+		$additional_site_url = 'https://subdomain.example.org';
+
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		add_filter( 'faustwp_get_wp_site_urls', function ( $site_urls ) {
+			return array_merge( $site_urls, [ 'https://subdomain.example.org' ] );
+		});
+
+		$this->assertSame(faustwp_get_wp_site_urls($site_url), [
+			$site_url,
+			$site_url_secure,
+			'//example.org',
+			$additional_site_url
+		] );
+
+		$content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$site_url_secure}/hello-world/">Hello World</a>
+</p>
+<p>Find more information about us <a href="{$additional_site_url}" title="More information">here</a></p>
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$additional_site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$additional_site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$additional_site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$site_url}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+</p>
+HTML;
+
+		$expected_content = <<<HTML
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+	<a href="{$frontend_uri}/hello-world/">Hello World</a>
+</p>
+<p>Find more information about us <a href="{$frontend_uri}" title="More information">here</a></p>
+<p>
+	<img class="alignnone size-medium wp-image-10" src="{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp" srcset=\"{$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-300x155.webp 300w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1-768x397.webp 768w, {$frontend_uri}/wp-content/uploads/sites/2/2024/12/Logo-888x459-1.webp 888w\" sizes=\"auto, (max-width: 300px) 100vw, 300px\"  alt="" width="300" height="155" />
+</p>
+HTML;
+		$this->assertSame( $expected_content, content_replacement( $content ) );
+	}
+
+
+	public function test_image_sourceset_replacement_for_different_http_protocols_with_media_replacement_enabled() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '0' );
+
+		$sources = array (
+			100 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $site_url_secure . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$expected = array (
+			100 => array('url' => $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => $frontend_uri . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$this->assertSame( $expected, image_source_srcset_replacement( $sources ) );
+	}
+
+
+	public function test_image_sourceset_replacement_for_different_http_protocols_with_media_replacement_disabled() {
+
+		$frontend_uri    = 'http://localhost:3000';
+		$site_url = site_url();
+		$site_url_secure = str_replace('http:', 'https:', $site_url);
+
+		faustwp_update_setting( 'frontend_uri', $frontend_uri );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+		faustwp_update_setting( 'enable_image_source', '1' );
+
+		$sources = array (
+			100 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $site_url_secure . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$expected = array (
+			100 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			300 => array('url' => $site_url_secure . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1-300x155.webp'),
+			400 => array('url' => $site_url . '/wp-content/uploads/sites/2/2024/12/WP-Engine-Blue-888x459-1.webp'),
+		);
+
+		$this->assertSame( $expected, image_source_srcset_replacement( $sources ) );
 	}
 
 }

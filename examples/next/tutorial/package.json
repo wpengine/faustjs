@@ -1,0 +1,31 @@
+{
+  "name": "faust-tutorial",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "generate": "faust generatePossibleTypes",
+    "start": "next start",
+    "lint": "next lint",
+    "wp-dev": "npx @wp-now/wp-now start --blueprint faust-tutorial-blueprint.json"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.12.7",
+    "@faustwp/blocks": "^6.0.0",
+    "@faustwp/cli": "^3.1.1",
+    "@faustwp/core": "^3.1.0",
+    "graphql": "^16.10.0",
+    "next": "15.1.6",
+    "next-secure-headers": "^2.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}

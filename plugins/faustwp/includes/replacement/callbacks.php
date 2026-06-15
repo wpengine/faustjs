@@ -5,6 +5,8 @@
  * @package FaustWP
  */
 
+declare(strict_types=1);
+
 namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\{
@@ -27,43 +29,37 @@ add_filter( 'wpgraphql_content_blocks_resolver_content', __NAMESPACE__ . '\\cont
 /**
  * Callback for WordPress 'the_content' filter.
  *
- * @param string $content The post content.
+ * @param ?string $content The post content.
  *
- * @return string The post content.
+ * @return ?string The post content.
  */
-function content_replacement( $content ) {
-	$use_wp_domain_for_permalinks = ! domain_replacement_enabled();
-	$use_wp_domain_for_media      = use_wp_domain_for_media();
+function content_replacement( ?string $content ) {
 
-	if ( $use_wp_domain_for_permalinks && $use_wp_domain_for_media ) {
+	if ( ! $content ) {
 		return $content;
 	}
-
-	$replacement = faustwp_get_setting( 'frontend_uri' );
-	if ( ! $replacement ) {
-		$replacement = '/';
-	}
-
-	$site_url  = site_url();
-	$media_dir = str_replace( $site_url, '', wp_upload_dir()['baseurl'] );
-	$media_url = $site_url . $media_dir;
-
-	if ( $use_wp_domain_for_permalinks && ! $use_wp_domain_for_media ) {
-		$content = str_replace( $media_url, $replacement . $media_dir, $content );
+	$replace_content_urls = domain_replacement_enabled();
+	$replace_media_urls   = ! use_wp_domain_for_media();
+	if ( ! $replace_content_urls && ! $replace_media_urls ) {
 		return $content;
 	}
-
-	if ( ! $use_wp_domain_for_permalinks && ! $use_wp_domain_for_media ) {
-		$content = str_replace( $site_url, $replacement, $content );
+	$wp_site_urls = faustwp_get_wp_site_urls( site_url() );
+	if ( empty( $wp_site_urls ) ) {
 		return $content;
 	}
-
-	if ( ! $use_wp_domain_for_permalinks && $use_wp_domain_for_media ) {
-		$content = preg_replace( "#{$site_url}(?!{$media_dir})#", "{$replacement}", $content );
-		return $content;
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
+	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' ) ?? '/';
+	if ( $replace_content_urls && $replace_media_urls ) {
+		return str_replace( $wp_site_urls, $frontend_uri, $content );
 	}
+	if ( $replace_media_urls ) {
+		return str_replace( $wp_media_urls, $frontend_uri . $relative_upload_url, $content );
+	}
+	$site_urls_pattern = implode( '|', array_map( 'preg_quote', $wp_site_urls ) );
+	$pattern           = '#(' . $site_urls_pattern . ')(?!' . $relative_upload_url . '(\/|$))#';
 
-	return $content;
+	return preg_replace( $pattern, $frontend_uri, $content );
 }
 
 /**
@@ -86,49 +82,58 @@ function image_source_replacement( $content ) {
 		"#src=\"{$frontend_uri}/#",
 		'#src="/#',
 	);
+
 	return preg_replace( $patterns, "src=\"{$site_url}/", $content );
 }
 
 add_filter( 'wp_calculate_image_srcset', __NAMESPACE__ . '\\image_source_srcset_replacement' );
 /**
- * Callback for WordPress 'the_content' filter to replace paths to media.
+ * Callback for WordPress 'wp_calculate_image_srcset' filter to replace paths when generating a srcset
  *
- * @param array $sources One or more arrays of source data to include in the 'srcset'.
+ * @link https://developer.wordpress.org/reference/functions/wp_calculate_image_srcset/
  *
- * @return string One or more arrays of source data.
+ * @param array<string> $sources One or more arrays of source data to include in the 'srcset'.
+ *
+ * @return array One or more arrays of source data.
  */
 function image_source_srcset_replacement( $sources ) {
-	$use_wp_domain_for_media = use_wp_domain_for_media();
-	$frontend_uri            = faustwp_get_setting( 'frontend_uri' );
-	$site_url                = site_url();
 
-	/**
-	 * For urls with no domain or the frontend domain, replace with the WP site_url.
-	 * This was the default replacement pattern until Faust 1.2, at which point this
-	 * was adjusted to correct replacement bugs.
-	 */
-	$patterns = array(
-		"#^{$site_url}/#",
+	if ( ! is_array( $sources ) || empty( $sources ) ) {
+		return $sources;
+	}
+
+	$wp_site_urls = faustwp_get_wp_site_urls( site_url() );
+	if ( empty( $wp_site_urls ) ) {
+		return $sources;
+	}
+
+	$replace_media_urls  = ! use_wp_domain_for_media();
+	$relative_upload_url = faustwp_get_relative_upload_url( $wp_site_urls, wp_upload_dir()['baseurl'] );
+	$wp_media_urls       = faustwp_get_wp_media_urls( $wp_site_urls, $relative_upload_url );
+	$frontend_uri        = (string) faustwp_get_setting( 'frontend_uri' );
+	$site_url            = site_url() . '/';
+
+	$wp_media_site_url = $frontend_uri . $relative_upload_url;
+	$patterns          = array(
+		"#^{$frontend_uri}/#",
 		'#^/#',
 	);
 
-	$replacement = $frontend_uri;
-
 	/**
-	 * If using WP domain for media and a frontend URL is encountered, rewrite it to WP URL.
+	 * Update each source with the correct replacement URL
 	 */
-	if ( $use_wp_domain_for_media ) {
-		$patterns    = array(
-			"#^{$frontend_uri}/#",
-			'#^/#',
-		);
-		$replacement = $site_url;
-	}
+	foreach ( $sources as $width => $source ) {
+		$url = $source['url'];
 
-	if ( is_array( $sources ) ) {
-		foreach ( $sources as $width => $source ) {
-			$sources[ $width ]['url'] = preg_replace( $patterns, "$replacement/", $source['url'] );
+		if ( $replace_media_urls ) {
+			$sources[ $width ]['url'] = ( strpos( $url, $relative_upload_url ) === 0 )
+				? $frontend_uri . $url
+				: str_replace( $wp_media_urls, $wp_media_site_url, $source['url'] );
+			continue;
 		}
+
+		// We need to make sure that the frontend URL or relative URL (legacy) is updated with the site url.
+		$sources[ $width ]['url'] = preg_replace( $patterns, $site_url, $source['url'] );
 	}
 
 	return $sources;
@@ -240,7 +245,15 @@ add_filter( 'post_type_link', __NAMESPACE__ . '\\post_link', 1000 );
  */
 function post_link( $link ) {
 	global $pagenow;
-	$target_pages = array( 'admin-ajax.php', 'index.php', 'edit.php', 'post.php', 'post-new.php', 'upload.php', 'media-new.php' );
+	$target_pages = array(
+		'admin-ajax.php',
+		'index.php',
+		'edit.php',
+		'post.php',
+		'post-new.php',
+		'upload.php',
+		'media-new.php',
+	);
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in `is_ajax_generate_permalink_request()` and `is_wp_link_ajax_request()`.
 	if ( empty( $_POST ) && 'post-new.php' === $pagenow ) {
@@ -251,7 +264,7 @@ function post_link( $link ) {
 	if ( in_array( $pagenow, $target_pages, true )
 		&& is_ajax_generate_permalink_request()
 	) {
-			return $link;
+		return $link;
 	}
 
 	if (
@@ -308,8 +321,23 @@ function enqueue_preview_scripts() {
 	);
 }
 
-add_filter( 'rest_prepare_post', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
-add_filter( 'rest_prepare_page', __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+add_filter( 'rest_api_init', __NAMESPACE__ . '\\register_preview_link_hooks_for_all_draft_post_types' );
+
+/**
+ * Registers the preview link hooks for all post types.
+ */
+function register_preview_link_hooks_for_all_draft_post_types() {
+	$post_types = get_post_types(
+		array(
+			'public' => true,
+		)
+	);
+
+	foreach ( $post_types as $post_type ) {
+		add_filter( 'rest_prepare_' . $post_type, __NAMESPACE__ . '\\preview_link_in_rest_response', 10, 2 );
+	}
+}
+
 /**
  * Adds the preview link to rest responses.
  *

@@ -19,4 +19,4 @@
   </a>
 </p>
 
-`@faustwp/cli` provides a CLI to develop, build, and serve your Faust apps.
+`@faustwp/cli` provides a CLI to develop, build, and serve your Next.js apps built with Faust.js.

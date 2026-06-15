@@ -60,7 +60,7 @@ function deny_public_access() {
 	// Get the request uri with query params.
 	$request_uri = home_url( add_query_arg( null, null ) );
 
-	$response_code = 302;
+	$response_code = apply_filters( 'faustwp_public_redirect_status_code', 302 );
 	$redirect_url  = str_replace( trailingslashit( get_home_url() ), $frontend_uri, $request_uri );
 	$protocols     = array( 'http', 'https' );
 

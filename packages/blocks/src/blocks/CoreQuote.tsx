@@ -6,7 +6,7 @@ import { getStyles } from '../utils/index.js';
 
 export type CoreQuoteFragmentProps = ContentBlock & {
   attributes?: {
-    align?: string;
+    textAlign?: string;
     anchor?: string;
     backgroundColor?: string;
     citation?: string;
@@ -52,7 +52,7 @@ CoreQuote.fragments = {
   entry: gql`
     fragment CoreQuoteBlockFragment on CoreQuote {
       attributes {
-        align
+        textAlign
         anchor
         backgroundColor
         citation

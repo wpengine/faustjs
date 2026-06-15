@@ -1,5 +1,89 @@
 # @faustwp/blocks
 
+## 6.1.0
+
+### Minor Changes
+
+- 4b1090a: ### WHAT
+
+  Refactor: Added CoreListItem block to fix repeating sublist issue
+
+  - Added CoreListItem block
+  - Updated CoreList block
+  - Updated Corelist.test to accomodate new HTML structure
+  - Added a new scenario to test nested lists
+
+  ### WHY
+
+  CoreList was rendering values attribute, which happens to return nested list items multiple times.
+
+  ### HOW
+
+  You need to add new CoreListItem fragments to your queries:
+
+  ```javascript
+  gql`
+    ${blocks.CoreListItem.fragments.entry}
+  `;
+  ```
+
+  Example query:
+
+  ```javascript
+  SingleTemplate.query = gql`
+    ${blocks.CoreList.fragments.entry}
+    ${blocks.CoreListItem.fragments.entry}
+    query GetPost(
+      $uri: ID!
+    ) {
+      post(id: $uri, idType: URI) {
+        title
+        content
+        editorBlocks {
+          name
+          __typename
+          renderedHtml
+          id: clientId
+          parentId: parentClientId
+          ...${blocks.CoreList.fragments.key}
+          ...${blocks.CoreListItem.fragments.key}
+        }
+      }
+    }
+  `;
+  ```
+
+## 6.0.0
+
+### Major Changes
+
+- 99b5793: Update of the CoreParagraph block to support the native WP anchor attribute. GitHub issue: "[[feat] Add anchor attribute to core/paragraph block](https://github.com/wpengine/faustjs/issues/1954)"
+
+  Introduces new field to `core/paragraph` block: `anchor`. This field allows users to add an anchor to the paragraph block. The anchor is used to create a link to a specific part of the page. The anchor is added to the block's wrapper element as an ID attribute.
+
+  **Files changed:**
+
+  - packages/blocks/src/blocks/CoreParagraph.tsx (added anchor attribute)
+  - packages/blocks/package.json (updated package version to 6.0.0)
+
+### Patch Changes
+
+- bdb7d7f: Bug: Fixed an issue an issue with WordPressBlocksProvider and the theme argument to allow it to be optional and not throw an error. By default theme is now an empty object
+
+## 5.0.0
+
+### Major Changes
+
+- 9011492: Updates the GraphQL fragment associated with the CoreQuote component to be compatible with WordPress 6.6
+
+  Adds `legacyBehavior` to CoreButton link to work on Next.js v13.
+
+## 4.1.0
+
+### Minor Changes
+
+- 53bb9a6d: Updated dependencies, peerDependencies and devDependencies to better support local development and debugging.
+
 ## 4.0.0
 
 ### Major Changes

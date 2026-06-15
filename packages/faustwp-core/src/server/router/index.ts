@@ -3,9 +3,9 @@ import trimEnd from 'lodash/trimEnd.js';
 import { authorizeHandler, logoutHandler } from '../auth/middleware.js';
 import { parseUrl } from '../../utils/index.js';
 import {
-  LOGOUT_ENDPOINT_PARTIAL_PATH,
-  TOKEN_ENDPOINT_PARTIAL_PATH,
-  FAUST_API_BASE_PATH,
+	LOGOUT_ENDPOINT_PARTIAL_PATH,
+	TOKEN_ENDPOINT_PARTIAL_PATH,
+	FAUST_API_BASE_PATH,
 } from '../../lib/constants.js';
 
 /**
@@ -24,19 +24,19 @@ import {
  */
 // eslint-disable-next-line consistent-return
 export async function apiRouter(
-  req: IncomingMessage,
-  res: ServerResponse,
+	req: IncomingMessage,
+	res: ServerResponse,
 ): Promise<void> {
-  const parsedUrl = parseUrl(req.url);
-  const pathname = trimEnd(parsedUrl?.pathname, '/');
+	const parsedUrl = parseUrl(req.url);
+	const pathname = trimEnd(parsedUrl?.pathname, '/');
 
-  switch (pathname) {
-    case `${FAUST_API_BASE_PATH}/${TOKEN_ENDPOINT_PARTIAL_PATH}`:
-      return authorizeHandler(req, res);
-    case `${FAUST_API_BASE_PATH}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`:
-      return logoutHandler(req, res);
-    default:
-      res.statusCode = 404;
-      res.end();
-  }
+	switch (pathname) {
+		case `${FAUST_API_BASE_PATH}/${TOKEN_ENDPOINT_PARTIAL_PATH}`:
+			return authorizeHandler(req, res);
+		case `${FAUST_API_BASE_PATH}/${LOGOUT_ENDPOINT_PARTIAL_PATH}`:
+			return logoutHandler(req, res);
+		default:
+			res.statusCode = 404;
+			res.end();
+	}
 }

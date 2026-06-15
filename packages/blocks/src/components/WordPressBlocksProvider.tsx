@@ -48,7 +48,7 @@ export function WordPressBlocksProvider(props: {
   config: WordPressBlocksProviderConfig;
 }) {
   const { children, config } = props;
-  const { blocks, theme } = config;
+  const { blocks, theme = {} } = config;
 
   return (
     <WordPressBlocksContext.Provider value={blocks}>

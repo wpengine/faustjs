@@ -34,12 +34,12 @@ body:
         Add any other context about the problem here, such as screenshots, error logs, etc.
   - type: input
     attributes:
-      label: "@faustwp/core Version"
+      label: '@faustwp/core Version'
     validations:
       required: true
   - type: input
     attributes:
-      label: "@faustwp/cli Version"
+      label: '@faustwp/cli Version'
     validations:
       required: true
   - type: input
@@ -55,7 +55,7 @@ body:
   - type: textarea
     attributes:
       label: Additional environment details
-      description: Additional Faust.js packages and their versions (@faustwp/blocks, @faustwp/experimental-app-router, etc), PHP version, Hosting Platform, etc.
+      description: Additional Faust.js packages and their versions (@faustwp/blocks, @faustwp/core, etc), PHP version, Hosting Platform, etc.
   - type: checkboxes
     attributes:
       label: Please confirm that you have searched existing issues in the repo.

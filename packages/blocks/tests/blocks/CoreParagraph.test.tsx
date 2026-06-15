@@ -42,4 +42,20 @@ describe('<CoreParagraph />', () => {
       </p>
     `);
   });
+
+  test('applies the HTML anchor attribute properly', () => {
+    renderProvider({
+      attributes: {
+        anchor: 'test-anchor',
+        content: 'Hello World',
+      },
+    });
+    expect(screen.queryByText('Hello World')).toMatchInlineSnapshot(`
+      <p
+        id="test-anchor"
+      >
+        Hello World
+      </p>
+    `);
+  });
 });

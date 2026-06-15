@@ -1,7 +1,7 @@
 export interface Params {
-  idKey?: string;
-  parentKey?: string;
-  childrenKey?: string;
+	idKey?: string;
+	parentKey?: string;
+	childrenKey?: string;
 }
 
 type Data = Record<string | number, unknown>;
@@ -14,34 +14,34 @@ type Data = Record<string | number, unknown>;
  * @returns Data Array
  */
 export function flatListToHierarchical(
-  data: Data[] = [],
-  {
-    idKey = 'id',
-    parentKey = 'parentId',
-    childrenKey = 'children',
-  }: Params = {},
+	data: Data[] = [],
+	{
+		idKey = 'id',
+		parentKey = 'parentId',
+		childrenKey = 'children',
+	}: Params = {},
 ) {
-  const tree: Data[] = [];
-  const childrenOf: { [key: string | number]: Data[] } = {};
+	const tree: Data[] = [];
+	const childrenOf: { [key: string | number]: Data[] } = {};
 
-  data.forEach((item) => {
-    const newItem = { ...item };
+	data.forEach((item) => {
+		const newItem = { ...item };
 
-    const id = newItem?.[idKey] as string | number | undefined;
-    const parentId = (newItem?.[parentKey] ?? 0) as string | undefined;
+		const id = newItem?.[idKey] as string | number | undefined;
+		const parentId = (newItem?.[parentKey] ?? 0) as string | undefined;
 
-    if (!id) {
-      return;
-    }
+		if (!id) {
+			return;
+		}
 
-    childrenOf[id] = childrenOf[id] || [];
-    newItem[childrenKey] = childrenOf[id];
+		childrenOf[id] = childrenOf[id] || [];
+		newItem[childrenKey] = childrenOf[id];
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    parentId
-      ? (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem)
-      : tree.push(newItem);
-  });
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+		parentId
+			? (childrenOf[parentId] = childrenOf[parentId] || []).push(newItem)
+			: tree.push(newItem);
+	});
 
-  return tree;
+	return tree;
 }

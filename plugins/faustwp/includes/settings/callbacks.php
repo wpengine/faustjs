@@ -160,6 +160,14 @@ function register_settings_fields() {
 	);
 
 	add_settings_field(
+		'remove_additional_menu_locations',
+		__( 'Remove Additional Nav Menu Locations', 'faustwp' ),
+		__NAMESPACE__ . '\\display_remove_additional_menu_locations_field',
+		'faustwp-settings',
+		'settings_section'
+	);
+
+	add_settings_field(
 		'enable_disable',
 		__( 'Features', 'faustwp' ),
 		__NAMESPACE__ . '\\display_enable_disable_fields',
@@ -214,6 +222,7 @@ function sanitize_faustwp_settings( $settings, $option ) {
 				$settings[ $name ] = sanitize_text_field( $value );
 				break;
 
+			case 'remove_additional_menu_locations':
 			case 'enable_redirects':
 			case 'enable_rewrites':
 			case 'disable_theme':
@@ -324,6 +333,23 @@ function display_menu_locations_field() {
 	<p class="description">
 		<?php esc_html_e( 'A comma-separated list of menu locations. Assign menus to locations at Appearance → Menus.', 'faustwp' ); ?>
 	</p>
+	<?php
+}
+
+/**
+ * Callback for WordPress add_settings_field() method parameter.
+ *
+ * Display the "Remove Additional Menu Locations" checkbox field.
+ *
+ * @return void
+ */
+function display_remove_additional_menu_locations_field() {
+	$removed = faustwp_get_setting( 'remove_additional_menu_locations', false );
+	?>
+	<label for="remove_additional_menu_locations">
+		<input type="checkbox" id="remove_additional_menu_locations" name="faustwp_settings[remove_additional_menu_locations]" value="1" <?php checked( $removed ); ?> /><?php esc_html_e( 'Remove all Nav Menu locations that are not registered on this screen.', 'faustwp' ); ?>
+		<p class="description"><?php esc_html_e( 'By checking this, the only Nav Menu locations will be the ones registered on this page. Leaving this un-checked will combine the menu locations on this page with menu locations registered by other plugins or themes. This has an impact on the nav menu manager in the WordPress admin and API access to menus.', 'faustwp' ); ?></p>
+	</label>
 	<?php
 }
 

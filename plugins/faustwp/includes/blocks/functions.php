@@ -187,7 +187,7 @@ function register_block_asset( $metadata, $field_name, $block_name, $dependencie
 	}
 
 	// Generate a handle and register the asset.
-	$handle = $block_name . '-' . strtolower( $field_name );
+	$handle = generate_block_asset_handle( $metadata['name'], $field_name );
 	if ( strpos( strtolower( $field_name ), 'script' ) !== false ) {
 		wp_register_script( $handle, $full_url, $dependencies, $version, true );
 	} elseif ( strpos( strtolower( $field_name ), 'style' ) !== false ) {

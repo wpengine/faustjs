@@ -1,0 +1,44 @@
+name: Package Code Quality
+
+on:
+  pull_request:
+    branches: [canary]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.php'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup-node:
+    name: Setup Dependencies
+    uses: ./.github/workflows/node-setup.yml
+    strategy:
+      matrix:
+        node-version: [22]
+    with:
+      node-version: ${{ matrix.node-version }}
+  check_lint:
+    name: Validate package linting
+    runs-on: ubuntu-latest
+    needs: [setup-node]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: ./.github/actions/cache-restore
+      - name: Check Linting
+        run: npm run lint
+  check_format:
+    name: Validate package formatting
+    runs-on: ubuntu-latest
+    needs: [setup-node]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: ./.github/actions/cache-restore
+      - name: Check Formatting
+        run: npm run test:format

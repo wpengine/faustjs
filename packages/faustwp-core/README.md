@@ -19,4 +19,4 @@
   </a>
 </p>
 
-Faust is a framework that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers.
+Faust is a toolkit that aims to make headless WordPress as streamlined as classic WordPress for both developers and publishers.

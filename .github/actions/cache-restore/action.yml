@@ -1,0 +1,30 @@
+name: 'Cache restoration'
+description: 'Setup a NodeJS environment and restore cache if any, given a node version'
+
+inputs:
+  node-version:
+    description: 'Node version to use, default to LTS'
+    required: true
+    default: 22
+outputs:
+  cache-hit:
+    description: 'Forward actions/cache cache-hit output'
+    value: ${{ steps.node-cache.outputs.cache-hit }}
+
+runs:
+  using: 'composite' # Mandatory parameter
+  steps:
+    # Setup a Node environment given a node version
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Cache Node Modules
+      id: node-cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          **/node_modules
+          ~/.cache
+        key: ${{ runner.os }}-${{ inputs.node-version }}-${{ hashFiles('package-lock.json') }}

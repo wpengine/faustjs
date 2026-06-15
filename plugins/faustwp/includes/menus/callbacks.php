@@ -20,6 +20,14 @@ add_action( 'after_setup_theme', __NAMESPACE__ . '\\remove_menu_locations', 100 
  * Unregisters menu locations such as those provided by the active PHP theme.
  */
 function remove_menu_locations() {
+
+	$remove_menus = faustwp_get_setting( 'remove_additional_menu_locations', false );
+
+	// If additional menus are not set to be removed, do nothing.
+	if ( false === $remove_menus ) {
+		return;
+	}
+
 	$menus = array_keys( get_registered_nav_menus() );
 
 	array_walk( $menus, 'unregister_nav_menu' );

@@ -1,9 +1,9 @@
 import {
-  GetStaticPropsContext,
-  GetStaticPropsResult,
-  GetServerSidePropsResult,
-  GetServerSidePropsContext,
-  Redirect,
+	GetStaticPropsContext,
+	GetStaticPropsResult,
+	GetServerSidePropsResult,
+	GetServerSidePropsContext,
+	Redirect,
 } from 'next';
 import type { DocumentNode } from 'graphql';
 import isBoolean from 'lodash/isBoolean.js';
@@ -14,40 +14,40 @@ import { addApolloState, getApolloClient } from './client.js';
 type Props = Record<string, unknown>;
 
 export interface GetNextServerSidePropsConfig<TProps = Props> {
-  Page: {
-    query?: DocumentNode;
-    variables?: (
-      context: GetStaticPropsContext | GetServerSidePropsContext,
-      extra?: TProps,
-    ) => {
-      [key: string]: any;
-    };
-  };
-  props?: TProps;
-  notFound?: true;
-  redirect?: Redirect;
-  /**
-   * Provide extra parameters for the Page.variables function call.
-   */
-  extra?: TProps;
+	Page: {
+		query?: DocumentNode;
+		variables?: (
+			context: GetStaticPropsContext | GetServerSidePropsContext,
+			extra?: TProps,
+		) => {
+			[key: string]: any;
+		};
+	};
+	props?: TProps;
+	notFound?: true;
+	redirect?: Redirect;
+	/**
+	 * Provide extra parameters for the Page.variables function call.
+	 */
+	extra?: TProps;
 }
 
 export interface GetNextStaticPropsConfig<TProps = Props>
-  extends GetNextServerSidePropsConfig<TProps> {
-  revalidate?: number | boolean;
+	extends GetNextServerSidePropsConfig<TProps> {
+	revalidate?: number | boolean;
 }
 
 export interface FaustPage<Data, TProps = void>
-  extends React.FC<
-    { data?: Data; __PAGE_VARIABLES__?: { [key: string]: any } } & TProps
-  > {
-  query?: DocumentNode;
-  variables?: (
-    context: GetStaticPropsContext | GetServerSidePropsContext,
-    extra?: Props,
-  ) => {
-    [key: string]: any;
-  };
+	extends React.FC<
+		{ data?: Data; __PAGE_VARIABLES__?: { [key: string]: any } } & TProps
+	> {
+	query?: DocumentNode;
+	variables?: (
+		context: GetStaticPropsContext | GetServerSidePropsContext,
+		extra?: Props,
+	) => {
+		[key: string]: any;
+	};
 }
 
 /**
@@ -57,49 +57,49 @@ export interface FaustPage<Data, TProps = void>
  * @param {GetNextStaticPropsConfig} cfg
  */
 export async function getNextStaticProps<TProps>(
-  context: GetStaticPropsContext,
-  cfg: GetNextStaticPropsConfig<TProps>,
+	context: GetStaticPropsContext,
+	cfg: GetNextStaticPropsConfig<TProps>,
 ): Promise<GetStaticPropsResult<TProps>> {
-  const { notFound, redirect, Page, revalidate, props, extra } = cfg;
-  const apolloClient = getApolloClient();
-  if (isBoolean(notFound) && notFound === true) {
-    return {
-      notFound,
-      revalidate: DEFAULT_ISR_REVALIDATE,
-    };
-  }
+	const { notFound, redirect, Page, revalidate, props, extra } = cfg;
+	const apolloClient = getApolloClient();
+	if (isBoolean(notFound) && notFound === true) {
+		return {
+			notFound,
+			revalidate: DEFAULT_ISR_REVALIDATE,
+		};
+	}
 
-  if (isObject(redirect)) {
-    return {
-      redirect,
-    };
-  }
+	if (isObject(redirect)) {
+		return {
+			redirect,
+		};
+	}
 
-  const pageVariables = Page?.variables
-    ? Page?.variables(context, extra)
-    : undefined;
+	const pageVariables = Page?.variables
+		? Page?.variables(context, extra)
+		: undefined;
 
-  let pageQueryRes;
-  if (Page.query) {
-    pageQueryRes = await apolloClient.query({
-      query: Page.query,
-      variables: pageVariables,
-    });
-  }
+	let pageQueryRes;
+	if (Page.query) {
+		pageQueryRes = await apolloClient.query({
+			query: Page.query,
+			variables: pageVariables,
+		});
+	}
 
-  let returnedProps = { ...props };
+	let returnedProps = { ...props };
 
-  if (pageQueryRes?.data) {
-    returnedProps = { ...returnedProps, data: pageQueryRes.data };
-  }
+	if (pageQueryRes?.data) {
+		returnedProps = { ...returnedProps, data: pageQueryRes.data };
+	}
 
-  if (pageVariables) {
-    returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
-  }
+	if (pageVariables) {
+		returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
+	}
 
-  const pageProps = addApolloState(apolloClient, { props: returnedProps });
-  pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
-  return pageProps as GetStaticPropsResult<TProps>;
+	const pageProps = addApolloState(apolloClient, { props: returnedProps });
+	pageProps.revalidate = revalidate ?? DEFAULT_ISR_REVALIDATE;
+	return pageProps as GetStaticPropsResult<TProps>;
 }
 
 /**
@@ -109,50 +109,50 @@ export async function getNextStaticProps<TProps>(
  * @param {GetNextServerSidePropsConfig} cfg
  */
 export async function getNextServerSideProps<TProps>(
-  context: GetServerSidePropsContext,
-  cfg: GetNextServerSidePropsConfig<TProps>,
+	context: GetServerSidePropsContext,
+	cfg: GetNextServerSidePropsConfig<TProps>,
 ): Promise<GetServerSidePropsResult<TProps>> {
-  const { res } = context;
-  const { notFound, redirect, Page, props, extra } = cfg;
-  const apolloClient = getApolloClient();
+	const { res } = context;
+	const { notFound, redirect, Page, props, extra } = cfg;
+	const apolloClient = getApolloClient();
 
-  res.setHeader('x-using', 'faust');
+	res.setHeader('x-using', 'faust');
 
-  if (isBoolean(notFound) && notFound === true) {
-    return {
-      notFound,
-    };
-  }
+	if (isBoolean(notFound) && notFound === true) {
+		return {
+			notFound,
+		};
+	}
 
-  if (isObject(redirect)) {
-    return {
-      redirect,
-    };
-  }
+	if (isObject(redirect)) {
+		return {
+			redirect,
+		};
+	}
 
-  const pageVariables = Page?.variables
-    ? Page?.variables(context, extra)
-    : undefined;
+	const pageVariables = Page?.variables
+		? Page?.variables(context, extra)
+		: undefined;
 
-  let pageQueryRes;
-  if (Page.query) {
-    pageQueryRes = await apolloClient.query({
-      query: Page.query,
-      variables: pageVariables,
-    });
-  }
+	let pageQueryRes;
+	if (Page.query) {
+		pageQueryRes = await apolloClient.query({
+			query: Page.query,
+			variables: pageVariables,
+		});
+	}
 
-  let returnedProps = { ...props };
+	let returnedProps = { ...props };
 
-  if (pageQueryRes?.data) {
-    returnedProps = { ...returnedProps, data: pageQueryRes.data };
-  }
+	if (pageQueryRes?.data) {
+		returnedProps = { ...returnedProps, data: pageQueryRes.data };
+	}
 
-  if (pageVariables) {
-    returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
-  }
+	if (pageVariables) {
+		returnedProps = { ...returnedProps, __PAGE_VARIABLES__: pageVariables };
+	}
 
-  return addApolloState(apolloClient, {
-    props: returnedProps,
-  }) as GetServerSidePropsResult<TProps>;
+	return addApolloState(apolloClient, {
+		props: returnedProps,
+	}) as GetServerSidePropsResult<TProps>;
 }

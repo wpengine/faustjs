@@ -5,6 +5,8 @@
  * @package FaustWP
  */
 
+declare(strict_types=1);
+
 namespace WPE\FaustWP\Replacement;
 
 use function WPE\FaustWP\Settings\{
@@ -126,8 +128,70 @@ function is_ajax_generate_permalink_request(): bool {
  */
 function is_wp_link_ajax_request(): bool {
 	return ( wp_doing_ajax()
-		&& ! empty( $_POST['_ajax_linking_nonce'] )
-		&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
-		&& ! empty( $_POST['action'] )
-		&& 'wp-link-ajax' === $_POST['action'] );
+			&& ! empty( $_POST['_ajax_linking_nonce'] )
+			&& wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_linking_nonce'] ) ), 'internal-linking' )
+			&& ! empty( $_POST['action'] )
+			&& 'wp-link-ajax' === $_POST['action'] );
+}
+
+
+/**
+ * Get all site URLs for each possible HTTP protocol
+ *
+ * @param string $site_url The site url.
+ *
+ * @return array<string> An array of site urls.
+ */
+function faustwp_get_wp_site_urls( string $site_url ): array {
+
+	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
+
+	$is_https = strpos( $site_url, 'https://' ) === 0;
+
+	return apply_filters(
+		'faustwp_get_wp_site_urls',
+		array(
+			$is_https ? "https://$host_url" : "http://$host_url",
+			$is_https ? "http://$host_url" : "https://$host_url",
+			"//$host_url",
+		)
+	);
+}
+
+/**
+ * Get all media urls based off the available site urls
+ *
+ * @param array<string> $wp_site_urls The array of potential site urls.
+ * @param string        $relative_upload_url The relative upload url.
+ *
+ * @return array<string> The array of media Urls
+ */
+function faustwp_get_wp_media_urls( array $wp_site_urls, string $relative_upload_url ) {
+
+	$media_urls = array();
+	foreach ( $wp_site_urls as $site_url ) {
+		$media_urls[] = $site_url . $relative_upload_url;
+	}
+
+	return apply_filters( 'faustwp_get_wp_site_media_urls', $media_urls );
+}
+
+
+/**
+ * Gets the relative wp-content upload URL.
+ *
+ * @param array<string> $site_urls An array of site URLs.
+ * @param string        $upload_url An array of site URLs.
+ *
+ * @return string The relative upload URL.
+ */
+function faustwp_get_relative_upload_url( array $site_urls, string $upload_url = '' ): string {
+
+	foreach ( $site_urls as $site_url ) {
+		if ( strpos( $upload_url, $site_url ) === 0 ) {
+			return (string) str_replace( $site_url, '', $upload_url );
+		}
+	}
+
+	return '';
 }

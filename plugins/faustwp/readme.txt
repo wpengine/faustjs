@@ -1,10 +1,10 @@
 === Faust.js ===
-Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine
+Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine,
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.5
-Stable tag: 1.3.1
-Requires PHP: 7.2
+Tested up to: 6.7.2
+Stable tag: 1.8.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,26 +54,26 @@ plugins/faustwp/.wordpress-org/screenshot-3.png
 
 == Changelog ==
 
-= 1.3.1 =
+= 1.8.1 =
 
 ### Patch Changes
 
-- c28624c: Improve domain_match function to handle port checks and Add Comprehensive Test Cases
+- 700f96e: bug: Fixes for Github workflow for faustwp releases. Added WPE info.json and automated for the release.
+- 134f823: Added minor fixes for non wpe release. Added test script to output th…
 
-= 1.3.0 =
+= 1.8.0 =
 
 ### Minor Changes
 
-- a478997: The default settings for `enable_image_source` has been changed to "on" for new installs.
+- aedd100: chore: Updated FaustWP to create a preview link for all draft post types.
+
+  Removed actions `rest_prepare_post` and `rest_prepare_page` from the callback functions.
+  Added a new action for `rest_api_init` to add `rest_prepare_{$post_type}` action for all publicably queryable post types including custom post types.
+
+= 1.7.5 =
 
 ### Patch Changes
 
-- bced682: Ensure's any related translations will properly load by calling `load_text_domain`
-
-= 1.2.3 =
-
-### Patch Changes
-
-- 4724719: Faust now errors if the NEXT_PUBLIC_WORDPRESS_URL matches the Headless URL in Faust Plugin settings.
+- 413fe9a: Added tested up to WordPress 6.7.2 for the FaustWP plugin.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

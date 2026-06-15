@@ -9,10 +9,12 @@ process.yml
 .env
 .env.*
 !.env.local.sample
-.docusaurus
+!.env.local.example
 build/
-examples/next/getting-started/package-lock.json
 faustjs.code-workspace
+plugins/faustwp/.docker/plugins/akismet/
+plugins/faustwp/.docker/plugins/hello.php
+plugins/faustwp/.docker/plugins/index.php
 
 # Ignore the WordPress source where used by various development environments
 wordpress/

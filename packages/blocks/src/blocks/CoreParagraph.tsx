@@ -19,6 +19,7 @@ export type CoreParagraphFragmentProps = ContentBlock & {
     dropCap?: string;
     gradient?: string;
     align?: string;
+    anchor?: string;
   };
 };
 
@@ -30,6 +31,7 @@ export function CoreParagraph(props: CoreParagraphFragmentProps) {
     <p
       style={style}
       className={attributes?.cssClassName}
+      id={attributes?.anchor}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: attributes?.content ?? '' }}
     />
@@ -52,6 +54,7 @@ CoreParagraph.fragments = {
         dropCap
         gradient
         align
+        anchor
       }
     }
   `,

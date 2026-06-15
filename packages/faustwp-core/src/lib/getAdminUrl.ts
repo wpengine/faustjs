@@ -9,13 +9,13 @@ import { hooks } from '../wpHooks/index.js';
  * @param {string} path Path relative to the admin URL.
  */
 export function getAdminUrl(path = ''): string {
-  let adminUrl = getWpUrl('wp-admin');
+	let adminUrl = getWpUrl('wp-admin');
 
-  adminUrl = hooks.applyFilters('wpAdminUrl', adminUrl, {}) as string;
+	adminUrl = hooks.applyFilters('wpAdminUrl', adminUrl, {}) as string;
 
-  if (!path) {
-    return adminUrl;
-  }
+	if (!path) {
+		return adminUrl;
+	}
 
-  return `${adminUrl}/${path}`;
+	return `${adminUrl}/${path}`;
 }

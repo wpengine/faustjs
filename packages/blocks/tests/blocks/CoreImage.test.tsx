@@ -64,32 +64,32 @@ describe('<CoreImage />', () => {
     });
 
     expect(tree.container).toMatchInlineSnapshot(`
-    <div>
-      <figure
-        class="wp-block-image alignwide size-large has-custom-border is-style-rounded"
-        id="my-anchor"
-      >
-        <a
-          class="my-link-class"
-          href="http://localhost:3000/hello-world/my-image/"
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          <img
-            alt="My alt text"
-            src="http://headless.local/wp-content/uploads/2022/12/My-image-1024x576.png"
-            style="border-width: 27px;"
-            title="mytitle"
-          />
-        </a>
-        <figcaption
-          class="wp-element-caption"
-        >
-          My caption
-        </figcaption>
-      </figure>
-    </div>
-    `);
+          <div>
+            <figure
+              class="wp-block-image alignwide size-large has-custom-border is-style-rounded"
+              id="my-anchor"
+            >
+              <a
+                class="my-link-class"
+                href="http://localhost:3000/hello-world/my-image/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                <img
+                  alt="My alt text"
+                  src="http://headless.local/wp-content/uploads/2022/12/My-image-1024x576.png"
+                  style="border-width: 27px;"
+                  title="mytitle"
+                />
+              </a>
+              <figcaption
+                class="wp-element-caption"
+              >
+                My caption
+              </figcaption>
+            </figure>
+          </div>
+        `);
   });
 
   test('applies the correct styles for a Next.js img', () => {
@@ -112,20 +112,19 @@ describe('<CoreImage />', () => {
     });
 
     expect(tree.container).toMatchInlineSnapshot(`
-    <div>
-      <figure
-        class="wp-block-image size-large is-resized another-class"
-        id="my-anchor"
-      >
-        <img
-          alt="My alt text"
-          src="http://headless.local/wp-content/uploads/2022/09/carbon5-1024x578.png"
-          style="flex-basis: 1024px; height: 578px;"
-          title="mytitle"
-        />
-        
-      </figure>
-    </div>
+      <div>
+        <figure
+          class="wp-block-image size-large is-resized another-class"
+          id="my-anchor"
+        >
+          <img
+            alt="My alt text"
+            src="http://headless.local/wp-content/uploads/2022/09/carbon5-1024x578.png"
+            style="flex-basis: 1024px; height: 578px;"
+            title="mytitle"
+          />
+        </figure>
+      </div>
     `);
   });
 });

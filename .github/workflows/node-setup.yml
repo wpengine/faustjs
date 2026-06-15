@@ -1,0 +1,29 @@
+name: 'Node Workspace Setup'
+description: 'Setup a environment and restore cache if any, given a node version'
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: 'Node version to use, default to LTS'
+        required: true
+        type: string
+        default: '22'
+
+jobs:
+  setup:
+    name: Setup Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ inputs.node-version }}
+        uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci

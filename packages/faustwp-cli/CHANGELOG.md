@@ -1,5 +1,25 @@
 # @faustwp/cli
 
+## 3.2.1
+
+### Patch Changes
+
+- 74e55bc: Updated code formatting config and switch to tabs. Configure your editor config settings for tab sizing preferences.
+
+## 3.1.1
+
+### Patch Changes
+
+- e22b87d: **@faustwp/cli**: Migrates `glob-promise` dependency to Promise support.
+
+  **@faustwp/experimental-app-router**: Update peer dependency of `@apollo/experimental-nextjs-app-support >=0.11.5`.
+
+## 3.1.0
+
+### Patch Changes
+
+- 031c2393: Added "glob" as a dependency
+
 ## 3.0.2
 
 ### Patch Changes
