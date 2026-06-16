@@ -15,7 +15,7 @@
 		"@wordpress/components": "^25.9.1",
 		"@wordpress/element": "5.20.0",
 		"@wordpress/hooks": "^3.43.0",
-		"@wordpress/i18n": "^4.43.0"
+		"@wordpress/i18n": "^6.21.1"
 	},
 	"devDependencies": {
 		"@react-spring/web": "9.7.3",
