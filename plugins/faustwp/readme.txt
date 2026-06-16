@@ -48,6 +48,11 @@ Johann Faust was a German printer and was instrumental in the invention of the p
 2. Portfolio, blog, and basic blueprints for headless sites built with Faust.js
 3. A code snippet
 
+== Upgrade Notice ==
+
+= 1.8.10 =
+Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77q-qcv3 / CVE-2026-54239.
+
 == Changelog ==
 
 = 1.8.9 =
