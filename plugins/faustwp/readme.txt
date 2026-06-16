@@ -34,10 +34,6 @@ Use one of the channels below to contact the Faust.js team for support.
 [GitHub](https://github.com/wpengine/faustjs) - Faust.js GitHub documentation and codebase.
 [Discord](https://discord.gg/J2khkF9XYK) - Interactive chat support on Discord.
 
-= Where can I find more information about development and future features for this plugin? =
-
-Great question! The development team posts weekly summaries of sprints related to Faust.js, [here](https://faustjs.org/blog).
-
 = Why the name “Faust.js”? =
 
 Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web.
@@ -47,6 +43,11 @@ Johann Faust was a German printer and was instrumental in the invention of the p
 1. The settings page
 2. Portfolio, blog, and basic blueprints for headless sites built with Faust.js
 3. A code snippet
+
+== Upgrade Notice ==
+
+= 1.8.10 =
+Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77q-qcv3 / CVE-2026-54239.
 
 == Changelog ==
 
