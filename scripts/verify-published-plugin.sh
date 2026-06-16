@@ -44,6 +44,17 @@ if grep -F "Update URI: false" "$PLUGIN_DIR/faustwp.php" >/dev/null 2>&1; then
   fail "\`Update URI: false\` header is present — wordpress.org auto-updates would be suppressed"
 fi
 
+echo "==> Assertion 5b: self-update infrastructure is absent from the wordpress.org distribution"
+# wordpress.org installs must not carry the external updater files — the build
+# pipeline strips them, and this catches a regression where that strip is lost.
+for forbidden in \
+  "includes/updates/class-plugin-updater.php" \
+  "includes/updates/check-for-updates.php"; do
+  if [ -e "$PLUGIN_DIR/$forbidden" ]; then
+    fail "self-update file present in published artifact: $forbidden"
+  fi
+done
+
 echo "==> Assertion 6: IV-in-HMAC fix is present in encrypt() and decrypt()"
 HMAC_COUNT=$(grep -cF '$iv . $cipher_text' "$PLUGIN_DIR/includes/auth/functions.php" || true)
 [ "$HMAC_COUNT" = "2" ] || fail "expected 2 \`\$iv . \$cipher_text\` occurrences in includes/auth/functions.php, found ${HMAC_COUNT}"
