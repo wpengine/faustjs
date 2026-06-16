@@ -12,7 +12,7 @@
  * Version: 1.8.10
  * Requires PHP: 7.4
  * Requires at least: 5.7
- * Tested up to: 6.9
+ * Tested up to: 7.0
  *
  * @package FaustWP
  */

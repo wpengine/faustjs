@@ -2,7 +2,7 @@
 Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, teresagobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: 1.8.10
 Requires PHP: 7.4
 License: GPLv2 or later
