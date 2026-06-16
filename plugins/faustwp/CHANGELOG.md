@@ -127,7 +127,7 @@
 
 ### Minor Changes
 
-- 011cd931: - Added a custom PluginUpdater class to enable FaustWP plugin updates from an external API endpoint.
+- 011cd931: - Added a custom PluginUpdater class to enable FaustWP plugin updates from an external API endpoint. Applies to non-wordpress.org distributions only.
 
 ## 1.4.1
 

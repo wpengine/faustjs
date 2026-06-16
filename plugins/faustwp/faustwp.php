@@ -61,7 +61,9 @@ if ( ! is_php_version_compatible( faustwp_minimum_php_requirement() ) ) {
 	return;
 }
 
-// Loads the updater service, if included in this build.
+// Loads the updater service when present. The files under includes/updates/
+// are excluded from the wordpress.org build, so these requires only execute
+// in distributions that ship the updater.
 if ( file_exists( FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php' ) ) {
 	require FAUSTWP_DIR . '/includes/updates/class-plugin-updater.php';
 }

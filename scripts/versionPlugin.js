@@ -17,13 +17,15 @@ async function versionPlugin() {
   const pluginFile = path.join(pluginPath, 'faustwp.php');
   const readmeTxt  = path.join(pluginPath, 'readme.txt');
   const changelog  = path.join(pluginPath, 'CHANGELOG.md');
+  const infoJson   = path.join(pluginPath, 'info.json');
 
   const version = await getNewVersion(pluginPath);
 
   if ( version ) {
     bumpPluginHeader(pluginFile, version);
     await bumpStableTag(readmeTxt, version);
-    generateReadmeChangelog(readmeTxt, changelog);
+    await generateReadmeChangelog(readmeTxt, changelog);
+    await updateInfoJson(infoJson, readmeTxt, changelog, version);
   }
 }
 
@@ -162,6 +164,101 @@ async function generateReadmeChangelog(readmeTxtFile, changelog) {
   } catch(e) {
     console.warn(e);
   }
+}
+
+/**
+ * Refreshes the release-time fields in the plugin's info.json manifest used by
+ * the non-wordpress.org update channel. Updates version, last_updated, tested,
+ * download_link, the versions map, and the changelog section. Fields that are
+ * not release-driven (contributors, ratings, banners, etc.) are preserved.
+ *
+ * @param {String} infoJsonFile Full path to the plugin's info.json.
+ * @param {String} readmeTxt    Full path to the plugin's readme.txt.
+ * @param {String} changelog    Full path to the plugin's CHANGELOG.md.
+ * @param {String} version      The new version number.
+ */
+async function updateInfoJson(infoJsonFile, readmeTxt, changelog, version) {
+  try {
+    const raw  = await readFile(infoJsonFile);
+    const info = JSON.parse(raw);
+
+    info.version       = version;
+    info.last_updated  = formatLastUpdated(new Date());
+    info.download_link = buildDownloadLink(version);
+    info.versions      = info.versions || {};
+    info.versions[version] = info.download_link;
+
+    const readme = await readFile(readmeTxt);
+    const tested = readme.match(/^Tested up to:\s*([0-9.]+)$/m);
+    if ( tested ) {
+      info.tested = tested[1];
+    }
+
+    info.sections = info.sections || {};
+    info.sections.changelog = await buildInfoJsonChangelog(changelog);
+
+    return writeFile(infoJsonFile, JSON.stringify(info, null, 2) + "\n");
+  } catch (e) {
+    console.warn(e);
+  }
+}
+
+/**
+ * Builds the download URL for a given version. The host matches the value the
+ * shipped updater client already calls in includes/updates/.
+ *
+ * @param {String} version
+ */
+function buildDownloadLink(version) {
+  return `https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.${version}.zip`;
+}
+
+/**
+ * Formats a Date as the "YYYY-MM-DD h:mmam/pm GMT" string the manifest uses.
+ *
+ * @param {Date} d
+ */
+function formatLastUpdated(d) {
+  const y   = d.getUTCFullYear();
+  const mo  = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  const min = String(d.getUTCMinutes()).padStart(2, '0');
+  let h = d.getUTCHours();
+  const ampm = h >= 12 ? 'pm' : 'am';
+  h = h % 12;
+  if (h === 0) { h = 12; }
+  return `${y}-${mo}-${day} ${h}:${min}${ampm} GMT`;
+}
+
+/**
+ * Builds the sections.changelog string for info.json from CHANGELOG.md.
+ * Mirrors the readme.txt logic (last 3 versions, "## X" → "= X =") but joins
+ * lines with a blank line so paragraph spacing matches the wordpress.org API
+ * shape that the manifest consumer expects.
+ *
+ * @param {String} changelogFile
+ */
+async function buildInfoJsonChangelog(changelogFile) {
+  const source = (await readFile(changelogFile))
+    .replace(/^# Faust\s*$/m, '')
+    .trim();
+
+  const lines = source.split(/\r?\n/);
+  const out = [];
+  let versionCount = 0;
+
+  for (const raw of lines) {
+    let line = raw;
+    if (line.startsWith('## ')) {
+      if (versionCount === 3) { break; }
+      line = line.replace('## ', '= ') + ' =';
+      versionCount++;
+    }
+    out.push(line);
+  }
+
+  out.push('[View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)');
+  return out.join('\n\n');
 }
 
 versionPlugin();

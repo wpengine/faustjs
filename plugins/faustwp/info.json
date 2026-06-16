@@ -1,0 +1,201 @@
+{
+  "name": "Faust.js™",
+  "slug": "faustwp",
+  "version": "1.8.9",
+  "requires": "5.7",
+  "tested": "6.9",
+  "requires_php": "7.4",
+  "requires_plugins": [],
+  "rating": 100,
+  "ratings": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 7
+  },
+  "num_ratings": 7,
+  "support_url": "https://wordpress.org/support/plugin/faustwp/",
+  "support_threads": 0,
+  "support_threads_resolved": 0,
+  "active_installs": 1000,
+  "last_updated": "2026-06-03 5:32pm GMT",
+  "added": "2021-12-02",
+  "homepage": "https://faustjs.org/",
+  "sections": {
+    "description": "In conjunction with the [Faust.js™ NPM packages](https://www.npmjs.com/search?q=%40faustwp), the Faust.js™ WordPress plugin enables a decoupled front-end to authenticate with WordPress through GraphQL mutations and REST API endpoints. It is the bridge between a Faust.js™ powered front-end application, and a WordPress backend.\n\n\n\nThe plugin also provides useful options for headless sites, such as the ability to:\n\n\n\n- Hide “theme” admin pages.\n\n- Redirect public route requests to the front-end application.\n\n- Rewrite WordPress URLs to front-end URLs in queried content.",
+    "installation": "1. Search for the plugin in WordPress under \"Plugins -> Add New\".\n\n2. Click the “Install Now” button, followed by \"Activate\".\n\n\n\nThat's it! For more information on getting started with headless WordPress, see [Getting Started with Faust.js](https://faustjs.org/docs/tutorial/dev-env-setup).",
+    "faq": "= If I need more support, where should I ask questions? =\n\nUse one of the channels below to contact the Faust.js team for support.\n\n[GitHub](https://github.com/wpengine/faustjs) - Faust.js GitHub documentation and codebase.\n\n[Discord](https://discord.gg/J2khkF9XYK) - Interactive chat support on Discord.\n\n\n\n= Where can I find more information about development and future features for this plugin? =\n\n\n\nGreat question! The development team posts weekly summaries of sprints related to Faust.js, [here](https://faustjs.org/blog).\n\n\n\n= Why the name “Faust.js”? =\n\n\n\nJohann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web.",
+    "changelog": "= 1.8.9 =\n\n\n\n### Patch Changes\n\n\n\n- 139479d: Remove the `Update URI: false` header from `faustwp.php` so WordPress checks wordpress.org for plugin updates. This restores wordpress.org as the canonical update channel for new installs. The 1.8.8 security fix (GHSA-q6pm-r77q-qcv3) — include the IV in the token envelope HMAC to prevent authentication bypass — was reported by ParkHyunWoo (@hwpark6804-gif) via Patchstack.\n\n\n\n= 1.8.8 =\n\n\n\n### Patch Changes\n\n\n\n- cda00de: fix[faustwp]: include the IV in the token envelope HMAC to prevent authentication bypass via IV bit-flipping (GHSA-q6pm-r77q-qcv3)\n\n\n\n= 1.8.7 =\n\n\n\n### Patch Changes\n\n\n\n- ca1e2f4: fix[faustwp]: update documentation links in settings page to use current URL structure\n\n\n\n[View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)",
+    "screenshots": "1. The settings page\n\n2. Portfolio, blog, and basic blueprints for headless sites built with Faust.js\n\n3. A code snippet\n\n\n\nplugins/faustwp/.wordpress-org/screenshot-1.png\n\nplugins/faustwp/.wordpress-org/screenshot-2.png\n\nplugins/faustwp/.wordpress-org/screenshot-3.png"
+  },
+  "download_link": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.9.zip",
+  "upgrade_notice": [],
+  "screenshots": {
+    "1": {
+      "src": "https://ps.w.org/faustwp/assets/screenshot-1.png?rev=2834048",
+      "caption": "The settings page"
+    },
+    "2": {
+      "src": "https://ps.w.org/faustwp/assets/screenshot-2.png?rev=2834048",
+      "caption": "Portfolio, blog, and basic blueprints for headless sites built with Faust.js"
+    },
+    "3": {
+      "src": "https://ps.w.org/faustwp/assets/screenshot-3.png?rev=2834048",
+      "caption": "A code snippet"
+    }
+  },
+  "tags": {
+    "composable-architecture": "composable-architecture",
+    "decoupled": "decoupled",
+    "faust": "faust",
+    "faustjs": "faustjs",
+    "headless": "headless"
+  },
+  "versions": {
+    "1.7.1": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.7.1.zip",
+    "1.8.0": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.0.zip",
+    "1.8.4": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.4.zip",
+    "1.8.5": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.5.zip",
+    "1.8.6": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.6.zip",
+    "1.8.7": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.7.zip",
+    "1.8.8": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.8.zip",
+    "1.8.9": "https://wpe-plugin-updates.wpengine.com/faustwp/faustwp.1.8.9.zip"
+  },
+  "business_model": false,
+  "repository_url": "",
+  "commercial_support_url": "",
+  "donate_link": "",
+  "banners": {
+    "low": "https://ps.w.org/faustwp/assets/banner-772x250.jpg?rev=2717649",
+    "high": "https://ps.w.org/faustwp/assets/banner-1544x500.jpg?rev=2717649"
+  },
+  "preview_link": "",
+  "short_description": "Plugin for working with Faust.js™, the Headless WordPress Framework.",
+  "contributors": [
+    {
+      "name": "antpb",
+      "type": "wporg",
+      "display_name": "Anthony Burchell",
+      "profile": "https://profiles.wordpress.org/antpb/",
+      "avatar": "https://secure.gravatar.com/avatar/453fbc8dfd108125f351d60fd2c1afe7?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "apmatthe",
+      "type": "wporg",
+      "display_name": "Andrew Matthews",
+      "profile": "https://profiles.wordpress.org/apmatthe/",
+      "avatar": "https://secure.gravatar.com/avatar/f98249968d900facd762493653a88b55?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "blakewpe",
+      "type": "wporg",
+      "display_name": "blakewpe",
+      "profile": "https://profiles.wordpress.org/blakewpe/",
+      "avatar": "https://secure.gravatar.com/avatar/f524fa068f734464722879d20ff57c5b?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "chriswiegman",
+      "type": "wporg",
+      "display_name": "Chris Wiegman",
+      "profile": "https://profiles.wordpress.org/chriswiegman/",
+      "avatar": "https://secure.gravatar.com/avatar/9a6372cbe7f7d32d0d27700862011288?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "claygriffiths",
+      "type": "wporg",
+      "display_name": "claygriffiths",
+      "profile": "https://profiles.wordpress.org/claygriffiths/",
+      "avatar": "https://secure.gravatar.com/avatar/c0456b3a19468fef8914a2f5371b40d6?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "colin-murphy",
+      "type": "wporg",
+      "display_name": "Colin Murphy",
+      "profile": "https://profiles.wordpress.org/colin-murphy/",
+      "avatar": "https://secure.gravatar.com/avatar/1ea83a4092e913bc43b099775f29b5b1?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "jasonkonen",
+      "type": "wporg",
+      "display_name": "Jason Konen",
+      "profile": "https://profiles.wordpress.org/jasonkonen/",
+      "avatar": "https://secure.gravatar.com/avatar/42e19a5a178ec1033215a45a1d683ef3?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "joefusco",
+      "type": "wporg",
+      "display_name": "Joe Fusco",
+      "profile": "https://profiles.wordpress.org/joefusco/",
+      "avatar": "https://secure.gravatar.com/avatar/11e370caa8ea5e1fb9e6b812d5c409f8?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "markkelnar",
+      "type": "wporg",
+      "display_name": "markkelnar",
+      "profile": "https://profiles.wordpress.org/markkelnar/",
+      "avatar": "https://secure.gravatar.com/avatar/5f17b8a0d0213ed2bc805ac40e83b1c5?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "matthewguywright",
+      "type": "wporg",
+      "display_name": "Matthew Wright",
+      "profile": "https://profiles.wordpress.org/matthewguywright/",
+      "avatar": "https://secure.gravatar.com/avatar/fe6a4f9674110c793a2c408d81b5dfae?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "mindctrl",
+      "type": "wporg",
+      "display_name": "John Parris",
+      "profile": "https://profiles.wordpress.org/mindctrl/",
+      "avatar": "https://secure.gravatar.com/avatar/1b31a4fe3905a88053a566b6037002d5?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "modernnerd",
+      "type": "wporg",
+      "display_name": "Nick C",
+      "profile": "https://profiles.wordpress.org/modernnerd/",
+      "avatar": "https://secure.gravatar.com/avatar/fb9b76c6ed2685d4bd52a863a3cebdd2?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "rfmeier",
+      "type": "wporg",
+      "display_name": "rfmeier",
+      "profile": "https://profiles.wordpress.org/rfmeier/",
+      "avatar": "https://secure.gravatar.com/avatar/6272ddb97237615090f42c44eb717389?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "TeresaGobble",
+      "type": "wporg",
+      "display_name": "Teresa Gobble",
+      "profile": "https://profiles.wordpress.org/teresagobble/",
+      "avatar": "https://secure.gravatar.com/avatar/3533063b820474ca319bf1e1b9774ebb?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "thdespou",
+      "type": "wporg",
+      "display_name": "Theo",
+      "profile": "https://profiles.wordpress.org/thdespou/",
+      "avatar": "https://secure.gravatar.com/avatar/314c9f734b04106c3d6169547d517e40?s=96&d=monsterid&r=g"
+    },
+    {
+      "name": "wpengine",
+      "type": "wporg",
+      "display_name": "WP Engine",
+      "profile": "https://profiles.wordpress.org/wpengine/",
+      "avatar": "https://secure.gravatar.com/avatar/c49ce4c563ebe19c03fb3af0348f162e?s=96&d=monsterid&r=g"
+    }
+  ],
+  "author": {
+    "name": "wpengine",
+    "type": "wporg",
+    "display_name": "WP Engine",
+    "profile": "https://profiles.wordpress.org/wpengine/",
+    "avatar": "https://secure.gravatar.com/avatar/c49ce4c563ebe19c03fb3af0348f162e?s=96&d=monsterid&r=g"
+  },
+  "icons": {
+    "1x": "https://wpe-plugin-updates.wpengine.com/faustwp/assets/icon.svg",
+    "svg": "https://wpe-plugin-updates.wpengine.com/faustwp/assets/icon.svg"
+  },
+  "downloaded": 65456
+}

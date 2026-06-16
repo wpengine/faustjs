@@ -23,3 +23,5 @@ package.json
 coverage
 phpstan.neon.dist
 /phpstan
+includes/updates
+info.json
