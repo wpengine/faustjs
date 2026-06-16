@@ -1,0 +1,32 @@
+# Dependabot configuration for the faustjs monorepo.
+#
+# The `increase-if-necessary` strategy keeps Dependabot from narrowing or
+# widening a package.json range as long as the new version still satisfies
+# the existing range. Dependabot still updates the lockfile, and still
+# updates the package.json range when the new version genuinely doesn't
+# fit. The intent: peerDependency ranges on shipped packages (e.g. the
+# Next.js peer on @faustwp/core) shouldn't be rewritten automatically as
+# part of a routine dependency bump; those are deliberate compatibility
+# decisions that warrant their own changeset and review.
+
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    versioning-strategy: "increase-if-necessary"
+
+  - package-ecosystem: "composer"
+    directory: "/plugins/faustwp"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    versioning-strategy: "increase-if-necessary"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
