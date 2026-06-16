@@ -1,5 +1,11 @@
 # Faust
 
+## 1.8.11
+
+### Patch Changes
+
+- 0ef93f8: Add WordPress 7.0 to the CI test matrix and update the plugin "Tested up to" header to 7.0.
+
 ## 1.8.10
 
 ### Patch Changes
