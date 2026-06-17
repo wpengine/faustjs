@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 7.0
-Stable tag: 1.8.10
+Stable tag: 1.8.11
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,12 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 == Changelog ==
 
+= 1.8.11 =
+
+### Patch Changes
+
+- 0ef93f8: Add WordPress 7.0 to the CI test matrix and update the plugin "Tested up to" header to 7.0.
+
 = 1.8.10 =
 
 ### Patch Changes
@@ -62,11 +68,5 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 ### Patch Changes
 
 - 139479d: Remove the `Update URI: false` header from `faustwp.php` so WordPress checks wordpress.org for plugin updates. This restores wordpress.org as the canonical update channel for new installs. The 1.8.8 security fix (GHSA-q6pm-r77q-qcv3) — include the IV in the token envelope HMAC to prevent authentication bypass — was reported by ParkHyunWoo (@hwpark6804-gif) via Patchstack.
-
-= 1.8.8 =
-
-### Patch Changes
-
-- cda00de: fix[faustwp]: include the IV in the token envelope HMAC to prevent authentication bypass via IV bit-flipping (GHSA-q6pm-r77q-qcv3)
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
