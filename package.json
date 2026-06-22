@@ -69,7 +69,8 @@
 		"test-exclude": "^7.0.1",
 		"immutable": "^5.1.5",
 		"uuid": ">=14.0.0",
-		"@tootallnate/once": "2.0.0"
+		"@tootallnate/once": "2.0.0",
+		"js-yaml": "^4.1.1"
 	},
 	"resolutions": {
 		"@babel/runtime": "7.27.0"
