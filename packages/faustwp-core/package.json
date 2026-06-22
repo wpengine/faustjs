@@ -40,7 +40,7 @@
 		"rehackt": "^0.1.0",
 		"rimraf": "^3.0.2",
 		"sass": "^1.80.3",
-		"shx": "^0.3.4",
+		"shx": "^0.4.0",
 		"symbol-observable": "^4.0.0",
 		"throat": "^6.0.2",
 		"ts-invariant": "^0.10.3",
