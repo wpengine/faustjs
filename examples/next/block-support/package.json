@@ -47,7 +47,8 @@
 		"serialize-javascript": ">=7.0.5",
 		"@tootallnate/once": ">=3.0.1",
 		"postcss": ">=8.5.10",
-		"uuid": ">=14.0.0"
+		"uuid": ">=14.0.0",
+		"js-yaml": "^4.1.1"
 	},
 	"resolutions": {
 		"@babel/runtime": "7.27.0"
