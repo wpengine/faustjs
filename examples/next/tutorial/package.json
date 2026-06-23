@@ -34,6 +34,7 @@
 		"fast-xml-parser": "^5.3.4",
 		"js-yaml": "^4.1.1",
 		"ajv": ">=8.17.2",
+		"js-yaml": "^4.1.1",
 		"next": {
 			"postcss": "$postcss"
 		}
