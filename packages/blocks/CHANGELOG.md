@@ -1,5 +1,11 @@
 # @faustwp/blocks
 
+## 6.1.9
+
+### Patch Changes
+
+- 3cbdac6: Widen the `next` peer dependency to allow Next.js 16.
+
 ## 6.1.8
 
 ### Patch Changes
