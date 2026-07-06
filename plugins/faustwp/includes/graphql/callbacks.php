@@ -346,23 +346,11 @@ function register_generate_ac_mutation() {
 				$email = isset( $input['email'] ) ? $input['email'] : null;
 				$password = isset( $input['password'] ) ? $input['password'] : null;
 
-				if ( $is_email ) {
-					$authenticate = wp_authenticate_email_password(
-						null,
-						$email,
-						$password
-					);
-
-					$user = get_user_by( 'email', $email );
-				} else {
-					$authenticate = wp_authenticate_username_password(
-						null,
-						$username,
-						$password
-					);
-
-					$user = get_user_by( 'login', $username );
-				}
+				// Authenticate through WordPress's full entry point so that
+				// callbacks on the `authenticate` filter run for the local-login
+				// flow, consistent with the standard WordPress login path.
+				$identifier   = $is_email ? $email : $username;
+				$authenticate = wp_authenticate( $identifier, $password );
 
 				if ( is_wp_error( $authenticate ) ) {
 					return array(
@@ -370,6 +358,8 @@ function register_generate_ac_mutation() {
 						'error' => $authenticate->get_error_message(),
 					);
 				}
+
+				$user = $authenticate;
 
 				// Generate an authorization code that expires in 1 minute.
 				$code = generate_authorization_code( $user, MINUTE_IN_SECONDS * 1 );
