@@ -62,7 +62,10 @@
 	"overrides": {
 		"semver": "~7.5.2",
 		"optionator": "0.9.3",
-		"postcss": "^8.5.10",
+		"postcss": "^8.5.23",
+		"next": {
+			"postcss": "^8.5.23"
+		},
 		"axios": "^1.7.4",
 		"cross-spawn": "^7.0.6",
 		"@babel/runtime": "^7.27.0",
