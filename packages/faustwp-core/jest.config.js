@@ -24,6 +24,7 @@ module.exports = {
 	extensionsToTreatAsEsm: ['.ts', '.tsx'],
 	moduleNameMapper: {
 		'^(\\.{1,2}/.*)\\.js$': '$1',
+		'^next/config$': '<rootDir>/__mocks__/next-config.js',
 	},
 
 	// Transform ESM dependencies that Jest needs to handle

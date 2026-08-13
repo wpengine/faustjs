@@ -1,9 +1,3 @@
-jest.mock('next/config', () => ({
-	__esModule: true,
-	default: jest.fn(),
-	setConfig: jest.fn(),
-}));
-
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import trim from 'lodash/trim.js';
