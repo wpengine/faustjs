@@ -5,7 +5,7 @@
 import { renderHook } from '@testing-library/react';
 import fetchMock from 'fetch-mock';
 import { useLogout } from '../../src/hooks/useLogout';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 
 describe('useLogout hook', () => {
 	const windowBackup = window.location;
