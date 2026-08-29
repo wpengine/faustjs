@@ -31,7 +31,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.tag || github.ref_name }}
 
@@ -82,7 +82,7 @@ jobs:
       name: wordpress-org
       url: https://wordpress.org/plugins/faustwp/
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.tag || github.ref_name }}
 
