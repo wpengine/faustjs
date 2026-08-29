@@ -87,7 +87,7 @@ jobs:
           ref: ${{ inputs.tag || github.ref_name }}
 
       - name: Download .org payload
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: faustwp-org-payload
           path: dist/faustwp
