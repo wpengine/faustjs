@@ -23,7 +23,7 @@
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.1",
-		"@wordpress/env": "^10.13.0",
+		"@wordpress/env": "^11.14.0",
 		"eslint": "^9.32.0",
 		"eslint-config-next": "^16",
 		"postcss": "^8.5.25",
