@@ -5,7 +5,7 @@
   "minimum-stability": "stable",
   "require-dev": {
     "antecedent/patchwork": "^2.1",
-    "axepress/wp-graphql-stubs": "^1.16",
+    "axepress/wp-graphql-stubs": "^2.6",
     "brain/monkey": "^2.6",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "lucatume/wp-browser": "^3",
