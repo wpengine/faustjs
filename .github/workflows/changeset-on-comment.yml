@@ -1,0 +1,174 @@
+name: Add changeset on comment
+
+# Lets a reviewer add a missing changeset to a PR by commenting:
+#   /changeset <patch|minor|major> <pkg> <summary>
+# where <pkg> is the short name of one of the monorepo's publishable
+# @faustwp/* packages. The valid set is discovered at runtime from the PR
+# branch's `package.json` workspaces and `.changeset/config.json` ignore
+# list, so adding or removing a package updates the command automatically.
+#
+# Only fires for commenters with write access to the repo, and only for
+# branches in this repo (fork PRs need a manual changeset).
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  add_changeset:
+    if: |
+      github.event.issue.pull_request != null &&
+      startsWith(github.event.comment.body, '/changeset')
+    runs-on: ubuntu-22.04
+    steps:
+      - name: React to the comment so the commenter sees we picked it up
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X POST \
+            "/repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions" \
+            -f content=eyes
+
+      - name: Require write access
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSOC: ${{ github.event.comment.author_association }}
+          COMMENTER: ${{ github.event.comment.user.login }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          case "$ASSOC" in
+            OWNER|MEMBER|COLLABORATOR) ;;
+            *)
+              gh api -X POST \
+                "/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+                -f body="@${COMMENTER} \`/changeset\` is restricted to users with write access."
+              exit 1
+              ;;
+          esac
+
+      - name: Resolve the PR head ref (and reject forks)
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          data=$(gh api "/repos/${{ github.repository }}/pulls/${PR_NUMBER}")
+          ref=$(printf '%s' "$data" | jq -r '.head.ref')
+          head_repo=$(printf '%s' "$data" | jq -r '.head.repo.full_name')
+          if [ "$head_repo" != "${{ github.repository }}" ]; then
+            gh api -X POST \
+              "/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+              -f body="\`/changeset\` cannot push to fork branches; add the changeset manually."
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.pr.outputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Parse and validate the command
+        id: cmd
+        env:
+          BODY: ${{ github.event.comment.body }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+
+          # Discover publishable packages — intersection of the workspaces list
+          # and the @faustwp/* scope, minus anything in Changesets' ignore list.
+          ignored=$(jq -r '.ignore[]?' .changeset/config.json)
+          is_ignored() { printf '%s\n' "$ignored" | grep -Fxq "$1"; }
+
+          pkgs=""
+          while IFS= read -r ws; do
+            for f in $ws/package.json; do
+              [ -f "$f" ] || continue
+              name=$(jq -r '.name // empty' "$f")
+              case "$name" in
+                @faustwp/*) ;;
+                *) continue ;;
+              esac
+              is_ignored "$name" && continue
+              pkgs+="${name#@faustwp/}	$name"$'\n'
+            done
+          done < <(jq -r '.workspaces.packages[]' package.json)
+          pkgs=$(printf '%s' "$pkgs" | sort -u)
+
+          sorted_list=$(printf '%s\n' "$pkgs" | cut -f1 | awk 'NR==1{printf "`%s`",$0} NR>1{printf ", `%s`",$0}')
+          usage="Usage: \`/changeset <patch|minor|major> <pkg> <summary>\` where \`<pkg>\` is one of: ${sorted_list}."
+
+          reply_and_exit() {
+            gh api -X POST \
+              "/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+              -f body="$1"
+            exit 1
+          }
+
+          first_line=$(printf '%s\n' "$BODY" | head -1 | tr -d '\r')
+          if [[ ! "$first_line" =~ ^/changeset[[:space:]]+(patch|minor|major)[[:space:]]+([A-Za-z0-9-]+)[[:space:]]+(.+)$ ]]; then
+            reply_and_exit "$usage"
+          fi
+          bump="${BASH_REMATCH[1]}"
+          pkg_short=$(echo "${BASH_REMATCH[2]}" | tr '[:upper:]' '[:lower:]')
+          summary=$(echo "${BASH_REMATCH[3]}" | sed -e 's/[[:space:]]*$//')
+
+          pkg=$(printf '%s\n' "$pkgs" | awk -F'\t' -v key="$pkg_short" '$1==key{print $2; exit}')
+          if [ -z "$pkg" ]; then
+            reply_and_exit "$usage"
+          fi
+
+          echo "bump=$bump" >> "$GITHUB_OUTPUT"
+          echo "pkg=$pkg" >> "$GITHUB_OUTPUT"
+          {
+            echo 'summary<<CHANGESET_SUMMARY_EOF'
+            printf '%s\n' "$summary"
+            echo 'CHANGESET_SUMMARY_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Write the changeset file
+        env:
+          BUMP: ${{ steps.cmd.outputs.bump }}
+          PKG: ${{ steps.cmd.outputs.pkg }}
+          SUMMARY: ${{ steps.cmd.outputs.summary }}
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          mkdir -p .changeset
+          # Random suffix so concurrent /changeset comments on the same PR can't collide.
+          file=".changeset/comment-pr-${PR_NUMBER}-$(openssl rand -hex 4).md"
+          {
+            echo '---'
+            echo "\"$PKG\": $BUMP"
+            echo '---'
+            echo
+            echo "$SUMMARY"
+          } > "$file"
+          echo "CHANGESET_FILE=$file" >> "$GITHUB_ENV"
+
+      - name: Commit and push
+        env:
+          PR_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$CHANGESET_FILE"
+          git commit -m "chore: add changeset for #${PR_NUMBER}"
+          git push
+
+      - name: Confirm the changeset landed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X POST \
+            "/repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions" \
+            -f content='+1'
