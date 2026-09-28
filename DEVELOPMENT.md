@@ -117,7 +117,7 @@ Use [Codeception](https://codeception.com/) for running end-2-end tests in the b
 
 ### 2. Front-end Setup
 
-1. Create the following `.env.test` in `examples/next/getting-started`.
+1. Create the following `.env.test` in `examples/next/faustwp-getting-started`.
 
 ```sh
 # Your WordPress site URL
@@ -127,7 +127,7 @@ NEXT_PUBLIC_WORDPRESS_URL=http://localhost:8080
 FAUST_SECRET_KEY=00000000-0000-4000-8000-000000000001
 ```
 
-2. From within `examples/next/getting-started`, run `NODE_ENV=test npm run dev`.
+2. From within `examples/next/faustwp-getting-started`, run `NODE_ENV=test npm run dev`.
 
 ### 3. WordPress Setup
 
@@ -151,10 +151,12 @@ FAUST_SECRET_KEY=00000000-0000-4000-8000-000000000001
 
 ## Git Workflows
 
-We have three notable branches:
+We have two notable branches:
 
-- `canary` - This branch has the latest changes
-- `main` - This branch is used to deploy changes to [faustjs.org](https://faustjs.org)
+- `canary` - This branch has the latest changes. [faustjs.org](https://faustjs.org) reads the `docs` folder from this branch, so merged docs changes go live within about 10 minutes.
+- `main` - This branch is frozen. Don't delete it, because external tools still link to examples on it.
+
+Deprecated packages and examples live on `archive-*` and `archive/*` branches.
 
 ### Code Changes/Feature Workflow
 

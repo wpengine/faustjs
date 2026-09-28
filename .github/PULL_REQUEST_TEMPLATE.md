@@ -1,13 +1,25 @@
+<!--
+Faust.js is in maintenance mode. We accept security fixes, compatibility updates, and critical bug fixes. See SUPPORT.md.
+
+Keep this short. Add a changeset (`npm run changeset`) if you changed a package or the plugin.
+-->
+
 - [ ] I have signed a [Contributor License Agreement (CLA)](https://github.com/wpengine/faustjs#contributor-license-agreement) with WP Engine.
 
-## Description
+<!-- "Fixes #123" closes the issue when this merges. Use "Related: #123" if it doesn't fully fix it. -->
 
-<!-- What does this PR do and why? -->
+Fixes #
 
-## Related Issues
+<!-- What would we miss by only reading the diff? Caveats, untested paths, follow-ups, merge order. One or two sentences. -->
 
-<!-- Link related issues: #1234 -->
+<details>
+<summary>Use of AI Tools</summary>
 
-## Testing
+<!-- If you didn't use AI tools, set "AI assistance" to No and delete the other lines. -->
 
-<!-- How can this be tested? -->
+AI assistance: Yes/No
+Tool(s):
+Model(s):
+Used for:
+
+</details>

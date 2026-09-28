@@ -6,3 +6,6 @@ contact_links:
   - name: Headless WordPress Discord Community
     url: https://discord.gg/J2khkF9XYK
     about: Ask questions, discuss features, and meet new people in the Headless WordPress Discord community
+  - name: Headless WordPress Toolkit
+    url: https://github.com/wpengine/hwptoolkit
+    about: Faust.js is in maintenance mode and does not accept feature requests. For new headless WordPress projects and ideas, see the Headless WordPress Toolkit.

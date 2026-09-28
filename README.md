@@ -18,20 +18,23 @@
 
 Faust.js is a toolkit for building Next.js applications for headless WordPress sites. Faust.js provides tooling to reduce the pains of building a headless WordPress site (namely around data fetching, authentication, previews, and SSR/SSG) while offering a pleasant experience for both developers and publishers.
 
-- [Getting started with Next.js](https://faustjs.org/docs/getting-started)
+> [!IMPORTANT]
+> Faust.js is in maintenance mode. We fix security issues and critical bugs and keep it compatible with supported versions of WordPress, WPGraphQL, Next.js, and Node.js, but we are not adding new features. For new headless WordPress projects, see the [Headless WordPress Toolkit](https://github.com/wpengine/hwptoolkit). Read the [support policy](SUPPORT.md) for details.
+
+- [Getting started with Next.js](https://faustjs.org/docs/tutorial/learn-faust/)
 
 ## System Requirements
 
-- Node.js v18 or newer. npm v8 or newer.
+- Node.js v20 or newer. npm v8 or newer.
 - MacOS, Windows (including WSL), and Linux are supported.
 
 ## Documentation
 
-Visit [https://faustjs.org/docs/](https://faustjs.org/docs/getting-started) to view the full documentation.
+Visit [https://faustjs.org/docs/](https://faustjs.org/docs/) to view the full documentation.
 
 ### Editing Docs
 
-Docs are MD in [`docs`](docs/). Here are a couple things you should know!
+Docs are MD in [`docs`](docs/). faustjs.org reads them straight from the `canary` branch, so a merged change is live on the site within about 10 minutes, and deleting or renaming a page needs a redirect in the [faustjs.org repository](https://github.com/wpengine/faustjs.org). Here are a couple things you should know!
 
 1.  Our Docs support [Github Flavored Markdown](https://github.github.com/gfm/) (GFM).
 2.  Images should be stored along side the doc that uses them in an `images/` folder.
@@ -82,7 +85,7 @@ There are many ways to [contribute](/CONTRIBUTING.md) to this project.
 - [Discuss open issues](https://github.com/wpengine/faustjs/issues) to help define the future of the project.
 - [Submit bugs](https://github.com/wpengine/faustjs/issues) and help us verify fixes as they are checked in.
 - Review and discuss the [source code changes](https://github.com/wpengine/faustjs/pulls).
-- [Contribute bug fixes](/CONTRIBUTING.md)
+- [Contribute bug fixes](/CONTRIBUTING.md) that fall within the [support policy](SUPPORT.md)
 
 ### Contributor License Agreement
 
