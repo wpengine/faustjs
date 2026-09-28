@@ -8,7 +8,6 @@
 	"workspaces": {
 		"packages": [
 			"packages/blocks",
-			"packages/block-editor-utils",
 			"packages/faustwp-cli",
 			"packages/faustwp-core",
 			"examples/next/faustwp-getting-started",
@@ -16,19 +15,17 @@
 		]
 	},
 	"scripts": {
-		"build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
+		"build": "npm run build --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/blocks",
 		"build:faust-cli": "npm run build --workspace=@faustwp/cli",
 		"build:faust-core": "npm run build --workspace=@faustwp/core",
 		"build:faust-blocks": "npm run build --workspace=@faustwp/blocks",
-		"clean": "npm run clean --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
+		"clean": "npm run clean --workspace=@faustwp/cli --workspace=@faustwp/core",
 		"clean:examples": "rimraf examples/**/node_modules",
-		"format": "npm run format --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils",
-		"build:faust-block-editor-utils": "npm run build --workspace=@faustwp/block-editor-utils",
+		"format": "npm run format --workspace=@faustwp/cli --workspace=@faustwp/core",
 		"dev": "npm run build && npm run dev:next:getting-started",
 		"dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
-		"test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks --workspace=@faustwp/block-editor-utils",
-		"test:coverage": "npm run build && npm run test:coverage --workspace=@faustwp/block-editor-utils",
-		"test:format": "npm run test:format --workspace=@faustwp/cli --workspace=@faustwp/core --workspace=@faustwp/block-editor-utils -- --ignore-path .eslintignore --ignore-pattern CHANGELOG.md",
+		"test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks",
+		"test:format": "npm run test:format --workspace=@faustwp/cli --workspace=@faustwp/core -- --ignore-path .eslintignore --ignore-pattern CHANGELOG.md",
 		"wpe-build": "exit 1",
 		"changeset": "changeset",
 		"version": "changeset version && node scripts/versionPlugin.js",
