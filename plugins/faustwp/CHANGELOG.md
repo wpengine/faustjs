@@ -1,5 +1,11 @@
 # Faust
 
+## 1.8.12
+
+### Patch Changes
+
+- 85d1b14: Route the `generateAuthorizationCode` mutation through `wp_authenticate()` so login policies hooked on the WordPress `authenticate` filter are enforced.
+
 ## 1.8.11
 
 ### Patch Changes
