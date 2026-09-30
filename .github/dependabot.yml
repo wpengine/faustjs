@@ -26,7 +26,10 @@ updates:
     open-pull-requests-limit: 5
     versioning-strategy: "increase-if-necessary"
   - package-ecosystem: "github-actions"
-    directory: "/"
+    # "/" only covers .github/workflows; the composite actions need listing too.
+    directories:
+      - "/"
+      - "/.github/actions/*"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 5
