@@ -88,7 +88,7 @@ jobs:
         run: npx -p nextjs-bundle-analysis report
 
       - name: Upload bundle analysis report for this PR
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: bundle
           path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
