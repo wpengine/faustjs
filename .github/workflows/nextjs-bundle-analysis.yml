@@ -30,10 +30,10 @@ jobs:
 
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Install Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
@@ -88,7 +88,7 @@ jobs:
         run: npx -p nextjs-bundle-analysis report
 
       - name: Upload bundle analysis report for this PR
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: bundle
           path: ${{ matrix.next-dir }}/.next/analyze/__bundle_analysis.json
@@ -118,7 +118,7 @@ jobs:
           echo EOF >> $GITHUB_OUTPUT
 
       - name: Find Comment
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@v4
         if: success() && github.event.number
         id: fc
         with:

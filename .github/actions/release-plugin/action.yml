@@ -46,8 +46,8 @@ runs:
         rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" ${{ env.PLUGIN_DIR }}/ dist/${{ env.SLUG }}
 
         zip_file="faustwp.${{ env.VERSION }}.zip"
-        cd "dist/${{ env.SLUG }}"
-        zip -r "../../$zip_file" .
+        cd "dist"
+        zip -r "../$zip_file" "${{ env.SLUG }}"
         cd -
 
         echo "zip-path=$PWD/$zip_file" >> $GITHUB_ENV
@@ -68,8 +68,8 @@ runs:
         sed -i -e '/\* Update URI: false/d' "dist/${{ env.SLUG }}/faustwp.php"
 
         org_zip_file="faustwp.${{ env.VERSION }}.org.zip"
-        cd "dist/${{ env.SLUG }}"
-        zip -r "../../$org_zip_file" .
+        cd "dist"
+        zip -r "../$org_zip_file" "${{ env.SLUG }}"
         cd -
 
         echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV

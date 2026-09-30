@@ -31,6 +31,22 @@ tested=$(sed -nE 's/^Tested up to:[[:space:]]+([^[:space:]]+).*/\1/p' "$README" 
 requires=$(sed -nE 's/^Requires at least:[[:space:]]+([^[:space:]]+).*/\1/p' "$README" | head -1 | tr -d '\r')
 requires_php=$(sed -nE 's/^Requires PHP:[[:space:]]+([^[:space:]]+).*/\1/p' "$README" | head -1 | tr -d '\r')
 
+# Sync the changelog from readme.txt so the manifest reflects the current
+# release notes. readme.txt is the source of truth and is already trimmed to
+# the recent versions with a "View the full changelog" link. Capture the body
+# of the "== Changelog ==" section, then trim surrounding whitespace. Empty
+# value skips the update.
+changelog=$(awk '
+	/^== Changelog ==/ { capture = 1; next }
+	capture && /^== / { capture = 0 }
+	capture { body = body $0 "\n" }
+	END {
+		gsub(/^[ \t\r\n]+/, "", body)
+		gsub(/[ \t\r\n]+$/, "", body)
+		printf "%s", body
+	}
+' "$README")
+
 jq \
 	--arg version "$VERSION" \
 	--arg last_updated "$current_time" \
@@ -40,6 +56,7 @@ jq \
 	--arg tested "$tested" \
 	--arg requires "$requires" \
 	--arg requires_php "$requires_php" \
+	--arg changelog "$changelog" \
 	'
 		.versions = {($new_version): $new_download_link} + .versions
 		| .version = $version
@@ -48,5 +65,6 @@ jq \
 		| if $tested != "" then .tested = $tested else . end
 		| if $requires != "" then .requires = $requires else . end
 		| if $requires_php != "" then .requires_php = $requires_php else . end
+		| if $changelog != "" then .sections.changelog = $changelog else . end
 	' \
 	info.json > info.json.tmp && mv info.json.tmp info.json
