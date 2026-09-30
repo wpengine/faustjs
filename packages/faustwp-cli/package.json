@@ -27,7 +27,7 @@
 	"dependencies": {
 		"archiver": "^6.0.1",
 		"chalk": "^4.1.2",
-		"dotenv-flow": "^3.2.0",
+		"dotenv-flow": "^4.1.0",
 		"form-data": "^4.0.6",
 		"fs-extra": "^11.1.1",
 		"glob": "^11.1.0",
