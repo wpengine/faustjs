@@ -1,0 +1,41 @@
+name: Lint Pull Request
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  title:
+    name: Validate pull request title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Changesets opens "Version Packages" from changeset-release/canary.
+    if: ${{ !startsWith(github.head_ref, 'changeset-release/') }}
+    # The action reports a commit status, which needs statuses: write.
+    permissions:
+      pull-requests: read
+      statuses: write
+    steps:
+      - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            build
+            chore
+            ci
+            docs
+            feat
+            fix
+            perf
+            refactor
+            revert
+            style
+            test
+          requireScope: false
+          ignoreLabels: |
+            bot
+            ignore-semantic-pull-request
