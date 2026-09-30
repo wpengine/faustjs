@@ -24,8 +24,8 @@
 	},
 	"devDependencies": {
 		"@faustwp/block-editor-utils": "^0.3.3",
-		"@wordpress/base-styles": "^6.20.0",
-		"@wordpress/block-library": "^9.44.0",
+		"@wordpress/base-styles": "^13.2.0",
+		"@wordpress/block-library": "^11.1.0",
 		"next-secure-headers": "^2.2.0"
 	},
 	"optionalDependencies": {
@@ -46,11 +46,12 @@
 		"postcss": ">=8.5.10",
 		"uuid": ">=14.0.0",
 		"adm-zip": ">=0.6.1",
-		"js-yaml": ">=4.3.1",
+		"js-yaml": ">=5.4.1",
 		"linkify-it": ">=5.0.1",
-		"markdown-it": ">=14.2.0",
+		"markdown-it": ">=14.3.1",
 		"markdownlint": ">=0.41.0",
-		"markdownlint-cli": ">=0.49.0"
+		"markdownlint-cli": ">=0.49.0",
+		"lighthouse": "^13.4.1"
 	},
 	"resolutions": {
 		"@babel/runtime": "7.27.0"
