@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
 import isString from 'lodash/isString.js';
-import cookie, { CookieSerializeOptions } from 'cookie';
+import { parseCookie, stringifySetCookie, SerializeOptions } from 'cookie';
 import { base64Decode, base64Encode } from '../../utils/index.js';
 
 export interface CookieOptions {
@@ -14,13 +14,13 @@ export class Cookies {
 
 	private response?: ServerResponse;
 
-	private cookies: Record<string, string> = {};
+	private cookies: Record<string, string | undefined> = {};
 
 	constructor(req: IncomingMessage, res?: ServerResponse) {
 		this.request = req;
 		this.response = res;
 
-		this.cookies = cookie.parse(this.request.headers.cookie || '');
+		this.cookies = parseCookie(this.request.headers.cookie || '');
 	}
 
 	public getCookie(
@@ -51,7 +51,7 @@ export class Cookies {
 			encoded = true,
 			isJson = false,
 			...serializeOptions
-		}: CookieOptions & CookieSerializeOptions = {},
+		}: CookieOptions & SerializeOptions = {},
 	): void {
 		const valueStr = isJson ? JSON.stringify(value) : (value as string);
 		const cookieValue = encoded ? base64Encode(valueStr) : valueStr;
@@ -60,7 +60,7 @@ export class Cookies {
 
 		this.response?.setHeader(
 			'Set-Cookie',
-			cookie.serialize(key, cookieValue, serializeOptions),
+			stringifySetCookie(key, cookieValue, serializeOptions),
 		);
 	}
 
@@ -69,7 +69,7 @@ export class Cookies {
 
 		this.response?.setHeader(
 			'Set-Cookie',
-			cookie.serialize(key, '', {
+			stringifySetCookie(key, '', {
 				path: '/',
 				sameSite: 'strict',
 				secure: true,
