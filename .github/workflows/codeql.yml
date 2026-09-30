@@ -1,0 +1,48 @@
+name: CodeQL
+
+# Scans our JavaScript/TypeScript and GitHub Actions workflow definitions on
+# every PR, every push to canary, and weekly so results refresh against newly
+# published query packs even when the code hasn't changed.
+#
+# PHP support is in beta on CodeQL. Add it for plugins/faustwp once the
+# language pack is stable.
+
+on:
+  push:
+    branches: [canary]
+  pull_request:
+    branches: [canary]
+  schedule:
+    - cron: '0 6 * * 1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [actions, javascript-typescript]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      # init and analyze must stay on the same version.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: '/language:${{ matrix.language }}'
