@@ -4,6 +4,22 @@ on:
   push:
     tags:
       - '@faustwp/wordpress-plugin@*'
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to operate on (e.g. @faustwp/wordpress-plugin@1.8.8)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Build artifacts but skip the wordpress.org deploy job'
+        required: false
+        default: false
+        type: boolean
+      redeploy:
+        description: 'Delete the existing SVN tag before publishing'
+        required: false
+        default: false
+        type: boolean
   workflow_dispatch:
     inputs:
       tag:
