@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "bootstrap-sha": "b1fd0b64c3256157989a377b6647669e8b6a9e5a",
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "tag-separator": "@",
+  "changelog-sections": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "perf", "section": "Performance Improvements" },
+    { "type": "revert", "section": "Reverts" },
+    { "type": "deps", "section": "Dependencies" },
+    { "type": "docs", "section": "Documentation", "hidden": true },
+    { "type": "chore", "section": "Miscellaneous", "hidden": true },
+    { "type": "refactor", "section": "Code Refactoring", "hidden": true },
+    { "type": "test", "section": "Tests", "hidden": true },
+    { "type": "build", "section": "Build System", "hidden": true },
+    { "type": "ci", "section": "Continuous Integration", "hidden": true },
+    { "type": "style", "section": "Styles", "hidden": true }
+  ],
+  "packages": {
+    "packages/faustwp-core": { "component": "@faustwp/core" },
+    "packages/faustwp-cli": { "component": "@faustwp/cli" },
+    "packages/blocks": { "component": "@faustwp/blocks" },
+    "packages/block-editor-utils": { "component": "@faustwp/block-editor-utils" },
+    "plugins/faustwp": { "component": "@faustwp/wordpress-plugin" }
+  },
+  "plugins": [
+    {
+      "type": "linked-versions",
+      "groupName": "core-cli",
+      "components": ["@faustwp/core", "@faustwp/cli"]
+    }
+  ]
+}

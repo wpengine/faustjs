@@ -39,7 +39,7 @@ In general, things we find useful when reviewing suggestions are:
 0. [A bug or feature you want to work on](https://github.com/wpengine/faustjs/labels/help%20wanted)! If you have found a new bug or want to propose a feature, please [create an issue](https://github.com/wpengine/faustjs/issues/new/choose) before starting a pull request.
 1. [A GitHub account](https://github.com/join).
 2. A working copy of the code. See [DEVELOPMENT.md](/DEVELOPMENT.md).
-3. A `changeset` that describes the changes you're making. You can create a `changeset` by running `npm run changeset` from the monorepo root.
+3. A pull request title that follows [Conventional Commits](https://www.conventionalcommits.org/), such as `fix(core): handle expired tokens`. We use it to version packages and write changelogs. See [DEVELOPMENT.md](/DEVELOPMENT.md#how-commits-map-to-releases).
 
 ## Housekeeping
 
