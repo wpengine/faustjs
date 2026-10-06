@@ -62,8 +62,9 @@ export async function createRootSitemapIndex(
 		throw new Error('Request object must have URL');
 	}
 
-	// get sitemapIndexPath config param
-	// fetch sitemap from WP
+	// sitemapIndexPath is where WordPress serves its index, which can differ
+	// from the frontend route serving this request (e.g. Yoast or Rank Math
+	// use /sitemap_index.xml while the Next.js route is /sitemap.xml).
 	const trimmedWpUrl = trim(getWpUrl(), '/');
 	const trimmedFrontendUrl = trim(frontendUrl, '/');
 	const trimmedSitemapIndexPath = trim(
@@ -72,13 +73,19 @@ export async function createRootSitemapIndex(
 	);
 	const wpSitemapUrl = `${trimmedWpUrl}/${trimmedSitemapIndexPath}`;
 
+	// Child sitemaps are served by the same frontend route as this index.
+	const trimmedFrontendIndexPath = trim(
+		new URL(req.url, frontendUrl).pathname,
+		'/',
+	);
+
 	let sitemaps: SitemapSchemaSitemapElement[] = [];
 
 	if (!isUndefined(pages) && isArray(pages) && pages.length) {
-		const trimmedFaustPagesPart = `${trim(
-			SITEMAP_INDEX_PATH,
+		const trimmedFaustPagesPart = `${trimmedFrontendIndexPath}?sitemap=${trim(
+			FAUST_PAGES_PATHNAME,
 			'/',
-		)}?sitemap=${trim(FAUST_PAGES_PATHNAME, '/')}`;
+		)}`;
 		const sitemapFaustPagesUrl = `${trimmedFrontendUrl}/${trimmedFaustPagesPart}`;
 
 		sitemaps = [
@@ -170,11 +177,11 @@ export async function createRootSitemapIndex(
 	 *
 	 * @example
 	 * Replaces http://headless.local/wp-sitemap-posts-page-1.xml with
-	 * http://localhost:3000/wp-sitemap-posts-page-1.xml
+	 * http://localhost:3000/sitemap.xml?sitemap=wp-sitemap-posts-page-1.xml
 	 */
 	wpSitemaps.forEach((sitemap) => {
 		const url = new URL(sitemap.loc);
-		const sitemapUrl = `${trim(frontendUrl, '/')}/sitemap.xml?sitemap=${trim(
+		const sitemapUrl = `${trimmedFrontendUrl}/${trimmedFrontendIndexPath}?sitemap=${trim(
 			url.pathname,
 			'/',
 		)}`;
