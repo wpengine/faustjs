@@ -23,7 +23,7 @@
 	"scripts": {
 		"prebuild": "npm run clean",
 		"postbuild": "npm run package",
-		"clean": "rimraf dist node_modules",
+		"clean": "rimraf dist",
 		"package": "node ../../scripts/package.js",
 		"test": "jest",
 		"build": "npm run build-esm && npm run build-cjs",
