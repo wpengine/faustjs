@@ -2,6 +2,10 @@ import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
 
+// archiver is ESM-only, which Jest's CommonJS runtime can't load, and these
+// tests don't build a ZIP.
+jest.mock('archiver', () => ({ ZipArchive: jest.fn() }));
+
 // Brackets are glob syntax, so a project path containing them used to match
 // nothing. Windows paths hit the same problem through their `\` separators.
 describe('blockset in a project path with glob characters', () => {

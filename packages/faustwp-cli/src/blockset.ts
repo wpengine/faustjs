@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import { glob } from 'glob';
 import FormData from 'form-data';
-import archiver from 'archiver';
+import { ZipArchive } from 'archiver';
 import { spawnSync } from 'child_process';
 
 import { getWpUrl, getWpSecret, hasYarn } from './utils/index.js';
@@ -152,7 +152,7 @@ export async function processBlockFiles(files: string[]): Promise<void> {
 export async function createZipArchive(): Promise<string> {
 	const zipPath = path.join(FAUST_DIR, 'blocks.zip');
 	const output = fs.createWriteStream(zipPath);
-	const archive = archiver('zip');
+	const archive = new ZipArchive();
 
 	archive.pipe(output);
 	archive.directory(BLOCKS_DIR, false);
