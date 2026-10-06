@@ -27,10 +27,10 @@
 	"dependencies": {
 		"archiver": "^6.0.1",
 		"chalk": "^4.1.2",
-		"dotenv-flow": "^3.2.0",
+		"dotenv-flow": "^4.1.0",
 		"form-data": "^4.0.6",
 		"fs-extra": "^11.1.1",
-		"glob": "^11.1.0",
+		"glob": "^13.0.6",
 		"isomorphic-fetch": "^3.0.0",
 		"lodash": "^4.18.1",
 		"webpack-cli": "5.1.4"

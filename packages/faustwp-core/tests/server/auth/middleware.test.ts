@@ -1,7 +1,10 @@
 import 'isomorphic-fetch';
 import fetchMock from 'fetch-mock';
 import { IncomingMessage, ServerResponse } from 'http';
-import { authorizeHandler } from '../../../src/server/auth/middleware';
+import {
+	authorizeHandler,
+	logoutHandler,
+} from '../../../src/server/auth/middleware';
 import * as getWpUrl from '../../../src/lib/getWpUrl';
 import * as getWpSecret from '../../../src/lib/getWpSecret';
 
@@ -132,5 +135,33 @@ describe('auth/middleware', () => {
 		endSpy.mockRestore();
 		warningSpy.mockRestore();
 		fetchMock.restore();
+	});
+
+	test('logoutHandler expires the refresh token cookie', async () => {
+		const req: IncomingMessage = {
+			method: 'POST',
+			headers: {},
+		} as any;
+
+		const res: ServerResponse = {
+			setHeader() {},
+			end() {},
+		} as any;
+
+		const setHeaderSpy = jest.spyOn(res, 'setHeader');
+
+		await logoutHandler(req, res);
+
+		expect(res.statusCode).toBe(205);
+		expect(setHeaderSpy).toHaveBeenLastCalledWith(
+			'Set-Cookie',
+			expect.stringContaining('Expires=Thu, 01 Jan 1970 00:00:00 GMT'),
+		);
+		expect(setHeaderSpy).not.toHaveBeenLastCalledWith(
+			'Set-Cookie',
+			expect.stringContaining('Max-Age'),
+		);
+
+		setHeaderSpy.mockRestore();
 	});
 });

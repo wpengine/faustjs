@@ -85,7 +85,12 @@ export function parsePhpAssetFile(phpContent: string): PhpAsset {
  * @returns {Promise<string[]>} - An array of paths to block.json files.
  */
 export async function fetchBlockFiles(): Promise<string[]> {
-	return glob(`${FAUST_BUILD_DIR}/**/block.json`, {
+	// Pass the directory as `cwd` instead of interpolating it into the pattern,
+	// otherwise Windows `\` separators and characters like `[` in the project
+	// path are parsed as glob syntax and nothing matches.
+	return glob('**/block.json', {
+		cwd: FAUST_BUILD_DIR,
+		absolute: true,
 		ignore: IGNORE_NODE_MODULES,
 	});
 }
@@ -128,7 +133,9 @@ export async function processBlockFiles(files: string[]): Promise<void> {
 		}
 
 		// Remove any other PHP files
-		const phpFiles = await glob(`${destDir}/**/*.php`, {
+		const phpFiles = await glob('**/*.php', {
+			cwd: destDir,
+			absolute: true,
 			ignore: IGNORE_NODE_MODULES,
 		});
 		await Promise.all(phpFiles.map((file) => fs.remove(file)));
