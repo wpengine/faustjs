@@ -3,36 +3,23 @@ name: Publish to npm
 on:
   workflow_call:
     inputs:
-      pre-build-command:
-        description: 'Command to run before building (e.g., snapshot versioning)'
-        type: string
-        required: false
-        default: ''
-      publish-command:
-        description: 'Command to run for publishing'
+      paths:
+        description: 'JSON array of package paths released by release-please (e.g. ["packages/faustwp-core"])'
         type: string
         required: true
-      push-tags:
-        description: 'Whether to push git tags after publishing'
-        type: boolean
-        required: false
-        default: false
 
 # No permissions block — inherits from caller workflow.
-# Release caller grants contents: write + id-token: write (enables git push and OIDC).
-# Nightly caller grants contents: read + id-token: write (enables checkout and OIDC).
+# The release caller grants id-token: write, which enables npm OIDC.
 
 jobs:
   publish:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v7
 
       - name: Setup Node.js 22.x
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: 22.x
           registry-url: 'https://registry.npmjs.org'
@@ -54,26 +41,15 @@ jobs:
           fi
           echo "OIDC token endpoint available"
 
-      - name: Pre-build
-        if: inputs.pre-build-command != ''
-        run: ${{ inputs.pre-build-command }}
-
       - name: Build packages
         run: npm run build
 
       - name: Publish to npm
-        run: ${{ inputs.publish-command }}
-
-      - name: Push tags
-        if: inputs.push-tags
-        run: git push origin --tags
-
-      - name: Create GitHub Releases
-        if: inputs.push-tags
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PATHS: ${{ inputs.paths }}
         run: |
-          git tag --points-at HEAD | while IFS= read -r tag; do
-            echo "Creating GitHub release for $tag"
-            gh release create "$tag" --title "$tag" --generate-notes || true
+          # The plugin is released to wordpress.org by release-plugin.yml, not npm.
+          for path in $(jq -r '.[] | select(startswith("packages/"))' <<< "$PATHS"); do
+            echo "Publishing $path"
+            npm publish --workspace "$path"
           done

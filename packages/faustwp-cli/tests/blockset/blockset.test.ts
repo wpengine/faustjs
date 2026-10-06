@@ -1,5 +1,8 @@
 import { spawnSync, SpawnSyncReturns } from 'child_process';
 jest.mock('child_process');
+// archiver is ESM-only, which Jest's CommonJS runtime can't load, and these
+// tests don't build a ZIP.
+jest.mock('archiver', () => ({ ZipArchive: jest.fn() }));
 import { hasYarn } from '../../src/utils/hasYarn.js';
 jest.mock('../../src/utils/hasYarn.js', () => ({
 	__esModule: true,

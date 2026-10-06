@@ -2,12 +2,17 @@
 
 ## Supported Versions
 
-The following versions of this project are currently being supported with security updates.
+Security fixes are released for the latest major version of each package. To get security updates, update to the latest release.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.3.1   | :white_check_mark: |
-| <1.3.0  | :x:                |
+| Package                            | Version              | Supported          |
+| ---------------------------------- | -------------------- | ------------------ |
+| Faust.js WordPress plugin          | 1.x                  | :white_check_mark: |
+| `@faustwp/core`                    | 3.x                  | :white_check_mark: |
+| `@faustwp/cli`                     | 3.x                  | :white_check_mark: |
+| `@faustwp/blocks`                  | 6.x                  | :white_check_mark: |
+| `@faustwp/block-editor-utils`      | 0.x                  | :white_check_mark: |
+| All packages                       | Older major versions | :x:                |
+| `@faustwp/experimental-app-router` | All (deprecated)     | :x:                |
 
 WP Engine takes the security of our software and services seriously, including all
 of the open-source code repositories managed through our
