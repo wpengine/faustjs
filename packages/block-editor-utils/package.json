@@ -22,7 +22,7 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^14.0.0",
 		"@types/jest": "^29.5.5",
-		"@types/node": "^18.0.6",
+		"@types/node": "^26.6.4",
 		"@types/react": "^18.2.28",
 		"@types/wordpress__block-editor": "11.5.5",
 		"@types/wordpress__blocks": "12.5.6",
