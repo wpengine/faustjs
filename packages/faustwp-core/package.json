@@ -23,7 +23,7 @@
 		"@types/jest": "^29.5.13",
 		"@types/js-cookie": "^3.0.6",
 		"@types/lodash": "^4.14.176",
-		"@types/node": "^26.6.4",
+		"@types/node": "^17.0.17",
 		"@types/testing-library__react": "10.2.0",
 		"@wry/caches": "^1.0.0",
 		"@wry/equality": "^0.5.6",
