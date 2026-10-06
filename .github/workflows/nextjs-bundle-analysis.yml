@@ -66,7 +66,7 @@ jobs:
           npm pkg set nextBundleAnalysis.budget=358400 nextBundleAnalysis.budgetPercentIncreaseRed=20 nextBundleAnalysis.showDetails=true --json
 
       - name: Restore next build
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: restore-build-cache
         env:
           cache-name: cache-next-build
