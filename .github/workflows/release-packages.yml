@@ -6,44 +6,79 @@ on:
       - canary
 
 permissions:
-  contents: write      # For creating releases/tags and pushing tags
-  pull-requests: write # For creating version PRs
+  contents: write      # For creating releases/tags and pushing to the release PR branch
+  pull-requests: write # For creating the release PR
   id-token: write      # For npm OIDC authentication
 
 jobs:
-  changesets:
-    name: Manage Changesets
+  release-please:
+    name: Release Please
     runs-on: ubuntu-22.04
     outputs:
-      has-changesets: ${{ steps.changesets.outputs.hasChangesets }}
+      releases-created: ${{ steps.release.outputs.releases_created }}
+      paths-released: ${{ steps.release.outputs.paths_released }}
+      plugin-release-created: ${{ steps.release.outputs['plugins/faustwp--release_created'] }}
+      plugin-tag: ${{ steps.release.outputs['plugins/faustwp--tag_name'] }}
+      pr: ${{ steps.release.outputs.pr }}
     steps:
-      - name: Checkout Repo
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          target-branch: canary
+
+  # release-please bumps each package.json but knows nothing about the root
+  # package-lock.json, the WordPress plugin header, the readme.txt Stable tag,
+  # or the readme.txt changelog. Sync those onto the release PR branch so they
+  # ship together.
+  sync-release-files:
+    name: Sync release files
+    needs: release-please
+    if: needs.release-please.outputs.pr
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout release PR branch
         uses: actions/checkout@v7
         with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
-          fetch-depth: 0
+          ref: ${{ fromJSON(needs.release-please.outputs.pr).headBranchName }}
 
       - name: Setup Node.js 22.x
         uses: actions/setup-node@v7
         with:
           node-version: 22.x
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Update plugin header, Stable tag, and readme.txt changelog
+        run: node scripts/versionPlugin.js
 
-      - name: Create Release Pull Request
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          version: npm run version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update workspace versions in package-lock.json
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "Release files already in sync"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: sync release files"
+          git push
 
   publish:
     name: Publish to npm
-    needs: changesets
-    if: needs.changesets.outputs.has-changesets == 'false'
+    needs: release-please
+    if: needs.release-please.outputs.releases-created == 'true'
     uses: ./.github/workflows/npm-publish.yml
     with:
-      publish-command: npx changeset publish
-      push-tags: true
+      paths: ${{ needs.release-please.outputs.paths-released }}
+
+  # Tags created with GITHUB_TOKEN don't trigger other workflows, so the
+  # plugin tag push alone won't start the wordpress.org deploy. Call it here.
+  release-plugin:
+    name: Deploy plugin
+    needs: release-please
+    if: needs.release-please.outputs.plugin-release-created == 'true'
+    uses: ./.github/workflows/release-plugin.yml
+    with:
+      tag: ${{ needs.release-please.outputs.plugin-tag }}
+      dry_run: false
+    secrets: inherit

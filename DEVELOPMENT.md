@@ -162,41 +162,43 @@ We use the [feature branch workflow](https://www.atlassian.com/git/tutorials/com
 
 - Create a new branch for the feature
 - Make changes to the code
-- Use `npm run changeset` to create a changeset describing any package or plugin updates
 - Commit your changes
-- Open a pull request to the `canary` branch
+- Open a pull request to the `canary` branch with a [Conventional Commits](https://www.conventionalcommits.org/) title, scoped to the package you changed (e.g. `fix(core): ...`, `feat(faustwp): ...`)
 - Squash and Merge the pull request into the `canary` branch
 
-**Note**: We use Squash and Merge when merging pull requests into the `canary` branch.
+**Note**: We use Squash and Merge when merging pull requests into the `canary` branch, so the pull request title becomes the commit message that drives versioning and changelogs.
 
 ## Deployment
 
-Developers with full GitHub repository access can create public releases. We use [Changesets](https://github.com/atlassian/changesets) to automate the versioning and deployment process for all of our packages and plugins.
+Developers with full GitHub repository access can create public releases. We use [release-please](https://github.com/googleapis/release-please) to automate versioning and deployment for all of our packages and the plugin. Configuration lives in `release-please-config.json` and `.release-please-manifest.json`.
 
-### Adding a changeset
+### How commits map to releases
 
-To add a new changeset for a new feature, bugfix or other change please see the [changeset documentation](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md).
+release-please reads the commits merged to `canary` since the last release of each package. Only commits that touch a package's directory count toward that package.
+
+- `fix:` releases a patch version.
+- `feat:` releases a minor version.
+- `!` after the type (e.g. `feat!:`) or a `BREAKING CHANGE:` footer releases a major version.
+- `deps:` releases a patch version and lists the change under Dependencies.
+- `chore:`, `docs:`, `ci:`, `test:`, `refactor:`, `build:`, and `style:` don't trigger a release.
+
+`@faustwp/core` and `@faustwp/cli` always share a version number.
 
 ### Versioning
 
-When you are ready to release, you should first create the new package and plugin versions.
+release-please keeps a release PR open against `canary` and updates it as commits land.
 
-1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the "Version Packages" PR.
+1. Go to [pull requests](https://github.com/wpengine/faustjs/pulls), and view the release-please PR.
 2. Review the PR:
    - [ ] Changelog entries were created in all updated packages or plugins.
    - [ ] Version numbers were appropriately bumped in the relevant package.json files.
-   - [ ] All `.changeset/*.md` files were removed.
    - [ ] Version number updated in the main plugin file and readme.txt (Plugin versioning only)
    - [ ] The plugin's readme.txt changelog has been updated with the latest 3 versions (Plugin versioning only)
-3. Approve, then "Squash and merge" the "Version Packages" PR into `canary`.
+3. Approve, then "Squash and merge" the release PR into `canary`.
 
-### Publishing the @faustwp packages
+### Publishing
 
-The @faustwp packages are automatically published to NPM through a GitHub action once the "Version Packages" PR is merged.
-
-### Publishing the FaustWP plugin
-
-Once the "Version Packages" PR is merged, create a new release on GitHub with a tag of `plugin/faustwp/v[version]`. This will kick off our GitHub Action to deploy the `faustwp` plugin to WordPress.org.
+Merging the release PR tags each released package (e.g. `@faustwp/core@3.4.2`), creates a GitHub release for it, and publishes the npm packages. If the plugin was released, the same workflow deploys it to WordPress.org.
 
 Once deployed, the updated packages and plugin will be visible here:
 
