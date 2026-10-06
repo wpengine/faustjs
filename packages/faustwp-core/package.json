@@ -28,7 +28,7 @@
 		"@wry/equality": "^0.5.6",
 		"@wry/trie": "^0.5.0",
 		"concurrently": "^7.6.0",
-		"fetch-mock": "9.11.0",
+		"fetch-mock": "12.6.0",
 		"graphql-tag": "^2.12.6",
 		"hoist-non-react-statics": "^3.3.2",
 		"is-typedarray": "1.0.0",
