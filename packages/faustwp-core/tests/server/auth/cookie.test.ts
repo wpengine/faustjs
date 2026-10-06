@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import cookie from 'cookie';
+import { stringifySetCookie } from 'cookie';
 import { Cookies } from '../../../src/server/auth/cookie';
 import { base64Encode } from '../../../src/utils';
 
@@ -95,7 +95,7 @@ describe('server/auth/cookie', () => {
 
 			const req: IncomingMessage = {
 				headers: {
-					cookie: cookie.serialize('prefs', jsonStr),
+					cookie: stringifySetCookie('prefs', jsonStr),
 				},
 			} as any;
 
@@ -125,7 +125,7 @@ describe('server/auth/cookie', () => {
 			const expectedEncoded = base64Encode('secret123');
 			expect(setHeaderSpy).toHaveBeenCalledWith(
 				'Set-Cookie',
-				cookie.serialize('session_id', expectedEncoded),
+				stringifySetCookie('session_id', expectedEncoded),
 			);
 			expect(cookies.getCookie('session_id')).toBe('secret123');
 		});
@@ -145,7 +145,7 @@ describe('server/auth/cookie', () => {
 
 			expect(setHeaderSpy).toHaveBeenCalledWith(
 				'Set-Cookie',
-				cookie.serialize('raw_key', 'raw_value'),
+				stringifySetCookie('raw_key', 'raw_value'),
 			);
 			expect(cookies.getCookie('raw_key', { encoded: false })).toBe(
 				'raw_value',
@@ -172,7 +172,7 @@ describe('server/auth/cookie', () => {
 			const expectedEncoded = base64Encode(JSON.stringify(data));
 			expect(setHeaderSpy).toHaveBeenCalledWith(
 				'Set-Cookie',
-				cookie.serialize('ui_settings', expectedEncoded),
+				stringifySetCookie('ui_settings', expectedEncoded),
 			);
 			expect(
 				cookies.getCookie('ui_settings', { encoded: true, isJson: true }),
@@ -204,7 +204,7 @@ describe('server/auth/cookie', () => {
 
 			expect(setHeaderSpy).toHaveBeenCalledWith(
 				'Set-Cookie',
-				cookie.serialize('secure_token', 'my_token', {
+				stringifySetCookie('secure_token', 'my_token', {
 					path: '/api',
 					sameSite: 'strict',
 					secure: true,
@@ -251,7 +251,7 @@ describe('server/auth/cookie', () => {
 			expect(cookies.getCookie('to_delete')).toBeUndefined();
 			expect(setHeaderSpy).toHaveBeenCalledWith(
 				'Set-Cookie',
-				cookie.serialize('to_delete', '', {
+				stringifySetCookie('to_delete', '', {
 					path: '/',
 					sameSite: 'strict',
 					secure: true,
