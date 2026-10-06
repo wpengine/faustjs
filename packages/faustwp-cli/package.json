@@ -9,8 +9,7 @@
 		"faust": "dist/index.js"
 	},
 	"devDependencies": {
-		"@types/archiver": "^5.3.2",
-		"@types/cookie": "0.5.1",
+		"@types/archiver": "^8.0.0",
 		"@types/dotenv-flow": "^3.2.0",
 		"@types/fs-extra": "^11.0.2",
 		"@types/isomorphic-fetch": "^0.0.36",
@@ -25,7 +24,7 @@
 		"typescript": "^4.9.5"
 	},
 	"dependencies": {
-		"archiver": "^6.0.1",
+		"archiver": "^8.0.0",
 		"chalk": "^4.1.2",
 		"dotenv-flow": "^4.1.0",
 		"form-data": "^4.0.6",
