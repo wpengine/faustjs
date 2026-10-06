@@ -147,7 +147,9 @@ describe('server/auth/cookie', () => {
 				'Set-Cookie',
 				cookie.serialize('raw_key', 'raw_value'),
 			);
-			expect(cookies.getCookie('raw_key', { encoded: false })).toBe('raw_value');
+			expect(cookies.getCookie('raw_key', { encoded: false })).toBe(
+				'raw_value',
+			);
 		});
 
 		test('serializes object to JSON before setting cookie when isJson is true', () => {

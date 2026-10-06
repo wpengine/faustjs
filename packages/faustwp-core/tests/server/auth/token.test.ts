@@ -299,7 +299,9 @@ describe('server/auth/token (OAuth)', () => {
 			expect(result).toEqual(deprecatedTokens);
 			expect(warningSpy).toHaveBeenCalled();
 			const loggedMessage = warningSpy.mock.calls.flat().join(' ');
-			expect(loggedMessage).toContain('Authentication and post previews will soon be incompatible');
+			expect(loggedMessage).toContain(
+				'Authentication and post previews will soon be incompatible',
+			);
 
 			const fallbackCall = fetchMock.lastCall(
 				`${wpUrl}/?rest_route=/wpac/v1/authorize`,
