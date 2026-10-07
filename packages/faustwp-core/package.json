@@ -12,7 +12,7 @@
 		"react-dom": ">=17.0.2"
 	},
 	"devDependencies": {
-		"@apollo/client": "^3.6.6",
+		"@apollo/client": "^4.3.1",
 		"@graphql-typed-document-node/core": "^3.1.1",
 		"@parcel/watcher": "2.6.0",
 		"@testing-library/jest-dom": "^7.0.1",
