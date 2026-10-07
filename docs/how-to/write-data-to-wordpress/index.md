@@ -34,7 +34,9 @@ import { gql, useMutation } from "@apollo/client";
 
 const CREATE_DRAFT = gql`
 	mutation CreateDraft($title: String!, $content: String) {
-		createPost(input: { title: $title, content: $content, status: DRAFT }) {
+		createPost(
+			input: { title: $title, content: $content, status: DRAFT }
+		) {
 			post {
 				databaseId
 				title
@@ -46,9 +48,10 @@ const CREATE_DRAFT = gql`
 
 export function NewDraft() {
 	const client = getApolloAuthClient();
-	const [createDraft, { data, loading, error }] = useMutation(CREATE_DRAFT, {
-		client,
-	});
+	const [createDraft, { data, loading, error }] = useMutation(
+		CREATE_DRAFT,
+		{ client },
+	);
 
 	async function handleSubmit(event) {
 		event.preventDefault();
@@ -62,7 +65,7 @@ export function NewDraft() {
 				},
 			});
 		} catch {
-			// Apollo rejects the promise on error. The message is shown below via `error`.
+			// Apollo rejects on error; `error` below shows the message.
 		}
 	}
 
@@ -103,7 +106,7 @@ WordPress core and WPGraphQL don't check whether a post changed between when you
 For most single-editor apps this doesn't matter. If several people or processes write to the same content, you can reduce the risk. Keep the post's `modified` value from when you loaded it, read it again immediately before writing, and stop if it has changed:
 
 ```js
-// `modifiedWhenLoaded` is the post's `modified` value from your original query.
+// `modifiedWhenLoaded` is `modified` from your original query.
 const client = getApolloAuthClient();
 
 const { data } = await client.query({
@@ -119,7 +122,7 @@ const { data } = await client.query({
 });
 
 if (data.post.modified !== modifiedWhenLoaded) {
-	// Someone else saved in the meantime. Ask the user to reload before saving.
+	// Someone else saved first. Ask the user to reload.
 }
 ```
 
