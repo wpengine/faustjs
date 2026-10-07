@@ -26,36 +26,11 @@ updates:
       production-dependencies:
         dependency-type: "production"
         update-types: ["minor", "patch"]
-    # These majors need a migration (Apollo 4, React 19 peers, ESLint flat
-    # config, Jest 30, the fetch-mock 12 API) rather than an automated bump.
+    # Majors usually need a migration (Apollo 4, React 19 peers, ESLint flat
+    # config, Jest 30) and are taken on deliberately, not as automated bumps.
+    # Security updates still open for vulnerable packages.
     ignore:
-      - dependency-name: "@apollo/client"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react-dom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-plugin-*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@typescript-eslint/*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "prettier"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "jest"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "jest-environment-jsdom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@wordpress/jest-preset-default"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "fetch-mock"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "graphql"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "composer"
