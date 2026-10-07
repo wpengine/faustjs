@@ -1,7 +1,7 @@
 import { getPreviewSeedNode } from '../../src/queries/seedQuery';
 
 describe('queries/seedQuery', () => {
-	test('getPreviewSeedNode() takes front page flags from the previewed page', () => {
+	test('getPreviewSeedNode() uses the front page flag from the previewed page', () => {
 		const node = getPreviewSeedNode({
 			contentNode: {
 				__typename: 'Page',
@@ -22,7 +22,7 @@ describe('queries/seedQuery', () => {
 		});
 	});
 
-	test('getPreviewSeedNode() keeps the node as is without a source node', () => {
+	test('getPreviewSeedNode() returns the revision unchanged without a source node', () => {
 		const contentNode = { __typename: 'Post', isFrontPage: false };
 
 		expect(getPreviewSeedNode({ contentNode })).toBe(contentNode);
@@ -31,7 +31,7 @@ describe('queries/seedQuery', () => {
 		);
 	});
 
-	test('getPreviewSeedNode() keeps node flags the source does not have', () => {
+	test('getPreviewSeedNode() keeps the revision flags when the source has none', () => {
 		const node = getPreviewSeedNode({
 			contentNode: { __typename: 'Post', isFrontPage: false },
 			previewSourceNode: {},
@@ -40,8 +40,27 @@ describe('queries/seedQuery', () => {
 		expect(node?.isFrontPage).toBe(false);
 	});
 
-	test('getPreviewSeedNode() returns undefined without data', () => {
+	test('getPreviewSeedNode() uses the posts page flag from the previewed page', () => {
+		const node = getPreviewSeedNode({
+			contentNode: {
+				__typename: 'Page',
+				isFrontPage: false,
+				isPostsPage: false,
+			},
+			previewSourceNode: { isFrontPage: false, isPostsPage: true },
+		});
+
+		expect(node?.isPostsPage).toBe(true);
+	});
+
+	test('getPreviewSeedNode() returns undefined without a revision', () => {
 		expect(getPreviewSeedNode(undefined)).toBeUndefined();
 		expect(getPreviewSeedNode({})).toBeUndefined();
+		expect(
+			getPreviewSeedNode({
+				contentNode: null,
+				previewSourceNode: { isFrontPage: true },
+			}),
+		).toBeUndefined();
 	});
 });

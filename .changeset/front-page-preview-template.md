@@ -2,4 +2,4 @@
 '@faustwp/core': patch
 ---
 
-Previews of the static front page now render the `front-page` template instead of falling back to `page`.
+Fixed previews of the static front page rendering the `page` template instead of `front-page`.
