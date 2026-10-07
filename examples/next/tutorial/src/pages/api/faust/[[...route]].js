@@ -1,3 +1,3 @@
-import "../../../faust.config";
+import "../../../../faust.config";
 
 export { apiRouter as default } from "@faustwp/core";
