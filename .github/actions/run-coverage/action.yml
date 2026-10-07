@@ -18,7 +18,7 @@ runs:
       run: npm run test:coverage:ci
 
     # Use the action only for report generation, not for running tests
-    - uses: ArtiomTr/jest-coverage-report-action@v2.3.1
+    - uses: ArtiomTr/jest-coverage-report-action@262a7bb0b20c4d1d6b6b026af0f008f78da72788 # v2.3.1
       with:
         output: report-markdown
         coverage-file: report.json
