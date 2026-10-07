@@ -1,75 +1,41 @@
-# 📅 Q4 2025 Headless WordPress Toolkit & Faust Refactor Roadmap
+# Faust.js Roadmap
 
-This roadmap reflects updated priorities for Q4 2025, emphasizing QA and GA release of the `wpgraphql-logging` plugin, exposure of existing documentation to the Docs site, and focused development on key Headless WordPress Toolkit packages.
+This roadmap covers Q4 2026. It replaces the Q4 2025 roadmap, which described a rewrite of Faust.js into framework adapters. That plan has been retired. Faust.js keeps its current packages and APIs and builds on them.
 
----
+## Priorities
 
-## 🧭 Strategic Priorities
+### 1. Compatibility and reliability
 
-1. **QA and GA release of `wpgraphql-logging` plugin**  
-   - Validate and release the plugin before end of November.  
-   - Ensure it meets pre-GA QA standards and integrates cleanly with the Toolkit.
+Keep existing Faust.js sites working as WordPress, WPGraphQL, Next.js, Node.js and Apollo Client move forward.
 
-2. **Developer documentation for the Headless WordPress Toolkit**  
-   - Expose existing `.md` files for the Logging Plugin to the Docs site.  
-   - Improve overall Docs structure to support Toolkit content.
+- Security fixes in all packages and the FaustWP plugin.
+- Support for new WordPress and WPGraphQL releases, including block schema changes in `@faustwp/blocks`.
+- Clear, documented ranges for supported Next.js, React and Apollo Client versions.
+- Fixes for confirmed bugs in authentication, previews and redirects.
 
-3. **Focused Toolkit package development**  
-   - Prioritize `@wpengine/hwp-template-hierarchy` and `@wpengine/hwp-auth`.  
-   - Defer additional package work to Q1 2026.
+### 2. Writing data back to WordPress
 
----
+Faust.js already handles reading content, authentication and previews. Writing data back to WordPress (server-side writes, scoped credentials and handling concurrent edits) is something every team currently solves on its own. This is the main new work for Faust.js.
 
-## 🗓 Sprint Breakdown
+All write-path features are additive and opt-in. Existing read, preview and authentication behavior doesn't change.
 
-| Sprint | Dates           | Focus Areas                           | Key Deliverables |
-|--------|----------------|---------------------------------------|-----------------|
-| **1** | Oct 7 – Oct 20  | 🛤 Planning + Initial Scaffolds         | - Publish updated roadmap (internal + OSS)<br>- Scaffold `@wpengine/hwp-toolbar` (carryover)<br>- Demo app updated for internal testing<br>- Prepare QA environment for `wpgraphql-logging` plugin |
-| **2** | Oct 21 – Nov 3  | ✅ **QA & Validation** | - **Pre-GA testing and validation of `wpgraphql-logging` plugin**<br>- Track QA results and fix issues for GA<br>- Integrate initial developer docs for Headless WP Toolkit<br>- *(Stretch goal)* Validate Toolkit examples function as expected |
-| **3** | Nov 4 – Nov 17  | 📘 **Docs Integration & Exposure**       | - **Expose existing `wpgraphql-logging` plugin `.md` docs to the public Docs site**<br>- Continue improving developer docs for the Headless WP Toolkit<br>- Ensure Docs site structure supports Toolkit and Logging content<br>- Plan GA release logistics for `wpgraphql-logging` |
-| **4** | Nov 18 – Dec 1  | 🚀 **Final QA + GA Release**             | - **Final QA pass and GA release of `wpgraphql-logging` plugin** 🎉<br>- Begin focused development on `@wpengine/hwp-template-hierarchy` and `@wpengine/hwp-auth` packages<br>- Internal validation and documentation for these packages |
-| **5** | Dec 2 – Dec 15  | 🧩 **Toolkit Package Development**       | - Continue iteration on `@wpengine/hwp-template-hierarchy` and `@wpengine/hwp-auth`<br>- Internal beta testing of both packages<br>- Refine Toolkit + Faust integration notes<br>- Update roadmap and documentation accordingly |
-| **6** | Dec 16 – Dec 23 | 🎉 **Release Prep & OSS Launch**         | - OSS publication of Toolkit-related packages and docs<br>- Publish Next.js adapter alignment roadmap<br>- Internal & OSS communication (GA recap + next steps)<br>- Plan Q1 2026: Astro + SvelteKit adapter expansion |
+| Item                                                                          | Status      | Issue                                                    |
+| ----------------------------------------------------------------------------- | ----------- | -------------------------------------------------------- |
+| Document the write path: mutations, token lifetime, concurrent edits          | In progress | [#2563](https://github.com/wpengine/faustjs/issues/2563) |
+| Versioned document store with conflict detection in FaustWP                   | Proposed    | [#2562](https://github.com/wpengine/faustjs/issues/2562) |
+| Scoped service user for server-side writes in FaustWP (off by default)        | Proposed    | [#2561](https://github.com/wpengine/faustjs/issues/2561) |
+| Framework-agnostic auth package for Node, Astro, SvelteKit and other runtimes | Proposed    | [#2564](https://github.com/wpengine/faustjs/issues/2564) |
 
----
+The auth package ships alongside `@faustwp/core` first. `@faustwp/core` only moves onto it after it has proven stable.
 
-## 🎯 End of Quarter Outcomes
+## Status of previously planned packages
 
-- ✅ **`wpgraphql-logging` plugin GA release completed**  
-- 📘 **Toolkit developer docs published and integrated into Docs site**  
-- 🧩 **`@wpengine/hwp-template-hierarchy` and `@wpengine/hwp-auth` packages in beta**  
-- 🌐 **Improved developer experience with validated Toolkit integration flow**  
-- 🗺 **Q1 2026 roadmap prepared for adapter expansion (Astro, SvelteKit)**
+The Q4 2025 roadmap listed `@wpengine/hwp-auth` and `@wpengine/hwp-template-hierarchy` as planned. Neither has been published, and they aren't part of the Faust.js roadmap. Framework-agnostic authentication is tracked in [#2564](https://github.com/wpengine/faustjs/issues/2564).
 
----
+For guidance on building headless WordPress sites with other frameworks, see the [Headless WordPress Toolkit](https://github.com/wpengine/hwptoolkit).
 
-## 👉 By Dec 23, 2025, Developers Can
+## Feedback
 
-- Use the **GA version of the `wpgraphql-logging` plugin**  
-- Access **Toolkit documentation directly on the Docs site**  
-- Integrate **`@wpengine/hwp-template-hierarchy`** and **`@wpengine/hwp-auth`** in projects  
-- Test and contribute to the growing **Faust + Toolkit ecosystem**
+Comment on the linked issues or start a thread in [Discussions](https://github.com/wpengine/faustjs/discussions).
 
----
-
-## 🧾 GA Readiness Checklist (Logging Plugin)
-
-| Area | Criteria | Owner | Status |
-|------|-----------|--------|--------|
-| QA Testing | All test cases pass across supported WP + GraphQL versions | QA | 🔄 In progress |
-| Docs | `.md` files exposed and verified on Docs site | Docs | ✅ Ready |
-| Compatibility | Verified with latest WPGraphQL + Toolkit packages | Eng | 🔄 In progress |
-| Release | Tagged on GitHub + WP Updater | Eng | ⏳ Planned (Sprint 4) |
-| Announcement | GA summary and migration notes published | Comms | ⏳ Planned (Sprint 6) |
-
----
-
-## 🔮 Looking Ahead (Q1 2026 Preview)
-
-- Expand Headless WordPress Toolkit with **Astro** and **SvelteKit** adapters.  
-- Continue improving `@wpengine/hwp-template-hierarchy` and `@wpengine/hwp-auth`.  
-- Broaden Toolkit integration with Faust Core and community examples.  
-
----
-
-_Last updated: Oct 21, 2025_
+_Last updated: Oct 7, 2026_
