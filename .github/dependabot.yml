@@ -15,9 +15,17 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     versioning-strategy: "increase-if-necessary"
+    # Batch routine bumps into one PR per dependency type each week.
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+      production-dependencies:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
     # These majors need a migration (Apollo 4, React 19 peers, ESLint flat
     # config, Jest 30, the fetch-mock 12 API) rather than an automated bump.
     ignore:
@@ -62,5 +70,8 @@ updates:
       - "/"
       - "/.github/actions/*"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ["*"]
