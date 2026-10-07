@@ -3,9 +3,9 @@ title: "Write Data to WordPress"
 description: "Send authenticated WPGraphQL mutations from your Faust.js app, and understand how access tokens and concurrent edits behave."
 ---
 
-Faust.js authentication isn't only for reading private data. The same access token lets your app write back to WordPress: create posts, update fields, submit comments, or run any other WPGraphQL mutation the logged-in user has permission to run.
+The access token Faust.js uses to read private data also lets your app write back to WordPress. Your app can create posts, update fields, or run any other WPGraphQL mutation the logged-in user has permission to run.
 
-This guide covers sending mutations from the browser, how long tokens last, and what happens when two people edit the same thing.
+This guide shows how to send mutations from the browser and explains how long tokens last and what happens when two people edit the same post.
 
 ## 0. Prerequisites
 
@@ -131,12 +131,12 @@ This narrows the window but doesn't close it: another save can still land betwee
 
 The flow above runs in the browser on behalf of a logged-in user. Faust.js doesn't yet provide a supported way for server-side code (a build step, a cron job, an API route acting on its own) to authenticate to WordPress.
 
-Until it does, use WordPress [Application Passwords](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) for a dedicated, low-privilege user, not a personal admin account. WPGraphQL accepts them as HTTP Basic auth (`Authorization: Basic <base64 of username:application-password>`). WordPress only allows Application Passwords over HTTPS, except on local development sites. Keep the credentials in server-side environment variables, never in variables prefixed with `NEXT_PUBLIC_`.
+Until it does, create a dedicated low-privilege user and give it a WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/). Avoid using a personal admin account. WPGraphQL accepts them as HTTP Basic auth (`Authorization: Basic <base64 of username:application-password>`). WordPress only allows Application Passwords over HTTPS, except on local development sites. Keep the credentials in server-side environment variables, never in variables prefixed with `NEXT_PUBLIC_`.
 
 A scoped service user for server-side writes is proposed in [#2561](https://github.com/wpengine/faustjs/issues/2561).
 
 ## Security notes
 
-- **Logging out clears the refresh token cookie, but WordPress doesn't keep a list of issued tokens.** A token that was copied before logout stays valid until it expires (at most 5 minutes for an access token, 2 weeks for a refresh token).
-- **Changing the Faust secret key invalidates every token at once.** Tokens are encrypted with the secret key, so after you click **Regenerate** in **Settings → Faust** (and update `FAUST_SECRET_KEY` in your app), all users have to log in again.
-- **Give users the least privilege they need.** The access token can do anything that user can do in WordPress.
+- Logging out clears the refresh token cookie, but WordPress doesn't keep a list of issued tokens. A token that was copied before logout stays valid until it expires (at most 5 minutes for an access token, 2 weeks for a refresh token).
+- Changing the Faust secret key invalidates every token at once. Tokens are encrypted with the secret key, so after you click **Regenerate** in **Settings → Faust** (and update `FAUST_SECRET_KEY` in your app), all users have to log in again.
+- An access token can do anything its user can do in WordPress, so give each user only the role they need.
