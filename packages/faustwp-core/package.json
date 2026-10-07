@@ -9,13 +9,13 @@
 		"@apollo/client": ">=3.6.6",
 		"next": "^16.3.8",
 		"react": ">=17.0.2",
-		"react-dom": ">=17.0.2"
+		"react-dom": "^18.3.1"
 	},
 	"devDependencies": {
 		"@apollo/client": "^3.6.6",
 		"@graphql-typed-document-node/core": "^3.1.1",
 		"@parcel/watcher": "2.6.0",
-		"@testing-library/jest-dom": "^6.9.1",
+		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^14.3.1",
 		"@types/is-number": "^7.0.1",
 		"@types/isomorphic-fetch": "^0.0.35",
@@ -28,7 +28,7 @@
 		"@wry/equality": "^0.5.6",
 		"@wry/trie": "^0.5.0",
 		"concurrently": "^7.6.0",
-		"fetch-mock": "9.11.0",
+		"fetch-mock": "12.6.0",
 		"graphql-tag": "^2.12.6",
 		"hoist-non-react-statics": "^3.3.2",
 		"is-typedarray": "1.0.0",
@@ -60,7 +60,7 @@
 		"fast-xml-parser": "^5.11.2",
 		"isomorphic-fetch": "^3.0.0",
 		"js-cookie": "^3.0.7",
-		"js-sha256": "^0.9.0",
+		"js-sha256": "^1.0.0",
 		"lodash": "^4.18.1"
 	},
 	"scripts": {
