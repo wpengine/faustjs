@@ -18,7 +18,7 @@
 		"@wordpress/i18n": "^6.29.0"
 	},
 	"devDependencies": {
-		"@react-spring/web": "9.7.3",
+		"@react-spring/web": "10.1.2",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^14.0.0",
 		"@types/jest": "^29.5.5",
