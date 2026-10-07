@@ -27,7 +27,7 @@
 		"@wry/caches": "^1.0.0",
 		"@wry/equality": "^0.5.6",
 		"@wry/trie": "^0.5.0",
-		"concurrently": "^7.6.0",
+		"concurrently": "^10.0.5",
 		"fetch-mock": "9.11.0",
 		"graphql-tag": "^2.12.7",
 		"hoist-non-react-statics": "^3.3.2",
