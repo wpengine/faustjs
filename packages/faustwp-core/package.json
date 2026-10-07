@@ -16,7 +16,7 @@
 		"@graphql-typed-document-node/core": "^3.1.1",
 		"@parcel/watcher": "2.6.0",
 		"@testing-library/jest-dom": "^7.0.1",
-		"@testing-library/react": "^14.3.1",
+		"@testing-library/react": "^16.3.3",
 		"@types/is-number": "^7.0.1",
 		"@types/isomorphic-fetch": "^0.0.35",
 		"@types/jest": "^29.5.13",
