@@ -18,7 +18,7 @@
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@types/is-number": "^7.0.1",
-		"@types/isomorphic-fetch": "^0.0.35",
+		"@types/isomorphic-fetch": "^0.0.39",
 		"@types/jest": "^29.5.13",
 		"@types/js-cookie": "^3.0.6",
 		"@types/lodash": "^4.17.25",
