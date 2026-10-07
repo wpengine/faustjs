@@ -18,6 +18,35 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
     versioning-strategy: "increase-if-necessary"
+    # These majors need a migration (React 19 peers, ESLint flat config,
+    # Jest 30, the fetch-mock 12 API) rather than an automated bump.
+    ignore:
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-plugin-*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@typescript-eslint/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "prettier"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "jest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "jest-environment-jsdom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@wordpress/jest-preset-default"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "fetch-mock"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "graphql"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "composer"
     directory: "/plugins/faustwp"
