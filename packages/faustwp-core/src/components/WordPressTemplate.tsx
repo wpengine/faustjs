@@ -16,7 +16,11 @@ import {
 	loadDynamicComponent,
 } from '../getTemplate.js';
 import { useAuth } from '../hooks/useAuth.js';
-import { SEED_QUERY, SeedNode } from '../queries/seedQuery.js';
+import {
+	SEED_QUERY,
+	SeedNode,
+	getPreviewSeedNode,
+} from '../queries/seedQuery.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 import { getQueryParam } from '../utils/convert.js';
 import { isWordPressPreview } from '../utils/isWordPressPreview.js';
@@ -337,7 +341,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 			const seedQueryRes = await client.query(queryArgs);
 
 			const node = isPreview
-				? (seedQueryRes?.data?.contentNode as SeedNode)
+				? (getPreviewSeedNode(seedQueryRes?.data) as SeedNode)
 				: (seedQueryRes?.data?.nodeByUri as SeedNode);
 
 			setSeedNode(node);

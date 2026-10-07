@@ -41,6 +41,9 @@ export const SEED_QUERY = gql`
 				__typename
 				...GetNode
 			}
+			previewSourceNode: contentNode(id: $id, idType: DATABASE_ID) {
+				...Page
+			}
 		}
 	}
 
@@ -106,3 +109,26 @@ export const SEED_QUERY = gql`
 		databaseId
 	}
 `;
+
+/**
+ * Preview seed queries resolve to the autosave revision, which WPGraphQL never
+ * reports as the front page or posts page. Take those flags from the node
+ * being previewed instead so the right template is chosen.
+ */
+export function getPreviewSeedNode(data?: {
+	contentNode?: SeedNode;
+	previewSourceNode?: SeedNode | null;
+}): SeedNode | undefined {
+	const node = data?.contentNode;
+	const source = data?.previewSourceNode;
+
+	if (!node || !source) {
+		return node;
+	}
+
+	return {
+		...node,
+		isFrontPage: source.isFrontPage ?? node.isFrontPage,
+		isPostsPage: source.isPostsPage ?? node.isPostsPage,
+	};
+}
