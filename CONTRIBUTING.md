@@ -52,18 +52,16 @@ Your pull request should:
   - At least one test should fail in the absence of your non-test code changes. If your PR does not match this criteria, please specify why
   - Tests should include reasonable permutations of the target fix/change
   - Include baseline changes with your change
-- Contain proper [semantic commit messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716#gistcomment-3711094) as follows:
+- Have a title that follows [Conventional Commits](https://www.conventionalcommits.org/). We squash and merge, so the title becomes the commit message on `canary` and release-please uses it to build the changelog:
 
   ```
-    <type>[<scope>]: (<issue #>) <short summary>
-      │      │           |             │
-      |      |           |             └─> Summary in present tense. Not capitalized. No period at the end.
-      |      |           |
-      │      │           └─> Issue # (optional): Issue number if related to bug database.
-      │      │
-      │      └─> Scope (optional): eg. common, compiler, authentication, core
-      │
-      └─> Type: chore, docs, feat, fix, refactor, style, or test.
+  <type>(<scope>): <short summary>
+    │       │             │
+    │       │             └─> Summary in present tense. Not capitalized. No period at the end.
+    │       │
+    │       └─> Scope (optional): eg. core, cli, blocks, faustwp, deps
+    │
+    └─> Type: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, or test.
   ```
 
 - To avoid line ending issues, set `autocrlf = input` and `whitespace = cr-at-eol` in your git configuration
