@@ -37,7 +37,7 @@
 		"optimism": "^0.18.0",
 		"prop-types": "^15.7.2",
 		"rehackt": "^0.1.0",
-		"rimraf": "^3.0.2",
+		"rimraf": "^6.1.3",
 		"sass": "^1.80.3",
 		"shx": "^0.4.0",
 		"symbol-observable": "^4.0.0",
