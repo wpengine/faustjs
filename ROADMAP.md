@@ -21,7 +21,7 @@ All write-path features are additive and opt-in. Existing read, preview and auth
 
 | Item                                                                          | Status      | Issue                                                    |
 | ----------------------------------------------------------------------------- | ----------- | -------------------------------------------------------- |
-| Document the write path: mutations, token lifetime, concurrent edits          | In progress | [#2563](https://github.com/wpengine/faustjs/issues/2563) |
+| Document the write path: mutations, token lifetime, concurrent edits          | Done        | [Guide](https://faustjs.org/docs/how-to/write-data-to-wordpress/), [#2563](https://github.com/wpengine/faustjs/issues/2563) |
 | Versioned document store with conflict detection in FaustWP                   | Proposed    | [#2562](https://github.com/wpengine/faustjs/issues/2562) |
 | Scoped service user for server-side writes in FaustWP (off by default)        | Proposed    | [#2561](https://github.com/wpengine/faustjs/issues/2561) |
 | Framework-agnostic auth package for Node, Astro, SvelteKit and other runtimes | Proposed    | [#2564](https://github.com/wpengine/faustjs/issues/2564) |

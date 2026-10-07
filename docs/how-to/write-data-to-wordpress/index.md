@@ -1,6 +1,6 @@
 ---
-title: 'Write Data to WordPress'
-description: 'Send authenticated WPGraphQL mutations from your Faust.js app, and understand how access tokens and concurrent edits behave.'
+title: "Write Data to WordPress"
+description: "Send authenticated WPGraphQL mutations from your Faust.js app, and understand how access tokens and concurrent edits behave."
 ---
 
 Faust.js authentication isn't only for reading private data. The same access token lets your app write back to WordPress: create posts, update fields, submit comments, or run any other WPGraphQL mutation the logged-in user has permission to run.
@@ -15,10 +15,10 @@ Follow the [Authentication](/docs/how-to/authentication/) guide first. You need 
 
 When a user logs in, the FaustWP plugin issues two tokens:
 
-| Token         | Lifetime  | Where it lives                               |
-| ------------- | --------- | -------------------------------------------- |
-| Access token  | 5 minutes | In memory in the browser                     |
-| Refresh token | 2 weeks   | An `httpOnly` cookie set by your Next.js app |
+| Token         | Lifetime  | Where it lives                                                    |
+| ------------- | --------- | ----------------------------------------------------------------- |
+| Access token  | 5 minutes | In memory in the browser. Fetched again after a page reload.      |
+| Refresh token | 2 weeks   | An `httpOnly` cookie set by the Faust API route in your Next.js app |
 
 `getApolloAuthClient()` returns an Apollo Client that sends the access token as an `Authorization: Bearer <token>` header. The FaustWP plugin reads that header and makes WordPress treat the request as coming from that user, so normal WordPress capability checks apply. An Author can create and edit their own posts but can't edit someone else's. A Subscriber can't create posts at all.
 
@@ -29,8 +29,8 @@ Faust.js refreshes the access token in the background 60 seconds before it expir
 Pass the auth client to Apollo's `useMutation` hook, the same way you pass it to `useQuery`:
 
 ```js title="components/NewDraft.js"
-import { getApolloAuthClient } from '@faustwp/core';
-import { gql, useMutation } from '@apollo/client';
+import { getApolloAuthClient } from "@faustwp/core";
+import { gql, useMutation } from "@apollo/client";
 
 const CREATE_DRAFT = gql`
 	mutation CreateDraft($title: String!, $content: String) {
@@ -54,12 +54,16 @@ export function NewDraft() {
 		event.preventDefault();
 		const form = new FormData(event.currentTarget);
 
-		await createDraft({
-			variables: {
-				title: form.get('title'),
-				content: form.get('content'),
-			},
-		});
+		try {
+			await createDraft({
+				variables: {
+					title: form.get("title"),
+					content: form.get("content"),
+				},
+			});
+		} catch {
+			// Apollo rejects the promise on error. The message is shown below via `error`.
+		}
 	}
 
 	return (
@@ -77,17 +81,17 @@ export function NewDraft() {
 }
 ```
 
-Render this component only when `useAuth()` reports `isAuthenticated === true`, as shown in the [Authentication](/docs/how-to/authentication/) guide.
+Render this component only when `useAuth()` reports `isAuthenticated === true`, as shown in the [Authentication](/docs/how-to/authentication/) guide. Until then there's no access token in memory, and the mutation runs as an anonymous visitor.
 
 ## 3. Handle permission errors
 
-If the request reaches WordPress without a valid access token, WordPress treats it as an anonymous visitor. WPGraphQL then returns a permission error in the response body instead of an HTTP 401, so check `error` (or `errors` on the result) rather than the status code.
+If the request reaches WordPress without a valid access token, WordPress treats it as an anonymous visitor. WPGraphQL then responds with HTTP 200 and a permission error in the response body, not a 401, so check `error` rather than the status code.
 
 This usually means one of:
 
 - The user doesn't have the WordPress capability the mutation needs.
 - The refresh token has expired or was cleared by logging out, so the user needs to log in again.
-- The device was asleep past the access token's expiry. On wake, the background refresh runs, but a request sent at the same instant can still go out with the old token. Retrying after the refresh completes succeeds.
+- The device was asleep past the access token's expiry. The background refresh runs on wake, but a request sent at the same moment can still go out with the old token. Retrying a moment later usually succeeds.
 
 > [!NOTE]
 > Faust.js doesn't currently expose a public function to force a token refresh before retrying. For now, show the error and let the user try again.
@@ -96,9 +100,12 @@ This usually means one of:
 
 WordPress core and WPGraphQL don't check whether a post changed between when you read it and when you write it. If two users load the same post, both edit it, and both save, the second save overwrites the first without an error.
 
-For most single-editor apps this doesn't matter. If several people or processes write to the same content, you can reduce the risk by reading the post's `modified` date immediately before writing and stopping if it has changed since you loaded it:
+For most single-editor apps this doesn't matter. If several people or processes write to the same content, you can reduce the risk. Keep the post's `modified` value from when you loaded it, read it again immediately before writing, and stop if it has changed:
 
 ```js
+// `modifiedWhenLoaded` is the post's `modified` value from your original query.
+const client = getApolloAuthClient();
+
 const { data } = await client.query({
 	query: gql`
 		query PostModified($id: ID!) {
@@ -108,7 +115,7 @@ const { data } = await client.query({
 		}
 	`,
 	variables: { id: postId },
-	fetchPolicy: 'network-only',
+	fetchPolicy: "network-only",
 });
 
 if (data.post.modified !== modifiedWhenLoaded) {
@@ -116,11 +123,15 @@ if (data.post.modified !== modifiedWhenLoaded) {
 }
 ```
 
+`fetchPolicy: "network-only"` skips Apollo's cache so you get the current value from WordPress.
+
 This narrows the window but doesn't close it: another save can still land between the check and your mutation. Built-in conflict detection is proposed in [#2562](https://github.com/wpengine/faustjs/issues/2562).
 
 ## 5. Writing from the server
 
-The flow above runs in the browser on behalf of a logged-in user. Faust.js doesn't yet provide a supported way for server-side code (a build step, a cron job, an API route acting on its own) to authenticate to WordPress. Until it does, WordPress [Application Passwords](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) for a dedicated, low-privilege user are the safest option. Avoid tying them to a personal admin account.
+The flow above runs in the browser on behalf of a logged-in user. Faust.js doesn't yet provide a supported way for server-side code (a build step, a cron job, an API route acting on its own) to authenticate to WordPress.
+
+Until it does, use WordPress [Application Passwords](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) for a dedicated, low-privilege user, not a personal admin account. WPGraphQL accepts them as HTTP Basic auth (`Authorization: Basic <base64 of username:application-password>`). WordPress only allows Application Passwords over HTTPS, except on local development sites. Keep the credentials in server-side environment variables, never in variables prefixed with `NEXT_PUBLIC_`.
 
 A scoped service user for server-side writes is proposed in [#2561](https://github.com/wpengine/faustjs/issues/2561).
 
