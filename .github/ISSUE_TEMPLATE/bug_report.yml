@@ -1,65 +1,60 @@
 name: Bug report
-description: Report a bug in Faust
+description: Report a bug in Faust.js
 labels: ['[Type] Bug', 'Needs Triage']
 body:
   - type: markdown
     attributes:
       value: >-
-        Thank you for taking the time to report a possible bug!
-
-        Please remember, a bug report is _not the place to ask questions_. You can
-        use [Discord](https://discord.gg/J2khkF9XYK) for that, or start a topic in [GitHub
-        Discussions](https://github.com/wpengine/faustjs/discussions).
+        Thanks for reporting a bug! For questions, use [GitHub
+        Discussions](https://github.com/wpengine/faustjs/discussions/categories/q-a)
+        or [Discord](https://discord.gg/J2khkF9XYK) instead.
   - type: textarea
     attributes:
       label: Description
-      description: >-
-        Please write a brief description of the bug, including what you expected and what actually happened.
+      description: What happened, and what did you expect to happen?
     validations:
       required: true
   - type: textarea
     attributes:
       label: Steps to reproduce
       description: >-
-        Please list all the steps needed to reproduce the bug in an *isolated* way (e.g. a clonable GitHub repository, or a Faust.js snippet that works on a clean environment ).
-      placeholder: >-
-        1. Clone the `faustwp-getting-started` example project
-        2. Navigate to the `wp-templates/single.js` Faust template
-        3. Result show X but should be Y
+        Steps that reproduce the bug on a clean setup. A link to a repository
+        or a minimal code snippet helps most.
+      placeholder: |
+        1. Clone the `faustwp-getting-started` example
+        2. Open `wp-templates/single.js`
+        3. See X instead of Y
     validations:
       required: true
+  - type: input
+    attributes:
+      label: '@faustwp/core version'
+      placeholder: e.g. 3.4.2
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: WordPress version
+      placeholder: e.g. 6.9
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: '@faustwp/cli version'
+      description: Leave blank if not installed.
+  - type: input
+    attributes:
+      label: Faust.js plugin version
+      description: Leave blank if not installed.
   - type: textarea
     attributes:
       label: Additional context
       description: >-
-        Add any other context about the problem here, such as screenshots, error logs, etc.
-  - type: input
-    attributes:
-      label: '@faustwp/core Version'
-    validations:
-      required: true
-  - type: input
-    attributes:
-      label: '@faustwp/cli Version'
-      description: Leave blank if not installed.
-  - type: input
-    attributes:
-      label: FaustWP Plugin Version
-      description: Leave blank if not installed.
-  - type: input
-    attributes:
-      label: WordPress Version
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Additional environment details
-      description: Additional Faust.js packages and their versions (@faustwp/blocks, @faustwp/core, etc), PHP version, Hosting Platform, etc.
+        Anything else that helps: error logs, screenshots, other @faustwp
+        packages, Next.js, Node.js, or PHP versions, hosting platform.
   - type: checkboxes
     attributes:
-      label: Please confirm that you have searched existing issues in the repo.
-      description: >-
-        You can do this by searching https://github.com/wpengine/faustjs/issues.
+      label: Existing issues
       options:
-        - label: 'Yes'
+        - label: I searched [existing issues](https://github.com/wpengine/faustjs/issues) and didn't find a match.
           required: true
