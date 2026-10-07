@@ -78,7 +78,7 @@ runs:
     - id: upload-main-release-to-github
       name: Uploads the main release zip file to GitHub
       if: inputs.upload-artifacts == 'true'
-      uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+      uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.zip-path }}
@@ -89,7 +89,7 @@ runs:
     - id: upload-org-release-to-github
       name: Uploads the non wpe-updater release zip file to GitHub
       if: inputs.upload-artifacts == 'true'
-      uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+      uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.org-zip-path }}
@@ -108,7 +108,7 @@ runs:
     - id: upload-info-json-to-github
       name: Upload info.json to GitHub Releases
       if: inputs.upload-artifacts == 'true'
-      uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+      uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.info-json-path }}
