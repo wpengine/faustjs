@@ -52,7 +52,7 @@
 		"zen-observable-ts": "^1.2.5"
 	},
 	"dependencies": {
-		"@wordpress/hooks": "^3.14.0",
+		"@wordpress/hooks": "^4.56.0",
 		"chalk": "^4.1.2",
 		"classnames": "^2.3.2",
 		"cookie": "^1.1.1",
