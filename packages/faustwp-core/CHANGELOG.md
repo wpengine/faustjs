@@ -1,5 +1,24 @@
 # @faustwp/core
 
+## [3.5.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.4.2...@faustwp/core@3.5.0) (2026-10-07)
+
+
+### Features
+
+* **core:** add a wpAdminUrl filter for the toolbar admin links ([#1897](https://github.com/wpengine/faustjs/issues/1897)) ([1ad7ebd](https://github.com/wpengine/faustjs/commit/1ad7ebd7ba50c33226a180d6777609fa70705b78))
+
+
+### Bug Fixes
+
+* **core:** expire the refresh token cookie on logout ([#2529](https://github.com/wpengine/faustjs/issues/2529)) ([056874c](https://github.com/wpengine/faustjs/commit/056874c6b0203305315f2f842a8780aa7c465ab0))
+* **core:** link child sitemaps to the route serving the sitemap index ([#2591](https://github.com/wpengine/faustjs/issues/2591)) ([ad2dec6](https://github.com/wpengine/faustjs/commit/ad2dec6eeb029f733499f5edc5b739acfca0ae57))
+
+
+### Reverts
+
+* eslint 10 and @types/node 26 bumps ([#2587](https://github.com/wpengine/faustjs/issues/2587)) ([e1d4312](https://github.com/wpengine/faustjs/commit/e1d431207bab493e8043078c47e04f1429aaf583))
+* react-dom 19 and fetch-mock 12 bumps, fix e2e install ([#2603](https://github.com/wpengine/faustjs/issues/2603)) ([d161eba](https://github.com/wpengine/faustjs/commit/d161eba6b64b395dbf74e7a9d2ad2c9e8e1d2334))
+
 ## 3.4.2
 
 ### Patch Changes
