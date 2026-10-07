@@ -20,7 +20,7 @@
 		"next": "^16.3.8",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"sass": "1.97.3"
+		"sass": "1.105.1"
 	},
 	"devDependencies": {
 		"next-secure-headers": "^2.2.0"
