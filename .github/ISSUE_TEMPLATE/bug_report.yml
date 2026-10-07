@@ -1,5 +1,6 @@
 name: Bug report
 description: Report a bug in Faust
+labels: ['[Type] Bug', 'Needs Triage']
 body:
   - type: markdown
     attributes:
@@ -40,13 +41,11 @@ body:
   - type: input
     attributes:
       label: '@faustwp/cli Version'
-    validations:
-      required: true
+      description: Leave blank if not installed.
   - type: input
     attributes:
       label: FaustWP Plugin Version
-    validations:
-      required: true
+      description: Leave blank if not installed.
   - type: input
     attributes:
       label: WordPress Version
