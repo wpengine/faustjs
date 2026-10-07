@@ -19,3 +19,8 @@ coverage
 
 # Ignore the WordPress source where used by various development environments
 wordpress/
+
+# Standalone examples install fresh with `npm install`; their lockfiles
+# would only add transitive Dependabot alerts.
+examples/next/block-support/package-lock.json
+examples/next/tutorial/package-lock.json
