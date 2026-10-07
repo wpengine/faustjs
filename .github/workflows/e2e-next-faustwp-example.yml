@@ -4,14 +4,12 @@ on:
   pull_request:
     paths:
       - 'examples/next/**'
+      - '.github/workflows/e2e-next-faustwp-example.yml'
 
 jobs:
   e2e-test-faustwp-getting-started-example:
     name: (faustwp) Next Getting Started Example on Node ${{ matrix.node }}
     runs-on: ubuntu-22.04
-    env:
-      PR_REPO: ${{github.event.pull_request.head.repo.full_name}}
-      PR_BRANCH: ${{github.event.pull_request.head.ref}}
     strategy:
       matrix:
         node: ['20', '22', '24']
@@ -25,48 +23,20 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
-      # Get the PR branch so we can pull the correct Next.js example path
-      - name: echo current pr branch name
+      # Copy the example from this checkout so the app is built from the
+      # PR's own example source.
+      - name: copy getting started example
         run: |
-          echo $PR_BRANCH
-      # Get the PR repo so we can pull the correct Next.js example path
-      - name: echo current pr repo
-        run: |
-          echo $PR_REPO
-      # Install the Faust.js Next getting started example via npx create next app
-      # and use the PR branch to pull the correct example URL
-      - name: npx create next app
-        run: |
-          npx create-next-app@13 \
-            -e https://github.com/${PR_REPO}/tree/${PR_BRANCH} \
-            --example-path examples/next/faustwp-getting-started \
-            --use-npm \
-            e2e-app
+          cp -r examples/next/faustwp-getting-started e2e-app
       - name: install and build packages
         working-directory: ./
         run: |
           npm ci
           npm run build
-      # To ensure PR changes are tested accurately, we replace the
-      # faust node_modules downloaded from NPM with the faust packages
-      # built in the previous step
-      # TODO: It would be nice to use symlink or npm link here, but upon
-      # writing this they do not function as expected on GH actions
-      - name: replace downloaded registry faust packages with local build
-        run: |
-          mkdir -p e2e-app/node_modules/@faustwp
-          rm -rf e2e-app/node_modules/@faustwp/cli
-          rm -rf e2e-app/node_modules/@faustwp/core
-          cp -r packages/faustwp-cli e2e-app/node_modules/@faustwp/cli
-          cp -r packages/faustwp-core e2e-app/node_modules/@faustwp/core
-          mkdir -p e2e-app/node_modules/.bin
-          ln -sf ../@faustwp/cli/dist/index.js e2e-app/node_modules/.bin/faust
-          chmod +x e2e-app/node_modules/@faustwp/cli/dist/index.js
-      # create-next-app's npm install may fail if @faustwp/* versions
-      # are not yet published. Point deps at local builds so npm install
-      # can resolve them and install all remaining dependencies.
-      # --install-links copies packages instead of symlinking, avoiding
-      # duplicate React instances from split module resolution.
+      # Point the app at the local package builds before its first install
+      # so npm installs their current dependencies. --install-links copies
+      # packages instead of symlinking, avoiding duplicate React instances
+      # from split module resolution.
       - name: install e2e-app dependencies
         working-directory: e2e-app
         run: |
