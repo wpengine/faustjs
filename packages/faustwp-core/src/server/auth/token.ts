@@ -25,7 +25,10 @@ export class OAuth {
 
 	constructor(cookies: Cookies) {
 		this.cookies = cookies;
-		this.tokenKey = `${getWpUrl()}-rt`;
+		this.tokenKey = `${getWpUrl().replace(
+			/[^!#$%&'*+\-.^_`|~0-9A-Za-z]/g,
+			'',
+		)}-rt`; // Sanitize URL to make cookie key RFC 6265 sec 4.1.1 compliant.
 	}
 
 	public getRefreshToken(): string | undefined {
@@ -35,6 +38,8 @@ export class OAuth {
 	public setRefreshToken(token?: string, expires?: number): void {
 		if (!isString(token) || token.length === 0) {
 			this.cookies.removeCookie(this.tokenKey);
+
+			return;
 		}
 
 		let maxAge: number | undefined = 2592000;
@@ -45,7 +50,7 @@ export class OAuth {
 			maxAge = undefined;
 		}
 
-		this.cookies.setCookie(this.tokenKey, token as string, {
+		this.cookies.setCookie(this.tokenKey, token, {
 			expires: expiresIn,
 			maxAge,
 			path: '/',

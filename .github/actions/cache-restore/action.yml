@@ -16,13 +16,13 @@ runs:
   steps:
     # Setup a Node environment given a node version
     - name: Use Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: ${{ inputs.node-version }}
 
     - name: Cache Node Modules
       id: node-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           **/node_modules

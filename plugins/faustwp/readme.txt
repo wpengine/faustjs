@@ -1,9 +1,9 @@
 === Faust.js ===
-Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, TeresaGobble, thdespou, wpengine,
+Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murphy, jasonkonen, joefusco, markkelnar, matthewguywright, mindctrl, modernnerd, rfmeier, teresagobble, thdespou, wpengine
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
-Tested up to: 6.7.2
-Stable tag: 1.8.1
+Tested up to: 7.0
+Stable tag: 1.8.12
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -34,10 +34,6 @@ Use one of the channels below to contact the Faust.js team for support.
 [GitHub](https://github.com/wpengine/faustjs) - Faust.js GitHub documentation and codebase.
 [Discord](https://discord.gg/J2khkF9XYK) - Interactive chat support on Discord.
 
-= Where can I find more information about development and future features for this plugin? =
-
-Great question! The development team posts weekly summaries of sprints related to Faust.js, [here](https://faustjs.org/blog).
-
 = Why the name “Faust.js”? =
 
 Johann Faust was a German printer and was instrumental in the invention of the printing press, along with his partner Johann Gutenberg. In the same way the printing press democratized the spread of information, the mission of Faust.js is to support and further the vision of WordPress to democratize publishing on the web.
@@ -48,32 +44,29 @@ Johann Faust was a German printer and was instrumental in the invention of the p
 2. Portfolio, blog, and basic blueprints for headless sites built with Faust.js
 3. A code snippet
 
-plugins/faustwp/.wordpress-org/screenshot-1.png
-plugins/faustwp/.wordpress-org/screenshot-2.png
-plugins/faustwp/.wordpress-org/screenshot-3.png
+== Upgrade Notice ==
+
+= 1.8.10 =
+Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77q-qcv3 / CVE-2026-54239.
 
 == Changelog ==
 
-= 1.8.1 =
+= 1.8.12 =
 
 ### Patch Changes
 
-- 700f96e: bug: Fixes for Github workflow for faustwp releases. Added WPE info.json and automated for the release.
-- 134f823: Added minor fixes for non wpe release. Added test script to output th…
+- 85d1b14: Route the `generateAuthorizationCode` mutation through `wp_authenticate()` so login policies hooked on the WordPress `authenticate` filter are enforced.
 
-= 1.8.0 =
-
-### Minor Changes
-
-- aedd100: chore: Updated FaustWP to create a preview link for all draft post types.
-
-  Removed actions `rest_prepare_post` and `rest_prepare_page` from the callback functions.
-  Added a new action for `rest_api_init` to add `rest_prepare_{$post_type}` action for all publicably queryable post types including custom post types.
-
-= 1.7.5 =
+= 1.8.11 =
 
 ### Patch Changes
 
-- 413fe9a: Added tested up to WordPress 6.7.2 for the FaustWP plugin.
+- 0ef93f8: Add WordPress 7.0 to the CI test matrix and update the plugin "Tested up to" header to 7.0.
+
+= 1.8.10 =
+
+### Patch Changes
+
+- 81a854f: Maintenance release for WordPress.org. No functional changes. Sites still on 1.8.0 remain affected by GHSA-q6pm-r77q-qcv3 / CVE-2026-54239 and should update.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

@@ -1,5 +1,141 @@
 # @faustwp/core
 
+## 3.4.2
+
+### Patch Changes
+
+- 8727c96: Restored the `next` peer dependency ranges (`>=12.1.6` for `@faustwp/core`, `^15.5.5 || ^16.0.0` for `@faustwp/blocks`) that an automated dependency bump had narrowed to `^16.3.3`.
+
+## 3.4.1
+
+### Patch Changes
+
+- 10ad814: fix[faustwp-core]: add path, sameSite, secure, and httpOnly flags to removeCookie() to match setCookie() attributes
+- b087ac3: test[faustwp-core]: add test coverage for sitemapIndexPath option in createRootSitemapIndex
+
+## 3.4.0
+
+### Minor Changes
+
+- ec26ac4: Feat: Added support `next/dynamic` imports for templates to reduce initial bundle size in a way that's backwards compatible with static imports.
+
+  This solves a known issue in Faust where all defined templates are bundled together and loaded on every WordPress page. By enabling the use of dynamic importing of templates this issue is resolved. Now templates are only loaded as needed per route.
+
+  It's recommended you migrate to dynamic imports by updating your template file. Here's an example:
+
+  ```js title=src/wp-templates/index.js
+  // Old Static Templates
+  import category from './category';
+  import tag from './tag';
+  import frontPage from './front-page';
+  import page from './page';
+  import single from './single';
+
+  export default {
+  	category,
+  	tag,
+  	'front-page': frontPage,
+  	page,
+  	single,
+  };
+
+  // New Dynamic Templates
+  import dynamic from 'next/dynamic';
+
+  const category = dynamic(() => import('./category.js'));
+  const tag = dynamic(() => import('./tag.js'));
+  const frontPage = dynamic(() => import('./front-page.js'));
+  const page = dynamic(() => import('./page.js'));
+
+  // The above examples assume use of default exports. If you are using named exports you'll need to handle that:
+  const single = dynamic(() => import('./single.js').then(mod => mod.Single));
+
+  export default {
+  	category,
+  	tag,
+  	'front-page': frontPage,
+  	page,
+  	single,
+  };
+  ```
+
+  For further info see the Next.js docs on the use of [`next/dynamic`](https://nextjs.org/docs/pages/guides/lazy-loading#nextdynamic-1).
+
+### Patch Changes
+
+- 91886b1: Upgraded fast-xml-parser from v5.3.4 to v5.3.6 to incorporate the latest bug fixes, performance improvements, and minor stability enhancements.
+- 95cacbe: Fixed an issue where dynamic template components were rendered via the next/dynamic wrapper directly, causing hydration mismatches and double renders, by resolving the dynamic component to its inner function and storing it in state before rendering.
+
+## 3.3.6
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
+## 3.3.5
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+  - Updated Jest configuration to use V8 coverage provider instead of Babel
+  - Disabled coverage collection by default for better test performance
+  - Added `transformIgnorePatterns` for improved ESM dependency handling
+  - Enhanced Apollo error logging with explicit type annotations
+  - Refactored test assertions to use direct array equality instead of inline snapshots
+  - Added coverage directory to .eslintignore
+  - Bump lodash from 4.17.21 to 4.17.23 to address security vulnerabilities
+  - Bump fast-xml-parser from 4.5.0 to 5.3.4 to address security vulnerabilities
+
+## 3.3.4
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
+## 3.3.2
+
+### Patch Changes
+
+- b5c208f: #2181 - Sanitize URL in cookie key to make it RFC 6265 sec 4.1.1 compliant.
+
+## 3.3.1
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
+## 3.3.0
+
+### Minor Changes
+
+- 5e1dfb4: Updated cookie package to 0.0.7
+
+## 3.2.6
+
+### Patch Changes
+
+- 59953b9: chore: Updating next to version 15 to fix security issue
+
+## 3.2.4
+
+### Patch Changes
+
+- a1fb6dd: chore: security update for packages brace-extension and form-data.
+
+## 3.2.3
+
+### Patch Changes
+
+- 4ddf732: Fixed an issue with the `getWordPressProps` function where the resolved URL was not correctly set for non-SSR contexts.
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+- 1ea9dc3: Changed the way the devtools option is configured for the Apollo Client
+
+## 3.2.2
+
+### Patch Changes
+
+- f4c0abb: chore: Update various babel packages.
+
 ## 3.2.1
 
 ### Patch Changes
@@ -24,11 +160,11 @@
   export default function Sitemap() {}
 
   export function getServerSideProps(ctx) {
-  	return getSitemapProps(ctx, {
-  		sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
-  		frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
-  		sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
-  	});
+    return getSitemapProps(ctx, {
+      sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
+      frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
+      sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+    });
   }
   ```
 
@@ -132,7 +268,7 @@
 
   ```jsx
   <ToolbarItem onKeyDown={handleKeyDown} onClick={handleClick}>
-  	Log Out
+    Log Out
   </ToolbarItem>
   ```
 
@@ -238,18 +374,18 @@
   import { FaustPage } from '@faustwp/core';
 
   type GetPageData = {
-  	generalSettings: {
-  		title: string;
-  	};
+    generalSettings: {
+      title: string;
+    };
   };
 
   type PageProps = {
-  	myProp: string;
+    myProp: string;
   };
 
   const Page: FaustPage<GetPageData, PageProps> = (props) => {
-  	const { myProp, data } = props;
-  	return <></>;
+    const { myProp, data } = props;
+    return <></>;
   };
   ```
 
@@ -318,9 +454,9 @@
   export default function Sitemap() {}
 
   export function getServerSideProps(context) {
-  	return getSitemapProps(context, {
-  		frontendUrl: process.env.FRONTEND_URL, // Set the FRONTEND_URL as an env var
-  	});
+    return getSitemapProps(context, {
+      frontendUrl: process.env.FRONTEND_URL, // Set the FRONTEND_URL as an env var
+    });
   }
   ```
 
@@ -350,7 +486,7 @@
   import { FaustHooks, FaustPlugin } from '@faustwp/core';
 
   export class MyPlugin implements FaustPlugin {
-  	apply(hooks: FaustHooks) {}
+    apply(hooks: FaustHooks) {}
   }
   ```
 

@@ -71,6 +71,40 @@ describe('healthCheck/validateFaustEnvVars', () => {
 			`Ensure your FAUST_SECRET_KEY environment variable matches your Secret Key in the Faust WordPress plugin settings`,
 		);
 	});
+
+	it('logs a Basic Auth error when the site returns 401 with WWW-Authenticate: Basic', async () => {
+		// @ts-ignore
+		const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
+			if (code && code !== 0) {
+				throw new Error(`Exit code: ${code}`);
+			}
+		});
+		const mockLog = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+		process.env.NEXT_PUBLIC_WORDPRESS_URL = 'https://basicauth.local';
+		process.env.FAUST_SECRET_KEY = 'valid-secret-key';
+
+		fetchMock.post(
+			'https://basicauth.local/?rest_route=/faustwp/v1/validate_secret_key',
+			{
+				status: 401,
+				headers: { 'WWW-Authenticate': 'Basic realm="Restricted"' },
+			},
+		);
+
+		try {
+			await validateFaustEnvVars();
+		} catch (err) {
+			// Expected exit
+		}
+
+		expect(mockExit).toHaveBeenCalledWith(1);
+		expect(mockLog).toHaveBeenCalledWith(
+			expect.stringContaining('HTTP Basic Authentication'),
+		);
+
+		mockLog.mockRestore();
+	});
 });
 
 describe('isWPEngineComTLD', () => {

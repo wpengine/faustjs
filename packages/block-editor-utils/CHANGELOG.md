@@ -1,5 +1,56 @@
 # @faustwp/block-editor-utils
 
+## 0.3.9
+
+### Patch Changes
+
+- 15c4a69: Updated `@wordpress/*` dependencies to their latest majors. `@wordpress/blocks` 16 replaces `showdown`, which has unpatched cross-site scripting and ReDoS advisories, with `marked`.
+
+## 0.3.8
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
+## 0.3.7
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+
+  - Updated Jest configuration to disable coverage collection by default
+  - Added type annotation to document known InnerBlocks.Content compatibility issue across React versions
+
+## 0.3.6
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
+## 0.3.5
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
+## 0.3.4
+
+### Patch Changes
+
+- a1fb6dd: chore: security update for packages brace-extension and form-data.
+
+## 0.3.3
+
+### Patch Changes
+
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+
+## 0.3.2
+
+### Patch Changes
+
+- f4c0abb: chore: Update various babel packages.
+
 ## 0.3.1
 
 ### Patch Changes
@@ -22,17 +73,16 @@
 
   ```js
   // Component.js
-
   Component.config = {
-  	name: 'CreateBlockBlockB',
-  	editorFields: {
-  		textArea: {
-  			type: 'string',
-  			label: 'My Message',
-  			location: 'editor',
-  			control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
-  		},
-  	},
+    name: 'CreateBlockBlockB',
+    editorFields: {
+      textArea: {
+        type: 'string',
+        label: 'My Message',
+        location: 'editor',
+        control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
+      },
+    },
   };
   ```
 
@@ -66,9 +116,9 @@
 
   ```js
   <div
-  	style={styles}
-  	className="rich-text"
-  	dangerouslySetInnerHTML={{ __html: attributes.richText }}
+    style={styles}
+    className="rich-text"
+    dangerouslySetInnerHTML={{ __html: attributes.richText }}
   />
   ```
 
@@ -119,9 +169,9 @@
   import save from './save';
 
   registerFaustBlock(MyFirstBlock, {
-  	blockJson: metadata,
-  	editFn: Edit,
-  	saveFn: save,
+    blockJson: metadata,
+    editFn: Edit,
+    saveFn: save,
   });
   ```
 

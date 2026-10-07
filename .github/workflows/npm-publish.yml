@@ -1,0 +1,55 @@
+name: Publish to npm
+
+on:
+  workflow_call:
+    inputs:
+      paths:
+        description: 'JSON array of package paths released by release-please (e.g. ["packages/faustwp-core"])'
+        type: string
+        required: true
+
+# No permissions block — inherits from caller workflow.
+# The release caller grants id-token: write, which enables npm OIDC.
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.x
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install legacy npm first, as a workaround for https://github.com/nodejs/node/issues/62425
+        run: npm install -g npm@10.9.8
+
+      - name: Upgrade npm for OIDC support
+        run: npm install -g npm@11.13.0
+
+      - name: Verify OIDC token availability
+        run: |
+          if [ -z "${ACTIONS_ID_TOKEN_REQUEST_URL}" ]; then
+            echo "::error::OIDC token not available. Ensure the caller workflow has 'id-token: write' permission."
+            exit 1
+          fi
+          echo "OIDC token endpoint available"
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Publish to npm
+        env:
+          PATHS: ${{ inputs.paths }}
+        run: |
+          # The plugin is released to wordpress.org by release-plugin.yml, not npm.
+          for path in $(jq -r '.[] | select(startswith("packages/"))' <<< "$PATHS"); do
+            echo "Publishing $path"
+            npm publish --workspace "$path"
+          done

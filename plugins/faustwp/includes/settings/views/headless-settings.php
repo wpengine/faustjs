@@ -72,18 +72,18 @@
 					<?php endif; ?>
 					<section>
 						<h4><?php esc_html_e( 'Create Your Headless App', 'faustwp' ); ?></h4>
-						<p><a href="https://faustjs.org/docs/next/getting-started" target="_blank" rel="noopener noreferrer">Follow our quick start guide</a>.</p>
+						<p><a href="https://faustjs.org/docs/how-to/basic-setup" target="_blank" rel="noopener noreferrer">Follow our quick start guide</a>.</p>
 					</section>
 				</div>
 				<div class="box docs">
 					<h3>Faust.js Documentation</h3>
 					<section>
 						<ul>
-							<li><a href="https://faustjs.org/guide/how-to-use-the-faust-example-project" target="_blank" rel="noopener noreferrer">In-depth Tutorial</a></li>
-							<li><a href="https://faustjs.org/tutorial/get-started-with-faust" target="_blank" rel="noopener noreferrer">Quick Start</a></li>
-							<li><a href="https://faustjs.org/guide/how-to-use-apollo-in-faust" target="_blank" rel="noopener noreferrer">Fetching Data</a></li>
-							<li><a href="https://faustjs.org/guide/how-to-setup-post-and-page-previews" target="_blank" rel="noopener noreferrer">Previews</a></li>
-							<li><a href="https://faustjs.org/guide/how-to-handle-authentication" target="_blank" rel="noopener noreferrer">Authentication</a></li>
+							<li><a href="https://faustjs.org/docs/tutorial/learn-faust" target="_blank" rel="noopener noreferrer">In-depth Tutorial</a></li>
+							<li><a href="https://faustjs.org/docs/tutorial/learn-faust" target="_blank" rel="noopener noreferrer">Quick Start</a></li>
+							<li><a href="https://faustjs.org/docs/how-to/query-data-in-the-browser" target="_blank" rel="noopener noreferrer">Fetching Data</a></li>
+							<li><a href="https://faustjs.org/docs/how-to/post-previews" target="_blank" rel="noopener noreferrer">Previews</a></li>
+							<li><a href="https://faustjs.org/docs/how-to/authentication" target="_blank" rel="noopener noreferrer">Authentication</a></li>
 						</ul>
 						<p><a class="button-primary" href="https://github.com/wpengine/faustjs/" target="_blank" rel="noopener noreferrer">Faust on GitHub</a></p>
 					</section>

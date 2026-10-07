@@ -136,7 +136,7 @@ function is_wp_link_ajax_request(): bool {
 
 
 /**
- * Get all site URLs for each possible HTTP protocol
+ * Get all site URLs for each possible HTTP protocol.
  *
  * @param string $site_url The site url.
  *
@@ -144,8 +144,11 @@ function is_wp_link_ajax_request(): bool {
  */
 function faustwp_get_wp_site_urls( string $site_url ): array {
 
-	$host_url = wp_parse_url( $site_url, PHP_URL_HOST );
-
+	$host_url_parse = wp_parse_url( $site_url );
+	$host_url       = $host_url_parse['host'] ?? '';
+	if ( ! empty( $host_url_parse['port'] ) ) {
+		$host_url .= ':' . $host_url_parse['port'];
+	}
 	$is_https = strpos( $site_url, 'https://' ) === 0;
 
 	return apply_filters(
@@ -157,6 +160,7 @@ function faustwp_get_wp_site_urls( string $site_url ): array {
 		)
 	);
 }
+
 
 /**
  * Get all media urls based off the available site urls
@@ -180,18 +184,16 @@ function faustwp_get_wp_media_urls( array $wp_site_urls, string $relative_upload
 /**
  * Gets the relative wp-content upload URL.
  *
- * @param array<string> $site_urls An array of site URLs.
- * @param string        $upload_url An array of site URLs.
+ * @param array<string>|string $site_urls An array of site URLs.
+ * @param string               $upload_url An array of site URLs.
  *
  * @return string The relative upload URL.
  */
 function faustwp_get_relative_upload_url( array $site_urls, string $upload_url = '' ): string {
-
 	foreach ( $site_urls as $site_url ) {
 		if ( strpos( $upload_url, $site_url ) === 0 ) {
 			return (string) str_replace( $site_url, '', $upload_url );
 		}
 	}
-
 	return '';
 }

@@ -1,5 +1,7 @@
 dist
 node_modules
+coverage
 /*.js
 /*.ts
 /*.d.ts
+CHANGELOG.md

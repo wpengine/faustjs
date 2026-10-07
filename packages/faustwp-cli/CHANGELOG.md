@@ -1,5 +1,69 @@
 # @faustwp/cli
 
+## 3.4.1
+
+### Patch Changes
+
+- d8b9d2e: fix[faustwp-cli]: detect HTTP Basic Auth on 401 response and show accurate error message instead of misleading secret key mismatch
+
+## 3.3.6
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
+## 3.3.5
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+  - Updated Jest configuration for better ESM support
+  - Switched to V8 coverage provider
+  - Enhanced health check test with more descriptive error output
+  - Added coverage directory to .eslintignore
+
+## 3.3.4
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
+## 3.3.3
+
+### Patch Changes
+
+- 17816f7: Improve validateNextWordPressUrl error messages by including HTTP status code and status text, also providing an additional clarity for fatal errors.
+
+## 3.3.1
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
+## 3.2.5
+
+### Patch Changes
+
+- f5e1253: Previously, WordPress connection failures lacked clear feedback. This update adds an error message when a 500 error occurs, improving debugging and usability.
+
+## 3.2.4
+
+### Patch Changes
+
+- a1fb6dd: chore: security update for packages brace-extension and form-data.
+
+## 3.2.3
+
+### Patch Changes
+
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+
+## 3.2.2
+
+### Patch Changes
+
+- f4c0abb: chore: Update various babel packages.
+
 ## 3.2.1
 
 ### Patch Changes

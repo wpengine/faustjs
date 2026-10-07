@@ -3,9 +3,6 @@ name: Package Code Quality
 on:
   pull_request:
     branches: [canary]
-    paths-ignore:
-      - '**/*.md'
-      - '**/*.php'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -26,9 +23,13 @@ jobs:
     needs: [setup-node]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up Node.js
         uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
       - name: Check Linting
         run: npm run lint
   check_format:
@@ -37,8 +38,12 @@ jobs:
     needs: [setup-node]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up Node.js
         uses: ./.github/actions/cache-restore
+        id: cache-node-modules
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
       - name: Check Formatting
         run: npm run test:format

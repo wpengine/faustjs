@@ -419,7 +419,7 @@ function rest_authorize_permission_callback( \WP_REST_Request $request ) {
 	$header_key = $request->get_header( 'x-faustwp-secret' );
 
 	if ( $secret_key && $header_key ) {
-		return $secret_key === $header_key;
+		return hash_equals( $secret_key, $header_key );
 	}
 
 	return false;
@@ -444,7 +444,7 @@ function wpac_authorize_permission_callback( \WP_REST_Request $request ) {
 	$header_key = $request->get_header( 'x-wpe-headless-secret' );
 
 	if ( $secret_key && $header_key ) {
-		return $secret_key === $header_key;
+		return hash_equals( $secret_key, $header_key );
 	}
 
 	return false;

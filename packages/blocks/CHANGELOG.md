@@ -1,5 +1,70 @@
 # @faustwp/blocks
 
+## 6.1.10
+
+### Patch Changes
+
+- 8727c96: Restored the `next` peer dependency ranges (`>=12.1.6` for `@faustwp/core`, `^15.5.5 || ^16.0.0` for `@faustwp/blocks`) that an automated dependency bump had narrowed to `^16.3.3`.
+
+## 6.1.9
+
+### Patch Changes
+
+- 3cbdac6: Widen the `next` peer dependency to allow Next.js 16.
+
+## 6.1.8
+
+### Patch Changes
+
+- 97ec3e8: Publish release after NPM auth changes
+
+## 6.1.7
+
+### Patch Changes
+
+- a726de7: Testing infrastructure improvements
+
+  - Updated Jest configuration with improved ESM support
+  - Added `transformIgnorePatterns` for ESM dependencies
+  - Suppressed expected React error logs in WordPressBlocksProvider tests
+  - Added `@ts-expect-error` comment in Save.tsx to document known type incompatibility with `InnerBlocks.Content`
+
+## 6.1.6
+
+### Patch Changes
+
+- f9d3ecf: Update glob
+
+## 6.1.5
+
+### Patch Changes
+
+- afb25f4: Updated glob to version 10.4.5
+
+## 6.1.4
+
+### Patch Changes
+
+- 59953b9: chore: Updating next to version 15 to fix security issue
+
+## 6.1.3
+
+### Patch Changes
+
+- a1fb6dd: chore: Security update for packages brace-extension and form-data.
+
+## 6.1.2
+
+### Patch Changes
+
+- 709fe4a: chore: Forced an update for babel packages for security vulnerability - GHSA-968p-4wvh-cqc8
+
+## 6.1.1
+
+### Patch Changes
+
+- f4c0abb: chore: Update various babel packages.
+
 ## 6.1.0
 
 ### Minor Changes

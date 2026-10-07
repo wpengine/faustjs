@@ -1,5 +1,7 @@
 # Custom Toolbar
 
+> **Deprecated:** This example is deprecated and no longer maintained. It will not receive updates or security fixes.
+
 This repository uses a starter scaffolding to get you up and running quickly on [WP Engine's Headless Platform](https://wpengine.com/headless-wordpress/) with a WordPress site skeleton for more advanced developers and also includes the Custom Toolbar Example.
 
 ## For more information

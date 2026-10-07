@@ -136,4 +136,92 @@ class BlockFunctionTests extends FaustUnitTest {
         $this->assertTrue( Blocks\ensure_directories_exist( $dirs ) );
     }
 
+    /**
+     * Regression guard for #2311: when unzip_uploaded_file() returns a WP_Error,
+     * process_and_replace_blocks() must call $wp_filesystem->delete( $target_file )
+     * before returning, so the orphaned zip doesn't accumulate at the predictable
+     * path under wp-content/uploads/faustwp/blocks/.
+     *
+     * Verified red-on-revert: removing the delete line from
+     * includes/blocks/functions.php fails this test's Mockery once() expectation.
+     */
+    public function test_process_and_replace_blocks_cleans_up_on_unzip_failure() {
+        $file = [
+            'name'     => 'mock.zip',
+            'type'     => 'application/zip',
+            'tmp_name' => '/tmp/mock.zip',
+        ];
+        $dirs = [
+            'target' => '/uploads/blocks',
+            'temp'   => '/uploads/blocks/tmp',
+        ];
+        $target_file = '/uploads/blocks/mock.zip';
+        $error       = new WP_Error( 'unzip_error', 'mock unzip failure' );
+
+        stubs([
+            // Internal helpers: success on move, error on unzip. cleanup must NOT
+            // run on the error path; if it does, fail loudly so we catch a future
+            // regression where the early return is removed.
+            'WPE\FaustWP\Blocks\move_uploaded_file'     => true,
+            'WPE\FaustWP\Blocks\unzip_uploaded_file'    => $error,
+            'WPE\FaustWP\Blocks\cleanup_temp_directory' => function () {
+                throw new \LogicException( 'cleanup_temp_directory must not run on the unzip-failure path' );
+            },
+            // WP global helpers: keep the target-file path deterministic so the
+            // Mockery ->with() expectation matches without depending on Brain
+            // Monkey's default passthroughs.
+            'trailingslashit'    => function ( $s ) { return rtrim( $s, '/' ) . '/'; },
+            'sanitize_file_name' => function ( $s ) { return $s; },
+        ]);
+
+        $filesystem = Mockery::mock( 'WP_Filesystem_Base' );
+        $filesystem->shouldReceive( 'delete' )
+            ->with( $target_file )
+            ->once();
+
+        $result = Blocks\process_and_replace_blocks( $filesystem, $file, $dirs );
+
+        $this->assertInstanceOf( WP_Error::class, $result );
+        $this->assertSame( $error, $result );
+    }
+
+    /**
+     * Success path: when both move and unzip succeed, process_and_replace_blocks()
+     * must NOT call $wp_filesystem->delete( $target_file ) (the extracted blocks
+     * remain in place) and must invoke cleanup_temp_directory() for the staging dir.
+     *
+     * Inverse of the regression-guard test above: catches a future change that
+     * over-aggressively deletes the target on the happy path.
+     */
+    public function test_process_and_replace_blocks_success_path_does_not_delete_target() {
+        $file = [
+            'name'     => 'mock.zip',
+            'type'     => 'application/zip',
+            'tmp_name' => '/tmp/mock.zip',
+        ];
+        $dirs = [
+            'target' => '/uploads/blocks',
+            'temp'   => '/uploads/blocks/tmp',
+        ];
+
+        $cleanup_called = false;
+        stubs([
+            'WPE\FaustWP\Blocks\move_uploaded_file'     => true,
+            'WPE\FaustWP\Blocks\unzip_uploaded_file'    => true,
+            'WPE\FaustWP\Blocks\cleanup_temp_directory' => function () use ( &$cleanup_called ) {
+                $cleanup_called = true;
+            },
+            'trailingslashit'    => function ( $s ) { return rtrim( $s, '/' ) . '/'; },
+            'sanitize_file_name' => function ( $s ) { return $s; },
+        ]);
+
+        $filesystem = Mockery::mock( 'WP_Filesystem_Base' );
+        $filesystem->shouldNotReceive( 'delete' );
+
+        $result = Blocks\process_and_replace_blocks( $filesystem, $file, $dirs );
+
+        $this->assertTrue( $result );
+        $this->assertTrue( $cleanup_called, 'cleanup_temp_directory must run on the success path.' );
+    }
+
 }

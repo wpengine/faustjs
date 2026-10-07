@@ -8,6 +8,10 @@ inputs:
   github_token:
     description: 'GitHub Token'
     required: true
+  upload-artifacts:
+    description: 'Upload generated artifacts to the matching GitHub Release. Set to false for dry-run builds.'
+    required: false
+    default: 'true'
 
 outputs:
   zip-path:
@@ -28,6 +32,13 @@ runs:
       run: sudo apt-get update && sudo apt-get install zip rsync -y
       shell: bash
 
+    - id: create-asset-release-version
+      name: Create asset release version without quotes
+      run: |
+        ASSET_RELEASE_VERSION=$(echo ${{ env.VERSION }} | tr -d '"')
+        echo "ASSET_RELEASE_VERSION=$ASSET_RELEASE_VERSION" >> $GITHUB_ENV
+      shell: bash
+
     - id: zip-main-release-for-github
       name: Zip plugin for the main release
       run: |
@@ -35,8 +46,8 @@ runs:
         rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" ${{ env.PLUGIN_DIR }}/ dist/${{ env.SLUG }}
 
         zip_file="faustwp.${{ env.VERSION }}.zip"
-        cd "dist/${{ env.SLUG }}"
-        zip -r "../../$zip_file" .
+        cd "dist"
+        zip -r "../$zip_file" "${{ env.SLUG }}"
         cd -
 
         echo "zip-path=$PWD/$zip_file" >> $GITHUB_ENV
@@ -49,18 +60,16 @@ runs:
         rm -rf dist
         # Create dist folder and copy files while excluding .distignore items
         mkdir -p dist
-        # Copy plugin files to dist folder and exclude external updater
-        rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" --exclude="includes/updates/check-for-updates.php" --exclude="includes/updates/class-plugin-updater.php" "${{ env.PLUGIN_DIR }}/" "dist/${{ env.SLUG }}"
-
-        # Updates for the CHANGELOG file
-        sed -i -e '/## 1.6.0/,+4d' "dist/${{ env.SLUG }}/CHANGELOG.md"
+        # Copy plugin files to dist folder; exclude the embedded updater code
+        # and CHANGELOG.md (wp.org users see release history via readme.txt).
+        rsync -av --exclude-from="${{ env.PLUGIN_DIR }}/.distignore" --exclude="includes/updates/check-for-updates.php" --exclude="includes/updates/class-plugin-updater.php" --exclude="CHANGELOG.md" "${{ env.PLUGIN_DIR }}/" "dist/${{ env.SLUG }}"
 
         # Allow updates for .org
         sed -i -e '/\* Update URI: false/d' "dist/${{ env.SLUG }}/faustwp.php"
 
         org_zip_file="faustwp.${{ env.VERSION }}.org.zip"
-        cd "dist/${{ env.SLUG }}"
-        zip -r "../../$org_zip_file" .
+        cd "dist"
+        zip -r "../$org_zip_file" "${{ env.SLUG }}"
         cd -
 
         echo "org-zip-path=$PWD/$org_zip_file" >> $GITHUB_ENV
@@ -68,26 +77,29 @@ runs:
 
     - id: upload-main-release-to-github
       name: Uploads the main release zip file to GitHub
+      if: inputs.upload-artifacts == 'true'
       uses: softprops/action-gh-release@v2
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.zip-path }}
         asset_name: faustwp.${{ env.VERSION }}.zip
-        tag_name: canary
+        tag_name: "@faustwp/wordpress-plugin@${{ env.ASSET_RELEASE_VERSION }}"
         overwrite: true
 
     - id: upload-org-release-to-github
       name: Uploads the non wpe-updater release zip file to GitHub
+      if: inputs.upload-artifacts == 'true'
       uses: softprops/action-gh-release@v2
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.org-zip-path }}
         asset_name: faustwp.${{ env.VERSION }}.org.zip
-        tag_name: canary
+        tag_name: "@faustwp/wordpress-plugin@${{ env.ASSET_RELEASE_VERSION }}"
         overwrite: true
 
     - id: generate-info-json
       name: Fetch and update info.json for WPE release
+      if: inputs.upload-artifacts == 'true'
       run: |
         bash .github/scripts/add-wpe-version-info-file.sh ${{ env.VERSION }}
         echo "info-json-path=$PWD/info.json" >> $GITHUB_ENV
@@ -95,10 +107,27 @@ runs:
 
     - id: upload-info-json-to-github
       name: Upload info.json to GitHub Releases
+      if: inputs.upload-artifacts == 'true'
       uses: softprops/action-gh-release@v2
       with:
         token: ${{ inputs.github_token }}
         files: ${{ env.info-json-path }}
         asset_name: info.json
-        tag_name: canary
+        tag_name: "@faustwp/wordpress-plugin@${{ env.ASSET_RELEASE_VERSION }}"
         overwrite: true
+
+    - id: release-summary
+      name: Print release summary
+      if: inputs.upload-artifacts == 'true'
+      shell: bash
+      run: |
+        base="https://github.com/wpengine/faustjs/releases/download/@faustwp/wordpress-plugin@${ASSET_RELEASE_VERSION}"
+        zip_name="${SLUG}.${VERSION}.zip"
+        {
+          echo "## ${SLUG} ${ASSET_RELEASE_VERSION}"
+          echo
+          echo "- Slug: \`${SLUG}\`"
+          echo "- Version: \`${ASSET_RELEASE_VERSION}\`"
+          echo "- Plugin zip: [${zip_name}](${base}/${zip_name})"
+          echo "- info.json: [info.json](${base}/info.json)"
+        } >> "$GITHUB_STEP_SUMMARY"

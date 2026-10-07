@@ -12,10 +12,17 @@ import { renderHook } from '@testing-library/react';  // Import from @testing-li
 
 describe('useBlocksTheme', () => {
   it('Throws an error if not used within WordPressBlocksProvider', () => {
+    // Suppress expected React error logs during this test
+    const originalError = console.error;
+    console.error = jest.fn();
+
     // Assert that renderHook throws an error when used outside of WordPressBlocksProvider
     expect(() => {
       renderHook(() => useBlocksTheme());
     }).toThrow('useBlocksTheme hook was called outside of context, make sure your app is wrapped with WordPressBlocksProvider');
+
+    // Restore console.error
+    console.error = originalError;
   });
 
   it('returns the passed in theme from WordPressBlocksProvider', () => {

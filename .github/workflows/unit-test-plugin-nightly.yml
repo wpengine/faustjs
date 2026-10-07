@@ -2,6 +2,8 @@ name: Unit Test Plugin / WordPress Nightly
 
 on:
   pull_request:
+    branches-ignore:
+      - 'next'
     paths-ignore:
       - '**/*.md'
 
@@ -11,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Create Docker Containers
         working-directory: ./plugins/faustwp

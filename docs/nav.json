@@ -1,0 +1,164 @@
+[
+	{
+		"title": "Introduction",
+		"route": "/docs/"
+	},
+	{
+		"title": "Learn Faust.js",
+		"route": "/docs/tutorial/learn-faust/"
+	},
+	{
+		"title": "How-To Guides",
+		"route": "/docs/how-to/",
+		"children": [
+			{
+				"title": "Basic Setup",
+				"route": "/docs/how-to/basic-setup/"
+			},
+			{
+				"title": "Authentication",
+				"route": "/docs/how-to/authentication/"
+			},
+			{
+				"title": "Customize the Toolbar",
+				"route": "/docs/how-to/customize-the-toolbar/"
+			},
+			{
+				"title": "Generate types with GraphQL Codegen",
+				"route": "/docs/how-to/generate-types-with-graphql-codegen/"
+			},
+			{
+				"title": "Rendering Blocks",
+				"route": "/docs/how-to/rendering-blocks/"
+			},
+			{
+				"title": "Custom Blocks",
+				"route": "/docs/how-to/custom-blocks/"
+			},
+			{
+				"title": "Post Previews",
+				"route": "/docs/how-to/post-previews/"
+			},
+			{
+				"title": "Sitemaps",
+				"route": "/docs/how-to/sitemaps/"
+			},
+			{
+				"title": "Create A Plugin",
+				"route": "/docs/how-to/create-a-plugin/"
+			},
+			{
+				"title": "Using WPGraphQL Smart Cache",
+				"route": "/docs/how-to/use-wpgraphql-smart-cache/"
+			},
+			{
+				"title": "Query Data in the Browser",
+				"route": "/docs/how-to/query-data-in-the-browser/"
+			},
+			{
+				"title": "Query Data in Next.js Routes",
+				"route": "/docs/how-to/query-data-in-nextjs-routes/"
+			},
+			{
+				"title": "Custom Post Types",
+				"route": "/docs/how-to/setup-cpt-in-faustjs/"
+			}
+		]
+	},
+	{
+		"title": "Reference",
+		"route": "/docs/reference/",
+		"children": [
+			{
+				"title": "Faust Plugin System Filters",
+				"route": "/docs/reference/faust-plugin-system-filters"
+			},
+			{
+				"title": "fromThemeJson",
+				"route": "/docs/reference/from-theme-json"
+			},
+			{
+				"title": "getNextServerSideProps",
+				"route": "/docs/reference/get-next-server-side-props"
+			},
+			{
+				"title": "getNextStaticProps",
+				"route": "/docs/reference/get-next-static-props"
+			},
+			{
+				"title": "getSiteMapProps",
+				"route": "/docs/reference/get-site-map-props"
+			},
+			{
+				"title": "getStyles",
+				"route": "/docs/reference/get-styles"
+			},
+			{
+				"title": "getWordPressProps",
+				"route": "/docs/reference/get-wordpress-props"
+			},
+			{
+				"title": "useAuth",
+				"route": "/docs/reference/use-auth"
+			},
+			{
+				"title": "useBlocksTheme",
+				"route": "/docs/reference/use-blocks-theme"
+			},
+			{
+				"title": "useLogin",
+				"route": "/docs/reference/use-login"
+			},
+			{
+				"title": "useLogout",
+				"route": "/docs/reference/use-logout"
+			},
+			{
+				"title": "withFaust",
+				"route": "/docs/reference/with-faust"
+			},
+			{
+				"title": "WordPressBlocksProvider",
+				"route": "/docs/reference/wordpress-blocks-provider"
+			},
+			{
+				"title": "WordPressBlocksViewer",
+				"route": "/docs/reference/wordpress-blocks-viewer"
+			},
+			{
+				"title": "blockset",
+				"route": "/docs/reference/blockset"
+			}
+		]
+	},
+	{
+		"title": "Explanation",
+		"route": "/docs/explanation/",
+		"children": [
+			{
+				"title": "Telemetry",
+				"route": "/docs/explanation/telemetry/"
+			},
+			{
+				"title": "Seed Query",
+				"route": "/docs/explanation/seed-query/"
+			},
+			{
+				"title": "WordPress Blocks FAQ",
+				"route": "/docs/explanation/blocks-faq/"
+			},
+			{
+				"title": "Apollo Client Basics",
+				"route": "/docs/explanation/apollo-client-basics/"
+			},
+			{
+				"title": "Deploying Your App",
+				"route": "/docs/explanation/deploy-your-app/"
+			},
+			{
+				"title": "Migrate from wp-graphql-gutenberg",
+				"route": "/docs/explanation/migrate-from-wp-graphql-gutenberg/"
+			}
+		]
+	}
+]

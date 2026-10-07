@@ -10,12 +10,17 @@ import React, {
 } from 'react';
 import { getApolloAuthClient, getApolloClient } from '../client.js';
 import { getConfig } from '../config/index.js';
-import { getTemplate } from '../getTemplate.js';
+import {
+	getTemplate,
+	isDynamicComponent,
+	loadDynamicComponent,
+} from '../getTemplate.js';
 import { useAuth } from '../hooks/useAuth.js';
 import { SEED_QUERY, SeedNode } from '../queries/seedQuery.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 import { getQueryParam } from '../utils/convert.js';
 import { isWordPressPreview } from '../utils/isWordPressPreview.js';
+import type { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 
 export type FaustProps = {
 	__SEED_NODE__?: SeedNode | null;
@@ -37,6 +42,14 @@ export type FaustTemplateProps<Data, Props = Record<string, never>> = Props & {
 	__TEMPLATE_QUERY_DATA__?: any | null;
 	__TEMPLATE_VARIABLES__?: { [key: string]: any };
 };
+
+function checkDuplicateQueryQueries(template: WordPressTemplateType): void {
+	if (template.query && template.queries) {
+		throw new Error(
+			'Only either `Component.query` or `Component.queries` can be provided, but not both.',
+		);
+	}
+}
 
 export function WordPressTemplateInternal(
 	props: WordPressTemplateProps & {
@@ -62,26 +75,29 @@ export function WordPressTemplateInternal(
 		setLoading,
 		...wordpressTemplateProps
 	} = props;
-	const template = getTemplate(seedNode, templates);
+	const unknownTemplate = getTemplate(seedNode, templates);
+	const isDynamic = isDynamicComponent(unknownTemplate);
 	const [data, setData] = useState<any | null>(templateQueryDataProp);
+	const [resolvedTemplate, setResolvedTemplate] =
+		useState<WordPressTemplateType | null>(null);
 	const { setQueries } = useContext(FaustContext) || {};
-
-	if (template && template.queries && template.query) {
-		throw new Error(
-			'`Only either `Component.query` or `Component.queries` can be provided, but not both.',
-		);
-	}
 
 	/**
 	 * Fetch the template's queries if defined.
 	 */
 	useEffect(() => {
 		void (async () => {
-			const client = isPreview ? getApolloAuthClient() : getApolloClient();
-
-			if (!template) {
+			if (!unknownTemplate) {
 				return;
 			}
+
+			const template = isDynamic
+				? await loadDynamicComponent(unknownTemplate)
+				: unknownTemplate;
+
+			checkDuplicateQueryQueries(template);
+
+			const client = isPreview ? getApolloAuthClient() : getApolloClient();
 
 			if (template.query) {
 				return;
@@ -121,16 +137,34 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [isAuthenticated, isPreview, seedNode, template, setQueries, setLoading]);
+	}, [
+		isAuthenticated,
+		isPreview,
+		seedNode,
+		unknownTemplate,
+		setQueries,
+		setLoading,
+		isDynamic,
+	]);
 
 	/**
 	 * Fetch the template's query if defined.
 	 */
 	useEffect(() => {
 		void (async () => {
+			if (!unknownTemplate) {
+				return;
+			}
+
+			const template = isDynamic
+				? await loadDynamicComponent(unknownTemplate)
+				: unknownTemplate;
+
+			checkDuplicateQueryQueries(template);
+
 			const client = isPreview ? getApolloAuthClient() : getApolloClient();
 
-			if (!template || !template?.query || template?.queries || !seedNode) {
+			if (!template.query || template.queries || !seedNode) {
 				return;
 			}
 
@@ -153,14 +187,36 @@ export function WordPressTemplateInternal(
 
 			setLoading(false);
 		})();
-	}, [data, template, seedNode, isPreview, isAuthenticated, setLoading]);
+	}, [
+		data,
+		unknownTemplate,
+		seedNode,
+		isPreview,
+		isAuthenticated,
+		setLoading,
+		isDynamic,
+	]);
 
-	if (!template) {
+	useEffect(() => {
+		if (!unknownTemplate || !isDynamic) {
+			return;
+		}
+		void loadDynamicComponent(unknownTemplate).then((template) => {
+			setResolvedTemplate(() => template);
+		});
+	}, [unknownTemplate, isDynamic]);
+
+	if (!unknownTemplate) {
 		return null;
 	}
 
-	const Component = template as React.FC<{ [key: string]: any }>;
+	if (isDynamic && !resolvedTemplate) {
+		return null;
+	}
 
+	const Component = (
+		isDynamic ? resolvedTemplate : unknownTemplate
+	) as React.FC<{ [key: string]: any }>;
 	const newProps = {
 		...wordpressTemplateProps,
 		__TEMPLATE_QUERY_DATA__: templateQueryDataProp,
@@ -186,8 +242,8 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 	const [seedNode, setSeedNode] = useState<SeedNode | null>(
 		seedNodeProp ?? null,
 	);
-	const template = getTemplate(seedNode, templates);
-	const [loading, setLoading] = useState(template === null);
+	const unknownTemplate = getTemplate(seedNode, templates);
+	const [loading, setLoading] = useState(unknownTemplate === null);
 	const [isPreview, setIsPreview] = useState<boolean | null>(
 		templateQueryDataProp ? false : null,
 	);
