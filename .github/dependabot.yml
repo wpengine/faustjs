@@ -18,9 +18,11 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 10
     versioning-strategy: "increase-if-necessary"
-    # These majors need a migration (React 19 peers, ESLint flat config,
-    # Jest 30, the fetch-mock 12 API) rather than an automated bump.
+    # These majors need a migration (Apollo 4, React 19 peers, ESLint flat
+    # config, Jest 30, the fetch-mock 12 API) rather than an automated bump.
     ignore:
+      - dependency-name: "@apollo/client"
+        update-types: ["version-update:semver-major"]
       - dependency-name: "react"
         update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
