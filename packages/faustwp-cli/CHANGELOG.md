@@ -1,5 +1,18 @@
 # @faustwp/cli
 
+## [3.5.0](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.4.1...@faustwp/cli@3.5.0) (2026-10-07)
+
+
+### Bug Fixes
+
+* **cli:** build the blockset ZIP with the archiver 8 API ([#2592](https://github.com/wpengine/faustjs/issues/2592)) ([98e3db6](https://github.com/wpengine/faustjs/commit/98e3db623bc396e16d4af2ecbd56fd50ebf72435))
+* **cli:** find blocks when the project path contains glob characters ([#2531](https://github.com/wpengine/faustjs/issues/2531)) ([f8d34d9](https://github.com/wpengine/faustjs/commit/f8d34d93f1eecf08a86116f6edc7e0d04ac904f2))
+
+
+### Reverts
+
+* eslint 10 and @types/node 26 bumps ([#2587](https://github.com/wpengine/faustjs/issues/2587)) ([e1d4312](https://github.com/wpengine/faustjs/commit/e1d431207bab493e8043078c47e04f1429aaf583))
+
 ## 3.4.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @faustwp/block-editor-utils
 
+## [0.3.10](https://github.com/wpengine/faustjs/compare/@faustwp/block-editor-utils@0.3.9...@faustwp/block-editor-utils@0.3.10) (2026-10-07)
+
+
+### Reverts
+
+* eslint 10 and @types/node 26 bumps ([#2587](https://github.com/wpengine/faustjs/issues/2587)) ([e1d4312](https://github.com/wpengine/faustjs/commit/e1d431207bab493e8043078c47e04f1429aaf583))
+* react-dom 19 and fetch-mock 12 bumps, fix e2e install ([#2603](https://github.com/wpengine/faustjs/issues/2603)) ([d161eba](https://github.com/wpengine/faustjs/commit/d161eba6b64b395dbf74e7a9d2ad2c9e8e1d2334))
+
 ## 0.3.9
 
 ### Patch Changes
