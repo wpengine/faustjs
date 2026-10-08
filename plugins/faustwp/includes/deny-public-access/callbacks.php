@@ -55,13 +55,8 @@ function deny_public_access() {
 		return;
 	}
 
-	$frontend_uri = trailingslashit( $frontend_uri );
-
-	// Get the request uri with query params.
-	$request_uri = home_url( add_query_arg( null, null ) );
-
 	$response_code = apply_filters( 'faustwp_public_redirect_status_code', 302 );
-	$redirect_url  = str_replace( trailingslashit( get_home_url() ), $frontend_uri, $request_uri );
+	$redirect_url  = get_public_redirect_url( add_query_arg( null, null ), $frontend_uri );
 	$protocols     = array( 'http', 'https' );
 
 	header( 'X-Redirect-By: WP Engine Headless plugin' ); // For support teams. See https://developer.yoast.com/blog/x-redirect-by-header/.
