@@ -17,7 +17,6 @@ export type CoreHeadingFragmentProps = ContentBlock & {
     gradient?: string;
     style?: string;
     textColor?: string;
-    textAlign?: string;
     level?: number;
   };
 };
@@ -51,7 +50,6 @@ CoreHeading.fragments = {
         gradient
         level
         style
-        textAlign
         textColor
         cssClassName
       }
