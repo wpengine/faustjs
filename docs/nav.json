@@ -60,6 +60,10 @@
 				"route": "/docs/how-to/query-data-in-nextjs-routes/"
 			},
 			{
+				"title": "Write Data to WordPress",
+				"route": "/docs/how-to/write-data-to-wordpress/"
+			},
+			{
 				"title": "Custom Post Types",
 				"route": "/docs/how-to/setup-cpt-in-faustjs/"
 			}
