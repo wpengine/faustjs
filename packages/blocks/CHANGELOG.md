@@ -1,5 +1,12 @@
 # @faustwp/blocks
 
+## [6.1.12](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.11...@faustwp/blocks@6.1.12) (2026-10-08)
+
+
+### Bug Fixes
+
+* **blocks:** stop querying textAlign on CoreButton and CoreHeading ([#2641](https://github.com/wpengine/faustjs/issues/2641)) ([881c512](https://github.com/wpengine/faustjs/commit/881c512a889176fe136c6e69944dac444fba6152))
+
 ## [6.1.11](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.10...@faustwp/blocks@6.1.11) (2026-10-07)
 
 

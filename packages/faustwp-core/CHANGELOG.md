@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## [3.5.1](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.0...@faustwp/core@3.5.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* **core:** use the front-page template when previewing the static front page ([#2637](https://github.com/wpengine/faustjs/issues/2637)) ([ac69326](https://github.com/wpengine/faustjs/commit/ac69326e2b1639c97692a6a95c3a52e9329af726))
+
 ## [3.5.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.4.2...@faustwp/core@3.5.0) (2026-10-07)
 
 
