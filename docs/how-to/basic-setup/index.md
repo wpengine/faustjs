@@ -9,8 +9,9 @@ In order to leverage any of the tools in the Faust.js toolkit, some preliminary 
 
 Before you begin, you'll need:
 
-- A WordPress site (local or remote), if you don't have one yet, we recommend setting up a local WordPress development environment.
-- A Next.js project (pages router), if you don't have a Next.js project yet, [create one](https://nextjs.org/docs/getting-started/installation) on your local computer.
+- A WordPress site (local or remote) running WordPress 6.0 or newer. If you don't have one yet, we recommend setting up a local WordPress development environment.
+- A Next.js 16 project using the Pages Router, with React 18.2 or newer. If you don't have a Next.js project yet, [create one](https://nextjs.org/docs/getting-started/installation) on your local computer.
+- Node.js 20.9 or newer.
 
 > [!INFO]- local WordPress development
 > There are lots of options for setting up a local WordPress development environment. Some popular choices include [LocalWP](https://localwp.com/), [`wp-env`](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/), or [MAMP](https://www.mamp.info/en/).
