@@ -7,9 +7,7 @@ The following explains the various options for deploying your Faust.js App to pr
 
 ## Picking The Right Node.js Version
 
-Faust.js supports supported versions of Node.js v16.0.0 or newer. The [latest LTS version](https://nodejs.org/en/about/previous-releases) of Node.js is recommended and anything [compatible with your Next.js](https://nextjs.org/docs/pages/getting-started/installation) version. Please make sure you are using a Node.js version that is compatible when deploying to avoid unexpected errors.
-
-Faust.js uses the `package.json` [engines field](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#engines) that will produce warnings when your package is installed as a dependency under a non compatible NPM/Node version.
+Faust.js requires Node.js 20.9 or newer, the minimum version supported by Next.js 16. The [latest LTS version](https://nodejs.org/en/about/previous-releases) of Node.js is recommended. Make sure your hosting provider uses a compatible Node.js version when deploying to avoid unexpected errors.
 
 ## Building Your App
 
