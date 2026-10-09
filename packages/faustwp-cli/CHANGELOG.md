@@ -1,5 +1,12 @@
 # @faustwp/cli
 
+## [3.5.1](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.5.0...@faustwp/cli@3.5.1) (2026-10-08)
+
+
+### Miscellaneous
+
+* **@faustwp/cli:** Synchronize core-cli versions
+
 ## [3.5.0](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.4.1...@faustwp/cli@3.5.0) (2026-10-07)
 
 
