@@ -4,3 +4,4 @@ coverage
 /*.js
 /*.ts
 /*.d.ts
+CHANGELOG.md

@@ -1,5 +1,19 @@
 # @faustwp/block-editor-utils
 
+## [0.3.10](https://github.com/wpengine/faustjs/compare/@faustwp/block-editor-utils@0.3.9...@faustwp/block-editor-utils@0.3.10) (2026-10-07)
+
+
+### Reverts
+
+* eslint 10 and @types/node 26 bumps ([#2587](https://github.com/wpengine/faustjs/issues/2587)) ([e1d4312](https://github.com/wpengine/faustjs/commit/e1d431207bab493e8043078c47e04f1429aaf583))
+* react-dom 19 and fetch-mock 12 bumps, fix e2e install ([#2603](https://github.com/wpengine/faustjs/issues/2603)) ([d161eba](https://github.com/wpengine/faustjs/commit/d161eba6b64b395dbf74e7a9d2ad2c9e8e1d2334))
+
+## 0.3.9
+
+### Patch Changes
+
+- 15c4a69: Updated `@wordpress/*` dependencies to their latest majors. `@wordpress/blocks` 16 replaces `showdown`, which has unpatched cross-site scripting and ReDoS advisories, with `marked`.
+
 ## 0.3.8
 
 ### Patch Changes
@@ -68,15 +82,15 @@
   ```js
   // Component.js
   Component.config = {
-  	name: 'CreateBlockBlockB',
-  	editorFields: {
-  		textArea: {
-  			type: 'string',
-  			label: 'My Message',
-  			location: 'editor',
-  			control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
-  		},
-  	},
+    name: 'CreateBlockBlockB',
+    editorFields: {
+      textArea: {
+        type: 'string',
+        label: 'My Message',
+        location: 'editor',
+        control: 'textarea', // <--- Render a TextAreaControl field in the Gutenberg editor
+      },
+    },
   };
   ```
 
@@ -110,9 +124,9 @@
 
   ```js
   <div
-  	style={styles}
-  	className="rich-text"
-  	dangerouslySetInnerHTML={{ __html: attributes.richText }}
+    style={styles}
+    className="rich-text"
+    dangerouslySetInnerHTML={{ __html: attributes.richText }}
   />
   ```
 
@@ -163,9 +177,9 @@
   import save from './save';
 
   registerFaustBlock(MyFirstBlock, {
-  	blockJson: metadata,
-  	editFn: Edit,
-  	saveFn: save,
+    blockJson: metadata,
+    editFn: Edit,
+    saveFn: save,
   });
   ```
 

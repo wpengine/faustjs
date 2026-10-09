@@ -1,5 +1,37 @@
 # @faustwp/core
 
+## [3.5.1](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.0...@faustwp/core@3.5.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* **core:** use the front-page template when previewing the static front page ([#2637](https://github.com/wpengine/faustjs/issues/2637)) ([ac69326](https://github.com/wpengine/faustjs/commit/ac69326e2b1639c97692a6a95c3a52e9329af726))
+
+## [3.5.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.4.2...@faustwp/core@3.5.0) (2026-10-07)
+
+
+### Features
+
+* **core:** add a wpAdminUrl filter for the toolbar admin links ([#1897](https://github.com/wpengine/faustjs/issues/1897)) ([1ad7ebd](https://github.com/wpengine/faustjs/commit/1ad7ebd7ba50c33226a180d6777609fa70705b78))
+
+
+### Bug Fixes
+
+* **core:** expire the refresh token cookie on logout ([#2529](https://github.com/wpengine/faustjs/issues/2529)) ([056874c](https://github.com/wpengine/faustjs/commit/056874c6b0203305315f2f842a8780aa7c465ab0))
+* **core:** link child sitemaps to the route serving the sitemap index ([#2591](https://github.com/wpengine/faustjs/issues/2591)) ([ad2dec6](https://github.com/wpengine/faustjs/commit/ad2dec6eeb029f733499f5edc5b739acfca0ae57))
+
+
+### Reverts
+
+* eslint 10 and @types/node 26 bumps ([#2587](https://github.com/wpengine/faustjs/issues/2587)) ([e1d4312](https://github.com/wpengine/faustjs/commit/e1d431207bab493e8043078c47e04f1429aaf583))
+* react-dom 19 and fetch-mock 12 bumps, fix e2e install ([#2603](https://github.com/wpengine/faustjs/issues/2603)) ([d161eba](https://github.com/wpengine/faustjs/commit/d161eba6b64b395dbf74e7a9d2ad2c9e8e1d2334))
+
+## 3.4.2
+
+### Patch Changes
+
+- 8727c96: Restored the `next` peer dependency ranges (`>=12.1.6` for `@faustwp/core`, `^15.5.5 || ^16.0.0` for `@faustwp/blocks`) that an automated dependency bump had narrowed to `^16.3.3`.
+
 ## 3.4.1
 
 ### Patch Changes
@@ -154,11 +186,11 @@
   export default function Sitemap() {}
 
   export function getServerSideProps(ctx) {
-  	return getSitemapProps(ctx, {
-  		sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
-  		frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
-  		sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
-  	});
+    return getSitemapProps(ctx, {
+      sitemapIndexPath: '/sitemap_index.xml', // RankMath changes the default sitemap path to this
+      frontendUrl: process.env.NEXT_PUBLIC_SITE_URL,
+      sitemapPathsToIgnore: ['/wp-sitemap-users-*'],
+    });
   }
   ```
 
@@ -262,7 +294,7 @@
 
   ```jsx
   <ToolbarItem onKeyDown={handleKeyDown} onClick={handleClick}>
-  	Log Out
+    Log Out
   </ToolbarItem>
   ```
 
@@ -368,18 +400,18 @@
   import { FaustPage } from '@faustwp/core';
 
   type GetPageData = {
-  	generalSettings: {
-  		title: string;
-  	};
+    generalSettings: {
+      title: string;
+    };
   };
 
   type PageProps = {
-  	myProp: string;
+    myProp: string;
   };
 
   const Page: FaustPage<GetPageData, PageProps> = (props) => {
-  	const { myProp, data } = props;
-  	return <></>;
+    const { myProp, data } = props;
+    return <></>;
   };
   ```
 
@@ -448,9 +480,9 @@
   export default function Sitemap() {}
 
   export function getServerSideProps(context) {
-  	return getSitemapProps(context, {
-  		frontendUrl: process.env.FRONTEND_URL, // Set the FRONTEND_URL as an env var
-  	});
+    return getSitemapProps(context, {
+      frontendUrl: process.env.FRONTEND_URL, // Set the FRONTEND_URL as an env var
+    });
   }
   ```
 
@@ -480,7 +512,7 @@
   import { FaustHooks, FaustPlugin } from '@faustwp/core';
 
   export class MyPlugin implements FaustPlugin {
-  	apply(hooks: FaustHooks) {}
+    apply(hooks: FaustHooks) {}
   }
   ```
 

@@ -1,5 +1,26 @@
 # @faustwp/blocks
 
+## [6.1.12](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.11...@faustwp/blocks@6.1.12) (2026-10-08)
+
+
+### Bug Fixes
+
+* **blocks:** stop querying textAlign on CoreButton and CoreHeading ([#2641](https://github.com/wpengine/faustjs/issues/2641)) ([881c512](https://github.com/wpengine/faustjs/commit/881c512a889176fe136c6e69944dac444fba6152))
+
+## [6.1.11](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.10...@faustwp/blocks@6.1.11) (2026-10-07)
+
+
+### Reverts
+
+* eslint 10 and @types/node 26 bumps ([#2587](https://github.com/wpengine/faustjs/issues/2587)) ([e1d4312](https://github.com/wpengine/faustjs/commit/e1d431207bab493e8043078c47e04f1429aaf583))
+* react-dom 19 and fetch-mock 12 bumps, fix e2e install ([#2603](https://github.com/wpengine/faustjs/issues/2603)) ([d161eba](https://github.com/wpengine/faustjs/commit/d161eba6b64b395dbf74e7a9d2ad2c9e8e1d2334))
+
+## 6.1.10
+
+### Patch Changes
+
+- 8727c96: Restored the `next` peer dependency ranges (`>=12.1.6` for `@faustwp/core`, `^15.5.5 || ^16.0.0` for `@faustwp/blocks`) that an automated dependency bump had narrowed to `^16.3.3`.
+
 ## 6.1.9
 
 ### Patch Changes

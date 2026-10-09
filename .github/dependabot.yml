@@ -7,7 +7,7 @@
 # fit. The intent: peerDependency ranges on shipped packages (e.g. the
 # Next.js peer on @faustwp/core) shouldn't be rewritten automatically as
 # part of a routine dependency bump; those are deliberate compatibility
-# decisions that warrant their own changeset and review.
+# decisions that warrant their own pull request and review.
 
 version: 2
 
@@ -15,9 +15,23 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     versioning-strategy: "increase-if-necessary"
+    # Batch routine bumps into one PR per dependency type each week.
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+      production-dependencies:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+    # Majors usually need a migration (Apollo 4, React 19 peers, ESLint flat
+    # config, Jest 30) and are taken on deliberately, not as automated bumps.
+    # Security updates still open for vulnerable packages.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "composer"
     directory: "/plugins/faustwp"
@@ -26,7 +40,13 @@ updates:
     open-pull-requests-limit: 5
     versioning-strategy: "increase-if-necessary"
   - package-ecosystem: "github-actions"
-    directory: "/"
+    # "/" only covers .github/workflows; the composite actions need listing too.
+    directories:
+      - "/"
+      - "/.github/actions/*"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ["*"]

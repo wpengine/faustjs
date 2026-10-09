@@ -112,6 +112,8 @@ You are now ready to access the auth page you created. In your terminal start up
 
 Here are some things you can do to continue to test and add to your auth strategy with the toolkit:
 
+- Use the same auth client to send mutations. See [Write Data to WordPress](/docs/how-to/write-data-to-wordpress/).
+
 - You can verify that authentication is working by adding a `console.log()` with the current user's name to check whether they are being authenticated properly. Using the above code example, it would look like this:
 
 ```js title="pages/gated/index.js"

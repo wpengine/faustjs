@@ -17,7 +17,7 @@
 		"@faustwp/core": "^3.3.2",
 		"classnames": "^2.5.1",
 		"graphql": "^16.10.0",
-		"next": "^16.3.4",
+		"next": "^16.3.8",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"sass": "^1.54.9"
@@ -44,7 +44,7 @@
 		"serialize-javascript": ">=7.0.5",
 		"postcss": ">=8.5.10",
 		"uuid": ">=14.0.0",
-		"adm-zip": ">=0.6.0",
+		"adm-zip": ">=0.6.1",
 		"js-yaml": ">=4.3.1",
 		"linkify-it": ">=5.0.1",
 		"markdown-it": ">=14.2.0",

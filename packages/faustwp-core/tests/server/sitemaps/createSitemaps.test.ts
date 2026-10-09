@@ -318,6 +318,72 @@ describe('createRootSitemapIndex', () => {
 			'http://headless.local/yoast-sitemap.xml',
 		);
 	});
+
+	it('points child sitemaps at the frontend route, not the WordPress sitemapIndexPath', async () => {
+		const createSitemapIndexSpy = jest.spyOn(
+			sitemapUtils,
+			'createSitemapIndex',
+		);
+		jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
+			return Promise.resolve({
+				ok: true,
+				status: 200,
+				text: () => Promise.resolve(validSitemapIndex1RecordXML),
+			}) as Promise<Response>;
+		});
+
+		const req = {
+			url: 'http://localhost:3000/sitemap.xml',
+		} as NextRequest;
+
+		const config: GetSitemapPropsConfig = {
+			frontendUrl: 'http://localhost:3000',
+			sitemapIndexPath: '/sitemap_index.xml',
+		};
+
+		await createSitemaps.createRootSitemapIndex(req, config);
+
+		expect(createSitemapIndexSpy).toHaveBeenCalledWith([
+			{
+				loc: 'http://localhost:3000/sitemap.xml?sitemap=post-sitemap.xml',
+			},
+		]);
+	});
+
+	it('uses the requested frontend route for child and Faust pages sitemaps', async () => {
+		const createSitemapIndexSpy = jest.spyOn(
+			sitemapUtils,
+			'createSitemapIndex',
+		);
+		jest.spyOn(global, 'fetch').mockImplementationOnce(() => {
+			return Promise.resolve({
+				ok: true,
+				status: 200,
+				text: () => Promise.resolve(validSitemapIndex1RecordXML),
+			}) as Promise<Response>;
+		});
+
+		// IncomingMessage URLs are path-only.
+		const req = {
+			url: '/sitemap_index.xml',
+		} as NextRequest;
+
+		const config: GetSitemapPropsConfig = {
+			frontendUrl: 'http://localhost:3000',
+			pages: [{ path: '/about' }],
+		};
+
+		await createSitemaps.createRootSitemapIndex(req, config);
+
+		expect(createSitemapIndexSpy).toHaveBeenCalledWith([
+			{
+				loc: 'http://localhost:3000/sitemap_index.xml?sitemap=sitemap-faust-pages.xml',
+			},
+			{
+				loc: 'http://localhost:3000/sitemap_index.xml?sitemap=post-sitemap.xml',
+			},
+		]);
+	});
 });
 
 describe('createPagesSitemap()', () => {

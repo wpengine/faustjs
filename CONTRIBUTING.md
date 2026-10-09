@@ -39,7 +39,7 @@ In general, things we find useful when reviewing suggestions are:
 0. [A bug or feature you want to work on](https://github.com/wpengine/faustjs/labels/help%20wanted)! If you have found a new bug or want to propose a feature, please [create an issue](https://github.com/wpengine/faustjs/issues/new/choose) before starting a pull request.
 1. [A GitHub account](https://github.com/join).
 2. A working copy of the code. See [DEVELOPMENT.md](/DEVELOPMENT.md).
-3. A `changeset` that describes the changes you're making. You can create a `changeset` by running `npm run changeset` from the monorepo root.
+3. A pull request title that follows [Conventional Commits](https://www.conventionalcommits.org/), such as `fix(core): handle expired tokens`. We use it to version packages and write changelogs. See [DEVELOPMENT.md](/DEVELOPMENT.md#how-commits-map-to-releases).
 
 ## Housekeeping
 
@@ -52,18 +52,16 @@ Your pull request should:
   - At least one test should fail in the absence of your non-test code changes. If your PR does not match this criteria, please specify why
   - Tests should include reasonable permutations of the target fix/change
   - Include baseline changes with your change
-- Contain proper [semantic commit messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716#gistcomment-3711094) as follows:
+- Have a title that follows [Conventional Commits](https://www.conventionalcommits.org/). We squash and merge, so the title becomes the commit message on `canary` and release-please uses it to build the changelog:
 
   ```
-    <type>[<scope>]: (<issue #>) <short summary>
-      │      │           |             │
-      |      |           |             └─> Summary in present tense. Not capitalized. No period at the end.
-      |      |           |
-      │      │           └─> Issue # (optional): Issue number if related to bug database.
-      │      │
-      │      └─> Scope (optional): eg. common, compiler, authentication, core
-      │
-      └─> Type: chore, docs, feat, fix, refactor, style, or test.
+  <type>(<scope>): <short summary>
+    │       │             │
+    │       │             └─> Summary in present tense. Not capitalized. No period at the end.
+    │       │
+    │       └─> Scope (optional): eg. core, cli, blocks, faustwp, deps
+    │
+    └─> Type: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, or test.
   ```
 
 - To avoid line ending issues, set `autocrlf = input` and `whitespace = cr-at-eol` in your git configuration

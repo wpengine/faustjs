@@ -4,6 +4,22 @@ on:
   push:
     tags:
       - '@faustwp/wordpress-plugin@*'
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Tag to operate on (e.g. @faustwp/wordpress-plugin@1.8.8)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Build artifacts but skip the wordpress.org deploy job'
+        required: false
+        default: false
+        type: boolean
+      redeploy:
+        description: 'Delete the existing SVN tag before publishing'
+        required: false
+        default: false
+        type: boolean
   workflow_dispatch:
     inputs:
       tag:
@@ -31,7 +47,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.tag || github.ref_name }}
 
@@ -44,7 +60,7 @@ jobs:
           ref="${RAW_REF#refs/tags/}"
           ref="${ref#v}"
 
-          # Strip the Changesets-style "@faustwp/wordpress-plugin@" prefix so VERSION is just "1.8.8".
+          # Strip the "@faustwp/wordpress-plugin@" tag prefix so VERSION is just "1.8.8".
           version="${ref#@faustwp/wordpress-plugin@}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "Resolved SVN version: $version"
@@ -66,7 +82,7 @@ jobs:
 
       - name: Upload .org payload for the deploy job
         if: ${{ !inputs.dry_run }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: faustwp-org-payload
           path: dist/faustwp
@@ -82,12 +98,12 @@ jobs:
       name: wordpress-org
       url: https://wordpress.org/plugins/faustwp/
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.tag || github.ref_name }}
 
       - name: Download .org payload
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: faustwp-org-payload
           path: dist/faustwp

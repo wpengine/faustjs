@@ -38,6 +38,8 @@ export class OAuth {
 	public setRefreshToken(token?: string, expires?: number): void {
 		if (!isString(token) || token.length === 0) {
 			this.cookies.removeCookie(this.tokenKey);
+
+			return;
 		}
 
 		let maxAge: number | undefined = 2592000;
@@ -48,7 +50,7 @@ export class OAuth {
 			maxAge = undefined;
 		}
 
-		this.cookies.setCookie(this.tokenKey, token as string, {
+		this.cookies.setCookie(this.tokenKey, token, {
 			expires: expiresIn,
 			maxAge,
 			path: '/',

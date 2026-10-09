@@ -41,6 +41,11 @@ export const SEED_QUERY = gql`
 				__typename
 				...GetNode
 			}
+			# The preview revision never reports isFrontPage or isPostsPage, so
+			# read them from the page being previewed. See getPreviewSeedNode.
+			previewSourceNode: contentNode(id: $id, idType: DATABASE_ID) {
+				...Page
+			}
 		}
 	}
 
@@ -106,3 +111,27 @@ export const SEED_QUERY = gql`
 		databaseId
 	}
 `;
+
+/**
+ * Preview seed queries resolve to the autosave revision, which WPGraphQL never
+ * reports as the front page or posts page. Copy those flags from the page
+ * being previewed so `getTemplate` resolves the same template it would
+ * outside of a preview.
+ */
+export function getPreviewSeedNode(data?: {
+	contentNode?: SeedNode | null;
+	previewSourceNode?: Pick<SeedNode, 'isFrontPage' | 'isPostsPage'> | null;
+}): SeedNode | undefined {
+	const node = data?.contentNode ?? undefined;
+	const source = data?.previewSourceNode;
+
+	if (!node || !source) {
+		return node;
+	}
+
+	return {
+		...node,
+		isFrontPage: source.isFrontPage ?? node.isFrontPage,
+		isPostsPage: source.isPostsPage ?? node.isPostsPage,
+	};
+}

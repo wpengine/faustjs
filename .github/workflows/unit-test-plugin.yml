@@ -16,7 +16,7 @@ jobs:
         wordpress: [ '7.0', '6.9', '6.8', '6.7', '6.6', '6.5', '6.4', '6.3' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Create Docker Containers
         env:
