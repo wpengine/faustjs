@@ -37,3 +37,32 @@ function doing_file_editor_save() {
 
 	return true;
 }
+
+/**
+ * Builds the front-end URL to redirect a public request to.
+ *
+ * Strips the WordPress home path from the request first, so a site installed in
+ * a subdirectory (such as https://example.com/wp) redirects to the matching
+ * front-end path instead of repeating the subdirectory.
+ *
+ * @param string $request_uri  The request path and query string, such as `/wp/sample-page/?p=1`.
+ * @param string $frontend_uri The front-end site URL.
+ *
+ * @return string
+ */
+function get_public_redirect_url( $request_uri, $frontend_uri ) {
+	$home_path = untrailingslashit( (string) wp_parse_url( home_url(), PHP_URL_PATH ) );
+
+	if (
+		'' !== $home_path &&
+		(
+			$request_uri === $home_path ||
+			0 === strpos( $request_uri, $home_path . '/' ) ||
+			0 === strpos( $request_uri, $home_path . '?' )
+		)
+	) {
+		$request_uri = substr( $request_uri, strlen( $home_path ) );
+	}
+
+	return trailingslashit( $frontend_uri ) . ltrim( $request_uri, '/' );
+}
