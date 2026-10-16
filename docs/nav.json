@@ -78,6 +78,10 @@
 				"route": "/docs/reference/faust-plugin-system-filters"
 			},
 			{
+				"title": "FaustProvider",
+				"route": "/docs/reference/faust-provider"
+			},
+			{
 				"title": "fromThemeJson",
 				"route": "/docs/reference/from-theme-json"
 			},
