@@ -84,7 +84,7 @@ Component.queries = [
 ];
 ```
 
-Each `variables` function receives the same arguments as `Component.variables`: the [seed node](/docs/explanation/seed-query/), a context object with `asPreview` and `locale`, and any [`extra` arguments](/docs/reference/get-wordpress-props/#passing-extra-arguments) passed to `getWordPressProps`.
+When the queries run on the server, each `variables` function receives the same arguments as `Component.variables`: the [seed node](/docs/explanation/seed-query/), a context object with `asPreview` and `locale`, and any [`extra` arguments](/docs/reference/get-wordpress-props/#passing-extra-arguments) passed to `getWordPressProps`.
 
 Faust runs all of the queries at the same time and stores each result for the template to read.
 
