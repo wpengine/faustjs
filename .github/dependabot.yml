@@ -32,6 +32,12 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # Dependabot rewrites the `next` peerDependency on @faustwp/core and
+      # @faustwp/blocks to the bumped version despite increase-if-necessary,
+      # which drops support for older Next.js releases (#2579, #2648). Bump
+      # Next.js by hand. Security updates aren't affected by update-types.
+      - dependency-name: "next"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
 
   - package-ecosystem: "composer"
     directory: "/plugins/faustwp"
