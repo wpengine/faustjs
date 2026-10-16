@@ -1,5 +1,7 @@
 # @faustwp/block-editor-utils
 
+> **DEPRECATED:** This package has been deprecated and is no longer maintained. The archived source code is available on the [`archive/block-editor-utils`](https://github.com/wpengine/faustjs/tree/archive/block-editor-utils) branch. Consider using WordPress's own [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) tooling instead. The `@faustwp/blocks` package and `faust blockset` command are not affected by this deprecation.
+
 <p align="center">
   <a aria-label="NPM version" href="https://www.npmjs.com/package/@faustwp/block-editor-utils">
     <img alt="" src="https://img.shields.io/npm/v/@faustwp/block-editor-utils?color=7e5cef&style=for-the-badge">
