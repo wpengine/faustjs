@@ -1,5 +1,12 @@
 # @faustwp/block-editor-utils
 
+## [0.3.11](https://github.com/wpengine/faustjs/compare/@faustwp/block-editor-utils@0.3.10...@faustwp/block-editor-utils@0.3.11) (2026-10-16)
+
+
+### Dependencies
+
+* bump the production-dependencies group with 6 updates ([b53c5f6](https://github.com/wpengine/faustjs/commit/b53c5f62d2459bbe5854f297adcf388b6aa4c868))
+
 ## [0.3.10](https://github.com/wpengine/faustjs/compare/@faustwp/block-editor-utils@0.3.9...@faustwp/block-editor-utils@0.3.10) (2026-10-07)
 
 

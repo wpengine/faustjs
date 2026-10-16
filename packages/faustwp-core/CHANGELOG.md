@@ -1,5 +1,18 @@
 # @faustwp/core
 
+## [3.5.2](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.1...@faustwp/core@3.5.2) (2026-10-16)
+
+
+### Bug Fixes
+
+* restore the next peer ranges narrowed by dependabot ([#2650](https://github.com/wpengine/faustjs/issues/2650)) ([276bf75](https://github.com/wpengine/faustjs/commit/276bf75d5b0cb013cc61221485b4654e3b5edaf6))
+
+
+### Dependencies
+
+* bump the dev-dependencies group with 3 updates ([d0b819e](https://github.com/wpengine/faustjs/commit/d0b819e594ae96f6560e9181e2616e9c2ff59dd3))
+* bump the production-dependencies group with 6 updates ([b53c5f6](https://github.com/wpengine/faustjs/commit/b53c5f62d2459bbe5854f297adcf388b6aa4c868))
+
 ## [3.5.1](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.0...@faustwp/core@3.5.1) (2026-10-08)
 
 
