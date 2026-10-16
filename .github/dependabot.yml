@@ -18,6 +18,12 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 10
     versioning-strategy: "increase-if-necessary"
+    # Release-please only releases for visible changelog types. Production
+    # bumps use `deps` so they reach the release PR's Dependencies section;
+    # dev bumps stay `chore` because they don't change what users install.
+    commit-message:
+      prefix: "deps"
+      prefix-development: "chore(deps-dev)"
     # Batch routine bumps into one PR per dependency type each week.
     groups:
       dev-dependencies:
