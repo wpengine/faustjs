@@ -144,9 +144,9 @@ export default function Component(props) {
 > [!note] Learn More
 > The [getting started example](https://github.com/wpengine/faustjs/tree/canary/examples/next/faustwp-getting-started/wp-templates) uses `Component.queries` with a shared layout query in each of its templates.
 
-## How `Component.queries` differs from `Component.query`
+## Notes and limitations
 
 - **Use one or the other.** A template can define `Component.query` or `Component.queries`, not both. Faust throws ``Only either `Component.query` or `Component.queries` can be provided, but not both.`` if it finds both.
 - **Results come from `useFaustQuery`, not `props.data`.** `props.data` is only filled in for `Component.query`.
-- **Queries run again in the browser.** After the page loads, Faust runs the queries again in the browser, and on previews it only runs them there. In the browser, the `variables` functions receive the seed node and `asPreview`, but not `locale` or `extra`.
+- **Queries run again in the browser.** After the page loads, Faust runs the queries again in the browser. On previews, they only run in the browser. In the browser, the `variables` functions receive the seed node and `asPreview`, but not `locale` or `extra`.
 - **Each query can only be listed once.** Faust stores results by the query's text, so listing the same query twice with different variables keeps only the last result. To fetch the same data with different variables, define a second query with a different operation name. See [#1742](https://github.com/wpengine/faustjs/issues/1742).
