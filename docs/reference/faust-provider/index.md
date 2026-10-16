@@ -3,7 +3,7 @@ title: "FaustProvider"
 description: "Reference for the FaustProvider component that sets up Apollo Client and Faust.js context for your app."
 ---
 
-`FaustProvider` is a React component that wraps your app in the context Faust.js needs. It provides the Apollo Client used by your templates and pages, the data fetched by your templates' queries, and the toolbar when it's enabled.
+`FaustProvider` is a React component that wraps your app in the context Faust.js needs. It provides the Apollo Client your components query with, the results of your templates' queries, and the toolbar when it's enabled.
 
 ## Usage
 
@@ -44,15 +44,15 @@ interface FaustProviderProps {
 
 ## What it provides
 
-`FaustProvider` renders these providers around your app:
+`FaustProvider` renders the following around your app:
 
-1. A Faust context that holds the results of the queries in a template's `queries` array. The `useFaustQuery` hook reads from this context and throws an error if it's used outside of `FaustProvider`. The stored results are replaced when you navigate to a page with new query results.
+1. A Faust context that holds the results of a template's `Component.queries`. The `useFaustQuery` hook reads from this context and throws an error if it's used outside of `FaustProvider`. The stored results are replaced when you navigate to a page with new query results.
 2. An Apollo [`ApolloProvider`](https://www.apollographql.com/docs/react/api/react/hooks), so Apollo hooks such as `useQuery` work anywhere in your app.
 3. The Faust toolbar, when the deprecated `experimentalToolbar` option is set to `true` in your [config](/docs/reference/set-config/).
 
 ## Apollo Client
 
-`FaustProvider` doesn't accept an Apollo Client as a prop. It creates the client from your Faust config and hydrates its cache with the Apollo state in `pageProps`. On the server it creates a new client for each request, and in the browser it reuses a single client across page navigations.
+`FaustProvider` doesn't accept an Apollo Client as a prop. It creates the client from your Faust config and hydrates its cache with the Apollo state in `pageProps`. On the server it creates a new client for each render, and in the browser it reuses a single client across page navigations.
 
 To customize the client, use a [Faust plugin](/docs/how-to/create-a-plugin/) with these filters:
 
