@@ -60,6 +60,10 @@
 				"route": "/docs/how-to/query-data-in-nextjs-routes/"
 			},
 			{
+				"title": "Use Multiple Queries in a Template",
+				"route": "/docs/how-to/use-multiple-queries-in-a-template/"
+			},
+			{
 				"title": "Write Data to WordPress",
 				"route": "/docs/how-to/write-data-to-wordpress/"
 			},
