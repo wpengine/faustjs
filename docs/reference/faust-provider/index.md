@@ -46,9 +46,9 @@ interface FaustProviderProps {
 
 `FaustProvider` renders these providers around your app:
 
-1. A Faust context that holds the results of your templates' queries. [`useFaustQuery`](/docs/how-to/query-data-in-nextjs-routes/) reads from this context and throws an error if it's used outside of `FaustProvider`. The stored results are replaced when you navigate to a page with new query results.
-2. An Apollo [`ApolloProvider`](https://www.apollographql.com/docs/react/api/react/hooks#the-apolloprovider-component), so Apollo hooks such as `useQuery` work anywhere in your app.
-3. The Faust toolbar, when `experimentalToolbar` is set to `true` in your [config](/docs/reference/set-config/).
+1. A Faust context that holds the results of the queries in a template's `queries` array. The `useFaustQuery` hook reads from this context and throws an error if it's used outside of `FaustProvider`. The stored results are replaced when you navigate to a page with new query results.
+2. An Apollo [`ApolloProvider`](https://www.apollographql.com/docs/react/api/react/hooks), so Apollo hooks such as `useQuery` work anywhere in your app.
+3. The Faust toolbar, when the deprecated `experimentalToolbar` option is set to `true` in your [config](/docs/reference/set-config/).
 
 ## Apollo Client
 
@@ -92,4 +92,4 @@ export default setConfig({
 
 The filters apply to every client Faust creates, including the one `FaustProvider` provides and the client returned by `getApolloAuthClient` for authenticated requests.
 
-If you need to query a different GraphQL API, create a separate Apollo Client and pass it to individual queries with the [`client` option](https://www.apollographql.com/docs/react/api/react/hooks#client) instead of replacing the one `FaustProvider` provides.
+If you need to query a different GraphQL API, create a separate Apollo Client and pass it to individual queries with `useQuery`'s [`client` option](https://www.apollographql.com/docs/react/api/react/hooks) instead of replacing the one `FaustProvider` provides.
