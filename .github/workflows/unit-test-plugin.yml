@@ -12,6 +12,7 @@ jobs:
     name: WordPress ${{ matrix.wordpress }}
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
         wordpress: [ '7.0', '6.9', '6.8', '6.7', '6.6', '6.5', '6.4', '6.3' ]
     steps:
