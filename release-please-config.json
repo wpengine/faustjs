@@ -23,7 +23,6 @@
     "packages/faustwp-core": { "component": "@faustwp/core" },
     "packages/faustwp-cli": { "component": "@faustwp/cli" },
     "packages/blocks": { "component": "@faustwp/blocks" },
-    "packages/block-editor-utils": { "component": "@faustwp/block-editor-utils" },
     "plugins/faustwp": { "component": "@faustwp/wordpress-plugin" }
   },
   "plugins": [
