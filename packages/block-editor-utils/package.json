@@ -10,11 +10,11 @@
 		"react-dom": "^18.0.0"
 	},
 	"dependencies": {
-		"@wordpress/block-editor": "^18.0.0",
+		"@wordpress/block-editor": "^18.1.0",
 		"@wordpress/blocks": "^16.1.0",
 		"@wordpress/components": "^41.0.0",
 		"@wordpress/element": "^8.8.0",
-		"@wordpress/hooks": "^4.56.0",
+		"@wordpress/hooks": "^4.57.0",
 		"@wordpress/i18n": "^6.29.0"
 	},
 	"devDependencies": {
