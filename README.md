@@ -22,8 +22,18 @@ Faust.js is a toolkit for building Next.js applications for headless WordPress s
 
 ## System Requirements
 
-- Node.js v18 or newer. npm v8 or newer.
-- MacOS, Windows (including WSL), and Linux are supported.
+### Front end
+
+- Node.js 18 or newer, and at least the version your Next.js release requires (20.9 for Next.js 16). npm 8 or newer.
+- Next.js 12.1.6 or newer with the Pages Router (15.5.5 or newer if you use `@faustwp/blocks`). The examples and tests use Next.js 16.
+- React 17.0.2 or newer, and at least the version your Next.js release requires (18.2 for Next.js 16).
+- Apollo Client 3 (3.14 or newer if you use `@faustwp/blocks`).
+- macOS, Windows (including WSL) or Linux.
+
+### WordPress
+
+- WordPress 6.0 or newer, with PHP 7.4 or newer (the minimums for current WPGraphQL).
+- The [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) and [Faust.js](https://wordpress.org/plugins/faustwp/) plugins.
 
 ## Documentation
 
