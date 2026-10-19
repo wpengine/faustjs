@@ -10,8 +10,8 @@ Security fixes are released for the latest major version of each package. To get
 | `@faustwp/core`                    | 3.x                  | :white_check_mark: |
 | `@faustwp/cli`                     | 3.x                  | :white_check_mark: |
 | `@faustwp/blocks`                  | 6.x                  | :white_check_mark: |
-| `@faustwp/block-editor-utils`      | 0.x                  | :white_check_mark: |
 | All packages                       | Older major versions | :x:                |
+| `@faustwp/block-editor-utils`      | All (deprecated)     | :x:                |
 | `@faustwp/experimental-app-router` | All (deprecated)     | :x:                |
 
 WP Engine takes the security of our software and services seriously, including all
