@@ -10,7 +10,7 @@ The `@faustwp/block-editor-utils` package provides helper functions for converti
 
 ## Prerequisites
 
-In order to use this feature, you need to clone down the working boilerplate example [here](https://github.com/wpengine/faustjs/tree/canary/examples/next/block-support) and follow its instructions in the `README.md` file on what plugins you need, packages you need to install and the command that needs to be run to sync the blocks to WordPress.
+In order to use this feature, you need to clone down the working boilerplate example [here](https://github.com/wpengine/faustjs/tree/archive/block-editor-utils/examples/next/block-support) from the `archive/block-editor-utils` branch and follow its instructions in the `README.md` file on what plugins you need, packages you need to install and the command that needs to be run to sync the blocks to WordPress.
 
 > [!WARNING]
 > This feature does not work with the latest version of React. It only works with React 18.
