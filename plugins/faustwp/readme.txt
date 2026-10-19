@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 7.0
-Stable tag: 1.8.12
+Stable tag: 1.8.13
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,13 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 == Changelog ==
 
+= 1.8.13 =
+
+
+### Bug Fixes
+
+* **faustwp:** stop repeating the subdirectory in public route redirects ([#2642](https://github.com/wpengine/faustjs/issues/2642)) ([e5f813a](https://github.com/wpengine/faustjs/commit/e5f813a53bceed7adad13dd54a2458bed3ba557b))
+
 = 1.8.12 =
 
 ### Patch Changes
@@ -62,11 +69,5 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 ### Patch Changes
 
 - 0ef93f8: Add WordPress 7.0 to the CI test matrix and update the plugin "Tested up to" header to 7.0.
-
-= 1.8.10 =
-
-### Patch Changes
-
-- 81a854f: Maintenance release for WordPress.org. No functional changes. Sites still on 1.8.0 remain affected by GHSA-q6pm-r77q-qcv3 / CVE-2026-54239 and should update.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
