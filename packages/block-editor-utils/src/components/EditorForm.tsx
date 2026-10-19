@@ -40,7 +40,13 @@ function EditorForm<T extends Record<string, any>>({
 			aria-label="Faust block editor form"
 			style={styles.form}>
 			<h3 className="faust-editor-form__heading" style={styles.heading}>
-				<Icon size={24} icon={blockJson?.icon} style={styles.icon} />
+				<Icon
+					size={24}
+					// Newer @wordpress/blocks types widen `icon` to include the
+					// { src, background, foreground } form; pass it through as before.
+					icon={blockJson?.icon as React.ComponentProps<typeof Icon>['icon']}
+					style={styles.icon}
+				/>
 				{blockJson.title}
 			</h3>
 			{fields.map((field: Field) => {
