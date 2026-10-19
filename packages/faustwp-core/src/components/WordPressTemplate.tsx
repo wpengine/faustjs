@@ -2,6 +2,7 @@ import { QueryOptions } from '@apollo/client';
 // eslint-disable-next-line import/extensions
 import { print } from '@apollo/client/utilities';
 import { sha256 } from 'js-sha256';
+import { useRouter } from 'next/router.js';
 import React, {
 	PropsWithChildren,
 	useContext,
@@ -85,6 +86,7 @@ export function WordPressTemplateInternal(
 	const [resolvedTemplate, setResolvedTemplate] =
 		useState<WordPressTemplateType | null>(null);
 	const { setQueries } = useContext(FaustContext) || {};
+	const { locale } = useRouter();
 
 	/**
 	 * Fetch the template's queries if defined.
@@ -119,7 +121,7 @@ export function WordPressTemplateInternal(
 
 			const queryCalls = template.queries.map(({ query, variables }) => {
 				const queryVariables = variables
-					? variables(seedNode, { asPreview: isPreview })
+					? variables(seedNode, { asPreview: isPreview, locale })
 					: undefined;
 				return client.query({
 					query,
@@ -149,6 +151,7 @@ export function WordPressTemplateInternal(
 		setQueries,
 		setLoading,
 		isDynamic,
+		locale,
 	]);
 
 	/**
@@ -181,7 +184,7 @@ export function WordPressTemplateInternal(
 			const queryArgs: QueryOptions = {
 				query: template?.query,
 				variables: template?.variables
-					? template?.variables(seedNode, { asPreview: isPreview })
+					? template?.variables(seedNode, { asPreview: isPreview, locale })
 					: undefined,
 			};
 
@@ -199,6 +202,7 @@ export function WordPressTemplateInternal(
 		isAuthenticated,
 		setLoading,
 		isDynamic,
+		locale,
 	]);
 
 	useEffect(() => {
