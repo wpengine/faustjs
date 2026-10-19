@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 
-const WP_TELEMETRY_ENDPOINT = '/wp-json/faustwp/v1/telemetry';
+const WP_TELEMETRY_ENDPOINT = '/?rest_route=/faustwp/v1/telemetry';
 
 export interface WPTelemetryResponseData {
 	faustwp: {

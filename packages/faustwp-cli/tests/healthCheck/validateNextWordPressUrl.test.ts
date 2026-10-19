@@ -36,7 +36,7 @@ describe('healthCheck/validateNextWordPressUrl', () => {
 		};
 
 		fetchMock.post(
-			'https://headless.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+			'https://headless.local/?rest_route=/faustwp/v1/validate_public_wordpress_url',
 			{
 				headers,
 				body: JSON.stringify({
@@ -55,7 +55,7 @@ describe('healthCheck/validateNextWordPressUrl', () => {
 		);
 		expect(mockExit).toHaveBeenCalledWith(1);
 		expect(fetchMock).toHaveFetched(
-			'https://headless.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+			'https://headless.local/?rest_route=/faustwp/v1/validate_public_wordpress_url',
 		);
 
 		consoleLogSpy.mockClear();
@@ -78,7 +78,7 @@ describe('healthCheck/validateNextWordPressUrl', () => {
 		};
 
 		fetchMock.postOnce(
-			'http://mysite.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+			'http://mysite.local/?rest_route=/faustwp/v1/validate_public_wordpress_url',
 			{
 				status: 404,
 			},
@@ -96,7 +96,7 @@ describe('healthCheck/validateNextWordPressUrl', () => {
 
 		expect(mockExit).not.toHaveBeenCalled();
 		expect(fetchMock).toHaveFetched(
-			'http://mysite.local/wp-json/faustwp/v1/validate_public_wordpress_url',
+			'http://mysite.local/?rest_route=/faustwp/v1/validate_public_wordpress_url',
 		);
 
 		consoleLogSpy.mockRestore();
