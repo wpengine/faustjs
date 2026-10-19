@@ -88,7 +88,5 @@ module.exports = {
 		'**/dist/*',
 		'**/*.d.ts',
 		'examples/**/*',
-		// Deprecated and no longer a workspace, so its dependencies aren't installed.
-		'packages/block-editor-utils/**/*',
 	],
 };
