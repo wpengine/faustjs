@@ -51,7 +51,7 @@ npm install @apollo/client@3 @faustwp/core graphql @faustwp/cli
 ```
 
 > [!NOTE]
-> Faust currently supports Apollo Client 3.x. Apollo Client 4 is not supported and may break Faust integrations.
+> Faust supports Apollo Client 3.x. Apollo Client 4 isn't supported, and npm stops with a peer dependency error (`ERESOLVE`) if you try to install it alongside `@faustwp/core`.
 
 
 ### D. Create Faust config file
