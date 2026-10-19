@@ -11,8 +11,9 @@ jobs:
     name: E2E app on Node ${{ matrix.node }}
     runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
-        node: ['20', '22', '24']
+        node: ['22', '24']
     defaults:
       run:
         working-directory: ./

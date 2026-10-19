@@ -76,3 +76,5 @@ Component.variables = ({ databaseId }, ctx, extra) => {
   ...
 }
 ```
+
+The `variables` function of each query in [`Component.queries`](/docs/how-to/use-multiple-queries-in-a-template/) receives `extra` the same way when the queries run on the server.

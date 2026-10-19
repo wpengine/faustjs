@@ -26,7 +26,7 @@ Make sure you can navigate to this page in your browser.
 
 ## 2. Adding the Apollo Client
 
-To query data in the browser, you need to import the `useQuery` from the `@apollo/client` package. This hook will execute queries using the same client used by templates on the server.
+To query data in the browser, you need to import the `useQuery` from the `@apollo/client` package. This hook will execute queries using the same client used by templates on the server. That client comes from [`FaustProvider`](/docs/reference/faust-provider/), which also explains how to customize it.
 
 ```js title="page/client.js" {1,4}
 import { gql, useQuery } from "@apollo/client";
