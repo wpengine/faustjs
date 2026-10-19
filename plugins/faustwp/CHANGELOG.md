@@ -1,5 +1,12 @@
 # Faust
 
+## [1.8.13](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.8.12...@faustwp/wordpress-plugin@1.8.13) (2026-10-19)
+
+
+### Bug Fixes
+
+* **faustwp:** stop repeating the subdirectory in public route redirects ([#2642](https://github.com/wpengine/faustjs/issues/2642)) ([e5f813a](https://github.com/wpengine/faustjs/commit/e5f813a53bceed7adad13dd54a2458bed3ba557b))
+
 ## 1.8.12
 
 ### Patch Changes
