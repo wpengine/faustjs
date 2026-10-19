@@ -4,7 +4,7 @@ description: "Create blocks in your Next.js app that also work in the WordPress 
 ---
 
 > [!CAUTION]
-> **Deprecated:** The `@faustwp/block-editor-utils` package has been deprecated and is no longer maintained. The archived source code is available on the [`archive/block-editor-utils`](https://github.com/wpengine/faustjs/tree/archive/block-editor-utils) branch. Consider using WordPress's own [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) tooling instead. The `@faustwp/blocks` package and `faust blockset` command are not affected by this deprecation.
+> **Deprecated:** The `@faustwp/block-editor-utils` package has been deprecated and is no longer maintained. The archived source code is available on the [`archive/block-editor-utils`](https://github.com/wpengine/faustjs/tree/archive/block-editor-utils/packages/block-editor-utils) branch. Consider using WordPress's own [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) tooling instead. The `@faustwp/blocks` package and `faust blockset` command are not affected by this deprecation.
 
 The `@faustwp/block-editor-utils` package provides helper functions for converting React components into blocks. This means you can use the same components in both places—your Next.js app and the WordPress Block Editor.
 
