@@ -10,7 +10,11 @@
 </p>
 
 > [!CAUTION]
-> This package has been **deprecated** and will not receive any further bug fixes or security patches. For new blocks, use WordPress's [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) tooling instead. If you keep using this package and need fixes, we'd recommend copying its source code into your project or using a tool such as [`patch-package`](https://www.npmjs.com/package/patch-package). The `@faustwp/blocks` package and `faust blockset` command are not affected.
+> This package has been **deprecated** and will not receive any further bug fixes or security patches.
+>
+> For new blocks, use WordPress's [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) tooling. If you keep using this package and need a fix, copy its source code into your project or patch it with a tool such as [`patch-package`](https://www.npmjs.com/package/patch-package).
+>
+> The `@faustwp/blocks` package and the `faust blockset` command are not affected.
 
 An archive of this package is available on the [`archive/block-editor-utils`](https://github.com/wpengine/faustjs/tree/archive/block-editor-utils/packages/block-editor-utils) branch.
 
