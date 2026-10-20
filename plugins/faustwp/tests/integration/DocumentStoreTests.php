@@ -72,6 +72,13 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		return $this->server->dispatch( new \WP_REST_Request( 'GET', self::ROUTE . '/' . $slug ) );
 	}
 
+	/**
+	 * Convert decoded JSON objects to arrays so they can be compared with assertSame.
+	 */
+	private function normalize( $value ) {
+		return json_decode( wp_json_encode( $value ), true );
+	}
+
 	public function test_store_is_disabled_by_default() {
 		remove_all_filters( 'faustwp_enable_document_store' );
 		unregister_post_type( POST_TYPE );
@@ -100,7 +107,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 201, $response->get_status() );
 		$this->assertSame(
 			array( 'slug' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
-			$response->get_data()
+			$this->normalize( $response->get_data() )
 		);
 	}
 
@@ -112,7 +119,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame(
 			array( 'slug' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
-			$response->get_data()
+			$this->normalize( $response->get_data() )
 		);
 	}
 
@@ -130,7 +137,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( 2, $response->get_data()['version'] );
-		$this->assertSame( array( 'theme' => 'light' ), get_document( 'settings' )['data'] );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
 	}
 
 	public function test_put_with_stale_version_returns_409_and_keeps_document() {
@@ -143,8 +150,8 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 409, $response->get_status() );
 		$this->assertSame( 'faustwp_document_conflict', $error['code'] );
 		$this->assertSame( 2, $error['data']['version'] );
-		$this->assertSame( array( 'theme' => 'light' ), $error['data']['document']['data'] );
-		$this->assertSame( array( 'theme' => 'light' ), get_document( 'settings' )['data'] );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( $error['data']['document']['data'] ) );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
 	}
 
 	public function test_create_with_version_zero_when_document_exists_returns_409() {
@@ -153,7 +160,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$response = $this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'light' ) ) );
 
 		$this->assertSame( 409, $response->get_status() );
-		$this->assertSame( array( 'theme' => 'dark' ), get_document( 'settings' )['data'] );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
 	}
 
 	public function test_update_of_missing_document_returns_409() {
@@ -189,7 +196,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertTrue( $raced );
 		$this->assertWPError( $result );
 		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
-		$this->assertSame( array( 'theme' => 'light' ), get_document( 'settings' )['data'] );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
 		$this->assertSame( 2, get_document( 'settings' )['version'] );
 	}
 
@@ -237,7 +244,13 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->put( 'settings', array( 'version' => 0, 'data' => $data ) );
 
-		$this->assertSame( $data, $this->get( 'settings' )->get_data()['data'] );
+		$this->assertSame( $data, $this->normalize( $this->get( 'settings' )->get_data()['data'] ) );
+	}
+
+	public function test_empty_objects_are_returned_as_objects() {
+		$this->put( 'settings', '{"version":0,"data":{"filters":{},"tags":[]}}' );
+
+		$this->assertSame( '{"filters":{},"tags":[]}', wp_json_encode( $this->get( 'settings' )->get_data()['data'] ) );
 	}
 
 	public function test_unauthenticated_requests_return_401() {
@@ -254,7 +267,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 403, $this->get( 'settings' )->get_status() );
 		$this->assertSame( 403, $this->put( 'settings', array( 'version' => 1, 'data' => array() ) )->get_status() );
-		$this->assertSame( array( 'theme' => 'dark' ), get_document( 'settings' )['data'] );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
 	}
 
 	public function test_read_capability_allows_reading_but_not_writing() {

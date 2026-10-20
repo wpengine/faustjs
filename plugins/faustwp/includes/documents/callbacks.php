@@ -125,6 +125,27 @@ function validate_document_data( $value ) {
 }
 
 /**
+ * Get the document data from a request.
+ *
+ * WordPress decodes JSON request bodies into associative arrays, which turns
+ * an empty object into an empty array. The body is decoded again here with
+ * objects kept as objects, so the stored data matches what was sent.
+ *
+ * @param WP_REST_Request $request Current request.
+ *
+ * @return mixed Document data.
+ */
+function get_request_document_data( WP_REST_Request $request ) {
+	$body = json_decode( $request->get_body() );
+
+	if ( is_object( $body ) && property_exists( $body, 'data' ) ) {
+		return $body->data;
+	}
+
+	return $request->get_param( 'data' );
+}
+
+/**
  * Callback for GET faustwp/v1/documents/<slug>.
  *
  * @param WP_REST_Request $request Current request.
@@ -157,7 +178,7 @@ function handle_put_document( WP_REST_Request $request ) {
 	$result = save_document(
 		$request->get_param( 'slug' ),
 		(int) $request->get_param( 'version' ),
-		$request->get_param( 'data' )
+		get_request_document_data( $request )
 	);
 
 	if ( is_wp_error( $result ) ) {

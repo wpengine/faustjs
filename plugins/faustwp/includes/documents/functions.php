@@ -164,16 +164,18 @@ function get_stored_document( $post_id ) {
 		return null;
 	}
 
-	$stored = json_decode( $row->meta_value, true );
-	if ( ! is_array( $stored ) || ! isset( $stored['version'] ) || ! array_key_exists( 'data', $stored ) ) {
+	// Decode JSON objects as objects, so an empty object in the data is
+	// returned as {} rather than [].
+	$stored = json_decode( $row->meta_value );
+	if ( ! is_object( $stored ) || ! isset( $stored->version ) || ! property_exists( $stored, 'data' ) ) {
 		return null;
 	}
 
 	return array(
 		'meta_id' => (int) $row->meta_id,
 		'raw'     => $row->meta_value,
-		'version' => (int) $stored['version'],
-		'data'    => $stored['data'],
+		'version' => (int) $stored->version,
+		'data'    => $stored->data,
 	);
 }
 
