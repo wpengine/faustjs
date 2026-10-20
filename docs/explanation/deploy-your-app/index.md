@@ -7,7 +7,7 @@ The following explains the various options for deploying your Faust.js App to pr
 
 ## Picking The Right Node.js Version
 
-Faust.js supports Node.js 22 or newer, so check that your hosting provider builds and runs your app on a compatible version. Node.js 20 and older have reached end of life and are no longer tested. The [latest LTS version](https://nodejs.org/en/about/previous-releases) of Node.js is recommended.
+Faust.js requires Node.js 22 or newer, so check that your hosting provider builds and runs your app on a compatible version. Node.js 20 has reached end of life; sites that need to stay on it can use `@faustwp/core` and `@faustwp/cli` 3.x and `@faustwp/blocks` 6.x. The [latest LTS version](https://nodejs.org/en/about/previous-releases) of Node.js is recommended.
 
 ## Building Your App
 
