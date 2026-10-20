@@ -164,4 +164,60 @@ describe('auth/middleware', () => {
 
 		setHeaderSpy.mockRestore();
 	});
+
+	describe('logoutHandler with a redirect_uri', () => {
+		const wpUrl = 'http://my-wp-site.com';
+		const refreshTokenCookie = `httpmy-wp-site.com-rt=${Buffer.from(
+			'valid-rt',
+		).toString('base64')}`;
+
+		function logoutRequest(): IncomingMessage {
+			return {
+				method: 'POST',
+				url: '/api/faust/auth/logout?redirect_uri=https%3A%2F%2Ffrontend.local%2F',
+				headers: { cookie: refreshTokenCookie },
+			} as any;
+		}
+
+		beforeEach(() => {
+			jest.spyOn(getWpSecret, 'getWpSecret').mockReturnValue('secret');
+			jest.spyOn(getWpUrl, 'getWpUrl').mockReturnValue(wpUrl);
+		});
+
+		afterEach(() => {
+			jest.restoreAllMocks();
+			fetchMock.restore();
+		});
+
+		test('returns the WordPress logout url from FaustWP', async () => {
+			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/logout`, {
+				status: 200,
+				body: { logoutUrl: `${wpUrl}/?faust_logout=code` },
+			});
+
+			const res: ServerResponse = { setHeader() {}, end() {} } as any;
+			const endSpy = jest.spyOn(res, 'end');
+
+			await logoutHandler(logoutRequest(), res);
+
+			expect(res.statusCode).toBe(200);
+			expect(endSpy).toBeCalledWith(
+				JSON.stringify({ wordpressLogoutUrl: `${wpUrl}/?faust_logout=code` }),
+			);
+			expect(JSON.parse(fetchMock.lastOptions()?.body as string)).toEqual({
+				refreshToken: 'valid-rt',
+				redirectUri: 'https://frontend.local/',
+			});
+		});
+
+		test('falls back to a 205 when FaustWP has no logout endpoint', async () => {
+			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/logout`, 404);
+
+			const res: ServerResponse = { setHeader() {}, end() {} } as any;
+
+			await logoutHandler(logoutRequest(), res);
+
+			expect(res.statusCode).toBe(205);
+		});
+	});
 });

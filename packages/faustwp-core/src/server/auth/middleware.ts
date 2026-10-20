@@ -1,6 +1,8 @@
 import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
 import { errorLog, getQueryParam } from '../../utils/index.js';
+import { getWpSecret } from '../../lib/getWpSecret.js';
+import { getWpUrl } from '../../lib/getWpUrl.js';
 import { Cookies } from './cookie.js';
 import { OAuth } from './token.js';
 
@@ -80,15 +82,63 @@ export async function authorizeHandler(
 }
 
 /**
+ * Ask FaustWP for a URL that logs the user's browser out of WordPress.
+ *
+ * @param {string} refreshToken The user's refresh token.
+ * @param {string} redirectUri Where WordPress redirects after logging out.
+ *
+ * @returns {Promise<string | null>} The URL, or null if FaustWP can't
+ * provide one, for example because the plugin is older than this endpoint.
+ */
+async function getWordPressLogoutUrl(
+	refreshToken: string,
+	redirectUri: string,
+): Promise<string | null> {
+	const secret = getWpSecret();
+
+	if (!secret) {
+		return null;
+	}
+
+	try {
+		const response = await fetch(
+			`${getWpUrl()}/?rest_route=/faustwp/v1/logout`,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'x-faustwp-secret': secret,
+				},
+				method: 'POST',
+				body: JSON.stringify({ refreshToken, redirectUri }),
+			},
+		);
+
+		if (!response.ok) {
+			return null;
+		}
+
+		const { logoutUrl } = (await response.json()) as { logoutUrl?: unknown };
+
+		return typeof logoutUrl === 'string' ? logoutUrl : null;
+	} catch {
+		return null;
+	}
+}
+
+/**
  * A Node handler for processing incoming requests to logout an authenticated user.
  * This handler clears the refresh token from the cookie and returns a response.
+ *
+ * If the request has a redirect_uri query parameter, the response also
+ * includes wordpressLogoutUrl: sending the browser there ends its WordPress
+ * session, so a user who logged in through WordPress isn't logged straight
+ * back in, and then redirects to redirect_uri.
  *
  * @param {IncomingMessage} req
  * @param {ServerResponse} res
  *
  * @see https://faustjs.org/docs/next/guides/auth
  */
-// eslint-disable-next-line @typescript-eslint/require-await
 export async function logoutHandler(
 	req: IncomingMessage,
 	res: ServerResponse,
@@ -102,7 +152,23 @@ export async function logoutHandler(
 	}
 
 	const oauth = new OAuth(new Cookies(req, res));
+	const refreshToken = oauth.getRefreshToken();
+	const redirectUri = getQueryParam(req.url ?? '', 'redirect_uri');
+
 	oauth.setRefreshToken(undefined);
+
+	const wordpressLogoutUrl =
+		refreshToken && redirectUri
+			? await getWordPressLogoutUrl(refreshToken, redirectUri)
+			: null;
+
+	if (wordpressLogoutUrl) {
+		res.statusCode = 200;
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify({ wordpressLogoutUrl }));
+
+		return;
+	}
 
 	res.statusCode = 205;
 	res.end();
