@@ -7,6 +7,7 @@
 
 namespace WPE\FaustWP\Tests\Integration;
 
+use function WPE\FaustWP\Documents\create_document;
 use function WPE\FaustWP\Documents\get_document;
 use function WPE\FaustWP\Documents\maybe_register_document_post_type;
 use function WPE\FaustWP\Documents\register_document_post_type;
@@ -198,6 +199,45 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
 		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
 		$this->assertSame( 2, get_document( 'settings' )['version'] );
+	}
+
+	/**
+	 * Simulates a create that checked for the document before another request
+	 * created it. WordPress gives the second post a different slug, so the
+	 * second create is rejected and its post removed.
+	 */
+	public function test_concurrent_create_with_renamed_slug_is_rejected() {
+		create_document( 'settings', array( 'theme' => 'dark' ) );
+
+		$result = create_document( 'settings', array( 'theme' => 'light' ) );
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertCount( 1, get_posts( array( 'post_type' => POST_TYPE, 'post_status' => 'any', 'fields' => 'ids' ) ) );
+	}
+
+	/**
+	 * Simulates two creates that both got the same slug. The oldest post is
+	 * kept and the later one is removed.
+	 */
+	public function test_concurrent_create_with_same_slug_keeps_the_oldest_post() {
+		create_document( 'settings', array( 'theme' => 'dark' ) );
+		add_filter(
+			'wp_unique_post_slug',
+			function ( $slug, $post_id, $post_status, $post_type, $post_parent, $original_slug ) {
+				return POST_TYPE === $post_type ? $original_slug : $slug;
+			},
+			10,
+			6
+		);
+
+		$result = create_document( 'settings', array( 'theme' => 'light' ) );
+
+		$this->assertWPError( $result );
+		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertCount( 1, get_posts( array( 'post_type' => POST_TYPE, 'post_status' => 'any', 'fields' => 'ids' ) ) );
 	}
 
 	public function test_slugs_outside_the_allowed_characters_do_not_match_the_route() {
