@@ -87,6 +87,27 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'wpseo_xml_sitemap_post_url', 'WPE\FaustWP\Replacement\yoast_sitemap_post_url' ) );
 	}
 
+	public function test_rank_math_sitemap_xml_post_url_filter() {
+		$this->assertSame( 10, has_action( 'rank_math/sitemap/xml_post_url', 'WPE\FaustWP\Replacement\rank_math_sitemap_post_url' ) );
+	}
+
+	/**
+	 * Tests Rank Math gets the WordPress URL for sitemap entries, since it drops
+	 * entries whose host doesn't match the WordPress home URL.
+	 */
+	public function test_rank_math_sitemap_post_url_returns_wordpress_url_when_rewrites_enabled() {
+		faustwp_update_setting( 'frontend_uri', 'http://moo' );
+		faustwp_update_setting( 'enable_rewrites', '1' );
+
+		$permalink = get_permalink( $this->post_id );
+		$this->assertSame( 'http://moo/?p=' . $this->post_id, $permalink );
+
+		$this->assertSame(
+			'http://example.org/?p=' . $this->post_id,
+			apply_filters( 'rank_math/sitemap/xml_post_url', $permalink, get_post( $this->post_id ) )
+		);
+	}
+
 	public function test_wp_calculate_image_srcset_filter(): void {
 		self::assertSame( 10, has_action( 'wp_calculate_image_srcset', 'WPE\FaustWP\Replacement\image_source_srcset_replacement' ) );
 	}
