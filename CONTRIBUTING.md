@@ -32,6 +32,10 @@ In general, things we find useful when reviewing suggestions are:
   - Code examples showing usage (if possible)
 - If relevant, precedent in other frameworks or libraries can be useful for establishing context and expected behavior
 
+## 4. How We Decide What To Work On
+
+Faust.js doesn't keep a roadmap. Work comes from what people run into: security fixes and compatibility with new WordPress, WPGraphQL, Next.js and Node.js releases first, then confirmed bugs, then features people ask for in issues. If something is missing or broken for you, [open an issue](https://github.com/wpengine/faustjs/issues/new/choose).
+
 # Instructions For Contributing Code
 
 ## What You'll Need
