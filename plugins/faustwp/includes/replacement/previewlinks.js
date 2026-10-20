@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // The save snackbar also shows the "View Post" link after publishing, which
-  // should keep pointing at the published post.
+  // Once a post is published, the save snackbar's link ("View Post", "View
+  // Page", etc.) goes to the published post, so only rewrite it before then.
   function isPostPublished() {
     const editor = window.wp?.data?.select('core/editor');
     return editor ? editor.isCurrentPostPublished() : false;
