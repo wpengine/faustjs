@@ -165,7 +165,7 @@ register_activation_hook( __FILE__, function () {
 } );
 ```
 
-A user with the `event_writer` role can create and update events, but can't touch posts, pages or other users' accounts.
+A user with the `event_writer` role can create events and update the ones it created, but can't edit posts, pages or other users' events. Add `edit_others_events` if it also needs to update events created by someone else.
 
 ### Send authenticated requests
 
