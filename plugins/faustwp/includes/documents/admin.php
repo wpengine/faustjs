@@ -185,5 +185,5 @@ function render_document_detail( $slug ) {
 	echo '</tbody></table>';
 
 	echo '<h2>' . esc_html__( 'Data', 'faustwp' ) . '</h2>';
-	echo '<pre style="max-height:40em;overflow:auto;padding:1em;background:#fff;border:1px solid #c3c4c7;"><code>' . esc_html( (string) $json ) . '</code></pre>';
+	echo '<pre style="max-height:40em;overflow:auto;padding:1em;background:#fff;border:1px solid #c3c4c7;"><code style="background:none;padding:0;">' . esc_html( (string) $json ) . '</code></pre>';
 }
