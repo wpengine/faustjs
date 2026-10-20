@@ -39,9 +39,10 @@ done
 
 # MySQL answers pings while it's still initializing, so wait until PHP can
 # connect the way WordPress does. (wp db query uses the mysql client, which
-# rejects this MySQL container's self-signed certificate.)
+# rejects this MySQL container's self-signed certificate.) PHP 8.1+ throws on a
+# refused connection despite the @, so hide the output of the failed attempts.
 echo "Waiting for the database..."
-until compose exec -T wordpress php -r 'exit( @mysqli_connect( "db", "root", "wordpress", "wordpress" ) ? 0 : 1 );'; do
+until compose exec -T wordpress php -r 'exit( @mysqli_connect( "db", "root", "wordpress", "wordpress" ) ? 0 : 1 );' >/dev/null 2>&1; do
 	sleep 2
 done
 
