@@ -108,10 +108,10 @@ It will download a file named `globalStylesheet.css` which you can import into t
 import "../globalStylesheet.css";
 ```
 
-To save the stylesheet somewhere else, pass a path with `--output`. The path is relative to the directory you run the command from, and any missing folders are created:
+To save the stylesheet somewhere else, pass a file or folder path with `--output`. Paths are relative to the directory you run the command from, and missing folders are created. If you pass a folder, the file is saved inside it as `globalStylesheet.css`.
 
 ```bash
-faust generateGlobalStylesheet --output styles/globalStylesheet.css
+faust generateGlobalStylesheet --output styles/wordpress.css
 ```
 
 ## Additional Info
