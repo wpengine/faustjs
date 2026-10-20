@@ -108,6 +108,12 @@ It will download a file named `globalStylesheet.css` which you can import into t
 import "../globalStylesheet.css";
 ```
 
+To save the stylesheet somewhere else, pass a file or folder path with `--output`. Paths are relative to the directory you run the command from, and missing folders are created. If you pass a folder, the file is saved inside it as `globalStylesheet.css`.
+
+```bash
+faust generateGlobalStylesheet --output styles/wordpress.css
+```
+
 ## Additional Info
 
 Proper block styling parity between the Gutenberg Editor and the Decoupled site is overall very tricky. Consider the following steps and considerations to achieve a better result.
