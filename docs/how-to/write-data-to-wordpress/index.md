@@ -168,8 +168,10 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 ```json
 {
 	"code": "faustwp_document_conflict",
+	"message": "The document has changed since the version this write was based on.",
 	"data": {
 		"status": 409,
+		"slug": "site-settings",
 		"version": 4,
 		"document": { "slug": "site-settings", "version": 4, "data": { "theme": "blue" } }
 	}
