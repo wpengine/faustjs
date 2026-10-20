@@ -340,7 +340,7 @@ function term_link( $term_link ) {
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_scripts' );
 /**
- * Adds JavaScript file to the Gutenberg editor page that prepends /preview to the preview link.
+ * Adds a script to the block editor that points its preview links at the Faust.js frontend preview.
  *
  * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
  */
