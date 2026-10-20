@@ -403,6 +403,29 @@ describe('server/auth/token (OAuth)', () => {
 			);
 		});
 
+		test('logs a hint when WordPress rejects the Application Password', async () => {
+			const warningSpy = jest
+				.spyOn(console, 'log')
+				.mockImplementation(jest.fn());
+			const mockCookies = {
+				getCookie: jest.fn().mockReturnValue(undefined),
+			} as unknown as Cookies;
+
+			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
+				status: 401,
+				body: JSON.stringify({ code: 'rest_forbidden' }),
+			});
+
+			const result: any = await new OAuth(mockCookies).fetch('auth-code');
+
+			expect(result.error).toBe(true);
+			expect(warningSpy.mock.calls.flat().join(' ')).toContain(
+				'Authorization header',
+			);
+
+			warningSpy.mockRestore();
+		});
+
 		test("doesn't try the deprecated endpoint without a secret key", async () => {
 			getWpSecretSpy.mockReturnValue(undefined);
 			const mockCookies = {

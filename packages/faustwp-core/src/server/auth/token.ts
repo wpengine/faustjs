@@ -114,6 +114,18 @@ export class OAuth {
 
 		const result = await response.json();
 
+		if (
+			applicationPassword &&
+			(response.status === 401 || response.status === 403)
+		) {
+			warnLog(
+				'WordPress rejected the Application Password in FAUST_APPLICATION_USER ' +
+					'and FAUST_APPLICATION_PASSWORD. Check that its user can ' +
+					'faustwp_exchange_tokens, and that your server passes the ' +
+					'Authorization header through to WordPress.',
+			);
+		}
+
 		if (!response.ok) {
 			return {
 				error: true,
