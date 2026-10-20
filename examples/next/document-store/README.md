@@ -25,7 +25,10 @@ You need Docker and Node.js.
    npm run dev
    ```
 
-4. Open `http://localhost:3000` in two tabs. Change the notes in both, then save each tab. The first save works. The second is rejected with `409 Conflict`, because it's based on a version that's no longer current, and the page shows both versions so you can keep theirs or overwrite with yours.
+4. Open `http://localhost:3000` in two tabs and try a few conflicts. The first save in either tab always works. The second is rejected by WordPress with `409 Conflict`, because it's based on a version that's no longer current, and the page decides what to do:
+   - **No edits in the second tab:** it loads the newer version.
+   - **The tabs changed different fields** (for example, notes in one and status in the other): it merges both changes and saves a new version.
+   - **The tabs changed the same field:** it lists just those fields with the earlier value, theirs and yours. Choose what to keep for each and click **Save merged**. Everything else is already merged.
 
 Stop WordPress with `npm run wordpress:stop`. Add `-- --volumes` to also delete its database.
 
@@ -41,4 +44,5 @@ docker compose --project-name faust-document-store exec wordpress wp --allow-roo
 
 - `mu-plugins/enable-document-store.php` is a must-use plugin that turns on the document store with the `faustwp_enable_document_store` filter.
 - `pages/api/documents/[slug].js` forwards `GET` and `PUT` requests to `/?rest_route=/faustwp/v1/documents/<slug>` with the Application Password, and passes WordPress's status code back: `404` before the document exists, `201` when it's created, `200` when it's updated and `409` for a stale write.
-- `pages/index.js` keeps the version it last read and sends it with every save. On a `409`, the response includes the current document.
+- `pages/index.js` keeps the version it last read and sends it with every save. On a `409`, the response includes the current document, and the page merges it with the local edits.
+- `lib/mergeDocuments.mjs` is the three-way merge: it compares the version the tab started from with theirs and yours, field by field, and reports fields both sides changed differently. Run its tests with `npm test`.
