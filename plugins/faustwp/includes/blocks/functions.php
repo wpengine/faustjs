@@ -57,6 +57,8 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
 		return $unzip_result;
 	}
 
+	match_blocks_permissions( $dirs['target'] );
+
 	cleanup_temp_directory( $wp_filesystem, $dirs['temp'] );
 
 	return true;
@@ -141,6 +143,68 @@ function unzip_uploaded_file( $target_file, $destination ) {
 		return $unzip_result;
 	}
 	return true;
+}
+
+/**
+ * Gives the extracted block files the same permissions as the blocks directory.
+ *
+ * The unzip_file() function writes with FS_CHMOD_FILE and FS_CHMOD_DIR. Some
+ * hosts set those so the web server can't read the files, and the block editor
+ * then can't load the block scripts. Core matches media uploads to their
+ * directory the same way. This calls chmod() directly because
+ * WP_Filesystem_Direct::chmod() treats a 0600 file as 0644 and skips it.
+ *
+ * @see https://github.com/wpengine/faustjs/issues/1942
+ *
+ * @param string $blocks_dir The blocks directory path.
+ * @return void
+ */
+function match_blocks_permissions( $blocks_dir ) {
+	$stat = @stat( $blocks_dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	if ( ! $stat ) {
+		return;
+	}
+
+	$dir_perms  = $stat['mode'] & 0777;
+	$file_perms = $stat['mode'] & 0666;
+
+	// Only touch block directories; the uploaded zip stays as it is.
+	foreach ( (array) glob( trailingslashit( $blocks_dir ) . '*', GLOB_ONLYDIR ) as $block_dir ) {
+		if ( is_link( $block_dir ) ) {
+			continue;
+		}
+
+		set_permissions( $block_dir, $dir_perms );
+
+		try {
+			$paths = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator( $block_dir, \FilesystemIterator::SKIP_DOTS ),
+				\RecursiveIteratorIterator::SELF_FIRST
+			);
+
+			foreach ( $paths as $path => $info ) {
+				if ( ! $info->isLink() ) {
+					set_permissions( $path, $info->isDir() ? $dir_perms : $file_perms );
+				}
+			}
+		} catch ( \UnexpectedValueException $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// An unreadable directory keeps its permissions, as it did before.
+		}
+	}
+}
+
+/**
+ * Sets a path's permissions if they differ from the given ones.
+ *
+ * @param string $path  File or directory path.
+ * @param int    $perms Permissions to set.
+ * @return void
+ */
+function set_permissions( $path, $perms ) {
+	if ( ( fileperms( $path ) & 0777 ) !== $perms ) {
+		// Silenced because chmod() warns on files PHP doesn't own, which would break the JSON response.
+		@chmod( $path, $perms ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_chmod
+	}
 }
 
 /**
