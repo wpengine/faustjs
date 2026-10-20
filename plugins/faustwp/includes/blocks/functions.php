@@ -148,10 +148,11 @@ function unzip_uploaded_file( $target_file, $destination ) {
 /**
  * Gives the extracted block files the same permissions as the blocks directory.
  *
- * WordPress's unzip_file() writes with FS_CHMOD_FILE and FS_CHMOD_DIR. Some hosts set those
- * so the web server can't read the files, and the block editor then can't load
- * the block scripts. Like core does for media uploads, this uses chmod() directly:
- * WP_Filesystem_Direct::chmod() treats a 0600 file as already 0644 and skips it.
+ * The unzip_file() function writes with FS_CHMOD_FILE and FS_CHMOD_DIR. Some
+ * hosts set those so the web server can't read the files, and the block editor
+ * then can't load the block scripts. Core matches media uploads to their
+ * directory the same way. This calls chmod() directly because
+ * WP_Filesystem_Direct::chmod() treats a 0600 file as 0644 and skips it.
  *
  * @see https://github.com/wpengine/faustjs/issues/1942
  *

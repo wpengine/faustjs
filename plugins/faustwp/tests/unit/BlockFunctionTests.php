@@ -240,19 +240,21 @@ class BlockFunctionTests extends FaustUnitTest {
         chmod( "$blocks_dir/my-block/build/index.js", 0600 );
         chmod( "$blocks_dir/blocks.zip", 0600 );
 
-        Blocks\match_blocks_permissions( $blocks_dir );
-        clearstatcache();
+        try {
+            Blocks\match_blocks_permissions( $blocks_dir );
+            clearstatcache();
 
-        $perms = function ( $path ) {
-            return fileperms( $path ) & 0777;
-        };
-        $this->assertSame( 0755, $perms( "$blocks_dir/my-block" ) );
-        $this->assertSame( 0755, $perms( "$blocks_dir/my-block/build" ) );
-        $this->assertSame( 0644, $perms( "$blocks_dir/my-block/block.json" ) );
-        $this->assertSame( 0644, $perms( "$blocks_dir/my-block/build/index.js" ) );
-        $this->assertSame( 0600, $perms( "$blocks_dir/blocks.zip" ), 'The uploaded zip must be left alone.' );
-
-        exec( 'rm -rf ' . escapeshellarg( $blocks_dir ) );
+            $perms = function ( $path ) {
+                return fileperms( $path ) & 0777;
+            };
+            $this->assertSame( 0755, $perms( "$blocks_dir/my-block" ) );
+            $this->assertSame( 0755, $perms( "$blocks_dir/my-block/build" ) );
+            $this->assertSame( 0644, $perms( "$blocks_dir/my-block/block.json" ) );
+            $this->assertSame( 0644, $perms( "$blocks_dir/my-block/build/index.js" ) );
+            $this->assertSame( 0600, $perms( "$blocks_dir/blocks.zip" ), 'The uploaded zip must be left alone.' );
+        } finally {
+            exec( 'rm -rf ' . escapeshellarg( $blocks_dir ) );
+        }
     }
 
 }
