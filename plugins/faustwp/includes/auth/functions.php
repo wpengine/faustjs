@@ -226,3 +226,27 @@ function get_default_key() {
 
 	return get_secret_key();
 }
+
+/**
+ * Whether the current request was authenticated with an Application Password.
+ *
+ * Cookie sessions and Faust access tokens don't count, so a logged-in browser
+ * can't pass checks meant for server-to-server credentials.
+ *
+ * @return bool True if WordPress authenticated the request with an Application Password.
+ */
+function is_application_password_request() {
+	return function_exists( 'rest_get_authenticated_app_password' )
+		&& null !== rest_get_authenticated_app_password();
+}
+
+/**
+ * Whether the current request uses an Application Password whose user has a capability.
+ *
+ * @param string $capability Capability to check.
+ *
+ * @return bool True if the request used an Application Password and its user has the capability.
+ */
+function current_application_password_user_can( $capability ) {
+	return is_application_password_request() && current_user_can( $capability );
+}
