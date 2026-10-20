@@ -420,3 +420,15 @@ add_filter( 'wpseo_xml_sitemap_post_url', __NAMESPACE__ . '\\yoast_sitemap_post_
 function yoast_sitemap_post_url( $url ) {
 	return equivalent_wp_url( $url );
 }
+
+add_filter( 'rank_math/sitemap/xml_post_url', __NAMESPACE__ . '\\rank_math_sitemap_post_url' );
+/**
+ * Filter the URL Rank Math uses in the XML sitemap.
+ *
+ * Note that only absolute local URLs are allowed as the check after this removes external URLs.
+ *
+ * @param string $url URL to use in the XML sitemap.
+ */
+function rank_math_sitemap_post_url( $url ) {
+	return equivalent_wp_url( $url );
+}
