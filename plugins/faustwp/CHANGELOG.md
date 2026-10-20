@@ -1,5 +1,14 @@
 # Faust
 
+## [1.8.14](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.8.13...@faustwp/wordpress-plugin@1.8.14) (2026-10-20)
+
+
+### Bug Fixes
+
+* **faustwp:** keep posts and pages in Rank Math sitemaps when URL rewrites are on ([#2664](https://github.com/wpengine/faustjs/issues/2664)) ([288a7b1](https://github.com/wpengine/faustjs/commit/288a7b10374ee882c67816a0a8f864b2b0d0d6f7))
+* **faustwp:** keep the View Post link after publishing in the block editor ([#2667](https://github.com/wpengine/faustjs/issues/2667)) ([183572b](https://github.com/wpengine/faustjs/commit/183572b242bc5623fd3f012ce737e8b58ccf0655))
+* **faustwp:** only rewrite the block editor's save notice link ([#2671](https://github.com/wpengine/faustjs/issues/2671)) ([bbcd312](https://github.com/wpengine/faustjs/commit/bbcd31254244d771b2cafc9bc9f8245c89a050d6))
+
 ## [1.8.13](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.8.12...@faustwp/wordpress-plugin@1.8.13) (2026-10-19)
 
 

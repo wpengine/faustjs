@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 7.0
-Stable tag: 1.8.13
+Stable tag: 1.8.14
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,15 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 == Changelog ==
 
+= 1.8.14 =
+
+
+### Bug Fixes
+
+* **faustwp:** keep posts and pages in Rank Math sitemaps when URL rewrites are on ([#2664](https://github.com/wpengine/faustjs/issues/2664)) ([288a7b1](https://github.com/wpengine/faustjs/commit/288a7b10374ee882c67816a0a8f864b2b0d0d6f7))
+* **faustwp:** keep the View Post link after publishing in the block editor ([#2667](https://github.com/wpengine/faustjs/issues/2667)) ([183572b](https://github.com/wpengine/faustjs/commit/183572b242bc5623fd3f012ce737e8b58ccf0655))
+* **faustwp:** only rewrite the block editor's save notice link ([#2671](https://github.com/wpengine/faustjs/issues/2671)) ([bbcd312](https://github.com/wpengine/faustjs/commit/bbcd31254244d771b2cafc9bc9f8245c89a050d6))
+
 = 1.8.13 =
 
 
@@ -63,11 +72,5 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 ### Patch Changes
 
 - 85d1b14: Route the `generateAuthorizationCode` mutation through `wp_authenticate()` so login policies hooked on the WordPress `authenticate` filter are enforced.
-
-= 1.8.11 =
-
-### Patch Changes
-
-- 0ef93f8: Add WordPress 7.0 to the CI test matrix and update the plugin "Tested up to" header to 7.0.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

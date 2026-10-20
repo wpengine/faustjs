@@ -1,5 +1,12 @@
 # @faustwp/blocks
 
+## [6.1.14](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.13...@faustwp/blocks@6.1.14) (2026-10-20)
+
+
+### Bug Fixes
+
+* **blocks:** apply a column's content width to its inner blocks ([#2665](https://github.com/wpengine/faustjs/issues/2665)) ([6ca2aad](https://github.com/wpengine/faustjs/commit/6ca2aad675d6adac519edb0f0602e56af1c3ba6b))
+
 ## [6.1.13](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.12...@faustwp/blocks@6.1.13) (2026-10-19)
 
 

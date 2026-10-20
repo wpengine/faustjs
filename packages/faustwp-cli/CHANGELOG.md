@@ -1,5 +1,17 @@
 # @faustwp/cli
 
+## [3.6.0](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.5.2...@faustwp/cli@3.6.0) (2026-10-20)
+
+
+### Features
+
+* **cli:** let generateGlobalStylesheet write to a custom path with --output ([#2668](https://github.com/wpengine/faustjs/issues/2668)) ([9e3c249](https://github.com/wpengine/faustjs/commit/9e3c249db8edc0df0d7da801ef0365b48cf25e1a))
+
+
+### Bug Fixes
+
+* **cli:** reach the FaustWP REST endpoints on sites with Plain permalinks ([#2661](https://github.com/wpengine/faustjs/issues/2661)) ([9252d34](https://github.com/wpengine/faustjs/commit/9252d34f0707752a5f2f3c85a52b8436cc9c4219))
+
 ## [3.5.2](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.5.1...@faustwp/cli@3.5.2) (2026-10-19)
 
 
