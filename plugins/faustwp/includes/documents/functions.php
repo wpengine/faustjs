@@ -66,7 +66,8 @@ function get_max_document_bytes() {
  *
  * The post type has no admin UI and isn't exposed through the core REST API,
  * WPGraphQL, search, sitemaps or front-end URLs. Documents are only reachable
- * through the faustwp/v1/documents routes.
+ * through the faustwp/v1/documents routes and the read-only Tools → Faust
+ * Documents screen.
  *
  * Its capabilities collapse to READ_CAPABILITY and EDIT_CAPABILITY, so access
  * can be granted to a role or user without granting anything else.
