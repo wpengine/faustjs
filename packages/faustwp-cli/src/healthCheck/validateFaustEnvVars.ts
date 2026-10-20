@@ -14,9 +14,22 @@ export function isWPEngineComSubdomain(url: string) {
 }
 
 /**
- * Validates that the appropriate Faust related environment variables are set.
+ * Commands that call WordPress with their own permissions instead of
+ * exchanging Faust tokens, so they work with an Application Password whose
+ * user can't exchange tokens.
  */
-export const validateFaustEnvVars = async () => {
+const COMMANDS_WITHOUT_TOKEN_EXCHANGE = [
+	'generatePossibleTypes',
+	'generateGlobalStylesheet',
+	'blockset',
+];
+
+/**
+ * Validates that the appropriate Faust related environment variables are set.
+ *
+ * @param command The CLI command being run, if any.
+ */
+export const validateFaustEnvVars = async (command?: string) => {
 	const hasCredentials = hasWpCredentials();
 	const applicationPassword = getWpApplicationPassword();
 
@@ -77,6 +90,18 @@ export const validateFaustEnvVars = async () => {
 			});
 			// WordPress answers 401 when the credentials aren't accepted, and 403
 			// when an Application Password's user lacks the capability.
+			if (
+				applicationPassword &&
+				response.status === 403 &&
+				command &&
+				COMMANDS_WITHOUT_TOKEN_EXCHANGE.includes(command)
+			) {
+				warnLog(
+					"The FAUST_APPLICATION_USER user can't exchange Faust tokens, so logins and previews won't work. Give it a role with the faustwp_exchange_tokens capability if you need them.",
+				);
+				return;
+			}
+
 			if (response.status === 401 || response.status === 403) {
 				const wwwAuth = response.headers.get('www-authenticate') || '';
 				if (wwwAuth.toLowerCase().includes('basic')) {

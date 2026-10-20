@@ -48,7 +48,7 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 	 * is available before continuing.
 	 */
 	if (!otherArgs.includes('--skip-health-checks')) {
-		await healthCheck();
+		await healthCheck(arg1);
 	}
 
 	// eslint-disable-next-line default-case
