@@ -42,6 +42,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // Once a post is public, the save snackbar's link ("View Post", "View
+  // Page", etc.) goes to the live post, so only rewrite it before then.
+  // Private and scheduled posts keep the preview link, since the frontend
+  // can't show them to visitors.
+  function isPostPublic() {
+    const editor = window.wp?.data?.select('core/editor');
+    return editor
+      ? editor.getCurrentPostAttribute('status') === 'publish'
+      : false;
+  }
+
   function updateUIElements() {
     const { headerLink, snackbarLink } = getPreviewLinksByVersion(wpVersion);
 
@@ -51,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (
       snackbarLink &&
+      !isPostPublic() &&
       snackbarLink.getAttribute('href') !== faustPreviewLink
     ) {
       snackbarLink.setAttribute('href', faustPreviewLink);
