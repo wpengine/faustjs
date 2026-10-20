@@ -285,6 +285,116 @@ describe('useAuth hook', () => {
 		});
 	});
 
+	it('catches up with logins and logouts that happened while skipped', async () => {
+		fetchMock.get(`/api/faust/auth/token`, {
+			status: 401,
+			body: JSON.stringify({ error: 'Unauthorized' }),
+		});
+		fetchMock.get(VIEWER_URL, {
+			status: 200,
+			body: { data: { viewer: fullViewer(1, 'first') } },
+		});
+
+		const { result, rerender } = renderHook(({ skip }) => useAuth({ skip }), {
+			initialProps: { skip: false },
+		});
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(false);
+		});
+
+		rerender({ skip: true });
+		act(() => {
+			setAccessToken('at', Math.floor(Date.now() / 1000) + 300);
+		});
+		rerender({ skip: false });
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(true);
+		});
+
+		rerender({ skip: true });
+		act(() => {
+			setAccessToken(undefined, undefined);
+		});
+		rerender({ skip: false });
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(false);
+		});
+	});
+
+	it('provides a login url when an authenticated session ends', async () => {
+		setAccessToken('at', Math.floor(Date.now() / 1000) + 300);
+		fetchMock.get(VIEWER_URL, {
+			status: 200,
+			body: { data: { viewer: fullViewer(1, 'first') } },
+		});
+
+		const { result } = renderHook(() => useAuth());
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(true);
+		});
+		expect(result.current.loginUrl).toStrictEqual(null);
+
+		// For example, refreshing the access token failed.
+		act(() => {
+			setAccessToken(undefined, undefined);
+		});
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(false);
+			expect(result.current.loginUrl).toStrictEqual(
+				'http://headless.local/generate?redirect_uri=http%3A%2F%2Flocalhost%2F',
+			);
+		});
+	});
+
+	it("ignores the previous user's viewer when it arrives after an account switch", async () => {
+		fetchMock.get(`/api/faust/auth/token`, {
+			status: 401,
+			body: JSON.stringify({ error: 'Unauthorized' }),
+		});
+		fetchMock.get(
+			VIEWER_URL,
+			{ status: 200, body: { data: { viewer: fullViewer(1, 'first') } } },
+			{ delay: 300, repeat: 1 },
+		);
+
+		const { result } = renderHook(() => useAuth());
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(false);
+		});
+
+		// The first user logs in, then is replaced before their viewer loads.
+		act(() => {
+			setAccessToken('first', Math.floor(Date.now() / 1000) + 300);
+		});
+		act(() => {
+			setAccessToken(undefined, undefined);
+		});
+		fetchMock.get(
+			VIEWER_URL,
+			{ status: 200, body: { data: { viewer: fullViewer(2, 'second') } } },
+			{ overwriteRoutes: false },
+		);
+		act(() => {
+			setAccessToken('second', Math.floor(Date.now() / 1000) + 300);
+		});
+
+		await waitFor(() => {
+			expect(result.current.viewer?.username).toStrictEqual('second');
+		});
+		// Let the first user's delayed response arrive.
+		await new Promise((resolve) => {
+			setTimeout(resolve, 400);
+		});
+
+		expect(result.current.viewer?.username).toStrictEqual('second');
+	});
+
 	it('ignores logins when skip is true', () => {
 		const { result } = renderHook(() => useAuth({ skip: true }));
 
