@@ -9,6 +9,8 @@ import { SEED_QUERY } from '../../src/queries/seedQuery.js';
 import { ApolloClient, NormalizedCacheObject, gql } from '@apollo/client';
 import * as getTemplate from '../../src/getTemplate.js';
 import * as FaustProvider from '../../src/components/FaustProvider.js';
+import { FaustContext } from '../../src/store/FaustContext.js';
+import * as nextRouter from 'next/router';
 
 xdescribe('<WordPressTemplate />', () => {
 	const windowBackup = window;
@@ -339,6 +341,94 @@ xdescribe('<WordPressTemplateInternal />', () => {
 			variables: {
 				postId: '50',
 			},
+		});
+	});
+});
+
+describe('<WordPressTemplateInternal /> client-side query variables', () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+		jest.restoreAllMocks();
+	});
+
+	const props = {
+		seedNode: { databaseId: '1' },
+		setLoading: jest.fn(),
+		loading: false,
+		isPreview: false,
+		isAuthenticated: false,
+		__TEMPLATE_QUERY_DATA__: null,
+	};
+
+	const GET_POST_QUERY = gql`
+		query GetPost($postId: ID!) {
+			post(id: $postId, idType: DATABASE_ID) {
+				title
+			}
+		}
+	`;
+
+	function mockClient() {
+		const clientQueryMock = jest.fn().mockResolvedValue({ data: {} });
+		jest.spyOn(client, 'getApolloClient').mockImplementation(
+			() =>
+				({
+					query: clientQueryMock,
+				} as any as ApolloClient<NormalizedCacheObject>),
+		);
+		return clientQueryMock;
+	}
+
+	beforeEach(() => {
+		jest.spyOn(getConfig, 'getConfig').mockReturnValue({ templates: {} });
+		jest
+			.spyOn(nextRouter, 'useRouter')
+			.mockReturnValue({ locale: 'fr' } as any as nextRouter.NextRouter);
+	});
+
+	test('passes the locale to template.variables', async () => {
+		const MyTemplate = () => <>My component</>;
+		MyTemplate.query = GET_POST_QUERY;
+		MyTemplate.variables = jest.fn(() => ({ postId: '1' }));
+		jest.spyOn(getTemplate, 'getTemplate').mockReturnValue(MyTemplate);
+		const clientQueryMock = mockClient();
+
+		await act(async () => {
+			render(<WordPressTemplate.WordPressTemplateInternal {...props} />);
+		});
+
+		expect(MyTemplate.variables).toHaveBeenCalledWith(props.seedNode, {
+			asPreview: false,
+			locale: 'fr',
+		});
+		expect(clientQueryMock).toHaveBeenCalledWith({
+			query: GET_POST_QUERY,
+			variables: { postId: '1' },
+		});
+	});
+
+	test('passes the locale to each template.queries variables function', async () => {
+		const variablesMock = jest.fn(() => ({ postId: '1' }));
+		const MyTemplate = () => <>My component</>;
+		MyTemplate.queries = [{ query: GET_POST_QUERY, variables: variablesMock }];
+		jest.spyOn(getTemplate, 'getTemplate').mockReturnValue(MyTemplate);
+		const clientQueryMock = mockClient();
+
+		await act(async () => {
+			render(
+				<FaustContext.Provider value={{ queries: null, setQueries: jest.fn() }}>
+					<WordPressTemplate.WordPressTemplateInternal {...props} />
+				</FaustContext.Provider>,
+			);
+		});
+
+		expect(variablesMock).toHaveBeenCalledWith(props.seedNode, {
+			asPreview: false,
+			locale: 'fr',
+		});
+		expect(clientQueryMock).toHaveBeenCalledWith({
+			query: GET_POST_QUERY,
+			variables: { postId: '1' },
 		});
 	});
 });
