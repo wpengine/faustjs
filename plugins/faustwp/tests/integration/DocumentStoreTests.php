@@ -9,6 +9,8 @@ namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Documents\create_document;
 use function WPE\FaustWP\Documents\get_document;
+use function WPE\FaustWP\Documents\get_document_post_id;
+use function WPE\FaustWP\Documents\get_stored_document;
 use function WPE\FaustWP\Documents\maybe_register_document_post_type;
 use function WPE\FaustWP\Documents\register_document_post_type;
 use function WPE\FaustWP\Documents\save_document;
@@ -333,5 +335,46 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
 
 		$this->assertTrue( is_protected_meta( META_KEY, 'post' ) );
+	}
+
+	public function test_update_records_modified_and_modified_by_without_touching_the_post() {
+		$creator = get_current_user_id();
+		save_document( 'settings', 0, array( 'theme' => 'dark' ) );
+		$post_id       = get_document_post_id( 'settings' );
+		$post_modified = get_post( $post_id )->post_modified;
+		$created       = get_stored_document( $post_id );
+
+		$this->assertSame( $creator, $created['modified_by'] );
+		$this->assertIsInt( $created['modified'] );
+
+		$editor = self::factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $editor );
+		$before = time();
+		save_document( 'settings', 1, array( 'theme' => 'light' ) );
+		$updated = get_stored_document( $post_id );
+
+		$this->assertSame( 2, $updated['version'] );
+		$this->assertSame( $editor, $updated['modified_by'] );
+		$this->assertGreaterThanOrEqual( $before, $updated['modified'] );
+		clean_post_cache( $post_id );
+		$this->assertSame( $post_modified, get_post( $post_id )->post_modified );
+	}
+
+	public function test_documents_saved_before_modified_was_recorded_still_read() {
+		save_document( 'legacy', 0, array( 'a' => 1 ) );
+		$post_id = get_document_post_id( 'legacy' );
+		update_post_meta( $post_id, META_KEY, wp_slash( wp_json_encode( array( 'version' => 1, 'data' => array( 'a' => 1 ) ) ) ) );
+
+		$stored = get_stored_document( $post_id );
+
+		$this->assertSame( 1, $stored['version'] );
+		$this->assertNull( $stored['modified'] );
+		$this->assertNull( $stored['modified_by'] );
+	}
+
+	public function test_get_response_shape_is_unchanged() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
+
+		$this->assertSame( array( 'slug', 'version', 'data' ), array_keys( $this->get( 'settings' )->get_data() ) );
 	}
 }

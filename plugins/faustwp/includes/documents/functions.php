@@ -147,7 +147,10 @@ function get_document_post_id( $slug ) {
  *
  * @param int $post_id Post ID.
  *
- * @return array|null Array with meta_id, raw, version and data keys, or null if missing.
+ * @return array|null Array with meta_id, raw, version, data, modified and
+ *                    modified_by keys, or null if missing. modified (a Unix
+ *                    timestamp) and modified_by (a user ID) are null for
+ *                    documents saved before they were recorded.
  */
 function get_stored_document( $post_id ) {
 	global $wpdb;
@@ -172,10 +175,12 @@ function get_stored_document( $post_id ) {
 	}
 
 	return array(
-		'meta_id' => (int) $row->meta_id,
-		'raw'     => $row->meta_value,
-		'version' => (int) $stored->version,
-		'data'    => $stored->data,
+		'meta_id'     => (int) $row->meta_id,
+		'raw'         => $row->meta_value,
+		'version'     => (int) $stored->version,
+		'data'        => $stored->data,
+		'modified'    => isset( $stored->modified ) ? (int) $stored->modified : null,
+		'modified_by' => isset( $stored->modified_by ) ? (int) $stored->modified_by : null,
 	);
 }
 
@@ -207,6 +212,11 @@ function get_document( $slug ) {
 /**
  * Encode a document's version and data for storage.
  *
+ * Also records when and by whom it was saved. Updates only rewrite the meta
+ * row, never the post, so the post's modified date and author don't track
+ * later saves. The version stays the first key, so every stored value still
+ * starts with its version.
+ *
  * @param int   $version Version number.
  * @param mixed $data    Document data.
  *
@@ -215,8 +225,10 @@ function get_document( $slug ) {
 function encode_stored_document( $version, $data ) {
 	return wp_json_encode(
 		array(
-			'version' => $version,
-			'data'    => $data,
+			'version'     => $version,
+			'data'        => $data,
+			'modified'    => time(),
+			'modified_by' => get_current_user_id(),
 		)
 	);
 }
