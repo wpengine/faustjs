@@ -340,9 +340,7 @@ function term_link( $term_link ) {
 
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_preview_scripts' );
 /**
- * Adds a script to the block editor that points its preview links at the Faust.js frontend preview.
- *
- * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
+ * Adds a script to the block editor that points the save notice's link at the Faust.js frontend preview.
  */
 function enqueue_preview_scripts() {
 	wp_enqueue_script( 'faustwp-gutenberg-filters', plugins_url( '/previewlinks.js', __FILE__ ), array( 'wp-data' ), plugin_version(), true );
@@ -351,7 +349,6 @@ function enqueue_preview_scripts() {
 		'_faustwp_preview_data',
 		array(
 			'_preview_link' => get_preview_post_link(),
-			'_wp_version'   => get_bloginfo( 'version' ),
 		)
 	);
 }

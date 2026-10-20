@@ -1,5 +1,10 @@
 /**
- * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
+ * Points the block editor's save notice link at the Faust.js preview.
+ *
+ * After saving a post that isn't public yet, the save notice ("View Post",
+ * "View Page", etc.) links to the post's permalink, which the frontend can't
+ * show. The editor's Preview button doesn't need this: it reads the preview
+ * link from the REST API, which FaustWP already rewrites.
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -14,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
 
-  const wpVersion = faustPreviewData._wp_version;
   const faustPreviewLink = faustPreviewData._preview_link;
 
   function debounce(func, wait) {
@@ -27,19 +31,21 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
-  // Handle potential breaking changes from WordPress.
-  function getPreviewLinksByVersion(version) {
-    switch (version) {
-      default:
-        return {
-          headerLink: document.querySelector(
-            '.edit-post-header-preview__grouping-external a',
-          ),
-          snackbarLink: document.querySelector(
-            '.components-snackbar__content a',
-          ),
-        };
+  // Only the editor's own save notice is rewritten. Its link is found by the
+  // URL in the notice's action, so links in other plugins' notices are left
+  // alone.
+  function getSaveNoticeLinks() {
+    const notices = window.wp?.data?.select('core/notices')?.getNotices() || [];
+    const saveNotice = notices.find((notice) => notice.id === 'editor-save');
+    const noticeUrl = saveNotice?.actions?.[0]?.url;
+
+    if (!noticeUrl) {
+      return [];
     }
+
+    return Array.from(
+      document.querySelectorAll('.components-snackbar__action'),
+    ).filter((link) => link.getAttribute('href') === noticeUrl);
   }
 
   // Once a post is public, the save snackbar's link ("View Post", "View
@@ -54,19 +60,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateUIElements() {
-    const { headerLink, snackbarLink } = getPreviewLinksByVersion(wpVersion);
-
-    if (headerLink && headerLink.getAttribute('href') !== faustPreviewLink) {
-      headerLink.setAttribute('href', faustPreviewLink);
+    if (isPostPublic()) {
+      return;
     }
 
-    if (
-      snackbarLink &&
-      !isPostPublic() &&
-      snackbarLink.getAttribute('href') !== faustPreviewLink
-    ) {
-      snackbarLink.setAttribute('href', faustPreviewLink);
-    }
+    getSaveNoticeLinks().forEach((link) => {
+      link.setAttribute('href', faustPreviewLink);
+    });
   }
 
   // Run the update function on initial page load.
