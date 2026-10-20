@@ -17,18 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', __NAMESPACE__ . '\\maybe_register_document_post_type' );
+add_action( 'init', __NAMESPACE__ . '\\maybe_set_up_document_store' );
 /**
  * Callback for WordPress 'init' action.
  *
- * Register the document post type when the store is enabled.
+ * Create or update the documents table when the store is enabled.
  */
-function maybe_register_document_post_type() {
+function maybe_set_up_document_store() {
 	if ( ! is_document_store_enabled() ) {
 		return;
 	}
 
-	register_document_post_type();
+	maybe_install_document_table();
 }
 
 add_filter( 'user_has_cap', __NAMESPACE__ . '\\grant_document_capabilities_to_admins', 10, 1 );

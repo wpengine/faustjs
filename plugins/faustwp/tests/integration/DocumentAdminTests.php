@@ -7,12 +7,12 @@
 
 namespace WPE\FaustWP\Tests\Integration;
 
-use function WPE\FaustWP\Documents\register_document_post_type;
+use function WPE\FaustWP\Documents\maybe_install_document_table;
 use function WPE\FaustWP\Documents\register_documents_admin_page;
 use function WPE\FaustWP\Documents\render_documents_admin_page;
 use function WPE\FaustWP\Documents\save_document;
+use function WPE\FaustWP\Documents\uninstall_document_table;
 use const WPE\FaustWP\Documents\ADMIN_PAGE_SLUG;
-use const WPE\FaustWP\Documents\POST_TYPE;
 
 /**
  * Tests for the read-only Tools → Faust Documents screen.
@@ -25,7 +25,7 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 		parent::setUp();
 
 		add_filter( 'faustwp_enable_document_store', '__return_true' );
-		register_document_post_type();
+		maybe_install_document_table();
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 		set_current_screen( 'dashboard' );
 	}
@@ -36,9 +36,7 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 		unset( $_GET['document'], $_GET['paged'] );
 		remove_all_filters( 'faustwp_enable_document_store' );
 		remove_all_filters( 'wp_die_handler' );
-		if ( post_type_exists( POST_TYPE ) ) {
-			unregister_post_type( POST_TYPE );
-		}
+		uninstall_document_table();
 		unset( $submenu['tools.php'] );
 		$_registered_pages = array();
 

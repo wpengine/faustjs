@@ -7,16 +7,16 @@
 
 namespace WPE\FaustWP\Tests\Integration;
 
-use function WPE\FaustWP\Documents\create_document;
 use function WPE\FaustWP\Documents\get_document;
-use function WPE\FaustWP\Documents\get_document_post_id;
+use function WPE\FaustWP\Documents\get_document_table;
 use function WPE\FaustWP\Documents\get_stored_document;
-use function WPE\FaustWP\Documents\maybe_register_document_post_type;
-use function WPE\FaustWP\Documents\register_document_post_type;
+use function WPE\FaustWP\Documents\maybe_install_document_table;
+use function WPE\FaustWP\Documents\maybe_set_up_document_store;
 use function WPE\FaustWP\Documents\save_document;
+use function WPE\FaustWP\Documents\uninstall_document_table;
+use const WPE\FaustWP\Documents\DB_VERSION;
+use const WPE\FaustWP\Documents\DB_VERSION_OPTION;
 use const WPE\FaustWP\Documents\EDIT_CAPABILITY;
-use const WPE\FaustWP\Documents\META_KEY;
-use const WPE\FaustWP\Documents\POST_TYPE;
 use const WPE\FaustWP\Documents\READ_CAPABILITY;
 
 /**
@@ -39,7 +39,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		parent::setUp();
 
 		add_filter( 'faustwp_enable_document_store', '__return_true' );
-		register_document_post_type();
+		maybe_install_document_table();
 		$this->init_rest_server();
 
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
@@ -51,9 +51,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		remove_all_filters( 'faustwp_enable_document_store' );
 		remove_all_filters( 'faustwp_document_max_bytes' );
-		if ( post_type_exists( POST_TYPE ) ) {
-			unregister_post_type( POST_TYPE );
-		}
+		uninstall_document_table();
 
 		parent::tearDown();
 	}
@@ -75,6 +73,17 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		return $this->server->dispatch( new \WP_REST_Request( 'GET', self::ROUTE . '/' . $slug ) );
 	}
 
+	private function table_exists() {
+		global $wpdb;
+
+		// The test suite creates temporary tables, which SHOW TABLES doesn't list.
+		$suppress = $wpdb->suppress_errors( true );
+		$exists   = false !== $wpdb->query( 'SELECT 1 FROM ' . get_document_table() . ' LIMIT 1' );
+		$wpdb->suppress_errors( $suppress );
+
+		return $exists;
+	}
+
 	/**
 	 * Convert decoded JSON objects to arrays so they can be compared with assertSame.
 	 */
@@ -83,25 +92,34 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	}
 
 	public function test_store_is_disabled_by_default() {
+		uninstall_document_table();
 		remove_all_filters( 'faustwp_enable_document_store' );
-		unregister_post_type( POST_TYPE );
 		$this->init_rest_server();
 
-		maybe_register_document_post_type();
+		maybe_set_up_document_store();
 
-		$this->assertFalse( post_type_exists( POST_TYPE ) );
+		$this->assertFalse( $this->table_exists() );
+		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
 		$this->assertArrayNotHasKey( self::ROUTE . '/(?P<slug>[a-z0-9-]{1,190})', $this->server->get_routes() );
 		$this->assertSame( 404, $this->get( 'settings' )->get_status() );
 	}
 
-	public function test_post_type_is_not_public() {
-		$post_type = get_post_type_object( POST_TYPE );
+	public function test_enabling_the_store_creates_the_table() {
+		uninstall_document_table();
 
-		$this->assertFalse( $post_type->public );
-		$this->assertFalse( $post_type->publicly_queryable );
-		$this->assertFalse( $post_type->show_ui );
-		$this->assertFalse( $post_type->show_in_rest );
-		$this->assertFalse( $post_type->show_in_graphql );
+		maybe_set_up_document_store();
+
+		$this->assertTrue( $this->table_exists() );
+		$this->assertSame( DB_VERSION, (int) get_option( DB_VERSION_OPTION ) );
+	}
+
+	public function test_uninstall_drops_the_table() {
+		save_document( 'settings', 0, array( 'theme' => 'dark' ) );
+
+		uninstall_document_table();
+
+		$this->assertFalse( $this->table_exists() );
+		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
 	}
 
 	public function test_put_with_version_zero_creates_document() {
@@ -185,8 +203,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		add_filter(
 			'query',
 			function ( $query ) use ( &$raced ) {
-				global $wpdb;
-				if ( ! $raced && 0 === strpos( $query, "UPDATE {$wpdb->postmeta} SET meta_value" ) ) {
+				if ( ! $raced && 0 === strpos( $query, 'UPDATE ' . get_document_table() ) ) {
 					$raced = true;
 					save_document( 'settings', 1, array( 'theme' => 'light' ) );
 				}
@@ -204,42 +221,30 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Simulates a create that checked for the document before another request
-	 * created it. WordPress gives the second post a different slug, so the
-	 * second create is rejected and its post removed.
+	 * Simulates another request creating the document just before this
+	 * create's INSERT. The unique key rejects the second row.
 	 */
-	public function test_concurrent_create_with_renamed_slug_is_rejected() {
-		create_document( 'settings', array( 'theme' => 'dark' ) );
-
-		$result = create_document( 'settings', array( 'theme' => 'light' ) );
-
-		$this->assertWPError( $result );
-		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
-		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
-		$this->assertCount( 1, get_posts( array( 'post_type' => POST_TYPE, 'post_status' => 'any', 'fields' => 'ids' ) ) );
-	}
-
-	/**
-	 * Simulates two creates that both got the same slug. The oldest post is
-	 * kept and the later one is removed.
-	 */
-	public function test_concurrent_create_with_same_slug_keeps_the_oldest_post() {
-		create_document( 'settings', array( 'theme' => 'dark' ) );
+	public function test_concurrent_create_is_rejected() {
+		$raced = false;
 		add_filter(
-			'wp_unique_post_slug',
-			function ( $slug, $post_id, $post_status, $post_type, $post_parent, $original_slug ) {
-				return POST_TYPE === $post_type ? $original_slug : $slug;
-			},
-			10,
-			6
+			'query',
+			function ( $query ) use ( &$raced ) {
+				if ( ! $raced && 0 === strpos( $query, 'INSERT INTO `' . get_document_table() . '`' ) ) {
+					$raced = true;
+					save_document( 'settings', 0, array( 'theme' => 'dark' ) );
+				}
+				return $query;
+			}
 		);
 
-		$result = create_document( 'settings', array( 'theme' => 'light' ) );
+		$result = save_document( 'settings', 0, array( 'theme' => 'light' ) );
 
+		global $wpdb;
+		$this->assertTrue( $raced );
 		$this->assertWPError( $result );
 		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
 		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
-		$this->assertCount( 1, get_posts( array( 'post_type' => POST_TYPE, 'post_status' => 'any', 'fields' => 'ids' ) ) );
+		$this->assertSame( '1', $wpdb->get_var( 'SELECT COUNT(*) FROM ' . get_document_table() ) );
 	}
 
 	public function test_slugs_outside_the_allowed_characters_do_not_match_the_route() {
@@ -331,18 +336,10 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 201, $this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) )->get_status() );
 	}
 
-	public function test_document_data_is_stored_in_protected_meta() {
-		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
-
-		$this->assertTrue( is_protected_meta( META_KEY, 'post' ) );
-	}
-
-	public function test_update_records_modified_and_modified_by_without_touching_the_post() {
+	public function test_update_records_modified_and_modified_by() {
 		$creator = get_current_user_id();
 		save_document( 'settings', 0, array( 'theme' => 'dark' ) );
-		$post_id       = get_document_post_id( 'settings' );
-		$post_modified = get_post( $post_id )->post_modified;
-		$created       = get_stored_document( $post_id );
+		$created = get_stored_document( 'settings' );
 
 		$this->assertSame( $creator, $created['modified_by'] );
 		$this->assertIsInt( $created['modified'] );
@@ -351,25 +348,11 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		wp_set_current_user( $editor );
 		$before = time();
 		save_document( 'settings', 1, array( 'theme' => 'light' ) );
-		$updated = get_stored_document( $post_id );
+		$updated = get_stored_document( 'settings' );
 
 		$this->assertSame( 2, $updated['version'] );
 		$this->assertSame( $editor, $updated['modified_by'] );
 		$this->assertGreaterThanOrEqual( $before, $updated['modified'] );
-		clean_post_cache( $post_id );
-		$this->assertSame( $post_modified, get_post( $post_id )->post_modified );
-	}
-
-	public function test_documents_saved_before_modified_was_recorded_still_read() {
-		save_document( 'legacy', 0, array( 'a' => 1 ) );
-		$post_id = get_document_post_id( 'legacy' );
-		update_post_meta( $post_id, META_KEY, wp_slash( wp_json_encode( array( 'version' => 1, 'data' => array( 'a' => 1 ) ) ) ) );
-
-		$stored = get_stored_document( $post_id );
-
-		$this->assertSame( 1, $stored['version'] );
-		$this->assertNull( $stored['modified'] );
-		$this->assertNull( $stored['modified_by'] );
 	}
 
 	public function test_get_response_shape_is_unchanged() {

@@ -18,17 +18,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * The post type that stores documents.
+ * Version of the documents table schema.
+ *
+ * Bump this when the schema in install_document_table() changes, and dbDelta()
+ * updates the table on the next request.
  */
-const POST_TYPE = 'faustwp_document';
+const DB_VERSION = 1;
 
 /**
- * The post meta key holding a document's version and data.
- *
- * The version and data share one meta row so they always change together, and
- * a write can compare and replace them in a single UPDATE.
+ * Option holding the installed documents table schema version.
  */
-const META_KEY = '_faustwp_document';
+const DB_VERSION_OPTION = 'faustwp_documents_db_version';
+
+/**
+ * Collection used by the faustwp/v1/documents routes.
+ *
+ * The table can hold separate collections and per-user documents, but the
+ * routes only use this shared collection for now.
+ */
+const DEFAULT_COLLECTION = 'default';
 
 /**
  * Capability needed to read documents.
@@ -62,105 +70,108 @@ function get_max_document_bytes() {
 }
 
 /**
- * Register the post type that stores documents.
+ * Get the name of the documents table for the current site.
  *
- * The post type has no admin UI and isn't exposed through the core REST API,
- * WPGraphQL, search, sitemaps or front-end URLs. Documents are only reachable
- * through the faustwp/v1/documents routes and the read-only Tools → Faust
- * Documents screen.
- *
- * Its capabilities collapse to READ_CAPABILITY and EDIT_CAPABILITY, so access
- * can be granted to a role or user without granting anything else.
+ * @return string Table name.
  */
-function register_document_post_type() {
-	register_post_type(
-		POST_TYPE,
-		array(
-			'label'               => __( 'Faust Documents', 'faustwp' ),
-			'public'              => false,
-			'publicly_queryable'  => false,
-			'exclude_from_search' => true,
-			'show_ui'             => false,
-			'show_in_menu'        => false,
-			'show_in_nav_menus'   => false,
-			'show_in_rest'        => false,
-			'show_in_graphql'     => false,
-			'rewrite'             => false,
-			'query_var'           => false,
-			'can_export'          => false,
-			'supports'            => array( 'title' ),
-			'map_meta_cap'        => true,
-			'capabilities'        => array(
-				'edit_post'              => 'edit_faustwp_document',
-				'read_post'              => 'read_faustwp_document',
-				'delete_post'            => 'delete_faustwp_document',
-				'read'                   => READ_CAPABILITY,
-				'read_private_posts'     => READ_CAPABILITY,
-				'create_posts'           => EDIT_CAPABILITY,
-				'edit_posts'             => EDIT_CAPABILITY,
-				'edit_others_posts'      => EDIT_CAPABILITY,
-				'edit_private_posts'     => EDIT_CAPABILITY,
-				'edit_published_posts'   => EDIT_CAPABILITY,
-				'publish_posts'          => EDIT_CAPABILITY,
-				'delete_posts'           => EDIT_CAPABILITY,
-				'delete_others_posts'    => EDIT_CAPABILITY,
-				'delete_private_posts'   => EDIT_CAPABILITY,
-				'delete_published_posts' => EDIT_CAPABILITY,
-			),
-		)
+function get_document_table() {
+	global $wpdb;
+
+	return $wpdb->prefix . 'faustwp_documents';
+}
+
+/**
+ * Create or update the documents table if its schema is out of date.
+ *
+ * Runs on the first request after the store is enabled or the schema changes.
+ * The upgrader lock keeps concurrent requests from running dbDelta() at once.
+ *
+ * @return void
+ */
+function maybe_install_document_table() {
+	if ( (int) get_option( DB_VERSION_OPTION ) === DB_VERSION ) {
+		return;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+	if ( ! \WP_Upgrader::create_lock( 'faustwp_documents_db', 60 ) ) {
+		return;
+	}
+
+	install_document_table();
+	update_option( DB_VERSION_OPTION, DB_VERSION, true );
+
+	\WP_Upgrader::release_lock( 'faustwp_documents_db' );
+}
+
+/**
+ * Create or update the documents table.
+ *
+ * Slugs and collections are ASCII with a binary collation, so the unique key
+ * is case-sensitive and short enough for older MySQL index limits.
+ *
+ * @return void
+ */
+function install_document_table() {
+	global $wpdb;
+
+	$table           = get_document_table();
+	$charset_collate = $wpdb->get_charset_collate();
+
+	dbDelta(
+		"CREATE TABLE {$table} (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			collection varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+			owner_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			slug varchar(190) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+			version bigint(20) unsigned NOT NULL,
+			data longtext NOT NULL,
+			created_gmt datetime NOT NULL,
+			modified_gmt datetime NOT NULL,
+			modified_by bigint(20) unsigned NOT NULL DEFAULT 0,
+			PRIMARY KEY  (id),
+			UNIQUE KEY collection_owner_slug (collection,owner_id,slug)
+		) {$charset_collate};"
 	);
 }
 
 /**
- * Find the post that stores a document.
+ * Delete the documents table and its schema version for the current site.
  *
- * If a race created more than one post for the same slug, the oldest one wins.
+ * Called from uninstall.php.
+ *
+ * @return void
+ */
+function uninstall_document_table() {
+	global $wpdb;
+
+	$wpdb->query( 'DROP TABLE IF EXISTS ' . get_document_table() ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.NotPrepared
+	delete_option( DB_VERSION_OPTION );
+}
+
+/**
+ * Read a document row.
+ *
+ * Reads straight from the database, so the version compared during a write is
+ * the version that's actually stored.
  *
  * @param string $slug Document slug.
  *
- * @return int Post ID, or 0 if the document doesn't exist.
+ * @return array|null Array with id, version, data, modified (Unix timestamp)
+ *                    and modified_by (user ID, or 0 if unknown) keys, or null
+ *                    if the document doesn't exist.
  */
-function get_document_post_id( $slug ) {
-	$posts = get_posts(
-		array(
-			'post_type'              => POST_TYPE,
-			'post_status'            => 'private',
-			'name'                   => $slug,
-			'orderby'                => 'ID',
-			'order'                  => 'ASC',
-			'posts_per_page'         => 1,
-			'fields'                 => 'ids',
-			'no_found_rows'          => true,
-			'suppress_filters'       => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		)
-	);
-
-	return $posts ? (int) $posts[0] : 0;
-}
-
-/**
- * Read the stored version and data for a document post.
- *
- * Reads the meta row straight from the database rather than the object cache,
- * so the value compared during a write is the value that's actually stored.
- *
- * @param int $post_id Post ID.
- *
- * @return array|null Array with meta_id, raw, version, data, modified and
- *                    modified_by keys, or null if missing. modified (a Unix
- *                    timestamp) and modified_by (a user ID) are null for
- *                    documents saved before they were recorded.
- */
-function get_stored_document( $post_id ) {
+function get_stored_document( $slug ) {
 	global $wpdb;
 
-	$row = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$table = get_document_table();
+	$row   = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			"SELECT meta_id, meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s ORDER BY meta_id ASC LIMIT 1",
-			$post_id,
-			META_KEY
+			"SELECT id, version, data, modified_gmt, modified_by FROM {$table} WHERE collection = %s AND owner_id = 0 AND slug = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			DEFAULT_COLLECTION,
+			$slug
 		)
 	);
 
@@ -168,20 +179,14 @@ function get_stored_document( $post_id ) {
 		return null;
 	}
 
-	// Decode JSON objects as objects, so an empty object in the data is
-	// returned as {} rather than [].
-	$stored = json_decode( $row->meta_value );
-	if ( ! is_object( $stored ) || ! isset( $stored->version ) || ! property_exists( $stored, 'data' ) ) {
-		return null;
-	}
-
 	return array(
-		'meta_id'     => (int) $row->meta_id,
-		'raw'         => $row->meta_value,
-		'version'     => (int) $stored->version,
-		'data'        => $stored->data,
-		'modified'    => isset( $stored->modified ) ? (int) $stored->modified : null,
-		'modified_by' => isset( $stored->modified_by ) ? (int) $stored->modified_by : null,
+		'id'          => (int) $row->id,
+		'version'     => (int) $row->version,
+		// Decode JSON objects as objects, so an empty object in the data is
+		// returned as {} rather than [].
+		'data'        => json_decode( $row->data ),
+		'modified'    => (int) strtotime( $row->modified_gmt . ' UTC' ),
+		'modified_by' => (int) $row->modified_by,
 	);
 }
 
@@ -193,12 +198,7 @@ function get_stored_document( $post_id ) {
  * @return array|null Array with slug, version and data keys, or null if the document doesn't exist.
  */
 function get_document( $slug ) {
-	$post_id = get_document_post_id( $slug );
-	if ( ! $post_id ) {
-		return null;
-	}
-
-	$stored = get_stored_document( $post_id );
+	$stored = get_stored_document( $slug );
 	if ( ! $stored ) {
 		return null;
 	}
@@ -215,27 +215,12 @@ function get_document( $slug ) {
  *
  * @param string $slug Document slug.
  *
- * @return array|null Array with slug, version, modified (Unix timestamp or
- *                    null) and modified_by (user ID or null) keys, or null if
+ * @return array|null Array with slug, version, modified (Unix timestamp) and
+ *                    modified_by (user ID, or 0 if unknown) keys, or null if
  *                    the document doesn't exist.
  */
 function get_document_summary( $slug ) {
-	$post_id = get_document_post_id( $slug );
-
-	return $post_id ? summarize_document( $slug, $post_id ) : null;
-}
-
-/**
- * Build a document summary from its post.
- *
- * @param string $slug    Document slug.
- * @param int    $post_id Document post ID.
- *
- * @return array|null Summary as returned by get_document_summary(), or null if
- *                    the post has no stored document.
- */
-function summarize_document( $slug, $post_id ) {
-	$stored = get_stored_document( $post_id );
+	$stored = get_stored_document( $slug );
 	if ( ! $stored ) {
 		return null;
 	}
@@ -258,54 +243,42 @@ function summarize_document( $slug, $post_id ) {
  *               get_document_summary()) and total_pages keys.
  */
 function list_documents( $page = 1, $per_page = 20 ) {
-	$query = new \WP_Query(
-		array(
-			'post_type'              => POST_TYPE,
-			'post_status'            => 'private',
-			'orderby'                => 'ID',
-			'order'                  => 'DESC',
-			'posts_per_page'         => max( 1, (int) $per_page ),
-			'paged'                  => max( 1, (int) $page ),
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
+	global $wpdb;
+
+	$table    = get_document_table();
+	$per_page = max( 1, (int) $per_page );
+	$offset   = ( max( 1, (int) $page ) - 1 ) * $per_page;
+
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$rows  = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT slug, version, modified_gmt, modified_by FROM {$table} WHERE collection = %s AND owner_id = 0 ORDER BY id DESC LIMIT %d OFFSET %d",
+			DEFAULT_COLLECTION,
+			$per_page,
+			$offset
 		)
 	);
+	$total = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT COUNT(*) FROM {$table} WHERE collection = %s AND owner_id = 0",
+			DEFAULT_COLLECTION
+		)
+	);
+	// phpcs:enable
 
 	$documents = array();
-	foreach ( $query->posts as $post ) {
-		$summary = summarize_document( $post->post_name, $post->ID );
-		if ( $summary ) {
-			$documents[] = $summary;
-		}
+	foreach ( (array) $rows as $row ) {
+		$documents[] = array(
+			'slug'        => $row->slug,
+			'version'     => (int) $row->version,
+			'modified'    => (int) strtotime( $row->modified_gmt . ' UTC' ),
+			'modified_by' => (int) $row->modified_by,
+		);
 	}
 
 	return array(
 		'documents'   => $documents,
-		'total_pages' => (int) $query->max_num_pages,
-	);
-}
-
-/**
- * Encode a document's version and data for storage.
- *
- * Also records when and by whom it was saved. Updates only rewrite the meta
- * row, never the post, so the post's modified date and author don't track
- * later saves. The version stays the first key, so every stored value still
- * starts with its version.
- *
- * @param int   $version Version number.
- * @param mixed $data    Document data.
- *
- * @return string|false JSON string, or false if the data can't be encoded.
- */
-function encode_stored_document( $version, $data ) {
-	return wp_json_encode(
-		array(
-			'version'     => $version,
-			'data'        => $data,
-			'modified'    => time(),
-			'modified_by' => get_current_user_id(),
-		)
+		'total_pages' => (int) ceil( $total / $per_page ),
 	);
 }
 
@@ -333,9 +306,9 @@ function conflict_error( $slug, $current ) {
 /**
  * Create or update a document if it's still at the expected version.
  *
- * Use version 0 to create a document. Updates replace the stored version and
- * data with one UPDATE that only matches the exact value that was read, so if
- * two writers send the same version at once, only one of them succeeds.
+ * Use version 0 to create a document. An update only matches the row if its
+ * version is still the expected one, so if two writers send the same version
+ * at once, only one of them succeeds.
  *
  * @param string $slug             Document slug.
  * @param int    $expected_version The version the write is based on.
@@ -353,51 +326,36 @@ function save_document( $slug, $expected_version, $data ) {
 		return new WP_Error( 'faustwp_document_too_large', __( 'The document is larger than the maximum size.', 'faustwp' ), array( 'status' => 413 ) );
 	}
 
-	$post_id = get_document_post_id( $slug );
-
-	if ( ! $post_id ) {
-		if ( 0 !== $expected_version ) {
-			return conflict_error( $slug, null );
-		}
-
-		return create_document( $slug, $data );
+	if ( 0 === $expected_version ) {
+		return create_document( $slug, $data, $encoded_data );
 	}
 
-	$stored = get_stored_document( $post_id );
-	if ( ! $stored ) {
-		return new WP_Error( 'faustwp_document_corrupt', __( 'The stored document could not be read.', 'faustwp' ), array( 'status' => 500 ) );
-	}
-
-	if ( $stored['version'] !== $expected_version ) {
-		return conflict_error( $slug, get_document( $slug ) );
-	}
-
-	$new_version = $stored['version'] + 1;
-	$new_raw     = encode_stored_document( $new_version, $data );
-
-	// The stored value starts with its version, and every successful write
-	// changes the version, so a value written since the read can't match
-	// $stored['raw'], even under a case-insensitive collation.
 	global $wpdb;
+
 	$updated = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			"UPDATE {$wpdb->postmeta} SET meta_value = %s WHERE meta_id = %d AND meta_value = %s",
-			$new_raw,
-			$stored['meta_id'],
-			$stored['raw']
+			'UPDATE ' . get_document_table() . ' SET version = version + 1, data = %s, modified_gmt = %s, modified_by = %d WHERE collection = %s AND owner_id = 0 AND slug = %s AND version = %d', // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$encoded_data,
+			current_time( 'mysql', true ),
+			get_current_user_id(),
+			DEFAULT_COLLECTION,
+			$slug,
+			$expected_version
 		)
 	);
 
-	wp_cache_delete( $post_id, 'post_meta' );
+	if ( false === $updated ) {
+		return database_error();
+	}
 
 	if ( 1 !== $updated ) {
-		// Another write replaced the stored value after it was read.
+		// The document doesn't exist or another write changed it first.
 		return conflict_error( $slug, get_document( $slug ) );
 	}
 
 	return array(
 		'slug'    => $slug,
-		'version' => $new_version,
+		'version' => $expected_version + 1,
 		'data'    => $data,
 		'created' => false,
 	);
@@ -406,38 +364,43 @@ function save_document( $slug, $expected_version, $data ) {
 /**
  * Create a new document at version 1.
  *
- * WordPress doesn't enforce unique post slugs in the database, so two
- * concurrent creates can both insert a post. After inserting, the oldest post
- * for the slug is kept and any later one is deleted and reported as a conflict.
+ * The table's unique key rejects a second row for the same slug, so if two
+ * requests create the same document at once, only one insert succeeds.
  *
- * @param string $slug Document slug.
- * @param mixed  $data Document data.
+ * @param string $slug         Document slug.
+ * @param mixed  $data         Document data.
+ * @param string $encoded_data Document data encoded as JSON.
  *
  * @return array|WP_Error The saved document with a created flag, or an error.
  */
-function create_document( $slug, $data ) {
-	$post_id = wp_insert_post(
+function create_document( $slug, $data, $encoded_data ) {
+	global $wpdb;
+
+	$now = current_time( 'mysql', true );
+
+	// Hide the duplicate key error; a failed insert is checked below.
+	$suppress = $wpdb->suppress_errors( true );
+	$inserted = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		get_document_table(),
 		array(
-			'post_type'   => POST_TYPE,
-			'post_status' => 'private',
-			'post_title'  => $slug,
-			'post_name'   => $slug,
-			'meta_input'  => array(
-				META_KEY => wp_slash( encode_stored_document( 1, $data ) ),
-			),
+			'collection'   => DEFAULT_COLLECTION,
+			'owner_id'     => 0,
+			'slug'         => $slug,
+			'version'      => 1,
+			'data'         => $encoded_data,
+			'created_gmt'  => $now,
+			'modified_gmt' => $now,
+			'modified_by'  => get_current_user_id(),
 		),
-		true
+		array( '%s', '%d', '%s', '%d', '%s', '%s', '%s', '%d' )
 	);
+	$wpdb->suppress_errors( $suppress );
 
-	if ( is_wp_error( $post_id ) ) {
-		return $post_id;
-	}
+	if ( ! $inserted ) {
+		$current = get_document( $slug );
 
-	$post = get_post( $post_id );
-	if ( ! $post || $post->post_name !== $slug || get_document_post_id( $slug ) !== $post_id ) {
-		// Another request created the document first.
-		wp_delete_post( $post_id, true );
-		return conflict_error( $slug, get_document( $slug ) );
+		// If the document exists, another request created it first.
+		return $current ? conflict_error( $slug, $current ) : database_error();
 	}
 
 	return array(
@@ -446,4 +409,13 @@ function create_document( $slug, $data ) {
 		'data'    => $data,
 		'created' => true,
 	);
+}
+
+/**
+ * Build the error returned when the database rejects a query.
+ *
+ * @return WP_Error Error with a 500 status.
+ */
+function database_error() {
+	return new WP_Error( 'faustwp_document_db_error', __( 'The document could not be saved.', 'faustwp' ), array( 'status' => 500 ) );
 }

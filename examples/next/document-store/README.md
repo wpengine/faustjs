@@ -37,7 +37,7 @@ Stop WordPress with `npm run wordpress:stop`. Add `-- --volumes` to also delete 
 WordPress loads FaustWP straight from `plugins/faustwp` in this repository, so changes to the plugin take effect on the next request without restarting anything. To run WP-CLI against the site, for example to inspect a document:
 
 ```bash
-docker compose --project-name faust-document-store exec wordpress wp --allow-root post list --post_type=faustwp_document
+docker compose --project-name faust-document-store exec wordpress wp --allow-root eval 'global $wpdb; print_r( $wpdb->get_results( "SELECT slug, version, modified_gmt FROM {$wpdb->prefix}faustwp_documents" ) );'
 ```
 
 ## How it works

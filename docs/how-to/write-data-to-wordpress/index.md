@@ -140,6 +140,8 @@ The store is off by default. Enable it with a filter in a small plugin or your t
 add_filter( 'faustwp_enable_document_store', '__return_true' );
 ```
 
+Documents live in their own database table, `wp_faustwp_documents` (with your site's table prefix), which FaustWP creates the first time WordPress loads with the store enabled. Deleting the FaustWP plugin deletes the table and its documents.
+
 Administrators can read and write documents. To give other users access, add the `read_faustwp_documents` capability to read, and both `read_faustwp_documents` and `edit_faustwp_documents` to write. These capabilities don't grant access to anything else in WordPress.
 
 The routes accept any WordPress REST API authentication, such as the [Application Password](#6-writing-from-the-server) described below.
