@@ -417,7 +417,8 @@ function encode_document_data( $data ) {
  * @param int    $expected_version The version the write is based on.
  * @param mixed  $data             New document data.
  *
- * @return array|WP_Error The saved document with a created flag, or an error.
+ * @return array|WP_Error The saved document, as returned by format_document(),
+ *                        plus an is_new flag, or an error.
  */
 function save_document( $collection, $id, $expected_version, $data ) {
 	$encoded_data = encode_document_data( $data );
@@ -503,7 +504,8 @@ function update_document( $collection, $id, $expected_version, $encoded_data ) {
 
 	return array(
 		'version'      => $expected_version + 1,
-		'created_gmt'  => (string) $created_gmt,
+		// If another request deleted the document in the meantime, fall back to now.
+		'created_gmt'  => $created_gmt ? $created_gmt : $now,
 		'modified_gmt' => $now,
 	);
 }
@@ -566,7 +568,7 @@ function create_document( $collection, $id, $encoded_data ) {
  * @param string $collection Collection name.
  * @param mixed  $data       Document data.
  *
- * @return array|WP_Error The saved document, or an error.
+ * @return array|WP_Error The saved document, as returned by save_document(), or an error.
  */
 function add_document( $collection, $data ) {
 	for ( $attempt = 0; $attempt < 3; $attempt++ ) {
