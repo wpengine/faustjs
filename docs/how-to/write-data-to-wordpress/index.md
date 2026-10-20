@@ -1,11 +1,11 @@
 ---
 title: "Write Data to WordPress"
-description: "Send authenticated WPGraphQL mutations from your Faust.js app, and understand how access tokens and concurrent edits behave."
+description: "Send authenticated WPGraphQL mutations from your Faust.js app or server, and understand how access tokens and concurrent edits behave."
 ---
 
 The access token Faust.js uses to read private data also lets your app write back to WordPress. Your app can create posts, update fields, or run any other WPGraphQL mutation the logged-in user has permission to run.
 
-This guide shows how to send mutations from the browser and explains how long tokens last and what happens when two people edit the same post.
+This guide shows how to send mutations from the browser and from server-side code, and explains how long tokens last and what happens when two people edit the same post.
 
 ## 0. Prerequisites
 
@@ -132,11 +132,70 @@ This narrows the window but doesn't close it: another save can still land betwee
 
 ## 5. Writing from the server
 
-The flow above runs in the browser on behalf of a logged-in user. Faust.js doesn't yet provide a supported way for server-side code (a build step, a cron job, an API route acting on its own) to authenticate to WordPress.
+The flow above runs in the browser on behalf of a logged-in user. Server-side code that writes on its own, such as a build step, a cron job or an API route, should authenticate with a WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) instead. Application Passwords are built into WordPress, and each one can be revoked on its own without affecting Faust.js logins or previews.
 
-Until it does, create a dedicated low-privilege user and give it a WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/). Avoid using a personal admin account. WPGraphQL accepts them as HTTP Basic auth (`Authorization: Basic <base64 of username:application-password>`). WordPress only allows Application Passwords over HTTPS, except on local development sites. Keep the credentials in server-side environment variables, never in variables prefixed with `NEXT_PUBLIC_`.
+### Create a dedicated user
 
-A scoped service user for server-side writes is proposed in [#2561](https://github.com/wpengine/faustjs/issues/2561).
+Don't use a personal or admin account. Create a WordPress user just for your server code, give it the narrowest role that can do the job, and generate an Application Password for it under **Users → Profile → Application Passwords**.
+
+If the built-in roles are too broad, give the user a custom role that can only edit one post type. The post type needs its own capabilities for this to work:
+
+```php title="my-plugin.php"
+add_action( 'init', function () {
+	register_post_type( 'event', array(
+		'public'              => true,
+		'show_in_graphql'     => true,
+		'graphql_single_name' => 'event',
+		'graphql_plural_name' => 'events',
+		// Gives events their own capabilities (edit_events, publish_events, ...)
+		// instead of sharing the ones for posts.
+		'capability_type'     => array( 'event', 'events' ),
+		'map_meta_cap'        => true,
+	) );
+} );
+
+// Roles are saved in the database, so add the role once, on activation.
+register_activation_hook( __FILE__, function () {
+	add_role( 'event_writer', 'Event writer', array(
+		'read'                  => true,
+		'edit_events'           => true,
+		'edit_published_events' => true,
+		'publish_events'        => true,
+	) );
+} );
+```
+
+A user with the `event_writer` role can create events and update the ones it created, but can't edit posts, pages or other users' events. Add `edit_others_events` if it also needs to update events created by someone else.
+
+### Send authenticated requests
+
+Send the credentials as HTTP Basic auth. WPGraphQL and the WordPress REST API both accept them:
+
+```js title="lib/wordpress-server.js"
+const credentials = Buffer.from(
+	`${process.env.WP_SERVICE_USER}:${process.env.WP_SERVICE_APP_PASSWORD}`,
+).toString("base64");
+
+export async function wordpressMutation(query, variables) {
+	const response = await fetch(
+		`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/graphql`,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Basic ${credentials}`,
+			},
+			body: JSON.stringify({ query, variables }),
+		},
+	);
+
+	return response.json();
+}
+```
+
+- WordPress only accepts Application Passwords over HTTPS, except on local development sites.
+- Keep the credentials in server-side environment variables. Never put them in variables prefixed with `NEXT_PUBLIC_`, which are sent to the browser.
+- To rotate the credentials, create a new Application Password, deploy it, then revoke the old one.
 
 ## Security notes
 
