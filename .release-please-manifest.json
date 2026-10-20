@@ -1,6 +1,6 @@
 {
-  "packages/faustwp-core": "3.5.2",
-  "packages/faustwp-cli": "3.5.2",
-  "packages/blocks": "6.1.13",
-  "plugins/faustwp": "1.8.13"
+  "packages/faustwp-core": "3.6.0",
+  "packages/faustwp-cli": "3.6.0",
+  "packages/blocks": "6.1.14",
+  "plugins/faustwp": "1.8.14"
 }

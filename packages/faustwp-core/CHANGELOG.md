@@ -1,5 +1,13 @@
 # @faustwp/core
 
+## [3.6.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.2...@faustwp/core@3.6.0) (2026-10-20)
+
+
+### Bug Fixes
+
+* **core:** pass the locale to template queries that run in the browser ([#2662](https://github.com/wpengine/faustjs/issues/2662)) ([9ad4458](https://github.com/wpengine/faustjs/commit/9ad445866243d99efaa750734ae58b259c6775d2))
+* **core:** stop accepting Apollo Client 4 as a peer dependency ([#2660](https://github.com/wpengine/faustjs/issues/2660)) ([039a5c2](https://github.com/wpengine/faustjs/commit/039a5c259e7932bcb0c3fa1391ee2645e2602f30))
+
 ## [3.5.2](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.1...@faustwp/core@3.5.2) (2026-10-19)
 
 
