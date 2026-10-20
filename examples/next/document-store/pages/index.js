@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
+import { deepEqual, mergeDocuments, setAtPath } from '../lib/mergeDocuments.mjs';
 
 const SLUG = 'team-notes';
 const EMPTY_NOTES = { title: '', notes: '', status: 'draft' };
+const FIELDS = [
+	{ name: 'title', label: 'Title' },
+	{ name: 'notes', label: 'Notes' },
+	{ name: 'status', label: 'Status' },
+];
+// How many times a save merges with a newer version and retries before
+// asking the user, in case other tabs keep saving in between.
+const MAX_AUTO_MERGES = 2;
 
 async function request(method, body) {
 	const response = await fetch(`/api/documents/${SLUG}`, {
@@ -18,19 +27,29 @@ async function request(method, body) {
 	}
 }
 
+function withDefaults(data) {
+	return { ...EMPTY_NOTES, ...data };
+}
+
+function formatValue(value) {
+	return value === undefined ? '(removed)' : JSON.stringify(value);
+}
+
 export default function Home() {
-	// The version and data last read from or saved to WordPress.
+	// The version and data last read from or saved to WordPress. Edits in the
+	// form are based on this, so it's the base for merging.
 	const [saved, setSaved] = useState(null);
 	// What's in the form now.
 	const [draft, setDraft] = useState(EMPTY_NOTES);
-	// The document someone else saved, when a write is rejected.
-	const [theirs, setTheirs] = useState(null);
+	// Fields both you and someone else changed, while waiting for a decision.
+	const [conflict, setConflict] = useState(null);
 	const [message, setMessage] = useState('Loading...');
+	const [saving, setSaving] = useState(false);
 
 	function showDocument(document) {
-		setSaved(document);
-		setDraft({ ...EMPTY_NOTES, ...document.data });
-		setTheirs(null);
+		setSaved({ ...document, data: withDefaults(document.data) });
+		setDraft(withDefaults(document.data));
+		setConflict(null);
 	}
 
 	async function load() {
@@ -46,18 +65,74 @@ export default function Home() {
 		}
 	}
 
-	async function save(version) {
-		const { status, json } = await request('PUT', { version, data: draft });
+	// Save `data` on top of `version`. On a conflict, `base` is the version the
+	// data was edited from, used to work out who changed what.
+	async function save(version, data, base, merges = 0) {
+		setSaving(true);
+		const { status, json } = await request('PUT', { version, data });
+		setSaving(false);
+
 		if (status === 200 || status === 201) {
 			showDocument(json);
-			setMessage(`Saved version ${json.version}.`);
-		} else if (status === 409) {
-			setTheirs(json.data.document);
-			setMessage(
-				`Someone saved version ${json.data.version} after you loaded version ${version}. Nothing was changed.`,
-			);
-		} else {
+			return { ok: true, version: json.version };
+		}
+		if (status !== 409) {
 			setMessage(`Could not save (${status}): ${json.message}`);
+			return { ok: false };
+		}
+
+		const theirs = { ...json.data.document, data: withDefaults(json.data.document?.data) };
+
+		// Nothing to keep from this tab, so just catch up.
+		if (deepEqual(data, base)) {
+			showDocument(theirs);
+			setMessage(`Updated to version ${theirs.version} from another tab.`);
+			return { ok: false };
+		}
+
+		const { merged, conflicts } = mergeDocuments(base, theirs.data, data);
+
+		if (conflicts.length === 0 && merges < MAX_AUTO_MERGES) {
+			const result = await save(theirs.version, merged, theirs.data, merges + 1);
+			if (result.ok && !result.merged) {
+				setMessage(
+					`Merged your changes with version ${theirs.version} and saved version ${result.version}.`,
+				);
+			}
+			return { ...result, merged: true };
+		}
+
+		setSaved(theirs);
+		setDraft(merged);
+		setConflict({
+			theirs,
+			merged,
+			fields: conflicts.map((item) => ({ ...item, choice: 'theirs' })),
+		});
+		setMessage(
+			conflicts.length
+				? `Version ${theirs.version} changed the same fields you did. Choose what to keep.`
+				: `Version ${theirs.version} keeps changing. Review the merged result and save again.`,
+		);
+		return { ok: false };
+	}
+
+	function choose(index, choice) {
+		setConflict({
+			...conflict,
+			fields: conflict.fields.map((field, i) => (i === index ? { ...field, choice } : field)),
+		});
+	}
+
+	async function saveMerged() {
+		const data = conflict.fields.reduce(
+			(result, field) =>
+				setAtPath(result, field.path, field.choice === 'yours' ? field.yours : field.theirs),
+			conflict.merged,
+		);
+		const result = await save(conflict.theirs.version, data, conflict.theirs.data);
+		if (result.ok && !result.merged) {
+			setMessage(`Saved version ${result.version} with your choices.`);
 		}
 	}
 
@@ -69,13 +144,19 @@ export default function Home() {
 		return (event) => setDraft({ ...draft, [field]: event.target.value });
 	}
 
+	// Fields with edits that aren't saved yet.
+	const changed = new Set(
+		saved ? FIELDS.filter(({ name }) => draft[name] !== saved.data[name]).map(({ name }) => name) : [],
+	);
+	const labelClass = (name) => (changed.has(name) ? 'changed' : undefined);
+
 	return (
 		<main>
 			<h1>Team notes</h1>
 			<p className="hint">
-				Open this page in two tabs, change the notes in both, then save
-				each tab. The second save is rejected because it's based on an
-				older version.
+				Open this page in two tabs and save in both. If the tabs changed
+				different fields, the second save merges them. If they changed the
+				same field, you choose which value to keep.
 			</p>
 
 			<p>
@@ -85,30 +166,39 @@ export default function Home() {
 			<form
 				onSubmit={(event) => {
 					event.preventDefault();
-					save(saved.version);
+					save(saved.version, draft, saved.data).then((result) => {
+						if (result.ok && !result.merged) {
+							setMessage(`Saved version ${result.version}.`);
+						}
+					});
 				}}
 			>
-				<label>
+				<label className={labelClass('title')}>
 					Title
-					<input value={draft.title} onChange={update('title')} />
+					<input value={draft.title} onChange={update('title')} disabled={Boolean(conflict)} />
 				</label>
-				<label>
+				<label className={labelClass('notes')}>
 					Notes
-					<textarea rows={6} value={draft.notes} onChange={update('notes')} />
+					<textarea
+						rows={6}
+						value={draft.notes}
+						onChange={update('notes')}
+						disabled={Boolean(conflict)}
+					/>
 				</label>
-				<label>
+				<label className={labelClass('status')}>
 					Status
-					<select value={draft.status} onChange={update('status')}>
+					<select value={draft.status} onChange={update('status')} disabled={Boolean(conflict)}>
 						<option value="draft">Draft</option>
 						<option value="review">In review</option>
 						<option value="done">Done</option>
 					</select>
 				</label>
 				<div className="actions">
-					<button type="submit" disabled={!saved || Boolean(theirs)}>
+					<button type="submit" disabled={!saved || saving || Boolean(conflict)}>
 						Save
 					</button>
-					<button type="button" onClick={load}>
+					<button type="button" onClick={load} disabled={saving}>
 						Reload
 					</button>
 				</div>
@@ -116,25 +206,43 @@ export default function Home() {
 
 			<p role="status">{message}</p>
 
-			{theirs && (
+			{conflict && (
 				<section className="conflict">
-					<h2>Conflict</h2>
-					<div className="columns">
-						<div>
-							<h3>Yours (not saved)</h3>
-							<pre>{JSON.stringify(draft, null, 2)}</pre>
-						</div>
-						<div>
-							<h3>Theirs (version {theirs.version})</h3>
-							<pre>{JSON.stringify(theirs.data, null, 2)}</pre>
-						</div>
-					</div>
+					<h2>Choose what to keep</h2>
+					<p>
+						Changes to other fields are already merged. These fields were
+						changed in version {conflict.theirs.version} and in this tab.
+					</p>
+					{conflict.fields.map((field, index) => (
+						<fieldset key={field.path.join('.')}>
+							<legend>{field.path.join('.')}</legend>
+							<p className="was">Before: {formatValue(field.base)}</p>
+							<label className="choice">
+								<input
+									type="radio"
+									name={`choice-${index}`}
+									checked={field.choice === 'theirs'}
+									onChange={() => choose(index, 'theirs')}
+								/>
+								Keep theirs: {formatValue(field.theirs)}
+							</label>
+							<label className="choice">
+								<input
+									type="radio"
+									name={`choice-${index}`}
+									checked={field.choice === 'yours'}
+									onChange={() => choose(index, 'yours')}
+								/>
+								Keep mine: {formatValue(field.yours)}
+							</label>
+						</fieldset>
+					))}
 					<div className="actions">
-						<button type="button" onClick={() => showDocument(theirs)}>
-							Reload theirs
+						<button type="button" onClick={saveMerged} disabled={saving}>
+							Save merged
 						</button>
-						<button type="button" onClick={() => save(theirs.version)}>
-							Overwrite with mine
+						<button type="button" onClick={() => showDocument(conflict.theirs)} disabled={saving}>
+							Discard my changes
 						</button>
 					</div>
 				</section>

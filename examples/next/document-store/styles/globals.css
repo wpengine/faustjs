@@ -49,14 +49,30 @@ button {
 	border: 2px solid #c62828;
 }
 
-.columns {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
+/* A field with edits that aren't saved yet. */
+label.changed {
+	border-left: 4px solid #f9a825;
+	padding-left: 0.5rem;
 }
 
-pre {
-	overflow: auto;
-	padding: 0.5rem;
-	background: #f5f5f5;
+.conflict fieldset {
+	margin: 1rem 0;
+	border: 1px solid #ccc;
+}
+
+.conflict legend {
+	font-weight: bold;
+}
+
+.conflict .was {
+	margin: 0 0 0.5rem;
+	color: #555;
+}
+
+.conflict label.choice {
+	display: flex;
+	gap: 0.5rem;
+	align-items: baseline;
+	margin: 0.25rem 0;
+	font-weight: normal;
 }
