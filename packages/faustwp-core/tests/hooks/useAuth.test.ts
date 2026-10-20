@@ -2,10 +2,12 @@
  * @jest-environment jsdom
  */
 
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import fetchMock from 'fetch-mock';
 import { useAuth } from '../../src/hooks/useAuth';
 import { setAccessToken } from '../../src/auth';
+
+const VIEWER_URL = `http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20avatar%20%7B%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20__typename%0A%20%20%20%20%7D%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`;
 
 describe('useAuth hook', () => {
 	const envBackup = process.env;
@@ -175,5 +177,53 @@ describe('useAuth hook', () => {
 	it('returns the viewer object', () => {
 		const { result } = renderHook(() => useAuth());
 		expect(result.current.viewer).toBeDefined();
+	});
+
+	it('updates isAuthenticated and viewer after logging in without a reload', async () => {
+		fetchMock.get(`/api/faust/auth/token`, {
+			status: 401,
+			body: JSON.stringify({ error: 'Unauthorized' }),
+		});
+		fetchMock.get(VIEWER_URL, {
+			status: 200,
+			body: JSON.stringify({
+				data: { viewer: { name: 'admin', username: 'admin' } },
+			}),
+		});
+
+		const { result } = renderHook(() => useAuth());
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(false);
+		});
+
+		// useLogin() stores the access token after a successful login.
+		act(() => {
+			setAccessToken('at', Math.floor(Date.now() / 1000) + 300);
+		});
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(true);
+			expect(result.current.viewer?.username).toStrictEqual('admin');
+		});
+
+		act(() => {
+			setAccessToken(undefined, undefined);
+		});
+
+		await waitFor(() => {
+			expect(result.current.isAuthenticated).toStrictEqual(false);
+			expect(result.current.viewer).toStrictEqual(null);
+		});
+	});
+
+	it('ignores logins when skip is true', () => {
+		const { result } = renderHook(() => useAuth({ skip: true }));
+
+		act(() => {
+			setAccessToken('at', Math.floor(Date.now() / 1000) + 300);
+		});
+
+		expect(result.current.isAuthenticated).toStrictEqual(null);
 	});
 });

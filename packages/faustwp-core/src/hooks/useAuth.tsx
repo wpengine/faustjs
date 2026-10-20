@@ -5,6 +5,8 @@ import { gql } from '@apollo/client';
 import {
 	ensureAuthorization,
 	EnsureAuthorizationOptions,
+	getAccessToken,
+	onAuthChange,
 } from '../auth/index.js';
 import { getApolloAuthClient } from '../client.js';
 
@@ -112,6 +114,27 @@ export function useAuth(_config?: UseAuthConfig) {
 			setIsReady(true);
 		})();
 	}, [called, config]);
+
+	/**
+	 * Update when this tab logs in or out after the first check, for example
+	 * after a login with useLogin().
+	 */
+	useEffect(() => {
+		if (config.skip === true) {
+			return undefined;
+		}
+
+		return onAuthChange(() => {
+			const authenticated = Boolean(getAccessToken());
+
+			setIsAuthenticated(authenticated);
+			setIsReady(true);
+
+			if (!authenticated) {
+				setViewer(null);
+			}
+		});
+	}, [config.skip]);
 
 	/**
 	 * Automatically redirect the user to the login page if the
