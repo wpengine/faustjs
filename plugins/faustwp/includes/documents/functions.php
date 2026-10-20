@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version of the documents table schema.
  *
- * Bump this when the schema in install_document_table() changes, and dbDelta()
+ * Bump this when the schema in install_document_table() changes, so dbDelta()
  * updates the table on the next request.
  */
 const DB_VERSION = 1;
@@ -34,7 +34,7 @@ const DB_VERSION_OPTION = 'faustwp_documents_db_version';
  * Collection used by the faustwp/v1/documents routes.
  *
  * The table can hold separate collections and per-user documents, but the
- * routes only use this shared collection for now.
+ * routes only use this collection, with shared documents (owner_id 0), for now.
  */
 const DEFAULT_COLLECTION = 'default';
 
@@ -89,6 +89,8 @@ function get_document_table() {
  * @return void
  */
 function maybe_install_document_table() {
+	global $wpdb;
+
 	if ( (int) get_option( DB_VERSION_OPTION ) === DB_VERSION ) {
 		return;
 	}
@@ -99,8 +101,6 @@ function maybe_install_document_table() {
 	if ( ! \WP_Upgrader::create_lock( 'faustwp_documents_db', 60 ) ) {
 		return;
 	}
-
-	global $wpdb;
 
 	install_document_table();
 
