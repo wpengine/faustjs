@@ -1,6 +1,6 @@
 # Faust.js Roadmap
 
-Q4 2026. New work builds on the existing packages; the Q4 2025 plan to rewrite Faust.js into framework adapters is no longer planned.
+Q4 2026. The Q4 2025 plan to rewrite Faust.js into framework adapters was dropped, and new work builds on the existing packages.
 
 ## 1. WordPress as your app's data store
 
