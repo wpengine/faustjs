@@ -101,6 +101,7 @@ describe('server/auth/token (OAuth)', () => {
 			const mockCookies = {
 				setCookie: jest.fn(),
 				removeCookie: jest.fn(),
+				secure: true,
 			} as unknown as Cookies;
 
 			const oauth = new OAuth(mockCookies);
@@ -124,6 +125,7 @@ describe('server/auth/token (OAuth)', () => {
 			const mockCookies = {
 				setCookie: jest.fn(),
 				removeCookie: jest.fn(),
+				secure: true,
 			} as unknown as Cookies;
 
 			const oauth = new OAuth(mockCookies);
@@ -141,6 +143,25 @@ describe('server/auth/token (OAuth)', () => {
 					secure: true,
 					httpOnly: true,
 				},
+			);
+		});
+	});
+
+	describe('setRefreshToken on plain HTTP localhost', () => {
+		test('sets the cookie without Secure when Cookies says the request is not secure', () => {
+			const mockCookies = {
+				setCookie: jest.fn(),
+				removeCookie: jest.fn(),
+				secure: false,
+			} as unknown as Cookies;
+
+			const oauth = new OAuth(mockCookies);
+			oauth.setRefreshToken('valid-rt-token');
+
+			expect(mockCookies.setCookie).toHaveBeenCalledWith(
+				'httpsmy-wp-site.com-rt',
+				'valid-rt-token',
+				expect.objectContaining({ secure: false, httpOnly: true }),
 			);
 		});
 	});

@@ -55,7 +55,7 @@ export class OAuth {
 			maxAge,
 			path: '/',
 			sameSite: 'strict',
-			secure: true,
+			secure: this.cookies.secure,
 			httpOnly: true,
 		});
 	}
