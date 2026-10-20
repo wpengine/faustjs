@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // URL in the notice's action, so links in other plugins' notices are left
   // alone.
   function getSaveNoticeLinks() {
-    const notices = window.wp?.data?.select('core/notices')?.getNotices() || [];
+    const notices =
+      window.wp?.data?.select('core/notices')?.getNotices() || [];
     const saveNotice = notices.find((notice) =>
       saveNoticeIds.includes(notice.id),
     );
@@ -54,10 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
     ).filter((link) => link.getAttribute('href') === noticeUrl);
   }
 
-  // Once a post is public, the save snackbar's link ("View Post", "View
-  // Page", etc.) goes to the live post, so only rewrite it before then.
-  // Private and scheduled posts keep the preview link, since the frontend
-  // can't show them to visitors.
+  // Once a post is public, the save notice's link goes to the live post, so
+  // only rewrite it before then. Private and scheduled posts keep the preview
+  // link, since the frontend can't show them to visitors.
   function isPostPublic() {
     const editor = window.wp?.data?.select('core/editor');
     return editor
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
       : false;
   }
 
-  function updateUIElements() {
+  function updateSaveNoticeLinks() {
     if (isPostPublic()) {
       return;
     }
@@ -75,10 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Run the update function on initial page load.
-  const debouncedUpdateUIElements = debounce(updateUIElements, 300);
-
-  // Observe DOM changes to update UI elements accordingly.
-  const observer = new MutationObserver(debouncedUpdateUIElements);
+  // The save notice is rendered after each save, so check again whenever the
+  // editor's DOM changes.
+  const debouncedUpdateSaveNoticeLinks = debounce(updateSaveNoticeLinks, 300);
+  const observer = new MutationObserver(debouncedUpdateSaveNoticeLinks);
   observer.observe(document.body, { childList: true, subtree: true });
 });
