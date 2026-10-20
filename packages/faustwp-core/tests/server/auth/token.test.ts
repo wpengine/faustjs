@@ -344,4 +344,84 @@ describe('server/auth/token (OAuth)', () => {
 			warningSpy.mockRestore();
 		});
 	});
+
+	describe('fetch with an Application Password', () => {
+		const tokens: OAuthTokens = {
+			accessToken: 'app-at',
+			accessTokenExpiration: 3600,
+			refreshToken: 'app-rt',
+			refreshTokenExpiration: 86400,
+		};
+
+		beforeEach(() => {
+			process.env.FAUST_APPLICATION_USER = 'frontend';
+			process.env.FAUST_APPLICATION_PASSWORD = 'abcd efgh ijkl mnop';
+		});
+
+		afterEach(() => {
+			delete process.env.FAUST_APPLICATION_USER;
+			delete process.env.FAUST_APPLICATION_PASSWORD;
+		});
+
+		test('sends Basic auth instead of the secret key', async () => {
+			const mockCookies = {
+				getCookie: jest.fn().mockReturnValue(undefined),
+			} as unknown as Cookies;
+
+			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
+				status: 200,
+				body: JSON.stringify(tokens),
+			});
+
+			const result = await new OAuth(mockCookies).fetch('auth-code');
+
+			expect(result).toEqual(tokens);
+			expect(
+				fetchMock.lastCall(`${wpUrl}/?rest_route=/faustwp/v1/authorize`)?.[1]
+					?.headers,
+			).toEqual({
+				'Content-Type': 'application/json',
+				Authorization: `Basic ${Buffer.from(
+					'frontend:abcd efgh ijkl mnop',
+				).toString('base64')}`,
+			});
+		});
+
+		test('works without a secret key', async () => {
+			getWpSecretSpy.mockReturnValue(undefined);
+			const mockCookies = {
+				getCookie: jest.fn().mockReturnValue(undefined),
+			} as unknown as Cookies;
+
+			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
+				status: 200,
+				body: JSON.stringify(tokens),
+			});
+
+			await expect(new OAuth(mockCookies).fetch('auth-code')).resolves.toEqual(
+				tokens,
+			);
+		});
+
+		test("doesn't try the deprecated endpoint without a secret key", async () => {
+			getWpSecretSpy.mockReturnValue(undefined);
+			const mockCookies = {
+				getCookie: jest.fn().mockReturnValue(undefined),
+			} as unknown as Cookies;
+
+			fetchMock
+				.post(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
+					status: 404,
+					body: JSON.stringify({ code: 'rest_no_route' }),
+				})
+				.post(`${wpUrl}/?rest_route=/wpac/v1/authorize`, 200);
+
+			const result: any = await new OAuth(mockCookies).fetch('auth-code');
+
+			expect(result.error).toBe(true);
+			expect(
+				fetchMock.called(`${wpUrl}/?rest_route=/wpac/v1/authorize`),
+			).toBe(false);
+		});
+	});
 });
