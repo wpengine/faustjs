@@ -89,9 +89,9 @@ add_filter( 'map_meta_cap', __NAMESPACE__ . '\\map_upload_blocks_capability', 10
 /**
  * Callback for WordPress 'map_meta_cap' filter.
  *
- * Uploading a blockset puts files on the server, so it needs the same access as
- * managing the site's options, or the network's on Multisite. It can't be granted
- * through a role.
+ * Uploading a blockset replaces the blocks registered for the whole site, so it
+ * needs the same access as managing the site's options, or the network's on
+ * Multisite. It can't be granted through a role.
  *
  * @param string[] $caps Primitive capabilities the user needs.
  * @param string   $cap  Capability being checked.
