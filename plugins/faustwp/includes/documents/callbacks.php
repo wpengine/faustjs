@@ -185,6 +185,24 @@ function validate_document_data( $value ) {
 }
 
 /**
+ * Get a collection name or document ID from the route.
+ *
+ * WP_REST_Request::get_param() prefers JSON body and query parameters over the
+ * route's, so a request could otherwise swap in an identifier the route
+ * pattern never checked.
+ *
+ * @param WP_REST_Request $request Current request.
+ * @param string          $name    Route parameter name.
+ *
+ * @return string The parameter value.
+ */
+function get_route_param( WP_REST_Request $request, $name ) {
+	$params = $request->get_url_params();
+
+	return isset( $params[ $name ] ) ? (string) $params[ $name ] : '';
+}
+
+/**
  * Get the document data from a request.
  *
  * WordPress decodes JSON request bodies into associative arrays, which turns
@@ -213,7 +231,7 @@ function get_request_document_data( WP_REST_Request $request ) {
  * @return WP_REST_Response|\WP_Error The document, or a 404 error.
  */
 function handle_get_document( WP_REST_Request $request ) {
-	$document = get_document( $request->get_param( 'collection' ), $request->get_param( 'id' ) );
+	$document = get_document( get_route_param( $request, 'collection' ), get_route_param( $request, 'id' ) );
 
 	if ( ! $document ) {
 		return not_found_error();
@@ -235,8 +253,8 @@ function handle_get_document( WP_REST_Request $request ) {
  */
 function handle_put_document( WP_REST_Request $request ) {
 	$result = save_document(
-		$request->get_param( 'collection' ),
-		$request->get_param( 'id' ),
+		get_route_param( $request, 'collection' ),
+		get_route_param( $request, 'id' ),
 		(int) $request->get_param( 'version' ),
 		get_request_document_data( $request )
 	);
@@ -253,7 +271,7 @@ function handle_put_document( WP_REST_Request $request ) {
  */
 function handle_list_documents( WP_REST_Request $request ) {
 	return new WP_REST_Response(
-		query_documents( $request->get_param( 'collection' ), $request->get_param( 'limit' ), $request->get_param( 'cursor' ) ),
+		query_documents( get_route_param( $request, 'collection' ), $request->get_param( 'limit' ), $request->get_param( 'cursor' ) ),
 		200
 	);
 }
@@ -268,7 +286,7 @@ function handle_list_documents( WP_REST_Request $request ) {
  * @return WP_REST_Response|\WP_Error The new document, or an error.
  */
 function handle_add_document( WP_REST_Request $request ) {
-	return document_response( add_document( $request->get_param( 'collection' ), get_request_document_data( $request ) ) );
+	return document_response( add_document( get_route_param( $request, 'collection' ), get_request_document_data( $request ) ) );
 }
 
 /**
@@ -283,8 +301,8 @@ function handle_add_document( WP_REST_Request $request ) {
  */
 function handle_delete_document( WP_REST_Request $request ) {
 	$result = delete_document(
-		$request->get_param( 'collection' ),
-		$request->get_param( 'id' ),
+		get_route_param( $request, 'collection' ),
+		get_route_param( $request, 'id' ),
 		(int) $request->get_param( 'version' )
 	);
 

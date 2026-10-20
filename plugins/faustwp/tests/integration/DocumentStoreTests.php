@@ -15,9 +15,11 @@ use function WPE\FaustWP\Documents\maybe_install_document_table;
 use function WPE\FaustWP\Documents\maybe_set_up_document_store;
 use function WPE\FaustWP\Documents\save_document;
 use function WPE\FaustWP\Documents\uninstall_document_table;
+use const WPE\FaustWP\Documents\COLLECTION_PATTERN;
 use const WPE\FaustWP\Documents\DB_VERSION;
 use const WPE\FaustWP\Documents\DB_VERSION_OPTION;
 use const WPE\FaustWP\Documents\EDIT_CAPABILITY;
+use const WPE\FaustWP\Documents\ID_PATTERN;
 use const WPE\FaustWP\Documents\READ_CAPABILITY;
 
 /**
@@ -131,7 +133,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertFalse( $this->table_exists() );
 		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
-		$this->assertArrayNotHasKey( '/faust/v1/collections/(?P<collection>[a-z0-9-]{1,64})/documents/(?P<id>[a-z0-9-]{1,190})', $this->server->get_routes() );
+		$this->assertArrayNotHasKey( '/faust/v1/collections/(?P<collection>' . COLLECTION_PATTERN . ')/documents/(?P<id>' . ID_PATTERN . ')', $this->server->get_routes() );
 		$this->assertSame( 404, $this->get( 'settings' )->get_status() );
 	}
 
@@ -300,9 +302,65 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	}
 
 	public function test_ids_and_collections_outside_the_allowed_characters_do_not_match_the_route() {
-		$this->assertSame( 404, $this->get( 'Settings' )->get_status() );
-		$this->assertSame( 404, $this->put( 'my_settings', array( 'version' => 0, 'data' => array() ) )->get_status() );
-		$this->assertSame( 404, $this->server->dispatch( new \WP_REST_Request( 'GET', '/faust/v1/collections/My_Prefs/documents/settings' ) )->get_status() );
+		$this->assertSame( 'rest_no_route', $this->put( 'Settings', array( 'version' => 0, 'data' => array() ) )->get_data()['code'] );
+		$this->assertSame( 'rest_no_route', $this->put( 'my_settings', array( 'version' => 0, 'data' => array() ) )->get_data()['code'] );
+		$this->assertSame( 'rest_no_route', $this->server->dispatch( new \WP_REST_Request( 'GET', '/faust/v1/collections/Prefs/documents/settings' ) )->get_data()['code'] );
+		$this->assertNull( get_document( 'prefs', 'Settings' ) );
+	}
+
+	public function test_body_and_query_parameters_cannot_replace_the_route_identifiers() {
+		$response = $this->put(
+			'settings',
+			array(
+				'version'    => 0,
+				'data'       => array(),
+				'collection' => 'Other Collection',
+				'id'         => 'Not A Slug!',
+			)
+		);
+
+		$this->assertSame( 201, $response->get_status() );
+		$this->assertSame( 'settings', $response->get_data()['id'] );
+		$this->assertSame( 'prefs', $response->get_data()['collection'] );
+		$this->assertNull( get_document( 'Other Collection', 'Not A Slug!' ) );
+
+		$request = new \WP_REST_Request( 'GET', self::ROUTE . '/settings' );
+		$request->set_query_params( array( 'id' => 'missing' ) );
+
+		$this->assertSame( 200, $this->server->dispatch( $request )->get_status() );
+	}
+
+	public function test_a_recreated_document_keeps_counting_versions() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
+		$this->delete( 'settings', 1 );
+
+		$this->assertSame( 404, $this->get( 'settings' )->get_status() );
+		$this->assertSame( array(), $this->list_documents()->get_data()['documents'] );
+
+		$recreated = $this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'light' ) ) );
+
+		$this->assertSame( 201, $recreated->get_status() );
+		$this->assertSame( 3, $recreated->get_data()['version'] );
+	}
+
+	public function test_stale_writes_from_before_a_delete_cannot_touch_the_recreated_document() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
+		$this->delete( 'settings', 1 );
+		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'light' ) ) );
+
+		$this->assertSame( 409, $this->put( 'settings', array( 'version' => 1, 'data' => array( 'theme' => 'stale' ) ) )->get_status() );
+		$this->assertSame( 409, $this->delete( 'settings', 1 )->get_status() );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
+	}
+
+	public function test_updating_a_deleted_document_is_a_conflict() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array() ) );
+		$this->delete( 'settings', 1 );
+
+		$response = $this->put( 'settings', array( 'version' => 1, 'data' => array() ) );
+
+		$this->assertSame( 409, $response->get_status() );
+		$this->assertNull( $response->get_data()['data']['document'] );
 	}
 
 	public function test_the_same_id_in_two_collections_is_two_documents() {

@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Bump this when the schema in install_document_table() changes, so dbDelta()
  * updates the table on the next request.
  */
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 /**
  * Option holding the installed documents table schema version.
@@ -33,13 +33,19 @@ const DB_VERSION_OPTION = 'faust_documents_db_version';
 
 /**
  * Pattern for collection names: lowercase letters, numbers and hyphens.
+ *
+ * Case-sensitive even inside REST route patterns, which WordPress matches
+ * case-insensitively.
  */
-const COLLECTION_PATTERN = '[a-z0-9-]{1,64}';
+const COLLECTION_PATTERN = '(?-i:[a-z0-9-]{1,64})';
 
 /**
  * Pattern for document IDs: lowercase letters, numbers and hyphens.
+ *
+ * Case-sensitive even inside REST route patterns, which WordPress matches
+ * case-insensitively.
  */
-const ID_PATTERN = '[a-z0-9-]{1,190}';
+const ID_PATTERN = '(?-i:[a-z0-9-]{1,190})';
 
 /**
  * Capability needed to read documents.
@@ -123,6 +129,10 @@ function maybe_install_document_table() {
  * The table can also hold per-user documents, but the routes only use shared
  * documents (owner_id 0) for now.
  *
+ * A deleted document keeps its row, with deleted_gmt set, so its version
+ * keeps counting up if it's created again. Otherwise a client holding an old
+ * version could overwrite the new document.
+ *
  * @return void
  */
 function install_document_table() {
@@ -142,6 +152,7 @@ function install_document_table() {
 			created_gmt datetime NOT NULL,
 			modified_gmt datetime NOT NULL,
 			modified_by bigint(20) unsigned NOT NULL DEFAULT 0,
+			deleted_gmt datetime DEFAULT NULL,
 			PRIMARY KEY  (id),
 			UNIQUE KEY collection_owner_document (collection,owner_id,document_id)
 		) {$charset_collate};"
@@ -180,7 +191,7 @@ function get_document_row( $collection, $id ) {
 
 	return $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			"SELECT * FROM {$table} WHERE collection = %s AND owner_id = 0 AND document_id = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			"SELECT * FROM {$table} WHERE collection = %s AND owner_id = 0 AND document_id = %s AND deleted_gmt IS NULL", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$collection,
 			$id
 		)
@@ -279,7 +290,7 @@ function query_documents( $collection, $limit, $cursor = '' ) {
 
 	$rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			"SELECT * FROM {$table} WHERE collection = %s AND owner_id = 0 AND id < %d ORDER BY id DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			"SELECT * FROM {$table} WHERE collection = %s AND owner_id = 0 AND deleted_gmt IS NULL AND id < %d ORDER BY id DESC LIMIT %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 			$collection,
 			$before,
 			$limit + 1
@@ -317,12 +328,12 @@ function list_documents( $page = 1, $per_page = 20 ) {
 	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$rows  = $wpdb->get_results(
 		$wpdb->prepare(
-			"SELECT collection, document_id, version, modified_gmt, modified_by FROM {$table} WHERE owner_id = 0 ORDER BY id DESC LIMIT %d OFFSET %d",
+			"SELECT collection, document_id, version, modified_gmt, modified_by FROM {$table} WHERE owner_id = 0 AND deleted_gmt IS NULL ORDER BY id DESC LIMIT %d OFFSET %d",
 			$per_page,
 			$offset
 		)
 	);
-	$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE owner_id = 0" );
+	$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE owner_id = 0 AND deleted_gmt IS NULL" );
 	// phpcs:enable
 
 	$documents = array();
@@ -449,9 +460,9 @@ function save_document( $collection, $id, $expected_version, $data ) {
 	 * @param array $document The saved document.
 	 * @param bool  $created  True if the document was created.
 	 */
-	do_action( 'faust_document_saved', $document, 1 === $result['version'] );
+	do_action( 'faust_document_saved', $document, $result['is_new'] );
 
-	return $document + array( 'is_new' => 1 === $result['version'] );
+	return $document + array( 'is_new' => $result['is_new'] );
 }
 
 /**
@@ -462,7 +473,8 @@ function save_document( $collection, $id, $expected_version, $data ) {
  * @param int    $expected_version The version the write is based on.
  * @param string $encoded_data     Document data encoded as JSON.
  *
- * @return array|WP_Error Array with version, created_gmt and modified_gmt keys, or an error.
+ * @return array|WP_Error Array with version, created_gmt, modified_gmt and
+ *                        is_new keys, or an error.
  */
 function update_document( $collection, $id, $expected_version, $encoded_data ) {
 	global $wpdb;
@@ -473,7 +485,7 @@ function update_document( $collection, $id, $expected_version, $encoded_data ) {
 	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$updated = $wpdb->query(
 		$wpdb->prepare(
-			"UPDATE {$table} SET version = version + 1, data = %s, modified_gmt = %s, modified_by = %d WHERE collection = %s AND owner_id = 0 AND document_id = %s AND version = %d",
+			"UPDATE {$table} SET version = version + 1, data = %s, modified_gmt = %s, modified_by = %d WHERE collection = %s AND owner_id = 0 AND document_id = %s AND version = %d AND deleted_gmt IS NULL",
 			$encoded_data,
 			$now,
 			get_current_user_id(),
@@ -507,20 +519,23 @@ function update_document( $collection, $id, $expected_version, $encoded_data ) {
 		// If another request deleted the document in the meantime, fall back to now.
 		'created_gmt'  => $created_gmt ? $created_gmt : $now,
 		'modified_gmt' => $now,
+		'is_new'       => false,
 	);
 }
 
 /**
- * Create a new document at version 1.
+ * Create a new document.
  *
  * The table's unique key rejects a second row for the same document, so if
- * two requests create it at once, only one insert succeeds.
+ * two requests create it at once, only one insert succeeds. A document that
+ * was deleted is revived instead, continuing from its last version.
  *
  * @param string $collection   Collection name.
  * @param string $id           Document ID.
  * @param string $encoded_data Document data encoded as JSON.
  *
- * @return array|WP_Error Array with version, created_gmt and modified_gmt keys, or an error.
+ * @return array|WP_Error Array with version, created_gmt, modified_gmt and
+ *                        is_new keys, or an error.
  */
 function create_document( $collection, $id, $encoded_data ) {
 	global $wpdb;
@@ -545,17 +560,80 @@ function create_document( $collection, $id, $encoded_data ) {
 	);
 	$wpdb->suppress_errors( $suppress );
 
-	if ( ! $inserted ) {
-		$current = get_document( $collection, $id );
+	if ( $inserted ) {
+		return array(
+			'version'      => 1,
+			'created_gmt'  => $now,
+			'modified_gmt' => $now,
+			'is_new'       => true,
+		);
+	}
 
-		// If the document exists, another request created it first.
-		return $current ? conflict_error( $collection, $id, $current ) : database_error();
+	$revived = revive_document( $collection, $id, $encoded_data, $now );
+	if ( $revived ) {
+		return $revived;
+	}
+
+	$current = get_document( $collection, $id );
+
+	// If the document exists, another request created it first.
+	return $current ? conflict_error( $collection, $id, $current ) : database_error();
+}
+
+/**
+ * Create a document again from its deleted row.
+ *
+ * @param string $collection   Collection name.
+ * @param string $id           Document ID.
+ * @param string $encoded_data Document data encoded as JSON.
+ * @param string $now          Current time in MySQL format, in UTC.
+ *
+ * @return array|false Array with version, created_gmt, modified_gmt and is_new
+ *                     keys, or false if there's no deleted row to revive.
+ */
+function revive_document( $collection, $id, $encoded_data, $now ) {
+	global $wpdb;
+
+	$table = get_document_table();
+
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$deleted_version = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT version FROM {$table} WHERE collection = %s AND owner_id = 0 AND document_id = %s AND deleted_gmt IS NOT NULL",
+			$collection,
+			$id
+		)
+	);
+
+	if ( null === $deleted_version ) {
+		return false;
+	}
+
+	// Only matches if the row is still deleted at that version, so if two
+	// requests revive it at once, only one succeeds.
+	$revived = $wpdb->query(
+		$wpdb->prepare(
+			"UPDATE {$table} SET version = version + 1, data = %s, created_gmt = %s, modified_gmt = %s, modified_by = %d, deleted_gmt = NULL WHERE collection = %s AND owner_id = 0 AND document_id = %s AND version = %d AND deleted_gmt IS NOT NULL",
+			$encoded_data,
+			$now,
+			$now,
+			get_current_user_id(),
+			$collection,
+			$id,
+			(int) $deleted_version
+		)
+	);
+	// phpcs:enable
+
+	if ( 1 !== $revived ) {
+		return false;
 	}
 
 	return array(
-		'version'      => 1,
+		'version'      => (int) $deleted_version + 1,
 		'created_gmt'  => $now,
 		'modified_gmt' => $now,
+		'is_new'       => true,
 	);
 }
 
@@ -604,9 +682,15 @@ function delete_document( $collection, $id, $expected_version ) {
 		return conflict_error( $collection, $id, $previous );
 	}
 
+	$now = current_time( 'mysql', true );
+
+	// Keep the row with its version, so a later create continues from it.
 	$deleted = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			'DELETE FROM ' . get_document_table() . ' WHERE collection = %s AND owner_id = 0 AND document_id = %s AND version = %d', // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			'UPDATE ' . get_document_table() . " SET version = version + 1, data = 'null', modified_gmt = %s, modified_by = %d, deleted_gmt = %s WHERE collection = %s AND owner_id = 0 AND document_id = %s AND version = %d AND deleted_gmt IS NULL", // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$now,
+			get_current_user_id(),
+			$now,
 			$collection,
 			$id,
 			$expected_version
