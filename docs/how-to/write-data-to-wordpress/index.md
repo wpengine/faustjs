@@ -153,8 +153,17 @@ GET /?rest_route=/faustwp/v1/collections/preferences/documents/site-settings
 ```
 
 ```json
-{ "collection": "preferences", "id": "site-settings", "version": 3, "data": { "theme": "dark" } }
+{
+	"collection": "preferences",
+	"id": "site-settings",
+	"version": 3,
+	"data": { "theme": "dark" },
+	"created": "2026-10-01T09:30:00Z",
+	"modified": "2026-10-20T15:04:05Z"
+}
 ```
+
+`created` and `modified` are UTC timestamps.
 
 Write a document by sending the version you read. Use `0` to create a new document. A successful write returns the new version:
 
@@ -176,16 +185,56 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 		"collection": "preferences",
 		"id": "site-settings",
 		"version": 4,
-		"document": { "collection": "preferences", "id": "site-settings", "version": 4, "data": { "theme": "blue" } }
+		"document": { "collection": "preferences", "id": "site-settings", "version": 4, "data": { "theme": "blue" }, "created": "…", "modified": "…" }
 	}
 }
+```
+
+To create a document without choosing an ID, for example a form submission, `POST` to the collection. WordPress generates a random ID and returns the new document with `201 Created`:
+
+```http
+POST /?rest_route=/faustwp/v1/collections/waitlist/documents
+Content-Type: application/json
+
+{ "data": { "email": "ada@example.com" } }
+```
+
+List a collection's documents, newest first. Pass `limit` (1 to 100, default 20), and to get the next page, pass the `next_cursor` from the previous response as `cursor`. `next_cursor` is `null` on the last page:
+
+```http
+GET /?rest_route=/faustwp/v1/collections/waitlist/documents&limit=20
+```
+
+```json
+{ "documents": [ { "collection": "waitlist", "id": "3f9c2a7e1b0d4c6a8e5f", "version": 1, "data": { "email": "ada@example.com" }, "created": "…", "modified": "…" } ], "next_cursor": null }
+```
+
+Delete a document by sending the version you read. Like a write, a stale version returns `409 Conflict`, and a document that doesn't exist returns `404`:
+
+```http
+DELETE /?rest_route=/faustwp/v1/collections/waitlist/documents/3f9c2a7e1b0d4c6a8e5f&version=1
+```
+
+To run code when documents change, for example to send an email for each form submission, use the `faustwp_document_saved` and `faustwp_document_deleted` actions:
+
+```php
+add_action(
+	'faustwp_document_saved',
+	function ( $document, $created ) {
+		if ( $created && 'waitlist' === $document['collection'] ) {
+			wp_mail( get_option( 'admin_email' ), 'New waitlist signup', $document['data']->email );
+		}
+	},
+	10,
+	2
+);
 ```
 
 Collection names and document IDs use lowercase letters, numbers and hyphens. A collection exists as soon as it has a document. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
 
 To see what your app has stored, go to **Tools → Faust Documents** in WordPress. It lists each document with its collection, version and when and by whom it was last saved, and shows a document's data. The screen is read-only.
 
-To try it locally, see the [document store example](https://github.com/wpengine/faustjs/tree/canary/examples/next/document-store). It runs WordPress in Docker and shows a conflict between two browser tabs.
+To try it locally, see the [document store example](https://github.com/wpengine/faustjs/tree/canary/examples/next/document-store). It runs WordPress in Docker, shows a conflict between two browser tabs, and has a waitlist page that adds, lists and removes documents.
 
 ## 6. Writing from the server
 
