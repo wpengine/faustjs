@@ -2,6 +2,14 @@
 import * as React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
+import { TextEncoder } from 'util';
+
+// react-dom/server needs TextEncoder, which jsdom doesn't provide.
+Object.assign(global, { TextEncoder });
+// The blocks package doesn't depend on @types/react-dom.
+const { renderToStaticMarkup } = require('react-dom/server') as {
+  renderToStaticMarkup: (element: React.ReactElement) => string;
+};
 import { WordPressBlocksProvider } from '../../src/components/WordPressBlocksProvider';
 import {
   CoreColumn,
@@ -104,6 +112,20 @@ describe('<CoreColumn />', () => {
     expect(css).toMatch(
       /^\.wp-container-core-column-faust-\w+ > :where\(:not\(\.alignleft\):not\(\.alignright\):not\(\.alignfull\)\) \{ margin-right: 0 !important; \}$/,
     );
+  });
+
+  test('keeps child selectors intact when rendered on the server', () => {
+    const html = renderToStaticMarkup(
+      <WordPressBlocksProvider config={{ blocks: {}, theme: {} }}>
+        <CoreColumn
+          attributes={{ layout: '{"type":"constrained","contentSize":"300px"}' }}
+        />
+      </WordPressBlocksProvider>,
+    );
+    expect(html).toContain(
+      ' > :where(:not(.alignleft):not(.alignright):not(.alignfull))',
+    );
+    expect(html).not.toContain('&gt;');
   });
 
   test('gives the same layout the same class name', () => {

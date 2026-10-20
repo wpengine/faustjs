@@ -116,7 +116,14 @@ export function CoreColumn(props: CoreColumnFragmentProps) {
     .join(' ');
   return (
     <>
-      {constrainedLayout && <style>{constrainedLayout.css}</style>}
+      {constrainedLayout && (
+        // React escapes ">" in text children when rendering on the server,
+        // which breaks the child selectors. The sizes are already sanitized.
+        <style
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: constrainedLayout.css }}
+        />
+      )}
       <div style={style} className={className || undefined}>
         <WordPressBlocksViewer blocks={innerBlocks ?? []} />
       </div>
