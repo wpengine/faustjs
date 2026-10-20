@@ -124,3 +124,18 @@ test('setAtPath replaces and removes nested values without mutating', () => {
 	assert.deepEqual(setAtPath(original, ['title'], undefined), { meta: { color: 'red' } });
 	assert.deepEqual(original, { meta: { color: 'red' }, title: 'x' });
 });
+
+test('keeps a "__proto__" field from the JSON as a field', () => {
+	const doc = JSON.parse('{"__proto__": {"x": 1}, "title": "a"}');
+	const { merged } = mergeDocuments(doc, doc, { ...doc, title: 'b' });
+
+	assert.equal(Object.getPrototypeOf(merged), Object.prototype);
+	assert.equal(JSON.stringify(merged), '{"__proto__":{"x":1},"title":"b"}');
+});
+
+test('setAtPath writes a "__proto__" field instead of changing the prototype', () => {
+	const result = setAtPath({ title: 'a' }, ['__proto__'], { x: 1 });
+
+	assert.equal(Object.getPrototypeOf(result), Object.prototype);
+	assert.equal(JSON.stringify(result), '{"title":"a","__proto__":{"x":1}}');
+});

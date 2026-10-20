@@ -29,12 +29,16 @@ export default function Waitlist() {
 	// Loads the first page, or the page after `cursor`.
 	async function load(cursor) {
 		const query = cursor ? `&cursor=${cursor}` : '';
+		// Block adding and removing until the page arrives, so the list can't
+		// get out of step with WordPress.
+		setBusy(true);
 		const { status, json } = await request('GET', `${COLLECTION_URL}?limit=${PAGE_SIZE}${query}`);
+		setBusy(false);
 		if (status !== 200) {
 			setMessage(`Could not load (${status}): ${json.message}`);
 			return;
 		}
-		setSignups(cursor ? [...signups, ...json.documents] : json.documents);
+		setSignups((current) => (cursor ? [...current, ...json.documents] : json.documents));
 		setNextCursor(json.next_cursor);
 		setMessage(json.documents.length || cursor ? '' : 'No signups yet.');
 	}
@@ -50,7 +54,7 @@ export default function Waitlist() {
 			return;
 		}
 		setEmail('');
-		setSignups([json, ...signups]);
+		setSignups((current) => [json, ...current]);
 		setMessage(`Added ${json.data.email} as ${json.id}.`);
 	}
 
@@ -63,7 +67,7 @@ export default function Waitlist() {
 		);
 		setBusy(false);
 		if (status === 200) {
-			setSignups(signups.filter(({ id }) => id !== signup.id));
+			setSignups((current) => current.filter(({ id }) => id !== signup.id));
 			setMessage(`Removed ${signup.data.email}.`);
 		} else if (status === 409 || status === 404) {
 			setMessage('That signup changed or was removed somewhere else. Reloaded the list.');

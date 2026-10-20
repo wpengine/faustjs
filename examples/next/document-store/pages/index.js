@@ -94,7 +94,15 @@ export default function Home() {
 			return { ok: false };
 		}
 
-		const theirs = { ...json.data.document, data: withDefaults(json.data.document?.data) };
+		// The document is null if someone else deleted it, so take the version
+		// (0 in that case) from the conflict itself.
+		const theirs = {
+			collection: COLLECTION,
+			id: DOCUMENT_ID,
+			...json.data.document,
+			version: json.data.version,
+			data: withDefaults(json.data.document?.data),
+		};
 
 		// Nothing to keep from this tab, so just catch up.
 		if (deepEqual(data, base)) {
@@ -191,7 +199,7 @@ export default function Home() {
 			>
 				<label className={labelClass('title')}>
 					Title
-					<input value={draft.title} onChange={update('title')} disabled={Boolean(conflict)} />
+					<input value={draft.title} onChange={update('title')} disabled={saving || Boolean(conflict)} />
 				</label>
 				<label className={labelClass('notes')}>
 					Notes
@@ -199,12 +207,12 @@ export default function Home() {
 						rows={6}
 						value={draft.notes}
 						onChange={update('notes')}
-						disabled={Boolean(conflict)}
+						disabled={saving || Boolean(conflict)}
 					/>
 				</label>
 				<label className={labelClass('status')}>
 					Status
-					<select value={draft.status} onChange={update('status')} disabled={Boolean(conflict)}>
+					<select value={draft.status} onChange={update('status')} disabled={saving || Boolean(conflict)}>
 						<option value="draft">Draft</option>
 						<option value="review">In review</option>
 						<option value="done">Done</option>

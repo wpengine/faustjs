@@ -72,7 +72,14 @@ function mergeObjects(base, theirs, yours, path, conflicts) {
 			conflicts,
 		);
 		if (value !== MISSING) {
-			merged[key] = value;
+			// defineProperty rather than assignment, so a "__proto__" key from
+			// the JSON becomes a field instead of changing the prototype.
+			Object.defineProperty(merged, key, {
+				value,
+				enumerable: true,
+				configurable: true,
+				writable: true,
+			});
 		}
 	}
 
@@ -102,7 +109,9 @@ export function mergeDocuments(base, theirs, yours) {
  */
 export function setAtPath(object, path, value) {
 	const [key, ...rest] = path;
-	const copy = { ...object };
+	// A computed key defines an own property, even for "__proto__", so the
+	// assignments below write a field instead of changing the prototype.
+	const copy = { ...object, [key]: undefined };
 	if (rest.length) {
 		copy[key] = setAtPath(isPlainObject(object[key]) ? object[key] : {}, rest, value);
 	} else if (value === MISSING) {

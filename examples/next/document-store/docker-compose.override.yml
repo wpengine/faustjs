@@ -7,3 +7,7 @@ services:
       WP_ENVIRONMENT_TYPE: local
     volumes:
       - ../../examples/next/document-store/mu-plugins/enable-document-store.php:/var/www/html/wp-content/mu-plugins/enable-document-store.php
+  db:
+    volumes:
+      # Keep the database when `npm run wordpress:stop` removes the container.
+      - db:/var/lib/mysql
