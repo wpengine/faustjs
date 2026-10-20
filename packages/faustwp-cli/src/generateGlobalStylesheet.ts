@@ -49,7 +49,7 @@ export async function generateGlobalStylesheet(
 
 	if (!outputPath) {
 		errorLog(
-			'The --output flag needs a file path, e.g. --output styles/wp.css',
+			'The --output flag needs a file or folder path, e.g. --output styles/wp.css',
 		);
 		process.exit(1);
 	}
