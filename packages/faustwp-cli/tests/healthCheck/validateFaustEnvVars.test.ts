@@ -59,7 +59,7 @@ describe('healthCheck/validateFaustEnvVars', () => {
 		process.env.FAUST_SECRET_KEY = 'invalid-secret-key';
 
 		fetchMock.post(
-			'https://headless.local/wp-json/faustwp/v1/validate_secret_key',
+			'https://headless.local/?rest_route=/faustwp/v1/validate_secret_key',
 			{
 				status: 401,
 			},

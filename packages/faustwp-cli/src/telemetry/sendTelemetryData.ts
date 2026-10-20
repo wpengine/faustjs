@@ -17,7 +17,7 @@ export const sendTelemetryData = (payload: TelemetryData) => {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/wp-json/faustwp/v1/process_telemetry`;
+	const WP_TELEMETRY_ENDPOINT = `${getWpUrl()!}/?rest_route=/faustwp/v1/process_telemetry`;
 
 	return fetch(WP_TELEMETRY_ENDPOINT, {
 		headers: {

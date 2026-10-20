@@ -175,7 +175,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
 	const form = new FormData();
 	form.append('zipfile', fs.createReadStream(zipPath));
 
-	const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/blockset`;
+	const apiUrl = `${getWpUrl()}/?rest_route=/faustwp/v1/blockset`;
 	const headers = {
 		...form.getHeaders(),
 		'x-faustwp-secret': getWpSecret() || '',

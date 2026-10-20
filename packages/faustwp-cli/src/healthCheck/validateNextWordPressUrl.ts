@@ -9,7 +9,7 @@ import { errorLog, warnLog } from '../stdout/index.js';
 const FAILED_VALIDATION_MESSAGE = 'Validation Failed, Faust is shutting down:';
 
 export async function validateNextWordPressUrl(): Promise<void> {
-	const apiUrl = `${getWpUrl()}/wp-json/faustwp/v1/validate_public_wordpress_url`;
+	const apiUrl = `${getWpUrl()}/?rest_route=/faustwp/v1/validate_public_wordpress_url`;
 	const headers = {
 		'Content-Type': 'application/json',
 		'x-faustwp-secret': getWpSecret() || '',
