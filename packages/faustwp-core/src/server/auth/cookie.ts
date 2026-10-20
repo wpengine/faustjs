@@ -9,6 +9,35 @@ export interface CookieOptions {
 	isJson?: boolean;
 }
 
+const LOOPBACK_HOST = /^(localhost|.+\.localhost|127(\.\d{1,3}){3}|\[::1\])$/i;
+
+function firstHeaderValue(value?: string | string[]): string {
+	const header = Array.isArray(value) ? value[0] : value;
+
+	return (header ?? '').split(',')[0].trim().toLowerCase();
+}
+
+/**
+ * Whether cookies set in response to this request should use the Secure
+ * attribute.
+ *
+ * Secure is only left off for plain HTTP requests to a loopback host, such as
+ * http://localhost during development. Safari discards Secure cookies there,
+ * unlike other browsers, which loses the login session right after logging in.
+ */
+export function isSecureCookieRequest(req: IncomingMessage): boolean {
+	const forwardedProto = firstHeaderValue(req.headers?.['x-forwarded-proto']);
+	const encrypted = (req.socket as { encrypted?: boolean } | undefined)
+		?.encrypted;
+	const protocol = forwardedProto || (encrypted ? 'https' : 'http');
+	const host = (
+		firstHeaderValue(req.headers?.['x-forwarded-host']) ||
+		firstHeaderValue(req.headers?.host)
+	).replace(/:\d+$/, '');
+
+	return !(protocol === 'http' && LOOPBACK_HOST.test(host));
+}
+
 export class Cookies {
 	private request: IncomingMessage;
 
@@ -16,9 +45,16 @@ export class Cookies {
 
 	private cookies: Record<string, string | undefined> = {};
 
+	/**
+	 * Whether cookies for this request should use the Secure attribute. See
+	 * `isSecureCookieRequest`.
+	 */
+	public readonly secure: boolean;
+
 	constructor(req: IncomingMessage, res?: ServerResponse) {
 		this.request = req;
 		this.response = res;
+		this.secure = isSecureCookieRequest(req);
 
 		this.cookies = parseCookie(this.request.headers.cookie || '');
 	}
@@ -72,7 +108,7 @@ export class Cookies {
 			stringifySetCookie(key, '', {
 				path: '/',
 				sameSite: 'strict',
-				secure: true,
+				secure: this.secure,
 				httpOnly: true,
 				expires: new Date(0),
 			}),

@@ -1,6 +1,9 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { stringifySetCookie } from 'cookie';
-import { Cookies } from '../../../src/server/auth/cookie';
+import {
+	Cookies,
+	isSecureCookieRequest,
+} from '../../../src/server/auth/cookie';
 import { base64Encode } from '../../../src/utils';
 
 describe('server/auth/cookie', () => {
@@ -273,6 +276,82 @@ describe('server/auth/cookie', () => {
 				cookies.removeCookie('no_res_key');
 			}).not.toThrow();
 			expect(cookies.getCookie('no_res_key')).toBeUndefined();
+		});
+	});
+
+	describe('isSecureCookieRequest', () => {
+		const request = (
+			headers: Record<string, string | string[]>,
+			encrypted?: boolean,
+		) => ({ headers, socket: { encrypted } } as any as IncomingMessage);
+
+		test.each([
+			['localhost:3000'],
+			['localhost'],
+			['127.0.0.1:3000'],
+			['[::1]:3000'],
+			['app.localhost:3000'],
+		])('is false for plain HTTP to loopback host %s', (host) => {
+			expect(isSecureCookieRequest(request({ host }))).toBe(false);
+		});
+
+		test('is true for plain HTTP to a non-loopback host', () => {
+			expect(isSecureCookieRequest(request({ host: 'example.com' }))).toBe(
+				true,
+			);
+			expect(isSecureCookieRequest(request({ host: 'mylocalhost.com' }))).toBe(
+				true,
+			);
+		});
+
+		test('is true for HTTPS to localhost', () => {
+			expect(
+				isSecureCookieRequest(request({ host: 'localhost:3000' }, true)),
+			).toBe(true);
+			expect(
+				isSecureCookieRequest(
+					request({ host: 'localhost:3000', 'x-forwarded-proto': 'https' }),
+				),
+			).toBe(true);
+		});
+
+		test('uses the forwarded host behind a proxy', () => {
+			expect(
+				isSecureCookieRequest(
+					request({
+						host: 'localhost:3000',
+						'x-forwarded-host': 'example.com',
+						'x-forwarded-proto': 'http',
+					}),
+				),
+			).toBe(true);
+		});
+
+		test('is true when the host is unknown', () => {
+			expect(isSecureCookieRequest({ headers: {} } as IncomingMessage)).toBe(
+				true,
+			);
+		});
+
+		test('removeCookie leaves Secure off on plain HTTP localhost', () => {
+			const setHeaderSpy = jest.fn();
+			const cookies = new Cookies(request({ host: 'localhost:3000' }), {
+				setHeader: setHeaderSpy,
+			} as any);
+
+			expect(cookies.secure).toBe(false);
+			cookies.removeCookie('rt');
+
+			expect(setHeaderSpy).toHaveBeenCalledWith(
+				'Set-Cookie',
+				stringifySetCookie('rt', '', {
+					path: '/',
+					sameSite: 'strict',
+					secure: false,
+					httpOnly: true,
+					expires: new Date(0),
+				}),
+			);
 		});
 	});
 });
