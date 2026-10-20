@@ -24,6 +24,8 @@ function firstHeaderValue(value?: string | string[]): string {
  * Secure is only left off for plain HTTP requests to a loopback host, such as
  * http://localhost during development. Safari discards Secure cookies there,
  * unlike other browsers, which loses the login session right after logging in.
+ * See https://bugs.webkit.org/show_bug.cgi?id=218980. Remove this exception
+ * once supported versions of Safari treat loopback hosts as secure.
  */
 export function isSecureCookieRequest(req: IncomingMessage): boolean {
 	const forwardedProto = firstHeaderValue(req.headers?.['x-forwarded-proto']);
