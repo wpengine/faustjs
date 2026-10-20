@@ -180,6 +180,8 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 
 Slugs use lowercase letters, numbers and hyphens. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
 
+To see what your app has stored, go to **Tools → Faust Documents** in WordPress. It lists each document with its version and when and by whom it was last saved, and shows a document's data. The screen is read-only.
+
 To try it locally, see the [document store example](https://github.com/wpengine/faustjs/tree/canary/examples/next/document-store). It runs WordPress in Docker and shows a conflict between two browser tabs.
 
 ## 6. Writing from the server

@@ -97,3 +97,4 @@ require FAUSTWP_DIR . '/includes/detect-conflicts/callbacks.php';
 require FAUSTWP_DIR . '/includes/blocks/callbacks.php';
 require FAUSTWP_DIR . '/includes/telemetry/callbacks.php';
 require FAUSTWP_DIR . '/includes/documents/callbacks.php';
+require FAUSTWP_DIR . '/includes/documents/admin.php';

@@ -210,6 +210,66 @@ function get_document( $slug ) {
 }
 
 /**
+ * Get a document's version and when and by whom it was last saved, without its data.
+ *
+ * @param string $slug Document slug.
+ *
+ * @return array|null Array with slug, version, modified (Unix timestamp or
+ *                    null) and modified_by (user ID or null) keys, or null if
+ *                    the document doesn't exist.
+ */
+function get_document_summary( $slug ) {
+	$post_id = get_document_post_id( $slug );
+	$stored  = $post_id ? get_stored_document( $post_id ) : null;
+	if ( ! $stored ) {
+		return null;
+	}
+
+	return array(
+		'slug'        => $slug,
+		'version'     => $stored['version'],
+		'modified'    => $stored['modified'],
+		'modified_by' => $stored['modified_by'],
+	);
+}
+
+/**
+ * List documents, newest first.
+ *
+ * @param int $page     Page number, starting at 1.
+ * @param int $per_page Documents per page.
+ *
+ * @return array Array with documents (summaries as returned by
+ *               get_document_summary()) and total_pages keys.
+ */
+function list_documents( $page = 1, $per_page = 20 ) {
+	$query = new \WP_Query(
+		array(
+			'post_type'              => POST_TYPE,
+			'post_status'            => 'private',
+			'orderby'                => 'ID',
+			'order'                  => 'DESC',
+			'posts_per_page'         => max( 1, (int) $per_page ),
+			'paged'                  => max( 1, (int) $page ),
+			'update_post_term_cache' => false,
+		)
+	);
+
+	$documents = array();
+	foreach ( $query->posts as $post ) {
+		$summary = get_document_summary( $post->post_name );
+		if ( $summary ) {
+			$documents[] = $summary;
+		}
+	}
+
+	return array(
+		'documents'   => $documents,
+		'total_pages' => (int) $query->max_num_pages,
+	);
+}
+
+/**
  * Encode a document's version and data for storage.
  *
  * Also records when and by whom it was saved. Updates only rewrite the meta
