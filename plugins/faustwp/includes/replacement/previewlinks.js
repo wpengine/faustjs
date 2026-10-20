@@ -1,5 +1,10 @@
 /**
- * XXX: Please remove this once this issue is resolved: https://github.com/WordPress/gutenberg/issues/13998
+ * Points the block editor's save notice link at the Faust.js preview.
+ *
+ * After saving a post that isn't public yet, the save notice ("View Post",
+ * "View Page", etc.) links to the post's permalink, which the frontend can't
+ * show. The editor's Preview button doesn't need this: it reads the preview
+ * link from the REST API, which FaustWP already rewrites.
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -14,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
 
-  const wpVersion = faustPreviewData._wp_version;
   const faustPreviewLink = faustPreviewData._preview_link;
 
   function debounce(func, wait) {
@@ -27,25 +31,33 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
-  // Handle potential breaking changes from WordPress.
-  function getPreviewLinksByVersion(version) {
-    switch (version) {
-      default:
-        return {
-          headerLink: document.querySelector(
-            '.edit-post-header-preview__grouping-external a',
-          ),
-          snackbarLink: document.querySelector(
-            '.components-snackbar__content a',
-          ),
-        };
+  // The save notice's ID changed from SAVE_POST_NOTICE_ID to editor-save in
+  // newer versions of the block editor.
+  const saveNoticeIds = ['editor-save', 'SAVE_POST_NOTICE_ID'];
+
+  // Only the editor's own save notice is rewritten. Its link is found by the
+  // URL in the notice's action, so links in other plugins' notices are left
+  // alone.
+  function getSaveNoticeLinks() {
+    const notices =
+      window.wp?.data?.select('core/notices')?.getNotices() || [];
+    const saveNotice = notices.find((notice) =>
+      saveNoticeIds.includes(notice.id),
+    );
+    const noticeUrl = saveNotice?.actions?.[0]?.url;
+
+    if (!noticeUrl) {
+      return [];
     }
+
+    return Array.from(
+      document.querySelectorAll('.components-snackbar__action'),
+    ).filter((link) => link.getAttribute('href') === noticeUrl);
   }
 
-  // Once a post is public, the save snackbar's link ("View Post", "View
-  // Page", etc.) goes to the live post, so only rewrite it before then.
-  // Private and scheduled posts keep the preview link, since the frontend
-  // can't show them to visitors.
+  // Once a post is public, the save notice's link goes to the live post, so
+  // only rewrite it before then. Private and scheduled posts keep the preview
+  // link, since the frontend can't show them to visitors.
   function isPostPublic() {
     const editor = window.wp?.data?.select('core/editor');
     return editor
@@ -53,26 +65,19 @@ document.addEventListener('DOMContentLoaded', function () {
       : false;
   }
 
-  function updateUIElements() {
-    const { headerLink, snackbarLink } = getPreviewLinksByVersion(wpVersion);
-
-    if (headerLink && headerLink.getAttribute('href') !== faustPreviewLink) {
-      headerLink.setAttribute('href', faustPreviewLink);
+  function updateSaveNoticeLinks() {
+    if (isPostPublic()) {
+      return;
     }
 
-    if (
-      snackbarLink &&
-      !isPostPublic() &&
-      snackbarLink.getAttribute('href') !== faustPreviewLink
-    ) {
-      snackbarLink.setAttribute('href', faustPreviewLink);
-    }
+    getSaveNoticeLinks().forEach((link) => {
+      link.setAttribute('href', faustPreviewLink);
+    });
   }
 
-  // Run the update function on initial page load.
-  const debouncedUpdateUIElements = debounce(updateUIElements, 300);
-
-  // Observe DOM changes to update UI elements accordingly.
-  const observer = new MutationObserver(debouncedUpdateUIElements);
+  // The save notice is rendered after each save, so check again whenever the
+  // editor's DOM changes.
+  const debouncedUpdateSaveNoticeLinks = debounce(updateSaveNoticeLinks, 300);
+  const observer = new MutationObserver(debouncedUpdateSaveNoticeLinks);
   observer.observe(document.body, { childList: true, subtree: true });
 });
