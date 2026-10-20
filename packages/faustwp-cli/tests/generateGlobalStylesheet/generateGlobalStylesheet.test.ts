@@ -40,6 +40,15 @@ describe('getGlobalStylesheetPath', () => {
 			getGlobalStylesheetPath(['--output', '--skip-health-checks']),
 		).toBeUndefined();
 	});
+
+	it('puts globalStylesheet.css inside a folder path', () => {
+		expect(getGlobalStylesheetPath(['--output', 'styles/'])).toBe(
+			path.join('styles', 'globalStylesheet.css'),
+		);
+		expect(getGlobalStylesheetPath(['--output', os.tmpdir()])).toBe(
+			path.join(os.tmpdir(), 'globalStylesheet.css'),
+		);
+	});
 });
 
 describe('generateGlobalStylesheet', () => {

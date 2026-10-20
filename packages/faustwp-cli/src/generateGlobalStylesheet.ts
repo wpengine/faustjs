@@ -30,6 +30,15 @@ export function getGlobalStylesheetPath(args: string[]): string | undefined {
 		return undefined;
 	}
 
+	// A folder path gets the default file name inside it.
+	if (
+		value.endsWith('/') ||
+		value.endsWith(path.sep) ||
+		(fs.existsSync(value) && fs.statSync(value).isDirectory())
+	) {
+		return path.join(value, path.basename(DEFAULT_GLOBAL_STYLESHEET_PATH));
+	}
+
 	return value;
 }
 
