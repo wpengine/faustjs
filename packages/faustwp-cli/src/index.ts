@@ -60,7 +60,7 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 			break;
 		}
 		case 'generateGlobalStylesheet': {
-			await generateGlobalStylesheet();
+			await generateGlobalStylesheet(otherArgs);
 			process.exit(0);
 
 			break;
