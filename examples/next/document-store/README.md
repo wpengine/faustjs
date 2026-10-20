@@ -1,6 +1,6 @@
 # Document store example
 
-A small Next.js app that reads and writes a shared JSON document in the [FaustWP document store](https://faustjs.org/docs/how-to/write-data-to-wordpress/), and shows what happens when two people save at the same time.
+A small Next.js app that uses the [FaustWP document store](https://faustjs.org/docs/how-to/write-data-to-wordpress/). The **Team notes** page edits a shared document and shows what happens when two people save at the same time. The **Waitlist** page adds, lists and removes documents in a collection.
 
 The app's API route talks to WordPress with an [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/), so the credentials stay on the server. It doesn't use Faust.js login: every visitor edits the document as the same WordPress user.
 
@@ -30,6 +30,8 @@ You need Docker and Node.js.
    - **The tabs changed different fields** (for example, notes in one and status in the other): it merges both changes and saves a new version.
    - **The tabs changed the same field:** it lists just those fields with the earlier value, theirs and yours. Choose what to keep for each and click **Save merged**. Everything else is already merged.
 
+5. Open `http://localhost:3000/waitlist` and add a few emails. Each one becomes a document with an ID WordPress generates, the list shows five at a time, newest first, and **Remove** deletes a signup.
+
 Stop WordPress with `npm run wordpress:stop`. Add `-- --volumes` to also delete its database.
 
 ## Working on the document store
@@ -43,6 +45,8 @@ docker compose --project-name faust-document-store exec wordpress wp --allow-roo
 ## How it works
 
 - `mu-plugins/enable-document-store.php` is a must-use plugin that turns on the document store with the `faustwp_enable_document_store` filter.
-- `pages/api/collections/[collection]/documents/[id].js` forwards `GET` and `PUT` requests to `/?rest_route=/faustwp/v1/collections/<collection>/documents/<id>` with the Application Password, and passes WordPress's status code back: `404` before the document exists, `201` when it's created, `200` when it's updated and `409` for a stale write.
+- `lib/wordpress.js` forwards requests to `/?rest_route=/faustwp/v1/...` with the Application Password, and passes WordPress's status code back: `404` before a document exists, `201` when one is created, `200` when it's updated or deleted and `409` for a stale write or delete.
+- `pages/api/collections/[collection]/documents/[id].js` handles `GET`, `PUT` and `DELETE` for one document, and `pages/api/collections/[collection]/documents/index.js` handles `GET` (list) and `POST` (add with a generated ID) for a collection.
+- `pages/waitlist.js` adds signups with `POST`, pages through the list with `next_cursor`, and removes a signup by sending the version it was listed at.
 - `pages/index.js` keeps the version it last read and sends it with every save. On a `409`, the response includes the current document, and the page merges it with the local edits.
 - `lib/mergeDocuments.mjs` is the three-way merge: it compares the version the tab started from with theirs and yours, field by field, and reports fields both sides changed differently. Run its tests with `npm test`.

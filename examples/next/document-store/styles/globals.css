@@ -76,3 +76,17 @@ label.changed {
 	margin: 0.25rem 0;
 	font-weight: normal;
 }
+
+.documents {
+	padding: 0;
+	list-style: none;
+}
+
+.documents li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid #ddd;
+}

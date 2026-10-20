@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { deepEqual, mergeDocuments, setAtPath } from '../lib/mergeDocuments.mjs';
 
@@ -165,6 +166,9 @@ export default function Home() {
 	return (
 		<main>
 			<h1>Team notes</h1>
+			<p>
+				<Link href="/waitlist">Waitlist example →</Link>
+			</p>
 			<p className="hint">
 				Open this page in two tabs and save in both. If the tabs changed
 				different fields, the second save merges them. If they changed the
