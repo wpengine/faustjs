@@ -426,6 +426,7 @@ add_filter( 'rank_math/sitemap/xml_post_url', __NAMESPACE__ . '\\rank_math_sitem
  * Filter the URL Rank Math uses in the XML sitemap.
  *
  * Note that only absolute local URLs are allowed as the check after this removes external URLs.
+ * Without this, URL rewrites make every post look external, and Rank Math serves an empty sitemap as a 404.
  *
  * @param string $url URL to use in the XML sitemap.
  */
