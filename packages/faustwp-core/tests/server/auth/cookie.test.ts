@@ -327,6 +327,18 @@ describe('server/auth/cookie', () => {
 			).toBe(true);
 		});
 
+		test('is always true in production builds', () => {
+			const nodeEnv = process.env.NODE_ENV;
+			(process.env as Record<string, string>).NODE_ENV = 'production';
+			try {
+				expect(
+					shouldUseSecureCookies(request({ host: 'localhost:3000' })),
+				).toBe(true);
+			} finally {
+				(process.env as Record<string, string | undefined>).NODE_ENV = nodeEnv;
+			}
+		});
+
 		test('is true when the host is unknown', () => {
 			expect(shouldUseSecureCookies({ headers: {} } as IncomingMessage)).toBe(
 				true,

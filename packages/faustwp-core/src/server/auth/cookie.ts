@@ -21,13 +21,19 @@ function firstHeaderValue(value?: string | string[]): string {
  * Whether cookies set in response to this request should use the Secure
  * attribute.
  *
- * Secure is only left off for plain HTTP requests to a loopback host, such as
- * http://localhost during development. Safari discards Secure cookies there,
+ * Secure is only left off outside production builds, for plain HTTP requests
+ * to a loopback host such as http://localhost. Safari discards Secure cookies there,
  * unlike other browsers, which loses the login session right after logging in.
  * See https://bugs.webkit.org/show_bug.cgi?id=218980. Remove this exception
  * once supported versions of Safari treat loopback hosts as secure.
  */
 export function shouldUseSecureCookies(req: IncomingMessage): boolean {
+	// Production always uses Secure, so a proxy that forwards a loopback host
+	// without x-forwarded-proto can't turn it off on a real site.
+	if (process.env.NODE_ENV === 'production') {
+		return true;
+	}
+
 	const forwardedProto = firstHeaderValue(req.headers?.['x-forwarded-proto']);
 	const encrypted = (req.socket as { encrypted?: boolean } | undefined)
 		?.encrypted;
