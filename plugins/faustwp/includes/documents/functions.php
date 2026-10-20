@@ -221,7 +221,21 @@ function get_document( $slug ) {
  */
 function get_document_summary( $slug ) {
 	$post_id = get_document_post_id( $slug );
-	$stored  = $post_id ? get_stored_document( $post_id ) : null;
+
+	return $post_id ? summarize_document( $slug, $post_id ) : null;
+}
+
+/**
+ * Build a document summary from its post.
+ *
+ * @param string $slug    Document slug.
+ * @param int    $post_id Document post ID.
+ *
+ * @return array|null Summary as returned by get_document_summary(), or null if
+ *                    the post has no stored document.
+ */
+function summarize_document( $slug, $post_id ) {
+	$stored = get_stored_document( $post_id );
 	if ( ! $stored ) {
 		return null;
 	}
@@ -252,13 +266,14 @@ function list_documents( $page = 1, $per_page = 20 ) {
 			'order'                  => 'DESC',
 			'posts_per_page'         => max( 1, (int) $per_page ),
 			'paged'                  => max( 1, (int) $page ),
+			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 		)
 	);
 
 	$documents = array();
 	foreach ( $query->posts as $post ) {
-		$summary = get_document_summary( $post->post_name );
+		$summary = summarize_document( $post->post_name, $post->ID );
 		if ( $summary ) {
 			$documents[] = $summary;
 		}
