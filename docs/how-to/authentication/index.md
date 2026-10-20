@@ -134,7 +134,7 @@ Your Next.js server exchanges authorization codes for tokens by calling the Faus
 
 4. Restart your app and log in again to check that previews and authentication still work. When both are set, Faust.js uses the Application Password and no longer sends `FAUST_SECRET_KEY`, so you can then remove `FAUST_SECRET_KEY` from your frontend's environment.
 
-The `faust blockset` command uses the same variables, but uploading blocks needs an administrator's Application Password (a super admin's on Multisite), so use a separate credential for it in CI rather than the frontend's.
+The `faust blockset` command reads the same two variables, but uploading blocks needs an administrator's Application Password (a super admin's on Multisite). Set an administrator's credentials only in the environment where you run `faust blockset`, such as a CI job, and keep the frontend's low-privilege credentials everywhere else.
 
 > [!NOTE]
 > WordPress only accepts Application Passwords over HTTPS, except on local development sites. Some servers remove the `Authorization` header before it reaches WordPress; if `faust dev` reports that the credentials were rejected even though they're correct, check your server's configuration. Sites protected with HTTP Basic auth can't use Application Passwords, since both use the same header.
