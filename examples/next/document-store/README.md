@@ -29,6 +29,14 @@ You need Docker and Node.js.
 
 Stop WordPress with `npm run wordpress:stop`. Add `-- --volumes` to also delete its database.
 
+## Working on the document store
+
+WordPress loads FaustWP straight from `plugins/faustwp` in this repository, so changes to the plugin take effect on the next request without restarting anything. To run WP-CLI against the site, for example to inspect a document:
+
+```bash
+docker compose --project-name faust-document-store exec wordpress wp --allow-root post list --post_type=faustwp_document
+```
+
 ## How it works
 
 - `mu-plugins/enable-document-store.php` is a must-use plugin that turns on the document store with the `faustwp_enable_document_store` filter.
