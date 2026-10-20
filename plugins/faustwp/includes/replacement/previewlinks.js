@@ -31,12 +31,18 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
+  // The save notice's ID changed from SAVE_POST_NOTICE_ID to editor-save in
+  // newer versions of the block editor.
+  const saveNoticeIds = ['editor-save', 'SAVE_POST_NOTICE_ID'];
+
   // Only the editor's own save notice is rewritten. Its link is found by the
   // URL in the notice's action, so links in other plugins' notices are left
   // alone.
   function getSaveNoticeLinks() {
     const notices = window.wp?.data?.select('core/notices')?.getNotices() || [];
-    const saveNotice = notices.find((notice) => notice.id === 'editor-save');
+    const saveNotice = notices.find((notice) =>
+      saveNoticeIds.includes(notice.id),
+    );
     const noticeUrl = saveNotice?.actions?.[0]?.url;
 
     if (!noticeUrl) {
