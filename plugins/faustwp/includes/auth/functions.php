@@ -95,6 +95,33 @@ function get_user_from_authorization_code( $code ) {
 }
 
 /**
+ * Generate a code that logs the given user out of WordPress in their browser.
+ *
+ * @uses WPE\FaustWP\Auth\generate_user_code()
+ *
+ * @param WP_User $wp_user A WP_User object.
+ * @param int     $duration The duration in seconds to remain valid.
+ *
+ * @return string|bool An encrypted string or false.
+ */
+function generate_logout_code( $wp_user, $duration ) {
+	return generate_user_code( $wp_user, 'lo', $duration );
+}
+
+/**
+ * Get a WP_User given a logout code.
+ *
+ * @uses WPE\FaustWP\Auth\get_user_from_code()
+ *
+ * @param string $code A base 64 encoded string.
+ *
+ * @return WP_User|bool A WP_User object or false.
+ */
+function get_user_from_logout_code( $code ) {
+	return get_user_from_code( $code, 'lo' );
+}
+
+/**
  * Generate an encrypted code for the given WP_User and type.
  *
  * @uses WPE\FaustWP\Auth\encrypt()
