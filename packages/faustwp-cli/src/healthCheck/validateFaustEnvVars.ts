@@ -1,4 +1,9 @@
-import { getWpSecret, getWpUrl } from '../utils/index.js';
+import {
+	getWpApplicationPassword,
+	getWpAuthHeaders,
+	getWpUrl,
+	hasWpCredentials,
+} from '../utils/index.js';
 import { errorLog, infoLog, warnLog } from '../stdout/index.js';
 import { validateNextWordPressUrl } from './validateNextWordPressUrl.js';
 
@@ -12,7 +17,8 @@ export function isWPEngineComSubdomain(url: string) {
  * Validates that the appropriate Faust related environment variables are set.
  */
 export const validateFaustEnvVars = async () => {
-	const secretWp = getWpSecret();
+	const hasCredentials = hasWpCredentials();
+	const applicationPassword = getWpApplicationPassword();
 
 	if (!process.env.NEXT_PUBLIC_WORDPRESS_URL) {
 		errorLog('Could not find NEXT_PUBLIC_WORDPRESS_URL environment variable.');
@@ -31,33 +37,47 @@ export const validateFaustEnvVars = async () => {
 		);
 	}
 
-	if (!secretWp) {
-		warnLog('Could not find FAUST_SECRET_KEY environment variable.');
+	if (
+		!applicationPassword &&
+		(process.env.FAUST_APPLICATION_USER ||
+			process.env.FAUST_APPLICATION_PASSWORD)
+	) {
+		warnLog(
+			'Set both FAUST_APPLICATION_USER and FAUST_APPLICATION_PASSWORD to use an Application Password.',
+		);
+	}
+
+	if (!hasCredentials) {
+		warnLog(
+			'Could not find FAUST_SECRET_KEY, or FAUST_APPLICATION_USER and FAUST_APPLICATION_PASSWORD, environment variables.',
+		);
 		warnLog('Some functionality may be limited.');
 	}
 
-	if (process.env.NEXT_PUBLIC_WORDPRESS_URL.startsWith('http://') && secretWp) {
+	if (
+		process.env.NEXT_PUBLIC_WORDPRESS_URL.startsWith('http://') &&
+		hasCredentials
+	) {
 		warnLog('Your WordPress site is not running on https!');
 		warnLog(
-			'This is a security concern as all traffic with your secret key is in plain text.',
+			'This is a security concern as all traffic with your credentials is in plain text.',
 		);
 		warnLog(
 			'Please make sure your production Faust app runs with a WordPress instance on https!',
 		);
 	}
 
-	if (secretWp) {
-		// send secret key
+	if (hasCredentials) {
 		const apiUrl = `${getWpUrl()}/?rest_route=/faustwp/v1/validate_secret_key`;
-		const headers = {
-			'x-faustwp-secret': secretWp,
-		};
+		const headers = getWpAuthHeaders();
 		try {
 			const response = await fetch(apiUrl, {
 				headers,
 				method: 'POST',
 			});
-			if (response.status === 401) {
+			// WordPress answers 401 when the credentials aren't accepted, and 403
+			// when an Application Password's user lacks the capability.
+			if (response.status === 401 || response.status === 403) {
 				const wwwAuth = response.headers.get('www-authenticate') || '';
 				if (wwwAuth.toLowerCase().includes('basic')) {
 					errorLog(
@@ -65,6 +85,17 @@ export const validateFaustEnvVars = async () => {
 					);
 					errorLog(
 						'Faust cannot validate the secret key until Basic Auth credentials are provided or the protection is removed.',
+					);
+				} else if (applicationPassword && response.status === 403) {
+					errorLog(
+						"The FAUST_APPLICATION_USER user can't exchange Faust tokens. Give it a role with the faustwp_exchange_tokens capability.",
+					);
+				} else if (applicationPassword) {
+					errorLog(
+						'Ensure FAUST_APPLICATION_USER and FAUST_APPLICATION_PASSWORD are a valid WordPress Application Password.',
+					);
+					errorLog(
+						'If they are, your server may be removing the Authorization header before it reaches WordPress.',
 					);
 				} else {
 					errorLog(

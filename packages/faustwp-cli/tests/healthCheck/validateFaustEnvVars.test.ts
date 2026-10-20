@@ -105,6 +105,70 @@ describe('healthCheck/validateFaustEnvVars', () => {
 
 		mockLog.mockRestore();
 	});
+
+	it('validates an Application Password instead of the secret key', async () => {
+		// @ts-ignore
+		const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {});
+
+		process.env.NEXT_PUBLIC_WORDPRESS_URL = 'https://apppassword.local';
+		process.env.FAUST_APPLICATION_USER = 'frontend';
+		process.env.FAUST_APPLICATION_PASSWORD = 'abcd efgh ijkl mnop';
+
+		fetchMock.post(
+			'https://apppassword.local/?rest_route=/faustwp/v1/validate_secret_key',
+			{ status: 200 },
+		);
+		fetchMock.post(
+			'https://apppassword.local/?rest_route=/faustwp/v1/validate_public_wordpress_url',
+			{ status: 200, body: {} },
+		);
+
+		await validateFaustEnvVars();
+
+		expect(mockExit).not.toHaveBeenCalled();
+		expect(fetchMock).toHaveFetched(
+			'https://apppassword.local/?rest_route=/faustwp/v1/validate_secret_key',
+			{
+				headers: {
+					Authorization: `Basic ${Buffer.from(
+						'frontend:abcd efgh ijkl mnop',
+					).toString('base64')}`,
+				},
+			},
+		);
+	});
+
+	it("explains a 403 when the Application Password's user lacks the capability", async () => {
+		// @ts-ignore
+		const mockExit = jest.spyOn(process, 'exit').mockImplementation((code) => {
+			if (code && code !== 0) {
+				throw new Error(`Exit code: ${code}`);
+			}
+		});
+		const mockLog = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+		process.env.NEXT_PUBLIC_WORDPRESS_URL = 'https://nocap.local';
+		process.env.FAUST_APPLICATION_USER = 'subscriber';
+		process.env.FAUST_APPLICATION_PASSWORD = 'abcd efgh ijkl mnop';
+
+		fetchMock.post(
+			'https://nocap.local/?rest_route=/faustwp/v1/validate_secret_key',
+			{ status: 403 },
+		);
+
+		try {
+			await validateFaustEnvVars();
+		} catch (err) {
+			// Expected exit
+		}
+
+		expect(mockExit).toHaveBeenCalledWith(1);
+		expect(mockLog).toHaveBeenCalledWith(
+			expect.stringContaining('faustwp_exchange_tokens'),
+		);
+
+		mockLog.mockRestore();
+	});
 });
 
 describe('isWPEngineComTLD', () => {

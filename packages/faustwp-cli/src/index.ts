@@ -9,7 +9,7 @@ import { blockset } from './blockset.js';
 import {
 	getCliArgs,
 	getNextCliArgs,
-	getWpSecret,
+	hasWpCredentials,
 	isDebug,
 	printFaustVersion,
 } from './utils/index.js';
@@ -73,7 +73,7 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 		}
 	}
 
-	if (getWpSecret()) {
+	if (hasWpCredentials()) {
 		try {
 			const telemetryData = marshallTelemetryData(arg1);
 			await sendTelemetryData(telemetryData);

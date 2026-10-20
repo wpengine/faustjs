@@ -419,9 +419,9 @@ describe('server/auth/token (OAuth)', () => {
 			const result: any = await new OAuth(mockCookies).fetch('auth-code');
 
 			expect(result.error).toBe(true);
-			expect(
-				fetchMock.called(`${wpUrl}/?rest_route=/wpac/v1/authorize`),
-			).toBe(false);
+			expect(fetchMock.called(`${wpUrl}/?rest_route=/wpac/v1/authorize`)).toBe(
+				false,
+			);
 		});
 	});
 });

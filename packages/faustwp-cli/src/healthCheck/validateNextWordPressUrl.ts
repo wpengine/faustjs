@@ -1,4 +1,4 @@
-import { getWpSecret, getWpUrl } from '../utils/index.js';
+import { getWpAuthHeaders, getWpUrl } from '../utils/index.js';
 import { errorLog, warnLog } from '../stdout/index.js';
 
 /**
@@ -12,7 +12,7 @@ export async function validateNextWordPressUrl(): Promise<void> {
 	const apiUrl = `${getWpUrl()}/?rest_route=/faustwp/v1/validate_public_wordpress_url`;
 	const headers = {
 		'Content-Type': 'application/json',
-		'x-faustwp-secret': getWpSecret() || '',
+		...getWpAuthHeaders(),
 	};
 
 	const postData = {

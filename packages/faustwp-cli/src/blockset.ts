@@ -6,7 +6,7 @@ import FormData from 'form-data';
 import { ZipArchive } from 'archiver';
 import { spawnSync } from 'child_process';
 
-import { getWpUrl, getWpSecret, hasYarn } from './utils/index.js';
+import { getWpUrl, getWpAuthHeaders, hasYarn } from './utils/index.js';
 import { debugLog } from './stdout/index.js';
 
 // File paths used throughout the blockset process
@@ -178,7 +178,7 @@ export async function uploadToWordPress(zipPath: string): Promise<void> {
 	const apiUrl = `${getWpUrl()}/?rest_route=/faustwp/v1/blockset`;
 	const headers = {
 		...form.getHeaders(),
-		'x-faustwp-secret': getWpSecret() || '',
+		...getWpAuthHeaders(),
 	};
 
 	try {
