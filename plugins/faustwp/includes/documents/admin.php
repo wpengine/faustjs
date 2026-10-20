@@ -52,12 +52,14 @@ function render_documents_admin_page() {
 		wp_die( esc_html__( 'Sorry, you are not allowed to view documents.', 'faustwp' ), 403 );
 	}
 
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only view.
-	$slug = isset( $_GET['document'] ) ? sanitize_text_field( wp_unslash( $_GET['document'] ) ) : '';
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only view.
+	$collection = isset( $_GET['collection'] ) ? sanitize_text_field( wp_unslash( $_GET['collection'] ) ) : '';
+	$id         = isset( $_GET['document'] ) ? sanitize_text_field( wp_unslash( $_GET['document'] ) ) : '';
+	// phpcs:enable
 
 	echo '<div class="wrap">';
-	if ( '' !== $slug ) {
-		render_document_detail( $slug );
+	if ( '' !== $id ) {
+		render_document_detail( $collection, $id );
 	} else {
 		render_document_list();
 	}
@@ -121,7 +123,8 @@ function render_document_list() {
 	}
 
 	echo '<table class="widefat striped"><thead><tr>';
-	echo '<th scope="col">' . esc_html__( 'Slug', 'faustwp' ) . '</th>';
+	echo '<th scope="col">' . esc_html__( 'Collection', 'faustwp' ) . '</th>';
+	echo '<th scope="col">' . esc_html__( 'ID', 'faustwp' ) . '</th>';
 	echo '<th scope="col">' . esc_html__( 'Version', 'faustwp' ) . '</th>';
 	echo '<th scope="col">' . esc_html__( 'Last saved', 'faustwp' ) . '</th>';
 	echo '<th scope="col">' . esc_html__( 'Saved by', 'faustwp' ) . '</th>';
@@ -129,9 +132,17 @@ function render_document_list() {
 
 	foreach ( $list['documents'] as $summary ) {
 		printf(
-			'<tr><td><a href="%s"><code>%s</code></a></td><td>%s</td><td>%s</td><td>%s</td></tr>',
-			esc_url( documents_admin_url( array( 'document' => $summary['slug'] ) ) ),
-			esc_html( $summary['slug'] ),
+			'<tr><td><code>%s</code></td><td><a href="%s"><code>%s</code></a></td><td>%s</td><td>%s</td><td>%s</td></tr>',
+			esc_html( $summary['collection'] ),
+			esc_url(
+				documents_admin_url(
+					array(
+						'collection' => $summary['collection'],
+						'document'   => $summary['id'],
+					)
+				)
+			),
+			esc_html( $summary['id'] ),
 			esc_html( (string) $summary['version'] ),
 			esc_html( format_document_modified( $summary ) ),
 			esc_html( document_last_author( $summary ) )
@@ -156,15 +167,16 @@ function render_document_list() {
 /**
  * Render one document.
  *
- * @param string $slug Document slug from the request.
+ * @param string $collection Collection name from the request.
+ * @param string $id         Document ID from the request.
  */
-function render_document_detail( $slug ) {
+function render_document_detail( $collection, $id ) {
 	echo '<h1>' . esc_html__( 'Faust Document', 'faustwp' ) . '</h1>';
 	printf( '<p><a href="%s">%s</a></p>', esc_url( documents_admin_url() ), esc_html__( '← All documents', 'faustwp' ) );
 
-	$valid    = (bool) preg_match( '/^[a-z0-9-]{1,190}$/', $slug );
-	$document = $valid ? get_document( $slug ) : null;
-	$summary  = $valid ? get_document_summary( $slug ) : null;
+	$valid    = preg_match( '/^' . COLLECTION_PATTERN . '$/', $collection ) && preg_match( '/^' . ID_PATTERN . '$/', $id );
+	$document = $valid ? get_document( $collection, $id ) : null;
+	$summary  = $valid ? get_document_summary( $collection, $id ) : null;
 
 	if ( ! $document || ! $summary ) {
 		echo '<div class="notice notice-error inline"><p>' . esc_html__( 'Document not found.', 'faustwp' ) . '</p></div>';
@@ -174,7 +186,8 @@ function render_document_detail( $slug ) {
 	$json = wp_json_encode( $document['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 
 	echo '<table class="form-table" role="presentation"><tbody>';
-	printf( '<tr><th scope="row">%s</th><td><code>%s</code></td></tr>', esc_html__( 'Slug', 'faustwp' ), esc_html( $document['slug'] ) );
+	printf( '<tr><th scope="row">%s</th><td><code>%s</code></td></tr>', esc_html__( 'Collection', 'faustwp' ), esc_html( $document['collection'] ) );
+	printf( '<tr><th scope="row">%s</th><td><code>%s</code></td></tr>', esc_html__( 'ID', 'faustwp' ), esc_html( $document['id'] ) );
 	printf( '<tr><th scope="row">%s</th><td>%s</td></tr>', esc_html__( 'Version', 'faustwp' ), esc_html( (string) $document['version'] ) );
 	printf( '<tr><th scope="row">%s</th><td>%s</td></tr>', esc_html__( 'Last saved', 'faustwp' ), esc_html( format_document_modified( $summary ) ) );
 	printf( '<tr><th scope="row">%s</th><td>%s</td></tr>', esc_html__( 'Saved by', 'faustwp' ), esc_html( document_last_author( $summary ) ) );

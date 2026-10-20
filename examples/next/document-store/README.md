@@ -37,12 +37,12 @@ Stop WordPress with `npm run wordpress:stop`. Add `-- --volumes` to also delete 
 WordPress loads FaustWP straight from `plugins/faustwp` in this repository, so changes to the plugin take effect on the next request without restarting anything. To run WP-CLI against the site, for example to inspect a document:
 
 ```bash
-docker compose --project-name faust-document-store exec wordpress wp --allow-root eval 'global $wpdb; print_r( $wpdb->get_results( "SELECT slug, version, modified_gmt FROM {$wpdb->prefix}faustwp_documents" ) );'
+docker compose --project-name faust-document-store exec wordpress wp --allow-root eval 'global $wpdb; print_r( $wpdb->get_results( "SELECT collection, document_id, version, modified_gmt FROM {$wpdb->prefix}faustwp_documents" ) );'
 ```
 
 ## How it works
 
 - `mu-plugins/enable-document-store.php` is a must-use plugin that turns on the document store with the `faustwp_enable_document_store` filter.
-- `pages/api/documents/[slug].js` forwards `GET` and `PUT` requests to `/?rest_route=/faustwp/v1/documents/<slug>` with the Application Password, and passes WordPress's status code back: `404` before the document exists, `201` when it's created, `200` when it's updated and `409` for a stale write.
+- `pages/api/collections/[collection]/documents/[id].js` forwards `GET` and `PUT` requests to `/?rest_route=/faustwp/v1/collections/<collection>/documents/<id>` with the Application Password, and passes WordPress's status code back: `404` before the document exists, `201` when it's created, `200` when it's updated and `409` for a stale write.
 - `pages/index.js` keeps the version it last read and sends it with every save. On a `409`, the response includes the current document, and the page merges it with the local edits.
 - `lib/mergeDocuments.mjs` is the three-way merge: it compares the version the tab started from with theirs and yours, field by field, and reports fields both sides changed differently. Run its tests with `npm test`.

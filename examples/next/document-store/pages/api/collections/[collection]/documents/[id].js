@@ -2,7 +2,8 @@
 // authenticating with an Application Password so the credentials never reach
 // the browser.
 
-const SLUG_PATTERN = /^[a-z0-9-]{1,190}$/;
+const COLLECTION_PATTERN = /^[a-z0-9-]{1,64}$/;
+const ID_PATTERN = /^[a-z0-9-]{1,190}$/;
 
 export default async function handler(req, res) {
 	if (req.method !== 'GET' && req.method !== 'PUT') {
@@ -10,8 +11,8 @@ export default async function handler(req, res) {
 		return res.status(405).json({ message: 'Method not allowed.' });
 	}
 
-	const { slug } = req.query;
-	if (!SLUG_PATTERN.test(slug)) {
+	const { collection, id } = req.query;
+	if (!COLLECTION_PATTERN.test(collection) || !ID_PATTERN.test(id)) {
 		return res
 			.status(400)
 			.json({ message: 'Use lowercase letters, numbers and hyphens.' });
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
 	let response;
 	try {
 		response = await fetch(
-			`${NEXT_PUBLIC_WORDPRESS_URL}/?rest_route=/faustwp/v1/documents/${slug}`,
+			`${NEXT_PUBLIC_WORDPRESS_URL}/?rest_route=/faustwp/v1/collections/${collection}/documents/${id}`,
 			{
 				method: req.method,
 				headers: {

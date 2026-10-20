@@ -27,7 +27,7 @@ use const WPE\FaustWP\Documents\READ_CAPABILITY;
  */
 class DocumentStoreTests extends \WP_UnitTestCase {
 
-	const ROUTE = '/faustwp/v1/documents';
+	const ROUTE = '/faustwp/v1/collections/prefs/documents';
 
 	/**
 	 * REST server for the test.
@@ -63,15 +63,15 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 	}
 
-	private function put( $slug, $body ) {
-		$request = new \WP_REST_Request( 'PUT', self::ROUTE . '/' . $slug );
+	private function put( $id, $body ) {
+		$request = new \WP_REST_Request( 'PUT', self::ROUTE . '/' . $id );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( is_string( $body ) ? $body : wp_json_encode( $body ) );
 		return $this->server->dispatch( $request );
 	}
 
-	private function get( $slug ) {
-		return $this->server->dispatch( new \WP_REST_Request( 'GET', self::ROUTE . '/' . $slug ) );
+	private function get( $id ) {
+		return $this->server->dispatch( new \WP_REST_Request( 'GET', self::ROUTE . '/' . $id ) );
 	}
 
 	private function table_exists() {
@@ -101,7 +101,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertFalse( $this->table_exists() );
 		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
-		$this->assertArrayNotHasKey( self::ROUTE . '/(?P<slug>[a-z0-9-]{1,190})', $this->server->get_routes() );
+		$this->assertArrayNotHasKey( '/faustwp/v1/collections/(?P<collection>[a-z0-9-]{1,64})/documents/(?P<id>[a-z0-9-]{1,190})', $this->server->get_routes() );
 		$this->assertSame( 404, $this->get( 'settings' )->get_status() );
 	}
 
@@ -115,7 +115,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	}
 
 	public function test_uninstall_drops_the_table() {
-		save_document( 'settings', 0, array( 'theme' => 'dark' ) );
+		save_document( 'prefs', 'settings', 0, array( 'theme' => 'dark' ) );
 
 		uninstall_document_table();
 
@@ -149,7 +149,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 201, $response->get_status() );
 		$this->assertSame(
-			array( 'slug' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
+			array( 'collection' => 'prefs', 'id' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
 			$this->normalize( $response->get_data() )
 		);
 	}
@@ -161,7 +161,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame(
-			array( 'slug' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
+			array( 'collection' => 'prefs', 'id' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
 			$this->normalize( $response->get_data() )
 		);
 	}
@@ -180,7 +180,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame( 2, $response->get_data()['version'] );
-		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 	}
 
 	public function test_put_with_stale_version_returns_409_and_keeps_document() {
@@ -194,7 +194,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 'faustwp_document_conflict', $error['code'] );
 		$this->assertSame( 2, $error['data']['version'] );
 		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( $error['data']['document']['data'] ) );
-		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 	}
 
 	public function test_create_with_version_zero_when_document_exists_returns_409() {
@@ -203,7 +203,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$response = $this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'light' ) ) );
 
 		$this->assertSame( 409, $response->get_status() );
-		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 	}
 
 	public function test_update_of_missing_document_returns_409() {
@@ -211,7 +211,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 409, $response->get_status() );
 		$this->assertSame( 0, $response->get_data()['data']['version'] );
-		$this->assertNull( get_document( 'settings' ) );
+		$this->assertNull( get_document( 'prefs', 'settings' ) );
 	}
 
 	/**
@@ -219,7 +219,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	 * UPDATE. The conditional UPDATE must not match, so only one write wins.
 	 */
 	public function test_concurrent_write_with_same_version_is_rejected() {
-		save_document( 'settings', 0, array( 'theme' => 'dark' ) );
+		save_document( 'prefs', 'settings', 0, array( 'theme' => 'dark' ) );
 
 		$raced = false;
 		add_filter(
@@ -227,19 +227,19 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 			function ( $query ) use ( &$raced ) {
 				if ( ! $raced && 0 === strpos( $query, 'UPDATE ' . get_document_table() ) ) {
 					$raced = true;
-					save_document( 'settings', 1, array( 'theme' => 'light' ) );
+					save_document( 'prefs', 'settings', 1, array( 'theme' => 'light' ) );
 				}
 				return $query;
 			}
 		);
 
-		$result = save_document( 'settings', 1, array( 'theme' => 'blue' ) );
+		$result = save_document( 'prefs', 'settings', 1, array( 'theme' => 'blue' ) );
 
 		$this->assertTrue( $raced );
 		$this->assertWPError( $result );
 		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
-		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'settings' )['data'] ) );
-		$this->assertSame( 2, get_document( 'settings' )['version'] );
+		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
+		$this->assertSame( 2, get_document( 'prefs', 'settings' )['version'] );
 	}
 
 	/**
@@ -253,32 +253,41 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 			function ( $query ) use ( &$raced ) {
 				if ( ! $raced && 0 === strpos( $query, 'INSERT INTO `' . get_document_table() . '`' ) ) {
 					$raced = true;
-					save_document( 'settings', 0, array( 'theme' => 'dark' ) );
+					save_document( 'prefs', 'settings', 0, array( 'theme' => 'dark' ) );
 				}
 				return $query;
 			}
 		);
 
-		$result = save_document( 'settings', 0, array( 'theme' => 'light' ) );
+		$result = save_document( 'prefs', 'settings', 0, array( 'theme' => 'light' ) );
 
 		global $wpdb;
 		$this->assertTrue( $raced );
 		$this->assertWPError( $result );
 		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
-		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 		$this->assertSame( '1', $wpdb->get_var( 'SELECT COUNT(*) FROM ' . get_document_table() ) );
 	}
 
-	public function test_slugs_outside_the_allowed_characters_do_not_match_the_route() {
+	public function test_ids_and_collections_outside_the_allowed_characters_do_not_match_the_route() {
 		$this->assertSame( 404, $this->get( 'Settings' )->get_status() );
 		$this->assertSame( 404, $this->put( 'my_settings', array( 'version' => 0, 'data' => array() ) )->get_status() );
+		$this->assertSame( 404, $this->server->dispatch( new \WP_REST_Request( 'GET', '/faustwp/v1/collections/My_Prefs/documents/settings' ) )->get_status() );
+	}
+
+	public function test_the_same_id_in_two_collections_is_two_documents() {
+		save_document( 'prefs', 'settings', 0, array( 'theme' => 'dark' ) );
+		save_document( 'drafts', 'settings', 0, array( 'title' => 'Hello' ) );
+
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
+		$this->assertSame( array( 'title' => 'Hello' ), $this->normalize( get_document( 'drafts', 'settings' )['data'] ) );
 	}
 
 	public function test_invalid_json_body_returns_400() {
 		$response = $this->put( 'settings', '{"version": 0, "data": ' );
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertNull( get_document( 'settings' ) );
+		$this->assertNull( get_document( 'prefs', 'settings' ) );
 	}
 
 	public function test_missing_version_returns_400() {
@@ -291,7 +300,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$response = $this->put( 'settings', array( 'version' => 0, 'data' => 'dark' ) );
 
 		$this->assertSame( 400, $response->get_status() );
-		$this->assertNull( get_document( 'settings' ) );
+		$this->assertNull( get_document( 'prefs', 'settings' ) );
 	}
 
 	public function test_document_larger_than_max_size_returns_413() {
@@ -305,7 +314,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$response = $this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'much too long' ) ) );
 
 		$this->assertSame( 413, $response->get_status() );
-		$this->assertNull( get_document( 'settings' ) );
+		$this->assertNull( get_document( 'prefs', 'settings' ) );
 	}
 
 	public function test_data_with_html_and_slashes_round_trips() {
@@ -336,7 +345,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertSame( 403, $this->get( 'settings' )->get_status() );
 		$this->assertSame( 403, $this->put( 'settings', array( 'version' => 1, 'data' => array() ) )->get_status() );
-		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'settings' )['data'] ) );
+		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 	}
 
 	public function test_read_capability_allows_reading_but_not_writing() {
@@ -360,8 +369,8 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 	public function test_update_records_modified_and_modified_by() {
 		$creator = get_current_user_id();
-		save_document( 'settings', 0, array( 'theme' => 'dark' ) );
-		$created = get_stored_document( 'settings' );
+		save_document( 'prefs', 'settings', 0, array( 'theme' => 'dark' ) );
+		$created = get_stored_document( 'prefs', 'settings' );
 
 		$this->assertSame( $creator, $created['modified_by'] );
 		$this->assertIsInt( $created['modified'] );
@@ -369,8 +378,8 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$editor = self::factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $editor );
 		$before = time();
-		save_document( 'settings', 1, array( 'theme' => 'light' ) );
-		$updated = get_stored_document( 'settings' );
+		save_document( 'prefs', 'settings', 1, array( 'theme' => 'light' ) );
+		$updated = get_stored_document( 'prefs', 'settings' );
 
 		$this->assertSame( 2, $updated['version'] );
 		$this->assertSame( $editor, $updated['modified_by'] );
@@ -380,6 +389,6 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	public function test_get_response_shape_is_unchanged() {
 		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
 
-		$this->assertSame( array( 'slug', 'version', 'data' ), array_keys( $this->get( 'settings' )->get_data() ) );
+		$this->assertSame( array( 'collection', 'id', 'version', 'data' ), array_keys( $this->get( 'settings' )->get_data() ) );
 	}
 }

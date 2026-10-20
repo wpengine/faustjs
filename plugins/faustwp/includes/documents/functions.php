@@ -2,9 +2,10 @@
 /**
  * Versioned document store functions for FaustWP.
  *
- * Documents are JSON values stored under a slug. Every write names the version
- * it was based on, and a write based on an old version is rejected instead of
- * overwriting a newer one.
+ * Documents are JSON values grouped into collections, each with an ID that's
+ * unique within its collection. Every write names the version it was based
+ * on, and a write based on an old version is rejected instead of overwriting
+ * a newer one.
  *
  * @package FaustWP
  */
@@ -31,12 +32,14 @@ const DB_VERSION = 1;
 const DB_VERSION_OPTION = 'faustwp_documents_db_version';
 
 /**
- * Collection used by the faustwp/v1/documents routes.
- *
- * The table can hold separate collections and per-user documents, but the
- * routes only use this collection, with shared documents (owner_id 0), for now.
+ * Pattern for collection names: lowercase letters, numbers and hyphens.
  */
-const DEFAULT_COLLECTION = 'default';
+const COLLECTION_PATTERN = '[a-z0-9-]{1,64}';
+
+/**
+ * Pattern for document IDs: lowercase letters, numbers and hyphens.
+ */
+const ID_PATTERN = '[a-z0-9-]{1,190}';
 
 /**
  * Capability needed to read documents.
@@ -115,8 +118,10 @@ function maybe_install_document_table() {
 /**
  * Create or update the documents table.
  *
- * Slugs and collections are ASCII with a binary collation, so the unique key
- * is case-sensitive and short enough for older MySQL index limits.
+ * Collections and document IDs are ASCII with a binary collation, so the
+ * unique key is case-sensitive and short enough for older MySQL index limits.
+ * The table can also hold per-user documents, but the routes only use shared
+ * documents (owner_id 0) for now.
  *
  * @return void
  */
@@ -131,14 +136,14 @@ function install_document_table() {
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			collection varchar(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
 			owner_id bigint(20) unsigned NOT NULL DEFAULT 0,
-			slug varchar(190) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+			document_id varchar(190) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
 			version bigint(20) unsigned NOT NULL,
 			data longtext NOT NULL,
 			created_gmt datetime NOT NULL,
 			modified_gmt datetime NOT NULL,
 			modified_by bigint(20) unsigned NOT NULL DEFAULT 0,
 			PRIMARY KEY  (id),
-			UNIQUE KEY collection_owner_slug (collection,owner_id,slug)
+			UNIQUE KEY collection_owner_document (collection,owner_id,document_id)
 		) {$charset_collate};"
 	);
 }
@@ -163,21 +168,22 @@ function uninstall_document_table() {
  * Reads straight from the database, so the version compared during a write is
  * the version that's actually stored.
  *
- * @param string $slug Document slug.
+ * @param string $collection Collection name.
+ * @param string $id         Document ID.
  *
- * @return array|null Array with id, version, data, modified (Unix timestamp)
- *                    and modified_by (user ID, or 0 if unknown) keys, or null
- *                    if the document doesn't exist.
+ * @return array|null Array with version, data, modified (Unix timestamp) and
+ *                    modified_by (user ID, or 0 if unknown) keys, or null if
+ *                    the document doesn't exist.
  */
-function get_stored_document( $slug ) {
+function get_stored_document( $collection, $id ) {
 	global $wpdb;
 
 	$table = get_document_table();
 	$row   = $wpdb->get_row( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			"SELECT id, version, data, modified_gmt, modified_by FROM {$table} WHERE collection = %s AND owner_id = 0 AND slug = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			DEFAULT_COLLECTION,
-			$slug
+			"SELECT version, data, modified_gmt, modified_by FROM {$table} WHERE collection = %s AND owner_id = 0 AND document_id = %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$collection,
+			$id
 		)
 	);
 
@@ -186,7 +192,6 @@ function get_stored_document( $slug ) {
 	}
 
 	return array(
-		'id'          => (int) $row->id,
 		'version'     => (int) $row->version,
 		// Decode JSON objects as objects, so an empty object in the data is
 		// returned as {} rather than [].
@@ -199,40 +204,45 @@ function get_stored_document( $slug ) {
 /**
  * Get a document.
  *
- * @param string $slug Document slug.
+ * @param string $collection Collection name.
+ * @param string $id         Document ID.
  *
- * @return array|null Array with slug, version and data keys, or null if the document doesn't exist.
+ * @return array|null Array with collection, id, version and data keys, or null
+ *                    if the document doesn't exist.
  */
-function get_document( $slug ) {
-	$stored = get_stored_document( $slug );
+function get_document( $collection, $id ) {
+	$stored = get_stored_document( $collection, $id );
 	if ( ! $stored ) {
 		return null;
 	}
 
 	return array(
-		'slug'    => $slug,
-		'version' => $stored['version'],
-		'data'    => $stored['data'],
+		'collection' => $collection,
+		'id'         => $id,
+		'version'    => $stored['version'],
+		'data'       => $stored['data'],
 	);
 }
 
 /**
  * Get a document's version and when and by whom it was last saved, without its data.
  *
- * @param string $slug Document slug.
+ * @param string $collection Collection name.
+ * @param string $id         Document ID.
  *
- * @return array|null Array with slug, version, modified (Unix timestamp) and
- *                    modified_by (user ID, or 0 if unknown) keys, or null if
- *                    the document doesn't exist.
+ * @return array|null Array with collection, id, version, modified (Unix
+ *                    timestamp) and modified_by (user ID, or 0 if unknown)
+ *                    keys, or null if the document doesn't exist.
  */
-function get_document_summary( $slug ) {
-	$stored = get_stored_document( $slug );
+function get_document_summary( $collection, $id ) {
+	$stored = get_stored_document( $collection, $id );
 	if ( ! $stored ) {
 		return null;
 	}
 
 	return array(
-		'slug'        => $slug,
+		'collection'  => $collection,
+		'id'          => $id,
 		'version'     => $stored['version'],
 		'modified'    => $stored['modified'],
 		'modified_by' => $stored['modified_by'],
@@ -240,7 +250,7 @@ function get_document_summary( $slug ) {
 }
 
 /**
- * List documents, newest first.
+ * List documents in every collection, newest first.
  *
  * @param int $page     Page number, starting at 1.
  * @param int $per_page Documents per page.
@@ -258,24 +268,19 @@ function list_documents( $page = 1, $per_page = 20 ) {
 	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$rows  = $wpdb->get_results(
 		$wpdb->prepare(
-			"SELECT slug, version, modified_gmt, modified_by FROM {$table} WHERE collection = %s AND owner_id = 0 ORDER BY id DESC LIMIT %d OFFSET %d",
-			DEFAULT_COLLECTION,
+			"SELECT collection, document_id, version, modified_gmt, modified_by FROM {$table} WHERE owner_id = 0 ORDER BY id DESC LIMIT %d OFFSET %d",
 			$per_page,
 			$offset
 		)
 	);
-	$total = (int) $wpdb->get_var(
-		$wpdb->prepare(
-			"SELECT COUNT(*) FROM {$table} WHERE collection = %s AND owner_id = 0",
-			DEFAULT_COLLECTION
-		)
-	);
+	$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE owner_id = 0" );
 	// phpcs:enable
 
 	$documents = array();
 	foreach ( (array) $rows as $row ) {
 		$documents[] = array(
-			'slug'        => $row->slug,
+			'collection'  => $row->collection,
+			'id'          => $row->document_id,
 			'version'     => (int) $row->version,
 			'modified'    => (int) strtotime( $row->modified_gmt . ' UTC' ),
 			'modified_by' => (int) $row->modified_by,
@@ -291,20 +296,22 @@ function list_documents( $page = 1, $per_page = 20 ) {
 /**
  * Build the error returned when a write is based on an old version.
  *
- * @param string     $slug    Document slug.
- * @param array|null $current The current document, or null if it doesn't exist.
+ * @param string     $collection Collection name.
+ * @param string     $id         Document ID.
+ * @param array|null $current    The current document, or null if it doesn't exist.
  *
  * @return WP_Error Conflict error with a 409 status.
  */
-function conflict_error( $slug, $current ) {
+function conflict_error( $collection, $id, $current ) {
 	return new WP_Error(
 		'faustwp_document_conflict',
 		__( 'The document has changed since the version this write was based on.', 'faustwp' ),
 		array(
-			'status'   => 409,
-			'slug'     => $slug,
-			'version'  => $current ? $current['version'] : 0,
-			'document' => $current,
+			'status'     => 409,
+			'collection' => $collection,
+			'id'         => $id,
+			'version'    => $current ? $current['version'] : 0,
+			'document'   => $current,
 		)
 	);
 }
@@ -316,13 +323,14 @@ function conflict_error( $slug, $current ) {
  * version is still the expected one, so if two writers send the same version
  * at once, only one of them succeeds.
  *
- * @param string $slug             Document slug.
+ * @param string $collection       Collection name.
+ * @param string $id               Document ID.
  * @param int    $expected_version The version the write is based on.
  * @param mixed  $data             New document data.
  *
  * @return array|WP_Error The saved document with a created flag, or an error.
  */
-function save_document( $slug, $expected_version, $data ) {
+function save_document( $collection, $id, $expected_version, $data ) {
 	$encoded_data = wp_json_encode( $data );
 	if ( false === $encoded_data ) {
 		return new WP_Error( 'faustwp_document_invalid', __( 'The document data could not be encoded as JSON.', 'faustwp' ), array( 'status' => 400 ) );
@@ -333,19 +341,19 @@ function save_document( $slug, $expected_version, $data ) {
 	}
 
 	if ( 0 === $expected_version ) {
-		return create_document( $slug, $data, $encoded_data );
+		return create_document( $collection, $id, $data, $encoded_data );
 	}
 
 	global $wpdb;
 
 	$updated = $wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->prepare(
-			'UPDATE ' . get_document_table() . ' SET version = version + 1, data = %s, modified_gmt = %s, modified_by = %d WHERE collection = %s AND owner_id = 0 AND slug = %s AND version = %d', // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			'UPDATE ' . get_document_table() . ' SET version = version + 1, data = %s, modified_gmt = %s, modified_by = %d WHERE collection = %s AND owner_id = 0 AND document_id = %s AND version = %d', // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$encoded_data,
 			current_time( 'mysql', true ),
 			get_current_user_id(),
-			DEFAULT_COLLECTION,
-			$slug,
+			$collection,
+			$id,
 			$expected_version
 		)
 	);
@@ -356,30 +364,32 @@ function save_document( $slug, $expected_version, $data ) {
 
 	if ( 1 !== $updated ) {
 		// The document doesn't exist or another write changed it first.
-		return conflict_error( $slug, get_document( $slug ) );
+		return conflict_error( $collection, $id, get_document( $collection, $id ) );
 	}
 
 	return array(
-		'slug'    => $slug,
-		'version' => $expected_version + 1,
-		'data'    => $data,
-		'created' => false,
+		'collection' => $collection,
+		'id'         => $id,
+		'version'    => $expected_version + 1,
+		'data'       => $data,
+		'created'    => false,
 	);
 }
 
 /**
  * Create a new document at version 1.
  *
- * The table's unique key rejects a second row for the same slug, so if two
- * requests create the same document at once, only one insert succeeds.
+ * The table's unique key rejects a second row for the same document, so if
+ * two requests create it at once, only one insert succeeds.
  *
- * @param string $slug         Document slug.
+ * @param string $collection   Collection name.
+ * @param string $id           Document ID.
  * @param mixed  $data         Document data.
  * @param string $encoded_data Document data encoded as JSON.
  *
  * @return array|WP_Error The saved document with a created flag, or an error.
  */
-function create_document( $slug, $data, $encoded_data ) {
+function create_document( $collection, $id, $data, $encoded_data ) {
 	global $wpdb;
 
 	$now = current_time( 'mysql', true );
@@ -389,9 +399,9 @@ function create_document( $slug, $data, $encoded_data ) {
 	$inserted = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		get_document_table(),
 		array(
-			'collection'   => DEFAULT_COLLECTION,
+			'collection'   => $collection,
 			'owner_id'     => 0,
-			'slug'         => $slug,
+			'document_id'  => $id,
 			'version'      => 1,
 			'data'         => $encoded_data,
 			'created_gmt'  => $now,
@@ -403,17 +413,18 @@ function create_document( $slug, $data, $encoded_data ) {
 	$wpdb->suppress_errors( $suppress );
 
 	if ( ! $inserted ) {
-		$current = get_document( $slug );
+		$current = get_document( $collection, $id );
 
 		// If the document exists, another request created it first.
-		return $current ? conflict_error( $slug, $current ) : database_error();
+		return $current ? conflict_error( $collection, $id, $current ) : database_error();
 	}
 
 	return array(
-		'slug'    => $slug,
-		'version' => 1,
-		'data'    => $data,
-		'created' => true,
+		'collection' => $collection,
+		'id'         => $id,
+		'version'    => 1,
+		'data'       => $data,
+		'created'    => true,
 	);
 }
 

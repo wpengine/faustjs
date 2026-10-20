@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { deepEqual, mergeDocuments, setAtPath } from '../lib/mergeDocuments.mjs';
 
-const SLUG = 'team-notes';
+const COLLECTION = 'notes';
+const DOCUMENT_ID = 'team';
 const EMPTY_NOTES = { title: '', notes: '', status: 'draft' };
 const FIELDS = [
 	{ name: 'title', label: 'Title' },
@@ -13,7 +14,7 @@ const FIELDS = [
 const MAX_AUTO_MERGES = 2;
 
 async function request(method, body) {
-	const response = await fetch(`/api/documents/${SLUG}`, {
+	const response = await fetch(`/api/collections/${COLLECTION}/documents/${DOCUMENT_ID}`, {
 		method,
 		headers: { 'Content-Type': 'application/json' },
 		body: body ? JSON.stringify(body) : undefined,
@@ -64,7 +65,12 @@ export default function Home() {
 			showDocument(json);
 			setMessage(`Loaded version ${json.version}.`);
 		} else if (status === 404) {
-			showDocument({ slug: SLUG, version: 0, data: EMPTY_NOTES });
+			showDocument({
+				collection: COLLECTION,
+				id: DOCUMENT_ID,
+				version: 0,
+				data: EMPTY_NOTES,
+			});
 			setMessage('No document yet. Saving creates it.');
 		} else {
 			setMessage(`Could not load (${status}): ${json.message}`);

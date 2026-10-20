@@ -80,7 +80,7 @@ function register_document_routes() {
 
 	register_rest_route(
 		'faustwp/v1',
-		'/documents/(?P<slug>[a-z0-9-]{1,190})',
+		'/collections/(?P<collection>' . COLLECTION_PATTERN . ')/documents/(?P<id>' . ID_PATTERN . ')',
 		array(
 			array(
 				'methods'             => 'GET',
@@ -162,15 +162,14 @@ function get_request_document_data( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for GET faustwp/v1/documents/<slug>.
+ * Callback for GET faustwp/v1/collections/<collection>/documents/<id>.
  *
  * @param WP_REST_Request $request Current request.
  *
  * @return WP_REST_Response|\WP_Error The document, or a 404 error.
  */
 function handle_get_document( WP_REST_Request $request ) {
-	$slug     = $request->get_param( 'slug' );
-	$document = get_document( $slug );
+	$document = get_document( $request->get_param( 'collection' ), $request->get_param( 'id' ) );
 
 	if ( ! $document ) {
 		return new \WP_Error( 'faustwp_document_not_found', __( 'Document not found.', 'faustwp' ), array( 'status' => 404 ) );
@@ -180,7 +179,7 @@ function handle_get_document( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for PUT faustwp/v1/documents/<slug>.
+ * Callback for PUT faustwp/v1/collections/<collection>/documents/<id>.
  *
  * The body is JSON with the version the write is based on (0 to create) and
  * the new data. A write based on an old version returns a 409 error with the
@@ -192,7 +191,8 @@ function handle_get_document( WP_REST_Request $request ) {
  */
 function handle_put_document( WP_REST_Request $request ) {
 	$result = save_document(
-		$request->get_param( 'slug' ),
+		$request->get_param( 'collection' ),
+		$request->get_param( 'id' ),
 		(int) $request->get_param( 'version' ),
 		get_request_document_data( $request )
 	);

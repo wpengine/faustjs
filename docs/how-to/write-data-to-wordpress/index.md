@@ -132,7 +132,7 @@ This narrows the window but doesn't close it: another save can still land betwee
 
 ## 5. Store app data with conflict detection
 
-The FaustWP plugin includes an optional document store for app data such as settings or structured drafts. Each document is a JSON object or array stored under a slug, with a version number. Every write names the version it was based on, and WordPress rejects the write if someone else saved first.
+The FaustWP plugin includes an optional document store for app data such as settings or structured drafts. Documents are grouped into collections, like `preferences` or `drafts`. Each document has an ID that's unique within its collection, a version number, and data that's a JSON object or array. Every write names the version it was based on, and WordPress rejects the write if someone else saved first.
 
 The store is off by default. Enable it with a filter in a small plugin or your theme's `functions.php`:
 
@@ -149,17 +149,17 @@ The routes accept any WordPress REST API authentication, such as the [Applicatio
 Read a document:
 
 ```http
-GET /?rest_route=/faustwp/v1/documents/site-settings
+GET /?rest_route=/faustwp/v1/collections/preferences/documents/site-settings
 ```
 
 ```json
-{ "slug": "site-settings", "version": 3, "data": { "theme": "dark" } }
+{ "collection": "preferences", "id": "site-settings", "version": 3, "data": { "theme": "dark" } }
 ```
 
 Write a document by sending the version you read. Use `0` to create a new document. A successful write returns the new version:
 
 ```http
-PUT /?rest_route=/faustwp/v1/documents/site-settings
+PUT /?rest_route=/faustwp/v1/collections/preferences/documents/site-settings
 Content-Type: application/json
 
 { "version": 3, "data": { "theme": "light" } }
@@ -173,16 +173,17 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 	"message": "The document has changed since the version this write was based on.",
 	"data": {
 		"status": 409,
-		"slug": "site-settings",
+		"collection": "preferences",
+		"id": "site-settings",
 		"version": 4,
-		"document": { "slug": "site-settings", "version": 4, "data": { "theme": "blue" } }
+		"document": { "collection": "preferences", "id": "site-settings", "version": 4, "data": { "theme": "blue" } }
 	}
 }
 ```
 
-Slugs use lowercase letters, numbers and hyphens. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
+Collection names and document IDs use lowercase letters, numbers and hyphens. A collection exists as soon as it has a document. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
 
-To see what your app has stored, go to **Tools → Faust Documents** in WordPress. It lists each document with its version and when and by whom it was last saved, and shows a document's data. The screen is read-only.
+To see what your app has stored, go to **Tools → Faust Documents** in WordPress. It lists each document with its collection, version and when and by whom it was last saved, and shows a document's data. The screen is read-only.
 
 To try it locally, see the [document store example](https://github.com/wpengine/faustjs/tree/canary/examples/next/document-store). It runs WordPress in Docker and shows a conflict between two browser tabs.
 

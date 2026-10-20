@@ -33,7 +33,7 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 	public function tearDown(): void {
 		global $submenu, $_registered_pages;
 
-		unset( $_GET['document'], $_GET['paged'] );
+		unset( $_GET['collection'], $_GET['document'], $_GET['paged'] );
 		remove_all_filters( 'faustwp_enable_document_store' );
 		remove_all_filters( 'wp_die_handler' );
 		uninstall_document_table();
@@ -86,12 +86,13 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 		$this->render();
 	}
 
-	public function test_list_shows_the_document_slug_and_version() {
-		save_document( 'team-notes', 0, array( 'title' => 'First' ) );
-		save_document( 'team-notes', 1, array( 'title' => 'Second' ) );
+	public function test_list_shows_the_document_collection_id_and_version() {
+		save_document( 'notes', 'team-notes', 0, array( 'title' => 'First' ) );
+		save_document( 'notes', 'team-notes', 1, array( 'title' => 'Second' ) );
 
 		$output = $this->render();
 
+		$this->assertStringContainsString( '<code>notes</code>', $output );
 		$this->assertStringContainsString( '<code>team-notes</code>', $output );
 		$this->assertStringContainsString( '<td>2</td>', $output );
 		$this->assertStringContainsString( wp_get_current_user()->display_name, $output );
@@ -102,8 +103,9 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 	}
 
 	public function test_detail_view_escapes_document_data() {
-		save_document( 'xss', 0, array( 'note' => '<script>alert(1)</script>' ) );
-		$_GET['document'] = 'xss';
+		save_document( 'notes', 'xss', 0, array( 'note' => '<script>alert(1)</script>' ) );
+		$_GET['collection'] = 'notes';
+		$_GET['document']   = 'xss';
 
 		$output = $this->render();
 
