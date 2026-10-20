@@ -169,6 +169,10 @@ function match_blocks_permissions( $blocks_dir ) {
 
 	// Only touch block directories; the uploaded zip stays as it is.
 	foreach ( (array) glob( trailingslashit( $blocks_dir ) . '*', GLOB_ONLYDIR ) as $block_dir ) {
+		if ( is_link( $block_dir ) ) {
+			continue;
+		}
+
 		set_permissions( $block_dir, $dir_perms );
 
 		try {
@@ -182,8 +186,8 @@ function match_blocks_permissions( $blocks_dir ) {
 					set_permissions( $path, $info->isDir() ? $dir_perms : $file_perms );
 				}
 			}
-		} catch ( \UnexpectedValueException $e ) {
-			continue;
+		} catch ( \UnexpectedValueException $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// An unreadable directory keeps its permissions, as it did before.
 		}
 	}
 }
@@ -197,7 +201,8 @@ function match_blocks_permissions( $blocks_dir ) {
  */
 function set_permissions( $path, $perms ) {
 	if ( ( fileperms( $path ) & 0777 ) !== $perms ) {
-		chmod( $path, $perms ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod
+		// Silenced because chmod() warns on files PHP doesn't own, which would break the JSON response.
+		@chmod( $path, $perms ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_chmod
 	}
 }
 
