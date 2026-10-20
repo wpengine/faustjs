@@ -42,6 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // The save snackbar also shows the "View Post" link after publishing, which
+  // should keep pointing at the published post.
+  function isPostPublished() {
+    const editor = window.wp?.data?.select('core/editor');
+    return editor ? editor.isCurrentPostPublished() : false;
+  }
+
   function updateUIElements() {
     const { headerLink, snackbarLink } = getPreviewLinksByVersion(wpVersion);
 
@@ -51,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (
       snackbarLink &&
+      !isPostPublished() &&
       snackbarLink.getAttribute('href') !== faustPreviewLink
     ) {
       snackbarLink.setAttribute('href', faustPreviewLink);
