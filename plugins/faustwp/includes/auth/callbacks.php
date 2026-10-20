@@ -61,6 +61,39 @@ function handle_generate_endpoint() {
 	exit;
 }
 
+add_action( 'parse_request', __NAMESPACE__ . '\\handle_logout_request' );
+/**
+ * Callback for WordPress 'parse_request' action.
+ *
+ * Log the browser out of WordPress when it visits a logout URL from the
+ * faustwp/v1/logout endpoint, then redirect to the requested url. Without
+ * this, a user who logged in through WordPress would be logged straight back
+ * in after logging out of the frontend.
+ *
+ * The code only logs out the user it was created for, so a logout URL can't
+ * log out anyone else.
+ *
+ * @return void
+ */
+function handle_logout_request() {
+	if ( empty( $_GET['faust_logout'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+
+	$user = get_user_from_logout_code( wp_unslash( $_GET['faust_logout'] ) ); // phpcs:ignore WordPress.Security
+
+	if ( $user && get_current_user_id() === $user->ID ) {
+		wp_logout();
+	}
+
+	$fallback     = faustwp_get_setting( 'frontend_uri' ) ? faustwp_get_setting( 'frontend_uri' ) : home_url( '/' );
+	$redirect_uri = empty( $_GET['redirect_uri'] ) ? $fallback : wp_unslash( $_GET['redirect_uri'] ); // phpcs:ignore WordPress.Security
+
+	wp_safe_redirect( wp_validate_redirect( $redirect_uri, $fallback ) );
+
+	exit;
+}
+
 add_filter( 'allowed_redirect_hosts', __NAMESPACE__ . '\\allowed_redirect_hosts', 10, 2 );
 /**
  * Callback for WordPress 'allowed_redirect_hosts' filter.

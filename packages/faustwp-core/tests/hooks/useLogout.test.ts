@@ -32,7 +32,7 @@ describe('useLogout hook', () => {
 	});
 
 	it('calls the logout endpoint to clear the refresh token', async () => {
-		fetchMock.post(`/api/faust/auth/logout`, {
+		fetchMock.post('begin:/api/faust/auth/logout', {
 			status: 205,
 		});
 
@@ -47,7 +47,7 @@ describe('useLogout hook', () => {
 	});
 
 	it('calls window.location.reload if no redirect url', async () => {
-		fetchMock.post(`/api/faust/auth/logout`, {
+		fetchMock.post('begin:/api/faust/auth/logout', {
 			status: 205,
 		});
 
@@ -61,7 +61,7 @@ describe('useLogout hook', () => {
 	});
 
 	it('calls window.location.assign to / if there is a preview url and no redirectUrl', async () => {
-		fetchMock.post(`/api/faust/auth/logout`, {
+		fetchMock.post('begin:/api/faust/auth/logout', {
 			status: 205,
 		});
 
@@ -77,7 +77,7 @@ describe('useLogout hook', () => {
 	});
 
 	it('calls window.location.assign if there is a redirect url', async () => {
-		fetchMock.post(`/api/faust/auth/logout`, {
+		fetchMock.post('begin:/api/faust/auth/logout', {
 			status: 205,
 		});
 
@@ -91,7 +91,7 @@ describe('useLogout hook', () => {
 	});
 
 	it('fails logout and provides the response object', async () => {
-		fetchMock.post(`/api/faust/auth/logout`, {
+		fetchMock.post('begin:/api/faust/auth/logout', {
 			status: 500,
 		});
 
@@ -100,6 +100,37 @@ describe('useLogout hook', () => {
 		await act(() => result.current.logout());
 
 		expect(result.current.error).not.toBeUndefined();
+
+		fetchMock.restore();
+	});
+
+	it('sends the destination to the logout endpoint', async () => {
+		fetchMock.post('begin:/api/faust/auth/logout', { status: 205 });
+
+		const { result } = renderHook(() => useLogout());
+
+		await act(() => result.current.logout('https://frontend.local/bye'));
+
+		expect(fetchMock.lastUrl()).toBe(
+			'/api/faust/auth/logout?redirect_uri=https%3A%2F%2Ffrontend.local%2Fbye',
+		);
+
+		fetchMock.restore();
+	});
+
+	it('sends the browser to the WordPress logout url when there is one', async () => {
+		fetchMock.post('begin:/api/faust/auth/logout', {
+			status: 200,
+			body: { wordpressLogoutUrl: 'http://wp.local/?faust_logout=code' },
+		});
+
+		const { result } = renderHook(() => useLogout());
+
+		await act(() => result.current.logout('https://frontend.local/bye'));
+
+		expect(window.location.assign).toHaveBeenLastCalledWith(
+			'http://wp.local/?faust_logout=code',
+		);
 
 		fetchMock.restore();
 	});
