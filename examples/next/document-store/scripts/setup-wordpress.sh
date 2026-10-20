@@ -56,6 +56,15 @@ if ! wp core is-installed >/dev/null 2>&1; then
 		--skip-email
 fi
 
+# The plugin's Docker setup imports a database that already has an older
+# WordPress installed at http://localhost:8080. Point it at this port, so logins
+# and wp-admin don't redirect to whatever else is running on 8080, bring its
+# tables up to date, and skip the admin email check on the first login.
+wp option update home "$WP_URL" >/dev/null
+wp option update siteurl "$WP_URL" >/dev/null
+wp core update-db >/dev/null
+wp option update admin_email_lifespan "$(( $(date +%s) + 31536000 ))" >/dev/null
+
 wp plugin is-active faustwp || wp plugin activate faustwp
 
 # A role with only the document capabilities, so the app's credentials can't
