@@ -29,7 +29,7 @@ const DB_VERSION = 1;
 /**
  * Option holding the installed documents table schema version.
  */
-const DB_VERSION_OPTION = 'faustwp_documents_db_version';
+const DB_VERSION_OPTION = 'faust_documents_db_version';
 
 /**
  * Pattern for collection names: lowercase letters, numbers and hyphens.
@@ -44,23 +44,23 @@ const ID_PATTERN = '[a-z0-9-]{1,190}';
 /**
  * Capability needed to read documents.
  */
-const READ_CAPABILITY = 'read_faustwp_documents';
+const READ_CAPABILITY = 'read_faust_documents';
 
 /**
  * Capability needed to create and update documents.
  */
-const EDIT_CAPABILITY = 'edit_faustwp_documents';
+const EDIT_CAPABILITY = 'edit_faust_documents';
 
 /**
  * Determine if the document store is enabled.
  *
  * The store is off by default. Enable it with:
- * add_filter( 'faustwp_enable_document_store', '__return_true' );
+ * add_filter( 'faust_enable_document_store', '__return_true' );
  *
  * @return bool True if the document store is enabled.
  */
 function is_document_store_enabled() {
-	return (bool) apply_filters( 'faustwp_enable_document_store', false );
+	return (bool) apply_filters( 'faust_enable_document_store', false );
 }
 
 /**
@@ -69,7 +69,7 @@ function is_document_store_enabled() {
  * @return int Maximum size in bytes.
  */
 function get_max_document_bytes() {
-	return (int) apply_filters( 'faustwp_document_max_bytes', 100 * KB_IN_BYTES );
+	return (int) apply_filters( 'faust_document_max_bytes', 100 * KB_IN_BYTES );
 }
 
 /**
@@ -80,7 +80,7 @@ function get_max_document_bytes() {
 function get_document_table() {
 	global $wpdb;
 
-	return $wpdb->prefix . 'faustwp_documents';
+	return $wpdb->prefix . 'faust_documents';
 }
 
 /**
@@ -101,7 +101,7 @@ function maybe_install_document_table() {
 	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
-	if ( ! \WP_Upgrader::create_lock( 'faustwp_documents_db', 60 ) ) {
+	if ( ! \WP_Upgrader::create_lock( 'faust_documents_db', 60 ) ) {
 		return;
 	}
 
@@ -112,7 +112,7 @@ function maybe_install_document_table() {
 		update_option( DB_VERSION_OPTION, DB_VERSION, true );
 	}
 
-	\WP_Upgrader::release_lock( 'faustwp_documents_db' );
+	\WP_Upgrader::release_lock( 'faust_documents_db' );
 }
 
 /**
@@ -353,7 +353,7 @@ function list_documents( $page = 1, $per_page = 20 ) {
  */
 function conflict_error( $collection, $id, $current ) {
 	return new WP_Error(
-		'faustwp_document_conflict',
+		'faust_document_conflict',
 		__( 'The document has changed since the version this write was based on.', 'faustwp' ),
 		array(
 			'status'     => 409,
@@ -371,7 +371,7 @@ function conflict_error( $collection, $id, $current ) {
  * @return WP_Error Error with a 404 status.
  */
 function not_found_error() {
-	return new WP_Error( 'faustwp_document_not_found', __( 'Document not found.', 'faustwp' ), array( 'status' => 404 ) );
+	return new WP_Error( 'faust_document_not_found', __( 'Document not found.', 'faustwp' ), array( 'status' => 404 ) );
 }
 
 /**
@@ -380,7 +380,7 @@ function not_found_error() {
  * @return WP_Error Error with a 500 status.
  */
 function database_error() {
-	return new WP_Error( 'faustwp_document_db_error', __( 'The document could not be saved.', 'faustwp' ), array( 'status' => 500 ) );
+	return new WP_Error( 'faust_document_db_error', __( 'The document could not be saved.', 'faustwp' ), array( 'status' => 500 ) );
 }
 
 /**
@@ -393,11 +393,11 @@ function database_error() {
 function encode_document_data( $data ) {
 	$encoded = wp_json_encode( $data );
 	if ( false === $encoded ) {
-		return new WP_Error( 'faustwp_document_invalid', __( 'The document data could not be encoded as JSON.', 'faustwp' ), array( 'status' => 400 ) );
+		return new WP_Error( 'faust_document_invalid', __( 'The document data could not be encoded as JSON.', 'faustwp' ), array( 'status' => 400 ) );
 	}
 
 	if ( strlen( $encoded ) > get_max_document_bytes() ) {
-		return new WP_Error( 'faustwp_document_too_large', __( 'The document is larger than the maximum size.', 'faustwp' ), array( 'status' => 413 ) );
+		return new WP_Error( 'faust_document_too_large', __( 'The document is larger than the maximum size.', 'faustwp' ), array( 'status' => 413 ) );
 	}
 
 	return $encoded;
@@ -410,7 +410,7 @@ function encode_document_data( $data ) {
  * version is still the expected one, so if two writers send the same version
  * at once, only one of them succeeds.
  *
- * Fires faustwp_document_saved after a successful write.
+ * Fires faust_document_saved after a successful write.
  *
  * @param string $collection       Collection name.
  * @param string $id               Document ID.
@@ -449,7 +449,7 @@ function save_document( $collection, $id, $expected_version, $data ) {
 	 * @param array $document The saved document.
 	 * @param bool  $created  True if the document was created.
 	 */
-	do_action( 'faustwp_document_saved', $document, 1 === $result['version'] );
+	do_action( 'faust_document_saved', $document, 1 === $result['version'] );
 
 	return $document + array( 'is_new' => 1 === $result['version'] );
 }
@@ -573,7 +573,7 @@ function create_document( $collection, $id, $encoded_data ) {
 function add_document( $collection, $data ) {
 	for ( $attempt = 0; $attempt < 3; $attempt++ ) {
 		$result = save_document( $collection, bin2hex( random_bytes( 10 ) ), 0, $data );
-		if ( ! is_wp_error( $result ) || 'faustwp_document_conflict' !== $result->get_error_code() ) {
+		if ( ! is_wp_error( $result ) || 'faust_document_conflict' !== $result->get_error_code() ) {
 			return $result;
 		}
 	}
@@ -584,7 +584,7 @@ function add_document( $collection, $data ) {
 /**
  * Delete a document if it's still at the expected version.
  *
- * Fires faustwp_document_deleted after a successful delete.
+ * Fires faust_document_deleted after a successful delete.
  *
  * @param string $collection       Collection name.
  * @param string $id               Document ID.
@@ -629,7 +629,7 @@ function delete_document( $collection, $id, $expected_version ) {
 	 *
 	 * @param array $previous The document as it was before it was deleted.
 	 */
-	do_action( 'faustwp_document_deleted', $previous );
+	do_action( 'faust_document_deleted', $previous );
 
 	return $previous;
 }

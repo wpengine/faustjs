@@ -24,7 +24,7 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		add_filter( 'faustwp_enable_document_store', '__return_true' );
+		add_filter( 'faust_enable_document_store', '__return_true' );
 		maybe_install_document_table();
 		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
 		set_current_screen( 'dashboard' );
@@ -34,7 +34,7 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 		global $submenu, $_registered_pages;
 
 		unset( $_GET['collection'], $_GET['document'], $_GET['paged'] );
-		remove_all_filters( 'faustwp_enable_document_store' );
+		remove_all_filters( 'faust_enable_document_store' );
 		remove_all_filters( 'wp_die_handler' );
 		uninstall_document_table();
 		unset( $submenu['tools.php'] );
@@ -64,7 +64,7 @@ class DocumentAdminTests extends \WP_UnitTestCase {
 	}
 
 	public function test_page_is_not_registered_when_the_store_is_disabled() {
-		remove_all_filters( 'faustwp_enable_document_store' );
+		remove_all_filters( 'faust_enable_document_store' );
 
 		register_documents_admin_page();
 

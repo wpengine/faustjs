@@ -4,4 +4,4 @@
  * Description: Turns on the FaustWP document store for the document store example.
  */
 
-add_filter( 'faustwp_enable_document_store', '__return_true' );
+add_filter( 'faust_enable_document_store', '__return_true' );

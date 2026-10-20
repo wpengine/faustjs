@@ -39,13 +39,13 @@ Stop WordPress with `npm run wordpress:stop`. Add `-- --volumes` to also delete 
 WordPress loads FaustWP straight from `plugins/faustwp` in this repository, so changes to the plugin take effect on the next request without restarting anything. To run WP-CLI against the site, for example to inspect a document:
 
 ```bash
-docker compose --project-name faust-document-store exec wordpress wp --allow-root eval 'global $wpdb; print_r( $wpdb->get_results( "SELECT collection, document_id, version, modified_gmt FROM {$wpdb->prefix}faustwp_documents" ) );'
+docker compose --project-name faust-document-store exec wordpress wp --allow-root eval 'global $wpdb; print_r( $wpdb->get_results( "SELECT collection, document_id, version, modified_gmt FROM {$wpdb->prefix}faust_documents" ) );'
 ```
 
 ## How it works
 
-- `mu-plugins/enable-document-store.php` is a must-use plugin that turns on the document store with the `faustwp_enable_document_store` filter.
-- `lib/wordpress.js` forwards requests to `/?rest_route=/faustwp/v1/...` with the Application Password, and passes WordPress's status code back: `404` before a document exists, `201` when one is created, `200` when it's updated or deleted and `409` for a stale write or delete.
+- `mu-plugins/enable-document-store.php` is a must-use plugin that turns on the document store with the `faust_enable_document_store` filter.
+- `lib/wordpress.js` forwards requests to `/?rest_route=/faust/v1/...` with the Application Password, and passes WordPress's status code back: `404` before a document exists, `201` when one is created, `200` when it's updated or deleted and `409` for a stale write or delete.
 - `pages/api/collections/[collection]/documents/[id].js` handles `GET`, `PUT` and `DELETE` for one document, and `pages/api/collections/[collection]/documents/index.js` handles `GET` (list) and `POST` (add with a generated ID) for a collection.
 - `pages/waitlist.js` adds signups with `POST`, pages through the list with `next_cursor`, and removes a signup by sending the version it was listed at.
 - `pages/index.js` keeps the version it last read and sends it with every save. On a `409`, the response includes the current document, and the page merges it with the local edits.

@@ -137,19 +137,19 @@ The FaustWP plugin includes an optional document store for app data such as sett
 The store is off by default. Enable it with a filter in a small plugin or your theme's `functions.php`:
 
 ```php
-add_filter( 'faustwp_enable_document_store', '__return_true' );
+add_filter( 'faust_enable_document_store', '__return_true' );
 ```
 
-Documents live in their own database table, `wp_faustwp_documents` (with your site's table prefix), which FaustWP creates the first time WordPress loads with the store enabled. Deleting the FaustWP plugin deletes the table and its documents.
+Documents live in their own database table, `wp_faust_documents` (with your site's table prefix), which FaustWP creates the first time WordPress loads with the store enabled. Deleting the FaustWP plugin deletes the table and its documents.
 
-Administrators can read and write documents. To give other users access, add the `read_faustwp_documents` capability to read, and both `read_faustwp_documents` and `edit_faustwp_documents` to write. These capabilities don't grant access to anything else in WordPress.
+Administrators can read and write documents. To give other users access, add the `read_faust_documents` capability to read, and both `read_faust_documents` and `edit_faust_documents` to write. These capabilities don't grant access to anything else in WordPress.
 
 The routes accept any WordPress REST API authentication, such as the [Application Password](#6-writing-from-the-server) described below.
 
 Read a document:
 
 ```http
-GET /?rest_route=/faustwp/v1/collections/preferences/documents/site-settings
+GET /?rest_route=/faust/v1/collections/preferences/documents/site-settings
 ```
 
 ```json
@@ -168,7 +168,7 @@ GET /?rest_route=/faustwp/v1/collections/preferences/documents/site-settings
 Write a document by sending the version you read. Use `0` to create a new document. A successful write returns the new version:
 
 ```http
-PUT /?rest_route=/faustwp/v1/collections/preferences/documents/site-settings
+PUT /?rest_route=/faust/v1/collections/preferences/documents/site-settings
 Content-Type: application/json
 
 { "version": 3, "data": { "theme": "light" } }
@@ -178,7 +178,7 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 
 ```json
 {
-	"code": "faustwp_document_conflict",
+	"code": "faust_document_conflict",
 	"message": "The document has changed since the version this write was based on.",
 	"data": {
 		"status": 409,
@@ -193,7 +193,7 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 To create a document without choosing an ID, for example a form submission, `POST` to the collection. WordPress generates a random ID and returns the new document with `201 Created`:
 
 ```http
-POST /?rest_route=/faustwp/v1/collections/waitlist/documents
+POST /?rest_route=/faust/v1/collections/waitlist/documents
 Content-Type: application/json
 
 { "data": { "email": "ada@example.com" } }
@@ -202,7 +202,7 @@ Content-Type: application/json
 List a collection's documents, newest first. Pass `limit` (1 to 100, default 20), and to get the next page, pass the `next_cursor` from the previous response as `cursor`. `next_cursor` is `null` on the last page:
 
 ```http
-GET /?rest_route=/faustwp/v1/collections/waitlist/documents&limit=20
+GET /?rest_route=/faust/v1/collections/waitlist/documents&limit=20
 ```
 
 ```json
@@ -212,14 +212,14 @@ GET /?rest_route=/faustwp/v1/collections/waitlist/documents&limit=20
 Delete a document by sending the version you read. Like a write, a stale version returns `409 Conflict`, and a document that doesn't exist returns `404`:
 
 ```http
-DELETE /?rest_route=/faustwp/v1/collections/waitlist/documents/3f9c2a7e1b0d4c6a8e5f&version=1
+DELETE /?rest_route=/faust/v1/collections/waitlist/documents/3f9c2a7e1b0d4c6a8e5f&version=1
 ```
 
-To run code when documents change, for example to send an email for each form submission, use the `faustwp_document_saved` and `faustwp_document_deleted` actions:
+To run code when documents change, for example to send an email for each form submission, use the `faust_document_saved` and `faust_document_deleted` actions:
 
 ```php
 add_action(
-	'faustwp_document_saved',
+	'faust_document_saved',
 	function ( $document, $created ) {
 		if ( $created && 'waitlist' === $document['collection'] ) {
 			wp_mail( get_option( 'admin_email' ), 'New waitlist signup', $document['data']->email );
@@ -230,7 +230,7 @@ add_action(
 );
 ```
 
-Collection names and document IDs use lowercase letters, numbers and hyphens. A collection exists as soon as it has a document. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
+Collection names and document IDs use lowercase letters, numbers and hyphens. A collection exists as soon as it has a document. Documents are limited to 100 KB of JSON by default, which you can change with the `faust_document_max_bytes` filter.
 
 To see what your app has stored, go to **Tools → Faust Documents** in WordPress. It lists each document with its collection, version and when and by whom it was last saved, and shows a document's data. The screen is read-only.
 

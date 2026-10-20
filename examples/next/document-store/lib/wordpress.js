@@ -41,7 +41,7 @@ export async function forwardToWordPress(req, res, path, query = '') {
 	let response;
 	try {
 		response = await fetch(
-			`${NEXT_PUBLIC_WORDPRESS_URL}/?rest_route=/faustwp/v1/${path}${query}`,
+			`${NEXT_PUBLIC_WORDPRESS_URL}/?rest_route=/faust/v1/${path}${query}`,
 			{
 				method: req.method,
 				headers: {

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Admin page slug.
  */
-const ADMIN_PAGE_SLUG = 'faustwp-documents';
+const ADMIN_PAGE_SLUG = 'faust-documents';
 
 /**
  * Documents listed per page.

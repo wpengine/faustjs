@@ -27,7 +27,7 @@ use const WPE\FaustWP\Documents\READ_CAPABILITY;
  */
 class DocumentStoreTests extends \WP_UnitTestCase {
 
-	const ROUTE = '/faustwp/v1/collections/prefs/documents';
+	const ROUTE = '/faust/v1/collections/prefs/documents';
 
 	/**
 	 * REST server for the test.
@@ -39,7 +39,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		add_filter( 'faustwp_enable_document_store', '__return_true' );
+		add_filter( 'faust_enable_document_store', '__return_true' );
 		maybe_install_document_table();
 		$this->init_rest_server();
 
@@ -50,8 +50,8 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		global $wp_rest_server;
 		$wp_rest_server = null;
 
-		remove_all_filters( 'faustwp_enable_document_store' );
-		remove_all_filters( 'faustwp_document_max_bytes' );
+		remove_all_filters( 'faust_enable_document_store' );
+		remove_all_filters( 'faust_document_max_bytes' );
 		uninstall_document_table();
 
 		parent::tearDown();
@@ -124,14 +124,14 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 	public function test_store_is_disabled_by_default() {
 		uninstall_document_table();
-		remove_all_filters( 'faustwp_enable_document_store' );
+		remove_all_filters( 'faust_enable_document_store' );
 		$this->init_rest_server();
 
 		maybe_set_up_document_store();
 
 		$this->assertFalse( $this->table_exists() );
 		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
-		$this->assertArrayNotHasKey( '/faustwp/v1/collections/(?P<collection>[a-z0-9-]{1,64})/documents/(?P<id>[a-z0-9-]{1,190})', $this->server->get_routes() );
+		$this->assertArrayNotHasKey( '/faust/v1/collections/(?P<collection>[a-z0-9-]{1,64})/documents/(?P<id>[a-z0-9-]{1,190})', $this->server->get_routes() );
 		$this->assertSame( 404, $this->get( 'settings' )->get_status() );
 	}
 
@@ -200,7 +200,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$response = $this->get( 'missing' );
 
 		$this->assertSame( 404, $response->get_status() );
-		$this->assertSame( 'faustwp_document_not_found', $response->get_data()['code'] );
+		$this->assertSame( 'faust_document_not_found', $response->get_data()['code'] );
 	}
 
 	public function test_put_with_matching_version_updates_and_bumps_version() {
@@ -221,7 +221,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$error    = $response->get_data();
 
 		$this->assertSame( 409, $response->get_status() );
-		$this->assertSame( 'faustwp_document_conflict', $error['code'] );
+		$this->assertSame( 'faust_document_conflict', $error['code'] );
 		$this->assertSame( 2, $error['data']['version'] );
 		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( $error['data']['document']['data'] ) );
 		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
@@ -267,7 +267,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertTrue( $raced );
 		$this->assertWPError( $result );
-		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
+		$this->assertSame( 'faust_document_conflict', $result->get_error_code() );
 		$this->assertSame( array( 'theme' => 'light' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 		$this->assertSame( 2, get_document( 'prefs', 'settings' )['version'] );
 	}
@@ -294,7 +294,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		global $wpdb;
 		$this->assertTrue( $raced );
 		$this->assertWPError( $result );
-		$this->assertSame( 'faustwp_document_conflict', $result->get_error_code() );
+		$this->assertSame( 'faust_document_conflict', $result->get_error_code() );
 		$this->assertSame( array( 'theme' => 'dark' ), $this->normalize( get_document( 'prefs', 'settings' )['data'] ) );
 		$this->assertSame( '1', $wpdb->get_var( 'SELECT COUNT(*) FROM ' . get_document_table() ) );
 	}
@@ -302,7 +302,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	public function test_ids_and_collections_outside_the_allowed_characters_do_not_match_the_route() {
 		$this->assertSame( 404, $this->get( 'Settings' )->get_status() );
 		$this->assertSame( 404, $this->put( 'my_settings', array( 'version' => 0, 'data' => array() ) )->get_status() );
-		$this->assertSame( 404, $this->server->dispatch( new \WP_REST_Request( 'GET', '/faustwp/v1/collections/My_Prefs/documents/settings' ) )->get_status() );
+		$this->assertSame( 404, $this->server->dispatch( new \WP_REST_Request( 'GET', '/faust/v1/collections/My_Prefs/documents/settings' ) )->get_status() );
 	}
 
 	public function test_the_same_id_in_two_collections_is_two_documents() {
@@ -335,7 +335,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 	public function test_document_larger_than_max_size_returns_413() {
 		add_filter(
-			'faustwp_document_max_bytes',
+			'faust_document_max_bytes',
 			function () {
 				return 10;
 			}
@@ -503,7 +503,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$saved   = array();
 		$deleted = array();
 		add_action(
-			'faustwp_document_saved',
+			'faust_document_saved',
 			function ( $document, $created ) use ( &$saved ) {
 				$saved[] = array( $document['version'], $created );
 			},
@@ -511,7 +511,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 			2
 		);
 		add_action(
-			'faustwp_document_deleted',
+			'faust_document_deleted',
 			function ( $previous ) use ( &$deleted ) {
 				$deleted[] = $previous['version'];
 			}

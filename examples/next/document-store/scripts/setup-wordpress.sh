@@ -72,7 +72,7 @@ wp plugin is-active faustwp || wp plugin activate faustwp
 if ! wp role exists document_writer >/dev/null 2>&1; then
 	wp role create document_writer "Document writer"
 fi
-wp cap add document_writer read read_faustwp_documents edit_faustwp_documents
+wp cap add document_writer read read_faust_documents edit_faust_documents
 
 if ! wp user get document-app >/dev/null 2>&1; then
 	wp user create document-app document-app@example.test --role=document_writer --porcelain >/dev/null

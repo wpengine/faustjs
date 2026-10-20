@@ -3,7 +3,7 @@
  * Callbacks for the versioned document store.
  *
  * Nothing here runs unless the store is enabled with the
- * faustwp_enable_document_store filter.
+ * faust_enable_document_store filter.
  *
  * @package FaustWP
  */
@@ -90,7 +90,7 @@ function register_document_routes() {
 	);
 
 	register_rest_route(
-		'faustwp/v1',
+		'faust/v1',
 		$collection_route,
 		array(
 			array(
@@ -123,7 +123,7 @@ function register_document_routes() {
 	);
 
 	register_rest_route(
-		'faustwp/v1',
+		'faust/v1',
 		$collection_route . '/(?P<id>' . ID_PATTERN . ')',
 		array(
 			array(
@@ -206,7 +206,7 @@ function get_request_document_data( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for GET faustwp/v1/collections/<collection>/documents/<id>.
+ * Callback for GET faust/v1/collections/<collection>/documents/<id>.
  *
  * @param WP_REST_Request $request Current request.
  *
@@ -223,7 +223,7 @@ function handle_get_document( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for PUT faustwp/v1/collections/<collection>/documents/<id>.
+ * Callback for PUT faust/v1/collections/<collection>/documents/<id>.
  *
  * The body is JSON with the version the write is based on (0 to create) and
  * the new data. A write based on an old version returns a 409 error with the
@@ -245,7 +245,7 @@ function handle_put_document( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for GET faustwp/v1/collections/<collection>/documents.
+ * Callback for GET faust/v1/collections/<collection>/documents.
  *
  * @param WP_REST_Request $request Current request.
  *
@@ -259,7 +259,7 @@ function handle_list_documents( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for POST faustwp/v1/collections/<collection>/documents.
+ * Callback for POST faust/v1/collections/<collection>/documents.
  *
  * Creates a document with a generated ID.
  *
@@ -272,7 +272,7 @@ function handle_add_document( WP_REST_Request $request ) {
 }
 
 /**
- * Callback for DELETE faustwp/v1/collections/<collection>/documents/<id>.
+ * Callback for DELETE faust/v1/collections/<collection>/documents/<id>.
  *
  * The version the delete is based on is required, as a query or body
  * parameter. A stale version returns a 409 error with the current document.

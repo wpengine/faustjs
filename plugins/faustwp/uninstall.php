@@ -12,15 +12,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 require_once __DIR__ . '/includes/documents/functions.php';
 
 if ( is_multisite() ) {
-	$faustwp_site_ids = get_sites(
+	$faust_site_ids = get_sites(
 		array(
 			'fields' => 'ids',
 			'number' => 0,
 		)
 	);
 
-	foreach ( $faustwp_site_ids as $faustwp_site_id ) {
-		switch_to_blog( $faustwp_site_id );
+	foreach ( $faust_site_ids as $faust_site_id ) {
+		switch_to_blog( $faust_site_id );
 		WPE\FaustWP\Documents\uninstall_document_table();
 		restore_current_blog();
 	}
