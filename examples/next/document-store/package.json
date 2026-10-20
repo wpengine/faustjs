@@ -6,6 +6,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
+		"test": "node --test lib/*.test.mjs",
 		"wordpress:setup": "bash scripts/setup-wordpress.sh",
 		"wordpress:stop": "bash scripts/stop-wordpress.sh"
 	},
