@@ -71,7 +71,7 @@ describe('<CoreColumn />', () => {
       [
         `.${containerClass} > :where(:not(.alignleft):not(.alignright):not(.alignfull)) { max-width: 300px; margin-left: auto !important; margin-right: auto !important; }`,
         `.${containerClass} > .alignwide { max-width: 600px; }`,
-        `.${containerClass} > .alignfull { max-width: none; }`,
+        `.${containerClass} .alignfull { max-width: none; }`,
       ].join('\n'),
     );
   });
@@ -89,6 +89,21 @@ describe('<CoreColumn />', () => {
       'max-width: 300px; margin-left: 0 !important; margin-right: auto !important;',
     );
     expect(css).toContain('> .alignwide { max-width: 300px; }');
+    expect(css).toContain('{ margin-left: 0 !important; }');
+  });
+
+  test('justifies inner blocks that use the theme content width', () => {
+    const { container } = renderProvider({
+      innerBlocks,
+      attributes: {
+        layout: '{"type":"constrained","justifyContent":"right"}',
+      },
+    });
+    const css = container.querySelector('style')?.textContent;
+    expect(css).not.toContain('max-width');
+    expect(css).toMatch(
+      /^\.wp-container-core-column-faust-\w+ > :where\(:not\(\.alignleft\):not\(\.alignright\):not\(\.alignfull\)\) \{ margin-right: 0 !important; \}$/,
+    );
   });
 
   test('gives the same layout the same class name', () => {

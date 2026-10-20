@@ -66,26 +66,37 @@ function getConstrainedLayout(layoutAttribute?: string) {
   }
   const contentSize = sanitizeSize(layout?.contentSize);
   const wideSize = sanitizeSize(layout?.wideSize);
-  if (!contentSize && !wideSize) {
+  const { justifyContent } = layout;
+  const isJustified = justifyContent === 'left' || justifyContent === 'right';
+  if (!contentSize && !wideSize && !isJustified) {
     return null;
   }
-  const { justifyContent } = layout;
-  const marginLeft =
-    justifyContent === 'left' ? '0 !important' : 'auto !important';
-  const marginRight =
-    justifyContent === 'right' ? '0 !important' : 'auto !important';
   const className = `wp-container-core-column-faust-${hash(
     [contentSize, wideSize, justifyContent].join('|'),
   )}`;
   const selector = `.${className}`;
-  const css = [
-    `${selector} > :where(:not(.alignleft):not(.alignright):not(.alignfull)) { max-width: ${
-      contentSize ?? wideSize
-    }; margin-left: ${marginLeft}; margin-right: ${marginRight}; }`,
-    `${selector} > .alignwide { max-width: ${wideSize ?? contentSize}; }`,
-    `${selector} > .alignfull { max-width: none; }`,
-  ].join('\n');
-  return { className, css };
+  const innerBlocks = `${selector} > :where(:not(.alignleft):not(.alignright):not(.alignfull))`;
+  const rules = [];
+  // Matches the rules WordPress outputs in wp_get_layout_style().
+  if (contentSize || wideSize) {
+    const marginLeft =
+      justifyContent === 'left' ? '0 !important' : 'auto !important';
+    const marginRight =
+      justifyContent === 'right' ? '0 !important' : 'auto !important';
+    rules.push(
+      `${innerBlocks} { max-width: ${
+        contentSize ?? wideSize
+      }; margin-left: ${marginLeft}; margin-right: ${marginRight}; }`,
+      `${selector} > .alignwide { max-width: ${wideSize ?? contentSize}; }`,
+      `${selector} .alignfull { max-width: none; }`,
+    );
+  }
+  if (justifyContent === 'left') {
+    rules.push(`${innerBlocks} { margin-left: 0 !important; }`);
+  } else if (justifyContent === 'right') {
+    rules.push(`${innerBlocks} { margin-right: 0 !important; }`);
+  }
+  return { className, css: rules.join('\n') };
 }
 
 export function CoreColumn(props: CoreColumnFragmentProps) {
