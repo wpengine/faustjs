@@ -100,8 +100,14 @@ function maybe_install_document_table() {
 		return;
 	}
 
+	global $wpdb;
+
 	install_document_table();
-	update_option( DB_VERSION_OPTION, DB_VERSION, true );
+
+	// Leave the version unrecorded if dbDelta() failed, so the next request retries.
+	if ( '' === $wpdb->last_error ) {
+		update_option( DB_VERSION_OPTION, DB_VERSION, true );
+	}
 
 	\WP_Upgrader::release_lock( 'faustwp_documents_db' );
 }

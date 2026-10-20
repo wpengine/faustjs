@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Documents\get_document;
+use function WPE\FaustWP\Documents\drop_document_table_with_site;
 use function WPE\FaustWP\Documents\get_document_table;
 use function WPE\FaustWP\Documents\get_stored_document;
 use function WPE\FaustWP\Documents\maybe_install_document_table;
@@ -120,6 +121,27 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 
 		$this->assertFalse( $this->table_exists() );
 		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
+	}
+
+	public function test_a_failed_install_is_retried() {
+		uninstall_document_table();
+		add_filter(
+			'query',
+			function ( $query ) {
+				return 0 === strpos( $query, 'CREATE' ) && false !== strpos( $query, get_document_table() ) ? 'NOT VALID SQL' : $query;
+			}
+		);
+
+		global $wpdb;
+		$suppress = $wpdb->suppress_errors( true );
+		maybe_install_document_table();
+		$wpdb->suppress_errors( $suppress );
+
+		$this->assertFalse( get_option( DB_VERSION_OPTION ) );
+	}
+
+	public function test_deleting_a_site_drops_its_table() {
+		$this->assertContains( get_document_table(), drop_document_table_with_site( array() ) );
 	}
 
 	public function test_put_with_version_zero_creates_document() {

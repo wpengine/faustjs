@@ -31,6 +31,22 @@ function maybe_set_up_document_store() {
 	maybe_install_document_table();
 }
 
+add_filter( 'wpmu_drop_tables', __NAMESPACE__ . '\\drop_document_table_with_site' );
+/**
+ * Callback for WordPress 'wpmu_drop_tables' filter.
+ *
+ * Delete a site's documents table when the site is deleted.
+ *
+ * @param string[] $tables Tables to drop for the site being deleted.
+ *
+ * @return string[] Tables to drop.
+ */
+function drop_document_table_with_site( $tables ) {
+	$tables[] = get_document_table();
+
+	return $tables;
+}
+
 add_filter( 'user_has_cap', __NAMESPACE__ . '\\grant_document_capabilities_to_admins', 10, 1 );
 /**
  * Callback for WordPress 'user_has_cap' filter.
