@@ -31,6 +31,12 @@ function withDefaults(data) {
 	return { ...EMPTY_NOTES, ...data };
 }
 
+// The form label for a conflicting field, or its path for anything else.
+function fieldLabel(path) {
+	const field = path.length === 1 && FIELDS.find(({ name }) => name === path[0]);
+	return field ? field.label : path.join('.');
+}
+
 function formatValue(value) {
 	return value === undefined ? '(removed)' : JSON.stringify(value);
 }
@@ -215,7 +221,7 @@ export default function Home() {
 					</p>
 					{conflict.fields.map((field, index) => (
 						<fieldset key={field.path.join('.')}>
-							<legend>{field.path.join('.')}</legend>
+							<legend>{fieldLabel(field.path)}</legend>
 							<p className="was">Before: {formatValue(field.base)}</p>
 							<label className="choice">
 								<input
