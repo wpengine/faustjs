@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { stringifySetCookie } from 'cookie';
 import {
 	Cookies,
-	isSecureCookieRequest,
+	shouldUseSecureCookies,
 } from '../../../src/server/auth/cookie';
 import { base64Encode } from '../../../src/utils';
 
@@ -279,7 +279,7 @@ describe('server/auth/cookie', () => {
 		});
 	});
 
-	describe('isSecureCookieRequest', () => {
+	describe('shouldUseSecureCookies', () => {
 		const request = (
 			headers: Record<string, string | string[]>,
 			encrypted?: boolean,
@@ -292,24 +292,24 @@ describe('server/auth/cookie', () => {
 			['[::1]:3000'],
 			['app.localhost:3000'],
 		])('is false for plain HTTP to loopback host %s', (host) => {
-			expect(isSecureCookieRequest(request({ host }))).toBe(false);
+			expect(shouldUseSecureCookies(request({ host }))).toBe(false);
 		});
 
 		test('is true for plain HTTP to a non-loopback host', () => {
-			expect(isSecureCookieRequest(request({ host: 'example.com' }))).toBe(
+			expect(shouldUseSecureCookies(request({ host: 'example.com' }))).toBe(
 				true,
 			);
-			expect(isSecureCookieRequest(request({ host: 'mylocalhost.com' }))).toBe(
+			expect(shouldUseSecureCookies(request({ host: 'mylocalhost.com' }))).toBe(
 				true,
 			);
 		});
 
 		test('is true for HTTPS to localhost', () => {
 			expect(
-				isSecureCookieRequest(request({ host: 'localhost:3000' }, true)),
+				shouldUseSecureCookies(request({ host: 'localhost:3000' }, true)),
 			).toBe(true);
 			expect(
-				isSecureCookieRequest(
+				shouldUseSecureCookies(
 					request({ host: 'localhost:3000', 'x-forwarded-proto': 'https' }),
 				),
 			).toBe(true);
@@ -317,7 +317,7 @@ describe('server/auth/cookie', () => {
 
 		test('uses the forwarded host behind a proxy', () => {
 			expect(
-				isSecureCookieRequest(
+				shouldUseSecureCookies(
 					request({
 						host: 'localhost:3000',
 						'x-forwarded-host': 'example.com',
@@ -328,7 +328,7 @@ describe('server/auth/cookie', () => {
 		});
 
 		test('is true when the host is unknown', () => {
-			expect(isSecureCookieRequest({ headers: {} } as IncomingMessage)).toBe(
+			expect(shouldUseSecureCookies({ headers: {} } as IncomingMessage)).toBe(
 				true,
 			);
 		});

@@ -27,7 +27,7 @@ function firstHeaderValue(value?: string | string[]): string {
  * See https://bugs.webkit.org/show_bug.cgi?id=218980. Remove this exception
  * once supported versions of Safari treat loopback hosts as secure.
  */
-export function isSecureCookieRequest(req: IncomingMessage): boolean {
+export function shouldUseSecureCookies(req: IncomingMessage): boolean {
 	const forwardedProto = firstHeaderValue(req.headers?.['x-forwarded-proto']);
 	const encrypted = (req.socket as { encrypted?: boolean } | undefined)
 		?.encrypted;
@@ -49,14 +49,14 @@ export class Cookies {
 
 	/**
 	 * Whether cookies for this request should use the Secure attribute. See
-	 * `isSecureCookieRequest`.
+	 * `shouldUseSecureCookies`.
 	 */
 	public readonly secure: boolean;
 
 	constructor(req: IncomingMessage, res?: ServerResponse) {
 		this.request = req;
 		this.response = res;
-		this.secure = isSecureCookieRequest(req);
+		this.secure = shouldUseSecureCookies(req);
 
 		this.cookies = parseCookie(this.request.headers.cookie || '');
 	}
