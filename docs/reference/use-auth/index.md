@@ -39,7 +39,7 @@ Further, the `useAuth` exports defined as a TypeScript type look like this:
 ```ts
 type UseAuth = {
   /**
-   * A way to determine if a user is authenticated or not. The value is `null` by default, and then changes to a boolean once the state is determined. It updates without a page reload when the user logs in with `useLogin`.
+   * A way to determine if a user is authenticated or not. The value is `null` by default, and then changes to a boolean once the state is determined. It updates without a page reload when the user logs in with `useLogin` or their session ends.
    */
   isAuthenticated: boolean | null;
 

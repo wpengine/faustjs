@@ -179,6 +179,8 @@ export function useAuth(_config?: UseAuthConfig) {
 			const client = getApolloAuthClient();
 
 			const { data } = await client.query({
+				// A different user may have logged in since the last query.
+				fetchPolicy: 'network-only',
 				query: gql`
 					query GetFaustViewer {
 						viewer {
@@ -206,7 +208,10 @@ export function useAuth(_config?: UseAuthConfig) {
 					}
 				`,
 			});
-			setViewer(data.viewer as ViewerType | null);
+			// Ignore the result if the user logged out while it was loading.
+			if (getAccessToken()) {
+				setViewer(data.viewer as ViewerType | null);
+			}
 		})();
 	}, [isAuthenticated, config.skip]);
 
