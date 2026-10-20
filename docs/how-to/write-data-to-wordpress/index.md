@@ -1,11 +1,11 @@
 ---
 title: "Write Data to WordPress"
-description: "Send authenticated WPGraphQL mutations from your Faust.js app, and understand how access tokens and concurrent edits behave."
+description: "Send authenticated WPGraphQL mutations from your Faust.js app or server, and understand how access tokens and concurrent edits behave."
 ---
 
 The access token Faust.js uses to read private data also lets your app write back to WordPress. Your app can create posts, update fields, or run any other WPGraphQL mutation the logged-in user has permission to run.
 
-This guide shows how to send mutations from the browser and explains how long tokens last and what happens when two people edit the same post.
+This guide shows how to send mutations from the browser and from server-side code, and explains how long tokens last and what happens when two people edit the same post.
 
 ## 0. Prerequisites
 
@@ -143,14 +143,14 @@ If the built-in roles are too broad, give the user a custom role that can only e
 ```php title="my-plugin.php"
 add_action( 'init', function () {
 	register_post_type( 'event', array(
-		'public'          => true,
-		'show_in_graphql' => true,
+		'public'              => true,
+		'show_in_graphql'     => true,
 		'graphql_single_name' => 'event',
 		'graphql_plural_name' => 'events',
 		// Gives events their own capabilities (edit_events, publish_events, ...)
 		// instead of sharing the ones for posts.
-		'capability_type' => array( 'event', 'events' ),
-		'map_meta_cap'    => true,
+		'capability_type'     => array( 'event', 'events' ),
+		'map_meta_cap'        => true,
 	) );
 } );
 
