@@ -9,7 +9,13 @@ async function request(method, body) {
 		headers: { 'Content-Type': 'application/json' },
 		body: body ? JSON.stringify(body) : undefined,
 	});
-	return { status: response.status, json: await response.json() };
+	const text = await response.text();
+	try {
+		return { status: response.status, json: JSON.parse(text) };
+	} catch {
+		// WordPress can answer with an HTML error page, for example on a fatal error.
+		return { status: response.status, json: { message: text.slice(0, 200) } };
+	}
 }
 
 export default function Home() {
@@ -99,7 +105,7 @@ export default function Home() {
 					</select>
 				</label>
 				<div className="actions">
-					<button type="submit" disabled={!saved || theirs}>
+					<button type="submit" disabled={!saved || Boolean(theirs)}>
 						Save
 					</button>
 					<button type="button" onClick={load}>
