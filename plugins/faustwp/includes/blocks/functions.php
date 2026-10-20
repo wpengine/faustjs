@@ -57,6 +57,8 @@ function process_and_replace_blocks( $wp_filesystem, $file, $dirs ) {
 		return $unzip_result;
 	}
 
+	match_blocks_permissions( $dirs['target'] );
+
 	cleanup_temp_directory( $wp_filesystem, $dirs['temp'] );
 
 	return true;
@@ -141,6 +143,62 @@ function unzip_uploaded_file( $target_file, $destination ) {
 		return $unzip_result;
 	}
 	return true;
+}
+
+/**
+ * Gives the extracted block files the same permissions as the blocks directory.
+ *
+ * WordPress's unzip_file() writes with FS_CHMOD_FILE and FS_CHMOD_DIR. Some hosts set those
+ * so the web server can't read the files, and the block editor then can't load
+ * the block scripts. Like core does for media uploads, this uses chmod() directly:
+ * WP_Filesystem_Direct::chmod() treats a 0600 file as already 0644 and skips it.
+ *
+ * @see https://github.com/wpengine/faustjs/issues/1942
+ *
+ * @param string $blocks_dir The blocks directory path.
+ * @return void
+ */
+function match_blocks_permissions( $blocks_dir ) {
+	$stat = @stat( $blocks_dir ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	if ( ! $stat ) {
+		return;
+	}
+
+	$dir_perms  = $stat['mode'] & 0777;
+	$file_perms = $stat['mode'] & 0666;
+
+	// Only touch block directories; the uploaded zip stays as it is.
+	foreach ( (array) glob( trailingslashit( $blocks_dir ) . '*', GLOB_ONLYDIR ) as $block_dir ) {
+		set_permissions( $block_dir, $dir_perms );
+
+		try {
+			$paths = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator( $block_dir, \FilesystemIterator::SKIP_DOTS ),
+				\RecursiveIteratorIterator::SELF_FIRST
+			);
+
+			foreach ( $paths as $path => $info ) {
+				if ( ! $info->isLink() ) {
+					set_permissions( $path, $info->isDir() ? $dir_perms : $file_perms );
+				}
+			}
+		} catch ( \UnexpectedValueException $e ) {
+			continue;
+		}
+	}
+}
+
+/**
+ * Sets a path's permissions if they differ from the given ones.
+ *
+ * @param string $path  File or directory path.
+ * @param int    $perms Permissions to set.
+ * @return void
+ */
+function set_permissions( $path, $perms ) {
+	if ( ( fileperms( $path ) & 0777 ) !== $perms ) {
+		chmod( $path, $perms ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod
+	}
 }
 
 /**
