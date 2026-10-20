@@ -24,3 +24,4 @@ wordpress/
 # would only add transitive Dependabot alerts.
 examples/next/block-support/package-lock.json
 examples/next/tutorial/package-lock.json
+examples/next/document-store/package-lock.json

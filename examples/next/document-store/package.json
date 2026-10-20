@@ -1,0 +1,21 @@
+{
+	"name": "@faustwp/document-store-example",
+	"private": true,
+	"version": "0.1.0",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"wordpress:setup": "bash scripts/setup-wordpress.sh",
+		"wordpress:stop": "bash scripts/stop-wordpress.sh"
+	},
+	"dependencies": {
+		"next": "^16.4.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1"
+	},
+	"engines": {
+		"node": ">=20.9",
+		"npm": ">=8"
+	}
+}

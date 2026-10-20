@@ -1,0 +1,62 @@
+body {
+	margin: 0;
+	font-family: system-ui, sans-serif;
+	line-height: 1.5;
+}
+
+main {
+	max-width: 48rem;
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+.hint {
+	color: #555;
+}
+
+form {
+	display: grid;
+	gap: 1rem;
+}
+
+label {
+	display: grid;
+	gap: 0.25rem;
+	font-weight: 600;
+}
+
+input,
+textarea,
+select {
+	font: inherit;
+	padding: 0.5rem;
+}
+
+.actions {
+	display: flex;
+	gap: 0.5rem;
+}
+
+button {
+	font: inherit;
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+}
+
+.conflict {
+	margin-top: 2rem;
+	padding: 1rem;
+	border: 2px solid #c62828;
+}
+
+.columns {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+pre {
+	overflow: auto;
+	padding: 0.5rem;
+	background: #f5f5f5;
+}

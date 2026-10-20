@@ -1,0 +1,9 @@
+# Used with plugins/faustwp/docker-compose.yml by scripts/setup-wordpress.sh.
+# Paths are relative to plugins/faustwp, the directory of the first compose file.
+services:
+  wordpress:
+    environment:
+      # WordPress only allows Application Passwords over HTTPS or on local sites.
+      WP_ENVIRONMENT_TYPE: local
+    volumes:
+      - ../../examples/next/document-store/mu-plugins/enable-document-store.php:/var/www/html/wp-content/mu-plugins/enable-document-store.php

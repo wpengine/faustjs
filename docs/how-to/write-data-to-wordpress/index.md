@@ -180,6 +180,8 @@ If the document has changed since version 3, the write returns `409 Conflict` an
 
 Slugs use lowercase letters, numbers and hyphens. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
 
+To try it locally, see the [document store example](https://github.com/wpengine/faustjs/tree/canary/examples/next/document-store). It runs WordPress in Docker and shows a conflict between two browser tabs.
+
 ## 6. Writing from the server
 
 The flow above runs in the browser on behalf of a logged-in user. Faust.js doesn't yet provide a supported way for server-side code (a build step, a cron job, an API route acting on its own) to authenticate to WordPress.
