@@ -110,6 +110,8 @@ async function getWordPressLogoutUrl(
 				},
 				method: 'POST',
 				body: JSON.stringify({ refreshToken, redirectUri }),
+				// Don't let a slow WordPress hold up logging out of the frontend.
+				signal: AbortSignal.timeout(5000),
 			},
 		);
 
