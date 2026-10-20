@@ -75,6 +75,15 @@ class ReplacementCallbacksTests extends \WP_UnitTestCase {
 		$this->assertSame( 10, has_action( 'enqueue_block_editor_assets', 'WPE\FaustWP\Replacement\enqueue_preview_scripts' ) );
 	}
 
+	/**
+	 * Tests the preview script loads after wp-data, since it reads the post's status from the core/editor store.
+	 */
+	public function test_enqueue_preview_scripts_depends_on_wp_data() {
+		\WPE\FaustWP\Replacement\enqueue_preview_scripts();
+
+		$this->assertContains( 'wp-data', wp_scripts()->registered['faustwp-gutenberg-filters']->deps );
+	}
+
 	public function test_wp_sitemaps_posts_entry_filter() {
 		$this->assertSame( 10, has_action( 'wp_sitemaps_posts_entry', 'WPE\FaustWP\Replacement\sitemaps_posts_entry' ) );
 	}
