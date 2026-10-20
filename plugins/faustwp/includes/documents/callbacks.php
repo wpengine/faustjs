@@ -78,9 +78,53 @@ function register_document_routes() {
 		return;
 	}
 
+	$collection_route = '/collections/(?P<collection>' . COLLECTION_PATTERN . ')/documents';
+	$data_arg         = array(
+		'required'          => true,
+		'validate_callback' => __NAMESPACE__ . '\\validate_document_data',
+	);
+	$version_arg      = array(
+		'required'          => true,
+		'type'              => 'integer',
+		'validate_callback' => 'rest_validate_request_arg',
+	);
+
 	register_rest_route(
 		'faustwp/v1',
-		'/collections/(?P<collection>' . COLLECTION_PATTERN . ')/documents/(?P<id>' . ID_PATTERN . ')',
+		$collection_route,
+		array(
+			array(
+				'methods'             => 'GET',
+				'callback'            => __NAMESPACE__ . '\\handle_list_documents',
+				'permission_callback' => __NAMESPACE__ . '\\can_read_documents',
+				'args'                => array(
+					'limit'  => array(
+						'type'              => 'integer',
+						'default'           => 20,
+						'minimum'           => 1,
+						'maximum'           => 100,
+						'validate_callback' => 'rest_validate_request_arg',
+					),
+					'cursor' => array(
+						'type'              => 'string',
+						'default'           => '',
+						'pattern'           => '^[0-9]*$',
+						'validate_callback' => 'rest_validate_request_arg',
+					),
+				),
+			),
+			array(
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\\handle_add_document',
+				'permission_callback' => __NAMESPACE__ . '\\can_edit_documents',
+				'args'                => array( 'data' => $data_arg ),
+			),
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
+		$collection_route . '/(?P<id>' . ID_PATTERN . ')',
 		array(
 			array(
 				'methods'             => 'GET',
@@ -92,16 +136,16 @@ function register_document_routes() {
 				'callback'            => __NAMESPACE__ . '\\handle_put_document',
 				'permission_callback' => __NAMESPACE__ . '\\can_edit_documents',
 				'args'                => array(
-					'version' => array(
-						'required'          => true,
-						'type'              => 'integer',
-						'minimum'           => 0,
-						'validate_callback' => 'rest_validate_request_arg',
-					),
-					'data'    => array(
-						'required'          => true,
-						'validate_callback' => __NAMESPACE__ . '\\validate_document_data',
-					),
+					'version' => array_merge( $version_arg, array( 'minimum' => 0 ) ),
+					'data'    => $data_arg,
+				),
+			),
+			array(
+				'methods'             => 'DELETE',
+				'callback'            => __NAMESPACE__ . '\\handle_delete_document',
+				'permission_callback' => __NAMESPACE__ . '\\can_edit_documents',
+				'args'                => array(
+					'version' => array_merge( $version_arg, array( 'minimum' => 1 ) ),
 				),
 			),
 		)
@@ -172,7 +216,7 @@ function handle_get_document( WP_REST_Request $request ) {
 	$document = get_document( $request->get_param( 'collection' ), $request->get_param( 'id' ) );
 
 	if ( ! $document ) {
-		return new \WP_Error( 'faustwp_document_not_found', __( 'Document not found.', 'faustwp' ), array( 'status' => 404 ) );
+		return not_found_error();
 	}
 
 	return new WP_REST_Response( $document, 200 );
@@ -197,12 +241,80 @@ function handle_put_document( WP_REST_Request $request ) {
 		get_request_document_data( $request )
 	);
 
+	return document_response( $result );
+}
+
+/**
+ * Callback for GET faustwp/v1/collections/<collection>/documents.
+ *
+ * @param WP_REST_Request $request Current request.
+ *
+ * @return WP_REST_Response Documents, newest first, and the cursor for the next page.
+ */
+function handle_list_documents( WP_REST_Request $request ) {
+	return new WP_REST_Response(
+		query_documents( $request->get_param( 'collection' ), $request->get_param( 'limit' ), $request->get_param( 'cursor' ) ),
+		200
+	);
+}
+
+/**
+ * Callback for POST faustwp/v1/collections/<collection>/documents.
+ *
+ * Creates a document with a generated ID.
+ *
+ * @param WP_REST_Request $request Current request.
+ *
+ * @return WP_REST_Response|\WP_Error The new document, or an error.
+ */
+function handle_add_document( WP_REST_Request $request ) {
+	return document_response( add_document( $request->get_param( 'collection' ), get_request_document_data( $request ) ) );
+}
+
+/**
+ * Callback for DELETE faustwp/v1/collections/<collection>/documents/<id>.
+ *
+ * The version the delete is based on is required, as a query or body
+ * parameter. A stale version returns a 409 error with the current document.
+ *
+ * @param WP_REST_Request $request Current request.
+ *
+ * @return WP_REST_Response|\WP_Error The deleted document, or an error.
+ */
+function handle_delete_document( WP_REST_Request $request ) {
+	$result = delete_document(
+		$request->get_param( 'collection' ),
+		$request->get_param( 'id' ),
+		(int) $request->get_param( 'version' )
+	);
+
 	if ( is_wp_error( $result ) ) {
 		return $result;
 	}
 
-	$status = $result['created'] ? 201 : 200;
-	unset( $result['created'] );
+	return new WP_REST_Response(
+		array(
+			'deleted'  => true,
+			'previous' => $result,
+		),
+		200
+	);
+}
+
+/**
+ * Build the response for a saved document.
+ *
+ * @param array|\WP_Error $result Result of save_document() or add_document().
+ *
+ * @return WP_REST_Response|\WP_Error 201 for a new document, 200 for an update, or the error.
+ */
+function document_response( $result ) {
+	if ( is_wp_error( $result ) ) {
+		return $result;
+	}
+
+	$status = $result['is_new'] ? 201 : 200;
+	unset( $result['is_new'] );
 
 	return new WP_REST_Response( $result, $status );
 }

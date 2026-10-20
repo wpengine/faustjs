@@ -85,7 +85,7 @@ function documents_admin_url( $args = array() ) {
  * @return string Formatted date.
  */
 function format_document_modified( $summary ) {
-	return (string) wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $summary['modified'] );
+	return (string) wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), (int) strtotime( $summary['modified'] ) );
 }
 
 /**

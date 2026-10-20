@@ -10,7 +10,7 @@ namespace WPE\FaustWP\Tests\Integration;
 use function WPE\FaustWP\Documents\get_document;
 use function WPE\FaustWP\Documents\drop_document_table_with_site;
 use function WPE\FaustWP\Documents\get_document_table;
-use function WPE\FaustWP\Documents\get_stored_document;
+use function WPE\FaustWP\Documents\get_document_summary;
 use function WPE\FaustWP\Documents\maybe_install_document_table;
 use function WPE\FaustWP\Documents\maybe_set_up_document_store;
 use function WPE\FaustWP\Documents\save_document;
@@ -85,6 +85,36 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		return $exists;
 	}
 
+	private function delete( $id, $version = null ) {
+		$request = new \WP_REST_Request( 'DELETE', self::ROUTE . '/' . $id );
+		if ( null !== $version ) {
+			$request->set_query_params( array( 'version' => $version ) );
+		}
+		return $this->server->dispatch( $request );
+	}
+
+	private function post( $body ) {
+		$request = new \WP_REST_Request( 'POST', self::ROUTE );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( $body ) );
+		return $this->server->dispatch( $request );
+	}
+
+	private function list_documents( $params = array() ) {
+		$request = new \WP_REST_Request( 'GET', self::ROUTE );
+		$request->set_query_params( $params );
+		return $this->server->dispatch( $request );
+	}
+
+	/**
+	 * Drop the created and modified timestamps so documents can be compared with assertSame.
+	 */
+	private function without_timestamps( $document ) {
+		$document = $this->normalize( $document );
+		unset( $document['created'], $document['modified'] );
+		return $document;
+	}
+
 	/**
 	 * Convert decoded JSON objects to arrays so they can be compared with assertSame.
 	 */
@@ -150,7 +180,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 201, $response->get_status() );
 		$this->assertSame(
 			array( 'collection' => 'prefs', 'id' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
-			$this->normalize( $response->get_data() )
+			$this->without_timestamps( $response->get_data() )
 		);
 	}
 
@@ -162,7 +192,7 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertSame(
 			array( 'collection' => 'prefs', 'id' => 'settings', 'version' => 1, 'data' => array( 'theme' => 'dark' ) ),
-			$this->normalize( $response->get_data() )
+			$this->without_timestamps( $response->get_data() )
 		);
 	}
 
@@ -370,25 +400,140 @@ class DocumentStoreTests extends \WP_UnitTestCase {
 	public function test_update_records_modified_and_modified_by() {
 		$creator = get_current_user_id();
 		save_document( 'prefs', 'settings', 0, array( 'theme' => 'dark' ) );
-		$created = get_stored_document( 'prefs', 'settings' );
+		$created = get_document_summary( 'prefs', 'settings' );
 
 		$this->assertSame( $creator, $created['modified_by'] );
-		$this->assertIsInt( $created['modified'] );
 
 		$editor = self::factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $editor );
 		$before = time();
 		save_document( 'prefs', 'settings', 1, array( 'theme' => 'light' ) );
-		$updated = get_stored_document( 'prefs', 'settings' );
+		$updated = get_document_summary( 'prefs', 'settings' );
 
 		$this->assertSame( 2, $updated['version'] );
 		$this->assertSame( $editor, $updated['modified_by'] );
-		$this->assertGreaterThanOrEqual( $before, $updated['modified'] );
+		$this->assertGreaterThanOrEqual( $before, strtotime( $updated['modified'] ) );
 	}
 
-	public function test_get_response_shape_is_unchanged() {
+	public function test_documents_include_created_and_modified_timestamps() {
+		$created  = $this->put( 'settings', array( 'version' => 0, 'data' => array() ) )->get_data();
+		$document = $this->get( 'settings' )->get_data();
+
+		$this->assertSame( array( 'collection', 'id', 'version', 'data', 'created', 'modified' ), array_keys( $document ) );
+		$this->assertMatchesRegularExpression( '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $document['created'] );
+		$this->assertSame( $created['created'], $document['created'] );
+		$this->assertSame( $document['created'], $this->put( 'settings', array( 'version' => 1, 'data' => array() ) )->get_data()['created'] );
+	}
+
+	public function test_post_creates_a_document_with_a_generated_id() {
+		$response = $this->post( array( 'data' => array( 'email' => 'a@example.com' ) ) );
+		$document = $response->get_data();
+
+		$this->assertSame( 201, $response->get_status() );
+		$this->assertMatchesRegularExpression( '/^[a-f0-9]{20}$/', $document['id'] );
+		$this->assertSame( 1, $document['version'] );
+		$this->assertSame( array( 'email' => 'a@example.com' ), $this->normalize( $this->get( $document['id'] )->get_data()['data'] ) );
+		$this->assertNotSame( $document['id'], $this->post( array( 'data' => array() ) )->get_data()['id'] );
+	}
+
+	public function test_post_requires_data() {
+		$this->assertSame( 400, $this->post( array() )->get_status() );
+	}
+
+	public function test_list_returns_documents_newest_first_with_a_cursor() {
+		foreach ( array( 'a', 'b', 'c' ) as $id ) {
+			save_document( 'prefs', $id, 0, array( 'id' => $id ) );
+		}
+		save_document( 'other', 'x', 0, array() );
+
+		$first = $this->list_documents( array( 'limit' => 2 ) )->get_data();
+
+		$this->assertSame( array( 'c', 'b' ), wp_list_pluck( $first['documents'], 'id' ) );
+		$this->assertSame( array( 'id' => 'c' ), $this->normalize( $first['documents'][0]['data'] ) );
+		$this->assertNotNull( $first['next_cursor'] );
+
+		$second = $this->list_documents( array( 'limit' => 2, 'cursor' => $first['next_cursor'] ) )->get_data();
+
+		$this->assertSame( array( 'a' ), wp_list_pluck( $second['documents'], 'id' ) );
+		$this->assertNull( $second['next_cursor'] );
+	}
+
+	public function test_list_of_an_empty_collection_is_empty() {
+		$this->assertSame( array( 'documents' => array(), 'next_cursor' => null ), $this->list_documents()->get_data() );
+	}
+
+	public function test_list_limit_is_capped() {
+		$this->assertSame( 400, $this->list_documents( array( 'limit' => 101 ) )->get_status() );
+	}
+
+	public function test_delete_with_current_version_removes_the_document() {
 		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
 
-		$this->assertSame( array( 'collection', 'id', 'version', 'data' ), array_keys( $this->get( 'settings' )->get_data() ) );
+		$response = $this->delete( 'settings', 1 );
+
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertTrue( $response->get_data()['deleted'] );
+		$this->assertSame( 'settings', $response->get_data()['previous']['id'] );
+		$this->assertNull( get_document( 'prefs', 'settings' ) );
+	}
+
+	public function test_delete_with_stale_version_returns_409_and_keeps_the_document() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array( 'theme' => 'dark' ) ) );
+		$this->put( 'settings', array( 'version' => 1, 'data' => array( 'theme' => 'light' ) ) );
+
+		$response = $this->delete( 'settings', 1 );
+
+		$this->assertSame( 409, $response->get_status() );
+		$this->assertSame( 2, $response->get_data()['data']['version'] );
+		$this->assertNotNull( get_document( 'prefs', 'settings' ) );
+	}
+
+	public function test_delete_of_a_missing_document_returns_404() {
+		$this->assertSame( 404, $this->delete( 'missing', 1 )->get_status() );
+	}
+
+	public function test_delete_requires_a_version() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array() ) );
+
+		$this->assertSame( 400, $this->delete( 'settings' )->get_status() );
+		$this->assertNotNull( get_document( 'prefs', 'settings' ) );
+	}
+
+	public function test_saving_and_deleting_fire_actions() {
+		$saved   = array();
+		$deleted = array();
+		add_action(
+			'faustwp_document_saved',
+			function ( $document, $created ) use ( &$saved ) {
+				$saved[] = array( $document['version'], $created );
+			},
+			10,
+			2
+		);
+		add_action(
+			'faustwp_document_deleted',
+			function ( $previous ) use ( &$deleted ) {
+				$deleted[] = $previous['version'];
+			}
+		);
+
+		save_document( 'prefs', 'settings', 0, array() );
+		save_document( 'prefs', 'settings', 1, array() );
+		save_document( 'prefs', 'settings', 1, array() ); // Stale, so no action.
+		$this->delete( 'settings', 2 );
+
+		$this->assertSame( array( array( 1, true ), array( 2, false ) ), $saved );
+		$this->assertSame( array( 2 ), $deleted );
+	}
+
+	public function test_writers_without_edit_capability_cannot_add_or_delete() {
+		$this->put( 'settings', array( 'version' => 0, 'data' => array() ) );
+		$user = self::factory()->user->create_and_get( array( 'role' => 'subscriber' ) );
+		$user->add_cap( READ_CAPABILITY );
+		wp_set_current_user( $user->ID );
+
+		$this->assertSame( 200, $this->list_documents()->get_status() );
+		$this->assertSame( 403, $this->post( array( 'data' => array() ) )->get_status() );
+		$this->assertSame( 403, $this->delete( 'settings', 1 )->get_status() );
 	}
 }
