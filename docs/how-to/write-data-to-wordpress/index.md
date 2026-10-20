@@ -128,9 +128,57 @@ if (data.post.modified !== modifiedWhenLoaded) {
 
 `fetchPolicy: "network-only"` skips Apollo's cache so you get the current value from WordPress.
 
-This narrows the window but doesn't close it: another save can still land between the check and your mutation. Built-in conflict detection is proposed in [#2562](https://github.com/wpengine/faustjs/issues/2562).
+This narrows the window but doesn't close it: another save can still land between the check and your mutation. For app data that several writers update, the FaustWP document store below rejects stale writes instead.
 
-## 5. Writing from the server
+## 5. Store app data with conflict detection
+
+The FaustWP plugin includes an optional document store for app data such as settings or structured drafts. Each document is a JSON object or array stored under a slug, with a version number. Every write names the version it was based on, and WordPress rejects the write if someone else saved first.
+
+The store is off by default. Enable it with a filter in a small plugin or your theme's `functions.php`:
+
+```php
+add_filter( 'faustwp_enable_document_store', '__return_true' );
+```
+
+Administrators can read and write documents. To give other users access, add the `read_faustwp_documents` capability to read, and both `read_faustwp_documents` and `edit_faustwp_documents` to write. These capabilities don't grant access to anything else in WordPress.
+
+The routes accept any WordPress REST API authentication, such as the [Application Password](#6-writing-from-the-server) described below.
+
+Read a document:
+
+```http
+GET /?rest_route=/faustwp/v1/documents/site-settings
+```
+
+```json
+{ "slug": "site-settings", "version": 3, "data": { "theme": "dark" } }
+```
+
+Write a document by sending the version you read. Use `0` to create a new document. A successful write returns the new version:
+
+```http
+PUT /?rest_route=/faustwp/v1/documents/site-settings
+Content-Type: application/json
+
+{ "version": 3, "data": { "theme": "light" } }
+```
+
+If the document has changed since version 3, the write returns `409 Conflict` and doesn't change anything. The response includes the current document, so you can merge the changes or ask the user what to keep, then retry with the current version:
+
+```json
+{
+	"code": "faustwp_document_conflict",
+	"data": {
+		"status": 409,
+		"version": 4,
+		"document": { "slug": "site-settings", "version": 4, "data": { "theme": "blue" } }
+	}
+}
+```
+
+Slugs use lowercase letters, numbers and hyphens. Documents are limited to 100 KB of JSON by default, which you can change with the `faustwp_document_max_bytes` filter.
+
+## 6. Writing from the server
 
 The flow above runs in the browser on behalf of a logged-in user. Faust.js doesn't yet provide a supported way for server-side code (a build step, a cron job, an API route acting on its own) to authenticate to WordPress.
 
