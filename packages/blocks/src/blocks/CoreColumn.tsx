@@ -50,9 +50,9 @@ function hash(value: string) {
 }
 
 /**
- * Returns the class name and CSS for "Inner blocks use content width".
- * Like WordPress, the max width applies to the column's inner blocks, not
- * the column itself.
+ * Returns the class name and CSS for a column whose inner blocks use a
+ * content width or justification. Like WordPress, the max width and margins
+ * apply to the column's inner blocks, not the column itself.
  */
 function getConstrainedLayout(layoutAttribute?: string) {
   if (!layoutAttribute) {
@@ -75,16 +75,16 @@ function getConstrainedLayout(layoutAttribute?: string) {
     [contentSize, wideSize, justifyContent].join('|'),
   )}`;
   const selector = `.${className}`;
-  const innerBlocks = `${selector} > :where(:not(.alignleft):not(.alignright):not(.alignfull))`;
-  const rules = [];
-  // Matches the rules WordPress outputs in wp_get_layout_style().
+  const innerBlocksSelector = `${selector} > :where(:not(.alignleft):not(.alignright):not(.alignfull))`;
+  // These match the rules WordPress outputs in wp_get_layout_style().
+  const rules: string[] = [];
   if (contentSize || wideSize) {
     const marginLeft =
       justifyContent === 'left' ? '0 !important' : 'auto !important';
     const marginRight =
       justifyContent === 'right' ? '0 !important' : 'auto !important';
     rules.push(
-      `${innerBlocks} { max-width: ${
+      `${innerBlocksSelector} { max-width: ${
         contentSize ?? wideSize
       }; margin-left: ${marginLeft}; margin-right: ${marginRight}; }`,
       `${selector} > .alignwide { max-width: ${wideSize ?? contentSize}; }`,
@@ -92,9 +92,9 @@ function getConstrainedLayout(layoutAttribute?: string) {
     );
   }
   if (justifyContent === 'left') {
-    rules.push(`${innerBlocks} { margin-left: 0 !important; }`);
+    rules.push(`${innerBlocksSelector} { margin-left: 0 !important; }`);
   } else if (justifyContent === 'right') {
-    rules.push(`${innerBlocks} { margin-right: 0 !important; }`);
+    rules.push(`${innerBlocksSelector} { margin-right: 0 !important; }`);
   }
   return { className, css: rules.join('\n') };
 }
