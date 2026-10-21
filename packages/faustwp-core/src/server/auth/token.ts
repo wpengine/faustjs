@@ -5,6 +5,7 @@ import isNumber from 'lodash/isNumber.js';
 import { Cookies } from './cookie.js';
 import { warnLog } from '../../utils/index.js';
 import { getWpSecret } from '../../lib/getWpSecret.js';
+import { getWpApplicationPasswordAuthorization } from '../../lib/getWpApplicationPassword.js';
 import { getWpUrl } from '../../lib/getWpUrl.js';
 
 export type OAuthTokenResponse =
@@ -63,17 +64,23 @@ export class OAuth {
 	public async fetch(code?: string): Promise<OAuthTokenResponse> {
 		const wpUrl = getWpUrl();
 		const apiClientSecret = getWpSecret();
+		const applicationPassword = getWpApplicationPasswordAuthorization();
 
-		if (!apiClientSecret) {
+		if (!apiClientSecret && !applicationPassword) {
 			throw new Error(
 				'The apiClientSecret must be specified to use the auth middleware',
 			);
 		}
 
+		// An Application Password, when configured, is used instead of the secret key.
+		const authHeaders: Record<string, string> = applicationPassword
+			? { Authorization: applicationPassword }
+			: { 'x-faustwp-secret': apiClientSecret as string };
+
 		let response = await fetch(`${wpUrl}/?rest_route=/faustwp/v1/authorize`, {
 			headers: {
 				'Content-Type': 'application/json',
-				'x-faustwp-secret': apiClientSecret,
+				...authHeaders,
 			},
 			method: 'POST',
 			body: JSON.stringify({
@@ -82,8 +89,8 @@ export class OAuth {
 			}),
 		});
 
-		if (response.status === 404) {
-			// Check for the deprecated authorize endpoint.
+		if (response.status === 404 && apiClientSecret) {
+			// Check for the deprecated authorize endpoint, which only accepts the secret key.
 			response = await fetch(`${wpUrl}/?rest_route=/wpac/v1/authorize`, {
 				headers: {
 					'Content-Type': 'application/json',
@@ -106,6 +113,18 @@ export class OAuth {
 		}
 
 		const result = await response.json();
+
+		if (
+			applicationPassword &&
+			(response.status === 401 || response.status === 403)
+		) {
+			warnLog(
+				'WordPress rejected the Application Password in FAUST_APPLICATION_USER ' +
+					'and FAUST_APPLICATION_PASSWORD. Check that its user can ' +
+					'faustwp_exchange_tokens, and that your server passes the ' +
+					'Authorization header through to WordPress.',
+			);
+		}
 
 		if (!response.ok) {
 			return {

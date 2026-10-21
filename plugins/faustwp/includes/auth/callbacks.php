@@ -117,3 +117,43 @@ function allowed_redirect_hosts( $hosts, $host ) {
 
 	return $hosts;
 }
+
+add_filter( 'map_meta_cap', __NAMESPACE__ . '\\map_upload_blocks_capability', 10, 2 );
+/**
+ * Callback for WordPress 'map_meta_cap' filter.
+ *
+ * Uploading a blockset replaces the blocks registered for the whole site, so it
+ * needs the same access as managing the site's options, or the network's on
+ * Multisite. It can't be granted through a role.
+ *
+ * @param string[] $caps Primitive capabilities the user needs.
+ * @param string   $cap  Capability being checked.
+ *
+ * @return string[] Primitive capabilities the user needs.
+ */
+function map_upload_blocks_capability( $caps, $cap ) {
+	if ( 'faustwp_upload_blocks' === $cap ) {
+		return array( is_multisite() ? 'manage_network_options' : 'manage_options' );
+	}
+
+	return $caps;
+}
+
+add_filter( 'user_has_cap', __NAMESPACE__ . '\\grant_exchange_tokens_capability' );
+/**
+ * Callback for WordPress 'user_has_cap' filter.
+ *
+ * Lets administrators exchange authorization codes for tokens with an Application
+ * Password. Other users need a role that includes 'faustwp_exchange_tokens'.
+ *
+ * @param bool[] $allcaps The user's capabilities.
+ *
+ * @return bool[] The user's capabilities.
+ */
+function grant_exchange_tokens_capability( $allcaps ) {
+	if ( ! empty( $allcaps['manage_options'] ) ) {
+		$allcaps['faustwp_exchange_tokens'] = true;
+	}
+
+	return $allcaps;
+}

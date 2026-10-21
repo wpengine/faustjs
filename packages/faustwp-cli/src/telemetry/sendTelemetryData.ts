@@ -1,7 +1,10 @@
 import 'isomorphic-fetch';
 
 import { getWpUrl } from '../utils/getWpUrl.js';
-import { getWpSecret } from '../utils/getWpSecret.js';
+import {
+	getWpAuthHeaders,
+	hasWpCredentials,
+} from '../utils/getWpAuthHeaders.js';
 import { TelemetryData } from './marshallTelemetryData.js';
 
 /**
@@ -10,10 +13,8 @@ import { TelemetryData } from './marshallTelemetryData.js';
  * @param payload The data being sent to telemetry API
  */
 export const sendTelemetryData = (payload: TelemetryData) => {
-	const secret = getWpSecret();
-
-	if (!secret) {
-		throw new Error('Faust secret key is required');
+	if (!hasWpCredentials()) {
+		throw new Error('Faust secret key or Application Password is required');
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -21,7 +22,7 @@ export const sendTelemetryData = (payload: TelemetryData) => {
 
 	return fetch(WP_TELEMETRY_ENDPOINT, {
 		headers: {
-			'x-faustwp-secret': secret,
+			...getWpAuthHeaders(),
 			'Content-Type': 'application/json',
 		},
 		method: 'POST',

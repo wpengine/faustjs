@@ -1,6 +1,7 @@
 import 'isomorphic-fetch';
 import { IncomingMessage, ServerResponse } from 'http';
 import { errorLog, getQueryParam } from '../../utils/index.js';
+import { getWpApplicationPasswordAuthorization } from '../../lib/getWpApplicationPassword.js';
 import { getWpSecret } from '../../lib/getWpSecret.js';
 import { getWpUrl } from '../../lib/getWpUrl.js';
 import { Cookies } from './cookie.js';
@@ -95,10 +96,16 @@ async function getWordPressLogoutUrl(
 	redirectUri: string,
 ): Promise<string | null> {
 	const secret = getWpSecret();
+	const applicationPassword = getWpApplicationPasswordAuthorization();
 
-	if (!secret) {
+	if (!secret && !applicationPassword) {
 		return null;
 	}
+
+	// An Application Password, when configured, is used instead of the secret key.
+	const authHeaders: Record<string, string> = applicationPassword
+		? { Authorization: applicationPassword }
+		: { 'x-faustwp-secret': secret as string };
 
 	try {
 		const response = await fetch(
@@ -106,7 +113,7 @@ async function getWordPressLogoutUrl(
 			{
 				headers: {
 					'Content-Type': 'application/json',
-					'x-faustwp-secret': secret,
+					...authHeaders,
 				},
 				method: 'POST',
 				body: JSON.stringify({ refreshToken, redirectUri }),

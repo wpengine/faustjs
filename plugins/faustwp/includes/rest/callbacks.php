@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\REST;
 
 use function WPE\FaustWP\Auth\{
+	current_application_password_user_can,
 	get_user_from_access_token,
 	get_user_from_refresh_token,
 	get_user_from_authorization_code,
@@ -329,14 +330,16 @@ function handle_rest_process_telemetry_callback( \WP_REST_Request $request ) {
 /**
  * Callback to check permissions for requests to `faustwp/v1/blockset`.
  *
- * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match,
+ * or if the request uses an Application Password whose user can 'faustwp_upload_blocks'.
  *
  * @param \WP_REST_Request $request The current \WP_REST_Request object.
  *
  * @return bool True if current user can, false if else.
  */
 function rest_blockset_permission_callback( \WP_REST_Request $request ) {
-	return rest_authorize_permission_callback( $request );
+	return is_valid_secret_header( $request )
+		|| current_application_password_user_can( 'faustwp_upload_blocks' );
 }
 
 /**
@@ -444,7 +447,8 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
 /**
  * Callback to check permissions for requests to `faustwp/v1/authorize`.
  *
- * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match.
+ * Authorized if the 'secret_key' settings value and http header 'x-faustwp-secret' match,
+ * or if the request uses an Application Password whose user can 'faustwp_exchange_tokens'.
  *
  * @link https://developer.wordpress.org/reference/functions/register_rest_route/
  * @link https://developer.wordpress.org/rest-api/extending-the-rest-api/routes-and-endpoints/#permissions-callback
@@ -454,6 +458,18 @@ function handle_rest_authorize_callback( \WP_REST_Request $request ) {
  * @return bool True if current user can, false if else.
  */
 function rest_authorize_permission_callback( \WP_REST_Request $request ) {
+	return is_valid_secret_header( $request )
+		|| current_application_password_user_can( 'faustwp_exchange_tokens' );
+}
+
+/**
+ * Whether the request's 'x-faustwp-secret' header matches the 'secret_key' setting.
+ *
+ * @param \WP_REST_Request $request The current \WP_REST_Request object.
+ *
+ * @return bool True if the header matches, false if else.
+ */
+function is_valid_secret_header( \WP_REST_Request $request ) {
 	$secret_key = get_secret_key();
 	$header_key = $request->get_header( 'x-faustwp-secret' );
 

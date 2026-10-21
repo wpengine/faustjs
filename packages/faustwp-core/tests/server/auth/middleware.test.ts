@@ -210,6 +210,35 @@ describe('auth/middleware', () => {
 			});
 		});
 
+		test('uses the Application Password instead of the secret key when one is set', async () => {
+			jest.spyOn(getWpSecret, 'getWpSecret').mockReturnValue(undefined);
+			process.env.FAUST_APPLICATION_USER = 'frontend';
+			process.env.FAUST_APPLICATION_PASSWORD = 'abcd efgh';
+			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/logout`, {
+				status: 200,
+				body: { logoutUrl: `${wpUrl}/?faust_logout=code` },
+			});
+
+			const res: ServerResponse = { setHeader() {}, end() {} } as any;
+
+			try {
+				await logoutHandler(logoutRequest(), res);
+			} finally {
+				delete process.env.FAUST_APPLICATION_USER;
+				delete process.env.FAUST_APPLICATION_PASSWORD;
+			}
+
+			const headers = fetchMock.lastOptions()?.headers as Record<
+				string,
+				string
+			>;
+			expect(res.statusCode).toBe(200);
+			expect(headers.Authorization).toBe(
+				`Basic ${Buffer.from('frontend:abcd efgh').toString('base64')}`,
+			);
+			expect(headers['x-faustwp-secret']).toBeUndefined();
+		});
+
 		test('falls back to a 205 when FaustWP has no logout endpoint', async () => {
 			fetchMock.post(`${wpUrl}/?rest_route=/faustwp/v1/logout`, 404);
 

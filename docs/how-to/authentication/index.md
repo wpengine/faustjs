@@ -108,6 +108,37 @@ The main `Page` component uses `isReady` and `isAuthenticated` to manage the use
 
 You are now ready to access the auth page you created. In your terminal start up the dev server by running `npm run dev` and visit the [`http://localhost:3000/gated`](http://localhost:3000/gated) route. If the authentication was set up properly, you should be redirected to the WP login screen. Once you login, you should be sent back to the gated page and see the gated content.
 
+## Connect with an Application Password instead of the secret key
+
+Your Next.js server exchanges authorization codes for tokens by calling the FaustWP plugin. It can authenticate those calls with a WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) instead of `FAUST_SECRET_KEY`. Each Application Password belongs to one user, can be revoked on its own, and only allows what that user's role allows.
+
+1. Create a WordPress user for your frontend and give it a role with the `faustwp_exchange_tokens` capability. Administrators have it by default, but a dedicated low-privilege user is safer:
+
+   ```php title="my-plugin.php"
+   // Roles are saved in the database, so add the role once, on activation.
+   register_activation_hook( __FILE__, function () {
+   	add_role( 'faust_frontend', 'Faust frontend', array(
+   		'read'                    => true,
+   		'faustwp_exchange_tokens' => true,
+   	) );
+   } );
+   ```
+
+2. Generate an Application Password for that user under **Users → Profile → Application Passwords**.
+3. Add the credentials to your Next.js app's server environment:
+
+   ```bash title=".env.local"
+   FAUST_APPLICATION_USER=faust-frontend
+   FAUST_APPLICATION_PASSWORD="abcd efgh ijkl mnop qrst uvwx"
+   ```
+
+4. Restart your app and log in again to check that previews and authentication still work. When both are set, Faust.js uses the Application Password and no longer sends `FAUST_SECRET_KEY`, so you can then remove `FAUST_SECRET_KEY` from your frontend's environment.
+
+The `faust blockset` command reads the same two variables, but uploading blocks needs an administrator's Application Password (a super admin's on Multisite). Set an administrator's credentials only in the environment where you run `faust blockset`, such as a CI job, and keep the frontend's low-privilege credentials everywhere else.
+
+> [!NOTE]
+> WordPress only accepts Application Passwords over HTTPS, except on local development sites. Some servers remove the `Authorization` header before it reaches WordPress; if `faust dev` reports that the credentials were rejected even though they're correct, check your server's configuration. Sites protected with HTTP Basic auth can't use Application Passwords, since both use the same header.
+
 ## Next steps
 
 Here are some things you can do to continue to test and add to your auth strategy with the toolkit:
