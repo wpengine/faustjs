@@ -224,4 +224,37 @@ class BlockFunctionTests extends FaustUnitTest {
         $this->assertTrue( $cleanup_called, 'cleanup_temp_directory must run on the success path.' );
     }
 
+    /**
+     * #1942: extracted files get the blocks directory's permissions, so the web
+     * server can serve block scripts even when FS_CHMOD_FILE is restrictive.
+     */
+    public function test_match_blocks_permissions_uses_blocks_dir_permissions() {
+        $blocks_dir = sys_get_temp_dir() . '/faustwp-blocks-' . uniqid();
+        mkdir( "$blocks_dir/my-block/build", 0700, true );
+        file_put_contents( "$blocks_dir/my-block/block.json", '{}' );
+        file_put_contents( "$blocks_dir/my-block/build/index.js", '' );
+        file_put_contents( "$blocks_dir/blocks.zip", '' );
+        chmod( $blocks_dir, 0755 );
+        chmod( "$blocks_dir/my-block", 0700 );
+        chmod( "$blocks_dir/my-block/block.json", 0600 );
+        chmod( "$blocks_dir/my-block/build/index.js", 0600 );
+        chmod( "$blocks_dir/blocks.zip", 0600 );
+
+        try {
+            Blocks\match_blocks_permissions( $blocks_dir );
+            clearstatcache();
+
+            $perms = function ( $path ) {
+                return fileperms( $path ) & 0777;
+            };
+            $this->assertSame( 0755, $perms( "$blocks_dir/my-block" ) );
+            $this->assertSame( 0755, $perms( "$blocks_dir/my-block/build" ) );
+            $this->assertSame( 0644, $perms( "$blocks_dir/my-block/block.json" ) );
+            $this->assertSame( 0644, $perms( "$blocks_dir/my-block/build/index.js" ) );
+            $this->assertSame( 0600, $perms( "$blocks_dir/blocks.zip" ), 'The uploaded zip must be left alone.' );
+        } finally {
+            exec( 'rm -rf ' . escapeshellarg( $blocks_dir ) );
+        }
+    }
+
 }

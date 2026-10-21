@@ -13,7 +13,8 @@ use function WPE\FaustWP\Auth\{
 	get_user_from_refresh_token,
 	get_user_from_authorization_code,
 	generate_refresh_token,
-	generate_access_token
+	generate_access_token,
+	generate_logout_code
 };
 use function WPE\FaustWP\Settings\get_secret_key;
 use function WPE\FaustWP\Telemetry\{
@@ -117,6 +118,16 @@ function register_rest_routes() {
 		array(
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\\handle_rest_authorize_callback',
+			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
+		)
+	);
+
+	register_rest_route(
+		'faustwp/v1',
+		'/logout',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\\handle_rest_logout_callback',
 			'permission_callback' => __NAMESPACE__ . '\\rest_authorize_permission_callback',
 		)
 	);
@@ -358,6 +369,34 @@ function rest_process_telemetry_permission_callback( \WP_REST_Request $request )
 }
 
 
+
+/**
+ * Callback for POST faustwp/v1/logout.
+ *
+ * Returns a URL that logs the user's browser out of WordPress. The frontend
+ * sends the browser there after clearing its own refresh token.
+ *
+ * @param \WP_REST_Request $request Full data about the request.
+ *
+ * @return array|\WP_Error Array with a logoutUrl key, or an error.
+ */
+function handle_rest_logout_callback( \WP_REST_Request $request ) {
+	$refresh_token = trim( (string) $request->get_param( 'refreshToken' ) );
+	$redirect_uri  = trim( (string) $request->get_param( 'redirectUri' ) );
+	$user          = $refresh_token ? get_user_from_refresh_token( $refresh_token ) : false;
+
+	if ( ! $user ) {
+		return new \WP_Error( 'invalid_request', 'Invalid refresh token.', array( 'status' => 400 ) );
+	}
+
+	$args = array( 'faust_logout' => rawurlencode( generate_logout_code( $user, MINUTE_IN_SECONDS * 5 ) ) );
+
+	if ( $redirect_uri ) {
+		$args['redirect_uri'] = rawurlencode( $redirect_uri );
+	}
+
+	return array( 'logoutUrl' => add_query_arg( $args, home_url( '/' ) ) );
+}
 
 /**
  * Callback for WordPress register_rest_route() 'callback' parameter.

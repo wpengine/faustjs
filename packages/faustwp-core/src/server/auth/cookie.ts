@@ -9,6 +9,43 @@ export interface CookieOptions {
 	isJson?: boolean;
 }
 
+const LOOPBACK_HOST = /^(localhost|.+\.localhost|127(\.\d{1,3}){3}|\[::1\])$/i;
+
+function firstHeaderValue(value?: string | string[]): string {
+	const header = Array.isArray(value) ? value[0] : value;
+
+	return (header ?? '').split(',')[0].trim().toLowerCase();
+}
+
+/**
+ * Whether cookies set in response to this request should use the Secure
+ * attribute.
+ *
+ * Secure is only left off outside production builds, for plain HTTP requests
+ * to a loopback host such as http://localhost. Safari discards Secure cookies there,
+ * unlike other browsers, which loses the login session right after logging in.
+ * See https://bugs.webkit.org/show_bug.cgi?id=218980. Remove this exception
+ * once supported versions of Safari treat loopback hosts as secure.
+ */
+export function shouldUseSecureCookies(req: IncomingMessage): boolean {
+	// Production always uses Secure, so a proxy that forwards a loopback host
+	// without x-forwarded-proto can't turn it off on a real site.
+	if (process.env.NODE_ENV === 'production') {
+		return true;
+	}
+
+	const forwardedProto = firstHeaderValue(req.headers?.['x-forwarded-proto']);
+	const encrypted = (req.socket as { encrypted?: boolean } | undefined)
+		?.encrypted;
+	const protocol = forwardedProto || (encrypted ? 'https' : 'http');
+	const host = (
+		firstHeaderValue(req.headers?.['x-forwarded-host']) ||
+		firstHeaderValue(req.headers?.host)
+	).replace(/:\d+$/, '');
+
+	return !(protocol === 'http' && LOOPBACK_HOST.test(host));
+}
+
 export class Cookies {
 	private request: IncomingMessage;
 
@@ -16,9 +53,16 @@ export class Cookies {
 
 	private cookies: Record<string, string | undefined> = {};
 
+	/**
+	 * Whether cookies for this request should use the Secure attribute. See
+	 * `shouldUseSecureCookies`.
+	 */
+	public readonly secure: boolean;
+
 	constructor(req: IncomingMessage, res?: ServerResponse) {
 		this.request = req;
 		this.response = res;
+		this.secure = shouldUseSecureCookies(req);
 
 		this.cookies = parseCookie(this.request.headers.cookie || '');
 	}
@@ -72,7 +116,7 @@ export class Cookies {
 			stringifySetCookie(key, '', {
 				path: '/',
 				sameSite: 'strict',
-				secure: true,
+				secure: this.secure,
 				httpOnly: true,
 				expires: new Date(0),
 			}),

@@ -21,7 +21,7 @@ Here is a description of each:
 
 - `loading`: If `true`, the request is still in flight.
 - `error`: If the logout process produces one or more errors, this object contains either an array of `graphQLErrors` or a single `networkError`. Otherwise, this value is `undefined`.
-- `logout`: Callback function to initiate the logout request. You can pass an optional `redirectUrl` parameter that is used to redirect once you successfully complete the process.
+- `logout`: Callback function to initiate the logout request. You can pass an optional `redirectUrl` parameter that is used to redirect once you successfully complete the process. If the user also has a WordPress session in this browser, for example because they logged in through WordPress, `logout` ends that session too, so the user isn't logged straight back in. This needs the latest FaustWP plugin; with older versions, only the Faust session ends.
 
 ## Usage
 
