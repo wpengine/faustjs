@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import isString from 'lodash/isString.js';
 import { getWpUrl } from '../lib/getWpUrl.js';
-import { getQueryParam, removeURLParam } from '../utils/index.js';
+import { errorLog, getQueryParam, removeURLParam } from '../utils/index.js';
 import { fetchAccessToken, getAccessToken } from './client/accessToken.js';
 
 export interface EnsureAuthorizationOptions {
@@ -53,6 +53,25 @@ export async function ensureAuthorization(
 	}
 
 	const token = await fetchAccessToken(code);
+
+	if (!token && code) {
+		/**
+		 * WordPress already issued a code, so the exchange itself failed, for
+		 * example because the frontend's credentials were rejected. Sending the
+		 * user back for another code would loop forever, so stop here, and drop
+		 * the code so a reload starts over.
+		 */
+		window.history.replaceState(
+			{},
+			document.title,
+			removeURLParam(window.location.href, 'code'),
+		);
+		errorLog(
+			'Faust.js could not exchange the authorization code for an access token. Check your Next.js server logs.',
+		);
+
+		return {};
+	}
 
 	if (!token) {
 		return unauthorized;
