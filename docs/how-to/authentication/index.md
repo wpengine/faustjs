@@ -112,6 +112,8 @@ You are now ready to access the auth page you created. In your terminal start up
 
 Your Next.js server exchanges authorization codes for tokens by calling the FaustWP plugin. It can authenticate those calls with a WordPress [Application Password](https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/) instead of `FAUST_SECRET_KEY`. Each Application Password belongs to one user, can be revoked on its own, and only allows what that user's role allows.
 
+This needs FaustWP 1.9.0 or later, so update the plugin before setting the variables below. Older versions of the plugin reject the Application Password, and logins and previews stop working.
+
 1. Create a WordPress user for your frontend and give it a role with the `faustwp_exchange_tokens` capability. Administrators have it by default, but a dedicated low-privilege user is safer:
 
    ```php title="my-plugin.php"
