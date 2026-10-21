@@ -34,7 +34,12 @@ RUN set -e \
 	-qq --no-install-recommends \
 	; sudo adduser www-data sudo \
 	; rm -rf /var/lib/apt/lists/* \
-	&& pecl install pcov \
+	# PECL sometimes answers "No releases available", so retry before failing.
+	&& for attempt in 1 2 3 4 5; do \
+		pecl install pcov && break; \
+		[ "$attempt" = 5 ] && exit 1; \
+		sleep 10; \
+	done \
 	&& docker-php-ext-enable pcov
 
 # Copy the script to create the testing environment
