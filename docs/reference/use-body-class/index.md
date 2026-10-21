@@ -7,7 +7,7 @@ WordPress themes add classes like `home`, `single-post`, `postid-123` and `categ
 
 ## Add body classes to every WordPress page
 
-Pass `bodyClass` to `WordPressTemplate`:
+Pass `bodyClass` to `WordPressTemplate` on every page that renders it. In the getting-started example, that's `pages/index.js`, `pages/[...wordpressNode].js` and `pages/preview.js`:
 
 ```js title="pages/[...wordpressNode].js"
 export default function Page(props) {
