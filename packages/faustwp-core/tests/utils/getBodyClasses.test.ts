@@ -112,4 +112,26 @@ describe('getBodyClasses()', () => {
 			getBodyClasses({ __typename: 'ContentType', name: 'movie' }),
 		).toEqual(['archive', 'post-type-archive', 'post-type-archive-movie']);
 	});
+
+	test('removes percent-encoded characters from slugs, like WordPress', () => {
+		const term = (slug: string) => ({
+			__typename: 'Term',
+			databaseId: '3',
+			isTermNode: true,
+			slug,
+			taxonomyName: 'category',
+		});
+
+		expect(getBodyClasses(term('caf%c3%a9-news'))).toEqual([
+			'archive',
+			'category',
+			'category-caf-news',
+			'category-3',
+		]);
+		expect(getBodyClasses(term('%e6%97%a5%e6%9c%ac'))).toEqual([
+			'archive',
+			'category',
+			'category-3',
+		]);
+	});
 });

@@ -1,6 +1,17 @@
 import type { SeedNode } from '../queries/seedQuery.js';
 
 /**
+ * Make a slug safe to use in a class name, like WordPress's
+ * sanitize_html_class(): percent-encoded characters and anything other than
+ * letters, numbers, underscores and hyphens are removed.
+ */
+function sanitizeClass(value?: string): string {
+	return (value ?? '')
+		.replace(/%[a-fA-F0-9]{2}/g, '')
+		.replace(/[^A-Za-z0-9_-]/g, '');
+}
+
+/**
  * Turn a page template name like "Full Width" into "full-width".
  */
 function toClassName(value: string): string {
@@ -67,18 +78,21 @@ export function getBodyClasses(seedNode?: SeedNode | null): string[] {
 	}
 
 	if (seedNode.isTermNode) {
-		const { slug, taxonomyName } = seedNode;
+		const { taxonomyName } = seedNode;
+		const slug = sanitizeClass(seedNode.slug);
+		// Like WordPress, skip the slug class if nothing usable is left.
+		const termClasses = (prefix: string) =>
+			slug ? [`${prefix}-${slug}`, `${prefix}-${id}`] : [`${prefix}-${id}`];
 
 		if (taxonomyName === 'category') {
-			classes.push('archive', 'category', `category-${slug}`, `category-${id}`);
+			classes.push('archive', 'category', ...termClasses('category'));
 		} else if (taxonomyName === 'post_tag') {
-			classes.push('archive', 'tag', `tag-${slug}`, `tag-${id}`);
+			classes.push('archive', 'tag', ...termClasses('tag'));
 		} else if (taxonomyName) {
 			classes.push(
 				'archive',
-				`tax-${taxonomyName}`,
-				`term-${slug}`,
-				`term-${id}`,
+				`tax-${sanitizeClass(taxonomyName)}`,
+				...termClasses('term'),
 			);
 		}
 
