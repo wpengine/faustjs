@@ -463,4 +463,32 @@ describe('<WordPressTemplateInternal /> client-side query variables', () => {
 		view.unmount();
 		expect(document.body.classList.contains('single-post')).toBe(false);
 	});
+
+	test("uses the previewed post's ID, not the autosave revision's, and adds logged-in", () => {
+		const MyTemplate = () => <>My component</>;
+		jest.spyOn(getTemplate, 'getTemplate').mockReturnValue(MyTemplate);
+		window.history.pushState({}, '', '/preview?p=2&preview=true');
+		const revision = {
+			databaseId: '72',
+			isContentNode: true,
+			contentType: { node: { name: 'page' } },
+		};
+
+		const view = render(
+			<WordPressTemplate.WordPressTemplateInternal
+				{...props}
+				seedNode={revision}
+				isPreview
+				isAuthenticated
+				bodyClass
+			/>,
+		);
+
+		expect(document.body.classList.contains('page-id-2')).toBe(true);
+		expect(document.body.classList.contains('page-id-72')).toBe(false);
+		expect(document.body.classList.contains('logged-in')).toBe(true);
+
+		view.unmount();
+		window.history.pushState({}, '', '/');
+	});
 });

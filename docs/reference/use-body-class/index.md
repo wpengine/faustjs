@@ -30,7 +30,7 @@ The classes are worked out from the seed node Faust.js already loads, and they a
 | Author | `archive`, `author`, `author-{id}` |
 | Post type archive | `archive`, `post-type-archive`, `post-type-archive-{post type}` |
 
-When the Faust toolbar is showing, it adds `admin-bar` and `logged-in`.
+Previews also get `logged-in`, since you have to be logged in to see them. When the Faust toolbar is showing, it adds `admin-bar`, even without `bodyClass`.
 
 These are a subset of what WordPress's `body_class()` adds. Page template classes use the template's name, such as `page-template-full-width` for "Full Width", rather than its file name, and filters on `body_class` don't apply. As in WordPress, characters that can't go in a class name are removed from slugs.
 

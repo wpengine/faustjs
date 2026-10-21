@@ -115,8 +115,8 @@ export function AuthenticatedToolbar({ seedNode }: ToolbarProps) {
 		setToolbarNodes(filteredNodes);
 	}, [coreToolbarNodes, seedNode]);
 
-	// The toolbar only shows for logged-in users, like WordPress's admin bar.
-	useBodyClass(['admin-bar', 'logged-in']);
+	// Makes room for the toolbar. See styles/_body-classes.scss.
+	useBodyClass(['admin-bar']);
 
 	const primaryNodes = toolbarNodes.filter(
 		({ location }) => location === 'primary',

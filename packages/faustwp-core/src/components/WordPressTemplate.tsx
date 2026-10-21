@@ -63,6 +63,29 @@ function checkDuplicateQueryQueries(template: WordPressTemplateType): void {
 	}
 }
 
+/**
+ * Body classes for the template's page.
+ *
+ * A preview's seed node is the autosave revision, so take the ID of the post
+ * being previewed from the URL instead. Users are only known to be logged in
+ * during previews.
+ */
+function getTemplateBodyClasses(
+	seedNode: SeedNode,
+	isPreview: boolean,
+	isAuthenticated: boolean | null,
+): string[] {
+	const previewId =
+		isPreview && typeof window !== 'undefined'
+			? getQueryParam(window.location.href, 'p')
+			: '';
+	const classes = getBodyClasses(
+		previewId ? { ...seedNode, databaseId: previewId } : seedNode,
+	);
+
+	return isAuthenticated ? [...classes, 'logged-in'] : classes;
+}
+
 export function WordPressTemplateInternal(
 	props: WordPressTemplateProps & {
 		seedNode: SeedNode;
@@ -89,7 +112,11 @@ export function WordPressTemplateInternal(
 		...wordpressTemplateProps
 	} = props;
 
-	useBodyClass(bodyClass ? getBodyClasses(seedNode) : []);
+	useBodyClass(
+		bodyClass
+			? getTemplateBodyClasses(seedNode, isPreview, isAuthenticated)
+			: [],
+	);
 
 	const unknownTemplate = getTemplate(seedNode, templates);
 	const isDynamic = isDynamicComponent(unknownTemplate);
