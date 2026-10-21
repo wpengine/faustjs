@@ -48,8 +48,12 @@ export function getBodyClasses(seedNode?: SeedNode | null): string[] {
 		classes.push('home');
 	}
 
+	// The posts page lists posts, so it gets no page or archive classes, even
+	// when a preview resolves it to a Page.
 	if (seedNode.isPostsPage) {
 		classes.push('blog');
+
+		return classes;
 	}
 
 	if (seedNode.isContentNode) {
@@ -105,8 +109,7 @@ export function getBodyClasses(seedNode?: SeedNode | null): string[] {
 		return classes;
 	}
 
-	// The posts page is also a post type archive, but WordPress only calls it "blog".
-	if (typeName === 'ContentType' && seedNode.name && !seedNode.isPostsPage) {
+	if (typeName === 'ContentType' && seedNode.name) {
 		classes.push(
 			'archive',
 			'post-type-archive',

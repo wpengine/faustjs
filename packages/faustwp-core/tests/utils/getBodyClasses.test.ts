@@ -70,6 +70,12 @@ describe('getBodyClasses()', () => {
 		]);
 	});
 
+	test('a posts page that a preview resolves to a Page gets only blog', () => {
+		expect(getBodyClasses(post('page', { isPostsPage: true }))).toEqual([
+			'blog',
+		]);
+	});
+
 	test('categories, tags and other taxonomies', () => {
 		const term = (taxonomyName: string) => ({
 			__typename: 'Term',
