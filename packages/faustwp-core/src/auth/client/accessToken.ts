@@ -50,6 +50,28 @@ export function setRefreshTimer(timer: RefreshTimer): void {
 let accessToken: AccessToken | undefined;
 
 /**
+ * Functions to call when this tab logs in or out.
+ */
+const authChangeListeners = new Set<() => void>();
+
+/**
+ * Call a function whenever this tab logs in or out, that is, when an access
+ * token is stored where there was none, or cleared. Refreshing an existing
+ * token doesn't count.
+ *
+ * @param {Function} listener Function to call.
+ *
+ * @returns {Function} Function that stops calling the listener.
+ */
+export function onAuthChange(listener: () => void): () => void {
+	authChangeListeners.add(listener);
+
+	return () => {
+		authChangeListeners.delete(listener);
+	};
+}
+
+/**
  * Get an access token from memory if one exists
  *
  * @returns {string | undefined}
@@ -83,10 +105,16 @@ export function setAccessToken(
 		return;
 	}
 
+	const wasAuthenticated = Boolean(accessToken?.token);
+
 	accessToken = {
 		token,
 		expiration,
 	};
+
+	if (Boolean(token) !== wasAuthenticated) {
+		authChangeListeners.forEach((listener) => listener());
+	}
 }
 
 /**

@@ -1,12 +1,15 @@
 import trim from 'lodash/trim.js';
 import defaults from 'lodash/defaults.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gql } from '@apollo/client';
 import {
 	ensureAuthorization,
 	EnsureAuthorizationOptions,
+	getAccessToken,
+	onAuthChange,
 } from '../auth/index.js';
 import { getApolloAuthClient } from '../client.js';
+import { getWpUrl } from '../lib/getWpUrl.js';
 
 type RedirectStrategyConfig = {
 	strategy: 'redirect';
@@ -46,6 +49,17 @@ type ViewerType = {
 
 export type UseAuthConfig = RedirectStrategyConfig | LocalStrategyConfig;
 
+/**
+ * The URL to log in at for the given strategy, returning to the current page.
+ */
+function getLoginUrl(config: UseAuthConfig): string {
+	const redirectUri = encodeURIComponent(window.location.href);
+
+	return config.strategy === 'local'
+		? `/${trim(config.loginPageUrl, '/')}?redirect_uri=${redirectUri}`
+		: `${getWpUrl()}/generate?redirect_uri=${redirectUri}`;
+}
+
 export function useAuth(_config?: UseAuthConfig) {
 	const config = defaults(_config, {
 		strategy: 'redirect',
@@ -64,6 +78,13 @@ export function useAuth(_config?: UseAuthConfig) {
 	const [loginUrl, setLoginUrl] = useState<string | null>(null);
 	const [called, setCalled] = useState<boolean>(false);
 	const [viewer, setViewer] = useState<ViewerType | null>(null);
+	// Counts logins and logouts in this tab, so a viewer request started before
+	// one is ignored.
+	const [session, setSession] = useState<number>(0);
+	const sessionRef = useRef<number>(0);
+	const initialCheckDone = useRef<boolean>(false);
+	const configRef = useRef<UseAuthConfig>(config);
+	configRef.current = config;
 
 	useEffect(() => {
 		if (config.skip === true) {
@@ -110,8 +131,37 @@ export function useAuth(_config?: UseAuthConfig) {
 			}
 
 			setIsReady(true);
+			initialCheckDone.current = true;
 		})();
 	}, [called, config]);
+
+	/**
+	 * Update when this tab logs in or out after the first check, for example
+	 * after a login with useLogin() or when the session ends.
+	 */
+	useEffect(() => {
+		if (config.skip === true) {
+			return undefined;
+		}
+
+		function syncWithAccessToken() {
+			const authenticated = Boolean(getAccessToken());
+
+			sessionRef.current += 1;
+			setSession(sessionRef.current);
+			setIsAuthenticated(authenticated);
+			setIsReady(true);
+			setViewer(null);
+			setLoginUrl(authenticated ? null : getLoginUrl(configRef.current));
+		}
+
+		// The user may have logged in or out while skip was true.
+		if (initialCheckDone.current) {
+			syncWithAccessToken();
+		}
+
+		return onAuthChange(syncWithAccessToken);
+	}, [config.skip]);
 
 	/**
 	 * Automatically redirect the user to the login page if the
@@ -152,10 +202,16 @@ export function useAuth(_config?: UseAuthConfig) {
 			return;
 		}
 
+		const requestSession = sessionRef.current;
+
 		(async () => {
 			const client = getApolloAuthClient();
 
 			const { data } = await client.query({
+				// Always ask WordPress, and never share a request with an earlier
+				// session's, since a different user may have logged in since.
+				fetchPolicy: 'network-only',
+				context: { queryDeduplication: false },
 				query: gql`
 					query GetFaustViewer {
 						viewer {
@@ -183,9 +239,12 @@ export function useAuth(_config?: UseAuthConfig) {
 					}
 				`,
 			});
-			setViewer(data.viewer as ViewerType | null);
+			// Ignore the result if the user logged in or out while it was loading.
+			if (sessionRef.current === requestSession) {
+				setViewer(data.viewer as ViewerType | null);
+			}
 		})();
-	}, [isAuthenticated, config.skip]);
+	}, [isAuthenticated, session, config.skip]);
 
 	return {
 		isAuthenticated,

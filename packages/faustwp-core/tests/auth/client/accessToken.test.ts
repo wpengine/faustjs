@@ -145,4 +145,20 @@ describe('auth/client/accessToken', () => {
 
 		expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
 	});
+
+	test('onAuthChange() calls listeners on login and logout, not on refresh', () => {
+		const listener = jest.fn();
+		const stop = accessToken.onAuthChange(listener);
+
+		accessToken.setAccessToken('at', 100);
+		accessToken.setAccessToken('refreshed', 200);
+		expect(listener).toHaveBeenCalledTimes(1);
+
+		accessToken.setAccessToken(undefined, undefined);
+		expect(listener).toHaveBeenCalledTimes(2);
+
+		stop();
+		accessToken.setAccessToken('at', 100);
+		expect(listener).toHaveBeenCalledTimes(2);
+	});
 });
