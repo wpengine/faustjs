@@ -34,12 +34,16 @@ RUN set -e \
 	-qq --no-install-recommends \
 	; sudo adduser www-data sudo \
 	; rm -rf /var/lib/apt/lists/* \
-	# PECL sometimes answers "No releases available", so retry before failing.
-	&& for attempt in 1 2 3 4 5; do \
-		pecl install pcov && break; \
-		[ "$attempt" = 5 ] && exit 1; \
-		sleep 10; \
-	done \
+	# Build pcov from its GitHub release, since PECL often answers
+	# "No releases available" to CI runners.
+	&& curl -fsSL https://github.com/krakjoe/pcov/archive/refs/tags/v1.0.12.tar.gz | tar -xz -C /tmp \
+	&& cd /tmp/pcov-1.0.12 \
+	&& phpize \
+	&& ./configure --enable-pcov \
+	&& make -j"$(nproc)" \
+	&& make install \
+	&& cd / \
+	&& rm -rf /tmp/pcov-1.0.12 \
 	&& docker-php-ext-enable pcov
 
 # Copy the script to create the testing environment
