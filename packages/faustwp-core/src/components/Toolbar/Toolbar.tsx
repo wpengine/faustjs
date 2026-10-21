@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import React, { useEffect, useMemo, useState } from 'react';
 import { getApolloAuthClient } from '../../client.js';
 import { useAuth } from '../../hooks/useAuth.js';
+import { useBodyClass } from '../../hooks/useBodyClass.js';
 import { SeedNode } from '../../queries/seedQuery.js';
 import { hooks } from '../../wpHooks/index.js';
 import { Edit } from './nodes/Edit.js';
@@ -114,21 +115,8 @@ export function AuthenticatedToolbar({ seedNode }: ToolbarProps) {
 		setToolbarNodes(filteredNodes);
 	}, [coreToolbarNodes, seedNode]);
 
-	/**
-	 * Handle adding `admin-bar` body class on render.
-	 *
-	 * This could eventually be handled with a Faust bodyClass hook
-	 * @link https://developer.wordpress.org/reference/hooks/body_class/
-	 */
-	useEffect(() => {
-		document?.body.classList.add('admin-bar');
-
-		// Cleanup body class when this component unmounts.
-		// eslint-disable-next-line consistent-return
-		return () => {
-			document?.body.classList.remove('admin-bar');
-		};
-	}, []);
+	// The toolbar only shows for logged-in users, like WordPress's admin bar.
+	useBodyClass(['admin-bar', 'logged-in']);
 
 	const primaryNodes = toolbarNodes.filter(
 		({ location }) => location === 'primary',

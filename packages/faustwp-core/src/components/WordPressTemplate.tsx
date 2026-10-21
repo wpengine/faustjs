@@ -17,6 +17,7 @@ import {
 	loadDynamicComponent,
 } from '../getTemplate.js';
 import { useAuth } from '../hooks/useAuth.js';
+import { useBodyClass } from '../hooks/useBodyClass.js';
 import {
 	SEED_QUERY,
 	SeedNode,
@@ -24,10 +25,16 @@ import {
 } from '../queries/seedQuery.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
 import { getQueryParam } from '../utils/convert.js';
+import { getBodyClasses } from '../utils/getBodyClasses.js';
 import { isWordPressPreview } from '../utils/isWordPressPreview.js';
 import type { WordPressTemplate as WordPressTemplateType } from '../getWordPressProps.js';
 
 export type FaustProps = {
+	/**
+	 * Add WordPress-style classes like `single-post` or `category-news` to
+	 * `<body>`. See getBodyClasses().
+	 */
+	bodyClass?: boolean;
 	__SEED_NODE__?: SeedNode | null;
 	__FAUST_QUERIES__?: FaustQueries | null;
 	__TEMPLATE_QUERY_DATA__?: any | null;
@@ -72,6 +79,7 @@ export function WordPressTemplateInternal(
 	}
 
 	const {
+		bodyClass,
 		seedNode,
 		isAuthenticated,
 		isPreview,
@@ -80,6 +88,9 @@ export function WordPressTemplateInternal(
 		setLoading,
 		...wordpressTemplateProps
 	} = props;
+
+	useBodyClass(bodyClass ? getBodyClasses(seedNode) : []);
+
 	const unknownTemplate = getTemplate(seedNode, templates);
 	const isDynamic = isDynamicComponent(unknownTemplate);
 	const [data, setData] = useState<any | null>(templateQueryDataProp);

@@ -431,4 +431,36 @@ describe('<WordPressTemplateInternal /> client-side query variables', () => {
 			variables: { postId: '1' },
 		});
 	});
+
+	test('adds WordPress body classes only when bodyClass is set', async () => {
+		const MyTemplate = () => <>My component</>;
+		jest.spyOn(getTemplate, 'getTemplate').mockReturnValue(MyTemplate);
+		const seedNode = {
+			databaseId: '7',
+			isContentNode: true,
+			contentType: { node: { name: 'post' } },
+		};
+
+		let view = render(
+			<WordPressTemplate.WordPressTemplateInternal
+				{...props}
+				seedNode={seedNode}
+			/>,
+		);
+		expect(document.body.classList.contains('single-post')).toBe(false);
+		view.unmount();
+
+		view = render(
+			<WordPressTemplate.WordPressTemplateInternal
+				{...props}
+				seedNode={seedNode}
+				bodyClass
+			/>,
+		);
+		expect(document.body.classList.contains('single-post')).toBe(true);
+		expect(document.body.classList.contains('postid-7')).toBe(true);
+
+		view.unmount();
+		expect(document.body.classList.contains('single-post')).toBe(false);
+	});
 });
