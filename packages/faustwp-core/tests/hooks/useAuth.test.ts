@@ -7,8 +7,7 @@ import fetchMock from 'fetch-mock';
 import { useAuth } from '../../src/hooks/useAuth';
 import { setAccessToken } from '../../src/auth';
 
-// Apollo Client 4 appends an extensions param, so match on the start of the URL.
-const VIEWER_URL = `begin:http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20avatar%20%7B%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20__typename%0A%20%20%20%20%7D%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`;
+const VIEWER_URL = `http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20avatar%20%7B%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20__typename%0A%20%20%20%20%7D%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`;
 
 /**
  * A viewer with every field useAuth asks for, so Apollo can answer the query from its cache.
@@ -76,21 +75,24 @@ describe('useAuth hook', () => {
 			status: 200,
 			body: JSON.stringify({ accessToken: 'at', refreshToken: 'rt' }),
 		});
-		fetchMock.get(VIEWER_URL, {
-			status: 200,
-			body: JSON.stringify({
-				data: {
-					viewer: {
-						name: 'admin',
-						username: 'admin',
-						capabilities: ['administrator'],
-						databaseId: 1,
-						description: '',
-						email: '',
+		fetchMock.get(
+			`http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20avatar%20%7B%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20__typename%0A%20%20%20%20%7D%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`,
+			{
+				status: 200,
+				body: JSON.stringify({
+					data: {
+						viewer: {
+							name: 'admin',
+							username: 'admin',
+							capabilities: ['administrator'],
+							databaseId: 1,
+							description: '',
+							email: '',
+						},
 					},
-				},
-			}),
-		});
+				}),
+			},
+		);
 
 		const { result } = renderHook(() => useAuth());
 
@@ -155,21 +157,24 @@ describe('useAuth hook', () => {
 			}),
 		});
 
-		fetchMock.get(VIEWER_URL, {
-			status: 200,
-			body: JSON.stringify({
-				data: {
-					viewer: {
-						name: 'admin',
-						username: 'admin',
-						capabilities: ['administrator'],
-						databaseId: 1,
-						description: '',
-						email: '',
+		fetchMock.get(
+			`http://headless.local/index.php?graphql&query=query%20GetFaustViewer%20%7B%0A%20%20viewer%20%7B%0A%20%20%20%20name%0A%20%20%20%20username%0A%20%20%20%20capabilities%0A%20%20%20%20databaseId%0A%20%20%20%20description%0A%20%20%20%20email%0A%20%20%20%20firstName%0A%20%20%20%20id%0A%20%20%20%20lastName%0A%20%20%20%20nickname%0A%20%20%20%20locale%0A%20%20%20%20registeredDate%0A%20%20%20%20slug%0A%20%20%20%20templates%0A%20%20%20%20uri%0A%20%20%20%20url%0A%20%20%20%20userId%0A%20%20%20%20avatar%20%7B%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20__typename%0A%20%20%20%20%7D%0A%20%20%20%20__typename%0A%20%20%7D%0A%7D&operationName=GetFaustViewer&variables=%7B%7D`,
+			{
+				status: 200,
+				body: JSON.stringify({
+					data: {
+						viewer: {
+							name: 'admin',
+							username: 'admin',
+							capabilities: ['administrator'],
+							databaseId: 1,
+							description: '',
+							email: '',
+						},
 					},
-				},
-			}),
-		});
+				}),
+			},
+		);
 
 		const { result } = renderHook(() => useAuth());
 

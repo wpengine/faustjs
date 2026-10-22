@@ -113,6 +113,9 @@ export function createApolloClient(authenticated = false) {
 		},
 		link: linkChain,
 		cache: new InMemoryCache(inMemoryCacheObject).restore(windowApolloState),
+		// Apollo Client 4 adds its name and version to every request. Leave them
+		// out so GET URLs, and any caches keyed on them, match Apollo Client 3.
+		...({ enhancedClientAwareness: { transport: false } } as object),
 	};
 
 	apolloClientOptions = hooks.applyFilters(
