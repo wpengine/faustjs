@@ -2,7 +2,7 @@
 	"name": "@faustjs/root",
 	"private": true,
 	"engines": {
-		"node": ">=18",
+		"node": ">=22",
 		"npm": ">=8"
 	},
 	"workspaces": {
