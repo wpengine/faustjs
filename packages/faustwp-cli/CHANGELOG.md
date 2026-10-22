@@ -1,5 +1,17 @@
 # @faustwp/cli
 
+## [4.0.0](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.6.0...@faustwp/cli@4.0.0) (2026-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* @faustwp/core, @faustwp/cli and @faustwp/blocks now require Node.js 22 or newer. Sites that need to stay on Node.js 20 can keep using core and cli 3.x and blocks 6.x.
+
+### Features
+
+* connect Faust.js to WordPress with an Application Password ([#2676](https://github.com/wpengine/faustjs/issues/2676)) ([f34412c](https://github.com/wpengine/faustjs/commit/f34412ca683c6663a5176ffb590845721ff59f34))
+* require Node.js 22 or newer ([#2670](https://github.com/wpengine/faustjs/issues/2670)) ([79e700c](https://github.com/wpengine/faustjs/commit/79e700c00313368573810af6bfeb0618d11f2f3b))
+
 ## [3.6.0](https://github.com/wpengine/faustjs/compare/@faustwp/cli@3.5.2...@faustwp/cli@3.6.0) (2026-10-20)
 
 

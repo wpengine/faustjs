@@ -1,5 +1,18 @@
 # Faust
 
+## [1.9.0](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.8.14...@faustwp/wordpress-plugin@1.9.0) (2026-10-22)
+
+
+### Features
+
+* connect Faust.js to WordPress with an Application Password ([#2676](https://github.com/wpengine/faustjs/issues/2676)) ([f34412c](https://github.com/wpengine/faustjs/commit/f34412ca683c6663a5176ffb590845721ff59f34))
+
+
+### Bug Fixes
+
+* end the WordPress session when logging out of the frontend ([#2684](https://github.com/wpengine/faustjs/issues/2684)) ([f32eb6b](https://github.com/wpengine/faustjs/commit/f32eb6b3295a812354d405028c8d97b2ead173b5))
+* **faustwp:** make blockset files readable by the web server ([#2681](https://github.com/wpengine/faustjs/issues/2681)) ([89561a5](https://github.com/wpengine/faustjs/commit/89561a50384d4970a2f79e34c25e2b9c8beaec5d))
+
 ## [1.8.14](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.8.13...@faustwp/wordpress-plugin@1.8.14) (2026-10-20)
 
 

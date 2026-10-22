@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 7.0
-Stable tag: 1.8.14
+Stable tag: 1.9.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,19 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 == Changelog ==
 
+= 1.9.0 =
+
+
+### Features
+
+* connect Faust.js to WordPress with an Application Password ([#2676](https://github.com/wpengine/faustjs/issues/2676)) ([f34412c](https://github.com/wpengine/faustjs/commit/f34412ca683c6663a5176ffb590845721ff59f34))
+
+
+### Bug Fixes
+
+* end the WordPress session when logging out of the frontend ([#2684](https://github.com/wpengine/faustjs/issues/2684)) ([f32eb6b](https://github.com/wpengine/faustjs/commit/f32eb6b3295a812354d405028c8d97b2ead173b5))
+* **faustwp:** make blockset files readable by the web server ([#2681](https://github.com/wpengine/faustjs/issues/2681)) ([89561a5](https://github.com/wpengine/faustjs/commit/89561a50384d4970a2f79e34c25e2b9c8beaec5d))
+
 = 1.8.14 =
 
 
@@ -66,11 +79,5 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 ### Bug Fixes
 
 * **faustwp:** stop repeating the subdirectory in public route redirects ([#2642](https://github.com/wpengine/faustjs/issues/2642)) ([e5f813a](https://github.com/wpengine/faustjs/commit/e5f813a53bceed7adad13dd54a2458bed3ba557b))
-
-= 1.8.12 =
-
-### Patch Changes
-
-- 85d1b14: Route the `generateAuthorizationCode` mutation through `wp_authenticate()` so login policies hooked on the WordPress `authenticate` filter are enforced.
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)

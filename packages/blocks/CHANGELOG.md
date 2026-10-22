@@ -1,5 +1,16 @@
 # @faustwp/blocks
 
+## [7.0.0](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.14...@faustwp/blocks@7.0.0) (2026-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* @faustwp/core, @faustwp/cli and @faustwp/blocks now require Node.js 22 or newer. Sites that need to stay on Node.js 20 can keep using core and cli 3.x and blocks 6.x.
+
+### Features
+
+* require Node.js 22 or newer ([#2670](https://github.com/wpengine/faustjs/issues/2670)) ([79e700c](https://github.com/wpengine/faustjs/commit/79e700c00313368573810af6bfeb0618d11f2f3b))
+
 ## [6.1.14](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.13...@faustwp/blocks@6.1.14) (2026-10-20)
 
 

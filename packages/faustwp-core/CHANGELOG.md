@@ -1,5 +1,31 @@
 # @faustwp/core
 
+## [4.0.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.6.0...@faustwp/core@4.0.0) (2026-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* @faustwp/core, @faustwp/cli and @faustwp/blocks now require Node.js 22 or newer. Sites that need to stay on Node.js 20 can keep using core and cli 3.x and blocks 6.x.
+
+### Features
+
+* connect Faust.js to WordPress with an Application Password ([#2676](https://github.com/wpengine/faustjs/issues/2676)) ([f34412c](https://github.com/wpengine/faustjs/commit/f34412ca683c6663a5176ffb590845721ff59f34))
+* **core:** add WordPress-style body classes ([#2689](https://github.com/wpengine/faustjs/issues/2689)) ([8e87663](https://github.com/wpengine/faustjs/commit/8e87663907137e235b18045a92aaa357c0a69b8a))
+* require Node.js 22 or newer ([#2670](https://github.com/wpengine/faustjs/issues/2670)) ([79e700c](https://github.com/wpengine/faustjs/commit/79e700c00313368573810af6bfeb0618d11f2f3b))
+
+
+### Bug Fixes
+
+* **core:** keep the login cookie in Safari on http://localhost ([#2675](https://github.com/wpengine/faustjs/issues/2675)) ([ad53311](https://github.com/wpengine/faustjs/commit/ad533112c2087cb4efc1f40473f27f091fe34891))
+* **core:** stop the preview redirect loop when exchanging a code fails ([#2686](https://github.com/wpengine/faustjs/issues/2686)) ([9956251](https://github.com/wpengine/faustjs/commit/9956251dbb6f308ac29e5b726d9f44720a64bc6f))
+* **core:** update useAuth after logging in with useLogin ([#2683](https://github.com/wpengine/faustjs/issues/2683)) ([03818f4](https://github.com/wpengine/faustjs/commit/03818f4dc1d647f7f94bf4391c34a5f2879f2e3a))
+* end the WordPress session when logging out of the frontend ([#2684](https://github.com/wpengine/faustjs/issues/2684)) ([f32eb6b](https://github.com/wpengine/faustjs/commit/f32eb6b3295a812354d405028c8d97b2ead173b5))
+
+
+### Dependencies
+
+* Bump sass ([#2691](https://github.com/wpengine/faustjs/issues/2691)) ([4da280c](https://github.com/wpengine/faustjs/commit/4da280ced0253a827b260b5449db28e7f73484fb))
+
 ## [3.6.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.5.2...@faustwp/core@3.6.0) (2026-10-20)
 
 
