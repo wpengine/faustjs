@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
+          check-latest: true
 
       # Install faust-scaffold-ts via npx create next app
       - name: npx create next app
