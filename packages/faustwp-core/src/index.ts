@@ -33,7 +33,10 @@ import { useLogin } from './hooks/useLogin.js';
 import { useBodyClass } from './hooks/useBodyClass.js';
 import { getBodyClasses } from './utils/getBodyClasses.js';
 import { useLogout } from './hooks/useLogout.js';
-import { useFaustQuery } from './hooks/useFaustContext.js';
+import {
+	useFaustQuery,
+	UseFaustQueryOptions,
+} from './hooks/useFaustContext.js';
 import { FaustContext } from './store/FaustContext.js';
 
 import {
@@ -90,5 +93,6 @@ export {
 	FaustPage,
 	hooks,
 	useFaustQuery,
+	UseFaustQueryOptions,
 	FaustContext,
 };
