@@ -8,7 +8,7 @@ on:
         description: 'Node version to use, default to LTS'
         required: true
         type: string
-        default: '22'
+        default: '24'
 
 jobs:
   setup:

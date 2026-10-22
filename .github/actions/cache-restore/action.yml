@@ -5,7 +5,7 @@ inputs:
   node-version:
     description: 'Node version to use, default to LTS'
     required: true
-    default: 22
+    default: 24
 outputs:
   cache-hit:
     description: 'Forward actions/cache cache-hit output'
