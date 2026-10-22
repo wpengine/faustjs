@@ -349,6 +349,7 @@ describe('<WordPressTemplateInternal /> client-side query variables', () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 		jest.restoreAllMocks();
+		window.history.pushState({}, '', '/');
 	});
 
 	const props = {
@@ -489,6 +490,5 @@ describe('<WordPressTemplateInternal /> client-side query variables', () => {
 		expect(document.body.classList.contains('logged-in')).toBe(true);
 
 		view.unmount();
-		window.history.pushState({}, '', '/');
 	});
 });
