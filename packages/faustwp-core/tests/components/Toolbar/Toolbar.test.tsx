@@ -6,7 +6,7 @@ import { waitFor, queryByAttribute, within } from '@testing-library/dom';
 import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustToolbarNodes } from '../../../src';
 import { setConfig } from '../../../src/config/index';
-import * as apollo from '@apollo/client';
+import * as apollo from '@apollo/client/react';
 import * as nextRouter from 'next/router';
 import { Toolbar } from '../../../src/components/Toolbar';
 import { OperationVariables, QueryResult } from '@apollo/client';

@@ -161,7 +161,7 @@ export function WordPressTemplateInternal(
 				const queryVariables = variables
 					? variables(seedNode, { asPreview: isPreview, locale })
 					: undefined;
-				return client.query({
+				return client.query<any>({
 					query,
 					variables: queryVariables,
 				});
@@ -226,7 +226,7 @@ export function WordPressTemplateInternal(
 					: undefined,
 			};
 
-			const templateQueryRes = await client.query(queryArgs);
+			const templateQueryRes = await client.query<any>(queryArgs);
 
 			setData(templateQueryRes.data);
 
@@ -380,7 +380,7 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
 			setLoading(true);
 
-			const seedQueryRes = await client.query(queryArgs);
+			const seedQueryRes = await client.query<any>(queryArgs);
 
 			const node = isPreview
 				? (getPreviewSeedNode(seedQueryRes?.data) as SeedNode)

@@ -1,4 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
+// eslint-disable-next-line import/extensions
+import { useMutation } from '@apollo/client/react';
 import { useEffect, useState } from 'react';
 import { fetchAccessToken } from '../auth/client/accessToken.js';
 import { isValidEmail } from '../utils/index.js';

@@ -1,4 +1,6 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+// eslint-disable-next-line import/extensions
+import { useQuery } from '@apollo/client/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { getApolloAuthClient } from '../../client.js';
 import { useAuth } from '../../hooks/useAuth.js';
@@ -167,7 +169,7 @@ export function AuthenticatedToolbar({ seedNode }: ToolbarProps) {
  */
 export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
 	const client = getApolloAuthClient();
-	const { data, error } = useQuery(
+	const { data, error } = useQuery<any>(
 		gql`
 			{
 				viewer {

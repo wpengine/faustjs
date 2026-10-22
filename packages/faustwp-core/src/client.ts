@@ -1,6 +1,5 @@
 import {
 	ApolloClient,
-	ApolloClientOptions,
 	ApolloLink,
 	createHttpLink,
 	InMemoryCache,
@@ -23,6 +22,13 @@ import { getConfig } from './config/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { hooks } from './wpHooks/index.js';
 
+// Apollo Client 4 dropped the cache type parameter, so derive the types from
+// the constructor to work with both 3.x and 4.x.
+export type FaustApolloClient = InstanceType<typeof ApolloClient>;
+export type FaustApolloClientOptions = ConstructorParameters<
+	typeof ApolloClient
+>[0];
+
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 declare global {
@@ -34,8 +40,8 @@ declare global {
 const windowApolloState =
 	typeof window !== 'undefined' ? window[APOLLO_STATE_PROP_NAME] : {};
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
-let apolloAuthClient: ApolloClient<NormalizedCacheObject> | undefined;
+let apolloClient: FaustApolloClient | undefined;
+let apolloAuthClient: FaustApolloClient | undefined;
 
 export function createApolloClient(authenticated = false) {
 	const { possibleTypes, usePersistedQueries, useGETForQueries } = getConfig();
@@ -100,7 +106,7 @@ export function createApolloClient(authenticated = false) {
 		}).concat(linkChain);
 	}
 
-	let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
+	let apolloClientOptions: FaustApolloClientOptions = {
 		ssrMode: typeof window === 'undefined',
 		devtools: {
 			enabled: typeof window !== 'undefined',
@@ -113,7 +119,7 @@ export function createApolloClient(authenticated = false) {
 		'apolloClientOptions',
 		apolloClientOptions,
 		{},
-	) as ApolloClientOptions<NormalizedCacheObject>;
+	) as FaustApolloClientOptions;
 
 	return new ApolloClient(apolloClientOptions);
 }
@@ -126,7 +132,7 @@ export function getApolloClient(initialState = null) {
 	// gets hydrated here
 	if (initialState) {
 		// Get existing cache, loaded during client side data fetching
-		const existingCache = _apolloClient.extract();
+		const existingCache = _apolloClient.extract() as NormalizedCacheObject;
 
 		// Merge the initialState from getStaticProps/getServerSideProps in the existing cache
 		const data = merge(existingCache, initialState, {
@@ -158,7 +164,7 @@ export function getApolloAuthClient() {
 }
 
 export function addApolloState(
-	client: ApolloClient<NormalizedCacheObject>,
+	client: FaustApolloClient,
 	pageProps: AppProps<{
 		props: { [key: string]: any };
 		revalidate?: number | boolean;

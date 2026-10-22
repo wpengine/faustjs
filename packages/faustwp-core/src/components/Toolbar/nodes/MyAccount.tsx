@@ -1,5 +1,7 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+// eslint-disable-next-line import/extensions
+import { useQuery } from '@apollo/client/react';
 import { getApolloAuthClient } from '../../../client.js';
 import { useLogout } from '../../../hooks/useLogout.js';
 import { useAuth } from '../../../hooks/useAuth.js';
@@ -14,7 +16,7 @@ import {
 export function AuthenticatedAccount() {
 	const client = getApolloAuthClient();
 	const { logout } = useLogout();
-	const { data, loading } = useQuery(
+	const { data, loading } = useQuery<any>(
 		gql`
 			{
 				viewer {

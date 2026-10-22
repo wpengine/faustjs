@@ -207,7 +207,7 @@ export function useAuth(_config?: UseAuthConfig) {
 		(async () => {
 			const client = getApolloAuthClient();
 
-			const { data } = await client.query({
+			const { data } = await client.query<any>({
 				// Always ask WordPress, and never share a request with an earlier
 				// session's, since a different user may have logged in since.
 				fetchPolicy: 'network-only',

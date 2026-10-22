@@ -6,7 +6,7 @@
 	"module": "dist/mjs/index.js",
 	"types": "dist/mjs/index.d.ts",
 	"peerDependencies": {
-		"@apollo/client": "^3.14.1",
+		"@apollo/client": "^3.14.1 || ^4.0.0",
 		"@faustwp/core": ">=1.1.0",
 		"@wordpress/style-engine": ">=1.18.0",
 		"next": "^16.4.2",
