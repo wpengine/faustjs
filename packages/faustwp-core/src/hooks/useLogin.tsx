@@ -34,7 +34,20 @@ export type GenerateAuthCodeMutationRes =
 			};
 	  };
 
-export function useLogin() {
+export type UseLoginResult = {
+	login: (
+		usernameEmail: string,
+		password: string,
+		redirectUrl?: string,
+	) => void;
+	loading: boolean;
+	data: GenerateAuthCodeMutationRes | null | undefined;
+	// Written this way so it's ApolloError with Apollo Client 3 and the new
+	// error types with Apollo Client 4.
+	error: ReturnType<typeof useMutation>[1]['error'];
+};
+
+export function useLogin(): UseLoginResult {
 	/**
 	 * Use our own data state value here instead of the data value from
 	 * the useMutation because we only want to return the data after the

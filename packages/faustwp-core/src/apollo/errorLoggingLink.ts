@@ -6,9 +6,7 @@ import { errorLog } from '../utils/log.js';
  * @param error The error to check.
  * @returns A boolean indicating whether the error is a server error.
  */
-function isServerError(
-	error: unknown,
-): error is {
+function isServerError(error: unknown): error is {
 	response: Response;
 	statusCode: number;
 	result?: unknown;

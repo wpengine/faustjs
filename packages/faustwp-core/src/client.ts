@@ -22,9 +22,10 @@ import { getConfig } from './config/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { hooks } from './wpHooks/index.js';
 
-// Apollo Client 4 dropped the cache type parameter, so derive the types from
-// the constructor to work with both 3.x and 4.x.
-export type FaustApolloClient = InstanceType<typeof ApolloClient>;
+// Apollo Client 4 dropped the cache type parameter. These types are worked out
+// in the app's own project, so they fit whichever version it installs: with
+// 3.x the client is ApolloClient<any>, with 4.x it's ApolloClient.
+export type FaustApolloClient = typeof ApolloClient.prototype;
 export type FaustApolloClientOptions = ConstructorParameters<
 	typeof ApolloClient
 >[0];
@@ -43,7 +44,7 @@ const windowApolloState =
 let apolloClient: FaustApolloClient | undefined;
 let apolloAuthClient: FaustApolloClient | undefined;
 
-export function createApolloClient(authenticated = false) {
+export function createApolloClient(authenticated = false): FaustApolloClient {
 	const { possibleTypes, usePersistedQueries, useGETForQueries } = getConfig();
 
 	let inMemoryCacheObject: InMemoryCacheConfig = {
@@ -127,7 +128,7 @@ export function createApolloClient(authenticated = false) {
 	return new ApolloClient(apolloClientOptions);
 }
 
-export function getApolloClient(initialState = null) {
+export function getApolloClient(initialState = null): FaustApolloClient {
 	// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 	const _apolloClient = apolloClient ?? createApolloClient();
 
@@ -157,7 +158,7 @@ export function getApolloClient(initialState = null) {
 	return _apolloClient;
 }
 
-export function getApolloAuthClient() {
+export function getApolloAuthClient(): FaustApolloClient {
 	// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 	const _apolloAuthClient = apolloAuthClient ?? createApolloClient(true);
 
@@ -186,7 +187,7 @@ export function addApolloState(
 
 export function useApollo(
 	pageProps: AppProps<{ [key: string]: any }>['pageProps'],
-) {
+): FaustApolloClient {
 	const state = pageProps[APOLLO_STATE_PROP_NAME];
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	const store = useMemo(() => getApolloClient(state), [state]);
