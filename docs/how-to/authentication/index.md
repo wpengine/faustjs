@@ -35,7 +35,8 @@ You are now ready to implement the auth functionality. Create a `/gated/index.js
 
 ```js title="pages/gated/index.js"
 import { useAuth, getApolloAuthClient, useLogout } from "@faustwp/core";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 function AuthenticatedView() {
 	const client = getApolloAuthClient();
@@ -151,7 +152,8 @@ Here are some things you can do to continue to test and add to your auth strateg
 
 ```js title="pages/gated/index.js"
 import { useAuth, getApolloAuthClient, useLogout } from "@faustwp/core";
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 function AuthenticatedView() {
   const client = getApolloAuthClient();

@@ -51,7 +51,7 @@ npm install @apollo/client@3 @faustwp/core graphql @faustwp/cli
 ```
 
 > [!NOTE]
-> Faust also supports Apollo Client 4. To use it, install `@apollo/client@4` and `rxjs` instead, and import React hooks like `useQuery` from `@apollo/client/react`.
+> Faust also supports Apollo Client 4. To use it, install `@apollo/client@4` and `rxjs` instead of `@apollo/client@3`. Import React hooks like `useQuery` from `@apollo/client/react`, which works with both versions.
 
 
 ### D. Create Faust config file
