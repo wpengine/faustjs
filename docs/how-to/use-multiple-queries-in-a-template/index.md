@@ -167,7 +167,7 @@ Component.queries = [
 ];
 ```
 
-The variables must match what the entry's `variables` function returns, in any key order. Without the second argument, `useFaustQuery` returns the last entry's result.
+The variables must match what the entry's `variables` function returns, in any key order. Since the queries run again in the browser, where the function doesn't receive `extra`, don't base these variables on `extra`. Without the second argument, `useFaustQuery` returns the last entry's result.
 
 ## Notes and limitations
 
