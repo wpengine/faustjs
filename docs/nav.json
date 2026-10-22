@@ -118,6 +118,10 @@
 				"route": "/docs/reference/use-blocks-theme"
 			},
 			{
+				"title": "useBodyClass",
+				"route": "/docs/reference/use-body-class"
+			},
+			{
 				"title": "useLogin",
 				"route": "/docs/reference/use-login"
 			},

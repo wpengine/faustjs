@@ -30,6 +30,8 @@ import {
 } from './server/sitemaps/getSitemapProps.js';
 import { useAuth } from './hooks/useAuth.js';
 import { useLogin } from './hooks/useLogin.js';
+import { useBodyClass } from './hooks/useBodyClass.js';
+import { getBodyClasses } from './utils/getBodyClasses.js';
 import { useLogout } from './hooks/useLogout.js';
 import { useFaustQuery } from './hooks/useFaustContext.js';
 import { FaustContext } from './store/FaustContext.js';
@@ -74,6 +76,8 @@ export {
 	GetSitemapPropsConfig,
 	useAuth,
 	useLogin,
+	useBodyClass,
+	getBodyClasses,
 	useLogout,
 	FaustToolbarNodes,
 	FaustToolbarContext,

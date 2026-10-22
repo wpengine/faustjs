@@ -349,6 +349,7 @@ describe('<WordPressTemplateInternal /> client-side query variables', () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 		jest.restoreAllMocks();
+		window.history.pushState({}, '', '/');
 	});
 
 	const props = {
@@ -430,5 +431,64 @@ describe('<WordPressTemplateInternal /> client-side query variables', () => {
 			query: GET_POST_QUERY,
 			variables: { postId: '1' },
 		});
+	});
+
+	test('adds WordPress body classes only when bodyClass is set', async () => {
+		const MyTemplate = () => <>My component</>;
+		jest.spyOn(getTemplate, 'getTemplate').mockReturnValue(MyTemplate);
+		const seedNode = {
+			databaseId: '7',
+			isContentNode: true,
+			contentType: { node: { name: 'post' } },
+		};
+
+		let view = render(
+			<WordPressTemplate.WordPressTemplateInternal
+				{...props}
+				seedNode={seedNode}
+			/>,
+		);
+		expect(document.body.classList.contains('single-post')).toBe(false);
+		view.unmount();
+
+		view = render(
+			<WordPressTemplate.WordPressTemplateInternal
+				{...props}
+				seedNode={seedNode}
+				bodyClass
+			/>,
+		);
+		expect(document.body.classList.contains('single-post')).toBe(true);
+		expect(document.body.classList.contains('postid-7')).toBe(true);
+
+		view.unmount();
+		expect(document.body.classList.contains('single-post')).toBe(false);
+	});
+
+	test("uses the previewed post's ID, not the autosave revision's, and adds logged-in", () => {
+		const MyTemplate = () => <>My component</>;
+		jest.spyOn(getTemplate, 'getTemplate').mockReturnValue(MyTemplate);
+		window.history.pushState({}, '', '/preview?p=2&preview=true');
+		const revision = {
+			databaseId: '72',
+			isContentNode: true,
+			contentType: { node: { name: 'page' } },
+		};
+
+		const view = render(
+			<WordPressTemplate.WordPressTemplateInternal
+				{...props}
+				seedNode={revision}
+				isPreview
+				isAuthenticated
+				bodyClass
+			/>,
+		);
+
+		expect(document.body.classList.contains('page-id-2')).toBe(true);
+		expect(document.body.classList.contains('page-id-72')).toBe(false);
+		expect(document.body.classList.contains('logged-in')).toBe(true);
+
+		view.unmount();
 	});
 });
