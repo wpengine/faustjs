@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
+import { gql, useQuery } from "@apollo/client";
 import Head from "next/head";
 import Header from "../components/header";
 import EntryHeader from "../components/entry-header";

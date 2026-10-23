@@ -1,5 +1,4 @@
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
+import { gql, useQuery } from "@apollo/client";
 import style from "../styles/front-page.module.css";
 import { getApolloAuthClient, useAuth } from '@faustwp/core';
 import { useLogout } from '@faustwp/core';
