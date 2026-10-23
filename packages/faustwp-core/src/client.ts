@@ -1,7 +1,7 @@
 import {
 	ApolloClient,
 	ApolloLink,
-	createHttpLink,
+	HttpLink,
 	InMemoryCache,
 	InMemoryCacheConfig,
 	NormalizedCacheObject,
@@ -72,7 +72,7 @@ export function createApolloClient(authenticated = false): FaustApolloClient {
 
 	let linkChain = ApolloLink.from([
 		new ErrorLoggingLink(),
-		createHttpLink({
+		new HttpLink({
 			uri: getGraphqlEndpoint(),
 			/**
 			 * Only add this option if usePersistedQueries is not set/false.
@@ -82,6 +82,9 @@ export function createApolloClient(authenticated = false): FaustApolloClient {
 			useGETForQueries: useGETForQueries && !usePersistedQueries,
 		}),
 	]);
+
+	// Apollo Client 4 deprecates createPersistedQueryLink and setContext in favor
+	// of link classes that Apollo Client 3 doesn't have, so keep these for now.
 
 	// If the user requested to use persisted queries, apply the link.
 	if (usePersistedQueries) {
