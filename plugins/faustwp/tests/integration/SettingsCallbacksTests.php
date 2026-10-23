@@ -8,7 +8,6 @@
 namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Settings\sanitize_faustwp_settings;
-use function WPE\FaustWP\Settings\faustwp_get_setting;
 use function WPE\FaustWP\Settings\trim_frontend_uri_trailing_slash;
 
 class SettingsCallbacksTests extends \WP_UnitTestCase {
@@ -46,7 +45,10 @@ class SettingsCallbacksTests extends \WP_UnitTestCase {
 	public function test_sanitize_faustwp_settings_rejects_a_null_frontend_uri() {
 		$sanitized = sanitize_faustwp_settings( [ 'frontend_uri' => null ], $this->option );
 
-		$this->assertSame( faustwp_get_setting( 'frontend_uri' ), $sanitized['frontend_uri'] );
+		$this->assertSame( $this->init_settings['frontend_uri'], $sanitized['frontend_uri'] );
+		$errors = get_settings_errors( $this->option );
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( $errors[0]['code'], 'faustwp_invalid_frontend_uri' );
 	}
 
 	public function test_trim_frontend_uri_trailing_slash_handles_a_null_frontend_uri() {
