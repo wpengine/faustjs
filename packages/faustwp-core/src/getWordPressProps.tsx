@@ -128,7 +128,7 @@ export async function getWordPressProps(
 		resolvedUrl,
 	}) as DocumentNode;
 
-	const seedQueryRes = await client.query<any>({
+	const seedQueryRes = await client.query<{ nodeByUri?: SeedNode | null }>({
 		query: seedQuery,
 		variables: { uri: resolvedUrl },
 	});

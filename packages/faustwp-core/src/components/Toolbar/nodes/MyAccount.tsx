@@ -16,7 +16,16 @@ import {
 export function AuthenticatedAccount() {
 	const client = getApolloAuthClient();
 	const { logout } = useLogout();
-	const { data, loading } = useQuery<any>(
+	const { data, loading } = useQuery<{
+		viewer?: {
+			name?: string | null;
+			username?: string | null;
+			avatar26?: { url?: string | null } | null;
+			avatar52?: { url?: string | null } | null;
+			avatar64?: { url?: string | null } | null;
+			avatar128?: { url?: string | null } | null;
+		} | null;
+	}>(
 		gql`
 			{
 				viewer {
@@ -63,7 +72,7 @@ export function AuthenticatedAccount() {
 				{data?.viewer?.avatar64?.url ? (
 					<img
 						alt=""
-						src={data?.viewer?.avatar26?.url}
+						src={data?.viewer?.avatar26?.url ?? undefined}
 						srcSet={`${data?.viewer?.avatar52?.url as string} 2x`}
 						className="avatar avatar-26 photo"
 						height="26"
@@ -80,7 +89,7 @@ export function AuthenticatedAccount() {
 							{data?.viewer?.avatar64?.url ? (
 								<img
 									alt=""
-									src={data?.viewer?.avatar64?.url}
+									src={data?.viewer?.avatar64?.url ?? undefined}
 									srcSet={`${data?.viewer?.avatar128?.url as string} 2x`}
 									className="avatar avatar-64 photo"
 									height="64"

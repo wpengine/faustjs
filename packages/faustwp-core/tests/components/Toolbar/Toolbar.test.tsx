@@ -85,6 +85,28 @@ test('doesnt render the toolbar if user preference is false', async () => {
 	expect(navElement).not.toBeInTheDocument();
 });
 
+test('doesnt render the toolbar once the session has ended', async () => {
+	expect.assertions(1);
+	mockIsAuthenticated = true;
+
+	// WPGraphQL returns a null viewer when the user is no longer logged in.
+	const mockUseQuery = {
+		data: {
+			viewer: null,
+		},
+	} as unknown as QueryResult;
+
+	jest.spyOn(apollo, 'useQuery').mockReturnValue(mockUseQuery);
+
+	const dom = render(<Toolbar />);
+
+	const navElement = await waitFor(() =>
+		queryByAttribute('id', dom.container, 'wpadminbar'),
+	);
+
+	expect(navElement).not.toBeInTheDocument();
+});
+
 test('render the toolbar if user preference request throws an error/fails', async () => {
 	expect.assertions(1);
 	mockIsAuthenticated = true;

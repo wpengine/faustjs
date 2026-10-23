@@ -380,7 +380,11 @@ export function WordPressTemplate(props: WordPressTemplateProps) {
 
 			setLoading(true);
 
-			const seedQueryRes = await client.query<any>(queryArgs);
+			const seedQueryRes = await client.query<
+				NonNullable<Parameters<typeof getPreviewSeedNode>[0]> & {
+					nodeByUri?: SeedNode | null;
+				}
+			>(queryArgs);
 
 			const node = isPreview
 				? (getPreviewSeedNode(seedQueryRes?.data) as SeedNode)

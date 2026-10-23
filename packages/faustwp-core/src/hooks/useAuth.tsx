@@ -207,7 +207,7 @@ export function useAuth(_config?: UseAuthConfig) {
 		(async () => {
 			const client = getApolloAuthClient();
 
-			const { data } = await client.query<any>({
+			const { data } = await client.query<{ viewer?: ViewerType | null }>({
 				// Always ask WordPress, and never share a request with an earlier
 				// session's, since a different user may have logged in since.
 				fetchPolicy: 'network-only',
@@ -241,7 +241,7 @@ export function useAuth(_config?: UseAuthConfig) {
 			});
 			// Ignore the result if the user logged in or out while it was loading.
 			if (sessionRef.current === requestSession) {
-				setViewer(data.viewer as ViewerType | null);
+				setViewer(data?.viewer ?? null);
 			}
 		})();
 	}, [isAuthenticated, session, config.skip]);
