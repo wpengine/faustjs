@@ -1,11 +1,4 @@
-import {
-	ApolloLink,
-	FetchResult,
-	NextLink,
-	Operation,
-	Observable,
-	ServerError,
-} from '@apollo/client';
+import { ApolloLink, FetchResult, Operation, Observable } from '@apollo/client';
 import { errorLog } from '../utils/log.js';
 
 /**
@@ -13,17 +6,18 @@ import { errorLog } from '../utils/log.js';
  * @param error The error to check.
  * @returns A boolean indicating whether the error is a server error.
  */
-function isServerError(error: unknown): error is ServerError {
-	if (
+function isServerError(error: unknown): error is {
+	response: Response;
+	statusCode: number;
+	result?: unknown;
+	bodyText?: string;
+} {
+	return (
 		typeof error === 'object' &&
 		error !== null &&
 		'response' in error &&
-		'result' in error &&
 		'statusCode' in error
-	) {
-		return true;
-	}
-	return false;
+	);
 }
 
 /**
@@ -39,8 +33,9 @@ export class ErrorLoggingLink extends ApolloLink {
 	// eslint-disable-next-line class-methods-use-this
 	request(
 		operation: Operation,
-		forward: NextLink,
-	): Observable<FetchResult> | null {
+		// Apollo Client 3 calls this NextLink and 4 calls it ForwardFunction.
+		forward: NonNullable<Parameters<ApolloLink['request']>[1]>,
+	): ReturnType<ApolloLink['request']> {
 		return new Observable<FetchResult>(
 			(observer: {
 				next: (value: FetchResult) => void;
@@ -59,7 +54,8 @@ export class ErrorLoggingLink extends ApolloLink {
 						// Check if the error is a server error
 						if (isServerError(error)) {
 							errorLog('Server error:', error);
-							errorLog('Fetch result:', error.result);
+							// Apollo Client 3 parses the body into result; 4 keeps the raw bodyText.
+							errorLog('Fetch result:', error.result ?? error.bodyText);
 						} else {
 							errorLog('Network error:', error);
 						}

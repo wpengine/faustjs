@@ -128,7 +128,7 @@ export async function getWordPressProps(
 		resolvedUrl,
 	}) as DocumentNode;
 
-	const seedQueryRes = await client.query({
+	const seedQueryRes = await client.query<{ nodeByUri?: SeedNode | null }>({
 		query: seedQuery,
 		variables: { uri: resolvedUrl },
 	});
@@ -176,7 +176,7 @@ export async function getWordPressProps(
 		: undefined;
 
 	if (template.query) {
-		templateQueryRes = await client.query({
+		templateQueryRes = await client.query<any>({
 			query: template.query,
 			variables: templateVariables,
 		});
@@ -195,7 +195,7 @@ export async function getWordPressProps(
 						extra,
 				  )
 				: undefined;
-			return client.query({
+			return client.query<any>({
 				query,
 				variables: queryVariables,
 			});

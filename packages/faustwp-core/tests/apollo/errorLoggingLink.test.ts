@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client/core';
+import { GraphQLError } from 'graphql';
 import { Observable } from 'zen-observable-ts';
 import { ErrorLoggingLink } from '../../src/apollo/errorLoggingLink';
 
@@ -16,9 +16,7 @@ describe('ErrorLoggingLink', () => {
 	});
 
 	it('logs GraphQL errors', (done) => {
-		const mockErrors = [
-			new ApolloError({ errorMessage: 'Test GraphQL error' }),
-		];
+		const mockErrors = [new GraphQLError('Test GraphQL error')];
 		const mockResult = { errors: mockErrors };
 		const mockOperation = { query: {} };
 
@@ -54,10 +52,10 @@ describe('ErrorLoggingLink', () => {
 	}, 1000);
 
 	it('logs server errors along with fetch result', (done) => {
-		const mockServerError = new ApolloError({
-			errorMessage: 'Test server error',
-			graphQLErrors: [],
-			networkError: null, // Ensure networkError is null to simulate a server error
+		const mockServerError = Object.assign(new Error('Test server error'), {
+			response: {},
+			statusCode: 500,
+			result: { message: 'Internal server error' },
 		});
 		const mockOperation = { query: {} };
 

@@ -45,3 +45,20 @@ jobs:
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/faustwp-cli
+
+  test-apollo-client-4:
+    name: "Test packages with Apollo Client 4"
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup Node.js 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          check-latest: true
+
+      - name: Install
+        run: npm ci
+
+      - name: Test with Apollo Client 4
+        run: npm run test:apollo-client-4

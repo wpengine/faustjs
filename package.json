@@ -25,6 +25,7 @@
 		"dev": "npm run build && npm run dev:next:getting-started",
 		"dev:next:getting-started": "rimraf examples/next/faustwp-getting-started/.next && npm run dev ---workspace=examples/next/faustwp-getting-started",
 		"test": "npm run build && npm test --workspace=@faustwp/core --workspace=@faustwp/cli --workspace=@faustwp/blocks",
+		"test:apollo-client-4": "bash scripts/test-apollo-client-4.sh",
 		"test:format": "npm run test:format --workspace=@faustwp/cli --workspace=@faustwp/core -- --ignore-path .eslintignore",
 		"wpe-build": "exit 1",
 		"lint": "eslint ./packages --ext js,jsx,ts,tsx --max-warnings=0",

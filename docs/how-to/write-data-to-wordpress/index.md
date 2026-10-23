@@ -30,7 +30,8 @@ Pass the auth client to Apollo's `useMutation` hook, the same way you pass it to
 
 ```js title="components/NewDraft.js"
 import { getApolloAuthClient } from "@faustwp/core";
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 
 const CREATE_DRAFT = gql`
 	mutation CreateDraft($title: String!, $content: String) {

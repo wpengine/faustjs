@@ -29,7 +29,8 @@ Make sure you can navigate to this page in your browser.
 To query data in the browser, you need to import the `useQuery` from the `@apollo/client` package. This hook will execute queries using the same client used by templates on the server. That client comes from [`FaustProvider`](/docs/reference/faust-provider/), which also explains how to customize it.
 
 ```js title="page/client.js" {1,4}
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 export default function Page(props) {
 	const { data } = useQuery();
@@ -43,7 +44,8 @@ export default function Page(props) {
 It's time to write our GraphQL query to fetch some data. For this example we'll be fetching the site title and description from your WP site's general settings.
 
 ```js {4,9-17} title="page/client.js"
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 export default function Page(props) {
 	const { data } = useQuery(Page.query);
@@ -69,7 +71,8 @@ Page.query = gql`
 Now that we have our query, we can display the data on the page.
 
 ```js {5, 7-12} title="page/client.js"
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 export default function Page(props) {
 	const { data } = useQuery(Page.query);

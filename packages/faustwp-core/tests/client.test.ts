@@ -4,12 +4,22 @@ import * as persistedQueriesLink from '@apollo/client/link/persisted-queries';
 import * as apolloLinkContext from '@apollo/client/link/context';
 import { FaustConfig, setConfig } from '../src/config';
 
+// Wrap the HttpLink class so the tests can check the options it's created with.
+jest.mock('@apollo/client', () => {
+	const actual = jest.requireActual('@apollo/client');
+
+	return {
+		...actual,
+		HttpLink: jest.fn((options) => new actual.HttpLink(options)),
+	};
+});
+
 afterEach(() => {
 	jest.clearAllMocks();
 });
 
 describe('createApolloClient', () => {
-	const httpLinkSpy = jest.spyOn(apolloClient, 'createHttpLink');
+	const httpLinkSpy = apolloClient.HttpLink as unknown as jest.Mock;
 	const setContextLinkSpy = jest.spyOn(apolloLinkContext, 'setContext');
 	const persistedQueriesLinkSpy = jest.spyOn(
 		persistedQueriesLink,

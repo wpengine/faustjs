@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ApolloProvider } from '@apollo/client';
+// eslint-disable-next-line import/extensions
+import { ApolloProvider } from '@apollo/client/react';
 // eslint-disable-next-line import/extensions
 import { useRouter } from 'next/router';
 // eslint-disable-next-line import/extensions
