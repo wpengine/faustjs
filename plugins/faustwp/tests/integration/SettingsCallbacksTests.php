@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Settings\sanitize_faustwp_settings;
+use function WPE\FaustWP\Settings\trim_frontend_uri_trailing_slash;
 
 class SettingsCallbacksTests extends \WP_UnitTestCase {
 
@@ -39,6 +40,20 @@ class SettingsCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_sanitize_faustwp_settings_does_not_change_existing_settings() {
 		$this->assertSame( $this->init_settings, sanitize_faustwp_settings( $this->init_settings, $this->option ) );
+	}
+
+	public function test_sanitize_faustwp_settings_rejects_a_null_frontend_uri() {
+		$sanitized = sanitize_faustwp_settings( [ 'frontend_uri' => null ], $this->option );
+
+		$this->assertSame( $this->init_settings['frontend_uri'], $sanitized['frontend_uri'] );
+		$errors = get_settings_errors( $this->option );
+		$this->assertCount( 1, $errors );
+		$this->assertEquals( $errors[0]['code'], 'faustwp_invalid_frontend_uri' );
+	}
+
+	public function test_trim_frontend_uri_trailing_slash_handles_a_null_frontend_uri() {
+		$this->assertSame( '', trim_frontend_uri_trailing_slash( null, 'frontend_uri' ) );
+		$this->assertSame( 'http://localhost:3000', trim_frontend_uri_trailing_slash( 'http://localhost:3000/', 'frontend_uri' ) );
 	}
 
 	public function test_sanitize_faustwp_settings_allows_valid_frontend_uris() {

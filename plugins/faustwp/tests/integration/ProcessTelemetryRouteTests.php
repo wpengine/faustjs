@@ -7,6 +7,7 @@ use function WPE\FaustWP\Settings\get_secret_key;
 
 class ProcessTelemetryRouteTests extends WP_UnitTestCase
 {
+  private $server;
   private $request;
   private $route_name;
 
