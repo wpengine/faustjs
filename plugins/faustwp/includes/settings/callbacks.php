@@ -566,5 +566,6 @@ function trim_frontend_uri_trailing_slash( $value, $name ) {
 		return $value;
 	}
 
-	return untrailingslashit( $value );
+	// A front-end URL saved outside the settings screen may be null.
+	return untrailingslashit( (string) $value );
 }
