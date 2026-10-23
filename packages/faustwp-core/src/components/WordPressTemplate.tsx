@@ -1,7 +1,4 @@
 import { QueryOptions } from '@apollo/client';
-// eslint-disable-next-line import/extensions
-import { print } from '@apollo/client/utilities';
-import { sha256 } from 'js-sha256';
 import { useRouter } from 'next/router.js';
 import React, {
 	PropsWithChildren,
@@ -24,6 +21,7 @@ import {
 	getPreviewSeedNode,
 } from '../queries/seedQuery.js';
 import { FaustContext, FaustQueries } from '../store/FaustContext.js';
+import { storeFaustQueries } from '../store/faustQueries.js';
 import { getQueryParam } from '../utils/convert.js';
 import { getBodyClasses } from '../utils/getBodyClasses.js';
 import { isWordPressPreview } from '../utils/isWordPressPreview.js';
@@ -155,29 +153,23 @@ export function WordPressTemplateInternal(
 				return;
 			}
 
-			let queries: FaustQueries | null = null;
-
 			const queryCalls = template.queries.map(({ query, variables }) => {
 				const queryVariables = variables
 					? variables(seedNode, { asPreview: isPreview, locale })
 					: undefined;
-				return client.query({
-					query,
-					variables: queryVariables,
-				});
+				return client
+					.query({
+						query,
+						variables: queryVariables,
+					})
+					.then((result) => ({
+						query,
+						variables: queryVariables,
+						data: result.data,
+					}));
 			});
 
-			const queriesRes = await Promise.all(queryCalls);
-
-			queries = {};
-
-			queriesRes.forEach((queryRes, index) => {
-				if (queries && template.queries) {
-					queries[sha256(print(template.queries[index].query))] = queryRes.data;
-				}
-			});
-
-			setQueries(queries);
+			setQueries(storeFaustQueries(await Promise.all(queryCalls)));
 
 			setLoading(false);
 		})();
