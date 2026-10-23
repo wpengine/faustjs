@@ -8,6 +8,7 @@
 namespace WPE\FaustWP\Tests\Integration;
 
 use function WPE\FaustWP\Settings\sanitize_faustwp_settings;
+use function WPE\FaustWP\Settings\faustwp_get_setting;
 
 class SettingsCallbacksTests extends \WP_UnitTestCase {
 
@@ -39,6 +40,12 @@ class SettingsCallbacksTests extends \WP_UnitTestCase {
 
 	public function test_sanitize_faustwp_settings_does_not_change_existing_settings() {
 		$this->assertSame( $this->init_settings, sanitize_faustwp_settings( $this->init_settings, $this->option ) );
+	}
+
+	public function test_sanitize_faustwp_settings_rejects_a_null_frontend_uri() {
+		$sanitized = sanitize_faustwp_settings( [ 'frontend_uri' => null ], $this->option );
+
+		$this->assertSame( faustwp_get_setting( 'frontend_uri' ), $sanitized['frontend_uri'] );
 	}
 
 	public function test_sanitize_faustwp_settings_allows_valid_frontend_uris() {
