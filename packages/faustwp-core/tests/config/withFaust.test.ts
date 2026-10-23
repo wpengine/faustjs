@@ -104,4 +104,18 @@ describe('withFaust', () => {
 		]
 	`);
 	});
+
+	test('it bundles the Faust packages', () => {
+		expect(withFaust({}).transpilePackages).toEqual([
+			'@faustwp/core',
+			'@faustwp/blocks',
+		]);
+	});
+
+	test('it keeps transpilePackages from the user config', () => {
+		expect(
+			withFaust({ transpilePackages: ['my-lib', '@faustwp/core'] })
+				.transpilePackages,
+		).toEqual(['my-lib', '@faustwp/core', '@faustwp/blocks']);
+	});
 });
