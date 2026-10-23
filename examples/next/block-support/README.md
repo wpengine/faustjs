@@ -7,7 +7,7 @@ Example showcasing Faust.js block editor support.
 
 ## Pre-requisites
 
-See <https://faustjs.org/tutorial/get-started-with-faust> and <https://faustjs.org/tutorial/get-started-with-wp-graphql-content-blocks> for reference
+See [Basic Setup](https://faustjs.org/docs/how-to/basic-setup/) and [Rendering Blocks](https://faustjs.org/docs/how-to/rendering-blocks/) for reference.
 
 You need your own WordPress site with these plugins installed and active:
 
