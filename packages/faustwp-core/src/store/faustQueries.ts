@@ -31,7 +31,8 @@ function sortKeys(value: unknown): unknown {
 /**
  * Get the key a query's result is stored under. With variables, the key also
  * covers them, in any key order, so the same query can be stored once per set
- * of variables.
+ * of variables. Variables go through JSON first, as they do when Apollo sends
+ * them, so values like dates keep what makes them different.
  */
 export function getFaustQueryKey(
 	query: DocumentNode,
@@ -41,7 +42,11 @@ export function getFaustQueryKey(
 
 	return variables === undefined
 		? sha256(printed)
-		: sha256(`${printed}\n${JSON.stringify(sortKeys(variables))}`);
+		: sha256(
+				`${printed}\n${JSON.stringify(
+					sortKeys(JSON.parse(JSON.stringify(variables))),
+				)}`,
+		  );
 }
 
 /**
@@ -60,30 +65,39 @@ export function storeFaustQueries(
 	}[],
 ): FaustQueries {
 	const queries: FaustQueries = {};
+	const entries = results.map(({ query, variables, data }) => ({
+		queryKey: getFaustQueryKey(query),
+		variablesKey:
+			variables === undefined ? undefined : getFaustQueryKey(query, variables),
+		data,
+	}));
 	const lastIndex = new Map<string, number>();
 
-	results.forEach(({ query }, index) => {
-		lastIndex.set(getFaustQueryKey(query), index);
+	// A later entry for the same query and variables replaces an earlier one.
+	entries.forEach(({ queryKey, variablesKey }, index) => {
+		lastIndex.set(queryKey, index);
+		if (variablesKey) {
+			lastIndex.set(variablesKey, index);
+		}
 	});
 
-	results.forEach(({ query, variables, data }, index) => {
-		const queryKey = getFaustQueryKey(query);
-
+	entries.forEach(({ queryKey, variablesKey, data }, index) => {
 		if (lastIndex.get(queryKey) === index) {
 			queries[queryKey] = data;
 
-			if (variables !== undefined) {
-				queries[queryKey + VARIABLES_SUFFIX] = getFaustQueryKey(
-					query,
-					variables,
-				);
+			if (variablesKey) {
+				queries[queryKey + VARIABLES_SUFFIX] = variablesKey;
 			}
-
-			return;
 		}
+	});
 
-		if (variables !== undefined) {
-			queries[getFaustQueryKey(query, variables)] = data;
+	entries.forEach(({ queryKey, variablesKey, data }, index) => {
+		if (
+			variablesKey &&
+			lastIndex.get(variablesKey) === index &&
+			queries[queryKey + VARIABLES_SUFFIX] !== variablesKey
+		) {
+			queries[variablesKey] = data;
 		}
 	});
 

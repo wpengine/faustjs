@@ -38,6 +38,15 @@ describe('getFaustQueryKey()', () => {
 		expect(sports).not.toBe(getFaustQueryKey(GET_POSTS, { category: 'news' }));
 		expect(sports).not.toBe(getFaustQueryKey(GET_POSTS));
 	});
+
+	test('tells apart values that JSON serializes, like dates', () => {
+		expect(
+			getFaustQueryKey(GET_POSTS, { after: new Date('2026-01-01') }),
+		).not.toBe(getFaustQueryKey(GET_POSTS, { after: new Date('2026-02-01') }));
+		expect(getFaustQueryKey(GET_POSTS, { after: new Date('2026-01-01') })).toBe(
+			getFaustQueryKey(GET_POSTS, { after: '2026-01-01T00:00:00.000Z' }),
+		);
+	});
 });
 
 describe('storeFaustQueries() and readFaustQuery()', () => {
@@ -111,5 +120,32 @@ describe('storeFaustQueries() and readFaustQuery()', () => {
 		expect(
 			readFaustQuery(queries, GET_POSTS, { category: 'news' }),
 		).toBeUndefined();
+	});
+
+	test('a repeated query and variables pair keeps only the last result', () => {
+		const queries = storeFaustQueries([
+			{
+				query: GET_POSTS,
+				variables: { category: 'sports' },
+				data: posts('S1'),
+			},
+			{ query: GET_POSTS, variables: { category: 'news' }, data: posts('N') },
+			{
+				query: GET_POSTS,
+				variables: { category: 'sports' },
+				data: posts('S2'),
+			},
+		]);
+
+		expect(readFaustQuery(queries, GET_POSTS, { category: 'sports' })).toEqual(
+			posts('S2'),
+		);
+		expect(readFaustQuery(queries, GET_POSTS)).toEqual(posts('S2'));
+		expect(readFaustQuery(queries, GET_POSTS, { category: 'news' })).toEqual(
+			posts('N'),
+		);
+		expect(
+			Object.values(queries).filter((value) => typeof value === 'object'),
+		).toHaveLength(2);
 	});
 });
