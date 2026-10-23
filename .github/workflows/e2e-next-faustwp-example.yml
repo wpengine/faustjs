@@ -58,3 +58,8 @@ jobs:
         working-directory: e2e-app
         run: |
           npm run build
+      # next build alone doesn't catch errors that only happen when the
+      # production server renders a page on demand.
+      - name: Serve and load a page rendered on demand
+        run: |
+          bash scripts/smoke-test-example.sh e2e-app
