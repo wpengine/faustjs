@@ -5,6 +5,7 @@ import { gql } from '@apollo/client';
 import fetchMock from 'fetch-mock';
 import { setAccessToken } from '../../src/auth';
 import { createApolloClient } from '../../src/client';
+import { FaustConfig, setConfig } from '../../src/config';
 
 // Sends real queries through createApolloClient's links, with only fetch
 // mocked, so the requests are checked with whichever Apollo Client is
@@ -85,5 +86,32 @@ describe('Apollo link chain', () => {
 			.map((args) => args.join(' '))
 			.join('\n');
 		expect(logged).toContain('GraphQL errors');
+	});
+
+	test('sends persisted queries as a hash without client library extensions', async () => {
+		setConfig({
+			usePersistedQueries: true,
+			useGETForQueries: true,
+		} as FaustConfig);
+		fetchMock.get(GRAPHQL_URL, {
+			data: {
+				generalSettings: { title: 'Site', __typename: 'GeneralSettings' },
+			},
+		});
+
+		try {
+			await createApolloClient().query<any>({ query: GET_TITLE });
+		} finally {
+			setConfig({
+				usePersistedQueries: false,
+				useGETForQueries: true,
+			} as FaustConfig);
+		}
+
+		const url = new URL(fetchMock.lastUrl() as string);
+		const extensions = JSON.parse(url.searchParams.get('extensions') as string);
+		expect(url.searchParams.has('query')).toBe(false);
+		expect(extensions.persistedQuery.sha256Hash).toMatch(/^[0-9a-f]{64}$/);
+		expect(extensions).not.toHaveProperty('clientLibrary');
 	});
 });
