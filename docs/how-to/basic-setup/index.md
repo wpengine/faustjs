@@ -47,11 +47,11 @@ Save your `.env.local` file.
 Install the required NPM packages in your Next.js app.
 
 ```bash
-npm install @apollo/client@3 @faustwp/core graphql @faustwp/cli
+npm install @apollo/client @faustwp/core graphql @faustwp/cli
 ```
 
 > [!NOTE]
-> Faust supports Apollo Client 3.x. Apollo Client 4 isn't supported, and npm stops with a peer dependency error (`ERESOLVE`) if you try to install it alongside `@faustwp/core`.
+> Import Apollo's React hooks, like `useQuery`, from `@apollo/client/react`.
 
 
 ### D. Create Faust config file

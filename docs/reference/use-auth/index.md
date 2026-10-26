@@ -98,7 +98,8 @@ type UseAuth = {
 Below is a full example of login/logout and showing/hiding authenticated content. This below example uses the “redirect” strategy:
 
 ```js
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { getApolloAuthClient, useAuth } from "@faustwp/core";
 import { useLogout } from "@faustwp/core";
 

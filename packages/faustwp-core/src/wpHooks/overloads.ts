@@ -1,13 +1,9 @@
-import {
-	ApolloClientOptions,
-	DocumentNode,
-	InMemoryCacheConfig,
-	NormalizedCacheObject,
-} from '@apollo/client';
+import { DocumentNode, InMemoryCacheConfig } from '@apollo/client';
 import { _Hooks } from '@wordpress/hooks/build-types/createHooks.js';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { FaustToolbarNodes } from '../components/Toolbar/index.js';
 import { SeedNode } from '../queries/seedQuery.js';
+import type { FaustApolloClientOptions } from '../client.js';
 
 type FaustCoreFilters = {
 	addFilter(
@@ -24,9 +20,9 @@ type FaustCoreFilters = {
 		hookName: 'apolloClientOptions',
 		namespace: string,
 		callback: (
-			apolloClientOptions: ApolloClientOptions<NormalizedCacheObject>,
+			apolloClientOptions: FaustApolloClientOptions,
 			context: Record<string, never>,
-		) => ApolloClientOptions<NormalizedCacheObject>,
+		) => FaustApolloClientOptions,
 		priority?: number | undefined,
 	): void;
 

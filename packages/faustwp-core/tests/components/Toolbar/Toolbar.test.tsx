@@ -6,7 +6,7 @@ import { waitFor, queryByAttribute, within } from '@testing-library/dom';
 import { Hooks } from '@wordpress/hooks/build-types';
 import { FaustToolbarNodes } from '../../../src';
 import { setConfig } from '../../../src/config/index';
-import * as apollo from '@apollo/client';
+import * as apollo from '@apollo/client/react';
 import * as nextRouter from 'next/router';
 import { Toolbar } from '../../../src/components/Toolbar';
 import { OperationVariables, QueryResult } from '@apollo/client';
@@ -75,6 +75,28 @@ test('doesnt render the toolbar if user preference is false', async () => {
 	const useQuerySpy = jest
 		.spyOn(apollo, 'useQuery')
 		.mockReturnValue(mockUseQuery);
+
+	const dom = render(<Toolbar />);
+
+	const navElement = await waitFor(() =>
+		queryByAttribute('id', dom.container, 'wpadminbar'),
+	);
+
+	expect(navElement).not.toBeInTheDocument();
+});
+
+test('doesnt render the toolbar once the session has ended', async () => {
+	expect.assertions(1);
+	mockIsAuthenticated = true;
+
+	// WPGraphQL returns a null viewer when the user is no longer logged in.
+	const mockUseQuery = {
+		data: {
+			viewer: null,
+		},
+	} as unknown as QueryResult;
+
+	jest.spyOn(apollo, 'useQuery').mockReturnValue(mockUseQuery);
 
 	const dom = render(<Toolbar />);
 

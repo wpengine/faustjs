@@ -1,8 +1,7 @@
 import {
 	ApolloClient,
-	ApolloClientOptions,
 	ApolloLink,
-	createHttpLink,
+	HttpLink,
 	InMemoryCache,
 	InMemoryCacheConfig,
 	NormalizedCacheObject,
@@ -23,6 +22,14 @@ import { getConfig } from './config/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
 import { hooks } from './wpHooks/index.js';
 
+// Apollo Client 4 dropped the cache type parameter. These types are worked out
+// in the app's own project, so they fit whichever version it installs: with
+// 3.x the client is ApolloClient<any>, with 4.x it's ApolloClient.
+export type FaustApolloClient = typeof ApolloClient.prototype;
+export type FaustApolloClientOptions = ConstructorParameters<
+	typeof ApolloClient
+>[0];
+
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 declare global {
@@ -34,10 +41,10 @@ declare global {
 const windowApolloState =
 	typeof window !== 'undefined' ? window[APOLLO_STATE_PROP_NAME] : {};
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
-let apolloAuthClient: ApolloClient<NormalizedCacheObject> | undefined;
+let apolloClient: FaustApolloClient | undefined;
+let apolloAuthClient: FaustApolloClient | undefined;
 
-export function createApolloClient(authenticated = false) {
+export function createApolloClient(authenticated = false): FaustApolloClient {
 	const { possibleTypes, usePersistedQueries, useGETForQueries } = getConfig();
 
 	let inMemoryCacheObject: InMemoryCacheConfig = {
@@ -65,7 +72,7 @@ export function createApolloClient(authenticated = false) {
 
 	let linkChain = ApolloLink.from([
 		new ErrorLoggingLink(),
-		createHttpLink({
+		new HttpLink({
 			uri: getGraphqlEndpoint(),
 			/**
 			 * Only add this option if usePersistedQueries is not set/false.
@@ -75,6 +82,9 @@ export function createApolloClient(authenticated = false) {
 			useGETForQueries: useGETForQueries && !usePersistedQueries,
 		}),
 	]);
+
+	// Apollo Client 4 deprecates createPersistedQueryLink and setContext in favor
+	// of link classes that Apollo Client 3 doesn't have, so keep these for now.
 
 	// If the user requested to use persisted queries, apply the link.
 	if (usePersistedQueries) {
@@ -100,25 +110,28 @@ export function createApolloClient(authenticated = false) {
 		}).concat(linkChain);
 	}
 
-	let apolloClientOptions: ApolloClientOptions<NormalizedCacheObject> = {
+	let apolloClientOptions: FaustApolloClientOptions = {
 		ssrMode: typeof window === 'undefined',
 		devtools: {
 			enabled: typeof window !== 'undefined',
 		},
 		link: linkChain,
 		cache: new InMemoryCache(inMemoryCacheObject).restore(windowApolloState),
+		// Apollo Client 4 adds its name and version to every request. Leave them
+		// out so GET URLs, and any caches keyed on them, match Apollo Client 3.
+		...({ enhancedClientAwareness: { transport: false } } as object),
 	};
 
 	apolloClientOptions = hooks.applyFilters(
 		'apolloClientOptions',
 		apolloClientOptions,
 		{},
-	) as ApolloClientOptions<NormalizedCacheObject>;
+	) as FaustApolloClientOptions;
 
 	return new ApolloClient(apolloClientOptions);
 }
 
-export function getApolloClient(initialState = null) {
+export function getApolloClient(initialState = null): FaustApolloClient {
 	// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 	const _apolloClient = apolloClient ?? createApolloClient();
 
@@ -126,7 +139,7 @@ export function getApolloClient(initialState = null) {
 	// gets hydrated here
 	if (initialState) {
 		// Get existing cache, loaded during client side data fetching
-		const existingCache = _apolloClient.extract();
+		const existingCache = _apolloClient.extract() as NormalizedCacheObject;
 
 		// Merge the initialState from getStaticProps/getServerSideProps in the existing cache
 		const data = merge(existingCache, initialState, {
@@ -148,7 +161,7 @@ export function getApolloClient(initialState = null) {
 	return _apolloClient;
 }
 
-export function getApolloAuthClient() {
+export function getApolloAuthClient(): FaustApolloClient {
 	// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 	const _apolloAuthClient = apolloAuthClient ?? createApolloClient(true);
 
@@ -158,7 +171,7 @@ export function getApolloAuthClient() {
 }
 
 export function addApolloState(
-	client: ApolloClient<NormalizedCacheObject>,
+	client: FaustApolloClient,
 	pageProps: AppProps<{
 		props: { [key: string]: any };
 		revalidate?: number | boolean;
@@ -177,7 +190,7 @@ export function addApolloState(
 
 export function useApollo(
 	pageProps: AppProps<{ [key: string]: any }>['pageProps'],
-) {
+): FaustApolloClient {
 	const state = pageProps[APOLLO_STATE_PROP_NAME];
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	const store = useMemo(() => getApolloClient(state), [state]);

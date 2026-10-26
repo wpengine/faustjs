@@ -1,4 +1,6 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
+// eslint-disable-next-line import/extensions
+import { useQuery } from '@apollo/client/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { getApolloAuthClient } from '../../client.js';
 import { useAuth } from '../../hooks/useAuth.js';
@@ -167,7 +169,9 @@ export function AuthenticatedToolbar({ seedNode }: ToolbarProps) {
  */
 export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
 	const client = getApolloAuthClient();
-	const { data, error } = useQuery(
+	const { data, error } = useQuery<{
+		viewer?: { shouldShowFaustToolbar?: boolean | null } | null;
+	}>(
 		gql`
 			{
 				viewer {
@@ -192,7 +196,8 @@ export function ToolbarAwaitUser({ seedNode }: ToolbarProps) {
 		return null;
 	}
 
-	if (data.viewer.shouldShowFaustToolbar === false) {
+	// WPGraphQL returns no viewer once the session has ended.
+	if (!data.viewer || data.viewer.shouldShowFaustToolbar === false) {
 		return null;
 	}
 
