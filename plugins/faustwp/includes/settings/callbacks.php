@@ -203,7 +203,7 @@ function sanitize_faustwp_settings( $settings, $option ) {
 
 		switch ( $name ) {
 			case 'frontend_uri':
-				if ( '' === $value || preg_match( '#http(s?)://(.+)#i', $value ) ) {
+				if ( '' === $value || ( is_string( $value ) && preg_match( '#http(s?)://(.+)#i', $value ) ) ) {
 					$settings[ $name ] = esc_url_raw( $value, $protocols );
 				} else {
 					$errors[ $name ]   = __( 'The Front-end site URL you entered did not appear to be a valid URL. Please enter a valid URL.', 'faustwp' );
@@ -566,5 +566,6 @@ function trim_frontend_uri_trailing_slash( $value, $name ) {
 		return $value;
 	}
 
-	return untrailingslashit( $value );
+	// A front-end URL saved outside the settings screen may be null.
+	return untrailingslashit( (string) $value );
 }
