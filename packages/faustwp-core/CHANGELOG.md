@@ -1,5 +1,23 @@
 # @faustwp/core
 
+## [4.1.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.0.0...@faustwp/core@4.1.0) (2026-10-26)
+
+
+### Features
+
+* **core:** support Apollo Client 4 ([#2694](https://github.com/wpengine/faustjs/issues/2694)) ([4752023](https://github.com/wpengine/faustjs/commit/4752023fa1866afb9d5bf964e05200a46b086f41))
+* **core:** support the same query with different variables in useFaustQuery ([#2695](https://github.com/wpengine/faustjs/issues/2695)) ([503dd16](https://github.com/wpengine/faustjs/commit/503dd168ea9b534476b17b3218bd7c06dfa0ca30))
+
+
+### Bug Fixes
+
+* **core:** bundle the Faust packages so pages rendered on demand work with Turbopack ([#2696](https://github.com/wpengine/faustjs/issues/2696)) ([3f5ff44](https://github.com/wpengine/faustjs/commit/3f5ff44f61a7a99f45236257e7872c0b6fd96de2))
+
+
+### Dependencies
+
+* bump next from 16.4.0 to 16.4.2 ([#2693](https://github.com/wpengine/faustjs/issues/2693)) ([d83bbe6](https://github.com/wpengine/faustjs/commit/d83bbe6fe4a72cbb2899474291556fdf2dbbfe6f))
+
 ## [4.0.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@3.6.0...@faustwp/core@4.0.0) (2026-10-22)
 
 

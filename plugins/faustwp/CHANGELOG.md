@@ -1,5 +1,12 @@
 # Faust
 
+## [1.9.1](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.9.0...@faustwp/wordpress-plugin@1.9.1) (2026-10-26)
+
+
+### Bug Fixes
+
+* **faustwp:** stop passing null to preg_match when a front-end URL is missing ([#2701](https://github.com/wpengine/faustjs/issues/2701)) ([cc616f2](https://github.com/wpengine/faustjs/commit/cc616f2163683b20ea32bffca6b1e9567e0241cf))
+
 ## [1.9.0](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.8.14...@faustwp/wordpress-plugin@1.9.0) (2026-10-22)
 
 
