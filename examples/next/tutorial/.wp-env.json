@@ -1,7 +1,7 @@
 {
   "plugins": [
-    "https://downloads.wordpress.org/plugin/wp-graphql.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/faustwp.latest-stable.zip"
+    "https://downloads.wordpress.org/plugin/wp-graphql.zip",
+    "https://downloads.wordpress.org/plugin/faustwp.zip"
   ],
   "port": 8888,
   "config": {

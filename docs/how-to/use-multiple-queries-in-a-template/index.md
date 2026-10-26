@@ -144,9 +144,33 @@ export default function Component(props) {
 > [!note] Learn More
 > The [getting started example](https://github.com/wpengine/faustjs/tree/canary/examples/next/faustwp-getting-started/wp-templates) uses `Component.queries` with a shared layout query in each of its templates.
 
+## 4. Run the same query with different variables
+
+To list a query more than once, for example one section of posts per category, give each entry its own variables and pass the same variables to `useFaustQuery`:
+
+```js title="wp-templates/front-page.js"
+import { useFaustQuery } from "@faustwp/core";
+import { GET_POSTS_QUERY } from "../queries/GetPosts";
+
+export default function Component() {
+	const { posts: sports } =
+		useFaustQuery(GET_POSTS_QUERY, { variables: { category: "sports" } }) ?? {};
+	const { posts: news } =
+		useFaustQuery(GET_POSTS_QUERY, { variables: { category: "news" } }) ?? {};
+
+	// ...
+}
+
+Component.queries = [
+	{ query: GET_POSTS_QUERY, variables: () => ({ category: "sports" }) },
+	{ query: GET_POSTS_QUERY, variables: () => ({ category: "news" }) },
+];
+```
+
+The variables must match what the entry's `variables` function returns, in any key order. Since the queries run again in the browser, where the function doesn't receive `extra`, don't base these variables on `extra`. Without the second argument, `useFaustQuery` returns the last entry's result.
+
 ## Notes and limitations
 
 - **Use one or the other.** A template can define `Component.query` or `Component.queries`, not both. Faust throws ``Only either `Component.query` or `Component.queries` can be provided, but not both.`` if it finds both.
 - **Results come from `useFaustQuery`, not `props.data`.** `props.data` is only filled in for `Component.query`.
 - **Queries run again in the browser.** After the page loads, Faust runs the queries again in the browser. On previews, they only run in the browser. In the browser, the `variables` functions receive the seed node, `asPreview` and `locale`, but not `extra`.
-- **Each query can only be listed once.** Faust stores results by the query's text, so listing the same query twice with different variables keeps only the last result. To fetch the same data with different variables, define a second query with a different operation name. See [#1742](https://github.com/wpengine/faustjs/issues/1742).

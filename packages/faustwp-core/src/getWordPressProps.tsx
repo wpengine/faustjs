@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/extensions
-import { print } from '@apollo/client/utilities';
 import type { DocumentNode } from 'graphql';
-import { sha256 } from 'js-sha256';
 import { GetServerSidePropsContext, GetStaticPropsContext } from 'next';
 import { addApolloState, getApolloClient } from './client.js';
 import { FaustTemplateProps } from './components/WordPressTemplate.js';
@@ -16,6 +13,7 @@ import { SEED_QUERY, SeedNode } from './queries/seedQuery.js';
 import { debugLog, infoLog } from './utils/log.js';
 import { hooks } from './wpHooks/index.js';
 import { FaustQueries } from './store/FaustContext.js';
+import { storeFaustQueries } from './store/faustQueries.js';
 
 export const DEFAULT_ISR_REVALIDATE = 60 * 15; // 15 minutes
 
@@ -195,20 +193,15 @@ export async function getWordPressProps(
 						extra,
 				  )
 				: undefined;
-			return client.query<any>({
-				query,
-				variables: queryVariables,
-			});
+			return client
+				.query<any>({
+					query,
+					variables: queryVariables,
+				})
+				.then(({ data }) => ({ query, variables: queryVariables, data }));
 		});
-		const queriesRes = await Promise.all(queryCalls);
 
-		queries = {};
-
-		queriesRes.forEach((queryRes, index) => {
-			if (queries && template.queries) {
-				queries[sha256(print(template.queries[index].query))] = queryRes.data;
-			}
-		});
+		queries = storeFaustQueries(await Promise.all(queryCalls));
 	}
 
 	const appProps = addApolloState(client, {

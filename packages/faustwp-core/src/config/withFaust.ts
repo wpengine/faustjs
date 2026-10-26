@@ -11,6 +11,14 @@ export interface WithFaustConfig {
 	previewDestination?: string;
 }
 
+/**
+ * Faust packages to bundle into the app. In production, Turbopack loads
+ * packages from node_modules outside the app's bundle, so their components
+ * read a separate copy of Next.js's router context and throw "NextRouter was
+ * not mounted" on pages rendered on demand. Bundling them keeps one copy.
+ */
+export const FAUST_TRANSPILE_PACKAGES = ['@faustwp/core', '@faustwp/blocks'];
+
 export async function createRedirects(
 	nextConfig?: NextConfig,
 	redirectFn?: NextConfig['redirects'],
@@ -104,6 +112,13 @@ export function withFaust(
 	const existingHeaders = nextConfig.headers;
 	nextConfig.headers = () => addHeaders(nextConfig, existingHeaders);
 	nextConfig.poweredByHeader = false;
+
+	nextConfig.transpilePackages = Array.from(
+		new Set([
+			...(nextConfig.transpilePackages ?? []),
+			...FAUST_TRANSPILE_PACKAGES,
+		]),
+	);
 
 	return nextConfig;
 }

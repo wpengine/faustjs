@@ -308,21 +308,22 @@ xdescribe('<WordPressTemplateInternal />', () => {
 					} as any as ApolloClient<NormalizedCacheObject>),
 			);
 
-		clientQueryMock.mockImplementationOnce(() => ({
+		// client.query() returns a promise, like Apollo's.
+		clientQueryMock.mockResolvedValueOnce({
 			data: {
 				generalSettings: {
 					title: 'testing',
 				},
 			},
-		}));
+		});
 
-		clientQueryMock.mockImplementationOnce(() => ({
+		clientQueryMock.mockResolvedValueOnce({
 			data: {
 				post: {
 					databaseId: '50',
 				},
 			},
-		}));
+		});
 
 		await act(async () => {
 			render(
