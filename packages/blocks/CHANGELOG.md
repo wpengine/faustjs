@@ -1,5 +1,17 @@
 # @faustwp/blocks
 
+## [7.1.0](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@7.0.0...@faustwp/blocks@7.1.0) (2026-10-26)
+
+
+### Features
+
+* **core:** support Apollo Client 4 ([#2694](https://github.com/wpengine/faustjs/issues/2694)) ([4752023](https://github.com/wpengine/faustjs/commit/4752023fa1866afb9d5bf964e05200a46b086f41))
+
+
+### Dependencies
+
+* bump next from 16.4.0 to 16.4.2 ([#2693](https://github.com/wpengine/faustjs/issues/2693)) ([d83bbe6](https://github.com/wpengine/faustjs/commit/d83bbe6fe4a72cbb2899474291556fdf2dbbfe6f))
+
 ## [7.0.0](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@6.1.14...@faustwp/blocks@7.0.0) (2026-10-22)
 
 
