@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 7.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,13 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 == Changelog ==
 
+= 1.9.1 =
+
+
+### Bug Fixes
+
+* **faustwp:** stop passing null to preg_match when a front-end URL is missing ([#2701](https://github.com/wpengine/faustjs/issues/2701)) ([cc616f2](https://github.com/wpengine/faustjs/commit/cc616f2163683b20ea32bffca6b1e9567e0241cf))
+
 = 1.9.0 =
 
 
@@ -72,12 +79,5 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 * **faustwp:** keep posts and pages in Rank Math sitemaps when URL rewrites are on ([#2664](https://github.com/wpengine/faustjs/issues/2664)) ([288a7b1](https://github.com/wpengine/faustjs/commit/288a7b10374ee882c67816a0a8f864b2b0d0d6f7))
 * **faustwp:** keep the View Post link after publishing in the block editor ([#2667](https://github.com/wpengine/faustjs/issues/2667)) ([183572b](https://github.com/wpengine/faustjs/commit/183572b242bc5623fd3f012ce737e8b58ccf0655))
 * **faustwp:** only rewrite the block editor's save notice link ([#2671](https://github.com/wpengine/faustjs/issues/2671)) ([bbcd312](https://github.com/wpengine/faustjs/commit/bbcd31254244d771b2cafc9bc9f8245c89a050d6))
-
-= 1.8.13 =
-
-
-### Bug Fixes
-
-* **faustwp:** stop repeating the subdirectory in public route redirects ([#2642](https://github.com/wpengine/faustjs/issues/2642)) ([e5f813a](https://github.com/wpengine/faustjs/commit/e5f813a53bceed7adad13dd54a2458bed3ba557b))
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
