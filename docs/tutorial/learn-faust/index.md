@@ -200,23 +200,23 @@ if (props.loading) {
 
 This tells React to render a "Loading" message if the component is still loading. This momentary data fetching delay occurs because draft blog posts are client-side rendered (CSR) rather than server-side rendered (SSR). Until the draft loads, `props.data` is `undefined`, so the check has to come before anything reads `props.data.post`.
 
-Update the `Component.variables` function to return a new `asPreview` variable that is set to the value of `ctx?.asPreview`:
+Draft posts don't have a permalink yet, so the template can't look them up by URI. Update the `Component.variables` function to return the post's `databaseId` instead of its `uri`, plus a new `asPreview` variable that is set to the value of `ctx?.asPreview`:
 
 ```jsx title="src/wp-templates/single.js"
 SingleTemplate.variables = (seedQuery, ctx) => {
 	return {
-		uri: seedQuery?.uri,
+		databaseId: seedQuery?.databaseId, // [!code ++]
 		asPreview: ctx?.asPreview, // [!code ++]
 	};
 };
 ```
 
-Inside of the `GetPost` GraphQL query, accept a new `$asPreview: Boolean = false` argument. Pass that value into the `post` query by adding `asPreview: $asPreview`, as shown below.
+Inside of the `GetPost` GraphQL query, replace the `$uri` argument with `$databaseId: ID!` and accept a new `$asPreview: Boolean = false` argument. Look up the `post` by `DATABASE_ID` and pass in `asPreview: $asPreview`, as shown below.
 
 ```jsx title="src/wp-templates/single.js"
 SingleTemplate.query = gql`
-	query GetPost($uri: ID!, $asPreview: Boolean = false) {
-		post(id: $uri, idType: URI, asPreview: $asPreview) {
+	query GetPost($databaseId: ID!, $asPreview: Boolean = false) {
+		post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
 			title
 			content
 		}
@@ -245,8 +245,8 @@ export default function SingleTemplate(props) {
 }
 
 SingleTemplate.query = gql`
-	query GetPost($uri: ID!, $asPreview: Boolean = false) {
-		post(id: $uri, idType: URI, asPreview: $asPreview) {
+	query GetPost($databaseId: ID!, $asPreview: Boolean = false) {
+		post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
 			title
 			content
 		}
@@ -255,7 +255,7 @@ SingleTemplate.query = gql`
 
 SingleTemplate.variables = (seedQuery, ctx) => {
 	return {
-		uri: seedQuery?.uri,
+		databaseId: seedQuery?.databaseId,
 		asPreview: ctx?.asPreview,
 	};
 };
@@ -297,8 +297,8 @@ Next, we'll update our `single` blog post template to query for and render block
 Inside of the `SingleTemplate.query` GraphQL query, remove `content` and replace it with an `editorBlocks` section, as shown below.
 
 ```jsx title="src/wp-templates/single.js"
-query GetPost($uri: ID!, $asPreview: Boolean = false) {
-	post(id: $uri, idType: URI, asPreview: $asPreview) {
+query GetPost($databaseId: ID!, $asPreview: Boolean = false) {
+	post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
 		title
 		editorBlocks {
 			__typename
