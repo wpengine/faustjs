@@ -16,8 +16,7 @@ jobs:
         os: ['ubuntu-22.04']
         node: ['22', '24']
     permissions:
-      checks: write
-      pull-requests: write
+      contents: read
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -33,15 +32,15 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Tests
-        run: npm run test
+      - name: Test Blocks Package
+        run: npm test --workspace=@faustwp/blocks
 
-      - name: Code Coverage for FaustWP Core Package
+      - name: Test Core Package with Coverage
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/faustwp-core
 
-      - name: Code Coverage for FaustWP CLI Package
+      - name: Test CLI Package with Coverage
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/faustwp-cli
