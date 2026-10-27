@@ -416,6 +416,8 @@ In the `/faust-tutorial` project folder, run the command below. It downloads you
 npx faust generateGlobalStylesheet
 ```
 
+The file is a snapshot of your theme's styles. Editing posts doesn't change it, but run the command again after you switch themes or change styles in the Site Editor.
+
 Import the stylesheet in your `_app.js` file:
 
 ```jsx title="src/pages/_app.js"
