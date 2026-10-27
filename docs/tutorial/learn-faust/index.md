@@ -388,7 +388,7 @@ Inspect the blog post content in the browser dev tools and notice that each bloc
 
 Now [edit the Hello World! blog post](http://localhost:8888/wp-admin/post.php?post=1&action=edit). Make several changes to it in terms of font size, padding, margin, a border, an HTML anchor, and additional CSS classes, then save your changes.
 
-Reload the http://localhost:3000/blog/hello-world/ page in your frontend app. Inspect the paragraph block in DevTools to see markup similar to the example below. Faust has rendered the paragraph tag with these attributes, but the font size and padding don't show yet. The classes and CSS variables they use are defined in WordPress's global stylesheet, which the app doesn't load yet.
+Reload the http://localhost:3000/blog/hello-world/ page in your frontend app. Inspect the paragraph block in DevTools to see markup similar to the example below. Faust has rendered the paragraph tag with these attributes, but the font size, padding, and margin don't show yet. The classes and CSS variables they use are defined in WordPress's global stylesheet, which the app doesn't load yet.
 
 ```html
 <div class="paragraph-block-wrapper">
@@ -425,7 +425,7 @@ import "@/styles/globals.css";
 import "../../globalStylesheet.css"; // [!code ++]
 ```
 
-Reload the page. The paragraph now shows the font size and padding you set in the editor. Some block styles, such as the default border style, come from WordPress's block library CSS instead. The [`getStyles` reference](/docs/reference/get-styles/#additional-info) explains how to add it.
+Reload the page. The paragraph now shows the font size, padding, and margin you set in the editor. Some block styles, such as the default border style, come from WordPress's block library CSS instead. The [`getStyles` reference](/docs/reference/get-styles/#additional-info) explains how to add it.
 
 More information about using Faust to render blocks, override WordPress core blocks with your own implementation, and even add support for custom blocks can be found in these how-to guides:
 
