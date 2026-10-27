@@ -198,7 +198,7 @@ if (props.loading) {
 }
 ```
 
-This tells React to render a "Loading" message if the component is still loading. This momentary data fetching delay occurs because draft blog posts are client-side rendered (CSR) rather than server-side rendered (SSR).
+This tells React to render a "Loading" message if the component is still loading. This momentary data fetching delay occurs because draft blog posts are client-side rendered (CSR) rather than server-side rendered (SSR). Until the draft loads, `props.data` is `undefined`, so the check has to come before anything reads `props.data.post`.
 
 Update the `Component.variables` function to return a new `asPreview` variable that is set to the value of `ctx?.asPreview`:
 
