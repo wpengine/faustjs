@@ -32,16 +32,15 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Core and CLI tests run once, in the coverage steps below.
       - name: Test Blocks Package
         run: npm test --workspace=@faustwp/blocks
 
-      - name: Code Coverage for FaustWP Core Package
+      - name: Test Core Package with Coverage
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/faustwp-core
 
-      - name: Code Coverage for FaustWP CLI Package
+      - name: Test CLI Package with Coverage
         uses: ./.github/actions/run-coverage
         with:
           working-directory: packages/faustwp-cli
