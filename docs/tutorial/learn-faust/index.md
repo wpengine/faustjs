@@ -359,7 +359,6 @@ export default function SingleTemplate(props) {
 			<h1>{title}</h1>
 			<div>
 				{editorBlocks.map((block, index) => {
-					console.log(block);
 					if (block.name === 'core/paragraph') {
 						return (
 							<div
