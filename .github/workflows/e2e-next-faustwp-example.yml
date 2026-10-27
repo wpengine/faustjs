@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
+          cache: npm
       # Copy the example from this checkout so the app is built from the
       # PR's own example source.
       - name: copy getting started example
