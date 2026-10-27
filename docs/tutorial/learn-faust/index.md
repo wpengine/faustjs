@@ -423,7 +423,7 @@ import "@/styles/globals.css";
 import "../../globalStylesheet.css"; // [!code ++]
 ```
 
-Reload the page. The paragraph now shows the font size, padding, and border you set in the editor.
+Reload the page. The paragraph now shows the font size and padding you set in the editor. Some block styles, such as the default border style, come from WordPress's block library CSS instead. The [`getStyles` reference](/docs/reference/get-styles/#additional-info) explains how to add it.
 
 More information about using Faust to render blocks, override WordPress core blocks with your own implementation, and even add support for custom blocks can be found in these how-to guides:
 
