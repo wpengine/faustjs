@@ -348,11 +348,11 @@ Your updated `SingleTemplate` component should now look like this:
 
 ```jsx title="src/wp-templates/single.js"
 export default function SingleTemplate(props) {
-	const { title, editorBlocks } = props.data.post;
-
 	if (props.loading) {
 		return <p>Loading...</p>;
 	}
+
+	const { title, editorBlocks } = props.data.post;
 
 	return (
 		<>
