@@ -26,7 +26,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
-          cache: npm
 
       - name: Install
         run: npm ci
@@ -58,7 +57,6 @@ jobs:
         with:
           node-version: 24
           check-latest: true
-          cache: npm
 
       - name: Install
         run: npm ci
