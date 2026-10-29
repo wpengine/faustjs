@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## [4.1.1](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.1.0...@faustwp/core@4.1.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* **core:** merge server data into the Apollo cache without deepmerge ([#2714](https://github.com/wpengine/faustjs/issues/2714)) ([e12da6c](https://github.com/wpengine/faustjs/commit/e12da6c8af28dacfc2b276023330ee20bf1466e9))
+
 ## [4.1.0](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.0.0...@faustwp/core@4.1.0) (2026-10-26)
 
 
