@@ -19,13 +19,13 @@
 		"graphql": "^16.10.0",
 		"next": "^16.3.8",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"sass": "^1.54.9"
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@wordpress/base-styles": "^6.20.0",
 		"@wordpress/block-library": "^9.44.0",
 		"next-secure-headers": "^2.2.0",
+		"sass": "^1.54.9",
 		"@wordpress/scripts": "^32.5.0"
 	},
 	"engines": {
