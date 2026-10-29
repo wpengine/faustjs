@@ -6,8 +6,6 @@ import {
 	InMemoryCacheConfig,
 	NormalizedCacheObject,
 } from '@apollo/client';
-import merge from 'deepmerge';
-import isEqual from 'lodash/isEqual.js';
 import { useMemo } from 'react';
 // eslint-disable-next-line import/extensions
 import { setContext } from '@apollo/client/link/context';
@@ -20,6 +18,7 @@ import { ErrorLoggingLink } from './apollo/errorLoggingLink.js';
 import { getAccessToken } from './auth/index.js';
 import { getConfig } from './config/index.js';
 import { getGraphqlEndpoint } from './lib/getGraphqlEndpoint.js';
+import { mergeApolloState } from './utils/mergeApolloState.js';
 import { hooks } from './wpHooks/index.js';
 
 // Apollo Client 4 dropped the cache type parameter. These types are worked out
@@ -142,13 +141,10 @@ export function getApolloClient(initialState = null): FaustApolloClient {
 		const existingCache = _apolloClient.extract() as NormalizedCacheObject;
 
 		// Merge the initialState from getStaticProps/getServerSideProps in the existing cache
-		const data = merge(existingCache, initialState, {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-			arrayMerge: (destination, source) => [
-				...source,
-				...destination.filter((d) => source.every((s) => !isEqual(d, s))),
-			],
-		});
+		const data = mergeApolloState<NormalizedCacheObject>(
+			existingCache,
+			initialState,
+		);
 
 		// Restore the cache with the merged data
 		_apolloClient.cache.restore(data);
