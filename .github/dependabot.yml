@@ -21,6 +21,9 @@ updates:
     # Release-please only releases for visible changelog types. Production
     # bumps use `deps` so they reach the release PR's Dependencies section;
     # dev bumps stay `chore` because they don't change what users install.
+    # A package that's a production dependency in any workspace, including
+    # the getting-started example, gets `deps`, so keep build-only tools
+    # like sass in devDependencies there too.
     commit-message:
       prefix: "deps"
       prefix-development: "chore(deps-dev)"

@@ -19,11 +19,11 @@
 		"graphql": "^16.14.2",
 		"next": "^16.4.2",
 		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"sass": "1.106.1"
+		"react-dom": "^18.3.1"
 	},
 	"devDependencies": {
-		"next-secure-headers": "^2.2.0"
+		"next-secure-headers": "^2.2.0",
+		"sass": "1.106.1"
 	},
 	"engines": {
 		"node": ">=22",
