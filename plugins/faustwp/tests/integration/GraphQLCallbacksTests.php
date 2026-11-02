@@ -212,14 +212,15 @@ class GraphQLCallbacksTests extends \WP_UnitTestCase {
 		);
 		$this->go_to( get_attachment_link( $attachment_id ) );
 
-		$attachment_template = static function () {
-			return __FILE__;
-		};
-		add_filter( 'attachment_template', $attachment_template );
+		// The test theme has no attachment template, so pretend it does. WP_UnitTestCase removes the filter afterwards.
+		add_filter(
+			'attachment_template',
+			static function () {
+				return __FILE__;
+			}
+		);
 
 		$templates = templates_resolver( [], [], new \WPGraphQL\AppContext(), $this->createMock( \GraphQL\Type\Definition\ResolveInfo::class ) );
-
-		remove_filter( 'attachment_template', $attachment_template );
 
 		self::assertContains( 'attachment', $templates );
 		self::assertSame( 10, has_filter( 'the_content', 'prepend_attachment' ) );
