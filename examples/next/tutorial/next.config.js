@@ -10,7 +10,11 @@ module.exports = withFaust({
 		loadPaths: ['node_modules'],
 	},
 	images: {
-		domains: [getWpHostname()],
+		remotePatterns: [
+			{
+				hostname: getWpHostname(),
+			},
+		],
 	},
 	async headers() {
 		return [
