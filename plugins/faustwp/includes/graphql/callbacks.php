@@ -199,10 +199,6 @@ function templates_resolver( $root, $args, AppContext $context, ResolveInfo $inf
 		}
 
 		if ( $template ) {
-			if ( 'is_attachment' === $tag ) {
-				remove_filter( 'the_content', 'prepend_attachment' );
-			}
-
 			break;
 		}
 	}
