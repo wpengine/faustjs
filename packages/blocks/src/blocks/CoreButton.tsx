@@ -34,14 +34,13 @@ export function CoreButton(props: CoreButtonFragmentProps) {
         aria-label={attributes?.text}
         id={attributes?.anchor}
         className={attributes?.cssClassName}>
-        <Link legacyBehavior href={attributes?.url}>
-          <a
-            target={linkTarget}
-            className={attributes?.linkClassName}
-            rel={attributes?.rel}
-            style={style}>
-            <span>{attributes?.text}</span>
-          </a>
+        <Link
+          href={attributes.url}
+          target={linkTarget}
+          className={attributes?.linkClassName}
+          rel={attributes?.rel}
+          style={style}>
+          <span>{attributes?.text}</span>
         </Link>
       </div>
     );
