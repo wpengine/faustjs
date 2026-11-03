@@ -212,7 +212,7 @@ class GraphQLCallbacksTests extends \WP_UnitTestCase {
 		);
 		$this->go_to( get_attachment_link( $attachment_id ) );
 
-		// The test theme has no attachment template, so pretend it does. WP_UnitTestCase removes the filter afterwards.
+		// The test theme has no attachment template.
 		add_filter(
 			'attachment_template',
 			static function () {
