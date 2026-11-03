@@ -3,7 +3,7 @@ Contributors: antpb, apmatthe, blakewpe, chriswiegman, claygriffiths, colin-murp
 Tags: faustjs, faust, headless, decoupled, composable-architecture
 Requires at least: 5.7
 Tested up to: 7.0
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,13 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 == Changelog ==
 
+= 1.9.2 =
+
+
+### Bug Fixes
+
+* **faustwp:** stop the templates field from changing other nodes' content ([#2719](https://github.com/wpengine/faustjs/issues/2719)) ([9303677](https://github.com/wpengine/faustjs/commit/930367782173d1fb0cb0657102a8612d8855097f))
+
 = 1.9.1 =
 
 
@@ -70,14 +77,5 @@ Maintenance release. Sites still on 1.8.0 should update to address GHSA-q6pm-r77
 
 * end the WordPress session when logging out of the frontend ([#2684](https://github.com/wpengine/faustjs/issues/2684)) ([f32eb6b](https://github.com/wpengine/faustjs/commit/f32eb6b3295a812354d405028c8d97b2ead173b5))
 * **faustwp:** make blockset files readable by the web server ([#2681](https://github.com/wpengine/faustjs/issues/2681)) ([89561a5](https://github.com/wpengine/faustjs/commit/89561a50384d4970a2f79e34c25e2b9c8beaec5d))
-
-= 1.8.14 =
-
-
-### Bug Fixes
-
-* **faustwp:** keep posts and pages in Rank Math sitemaps when URL rewrites are on ([#2664](https://github.com/wpengine/faustjs/issues/2664)) ([288a7b1](https://github.com/wpengine/faustjs/commit/288a7b10374ee882c67816a0a8f864b2b0d0d6f7))
-* **faustwp:** keep the View Post link after publishing in the block editor ([#2667](https://github.com/wpengine/faustjs/issues/2667)) ([183572b](https://github.com/wpengine/faustjs/commit/183572b242bc5623fd3f012ce737e8b58ccf0655))
-* **faustwp:** only rewrite the block editor's save notice link ([#2671](https://github.com/wpengine/faustjs/issues/2671)) ([bbcd312](https://github.com/wpengine/faustjs/commit/bbcd31254244d771b2cafc9bc9f8245c89a050d6))
 
 [View the full changelog](https://github.com/wpengine/faustjs/blob/canary/plugins/faustwp/CHANGELOG.md)
