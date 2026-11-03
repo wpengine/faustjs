@@ -16,6 +16,7 @@ use function WPE\FaustWP\Settings\{
 
 use function WPE\FaustWP\GraphQL\{
 	filter_introspection,
+	templates_resolver,
 };
 
 class GraphQLCallbacksTests extends \WP_UnitTestCase {
@@ -195,6 +196,34 @@ class GraphQLCallbacksTests extends \WP_UnitTestCase {
 		);
 
 		remove_filter( 'faustwp_get_setting', [ $this, 'filter_secret_key' ] );
+	}
+
+	/**
+	 * Tests templates_resolver() leaves the_content alone when it finds an attachment template.
+	 */
+	public function test_templates_resolver_keeps_prepend_attachment_for_attachments(): void {
+		$attachment_id = self::factory()->attachment->create_object(
+			'image.jpg',
+			0,
+			[
+				'post_mime_type' => 'image/jpeg',
+				'post_status'    => 'inherit',
+			]
+		);
+		$this->go_to( get_attachment_link( $attachment_id ) );
+
+		// The test theme has no attachment template.
+		add_filter(
+			'attachment_template',
+			static function () {
+				return __FILE__;
+			}
+		);
+
+		$templates = templates_resolver( [], [], new \WPGraphQL\AppContext(), $this->createMock( \GraphQL\Type\Definition\ResolveInfo::class ) );
+
+		self::assertContains( 'attachment', $templates );
+		self::assertSame( 10, has_filter( 'the_content', 'prepend_attachment' ) );
 	}
 
 	/**
