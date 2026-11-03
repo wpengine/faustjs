@@ -28,6 +28,24 @@ describe('<CoreButton />', () => {
 		);
 	});
 
+	test('puts the link attributes on a single anchor', () => {
+		const { container } = renderProvider({
+			attributes: {
+				text: 'Click',
+				url: '/about',
+				linkClassName: 'wp-block-button__link',
+				linkTarget: '_blank',
+				rel: 'noopener',
+			},
+		});
+		const link = screen.getByRole('link', { name: 'Click' });
+		expect(link).toHaveAttribute('href', '/about');
+		expect(link).toHaveAttribute('target', '_blank');
+		expect(link).toHaveAttribute('rel', 'noopener');
+		expect(link).toHaveClass('wp-block-button__link');
+		expect(container.querySelectorAll('a')).toHaveLength(1);
+	});
+
 	// WordPress 7.0+ stores text alignment in style.typography.textAlign and
 	// adds the has-text-align-* class to the saved markup.
 	test('keeps text alignment from WordPress 7.0+ through the class name', () => {
