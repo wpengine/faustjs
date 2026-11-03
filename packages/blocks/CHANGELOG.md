@@ -1,5 +1,12 @@
 # @faustwp/blocks
 
+## [7.1.1](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@7.1.0...@faustwp/blocks@7.1.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* **blocks:** render CoreButton links without Link's legacyBehavior ([#2716](https://github.com/wpengine/faustjs/issues/2716)) ([7a511e5](https://github.com/wpengine/faustjs/commit/7a511e5b12ebbeaa50fd7be5f7117323777ea9c7))
+
 ## [7.1.0](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@7.0.0...@faustwp/blocks@7.1.0) (2026-10-26)
 
 

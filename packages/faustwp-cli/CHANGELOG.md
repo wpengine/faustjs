@@ -1,5 +1,12 @@
 # @faustwp/cli
 
+## [4.1.1](https://github.com/wpengine/faustjs/compare/@faustwp/cli@4.1.0...@faustwp/cli@4.1.1) (2026-11-03)
+
+
+### Dependencies
+
+* bump glob from 13.0.6 to 14.0.2 ([#2718](https://github.com/wpengine/faustjs/issues/2718)) ([2504ed8](https://github.com/wpengine/faustjs/commit/2504ed81d2ea0ceee025ef17a75ea9a99939b23d))
+
 ## [4.1.0](https://github.com/wpengine/faustjs/compare/@faustwp/cli@4.0.0...@faustwp/cli@4.1.0) (2026-10-26)
 
 

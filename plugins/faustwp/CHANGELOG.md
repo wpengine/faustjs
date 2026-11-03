@@ -1,5 +1,12 @@
 # Faust
 
+## [1.9.2](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.9.1...@faustwp/wordpress-plugin@1.9.2) (2026-11-03)
+
+
+### Bug Fixes
+
+* **faustwp:** stop the templates field from changing other nodes' content ([#2719](https://github.com/wpengine/faustjs/issues/2719)) ([9303677](https://github.com/wpengine/faustjs/commit/930367782173d1fb0cb0657102a8612d8855097f))
+
 ## [1.9.1](https://github.com/wpengine/faustjs/compare/@faustwp/wordpress-plugin@1.9.0...@faustwp/wordpress-plugin@1.9.1) (2026-10-26)
 
 
