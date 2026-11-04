@@ -23,7 +23,7 @@
 	},
 	"devDependencies": {
 		"next-secure-headers": "^2.2.0",
-		"sass": "1.106.1"
+		"sass": "1.107.1"
 	},
 	"engines": {
 		"node": ">=22",
