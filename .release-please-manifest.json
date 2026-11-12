@@ -1,6 +1,6 @@
 {
-  "packages/faustwp-core": "4.1.1",
-  "packages/faustwp-cli": "4.1.1",
+  "packages/faustwp-core": "4.1.2",
+  "packages/faustwp-cli": "4.1.2",
   "packages/blocks": "7.1.1",
   "plugins/faustwp": "1.9.2"
 }

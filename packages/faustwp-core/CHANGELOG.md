@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## [4.1.2](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.1.1...@faustwp/core@4.1.2) (2026-11-12)
+
+
+### Dependencies
+
+* bump fast-xml-parser from 5.11.2 to 5.12.0 ([#2729](https://github.com/wpengine/faustjs/issues/2729)) ([ddcc8dc](https://github.com/wpengine/faustjs/commit/ddcc8dc9d2946868c64cbb39cd65727230490ac7))
+
 ## [4.1.1](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.1.0...@faustwp/core@4.1.1) (2026-11-03)
 
 
