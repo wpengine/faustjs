@@ -24,14 +24,8 @@ describe('utils/getNextBinPath', () => {
 		return nextDir;
 	};
 
-	it('resolves the next bin from an object bin field', () => {
+	it('resolves the next bin', () => {
 		const nextDir = installNext({ next: './dist/bin/next' });
-
-		expect(getNextBinPath(cwd)).toBe(path.join(nextDir, 'dist', 'bin', 'next'));
-	});
-
-	it('resolves the next bin from a string bin field', () => {
-		const nextDir = installNext('./dist/bin/next');
 
 		expect(getNextBinPath(cwd)).toBe(path.join(nextDir, 'dist', 'bin', 'next'));
 	});

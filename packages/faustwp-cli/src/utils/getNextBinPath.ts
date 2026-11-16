@@ -17,9 +17,9 @@ export const getNextBinPath = (cwd = process.cwd()) => {
 			'next/package.json',
 		);
 		const { bin } = JSON.parse(fs.readFileSync(pkgPath, 'utf8')) as {
-			bin?: string | Record<string, string>;
+			bin?: { next?: string };
 		};
-		const binPath = typeof bin === 'string' ? bin : bin?.next;
+		const binPath = bin?.next;
 
 		return binPath ? path.resolve(path.dirname(pkgPath), binPath) : undefined;
 	} catch {
