@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
-import { debugLog } from './stdout/index.js';
+import { debugLog, errorLog } from './stdout/index.js';
 import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { blockset } from './blockset.js';
 import {
 	getCliArgs,
+	getNextBinPath,
 	getNextCliArgs,
 	hasWpCredentials,
 	isDebug,
@@ -88,12 +89,24 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 	 * Spawn a child process using the args captured in argv and continue the
 	 * standard i/o for the Next.js CLI.
 	 */
-	const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
+	const nextBinPath = getNextBinPath();
 
-	process.exit(
-		spawnSync(nextjsCommand, getNextCliArgs(), {
+	if (!nextBinPath) {
+		errorLog('Could not find Next.js. Make sure `next` is installed.');
+		process.exit(1);
+	}
+
+	const result = spawnSync(
+		process.execPath,
+		[nextBinPath, ...getNextCliArgs()],
+		{
 			stdio: 'inherit',
-			encoding: 'utf8',
-		})?.status as number | undefined,
+		},
 	);
+
+	if (result.error) {
+		errorLog('Failed to start Next.js:', result.error);
+	}
+
+	process.exit(result.status ?? 1);
 })();
