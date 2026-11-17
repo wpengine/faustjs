@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import { spawnSync } from 'child_process';
 import dotenv from 'dotenv-flow';
 import { debugLog } from './stdout/index.js';
 import { healthCheck } from './healthCheck/index.js';
 import { generatePossibleTypes } from './generatePossibleTypes.js';
 import { generateGlobalStylesheet } from './generateGlobalStylesheet.js';
 import { blockset } from './blockset.js';
+import { runNext } from './runNext.js';
 import {
 	getCliArgs,
 	getNextCliArgs,
@@ -84,16 +84,5 @@ import { marshallTelemetryData, sendTelemetryData } from './telemetry/index.js';
 
 	printFaustVersion();
 
-	/**
-	 * Spawn a child process using the args captured in argv and continue the
-	 * standard i/o for the Next.js CLI.
-	 */
-	const nextjsCommand = process.platform === 'win32' ? 'next.cmd' : 'next';
-
-	process.exit(
-		spawnSync(nextjsCommand, getNextCliArgs(), {
-			stdio: 'inherit',
-			encoding: 'utf8',
-		})?.status as number | undefined,
-	);
+	process.exit(runNext(getNextCliArgs()));
 })();
