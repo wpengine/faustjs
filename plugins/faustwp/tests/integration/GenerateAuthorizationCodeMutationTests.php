@@ -108,23 +108,40 @@ class GenerateAuthorizationCodeMutationTests extends \WP_UnitTestCase {
 	 * @return array{code: ?string, error: ?string} The mutation payload.
 	 */
 	private function generate_authorization_code( array $input ): array {
-		$result = graphql(
-			array(
-				'query'     => '
-					mutation Generate( $username: String, $email: String, $password: String ) {
-						generateAuthorizationCode( input: { username: $username, email: $email, password: $password } ) {
-							code
-							error
-						}
-					}
-				',
-				'variables' => array(
-					'username' => $input['username'] ?? null,
-					'email'    => $input['email'] ?? null,
-					'password' => $input['password'] ?? null,
-				),
-			)
+		// Deprecations raised inside WPGraphQL aren't Faust's to fix, and failing
+		// mid-request leaves WPGraphQL's request state set for later tests.
+		$previous_handler = set_error_handler(
+			static function ( ...$args ) use ( &$previous_handler ) {
+				if ( 0 === strpos( $args[2], WP_TEST_PLUGINS_DIR . '/wp-graphql/' ) ) {
+					return true;
+				}
+
+				return $previous_handler ? $previous_handler( ...$args ) : false;
+			},
+			E_DEPRECATED
 		);
+
+		try {
+			$result = graphql(
+				array(
+					'query'     => '
+						mutation Generate( $username: String, $email: String, $password: String ) {
+							generateAuthorizationCode( input: { username: $username, email: $email, password: $password } ) {
+								code
+								error
+							}
+						}
+					',
+					'variables' => array(
+						'username' => $input['username'] ?? null,
+						'email'    => $input['email'] ?? null,
+						'password' => $input['password'] ?? null,
+					),
+				)
+			);
+		} finally {
+			restore_error_handler();
+		}
 
 		$this->assertArrayNotHasKey( 'errors', $result, 'The mutation should not raise GraphQL errors.' );
 
