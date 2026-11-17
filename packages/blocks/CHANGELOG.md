@@ -1,5 +1,12 @@
 # @faustwp/blocks
 
+## [7.1.2](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@7.1.1...@faustwp/blocks@7.1.2) (2026-11-17)
+
+
+### Dependencies
+
+* bump next from 16.4.2 to 16.4.6 ([#2736](https://github.com/wpengine/faustjs/issues/2736)) ([b607363](https://github.com/wpengine/faustjs/commit/b6073636ec673b1354e2215b1d110ed3d3984ea6))
+
 ## [7.1.1](https://github.com/wpengine/faustjs/compare/@faustwp/blocks@7.1.0...@faustwp/blocks@7.1.1) (2026-11-03)
 
 

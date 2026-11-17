@@ -1,5 +1,17 @@
 # @faustwp/cli
 
+## [4.1.2](https://github.com/wpengine/faustjs/compare/@faustwp/cli@4.1.1...@faustwp/cli@4.1.2) (2026-11-17)
+
+
+### Bug Fixes
+
+* **cli:** start Next.js on Windows with Node 22+ ([#2733](https://github.com/wpengine/faustjs/issues/2733)) ([caf9158](https://github.com/wpengine/faustjs/commit/caf9158eb447b4eef685dada1340bac5e5cf5d8d))
+
+
+### Dependencies
+
+* bump the production-dependencies group across 1 directory with 4 updates ([#2737](https://github.com/wpengine/faustjs/issues/2737)) ([a12e51c](https://github.com/wpengine/faustjs/commit/a12e51c8d781c3fd922e76bbf0869cf7b9dac211))
+
 ## [4.1.1](https://github.com/wpengine/faustjs/compare/@faustwp/cli@4.1.0...@faustwp/cli@4.1.1) (2026-11-03)
 
 
