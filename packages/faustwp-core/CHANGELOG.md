@@ -1,5 +1,12 @@
 # @faustwp/core
 
+## [4.1.3](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.1.2...@faustwp/core@4.1.3) (2026-11-25)
+
+
+### Dependencies
+
+* bump js-sha256 from 1.0.0 to 1.1.0 in the production-dependencies group ([#2743](https://github.com/wpengine/faustjs/issues/2743)) ([bfbe4c7](https://github.com/wpengine/faustjs/commit/bfbe4c78818c34a259235c14241617aa1c526292))
+
 ## [4.1.2](https://github.com/wpengine/faustjs/compare/@faustwp/core@4.1.1...@faustwp/core@4.1.2) (2026-11-17)
 
 
